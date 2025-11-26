@@ -3017,6 +3017,7 @@ type ApiGetLoyaltyCardTransactionsRequest struct {
 	transactionUUIDs *[]string
 	pageSize *int64
 	skip *int64
+	awaitsActivation *bool
 }
 
 // Filter results by one or more subledger IDs. Must be exact match.
@@ -3064,6 +3065,12 @@ func (r ApiGetLoyaltyCardTransactionsRequest) PageSize(pageSize int64) ApiGetLoy
 // The number of items to skip when paging through large result sets.
 func (r ApiGetLoyaltyCardTransactionsRequest) Skip(skip int64) ApiGetLoyaltyCardTransactionsRequest {
 	r.skip = &skip
+	return r
+}
+
+// If &#x60;true&#x60;: Filters results to include only point transactions that have action-based activation and have not expired. If &#x60;false&#x60;: Returns an error. 
+func (r ApiGetLoyaltyCardTransactionsRequest) AwaitsActivation(awaitsActivation bool) ApiGetLoyaltyCardTransactionsRequest {
+	r.awaitsActivation = &awaitsActivation
 	return r
 }
 
@@ -3171,6 +3178,9 @@ func (a *IntegrationAPIService) GetLoyaltyCardTransactionsExecute(r ApiGetLoyalt
 	}
 	if r.skip != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "skip", r.skip, "form", "")
+	}
+	if r.awaitsActivation != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "awaitsActivation", r.awaitsActivation, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -3536,6 +3546,7 @@ type ApiGetLoyaltyProgramProfileTransactionsRequest struct {
 	endDate *time.Time
 	pageSize *int64
 	skip *int64
+	awaitsActivation *bool
 }
 
 // Filter the results by a list of customer session IDs.   To include multiple IDs, repeat the parameter for each one, for example,  &#x60;?customerSessionIDs&#x3D;id1&amp;customerSessionIDs&#x3D;id2&#x60;.  The response contains only data associated with the specified sessions. 
@@ -3583,6 +3594,12 @@ func (r ApiGetLoyaltyProgramProfileTransactionsRequest) PageSize(pageSize int64)
 // The number of items to skip when paging through large result sets.
 func (r ApiGetLoyaltyProgramProfileTransactionsRequest) Skip(skip int64) ApiGetLoyaltyProgramProfileTransactionsRequest {
 	r.skip = &skip
+	return r
+}
+
+// If &#x60;true&#x60;: Filters results to include only point transactions that have action-based activation and have not expired. If &#x60;false&#x60;: Returns an error. 
+func (r ApiGetLoyaltyProgramProfileTransactionsRequest) AwaitsActivation(awaitsActivation bool) ApiGetLoyaltyProgramProfileTransactionsRequest {
+	r.awaitsActivation = &awaitsActivation
 	return r
 }
 
@@ -3680,6 +3697,9 @@ func (a *IntegrationAPIService) GetLoyaltyProgramProfileTransactionsExecute(r Ap
 	}
 	if r.skip != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "skip", r.skip, "form", "")
+	}
+	if r.awaitsActivation != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "awaitsActivation", r.awaitsActivation, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

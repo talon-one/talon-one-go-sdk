@@ -50,10 +50,6 @@ type AddLoyaltyPointsEffectProps struct {
 	BundleIndex *int64 `json:"bundleIndex,omitempty"`
 	// The name of the bundle definition.
 	BundleName *string `json:"bundleName,omitempty"`
-	// If `true`, the loyalty points are pending until  action-based activation takes place. The `startDate` parameter automatically  defaults to `on_action`. 
-	AwaitsActivation *bool `json:"awaitsActivation,omitempty"`
-	// The duration for which the points remain active, relative to the  activation date. Example: `30D`.   **Note**: This value is only returned if `awaitsActivation` is `true`  and `expiryDate` is not set. 
-	ValidityDuration *string `json:"validityDuration,omitempty"`
 }
 
 type _AddLoyaltyPointsEffectProps AddLoyaltyPointsEffectProps
@@ -481,70 +477,6 @@ func (o *AddLoyaltyPointsEffectProps) SetBundleName(v string) {
 	o.BundleName = &v
 }
 
-// GetAwaitsActivation returns the AwaitsActivation field value if set, zero value otherwise.
-func (o *AddLoyaltyPointsEffectProps) GetAwaitsActivation() bool {
-	if o == nil || IsNil(o.AwaitsActivation) {
-		var ret bool
-		return ret
-	}
-	return *o.AwaitsActivation
-}
-
-// GetAwaitsActivationOk returns a tuple with the AwaitsActivation field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *AddLoyaltyPointsEffectProps) GetAwaitsActivationOk() (*bool, bool) {
-	if o == nil || IsNil(o.AwaitsActivation) {
-		return nil, false
-	}
-	return o.AwaitsActivation, true
-}
-
-// HasAwaitsActivation returns a boolean if a field has been set.
-func (o *AddLoyaltyPointsEffectProps) HasAwaitsActivation() bool {
-	if o != nil && !IsNil(o.AwaitsActivation) {
-		return true
-	}
-
-	return false
-}
-
-// SetAwaitsActivation gets a reference to the given bool and assigns it to the AwaitsActivation field.
-func (o *AddLoyaltyPointsEffectProps) SetAwaitsActivation(v bool) {
-	o.AwaitsActivation = &v
-}
-
-// GetValidityDuration returns the ValidityDuration field value if set, zero value otherwise.
-func (o *AddLoyaltyPointsEffectProps) GetValidityDuration() string {
-	if o == nil || IsNil(o.ValidityDuration) {
-		var ret string
-		return ret
-	}
-	return *o.ValidityDuration
-}
-
-// GetValidityDurationOk returns a tuple with the ValidityDuration field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *AddLoyaltyPointsEffectProps) GetValidityDurationOk() (*string, bool) {
-	if o == nil || IsNil(o.ValidityDuration) {
-		return nil, false
-	}
-	return o.ValidityDuration, true
-}
-
-// HasValidityDuration returns a boolean if a field has been set.
-func (o *AddLoyaltyPointsEffectProps) HasValidityDuration() bool {
-	if o != nil && !IsNil(o.ValidityDuration) {
-		return true
-	}
-
-	return false
-}
-
-// SetValidityDuration gets a reference to the given string and assigns it to the ValidityDuration field.
-func (o *AddLoyaltyPointsEffectProps) SetValidityDuration(v string) {
-	o.ValidityDuration = &v
-}
-
 func (o AddLoyaltyPointsEffectProps) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -584,12 +516,6 @@ func (o AddLoyaltyPointsEffectProps) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.BundleName) {
 		toSerialize["bundleName"] = o.BundleName
-	}
-	if !IsNil(o.AwaitsActivation) {
-		toSerialize["awaitsActivation"] = o.AwaitsActivation
-	}
-	if !IsNil(o.ValidityDuration) {
-		toSerialize["validityDuration"] = o.ValidityDuration
 	}
 	return toSerialize, nil
 }

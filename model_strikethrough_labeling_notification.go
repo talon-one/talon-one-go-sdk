@@ -34,10 +34,8 @@ type StrikethroughLabelingNotification struct {
 	TotalBatches int64 `json:"totalBatches"`
 	Trigger StrikethroughTrigger `json:"trigger"`
 	ChangedItems []StrikethroughChangedItem `json:"changedItems"`
-	// The type of notification.
+	// The type of the notification
 	NotificationType string `json:"NotificationType"`
-	// Timestamp at which the notification was sent.
-	SentAt time.Time `json:"sentAt"`
 }
 
 type _StrikethroughLabelingNotification StrikethroughLabelingNotification
@@ -46,7 +44,7 @@ type _StrikethroughLabelingNotification StrikethroughLabelingNotification
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewStrikethroughLabelingNotification(applicationId int64, currentBatch int64, totalBatches int64, trigger StrikethroughTrigger, changedItems []StrikethroughChangedItem, notificationType string, sentAt time.Time) *StrikethroughLabelingNotification {
+func NewStrikethroughLabelingNotification(applicationId int64, currentBatch int64, totalBatches int64, trigger StrikethroughTrigger, changedItems []StrikethroughChangedItem, notificationType string) *StrikethroughLabelingNotification {
 	this := StrikethroughLabelingNotification{}
 	this.ApplicationId = applicationId
 	this.CurrentBatch = currentBatch
@@ -54,7 +52,6 @@ func NewStrikethroughLabelingNotification(applicationId int64, currentBatch int6
 	this.Trigger = trigger
 	this.ChangedItems = changedItems
 	this.NotificationType = notificationType
-	this.SentAt = sentAt
 	return &this
 }
 
@@ -274,30 +271,6 @@ func (o *StrikethroughLabelingNotification) SetNotificationType(v string) {
 	o.NotificationType = v
 }
 
-// GetSentAt returns the SentAt field value
-func (o *StrikethroughLabelingNotification) GetSentAt() time.Time {
-	if o == nil {
-		var ret time.Time
-		return ret
-	}
-
-	return o.SentAt
-}
-
-// GetSentAtOk returns a tuple with the SentAt field value
-// and a boolean to check if the value has been set.
-func (o *StrikethroughLabelingNotification) GetSentAtOk() (*time.Time, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.SentAt, true
-}
-
-// SetSentAt sets field value
-func (o *StrikethroughLabelingNotification) SetSentAt(v time.Time) {
-	o.SentAt = v
-}
-
 func (o StrikethroughLabelingNotification) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -320,7 +293,6 @@ func (o StrikethroughLabelingNotification) ToMap() (map[string]interface{}, erro
 	toSerialize["trigger"] = o.Trigger
 	toSerialize["changedItems"] = o.ChangedItems
 	toSerialize["NotificationType"] = o.NotificationType
-	toSerialize["sentAt"] = o.SentAt
 	return toSerialize, nil
 }
 
@@ -335,7 +307,6 @@ func (o *StrikethroughLabelingNotification) UnmarshalJSON(data []byte) (err erro
 		"trigger",
 		"changedItems",
 		"NotificationType",
-		"sentAt",
 	}
 
 	allProperties := make(map[string]interface{})

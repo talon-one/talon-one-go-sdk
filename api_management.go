@@ -19163,6 +19163,7 @@ type ApiGetLoyaltyProgramTransactionsRequest struct {
 	endDate *time.Time
 	pageSize *int64
 	skip *int64
+	awaitsActivation *bool
 }
 
 // Filter results by loyalty transaction type: - &#x60;manual&#x60;: Loyalty transaction that was done manually. - &#x60;session&#x60;: Loyalty transaction that resulted from a customer session. - &#x60;import&#x60;: Loyalty transaction that was imported from a CSV file. 
@@ -19210,6 +19211,12 @@ func (r ApiGetLoyaltyProgramTransactionsRequest) PageSize(pageSize int64) ApiGet
 // The number of items to skip when paging through large result sets.
 func (r ApiGetLoyaltyProgramTransactionsRequest) Skip(skip int64) ApiGetLoyaltyProgramTransactionsRequest {
 	r.skip = &skip
+	return r
+}
+
+// If &#x60;true&#x60;: Filters results to include only point transactions that have action-based activation and have not expired. If &#x60;false&#x60;: Returns an error. 
+func (r ApiGetLoyaltyProgramTransactionsRequest) AwaitsActivation(awaitsActivation bool) ApiGetLoyaltyProgramTransactionsRequest {
+	r.awaitsActivation = &awaitsActivation
 	return r
 }
 
@@ -19303,6 +19310,9 @@ func (a *ManagementAPIService) GetLoyaltyProgramTransactionsExecute(r ApiGetLoya
 	}
 	if r.skip != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "skip", r.skip, "form", "")
+	}
+	if r.awaitsActivation != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "awaitsActivation", r.awaitsActivation, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

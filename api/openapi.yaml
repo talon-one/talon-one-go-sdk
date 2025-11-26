@@ -2052,6 +2052,15 @@ paths:
           format: int64
           type: integer
         style: form
+      - description: |
+          If `true`: Filters results to include only point transactions that have action-based activation and have not expired. If `false`: Returns an error.
+        explode: true
+        in: query
+        name: awaitsActivation
+        required: false
+        schema:
+          type: boolean
+        style: form
       responses:
         "200":
           content:
@@ -2217,6 +2226,15 @@ paths:
         schema:
           format: int64
           type: integer
+        style: form
+      - description: |
+          If `true`: Filters results to include only point transactions that have action-based activation and have not expired. If `false`: Returns an error.
+        explode: true
+        in: query
+        name: awaitsActivation
+        required: false
+        schema:
+          type: boolean
         style: form
       responses:
         "200":
@@ -5541,6 +5559,15 @@ paths:
         schema:
           format: int64
           type: integer
+        style: form
+      - description: |
+          If `true`: Filters results to include only point transactions that have action-based activation and have not expired. If `false`: Returns an error.
+        explode: true
+        in: query
+        name: awaitsActivation
+        required: false
+        schema:
+          type: boolean
         style: form
       responses:
         "200":
@@ -13488,25 +13515,6 @@ components:
             $ref: '#/components/schemas/NewCampaignGroup'
       description: body
       required: true
-    ActivateLoyaltyPoints:
-      content:
-        application/json:
-          examples:
-            UsingTransactionUUIDs:
-              summary: Activates point transactions using a given list of transaction
-                UUIDs.
-              value:
-                transactionUUIDs:
-                - 8f1a8d7c-9c3e-4a5e-9f0d-2c5f7a3b1cde
-                - 12b3c456-78d9-4e0f-a1b2-3456789abcde
-            UsingSessionId:
-              summary: Activate point transactions created during the given session.
-              value:
-                sessionId: ac08cc3c43470426591ad75b2d685ec04_v2
-          schema:
-            $ref: '#/components/schemas/ActivateLoyaltyPoints'
-      description: body
-      required: true
     DeductLoyaltyPoints:
       content:
         application/json:
@@ -14012,20 +14020,15 @@ components:
             $ref: '#/components/schemas/StrikethroughChangedItem'
           type: array
         NotificationType:
-          description: The type of notification.
+          description: The type of the notification
           enum:
           - StrikethroughPrice
-          type: string
-        sentAt:
-          description: Timestamp at which the notification was sent.
-          format: date-time
           type: string
       required:
       - NotificationType
       - applicationId
       - changedItems
       - currentBatch
-      - sentAt
       - totalBatches
       - trigger
     SecondaryDeployment:
@@ -15119,16 +15122,6 @@ components:
           type: integer
         bundleName:
           description: The name of the bundle definition.
-          type: string
-        awaitsActivation:
-          description: |
-            If `true`, the loyalty points are pending until  action-based activation takes place. The `startDate` parameter automatically  defaults to `on_action`.
-          type: boolean
-        validityDuration:
-          description: "The duration for which the points remain active, relative\
-            \ to the  activation date.\nExample: `30D`.  \n**Note**: This value is\
-            \ only returned if `awaitsActivation` is `true`  and `expiryDate` is not\
-            \ set.\n"
           type: string
       required:
       - name
@@ -28240,126 +28233,6 @@ components:
             items:
               $ref: '#/components/schemas/NewLoyaltyTier'
             type: array
-    ActivateLoyaltyPoints:
-      description: Activate loyalty points.
-      properties:
-        transactionUUIDs:
-          description: |
-            The list of transaction UUIDs used to activate point transactions.
-
-            If passed, `sessionId` must be omitted.
-          items:
-            format: uuid
-            type: string
-          maxItems: 50
-          minItems: 1
-          type: array
-          uniqueItems: true
-        sessionId:
-          description: |
-            The integration ID of the session with the point transactions to be activated.
-
-            If passed, `transactionUUIDs` must be omitted.
-          minLength: 1
-          type: string
-    LoyaltyLedgerEntry:
-      description: "A single row of the ledger, describing one addition or deduction."
-      example:
-        eventID: 5
-        amount: 100
-        created: 2021-07-20T22:00:00Z
-        flags:
-          createsNegativeBalance: true
-        subLedgerID: mysubledger
-        customerSessionID: t2gy5s-47274
-        type: addition
-        userID: 499
-        expiryDate: 2022-07-20T22:00:00Z
-        archived: false
-        customerProfileID: URNGV8294NV
-        cardID: 241
-        name: Add points on purchase
-        programID: 5
-        startDate: 2021-07-20T22:00:00Z
-      properties:
-        created:
-          example: 2021-07-20T22:00:00Z
-          format: date-time
-          type: string
-        programID:
-          example: 5
-          format: int64
-          type: integer
-        customerProfileID:
-          example: URNGV8294NV
-          type: string
-        cardID:
-          example: 241
-          format: int64
-          type: integer
-        customerSessionID:
-          example: t2gy5s-47274
-          type: string
-        eventID:
-          example: 5
-          format: int64
-          type: integer
-        type:
-          description: |
-            The type of the ledger transaction. Possible values are:
-            - `addition`
-            - `subtraction`
-            - `expire`
-            - `expiring` (for expiring points ledgers)
-          example: addition
-          type: string
-        amount:
-          example: 100
-          type: number
-        startDate:
-          example: 2021-07-20T22:00:00Z
-          format: date-time
-          type: string
-        expiryDate:
-          example: 2022-07-20T22:00:00Z
-          format: date-time
-          type: string
-        name:
-          description: "A name referencing the condition or effect that added this\
-            \ entry, or the specific name provided in an API call."
-          example: Add points on purchase
-          type: string
-        subLedgerID:
-          description: This specifies if we are adding loyalty points to the main
-            ledger or a subledger.
-          example: mysubledger
-          type: string
-        userID:
-          description: "This is the ID of the user who created this entry, if the\
-            \ addition or subtraction was done manually."
-          example: 499
-          format: int64
-          type: integer
-        archived:
-          description: Indicates if the entry belongs to the archived session.
-          example: false
-          type: boolean
-        flags:
-          $ref: '#/components/schemas/LoyaltyLedgerEntryFlags'
-      required:
-      - amount
-      - created
-      - name
-      - programID
-      - subLedgerID
-      - type
-    ActivateLoyaltyPointsResponse:
-      properties:
-        ledgerEntries:
-          description: Updated ledger entries after activation.
-          items:
-            $ref: '#/components/schemas/LoyaltyLedgerEntry'
-          type: array
     UpdateLoyaltyProgramTier:
       description: Update a tier in a specified loyalty program.
       properties:
@@ -28496,6 +28369,97 @@ components:
         id: 6
         userId: 388
         entity: AttributeAllowedList
+    LoyaltyLedgerEntry:
+      description: "A single row of the ledger, describing one addition or deduction."
+      example:
+        eventID: 5
+        amount: 100
+        created: 2021-07-20T22:00:00Z
+        flags:
+          createsNegativeBalance: true
+        subLedgerID: mysubledger
+        customerSessionID: t2gy5s-47274
+        type: addition
+        userID: 499
+        expiryDate: 2022-07-20T22:00:00Z
+        archived: false
+        customerProfileID: URNGV8294NV
+        cardID: 241
+        name: Add points on purchase
+        programID: 5
+        startDate: 2021-07-20T22:00:00Z
+      properties:
+        created:
+          example: 2021-07-20T22:00:00Z
+          format: date-time
+          type: string
+        programID:
+          example: 5
+          format: int64
+          type: integer
+        customerProfileID:
+          example: URNGV8294NV
+          type: string
+        cardID:
+          example: 241
+          format: int64
+          type: integer
+        customerSessionID:
+          example: t2gy5s-47274
+          type: string
+        eventID:
+          example: 5
+          format: int64
+          type: integer
+        type:
+          description: |
+            The type of the ledger transaction. Possible values are:
+            - `addition`
+            - `subtraction`
+            - `expire`
+            - `expiring` (for expiring points ledgers)
+          example: addition
+          type: string
+        amount:
+          example: 100
+          type: number
+        startDate:
+          example: 2021-07-20T22:00:00Z
+          format: date-time
+          type: string
+        expiryDate:
+          example: 2022-07-20T22:00:00Z
+          format: date-time
+          type: string
+        name:
+          description: "A name referencing the condition or effect that added this\
+            \ entry, or the specific name provided in an API call."
+          example: Add points on purchase
+          type: string
+        subLedgerID:
+          description: This specifies if we are adding loyalty points to the main
+            ledger or a subledger.
+          example: mysubledger
+          type: string
+        userID:
+          description: "This is the ID of the user who created this entry, if the\
+            \ addition or subtraction was done manually."
+          example: 499
+          format: int64
+          type: integer
+        archived:
+          description: Indicates if the entry belongs to the archived session.
+          example: false
+          type: boolean
+        flags:
+          $ref: '#/components/schemas/LoyaltyLedgerEntryFlags'
+      required:
+      - amount
+      - created
+      - name
+      - programID
+      - subLedgerID
+      - type
     LoyaltySubLedger:
       description: Ledger of Balance in Loyalty Program for a Customer.
       example:
@@ -34708,94 +34672,6 @@ components:
       - email
       - name
       - summary
-    PrismaticFlowConfig:
-      properties:
-        ApiKey:
-          type: string
-        BatchSize:
-          description: "Available for LoyaltyCardPointsExpiring, LoyaltyPointsExpiring,\
-            \ TierWillDowngrade, TierDowngrade, TierUpgrade, CouponCodeExpiring, CampaignNotification"
-          format: int64
-          type: integer
-        PeriodsInDays:
-          description: "Available for LoyaltyCardPointsExpiring, LoyaltyPointsExpiring,\
-            \ TierWillDowngrade"
-          items:
-            format: int64
-            type: integer
-          type: array
-      required:
-      - ApiKey
-    PrismaticFlowWithConfig:
-      properties:
-        EventType:
-          description: The event type we want to register a flow for.
-          enum:
-          - StrikethroughPrice
-          - CampaignEvaluationTreeChanged
-          - CampaignNotification
-          - LoyaltyCardPointsExpiring
-          - AsyncCouponsCreated
-          - CouponCodeExpiring
-          - LoyaltyPointsExpiring
-          - LoyaltyPointsPendingToActive
-          - TierDowngrade
-          - TierUpgrade
-          - TierWillDowngrade
-          - CouponCreated
-          - CouponUpdated
-          - CouponDeleted
-          - CouponsUpdated
-          - CouponsDeleted
-          - LoyaltyCardPointsAdded
-          - LoyaltyCardPointsDeducted
-          - LoyaltyPointsAdded
-          - LoyaltyPointsDeducted
-          type: string
-          x-generate-enum-go: PrismaticEventType
-        PrismaticFlowUrl:
-          description: The URL of the prismatic flow that we want to trigger for the
-            event.
-          type: string
-        Config:
-          $ref: '#/components/schemas/PrismaticFlowConfig'
-      required:
-      - Config
-      - EventType
-      - PrismaticFlowUrl
-    PrismaticFlow:
-      properties:
-        EventType:
-          description: The event type we want to register a flow for.
-          enum:
-          - StrikethroughPrice
-          - CampaignEvaluationTreeChanged
-          - CampaignNotification
-          - LoyaltyCardPointsExpiring
-          - AsyncCouponsCreated
-          - CouponCodeExpiring
-          - LoyaltyPointsExpiring
-          - LoyaltyPointsPendingToActive
-          - TierDowngrade
-          - TierUpgrade
-          - TierWillDowngrade
-          - CouponCreated
-          - CouponUpdated
-          - CouponDeleted
-          - CouponsUpdated
-          - CouponsDeleted
-          - LoyaltyCardPointsAdded
-          - LoyaltyCardPointsDeducted
-          - LoyaltyPointsAdded
-          - LoyaltyPointsDeducted
-          type: string
-        PrismaticFlowUrl:
-          description: The URL of the prismatic flow that we want to trigger for the
-            event.
-          type: string
-      required:
-      - EventType
-      - PrismaticFlowUrl
     IntegrationProfileEntityV3:
       properties:
         profileId:

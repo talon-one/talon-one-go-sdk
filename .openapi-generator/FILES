@@ -28,8 +28,6 @@ docs/AchievementBase.md
 docs/AchievementProgress.md
 docs/AchievementProgressWithDefinition.md
 docs/AchievementStatusEntry.md
-docs/ActivateLoyaltyPoints.md
-docs/ActivateLoyaltyPointsResponse.md
 docs/ActivateUserRequest.md
 docs/AddFreeItemEffectProps.md
 docs/AddItemCatalogAction.md
@@ -466,9 +464,6 @@ docs/PriceDetail.md
 docs/PriceType.md
 docs/PriceTypeReferenceDetail.md
 docs/PriceTypeReferences.md
-docs/PrismaticFlow.md
-docs/PrismaticFlowConfig.md
-docs/PrismaticFlowWithConfig.md
 docs/Product.md
 docs/ProductSearchMatch.md
 docs/ProductUnitAnalytics.md
@@ -646,8 +641,6 @@ model_achievement_base.go
 model_achievement_progress.go
 model_achievement_progress_with_definition.go
 model_achievement_status_entry.go
-model_activate_loyalty_points.go
-model_activate_loyalty_points_response.go
 model_activate_user_request.go
 model_add_free_item_effect_props.go
 model_add_item_catalog_action.go
@@ -1083,9 +1076,6 @@ model_price_detail.go
 model_price_type.go
 model_price_type_reference_detail.go
 model_price_type_references.go
-model_prismatic_flow.go
-model_prismatic_flow_config.go
-model_prismatic_flow_with_config.go
 model_product.go
 model_product_search_match.go
 model_product_unit_analytics.go

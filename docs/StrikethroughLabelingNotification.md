@@ -11,14 +11,13 @@ Name | Type | Description | Notes
 **TotalBatches** | **int64** | The total number of batches for the notification. | 
 **Trigger** | [**StrikethroughTrigger**](StrikethroughTrigger.md) |  | 
 **ChangedItems** | [**[]StrikethroughChangedItem**](StrikethroughChangedItem.md) |  | 
-**NotificationType** | **string** | The type of notification. | 
-**SentAt** | **time.Time** | Timestamp at which the notification was sent. | 
+**NotificationType** | **string** | The type of the notification | 
 
 ## Methods
 
 ### NewStrikethroughLabelingNotification
 
-`func NewStrikethroughLabelingNotification(applicationId int64, currentBatch int64, totalBatches int64, trigger StrikethroughTrigger, changedItems []StrikethroughChangedItem, notificationType string, sentAt time.Time, ) *StrikethroughLabelingNotification`
+`func NewStrikethroughLabelingNotification(applicationId int64, currentBatch int64, totalBatches int64, trigger StrikethroughTrigger, changedItems []StrikethroughChangedItem, notificationType string, ) *StrikethroughLabelingNotification`
 
 NewStrikethroughLabelingNotification instantiates a new StrikethroughLabelingNotification object
 This constructor will assign default values to properties that have it defined,
@@ -201,26 +200,6 @@ and a boolean to check if the value has been set.
 `func (o *StrikethroughLabelingNotification) SetNotificationType(v string)`
 
 SetNotificationType sets NotificationType field to given value.
-
-
-### GetSentAt
-
-`func (o *StrikethroughLabelingNotification) GetSentAt() time.Time`
-
-GetSentAt returns the SentAt field if non-nil, zero value otherwise.
-
-### GetSentAtOk
-
-`func (o *StrikethroughLabelingNotification) GetSentAtOk() (*time.Time, bool)`
-
-GetSentAtOk returns a tuple with the SentAt field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetSentAt
-
-`func (o *StrikethroughLabelingNotification) SetSentAt(v time.Time)`
-
-SetSentAt sets SentAt field to given value.
 
 
 
