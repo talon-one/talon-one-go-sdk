@@ -197,7 +197,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -261,7 +261,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -334,7 +334,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -407,7 +407,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -482,7 +482,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -548,7 +548,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -623,7 +623,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -689,7 +689,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -755,7 +755,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -827,7 +827,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -899,7 +899,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -972,7 +972,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -1047,7 +1047,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -1124,7 +1124,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -1199,7 +1199,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -1274,7 +1274,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -1351,7 +1351,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -1417,7 +1417,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -1483,7 +1483,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -1549,7 +1549,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -1615,7 +1615,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -1687,7 +1687,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -1751,7 +1751,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -1824,7 +1824,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -1892,7 +1892,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -1966,7 +1966,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -2037,7 +2037,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -2112,7 +2112,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -2186,7 +2186,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -2261,7 +2261,7 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -2358,7 +2358,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -2429,7 +2429,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -2503,7 +2503,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -2574,7 +2574,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -2642,7 +2642,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -2706,7 +2706,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -2765,7 +2765,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -2836,7 +2836,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -2906,7 +2906,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -2982,7 +2982,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -3052,7 +3052,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -3129,7 +3129,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -3202,7 +3202,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -3279,7 +3279,7 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -3378,7 +3378,7 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -3458,7 +3458,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -3533,7 +3533,7 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -3612,7 +3612,7 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -3685,7 +3685,7 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -3758,7 +3758,7 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -3831,7 +3831,7 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -3911,7 +3911,7 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -3990,7 +3990,7 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -4070,7 +4070,7 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -4145,7 +4145,7 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -4230,7 +4230,7 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -4316,7 +4316,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -4386,7 +4386,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -4456,7 +4456,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -4526,7 +4526,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -4602,7 +4602,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -4672,7 +4672,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -4742,7 +4742,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -4812,7 +4812,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -4882,7 +4882,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -4955,7 +4955,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -5036,7 +5036,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -5114,7 +5114,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -5192,7 +5192,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -5269,7 +5269,7 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -5369,7 +5369,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -5443,7 +5443,7 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -5535,7 +5535,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -5605,7 +5605,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -5675,7 +5675,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -5755,7 +5755,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -5833,7 +5833,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -5905,7 +5905,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -5973,7 +5973,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -6047,7 +6047,7 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -6126,7 +6126,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -6206,7 +6206,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -6276,7 +6276,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -6346,7 +6346,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -6425,7 +6425,7 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -6518,7 +6518,7 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -6604,7 +6604,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -6680,7 +6680,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -6755,7 +6755,7 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -6865,7 +6865,7 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -6947,7 +6947,7 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -7035,7 +7035,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -7114,7 +7114,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -7184,7 +7184,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -7265,7 +7265,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -7335,7 +7335,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -7408,7 +7408,7 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -7484,7 +7484,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -7558,7 +7558,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -7632,7 +7632,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -7706,7 +7706,7 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -7793,7 +7793,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -7875,7 +7875,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -7948,7 +7948,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -8019,7 +8019,7 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -8105,7 +8105,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -8166,7 +8166,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -8237,7 +8237,7 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -8330,7 +8330,7 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -8421,7 +8421,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -8491,7 +8491,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -8567,7 +8567,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -8646,7 +8646,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -8719,7 +8719,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -8789,7 +8789,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -8859,7 +8859,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -8929,7 +8929,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -9009,7 +9009,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -9081,7 +9081,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -9153,7 +9153,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -9225,7 +9225,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -9304,7 +9304,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -9379,7 +9379,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -9457,7 +9457,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -9534,7 +9534,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -9606,7 +9606,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -9678,7 +9678,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -9752,7 +9752,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -9824,7 +9824,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -9899,7 +9899,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -9963,7 +9963,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -10037,7 +10037,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -10116,7 +10116,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -10177,7 +10177,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -10254,7 +10254,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -10334,7 +10334,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -10417,7 +10417,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -10497,7 +10497,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -10583,7 +10583,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -10642,7 +10642,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -10715,7 +10715,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -10781,7 +10781,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -10847,7 +10847,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -10913,7 +10913,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -10981,7 +10981,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -11049,7 +11049,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -11119,7 +11119,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -11180,7 +11180,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -11241,7 +11241,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -11302,7 +11302,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -11363,7 +11363,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -11433,7 +11433,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -11494,7 +11494,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -11566,7 +11566,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -11638,7 +11638,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -11710,7 +11710,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -11783,7 +11783,7 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -11882,7 +11882,7 @@ import (
 	"fmt"
 	"os"
     "time"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -11981,7 +11981,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -12054,7 +12054,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -12127,7 +12127,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -12199,7 +12199,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -12277,7 +12277,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -12349,7 +12349,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -12421,7 +12421,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -12496,7 +12496,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -12574,7 +12574,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -12652,7 +12652,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -12725,7 +12725,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -12800,7 +12800,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -12878,7 +12878,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -12950,7 +12950,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -13025,7 +13025,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/talon-one/talon_go/v25"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
