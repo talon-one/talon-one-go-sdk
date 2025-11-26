@@ -1,0 +1,212 @@
+# ScimServiceProviderConfigResponse
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**Bulk** | Pointer to [**ScimServiceProviderConfigResponseBulk**](ScimServiceProviderConfigResponseBulk.md) |  | [optional] 
+**ChangePassword** | Pointer to [**ScimServiceProviderConfigResponseChangePassword**](ScimServiceProviderConfigResponseChangePassword.md) |  | [optional] 
+**DocumentationUri** | Pointer to **string** | The URI that points to the SCIM service provider&#39;s documentation, providing further details about the service&#39;s capabilities and usage. | [optional] 
+**Filter** | Pointer to [**ScimServiceProviderConfigResponseFilter**](ScimServiceProviderConfigResponseFilter.md) |  | [optional] 
+**Patch** | Pointer to [**ScimServiceProviderConfigResponsePatch**](ScimServiceProviderConfigResponsePatch.md) |  | [optional] 
+**Schemas** | Pointer to **[]string** | A list of SCIM schemas that define the structure and data types supported by the service provider. | [optional] 
+**Sort** | Pointer to [**ScimServiceProviderConfigResponseSort**](ScimServiceProviderConfigResponseSort.md) |  | [optional] 
+
+## Methods
+
+### NewScimServiceProviderConfigResponse
+
+`func NewScimServiceProviderConfigResponse() *ScimServiceProviderConfigResponse`
+
+NewScimServiceProviderConfigResponse instantiates a new ScimServiceProviderConfigResponse object
+This constructor will assign default values to properties that have it defined,
+and makes sure properties required by API are set, but the set of arguments
+will change when the set of required properties is changed
+
+### NewScimServiceProviderConfigResponseWithDefaults
+
+`func NewScimServiceProviderConfigResponseWithDefaults() *ScimServiceProviderConfigResponse`
+
+NewScimServiceProviderConfigResponseWithDefaults instantiates a new ScimServiceProviderConfigResponse object
+This constructor will only assign default values to properties that have it defined,
+but it doesn't guarantee that properties required by API are set
+
+### GetBulk
+
+`func (o *ScimServiceProviderConfigResponse) GetBulk() ScimServiceProviderConfigResponseBulk`
+
+GetBulk returns the Bulk field if non-nil, zero value otherwise.
+
+### GetBulkOk
+
+`func (o *ScimServiceProviderConfigResponse) GetBulkOk() (*ScimServiceProviderConfigResponseBulk, bool)`
+
+GetBulkOk returns a tuple with the Bulk field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetBulk
+
+`func (o *ScimServiceProviderConfigResponse) SetBulk(v ScimServiceProviderConfigResponseBulk)`
+
+SetBulk sets Bulk field to given value.
+
+### HasBulk
+
+`func (o *ScimServiceProviderConfigResponse) HasBulk() bool`
+
+HasBulk returns a boolean if a field has been set.
+
+### GetChangePassword
+
+`func (o *ScimServiceProviderConfigResponse) GetChangePassword() ScimServiceProviderConfigResponseChangePassword`
+
+GetChangePassword returns the ChangePassword field if non-nil, zero value otherwise.
+
+### GetChangePasswordOk
+
+`func (o *ScimServiceProviderConfigResponse) GetChangePasswordOk() (*ScimServiceProviderConfigResponseChangePassword, bool)`
+
+GetChangePasswordOk returns a tuple with the ChangePassword field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetChangePassword
+
+`func (o *ScimServiceProviderConfigResponse) SetChangePassword(v ScimServiceProviderConfigResponseChangePassword)`
+
+SetChangePassword sets ChangePassword field to given value.
+
+### HasChangePassword
+
+`func (o *ScimServiceProviderConfigResponse) HasChangePassword() bool`
+
+HasChangePassword returns a boolean if a field has been set.
+
+### GetDocumentationUri
+
+`func (o *ScimServiceProviderConfigResponse) GetDocumentationUri() string`
+
+GetDocumentationUri returns the DocumentationUri field if non-nil, zero value otherwise.
+
+### GetDocumentationUriOk
+
+`func (o *ScimServiceProviderConfigResponse) GetDocumentationUriOk() (*string, bool)`
+
+GetDocumentationUriOk returns a tuple with the DocumentationUri field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetDocumentationUri
+
+`func (o *ScimServiceProviderConfigResponse) SetDocumentationUri(v string)`
+
+SetDocumentationUri sets DocumentationUri field to given value.
+
+### HasDocumentationUri
+
+`func (o *ScimServiceProviderConfigResponse) HasDocumentationUri() bool`
+
+HasDocumentationUri returns a boolean if a field has been set.
+
+### GetFilter
+
+`func (o *ScimServiceProviderConfigResponse) GetFilter() ScimServiceProviderConfigResponseFilter`
+
+GetFilter returns the Filter field if non-nil, zero value otherwise.
+
+### GetFilterOk
+
+`func (o *ScimServiceProviderConfigResponse) GetFilterOk() (*ScimServiceProviderConfigResponseFilter, bool)`
+
+GetFilterOk returns a tuple with the Filter field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetFilter
+
+`func (o *ScimServiceProviderConfigResponse) SetFilter(v ScimServiceProviderConfigResponseFilter)`
+
+SetFilter sets Filter field to given value.
+
+### HasFilter
+
+`func (o *ScimServiceProviderConfigResponse) HasFilter() bool`
+
+HasFilter returns a boolean if a field has been set.
+
+### GetPatch
+
+`func (o *ScimServiceProviderConfigResponse) GetPatch() ScimServiceProviderConfigResponsePatch`
+
+GetPatch returns the Patch field if non-nil, zero value otherwise.
+
+### GetPatchOk
+
+`func (o *ScimServiceProviderConfigResponse) GetPatchOk() (*ScimServiceProviderConfigResponsePatch, bool)`
+
+GetPatchOk returns a tuple with the Patch field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPatch
+
+`func (o *ScimServiceProviderConfigResponse) SetPatch(v ScimServiceProviderConfigResponsePatch)`
+
+SetPatch sets Patch field to given value.
+
+### HasPatch
+
+`func (o *ScimServiceProviderConfigResponse) HasPatch() bool`
+
+HasPatch returns a boolean if a field has been set.
+
+### GetSchemas
+
+`func (o *ScimServiceProviderConfigResponse) GetSchemas() []string`
+
+GetSchemas returns the Schemas field if non-nil, zero value otherwise.
+
+### GetSchemasOk
+
+`func (o *ScimServiceProviderConfigResponse) GetSchemasOk() (*[]string, bool)`
+
+GetSchemasOk returns a tuple with the Schemas field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSchemas
+
+`func (o *ScimServiceProviderConfigResponse) SetSchemas(v []string)`
+
+SetSchemas sets Schemas field to given value.
+
+### HasSchemas
+
+`func (o *ScimServiceProviderConfigResponse) HasSchemas() bool`
+
+HasSchemas returns a boolean if a field has been set.
+
+### GetSort
+
+`func (o *ScimServiceProviderConfigResponse) GetSort() ScimServiceProviderConfigResponseSort`
+
+GetSort returns the Sort field if non-nil, zero value otherwise.
+
+### GetSortOk
+
+`func (o *ScimServiceProviderConfigResponse) GetSortOk() (*ScimServiceProviderConfigResponseSort, bool)`
+
+GetSortOk returns a tuple with the Sort field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSort
+
+`func (o *ScimServiceProviderConfigResponse) SetSort(v ScimServiceProviderConfigResponseSort)`
+
+SetSort sets Sort field to given value.
+
+### HasSort
+
+`func (o *ScimServiceProviderConfigResponse) HasSort() bool`
+
+HasSort returns a boolean if a field has been set.
+
+
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+

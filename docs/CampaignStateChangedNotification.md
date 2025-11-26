@@ -1,0 +1,98 @@
+# CampaignStateChangedNotification
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**NotificationType** | **string** | The type of the notification | 
+**TotalResultSize** | **int64** | The total size of the result set. | 
+**Data** | Pointer to [**[]CampaignStateChangedNotificationItem**](CampaignStateChangedNotificationItem.md) | A list of campaign notification data. | [optional] 
+
+## Methods
+
+### NewCampaignStateChangedNotification
+
+`func NewCampaignStateChangedNotification(notificationType string, totalResultSize int64, ) *CampaignStateChangedNotification`
+
+NewCampaignStateChangedNotification instantiates a new CampaignStateChangedNotification object
+This constructor will assign default values to properties that have it defined,
+and makes sure properties required by API are set, but the set of arguments
+will change when the set of required properties is changed
+
+### NewCampaignStateChangedNotificationWithDefaults
+
+`func NewCampaignStateChangedNotificationWithDefaults() *CampaignStateChangedNotification`
+
+NewCampaignStateChangedNotificationWithDefaults instantiates a new CampaignStateChangedNotification object
+This constructor will only assign default values to properties that have it defined,
+but it doesn't guarantee that properties required by API are set
+
+### GetNotificationType
+
+`func (o *CampaignStateChangedNotification) GetNotificationType() string`
+
+GetNotificationType returns the NotificationType field if non-nil, zero value otherwise.
+
+### GetNotificationTypeOk
+
+`func (o *CampaignStateChangedNotification) GetNotificationTypeOk() (*string, bool)`
+
+GetNotificationTypeOk returns a tuple with the NotificationType field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetNotificationType
+
+`func (o *CampaignStateChangedNotification) SetNotificationType(v string)`
+
+SetNotificationType sets NotificationType field to given value.
+
+
+### GetTotalResultSize
+
+`func (o *CampaignStateChangedNotification) GetTotalResultSize() int64`
+
+GetTotalResultSize returns the TotalResultSize field if non-nil, zero value otherwise.
+
+### GetTotalResultSizeOk
+
+`func (o *CampaignStateChangedNotification) GetTotalResultSizeOk() (*int64, bool)`
+
+GetTotalResultSizeOk returns a tuple with the TotalResultSize field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTotalResultSize
+
+`func (o *CampaignStateChangedNotification) SetTotalResultSize(v int64)`
+
+SetTotalResultSize sets TotalResultSize field to given value.
+
+
+### GetData
+
+`func (o *CampaignStateChangedNotification) GetData() []CampaignStateChangedNotificationItem`
+
+GetData returns the Data field if non-nil, zero value otherwise.
+
+### GetDataOk
+
+`func (o *CampaignStateChangedNotification) GetDataOk() (*[]CampaignStateChangedNotificationItem, bool)`
+
+GetDataOk returns a tuple with the Data field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetData
+
+`func (o *CampaignStateChangedNotification) SetData(v []CampaignStateChangedNotificationItem)`
+
+SetData sets Data field to given value.
+
+### HasData
+
+`func (o *CampaignStateChangedNotification) HasData() bool`
+
+HasData returns a boolean if a field has been set.
+
+
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+
