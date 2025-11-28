@@ -44,7 +44,7 @@ type _NewReferral NewReferral
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewReferral(campaignId int64, advocateProfileIntegrationId string) *NewReferral {
+func BuildNewReferral(campaignId int64, advocateProfileIntegrationId string) *NewReferral {
 	this := NewReferral{}
 	this.CampaignId = campaignId
 	this.AdvocateProfileIntegrationId = advocateProfileIntegrationId
@@ -358,7 +358,7 @@ func (v *NullableNewReferral) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewReferral(val *NewReferral) *NullableNewReferral {
+func BuildNullableNewReferral(val *NewReferral) *NullableNewReferral {
 	return &NullableNewReferral{value: val, isSet: true}
 }
 

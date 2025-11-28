@@ -57,7 +57,7 @@ type _RuleFailureReason RuleFailureReason
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewRuleFailureReason(campaignID int64, campaignName string, rulesetID int64, ruleIndex int64, ruleName string) *RuleFailureReason {
+func BuildRuleFailureReason(campaignID int64, campaignName string, rulesetID int64, ruleIndex int64, ruleName string) *RuleFailureReason {
 	this := RuleFailureReason{}
 	this.CampaignID = campaignID
 	this.CampaignName = campaignName
@@ -592,7 +592,7 @@ func (v *NullableRuleFailureReason) Unset() {
 	v.isSet = false
 }
 
-func NewNullableRuleFailureReason(val *RuleFailureReason) *NullableRuleFailureReason {
+func BuildNullableRuleFailureReason(val *RuleFailureReason) *NullableRuleFailureReason {
 	return &NullableRuleFailureReason{value: val, isSet: true}
 }
 

@@ -33,7 +33,7 @@ type _AddPriceAdjustmentCatalogAction AddPriceAdjustmentCatalogAction
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAddPriceAdjustmentCatalogAction(sku string, adjustments []NewPriceAdjustment) *AddPriceAdjustmentCatalogAction {
+func BuildAddPriceAdjustmentCatalogAction(sku string, adjustments []NewPriceAdjustment) *AddPriceAdjustmentCatalogAction {
 	this := AddPriceAdjustmentCatalogAction{}
 	this.Sku = sku
 	this.Adjustments = adjustments
@@ -172,7 +172,7 @@ func (v *NullableAddPriceAdjustmentCatalogAction) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAddPriceAdjustmentCatalogAction(val *AddPriceAdjustmentCatalogAction) *NullableAddPriceAdjustmentCatalogAction {
+func BuildNullableAddPriceAdjustmentCatalogAction(val *AddPriceAdjustmentCatalogAction) *NullableAddPriceAdjustmentCatalogAction {
 	return &NullableAddPriceAdjustmentCatalogAction{value: val, isSet: true}
 }
 

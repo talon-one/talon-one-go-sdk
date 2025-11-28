@@ -56,7 +56,7 @@ type _AudienceCustomer AudienceCustomer
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAudienceCustomer(id int64, created time.Time, integrationId string, accountId int64, closedSessions int64, totalSales float32, lastActivity time.Time) *AudienceCustomer {
+func BuildAudienceCustomer(id int64, created time.Time, integrationId string, accountId int64, closedSessions int64, totalSales float32, lastActivity time.Time) *AudienceCustomer {
 	this := AudienceCustomer{}
 	this.Id = id
 	this.Created = created
@@ -540,7 +540,7 @@ func (v *NullableAudienceCustomer) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAudienceCustomer(val *AudienceCustomer) *NullableAudienceCustomer {
+func BuildNullableAudienceCustomer(val *AudienceCustomer) *NullableAudienceCustomer {
 	return &NullableAudienceCustomer{value: val, isSet: true}
 }
 

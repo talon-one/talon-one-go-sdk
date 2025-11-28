@@ -27,7 +27,7 @@ type ScimServiceProviderConfigResponseChangePassword struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewScimServiceProviderConfigResponseChangePassword() *ScimServiceProviderConfigResponseChangePassword {
+func BuildScimServiceProviderConfigResponseChangePassword() *ScimServiceProviderConfigResponseChangePassword {
 	this := ScimServiceProviderConfigResponseChangePassword{}
 	return &this
 }
@@ -111,7 +111,7 @@ func (v *NullableScimServiceProviderConfigResponseChangePassword) Unset() {
 	v.isSet = false
 }
 
-func NewNullableScimServiceProviderConfigResponseChangePassword(val *ScimServiceProviderConfigResponseChangePassword) *NullableScimServiceProviderConfigResponseChangePassword {
+func BuildNullableScimServiceProviderConfigResponseChangePassword(val *ScimServiceProviderConfigResponseChangePassword) *NullableScimServiceProviderConfigResponseChangePassword {
 	return &NullableScimServiceProviderConfigResponseChangePassword{value: val, isSet: true}
 }
 

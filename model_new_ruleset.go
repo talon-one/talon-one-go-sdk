@@ -39,7 +39,7 @@ type _NewRuleset NewRuleset
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewRuleset(rules []Rule, bindings []Binding) *NewRuleset {
+func BuildNewRuleset(rules []Rule, bindings []Binding) *NewRuleset {
 	this := NewRuleset{}
 	this.Rules = rules
 	this.Bindings = bindings
@@ -283,7 +283,7 @@ func (v *NullableNewRuleset) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewRuleset(val *NewRuleset) *NullableNewRuleset {
+func BuildNullableNewRuleset(val *NewRuleset) *NullableNewRuleset {
 	return &NullableNewRuleset{value: val, isSet: true}
 }
 

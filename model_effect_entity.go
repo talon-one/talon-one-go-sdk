@@ -59,7 +59,7 @@ type _EffectEntity EffectEntity
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewEffectEntity(campaignId int64, rulesetId int64, ruleIndex int64, ruleName string, effectType string) *EffectEntity {
+func BuildEffectEntity(campaignId int64, rulesetId int64, ruleIndex int64, ruleName string, effectType string) *EffectEntity {
 	this := EffectEntity{}
 	this.CampaignId = campaignId
 	this.RulesetId = rulesetId
@@ -629,7 +629,7 @@ func (v *NullableEffectEntity) Unset() {
 	v.isSet = false
 }
 
-func NewNullableEffectEntity(val *EffectEntity) *NullableEffectEntity {
+func BuildNullableEffectEntity(val *EffectEntity) *NullableEffectEntity {
 	return &NullableEffectEntity{value: val, isSet: true}
 }
 

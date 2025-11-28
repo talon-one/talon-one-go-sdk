@@ -31,7 +31,7 @@ type _Endpoint Endpoint
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewEndpoint(path string) *Endpoint {
+func BuildEndpoint(path string) *Endpoint {
 	this := Endpoint{}
 	this.Path = path
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableEndpoint) Unset() {
 	v.isSet = false
 }
 
-func NewNullableEndpoint(val *Endpoint) *NullableEndpoint {
+func BuildNullableEndpoint(val *Endpoint) *NullableEndpoint {
 	return &NullableEndpoint{value: val, isSet: true}
 }
 

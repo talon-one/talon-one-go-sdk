@@ -50,7 +50,7 @@ type _CampaignCollectionWithoutPayload CampaignCollectionWithoutPayload
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCampaignCollectionWithoutPayload(id int64, created time.Time, accountId int64, modified time.Time, name string, createdBy int64) *CampaignCollectionWithoutPayload {
+func BuildCampaignCollectionWithoutPayload(id int64, created time.Time, accountId int64, modified time.Time, name string, createdBy int64) *CampaignCollectionWithoutPayload {
 	this := CampaignCollectionWithoutPayload{}
 	this.Id = id
 	this.Created = created
@@ -437,7 +437,7 @@ func (v *NullableCampaignCollectionWithoutPayload) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCampaignCollectionWithoutPayload(val *CampaignCollectionWithoutPayload) *NullableCampaignCollectionWithoutPayload {
+func BuildNullableCampaignCollectionWithoutPayload(val *CampaignCollectionWithoutPayload) *NullableCampaignCollectionWithoutPayload {
 	return &NullableCampaignCollectionWithoutPayload{value: val, isSet: true}
 }
 

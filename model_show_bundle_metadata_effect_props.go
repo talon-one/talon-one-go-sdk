@@ -35,7 +35,7 @@ type _ShowBundleMetadataEffectProps ShowBundleMetadataEffectProps
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewShowBundleMetadataEffectProps(description string, bundleAttributes []string, itemsIndices []float32) *ShowBundleMetadataEffectProps {
+func BuildShowBundleMetadataEffectProps(description string, bundleAttributes []string, itemsIndices []float32) *ShowBundleMetadataEffectProps {
 	this := ShowBundleMetadataEffectProps{}
 	this.Description = description
 	this.BundleAttributes = bundleAttributes
@@ -201,7 +201,7 @@ func (v *NullableShowBundleMetadataEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableShowBundleMetadataEffectProps(val *ShowBundleMetadataEffectProps) *NullableShowBundleMetadataEffectProps {
+func BuildNullableShowBundleMetadataEffectProps(val *ShowBundleMetadataEffectProps) *NullableShowBundleMetadataEffectProps {
 	return &NullableShowBundleMetadataEffectProps{value: val, isSet: true}
 }
 

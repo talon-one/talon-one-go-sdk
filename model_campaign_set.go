@@ -38,7 +38,7 @@ type _CampaignSet CampaignSet
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCampaignSet(applicationId int64, id int64, version int64, set CampaignSetBranchNode) *CampaignSet {
+func BuildCampaignSet(applicationId int64, id int64, version int64, set CampaignSetBranchNode) *CampaignSet {
 	this := CampaignSet{}
 	this.ApplicationId = applicationId
 	this.Id = id
@@ -266,7 +266,7 @@ func (v *NullableCampaignSet) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCampaignSet(val *CampaignSet) *NullableCampaignSet {
+func BuildNullableCampaignSet(val *CampaignSet) *NullableCampaignSet {
 	return &NullableCampaignSet{value: val, isSet: true}
 }
 

@@ -34,7 +34,7 @@ type _CatalogActionFilter CatalogActionFilter
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCatalogActionFilter(attr string, op string, value interface{}) *CatalogActionFilter {
+func BuildCatalogActionFilter(attr string, op string, value interface{}) *CatalogActionFilter {
 	this := CatalogActionFilter{}
 	this.Attr = attr
 	this.Op = op
@@ -204,7 +204,7 @@ func (v *NullableCatalogActionFilter) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCatalogActionFilter(val *CatalogActionFilter) *NullableCatalogActionFilter {
+func BuildNullableCatalogActionFilter(val *CatalogActionFilter) *NullableCatalogActionFilter {
 	return &NullableCatalogActionFilter{value: val, isSet: true}
 }
 

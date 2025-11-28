@@ -33,7 +33,7 @@ type _Loyalty Loyalty
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLoyalty(programs map[string]LoyaltyProgramLedgers) *Loyalty {
+func BuildLoyalty(programs map[string]LoyaltyProgramLedgers) *Loyalty {
 	this := Loyalty{}
 	this.Programs = programs
 	return &this
@@ -180,7 +180,7 @@ func (v *NullableLoyalty) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLoyalty(val *Loyalty) *NullableLoyalty {
+func BuildNullableLoyalty(val *Loyalty) *NullableLoyalty {
 	return &NullableLoyalty{value: val, isSet: true}
 }
 

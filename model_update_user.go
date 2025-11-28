@@ -37,7 +37,7 @@ type UpdateUser struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdateUser() *UpdateUser {
+func BuildUpdateUser() *UpdateUser {
 	this := UpdateUser{}
 	return &this
 }
@@ -296,7 +296,7 @@ func (v *NullableUpdateUser) Unset() {
 	v.isSet = false
 }
 
-func NewNullableUpdateUser(val *UpdateUser) *NullableUpdateUser {
+func BuildNullableUpdateUser(val *UpdateUser) *NullableUpdateUser {
 	return &NullableUpdateUser{value: val, isSet: true}
 }
 

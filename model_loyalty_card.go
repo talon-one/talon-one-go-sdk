@@ -62,7 +62,7 @@ type _LoyaltyCard LoyaltyCard
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLoyaltyCard(id int64, created time.Time, programID int64, status string, identifier string, usersPerCardLimit int64) *LoyaltyCard {
+func BuildLoyaltyCard(id int64, created time.Time, programID int64, status string, identifier string, usersPerCardLimit int64) *LoyaltyCard {
 	this := LoyaltyCard{}
 	this.Id = id
 	this.Created = created
@@ -659,7 +659,7 @@ func (v *NullableLoyaltyCard) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLoyaltyCard(val *LoyaltyCard) *NullableLoyaltyCard {
+func BuildNullableLoyaltyCard(val *LoyaltyCard) *NullableLoyaltyCard {
 	return &NullableLoyaltyCard{value: val, isSet: true}
 }
 

@@ -31,7 +31,7 @@ type _CouponReservations CouponReservations
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCouponReservations(integrationIDs []string) *CouponReservations {
+func BuildCouponReservations(integrationIDs []string) *CouponReservations {
 	this := CouponReservations{}
 	this.IntegrationIDs = integrationIDs
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableCouponReservations) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCouponReservations(val *CouponReservations) *NullableCouponReservations {
+func BuildNullableCouponReservations(val *CouponReservations) *NullableCouponReservations {
 	return &NullableCouponReservations{value: val, isSet: true}
 }
 

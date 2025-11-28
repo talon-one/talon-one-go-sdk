@@ -45,7 +45,7 @@ type _EventV3 EventV3
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewEventV3(profileId string, integrationId string, type_ string) *EventV3 {
+func BuildEventV3(profileId string, integrationId string, type_ string) *EventV3 {
 	this := EventV3{}
 	this.ProfileId = profileId
 	this.IntegrationId = integrationId
@@ -386,7 +386,7 @@ func (v *NullableEventV3) Unset() {
 	v.isSet = false
 }
 
-func NewNullableEventV3(val *EventV3) *NullableEventV3 {
+func BuildNullableEventV3(val *EventV3) *NullableEventV3 {
 	return &NullableEventV3{value: val, isSet: true}
 }
 

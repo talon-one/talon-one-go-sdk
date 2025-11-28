@@ -33,7 +33,7 @@ type _NewLoyaltyTier NewLoyaltyTier
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewLoyaltyTier(name string, minPoints float32) *NewLoyaltyTier {
+func BuildNewLoyaltyTier(name string, minPoints float32) *NewLoyaltyTier {
 	this := NewLoyaltyTier{}
 	this.Name = name
 	this.MinPoints = minPoints
@@ -172,7 +172,7 @@ func (v *NullableNewLoyaltyTier) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewLoyaltyTier(val *NewLoyaltyTier) *NullableNewLoyaltyTier {
+func BuildNullableNewLoyaltyTier(val *NewLoyaltyTier) *NullableNewLoyaltyTier {
 	return &NullableNewLoyaltyTier{value: val, isSet: true}
 }
 

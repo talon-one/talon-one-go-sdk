@@ -56,7 +56,7 @@ type _CustomerActivityReport CustomerActivityReport
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCustomerActivityReport(integrationId string, created time.Time, name string, customerId int64, couponRedemptions int64, couponUseAttempts int64, couponFailedAttempts int64, accruedDiscounts float32, accruedRevenue float32, totalOrders int64, totalOrdersNoCoupon int64, campaignName string) *CustomerActivityReport {
+func BuildCustomerActivityReport(integrationId string, created time.Time, name string, customerId int64, couponRedemptions int64, couponUseAttempts int64, couponFailedAttempts int64, accruedDiscounts float32, accruedRevenue float32, totalOrders int64, totalOrdersNoCoupon int64, campaignName string) *CustomerActivityReport {
 	this := CustomerActivityReport{}
 	this.IntegrationId = integrationId
 	this.Created = created
@@ -500,7 +500,7 @@ func (v *NullableCustomerActivityReport) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCustomerActivityReport(val *CustomerActivityReport) *NullableCustomerActivityReport {
+func BuildNullableCustomerActivityReport(val *CustomerActivityReport) *NullableCustomerActivityReport {
 	return &NullableCustomerActivityReport{value: val, isSet: true}
 }
 

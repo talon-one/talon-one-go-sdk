@@ -57,7 +57,7 @@ type UpdateLoyaltyProgram struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdateLoyaltyProgram() *UpdateLoyaltyProgram {
+func BuildUpdateLoyaltyProgram() *UpdateLoyaltyProgram {
 	this := UpdateLoyaltyProgram{}
 	return &this
 }
@@ -666,7 +666,7 @@ func (v *NullableUpdateLoyaltyProgram) Unset() {
 	v.isSet = false
 }
 
-func NewNullableUpdateLoyaltyProgram(val *UpdateLoyaltyProgram) *NullableUpdateLoyaltyProgram {
+func BuildNullableUpdateLoyaltyProgram(val *UpdateLoyaltyProgram) *NullableUpdateLoyaltyProgram {
 	return &NullableUpdateLoyaltyProgram{value: val, isSet: true}
 }
 

@@ -47,7 +47,7 @@ type NewCustomerSessionV2 struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewCustomerSessionV2() *NewCustomerSessionV2 {
+func BuildNewCustomerSessionV2() *NewCustomerSessionV2 {
 	this := NewCustomerSessionV2{}
 	var state string = "open"
 	this.State = &state
@@ -485,7 +485,7 @@ func (v *NullableNewCustomerSessionV2) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewCustomerSessionV2(val *NewCustomerSessionV2) *NullableNewCustomerSessionV2 {
+func BuildNullableNewCustomerSessionV2(val *NewCustomerSessionV2) *NullableNewCustomerSessionV2 {
 	return &NullableNewCustomerSessionV2{value: val, isSet: true}
 }
 

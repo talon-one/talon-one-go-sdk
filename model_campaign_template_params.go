@@ -37,7 +37,7 @@ type _CampaignTemplateParams CampaignTemplateParams
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCampaignTemplateParams(name string, type_ string, description string) *CampaignTemplateParams {
+func BuildCampaignTemplateParams(name string, type_ string, description string) *CampaignTemplateParams {
 	this := CampaignTemplateParams{}
 	this.Name = name
 	this.Type = type_
@@ -238,7 +238,7 @@ func (v *NullableCampaignTemplateParams) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCampaignTemplateParams(val *CampaignTemplateParams) *NullableCampaignTemplateParams {
+func BuildNullableCampaignTemplateParams(val *CampaignTemplateParams) *NullableCampaignTemplateParams {
 	return &NullableCampaignTemplateParams{value: val, isSet: true}
 }
 

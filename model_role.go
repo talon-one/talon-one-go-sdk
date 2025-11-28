@@ -48,7 +48,7 @@ type _Role Role
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewRole(id int64, created time.Time, modified time.Time, accountId int64, name string, acl map[string]interface{}) *Role {
+func BuildRole(id int64, created time.Time, modified time.Time, accountId int64, name string, acl map[string]interface{}) *Role {
 	this := Role{}
 	this.Id = id
 	this.Created = created
@@ -400,7 +400,7 @@ func (v *NullableRole) Unset() {
 	v.isSet = false
 }
 
-func NewNullableRole(val *Role) *NullableRole {
+func BuildNullableRole(val *Role) *NullableRole {
 	return &NullableRole{value: val, isSet: true}
 }
 

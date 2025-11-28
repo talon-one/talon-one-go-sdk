@@ -59,7 +59,7 @@ type _LimitCounter LimitCounter
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLimitCounter(campaignId int64, applicationId int64, accountId int64, id int64, action string, limit float32, counter float32) *LimitCounter {
+func BuildLimitCounter(campaignId int64, applicationId int64, accountId int64, id int64, action string, limit float32, counter float32) *LimitCounter {
 	this := LimitCounter{}
 	this.CampaignId = campaignId
 	this.ApplicationId = applicationId
@@ -613,7 +613,7 @@ func (v *NullableLimitCounter) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLimitCounter(val *LimitCounter) *NullableLimitCounter {
+func BuildNullableLimitCounter(val *LimitCounter) *NullableLimitCounter {
 	return &NullableLimitCounter{value: val, isSet: true}
 }
 

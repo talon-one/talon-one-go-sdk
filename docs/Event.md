@@ -212,7 +212,7 @@ HasSessionId returns a boolean if a field has been set.
 
 ### GetEffects
 
-`func (o *Event) GetEffects() []map[string]interface{}`
+`func (o *Event) GetEffects() [][]interface{}`
 
 GetEffects returns the Effects field if non-nil, zero value otherwise.
 
@@ -225,7 +225,7 @@ and a boolean to check if the value has been set.
 
 ### SetEffects
 
-`func (o *Event) SetEffects(v []map[string]interface{})`
+`func (o *Event) SetEffects(v [][]interface{})`
 
 SetEffects sets Effects field to given value.
 

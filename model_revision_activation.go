@@ -27,7 +27,7 @@ type RevisionActivation struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewRevisionActivation() *RevisionActivation {
+func BuildRevisionActivation() *RevisionActivation {
 	this := RevisionActivation{}
 	return &this
 }
@@ -111,7 +111,7 @@ func (v *NullableRevisionActivation) Unset() {
 	v.isSet = false
 }
 
-func NewNullableRevisionActivation(val *RevisionActivation) *NullableRevisionActivation {
+func BuildNullableRevisionActivation(val *RevisionActivation) *NullableRevisionActivation {
 	return &NullableRevisionActivation{value: val, isSet: true}
 }
 

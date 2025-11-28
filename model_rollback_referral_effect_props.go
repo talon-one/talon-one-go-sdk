@@ -31,7 +31,7 @@ type _RollbackReferralEffectProps RollbackReferralEffectProps
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewRollbackReferralEffectProps(value string) *RollbackReferralEffectProps {
+func BuildRollbackReferralEffectProps(value string) *RollbackReferralEffectProps {
 	this := RollbackReferralEffectProps{}
 	this.Value = value
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableRollbackReferralEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableRollbackReferralEffectProps(val *RollbackReferralEffectProps) *NullableRollbackReferralEffectProps {
+func BuildNullableRollbackReferralEffectProps(val *RollbackReferralEffectProps) *NullableRollbackReferralEffectProps {
 	return &NullableRollbackReferralEffectProps{value: val, isSet: true}
 }
 

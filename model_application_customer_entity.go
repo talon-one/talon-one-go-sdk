@@ -27,7 +27,7 @@ type ApplicationCustomerEntity struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewApplicationCustomerEntity() *ApplicationCustomerEntity {
+func BuildApplicationCustomerEntity() *ApplicationCustomerEntity {
 	this := ApplicationCustomerEntity{}
 	return &this
 }
@@ -111,7 +111,7 @@ func (v *NullableApplicationCustomerEntity) Unset() {
 	v.isSet = false
 }
 
-func NewNullableApplicationCustomerEntity(val *ApplicationCustomerEntity) *NullableApplicationCustomerEntity {
+func BuildNullableApplicationCustomerEntity(val *ApplicationCustomerEntity) *NullableApplicationCustomerEntity {
 	return &NullableApplicationCustomerEntity{value: val, isSet: true}
 }
 

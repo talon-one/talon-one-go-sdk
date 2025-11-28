@@ -60,7 +60,7 @@ type _CardAddedDeductedPointsNotification CardAddedDeductedPointsNotification
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCardAddedDeductedPointsNotification(profileIntegrationIDs []string, loyaltyProgramID int64, subledgerID string, amount float32, reason string, typeOfChange string, employeeName string, userID int64, operation string, sessionIntegrationID string, notificationType string, cardIdentifier string, usersPerCardLimit int64) *CardAddedDeductedPointsNotification {
+func BuildCardAddedDeductedPointsNotification(profileIntegrationIDs []string, loyaltyProgramID int64, subledgerID string, amount float32, reason string, typeOfChange string, employeeName string, userID int64, operation string, sessionIntegrationID string, notificationType string, cardIdentifier string, usersPerCardLimit int64) *CardAddedDeductedPointsNotification {
 	this := CardAddedDeductedPointsNotification{}
 	this.ProfileIntegrationIDs = profileIntegrationIDs
 	this.LoyaltyProgramID = loyaltyProgramID
@@ -566,7 +566,7 @@ func (v *NullableCardAddedDeductedPointsNotification) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCardAddedDeductedPointsNotification(val *CardAddedDeductedPointsNotification) *NullableCardAddedDeductedPointsNotification {
+func BuildNullableCardAddedDeductedPointsNotification(val *CardAddedDeductedPointsNotification) *NullableCardAddedDeductedPointsNotification {
 	return &NullableCardAddedDeductedPointsNotification{value: val, isSet: true}
 }
 

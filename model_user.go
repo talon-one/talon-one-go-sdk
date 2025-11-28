@@ -64,7 +64,7 @@ type _User User
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUser(id int64, created time.Time, modified time.Time, email string, accountId int64, name string, state string, inviteToken string, policy map[string]interface{}) *User {
+func BuildUser(id int64, created time.Time, modified time.Time, email string, accountId int64, name string, state string, inviteToken string, policy map[string]interface{}) *User {
 	this := User{}
 	this.Id = id
 	this.Created = created
@@ -672,7 +672,7 @@ func (v *NullableUser) Unset() {
 	v.isSet = false
 }
 
-func NewNullableUser(val *User) *NullableUser {
+func BuildNullableUser(val *User) *NullableUser {
 	return &NullableUser{value: val, isSet: true}
 }
 

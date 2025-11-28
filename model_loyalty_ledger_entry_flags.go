@@ -27,7 +27,7 @@ type LoyaltyLedgerEntryFlags struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLoyaltyLedgerEntryFlags() *LoyaltyLedgerEntryFlags {
+func BuildLoyaltyLedgerEntryFlags() *LoyaltyLedgerEntryFlags {
 	this := LoyaltyLedgerEntryFlags{}
 	return &this
 }
@@ -111,7 +111,7 @@ func (v *NullableLoyaltyLedgerEntryFlags) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLoyaltyLedgerEntryFlags(val *LoyaltyLedgerEntryFlags) *NullableLoyaltyLedgerEntryFlags {
+func BuildNullableLoyaltyLedgerEntryFlags(val *LoyaltyLedgerEntryFlags) *NullableLoyaltyLedgerEntryFlags {
 	return &NullableLoyaltyLedgerEntryFlags{value: val, isSet: true}
 }
 

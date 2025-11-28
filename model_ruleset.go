@@ -52,7 +52,7 @@ type _Ruleset Ruleset
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewRuleset(id int64, created time.Time, userId int64, rules []Rule, bindings []Binding) *Ruleset {
+func BuildRuleset(id int64, created time.Time, userId int64, rules []Rule, bindings []Binding) *Ruleset {
 	this := Ruleset{}
 	this.Id = id
 	this.Created = created
@@ -482,7 +482,7 @@ func (v *NullableRuleset) Unset() {
 	v.isSet = false
 }
 
-func NewNullableRuleset(val *Ruleset) *NullableRuleset {
+func BuildNullableRuleset(val *Ruleset) *NullableRuleset {
 	return &NullableRuleset{value: val, isSet: true}
 }
 

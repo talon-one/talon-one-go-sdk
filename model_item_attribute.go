@@ -34,7 +34,7 @@ type _ItemAttribute ItemAttribute
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewItemAttribute(attributeid int64, name string, value interface{}) *ItemAttribute {
+func BuildItemAttribute(attributeid int64, name string, value interface{}) *ItemAttribute {
 	this := ItemAttribute{}
 	this.Attributeid = attributeid
 	this.Name = name
@@ -204,7 +204,7 @@ func (v *NullableItemAttribute) Unset() {
 	v.isSet = false
 }
 
-func NewNullableItemAttribute(val *ItemAttribute) *NullableItemAttribute {
+func BuildNullableItemAttribute(val *ItemAttribute) *NullableItemAttribute {
 	return &NullableItemAttribute{value: val, isSet: true}
 }
 

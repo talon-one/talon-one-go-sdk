@@ -50,7 +50,7 @@ type _LoyaltyDashboardData LoyaltyDashboardData
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLoyaltyDashboardData(date time.Time, totalActivePoints float32, totalPendingPoints float32, totalSpentPoints float32, totalExpiredPoints float32, totalNegativePoints float32, totalMembers float32, newMembers float32, spentPoints LoyaltyDashboardPointsBreakdown, earnedPoints LoyaltyDashboardPointsBreakdown) *LoyaltyDashboardData {
+func BuildLoyaltyDashboardData(date time.Time, totalActivePoints float32, totalPendingPoints float32, totalSpentPoints float32, totalExpiredPoints float32, totalNegativePoints float32, totalMembers float32, newMembers float32, spentPoints LoyaltyDashboardPointsBreakdown, earnedPoints LoyaltyDashboardPointsBreakdown) *LoyaltyDashboardData {
 	this := LoyaltyDashboardData{}
 	this.Date = date
 	this.TotalActivePoints = totalActivePoints
@@ -405,7 +405,7 @@ func (v *NullableLoyaltyDashboardData) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLoyaltyDashboardData(val *LoyaltyDashboardData) *NullableLoyaltyDashboardData {
+func BuildNullableLoyaltyDashboardData(val *LoyaltyDashboardData) *NullableLoyaltyDashboardData {
 	return &NullableLoyaltyDashboardData{value: val, isSet: true}
 }
 

@@ -37,7 +37,7 @@ type _DeductLoyaltyPoints DeductLoyaltyPoints
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewDeductLoyaltyPoints(points float32) *DeductLoyaltyPoints {
+func BuildDeductLoyaltyPoints(points float32) *DeductLoyaltyPoints {
 	this := DeductLoyaltyPoints{}
 	this.Points = points
 	return &this
@@ -254,7 +254,7 @@ func (v *NullableDeductLoyaltyPoints) Unset() {
 	v.isSet = false
 }
 
-func NewNullableDeductLoyaltyPoints(val *DeductLoyaltyPoints) *NullableDeductLoyaltyPoints {
+func BuildNullableDeductLoyaltyPoints(val *DeductLoyaltyPoints) *NullableDeductLoyaltyPoints {
 	return &NullableDeductLoyaltyPoints{value: val, isSet: true}
 }
 

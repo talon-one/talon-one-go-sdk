@@ -53,7 +53,7 @@ type _SetDiscountPerItemEffectProps SetDiscountPerItemEffectProps
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSetDiscountPerItemEffectProps(name string, value float32, position float32) *SetDiscountPerItemEffectProps {
+func BuildSetDiscountPerItemEffectProps(name string, value float32, position float32) *SetDiscountPerItemEffectProps {
 	this := SetDiscountPerItemEffectProps{}
 	this.Name = name
 	this.Value = value
@@ -534,7 +534,7 @@ func (v *NullableSetDiscountPerItemEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableSetDiscountPerItemEffectProps(val *SetDiscountPerItemEffectProps) *NullableSetDiscountPerItemEffectProps {
+func BuildNullableSetDiscountPerItemEffectProps(val *SetDiscountPerItemEffectProps) *NullableSetDiscountPerItemEffectProps {
 	return &NullableSetDiscountPerItemEffectProps{value: val, isSet: true}
 }
 

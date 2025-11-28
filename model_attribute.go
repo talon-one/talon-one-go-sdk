@@ -62,7 +62,7 @@ type _Attribute Attribute
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAttribute(id int64, created time.Time, accountId int64, entity string, name string, title string, type_ string, description string, suggestions []string, editable bool) *Attribute {
+func BuildAttribute(id int64, created time.Time, accountId int64, entity string, name string, title string, type_ string, description string, suggestions []string, editable bool) *Attribute {
 	this := Attribute{}
 	this.Id = id
 	this.Created = created
@@ -670,7 +670,7 @@ func (v *NullableAttribute) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAttribute(val *Attribute) *NullableAttribute {
+func BuildNullableAttribute(val *Attribute) *NullableAttribute {
 	return &NullableAttribute{value: val, isSet: true}
 }
 

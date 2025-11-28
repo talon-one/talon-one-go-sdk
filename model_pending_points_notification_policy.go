@@ -35,7 +35,7 @@ type _PendingPointsNotificationPolicy PendingPointsNotificationPolicy
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPendingPointsNotificationPolicy(name string) *PendingPointsNotificationPolicy {
+func BuildPendingPointsNotificationPolicy(name string) *PendingPointsNotificationPolicy {
 	this := PendingPointsNotificationPolicy{}
 	this.Name = name
 	var batchingEnabled bool = true
@@ -225,7 +225,7 @@ func (v *NullablePendingPointsNotificationPolicy) Unset() {
 	v.isSet = false
 }
 
-func NewNullablePendingPointsNotificationPolicy(val *PendingPointsNotificationPolicy) *NullablePendingPointsNotificationPolicy {
+func BuildNullablePendingPointsNotificationPolicy(val *PendingPointsNotificationPolicy) *NullablePendingPointsNotificationPolicy {
 	return &NullablePendingPointsNotificationPolicy{value: val, isSet: true}
 }
 

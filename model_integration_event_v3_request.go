@@ -49,7 +49,7 @@ type _IntegrationEventV3Request IntegrationEventV3Request
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewIntegrationEventV3Request(profileId string, integrationId string, type_ string) *IntegrationEventV3Request {
+func BuildIntegrationEventV3Request(profileId string, integrationId string, type_ string) *IntegrationEventV3Request {
 	this := IntegrationEventV3Request{}
 	this.ProfileId = profileId
 	this.IntegrationId = integrationId
@@ -460,7 +460,7 @@ func (v *NullableIntegrationEventV3Request) Unset() {
 	v.isSet = false
 }
 
-func NewNullableIntegrationEventV3Request(val *IntegrationEventV3Request) *NullableIntegrationEventV3Request {
+func BuildNullableIntegrationEventV3Request(val *IntegrationEventV3Request) *NullableIntegrationEventV3Request {
 	return &NullableIntegrationEventV3Request{value: val, isSet: true}
 }
 

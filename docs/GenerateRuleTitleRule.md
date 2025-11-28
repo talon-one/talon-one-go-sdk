@@ -28,7 +28,7 @@ but it doesn't guarantee that properties required by API are set
 
 ### GetEffects
 
-`func (o *GenerateRuleTitleRule) GetEffects() []map[string]interface{}`
+`func (o *GenerateRuleTitleRule) GetEffects() [][]interface{}`
 
 GetEffects returns the Effects field if non-nil, zero value otherwise.
 
@@ -41,7 +41,7 @@ and a boolean to check if the value has been set.
 
 ### SetEffects
 
-`func (o *GenerateRuleTitleRule) SetEffects(v []map[string]interface{})`
+`func (o *GenerateRuleTitleRule) SetEffects(v [][]interface{})`
 
 SetEffects sets Effects field to given value.
 

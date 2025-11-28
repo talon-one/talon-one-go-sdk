@@ -52,7 +52,7 @@ type _ApplicationEvent ApplicationEvent
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewApplicationEvent(id int64, created time.Time, applicationId int64, type_ string, attributes map[string]interface{}, effects []Effect) *ApplicationEvent {
+func BuildApplicationEvent(id int64, created time.Time, applicationId int64, type_ string, attributes map[string]interface{}, effects []Effect) *ApplicationEvent {
 	this := ApplicationEvent{}
 	this.Id = id
 	this.Created = created
@@ -474,7 +474,7 @@ func (v *NullableApplicationEvent) Unset() {
 	v.isSet = false
 }
 
-func NewNullableApplicationEvent(val *ApplicationEvent) *NullableApplicationEvent {
+func BuildNullableApplicationEvent(val *ApplicationEvent) *NullableApplicationEvent {
 	return &NullableApplicationEvent{value: val, isSet: true}
 }
 

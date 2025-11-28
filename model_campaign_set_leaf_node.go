@@ -33,7 +33,7 @@ type _CampaignSetLeafNode CampaignSetLeafNode
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCampaignSetLeafNode(type_ string, campaignId int64) *CampaignSetLeafNode {
+func BuildCampaignSetLeafNode(type_ string, campaignId int64) *CampaignSetLeafNode {
 	this := CampaignSetLeafNode{}
 	this.Type = type_
 	this.CampaignId = campaignId
@@ -172,7 +172,7 @@ func (v *NullableCampaignSetLeafNode) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCampaignSetLeafNode(val *CampaignSetLeafNode) *NullableCampaignSetLeafNode {
+func BuildNullableCampaignSetLeafNode(val *CampaignSetLeafNode) *NullableCampaignSetLeafNode {
 	return &NullableCampaignSetLeafNode{value: val, isSet: true}
 }
 

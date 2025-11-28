@@ -34,7 +34,7 @@ type _APIError APIError
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAPIError(title string, source ErrorSource) *APIError {
+func BuildAPIError(title string, source ErrorSource) *APIError {
 	this := APIError{}
 	this.Title = title
 	this.Source = source
@@ -208,7 +208,7 @@ func (v *NullableAPIError) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAPIError(val *APIError) *NullableAPIError {
+func BuildNullableAPIError(val *APIError) *NullableAPIError {
 	return &NullableAPIError{value: val, isSet: true}
 }
 

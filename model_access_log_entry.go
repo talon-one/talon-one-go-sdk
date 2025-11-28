@@ -44,7 +44,7 @@ type _AccessLogEntry AccessLogEntry
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAccessLogEntry(uuid string, status int64, method string, requestUri string, time time.Time, requestPayload string, responsePayload string) *AccessLogEntry {
+func BuildAccessLogEntry(uuid string, status int64, method string, requestUri string, time time.Time, requestPayload string, responsePayload string) *AccessLogEntry {
 	this := AccessLogEntry{}
 	this.Uuid = uuid
 	this.Status = status
@@ -318,7 +318,7 @@ func (v *NullableAccessLogEntry) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAccessLogEntry(val *AccessLogEntry) *NullableAccessLogEntry {
+func BuildNullableAccessLogEntry(val *AccessLogEntry) *NullableAccessLogEntry {
 	return &NullableAccessLogEntry{value: val, isSet: true}
 }
 

@@ -31,7 +31,7 @@ type _LoyaltyDashboardPointsBreakdown LoyaltyDashboardPointsBreakdown
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLoyaltyDashboardPointsBreakdown(createdManually float32, createdViaRuleEngine float32) *LoyaltyDashboardPointsBreakdown {
+func BuildLoyaltyDashboardPointsBreakdown(createdManually float32, createdViaRuleEngine float32) *LoyaltyDashboardPointsBreakdown {
 	this := LoyaltyDashboardPointsBreakdown{}
 	this.CreatedManually = createdManually
 	this.CreatedViaRuleEngine = createdViaRuleEngine
@@ -170,7 +170,7 @@ func (v *NullableLoyaltyDashboardPointsBreakdown) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLoyaltyDashboardPointsBreakdown(val *LoyaltyDashboardPointsBreakdown) *NullableLoyaltyDashboardPointsBreakdown {
+func BuildNullableLoyaltyDashboardPointsBreakdown(val *LoyaltyDashboardPointsBreakdown) *NullableLoyaltyDashboardPointsBreakdown {
 	return &NullableLoyaltyDashboardPointsBreakdown{value: val, isSet: true}
 }
 

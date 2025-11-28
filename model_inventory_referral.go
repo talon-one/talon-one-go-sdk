@@ -58,7 +58,7 @@ type _InventoryReferral InventoryReferral
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewInventoryReferral(id int64, created time.Time, campaignId int64, advocateProfileIntegrationId string, code string, usageCounter int64, referredCustomers []string) *InventoryReferral {
+func BuildInventoryReferral(id int64, created time.Time, campaignId int64, advocateProfileIntegrationId string, code string, usageCounter int64, referredCustomers []string) *InventoryReferral {
 	this := InventoryReferral{}
 	this.Id = id
 	this.Created = created
@@ -577,7 +577,7 @@ func (v *NullableInventoryReferral) Unset() {
 	v.isSet = false
 }
 
-func NewNullableInventoryReferral(val *InventoryReferral) *NullableInventoryReferral {
+func BuildNullableInventoryReferral(val *InventoryReferral) *NullableInventoryReferral {
 	return &NullableInventoryReferral{value: val, isSet: true}
 }
 

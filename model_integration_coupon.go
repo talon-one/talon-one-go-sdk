@@ -76,7 +76,7 @@ type _IntegrationCoupon IntegrationCoupon
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewIntegrationCoupon(id int64, created time.Time, campaignId int64, usageCounter int64, profileRedemptionCount int64) *IntegrationCoupon {
+func BuildIntegrationCoupon(id int64, created time.Time, campaignId int64, usageCounter int64, profileRedemptionCount int64) *IntegrationCoupon {
 	this := IntegrationCoupon{}
 	this.Id = id
 	this.Created = created
@@ -934,7 +934,7 @@ func (v *NullableIntegrationCoupon) Unset() {
 	v.isSet = false
 }
 
-func NewNullableIntegrationCoupon(val *IntegrationCoupon) *NullableIntegrationCoupon {
+func BuildNullableIntegrationCoupon(val *IntegrationCoupon) *NullableIntegrationCoupon {
 	return &NullableIntegrationCoupon{value: val, isSet: true}
 }
 

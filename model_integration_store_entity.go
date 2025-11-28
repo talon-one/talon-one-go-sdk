@@ -27,7 +27,7 @@ type IntegrationStoreEntity struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewIntegrationStoreEntity() *IntegrationStoreEntity {
+func BuildIntegrationStoreEntity() *IntegrationStoreEntity {
 	this := IntegrationStoreEntity{}
 	return &this
 }
@@ -111,7 +111,7 @@ func (v *NullableIntegrationStoreEntity) Unset() {
 	v.isSet = false
 }
 
-func NewNullableIntegrationStoreEntity(val *IntegrationStoreEntity) *NullableIntegrationStoreEntity {
+func BuildNullableIntegrationStoreEntity(val *IntegrationStoreEntity) *NullableIntegrationStoreEntity {
 	return &NullableIntegrationStoreEntity{value: val, isSet: true}
 }
 

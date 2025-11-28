@@ -47,7 +47,7 @@ type _TalangAttribute TalangAttribute
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewTalangAttribute(name string, type_ string, visible bool, kind string, campaignsCount int64) *TalangAttribute {
+func BuildTalangAttribute(name string, type_ string, visible bool, kind string, campaignsCount int64) *TalangAttribute {
 	this := TalangAttribute{}
 	this.Name = name
 	this.Type = type_
@@ -409,7 +409,7 @@ func (v *NullableTalangAttribute) Unset() {
 	v.isSet = false
 }
 
-func NewNullableTalangAttribute(val *TalangAttribute) *NullableTalangAttribute {
+func BuildNullableTalangAttribute(val *TalangAttribute) *NullableTalangAttribute {
 	return &NullableTalangAttribute{value: val, isSet: true}
 }
 

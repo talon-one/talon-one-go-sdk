@@ -35,7 +35,7 @@ type _UpdateStore UpdateStore
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdateStore(name string, description string) *UpdateStore {
+func BuildUpdateStore(name string, description string) *UpdateStore {
 	this := UpdateStore{}
 	this.Name = name
 	this.Description = description
@@ -209,7 +209,7 @@ func (v *NullableUpdateStore) Unset() {
 	v.isSet = false
 }
 
-func NewNullableUpdateStore(val *UpdateStore) *NullableUpdateStore {
+func BuildNullableUpdateStore(val *UpdateStore) *NullableUpdateStore {
 	return &NullableUpdateStore{value: val, isSet: true}
 }
 

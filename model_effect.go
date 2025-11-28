@@ -60,7 +60,7 @@ type _Effect Effect
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewEffect(campaignId int64, rulesetId int64, ruleIndex int64, ruleName string, effectType string, props interface{}) *Effect {
+func BuildEffect(campaignId int64, rulesetId int64, ruleIndex int64, ruleName string, effectType string, props interface{}) *Effect {
 	this := Effect{}
 	this.CampaignId = campaignId
 	this.RulesetId = rulesetId
@@ -661,7 +661,7 @@ func (v *NullableEffect) Unset() {
 	v.isSet = false
 }
 
-func NewNullableEffect(val *Effect) *NullableEffect {
+func BuildNullableEffect(val *Effect) *NullableEffect {
 	return &NullableEffect{value: val, isSet: true}
 }
 

@@ -46,7 +46,7 @@ type UpdateCoupon struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdateCoupon() *UpdateCoupon {
+func BuildUpdateCoupon() *UpdateCoupon {
 	this := UpdateCoupon{}
 	var isReservationMandatory bool = false
 	this.IsReservationMandatory = &isReservationMandatory
@@ -449,7 +449,7 @@ func (v *NullableUpdateCoupon) Unset() {
 	v.isSet = false
 }
 
-func NewNullableUpdateCoupon(val *UpdateCoupon) *NullableUpdateCoupon {
+func BuildNullableUpdateCoupon(val *UpdateCoupon) *NullableUpdateCoupon {
 	return &NullableUpdateCoupon{value: val, isSet: true}
 }
 

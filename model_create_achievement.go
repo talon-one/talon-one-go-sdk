@@ -51,7 +51,7 @@ type _CreateAchievement CreateAchievement
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCreateAchievement(name string, title string, description string, target float32) *CreateAchievement {
+func BuildCreateAchievement(name string, title string, description string, target float32) *CreateAchievement {
 	this := CreateAchievement{}
 	this.Name = name
 	this.Title = title
@@ -489,7 +489,7 @@ func (v *NullableCreateAchievement) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCreateAchievement(val *CreateAchievement) *NullableCreateAchievement {
+func BuildNullableCreateAchievement(val *CreateAchievement) *NullableCreateAchievement {
 	return &NullableCreateAchievement{value: val, isSet: true}
 }
 

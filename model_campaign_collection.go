@@ -52,7 +52,7 @@ type _CampaignCollection CampaignCollection
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCampaignCollection(id int64, created time.Time, accountId int64, modified time.Time, name string, createdBy int64) *CampaignCollection {
+func BuildCampaignCollection(id int64, created time.Time, accountId int64, modified time.Time, name string, createdBy int64) *CampaignCollection {
 	this := CampaignCollection{}
 	this.Id = id
 	this.Created = created
@@ -474,7 +474,7 @@ func (v *NullableCampaignCollection) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCampaignCollection(val *CampaignCollection) *NullableCampaignCollection {
+func BuildNullableCampaignCollection(val *CampaignCollection) *NullableCampaignCollection {
 	return &NullableCampaignCollection{value: val, isSet: true}
 }
 

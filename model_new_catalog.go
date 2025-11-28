@@ -35,7 +35,7 @@ type _NewCatalog NewCatalog
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewCatalog(name string, description string) *NewCatalog {
+func BuildNewCatalog(name string, description string) *NewCatalog {
 	this := NewCatalog{}
 	this.Name = name
 	this.Description = description
@@ -209,7 +209,7 @@ func (v *NullableNewCatalog) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewCatalog(val *NewCatalog) *NullableNewCatalog {
+func BuildNullableNewCatalog(val *NewCatalog) *NullableNewCatalog {
 	return &NullableNewCatalog{value: val, isSet: true}
 }
 

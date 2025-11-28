@@ -45,7 +45,7 @@ type _NewCouponCreationJob NewCouponCreationJob
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewCouponCreationJob(numberOfCoupons int64, attributes map[string]interface{}) *NewCouponCreationJob {
+func BuildNewCouponCreationJob(numberOfCoupons int64, attributes map[string]interface{}) *NewCouponCreationJob {
 	this := NewCouponCreationJob{}
 	this.NumberOfCoupons = numberOfCoupons
 	this.Attributes = attributes
@@ -394,7 +394,7 @@ func (v *NullableNewCouponCreationJob) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewCouponCreationJob(val *NewCouponCreationJob) *NullableNewCouponCreationJob {
+func BuildNullableNewCouponCreationJob(val *NewCouponCreationJob) *NullableNewCouponCreationJob {
 	return &NullableNewCouponCreationJob{value: val, isSet: true}
 }
 

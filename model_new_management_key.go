@@ -52,7 +52,7 @@ type _NewManagementKey NewManagementKey
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewManagementKey(name string, expiryDate time.Time, endpoints []Endpoint, id int64, createdBy int64, accountID int64, created time.Time, key string) *NewManagementKey {
+func BuildNewManagementKey(name string, expiryDate time.Time, endpoints []Endpoint, id int64, createdBy int64, accountID int64, created time.Time, key string) *NewManagementKey {
 	this := NewManagementKey{}
 	this.Name = name
 	this.ExpiryDate = expiryDate
@@ -458,7 +458,7 @@ func (v *NullableNewManagementKey) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewManagementKey(val *NewManagementKey) *NullableNewManagementKey {
+func BuildNullableNewManagementKey(val *NewManagementKey) *NullableNewManagementKey {
 	return &NullableNewManagementKey{value: val, isSet: true}
 }
 

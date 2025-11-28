@@ -41,7 +41,7 @@ type _RollbackIncreasedAchievementProgressEffectProps RollbackIncreasedAchieveme
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewRollbackIncreasedAchievementProgressEffectProps(achievementId int64, achievementName string, progressTrackerId int64, decreaseProgressBy float32, currentProgress float32, target float32) *RollbackIncreasedAchievementProgressEffectProps {
+func BuildRollbackIncreasedAchievementProgressEffectProps(achievementId int64, achievementName string, progressTrackerId int64, decreaseProgressBy float32, currentProgress float32, target float32) *RollbackIncreasedAchievementProgressEffectProps {
 	this := RollbackIncreasedAchievementProgressEffectProps{}
 	this.AchievementId = achievementId
 	this.AchievementName = achievementName
@@ -288,7 +288,7 @@ func (v *NullableRollbackIncreasedAchievementProgressEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableRollbackIncreasedAchievementProgressEffectProps(val *RollbackIncreasedAchievementProgressEffectProps) *NullableRollbackIncreasedAchievementProgressEffectProps {
+func BuildNullableRollbackIncreasedAchievementProgressEffectProps(val *RollbackIncreasedAchievementProgressEffectProps) *NullableRollbackIncreasedAchievementProgressEffectProps {
 	return &NullableRollbackIncreasedAchievementProgressEffectProps{value: val, isSet: true}
 }
 

@@ -26,7 +26,7 @@ type SummarizeCampaignStoreBudget200Response struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSummarizeCampaignStoreBudget200Response() *SummarizeCampaignStoreBudget200Response {
+func BuildSummarizeCampaignStoreBudget200Response() *SummarizeCampaignStoreBudget200Response {
 	this := SummarizeCampaignStoreBudget200Response{}
 	return &this
 }
@@ -110,7 +110,7 @@ func (v *NullableSummarizeCampaignStoreBudget200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableSummarizeCampaignStoreBudget200Response(val *SummarizeCampaignStoreBudget200Response) *NullableSummarizeCampaignStoreBudget200Response {
+func BuildNullableSummarizeCampaignStoreBudget200Response(val *SummarizeCampaignStoreBudget200Response) *NullableSummarizeCampaignStoreBudget200Response {
 	return &NullableSummarizeCampaignStoreBudget200Response{value: val, isSet: true}
 }
 

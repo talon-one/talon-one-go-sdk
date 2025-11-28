@@ -32,7 +32,7 @@ type MessageLogResponse struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewMessageLogResponse() *MessageLogResponse {
+func BuildMessageLogResponse() *MessageLogResponse {
 	this := MessageLogResponse{}
 	return &this
 }
@@ -186,7 +186,7 @@ func (v *NullableMessageLogResponse) Unset() {
 	v.isSet = false
 }
 
-func NewNullableMessageLogResponse(val *MessageLogResponse) *NullableMessageLogResponse {
+func BuildNullableMessageLogResponse(val *MessageLogResponse) *NullableMessageLogResponse {
 	return &NullableMessageLogResponse{value: val, isSet: true}
 }
 

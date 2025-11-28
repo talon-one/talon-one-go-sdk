@@ -31,7 +31,7 @@ type _ApplicationEntity ApplicationEntity
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewApplicationEntity(applicationId int64) *ApplicationEntity {
+func BuildApplicationEntity(applicationId int64) *ApplicationEntity {
 	this := ApplicationEntity{}
 	this.ApplicationId = applicationId
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableApplicationEntity) Unset() {
 	v.isSet = false
 }
 
-func NewNullableApplicationEntity(val *ApplicationEntity) *NullableApplicationEntity {
+func BuildNullableApplicationEntity(val *ApplicationEntity) *NullableApplicationEntity {
 	return &NullableApplicationEntity{value: val, isSet: true}
 }
 

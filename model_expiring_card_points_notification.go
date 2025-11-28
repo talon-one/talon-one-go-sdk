@@ -34,7 +34,7 @@ type _ExpiringCardPointsNotification ExpiringCardPointsNotification
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewExpiringCardPointsNotification(totalResultSize int64, data []ExpiringCardPointsData, notificationType string) *ExpiringCardPointsNotification {
+func BuildExpiringCardPointsNotification(totalResultSize int64, data []ExpiringCardPointsData, notificationType string) *ExpiringCardPointsNotification {
 	this := ExpiringCardPointsNotification{}
 	this.TotalResultSize = totalResultSize
 	this.Data = data
@@ -200,7 +200,7 @@ func (v *NullableExpiringCardPointsNotification) Unset() {
 	v.isSet = false
 }
 
-func NewNullableExpiringCardPointsNotification(val *ExpiringCardPointsNotification) *NullableExpiringCardPointsNotification {
+func BuildNullableExpiringCardPointsNotification(val *ExpiringCardPointsNotification) *NullableExpiringCardPointsNotification {
 	return &NullableExpiringCardPointsNotification{value: val, isSet: true}
 }
 

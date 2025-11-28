@@ -73,7 +73,7 @@ type _CouponCreationJob CouponCreationJob
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCouponCreationJob(id int64, created time.Time, campaignId int64, applicationId int64, accountId int64, usageLimit int64, numberOfCoupons int64, attributes map[string]interface{}, batchId string, status string, createdAmount int64, failCount int64, errors []string, createdBy int64, communicated bool, chunkExecutionCount int64) *CouponCreationJob {
+func BuildCouponCreationJob(id int64, created time.Time, campaignId int64, applicationId int64, accountId int64, usageLimit int64, numberOfCoupons int64, attributes map[string]interface{}, batchId string, status string, createdAmount int64, failCount int64, errors []string, createdBy int64, communicated bool, chunkExecutionCount int64) *CouponCreationJob {
 	this := CouponCreationJob{}
 	this.Id = id
 	this.Created = created
@@ -800,7 +800,7 @@ func (v *NullableCouponCreationJob) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCouponCreationJob(val *CouponCreationJob) *NullableCouponCreationJob {
+func BuildNullableCouponCreationJob(val *CouponCreationJob) *NullableCouponCreationJob {
 	return &NullableCouponCreationJob{value: val, isSet: true}
 }
 

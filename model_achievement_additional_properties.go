@@ -39,7 +39,7 @@ type _AchievementAdditionalProperties AchievementAdditionalProperties
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAchievementAdditionalProperties(campaignId int64, userId int64) *AchievementAdditionalProperties {
+func BuildAchievementAdditionalProperties(campaignId int64, userId int64) *AchievementAdditionalProperties {
 	this := AchievementAdditionalProperties{}
 	this.CampaignId = campaignId
 	this.UserId = userId
@@ -283,7 +283,7 @@ func (v *NullableAchievementAdditionalProperties) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAchievementAdditionalProperties(val *AchievementAdditionalProperties) *NullableAchievementAdditionalProperties {
+func BuildNullableAchievementAdditionalProperties(val *AchievementAdditionalProperties) *NullableAchievementAdditionalProperties {
 	return &NullableAchievementAdditionalProperties{value: val, isSet: true}
 }
 

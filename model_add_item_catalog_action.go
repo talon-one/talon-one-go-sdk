@@ -38,7 +38,7 @@ type _AddItemCatalogAction AddItemCatalogAction
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAddItemCatalogAction(sku string) *AddItemCatalogAction {
+func BuildAddItemCatalogAction(sku string) *AddItemCatalogAction {
 	this := AddItemCatalogAction{}
 	this.Sku = sku
 	var replaceIfExists bool = false
@@ -294,7 +294,7 @@ func (v *NullableAddItemCatalogAction) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAddItemCatalogAction(val *AddItemCatalogAction) *NullableAddItemCatalogAction {
+func BuildNullableAddItemCatalogAction(val *AddItemCatalogAction) *NullableAddItemCatalogAction {
 	return &NullableAddItemCatalogAction{value: val, isSet: true}
 }
 

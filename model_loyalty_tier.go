@@ -44,7 +44,7 @@ type _LoyaltyTier LoyaltyTier
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLoyaltyTier(id int64, created time.Time, programID int64, name string, minPoints float32) *LoyaltyTier {
+func BuildLoyaltyTier(id int64, created time.Time, programID int64, name string, minPoints float32) *LoyaltyTier {
 	this := LoyaltyTier{}
 	this.Id = id
 	this.Created = created
@@ -334,7 +334,7 @@ func (v *NullableLoyaltyTier) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLoyaltyTier(val *LoyaltyTier) *NullableLoyaltyTier {
+func BuildNullableLoyaltyTier(val *LoyaltyTier) *NullableLoyaltyTier {
 	return &NullableLoyaltyTier{value: val, isSet: true}
 }
 

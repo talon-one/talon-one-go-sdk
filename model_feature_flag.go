@@ -38,7 +38,7 @@ type _FeatureFlag FeatureFlag
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewFeatureFlag(name string, value string) *FeatureFlag {
+func BuildFeatureFlag(name string, value string) *FeatureFlag {
 	this := FeatureFlag{}
 	this.Name = name
 	this.Value = value
@@ -247,7 +247,7 @@ func (v *NullableFeatureFlag) Unset() {
 	v.isSet = false
 }
 
-func NewNullableFeatureFlag(val *FeatureFlag) *NullableFeatureFlag {
+func BuildNullableFeatureFlag(val *FeatureFlag) *NullableFeatureFlag {
 	return &NullableFeatureFlag{value: val, isSet: true}
 }
 

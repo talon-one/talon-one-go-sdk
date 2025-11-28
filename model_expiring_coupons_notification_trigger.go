@@ -33,7 +33,7 @@ type _ExpiringCouponsNotificationTrigger ExpiringCouponsNotificationTrigger
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewExpiringCouponsNotificationTrigger(amount int64, period string) *ExpiringCouponsNotificationTrigger {
+func BuildExpiringCouponsNotificationTrigger(amount int64, period string) *ExpiringCouponsNotificationTrigger {
 	this := ExpiringCouponsNotificationTrigger{}
 	this.Amount = amount
 	this.Period = period
@@ -172,7 +172,7 @@ func (v *NullableExpiringCouponsNotificationTrigger) Unset() {
 	v.isSet = false
 }
 
-func NewNullableExpiringCouponsNotificationTrigger(val *ExpiringCouponsNotificationTrigger) *NullableExpiringCouponsNotificationTrigger {
+func BuildNullableExpiringCouponsNotificationTrigger(val *ExpiringCouponsNotificationTrigger) *NullableExpiringCouponsNotificationTrigger {
 	return &NullableExpiringCouponsNotificationTrigger{value: val, isSet: true}
 }
 

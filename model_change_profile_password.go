@@ -33,7 +33,7 @@ type _ChangeProfilePassword ChangeProfilePassword
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewChangeProfilePassword(password string, newPassword string) *ChangeProfilePassword {
+func BuildChangeProfilePassword(password string, newPassword string) *ChangeProfilePassword {
 	this := ChangeProfilePassword{}
 	this.Password = password
 	this.NewPassword = newPassword
@@ -172,7 +172,7 @@ func (v *NullableChangeProfilePassword) Unset() {
 	v.isSet = false
 }
 
-func NewNullableChangeProfilePassword(val *ChangeProfilePassword) *NullableChangeProfilePassword {
+func BuildNullableChangeProfilePassword(val *ChangeProfilePassword) *NullableChangeProfilePassword {
 	return &NullableChangeProfilePassword{value: val, isSet: true}
 }
 

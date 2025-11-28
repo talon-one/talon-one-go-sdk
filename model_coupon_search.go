@@ -31,7 +31,7 @@ type _CouponSearch CouponSearch
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCouponSearch(attributes map[string]interface{}) *CouponSearch {
+func BuildCouponSearch(attributes map[string]interface{}) *CouponSearch {
 	this := CouponSearch{}
 	this.Attributes = attributes
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableCouponSearch) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCouponSearch(val *CouponSearch) *NullableCouponSearch {
+func BuildNullableCouponSearch(val *CouponSearch) *NullableCouponSearch {
 	return &NullableCouponSearch{value: val, isSet: true}
 }
 

@@ -42,7 +42,7 @@ type _AnalyticsSKU AnalyticsSKU
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAnalyticsSKU(id int64, sku string) *AnalyticsSKU {
+func BuildAnalyticsSKU(id int64, sku string) *AnalyticsSKU {
 	this := AnalyticsSKU{}
 	this.Id = id
 	this.Sku = sku
@@ -321,7 +321,7 @@ func (v *NullableAnalyticsSKU) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAnalyticsSKU(val *AnalyticsSKU) *NullableAnalyticsSKU {
+func BuildNullableAnalyticsSKU(val *AnalyticsSKU) *NullableAnalyticsSKU {
 	return &NullableAnalyticsSKU{value: val, isSet: true}
 }
 

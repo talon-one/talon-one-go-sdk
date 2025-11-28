@@ -39,7 +39,7 @@ type _NewAdditionalCost NewAdditionalCost
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewAdditionalCost(name string, title string, description string) *NewAdditionalCost {
+func BuildNewAdditionalCost(name string, title string, description string) *NewAdditionalCost {
 	this := NewAdditionalCost{}
 	this.Name = name
 	this.Title = title
@@ -279,7 +279,7 @@ func (v *NullableNewAdditionalCost) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewAdditionalCost(val *NewAdditionalCost) *NullableNewAdditionalCost {
+func BuildNullableNewAdditionalCost(val *NewAdditionalCost) *NullableNewAdditionalCost {
 	return &NullableNewAdditionalCost{value: val, isSet: true}
 }
 

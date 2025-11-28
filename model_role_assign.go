@@ -33,7 +33,7 @@ type _RoleAssign RoleAssign
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewRoleAssign(users []int64, roles []int64) *RoleAssign {
+func BuildRoleAssign(users []int64, roles []int64) *RoleAssign {
 	this := RoleAssign{}
 	this.Users = users
 	this.Roles = roles
@@ -172,7 +172,7 @@ func (v *NullableRoleAssign) Unset() {
 	v.isSet = false
 }
 
-func NewNullableRoleAssign(val *RoleAssign) *NullableRoleAssign {
+func BuildNullableRoleAssign(val *RoleAssign) *NullableRoleAssign {
 	return &NullableRoleAssign{value: val, isSet: true}
 }
 

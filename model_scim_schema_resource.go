@@ -32,7 +32,7 @@ type ScimSchemaResource struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewScimSchemaResource() *ScimSchemaResource {
+func BuildScimSchemaResource() *ScimSchemaResource {
 	this := ScimSchemaResource{}
 	return &this
 }
@@ -221,7 +221,7 @@ func (v *NullableScimSchemaResource) Unset() {
 	v.isSet = false
 }
 
-func NewNullableScimSchemaResource(val *ScimSchemaResource) *NullableScimSchemaResource {
+func BuildNullableScimSchemaResource(val *ScimSchemaResource) *NullableScimSchemaResource {
 	return &NullableScimSchemaResource{value: val, isSet: true}
 }
 

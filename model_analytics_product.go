@@ -37,7 +37,7 @@ type _AnalyticsProduct AnalyticsProduct
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAnalyticsProduct(id int64, name string, catalogId int64) *AnalyticsProduct {
+func BuildAnalyticsProduct(id int64, name string, catalogId int64) *AnalyticsProduct {
 	this := AnalyticsProduct{}
 	this.Id = id
 	this.Name = name
@@ -238,7 +238,7 @@ func (v *NullableAnalyticsProduct) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAnalyticsProduct(val *AnalyticsProduct) *NullableAnalyticsProduct {
+func BuildNullableAnalyticsProduct(val *AnalyticsProduct) *NullableAnalyticsProduct {
 	return &NullableAnalyticsProduct{value: val, isSet: true}
 }
 

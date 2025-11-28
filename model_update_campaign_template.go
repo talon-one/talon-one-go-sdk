@@ -62,7 +62,7 @@ type _UpdateCampaignTemplate UpdateCampaignTemplate
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdateCampaignTemplate(name string, description string, instructions string, state string, applicationsIds []int64) *UpdateCampaignTemplate {
+func BuildUpdateCampaignTemplate(name string, description string, instructions string, state string, applicationsIds []int64) *UpdateCampaignTemplate {
 	this := UpdateCampaignTemplate{}
 	this.Name = name
 	this.Description = description
@@ -741,7 +741,7 @@ func (v *NullableUpdateCampaignTemplate) Unset() {
 	v.isSet = false
 }
 
-func NewNullableUpdateCampaignTemplate(val *UpdateCampaignTemplate) *NullableUpdateCampaignTemplate {
+func BuildNullableUpdateCampaignTemplate(val *UpdateCampaignTemplate) *NullableUpdateCampaignTemplate {
 	return &NullableUpdateCampaignTemplate{value: val, isSet: true}
 }
 

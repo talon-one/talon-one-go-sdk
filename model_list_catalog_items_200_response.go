@@ -32,7 +32,7 @@ type _ListCatalogItems200Response ListCatalogItems200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewListCatalogItems200Response(data []CatalogItem) *ListCatalogItems200Response {
+func BuildListCatalogItems200Response(data []CatalogItem) *ListCatalogItems200Response {
 	this := ListCatalogItems200Response{}
 	this.Data = data
 	return &this
@@ -214,7 +214,7 @@ func (v *NullableListCatalogItems200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableListCatalogItems200Response(val *ListCatalogItems200Response) *NullableListCatalogItems200Response {
+func BuildNullableListCatalogItems200Response(val *ListCatalogItems200Response) *NullableListCatalogItems200Response {
 	return &NullableListCatalogItems200Response{value: val, isSet: true}
 }
 

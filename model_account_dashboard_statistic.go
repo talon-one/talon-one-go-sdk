@@ -38,7 +38,7 @@ type _AccountDashboardStatistic AccountDashboardStatistic
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAccountDashboardStatistic(campaigns AccountDashboardStatisticCampaigns) *AccountDashboardStatistic {
+func BuildAccountDashboardStatistic(campaigns AccountDashboardStatisticCampaigns) *AccountDashboardStatistic {
 	this := AccountDashboardStatistic{}
 	this.Campaigns = campaigns
 	return &this
@@ -290,7 +290,7 @@ func (v *NullableAccountDashboardStatistic) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAccountDashboardStatistic(val *AccountDashboardStatistic) *NullableAccountDashboardStatistic {
+func BuildNullableAccountDashboardStatistic(val *AccountDashboardStatistic) *NullableAccountDashboardStatistic {
 	return &NullableAccountDashboardStatistic{value: val, isSet: true}
 }
 

@@ -34,7 +34,7 @@ type _TierDowngradeNotification TierDowngradeNotification
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewTierDowngradeNotification(totalResultSize int64, data []TierDowngradeData, notificationType string) *TierDowngradeNotification {
+func BuildTierDowngradeNotification(totalResultSize int64, data []TierDowngradeData, notificationType string) *TierDowngradeNotification {
 	this := TierDowngradeNotification{}
 	this.TotalResultSize = totalResultSize
 	this.Data = data
@@ -200,7 +200,7 @@ func (v *NullableTierDowngradeNotification) Unset() {
 	v.isSet = false
 }
 
-func NewNullableTierDowngradeNotification(val *TierDowngradeNotification) *NullableTierDowngradeNotification {
+func BuildNullableTierDowngradeNotification(val *TierDowngradeNotification) *NullableTierDowngradeNotification {
 	return &NullableTierDowngradeNotification{value: val, isSet: true}
 }
 

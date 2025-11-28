@@ -30,7 +30,7 @@ type _ManagerConfig ManagerConfig
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewManagerConfig(schemaVersion int64) *ManagerConfig {
+func BuildManagerConfig(schemaVersion int64) *ManagerConfig {
 	this := ManagerConfig{}
 	this.SchemaVersion = schemaVersion
 	return &this
@@ -142,7 +142,7 @@ func (v *NullableManagerConfig) Unset() {
 	v.isSet = false
 }
 
-func NewNullableManagerConfig(val *ManagerConfig) *NullableManagerConfig {
+func BuildNullableManagerConfig(val *ManagerConfig) *NullableManagerConfig {
 	return &NullableManagerConfig{value: val, isSet: true}
 }
 

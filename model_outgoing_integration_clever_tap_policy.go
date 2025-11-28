@@ -35,7 +35,7 @@ type _OutgoingIntegrationCleverTapPolicy OutgoingIntegrationCleverTapPolicy
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewOutgoingIntegrationCleverTapPolicy(baseUrl string, accountId string, passcode string) *OutgoingIntegrationCleverTapPolicy {
+func BuildOutgoingIntegrationCleverTapPolicy(baseUrl string, accountId string, passcode string) *OutgoingIntegrationCleverTapPolicy {
 	this := OutgoingIntegrationCleverTapPolicy{}
 	this.BaseUrl = baseUrl
 	this.AccountId = accountId
@@ -201,7 +201,7 @@ func (v *NullableOutgoingIntegrationCleverTapPolicy) Unset() {
 	v.isSet = false
 }
 
-func NewNullableOutgoingIntegrationCleverTapPolicy(val *OutgoingIntegrationCleverTapPolicy) *NullableOutgoingIntegrationCleverTapPolicy {
+func BuildNullableOutgoingIntegrationCleverTapPolicy(val *OutgoingIntegrationCleverTapPolicy) *NullableOutgoingIntegrationCleverTapPolicy {
 	return &NullableOutgoingIntegrationCleverTapPolicy{value: val, isSet: true}
 }
 

@@ -32,7 +32,7 @@ type ScimBaseUser struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewScimBaseUser() *ScimBaseUser {
+func BuildScimBaseUser() *ScimBaseUser {
 	this := ScimBaseUser{}
 	return &this
 }
@@ -221,7 +221,7 @@ func (v *NullableScimBaseUser) Unset() {
 	v.isSet = false
 }
 
-func NewNullableScimBaseUser(val *ScimBaseUser) *NullableScimBaseUser {
+func BuildNullableScimBaseUser(val *ScimBaseUser) *NullableScimBaseUser {
 	return &NullableScimBaseUser{value: val, isSet: true}
 }
 

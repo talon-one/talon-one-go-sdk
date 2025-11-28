@@ -36,7 +36,7 @@ type _ValueMap ValueMap
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewValueMap(id int64, campaignId int64) *ValueMap {
+func BuildValueMap(id int64, campaignId int64) *ValueMap {
 	this := ValueMap{}
 	this.Id = id
 	this.CampaignId = campaignId
@@ -245,7 +245,7 @@ func (v *NullableValueMap) Unset() {
 	v.isSet = false
 }
 
-func NewNullableValueMap(val *ValueMap) *NullableValueMap {
+func BuildNullableValueMap(val *ValueMap) *NullableValueMap {
 	return &NullableValueMap{value: val, isSet: true}
 }
 

@@ -35,7 +35,7 @@ type _AddFreeItemEffectProps AddFreeItemEffectProps
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAddFreeItemEffectProps(sku string, name string) *AddFreeItemEffectProps {
+func BuildAddFreeItemEffectProps(sku string, name string) *AddFreeItemEffectProps {
 	this := AddFreeItemEffectProps{}
 	this.Sku = sku
 	this.Name = name
@@ -209,7 +209,7 @@ func (v *NullableAddFreeItemEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAddFreeItemEffectProps(val *AddFreeItemEffectProps) *NullableAddFreeItemEffectProps {
+func BuildNullableAddFreeItemEffectProps(val *AddFreeItemEffectProps) *NullableAddFreeItemEffectProps {
 	return &NullableAddFreeItemEffectProps{value: val, isSet: true}
 }
 

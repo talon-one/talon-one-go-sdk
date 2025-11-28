@@ -52,7 +52,7 @@ type _CustomerProfile CustomerProfile
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCustomerProfile(id int64, created time.Time, integrationId string, accountId int64, closedSessions int64, totalSales float32, lastActivity time.Time) *CustomerProfile {
+func BuildCustomerProfile(id int64, created time.Time, integrationId string, accountId int64, closedSessions int64, totalSales float32, lastActivity time.Time) *CustomerProfile {
 	this := CustomerProfile{}
 	this.Id = id
 	this.Created = created
@@ -466,7 +466,7 @@ func (v *NullableCustomerProfile) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCustomerProfile(val *CustomerProfile) *NullableCustomerProfile {
+func BuildNullableCustomerProfile(val *CustomerProfile) *NullableCustomerProfile {
 	return &NullableCustomerProfile{value: val, isSet: true}
 }
 

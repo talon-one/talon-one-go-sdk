@@ -34,7 +34,7 @@ type _MessageLogRequest MessageLogRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewMessageLogRequest(createdAt time.Time, request string) *MessageLogRequest {
+func BuildMessageLogRequest(createdAt time.Time, request string) *MessageLogRequest {
 	this := MessageLogRequest{}
 	this.CreatedAt = createdAt
 	this.Request = request
@@ -173,7 +173,7 @@ func (v *NullableMessageLogRequest) Unset() {
 	v.isSet = false
 }
 
-func NewNullableMessageLogRequest(val *MessageLogRequest) *NullableMessageLogRequest {
+func BuildNullableMessageLogRequest(val *MessageLogRequest) *NullableMessageLogRequest {
 	return &NullableMessageLogRequest{value: val, isSet: true}
 }
 

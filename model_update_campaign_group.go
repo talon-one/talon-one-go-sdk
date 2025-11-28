@@ -37,7 +37,7 @@ type _UpdateCampaignGroup UpdateCampaignGroup
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdateCampaignGroup(name string) *UpdateCampaignGroup {
+func BuildUpdateCampaignGroup(name string) *UpdateCampaignGroup {
 	this := UpdateCampaignGroup{}
 	this.Name = name
 	return &this
@@ -254,7 +254,7 @@ func (v *NullableUpdateCampaignGroup) Unset() {
 	v.isSet = false
 }
 
-func NewNullableUpdateCampaignGroup(val *UpdateCampaignGroup) *NullableUpdateCampaignGroup {
+func BuildNullableUpdateCampaignGroup(val *UpdateCampaignGroup) *NullableUpdateCampaignGroup {
 	return &NullableUpdateCampaignGroup{value: val, isSet: true}
 }
 

@@ -33,7 +33,7 @@ type _PriceTypeReferences PriceTypeReferences
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPriceTypeReferences(priceTypeId int64) *PriceTypeReferences {
+func BuildPriceTypeReferences(priceTypeId int64) *PriceTypeReferences {
 	this := PriceTypeReferences{}
 	this.PriceTypeId = priceTypeId
 	return &this
@@ -180,7 +180,7 @@ func (v *NullablePriceTypeReferences) Unset() {
 	v.isSet = false
 }
 
-func NewNullablePriceTypeReferences(val *PriceTypeReferences) *NullablePriceTypeReferences {
+func BuildNullablePriceTypeReferences(val *PriceTypeReferences) *NullablePriceTypeReferences {
 	return &NullablePriceTypeReferences{value: val, isSet: true}
 }
 

@@ -36,7 +36,7 @@ type _ExpiringPointsNotificationPolicy ExpiringPointsNotificationPolicy
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewExpiringPointsNotificationPolicy(name string, triggers []ExpiringPointsNotificationTrigger) *ExpiringPointsNotificationPolicy {
+func BuildExpiringPointsNotificationPolicy(name string, triggers []ExpiringPointsNotificationTrigger) *ExpiringPointsNotificationPolicy {
 	this := ExpiringPointsNotificationPolicy{}
 	this.Name = name
 	this.Triggers = triggers
@@ -253,7 +253,7 @@ func (v *NullableExpiringPointsNotificationPolicy) Unset() {
 	v.isSet = false
 }
 
-func NewNullableExpiringPointsNotificationPolicy(val *ExpiringPointsNotificationPolicy) *NullableExpiringPointsNotificationPolicy {
+func BuildNullableExpiringPointsNotificationPolicy(val *ExpiringPointsNotificationPolicy) *NullableExpiringPointsNotificationPolicy {
 	return &NullableExpiringPointsNotificationPolicy{value: val, isSet: true}
 }
 

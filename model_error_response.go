@@ -33,7 +33,7 @@ type _ErrorResponse ErrorResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewErrorResponse(message string) *ErrorResponse {
+func BuildErrorResponse(message string) *ErrorResponse {
 	this := ErrorResponse{}
 	this.Message = message
 	return &this
@@ -180,7 +180,7 @@ func (v *NullableErrorResponse) Unset() {
 	v.isSet = false
 }
 
-func NewNullableErrorResponse(val *ErrorResponse) *NullableErrorResponse {
+func BuildNullableErrorResponse(val *ErrorResponse) *NullableErrorResponse {
 	return &NullableErrorResponse{value: val, isSet: true}
 }
 

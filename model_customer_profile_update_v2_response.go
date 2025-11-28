@@ -30,7 +30,7 @@ type _CustomerProfileUpdateV2Response CustomerProfileUpdateV2Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCustomerProfileUpdateV2Response(customerProfile CustomerProfile) *CustomerProfileUpdateV2Response {
+func BuildCustomerProfileUpdateV2Response(customerProfile CustomerProfile) *CustomerProfileUpdateV2Response {
 	this := CustomerProfileUpdateV2Response{}
 	this.CustomerProfile = customerProfile
 	return &this
@@ -142,7 +142,7 @@ func (v *NullableCustomerProfileUpdateV2Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCustomerProfileUpdateV2Response(val *CustomerProfileUpdateV2Response) *NullableCustomerProfileUpdateV2Response {
+func BuildNullableCustomerProfileUpdateV2Response(val *CustomerProfileUpdateV2Response) *NullableCustomerProfileUpdateV2Response {
 	return &NullableCustomerProfileUpdateV2Response{value: val, isSet: true}
 }
 

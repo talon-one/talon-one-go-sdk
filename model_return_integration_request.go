@@ -33,7 +33,7 @@ type _ReturnIntegrationRequest ReturnIntegrationRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewReturnIntegrationRequest(return_ NewReturn) *ReturnIntegrationRequest {
+func BuildReturnIntegrationRequest(return_ NewReturn) *ReturnIntegrationRequest {
 	this := ReturnIntegrationRequest{}
 	this.Return = return_
 	return &this
@@ -180,7 +180,7 @@ func (v *NullableReturnIntegrationRequest) Unset() {
 	v.isSet = false
 }
 
-func NewNullableReturnIntegrationRequest(val *ReturnIntegrationRequest) *NullableReturnIntegrationRequest {
+func BuildNullableReturnIntegrationRequest(val *ReturnIntegrationRequest) *NullableReturnIntegrationRequest {
 	return &NullableReturnIntegrationRequest{value: val, isSet: true}
 }
 

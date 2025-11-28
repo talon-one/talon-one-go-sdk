@@ -33,7 +33,7 @@ type _OutgoingIntegrationBrazePolicy OutgoingIntegrationBrazePolicy
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewOutgoingIntegrationBrazePolicy(baseUrl string, apiKey string) *OutgoingIntegrationBrazePolicy {
+func BuildOutgoingIntegrationBrazePolicy(baseUrl string, apiKey string) *OutgoingIntegrationBrazePolicy {
 	this := OutgoingIntegrationBrazePolicy{}
 	this.BaseUrl = baseUrl
 	this.ApiKey = apiKey
@@ -172,7 +172,7 @@ func (v *NullableOutgoingIntegrationBrazePolicy) Unset() {
 	v.isSet = false
 }
 
-func NewNullableOutgoingIntegrationBrazePolicy(val *OutgoingIntegrationBrazePolicy) *NullableOutgoingIntegrationBrazePolicy {
+func BuildNullableOutgoingIntegrationBrazePolicy(val *OutgoingIntegrationBrazePolicy) *NullableOutgoingIntegrationBrazePolicy {
 	return &NullableOutgoingIntegrationBrazePolicy{value: val, isSet: true}
 }
 

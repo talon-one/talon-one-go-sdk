@@ -27,7 +27,7 @@ type OutgoingIntegrationTypes struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewOutgoingIntegrationTypes() *OutgoingIntegrationTypes {
+func BuildOutgoingIntegrationTypes() *OutgoingIntegrationTypes {
 	this := OutgoingIntegrationTypes{}
 	return &this
 }
@@ -111,7 +111,7 @@ func (v *NullableOutgoingIntegrationTypes) Unset() {
 	v.isSet = false
 }
 
-func NewNullableOutgoingIntegrationTypes(val *OutgoingIntegrationTypes) *NullableOutgoingIntegrationTypes {
+func BuildNullableOutgoingIntegrationTypes(val *OutgoingIntegrationTypes) *NullableOutgoingIntegrationTypes {
 	return &NullableOutgoingIntegrationTypes{value: val, isSet: true}
 }
 

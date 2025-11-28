@@ -32,7 +32,7 @@ type _MultipleAudiences MultipleAudiences
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewMultipleAudiences(accountId int64, audiences []MultipleAudiencesItem) *MultipleAudiences {
+func BuildMultipleAudiences(accountId int64, audiences []MultipleAudiencesItem) *MultipleAudiences {
 	this := MultipleAudiences{}
 	this.AccountId = accountId
 	this.Audiences = audiences
@@ -171,7 +171,7 @@ func (v *NullableMultipleAudiences) Unset() {
 	v.isSet = false
 }
 
-func NewNullableMultipleAudiences(val *MultipleAudiences) *NullableMultipleAudiences {
+func BuildNullableMultipleAudiences(val *MultipleAudiences) *NullableMultipleAudiences {
 	return &NullableMultipleAudiences{value: val, isSet: true}
 }
 

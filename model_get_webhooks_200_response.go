@@ -31,7 +31,7 @@ type _GetWebhooks200Response GetWebhooks200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetWebhooks200Response(totalResultSize int64, data []WebhookWithOutgoingIntegrationDetails) *GetWebhooks200Response {
+func BuildGetWebhooks200Response(totalResultSize int64, data []WebhookWithOutgoingIntegrationDetails) *GetWebhooks200Response {
 	this := GetWebhooks200Response{}
 	this.TotalResultSize = totalResultSize
 	this.Data = data
@@ -170,7 +170,7 @@ func (v *NullableGetWebhooks200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGetWebhooks200Response(val *GetWebhooks200Response) *NullableGetWebhooks200Response {
+func BuildNullableGetWebhooks200Response(val *GetWebhooks200Response) *NullableGetWebhooks200Response {
 	return &NullableGetWebhooks200Response{value: val, isSet: true}
 }
 

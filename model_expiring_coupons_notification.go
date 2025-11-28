@@ -34,7 +34,7 @@ type _ExpiringCouponsNotification ExpiringCouponsNotification
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewExpiringCouponsNotification(totalResultSize int64, data []ExpiringCouponsData, notificationType string) *ExpiringCouponsNotification {
+func BuildExpiringCouponsNotification(totalResultSize int64, data []ExpiringCouponsData, notificationType string) *ExpiringCouponsNotification {
 	this := ExpiringCouponsNotification{}
 	this.TotalResultSize = totalResultSize
 	this.Data = data
@@ -200,7 +200,7 @@ func (v *NullableExpiringCouponsNotification) Unset() {
 	v.isSet = false
 }
 
-func NewNullableExpiringCouponsNotification(val *ExpiringCouponsNotification) *NullableExpiringCouponsNotification {
+func BuildNullableExpiringCouponsNotification(val *ExpiringCouponsNotification) *NullableExpiringCouponsNotification {
 	return &NullableExpiringCouponsNotification{value: val, isSet: true}
 }
 

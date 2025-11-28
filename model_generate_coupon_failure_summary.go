@@ -33,7 +33,7 @@ type _GenerateCouponFailureSummary GenerateCouponFailureSummary
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGenerateCouponFailureSummary(eventID int64) *GenerateCouponFailureSummary {
+func BuildGenerateCouponFailureSummary(eventID int64) *GenerateCouponFailureSummary {
 	this := GenerateCouponFailureSummary{}
 	this.EventID = eventID
 	return &this
@@ -180,7 +180,7 @@ func (v *NullableGenerateCouponFailureSummary) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGenerateCouponFailureSummary(val *GenerateCouponFailureSummary) *NullableGenerateCouponFailureSummary {
+func BuildNullableGenerateCouponFailureSummary(val *GenerateCouponFailureSummary) *NullableGenerateCouponFailureSummary {
 	return &NullableGenerateCouponFailureSummary{value: val, isSet: true}
 }
 

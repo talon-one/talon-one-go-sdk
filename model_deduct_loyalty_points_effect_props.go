@@ -43,7 +43,7 @@ type _DeductLoyaltyPointsEffectProps DeductLoyaltyPointsEffectProps
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewDeductLoyaltyPointsEffectProps(ruleTitle string, programId int64, subLedgerId string, value float32, transactionUUID string, name string) *DeductLoyaltyPointsEffectProps {
+func BuildDeductLoyaltyPointsEffectProps(ruleTitle string, programId int64, subLedgerId string, value float32, transactionUUID string, name string) *DeductLoyaltyPointsEffectProps {
 	this := DeductLoyaltyPointsEffectProps{}
 	this.RuleTitle = ruleTitle
 	this.ProgramId = programId
@@ -325,7 +325,7 @@ func (v *NullableDeductLoyaltyPointsEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableDeductLoyaltyPointsEffectProps(val *DeductLoyaltyPointsEffectProps) *NullableDeductLoyaltyPointsEffectProps {
+func BuildNullableDeductLoyaltyPointsEffectProps(val *DeductLoyaltyPointsEffectProps) *NullableDeductLoyaltyPointsEffectProps {
 	return &NullableDeductLoyaltyPointsEffectProps{value: val, isSet: true}
 }
 

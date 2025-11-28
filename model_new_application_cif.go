@@ -42,7 +42,7 @@ type _NewApplicationCIF NewApplicationCIF
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewApplicationCIF(name string) *NewApplicationCIF {
+func BuildNewApplicationCIF(name string) *NewApplicationCIF {
 	this := NewApplicationCIF{}
 	this.Name = name
 	return &this
@@ -329,7 +329,7 @@ func (v *NullableNewApplicationCIF) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewApplicationCIF(val *NewApplicationCIF) *NullableNewApplicationCIF {
+func BuildNullableNewApplicationCIF(val *NewApplicationCIF) *NullableNewApplicationCIF {
 	return &NullableNewApplicationCIF{value: val, isSet: true}
 }
 

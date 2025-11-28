@@ -31,7 +31,7 @@ type _GetCustomerProfiles200Response GetCustomerProfiles200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetCustomerProfiles200Response(hasMore bool, data []CustomerProfile) *GetCustomerProfiles200Response {
+func BuildGetCustomerProfiles200Response(hasMore bool, data []CustomerProfile) *GetCustomerProfiles200Response {
 	this := GetCustomerProfiles200Response{}
 	this.HasMore = hasMore
 	this.Data = data
@@ -170,7 +170,7 @@ func (v *NullableGetCustomerProfiles200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGetCustomerProfiles200Response(val *GetCustomerProfiles200Response) *NullableGetCustomerProfiles200Response {
+func BuildNullableGetCustomerProfiles200Response(val *GetCustomerProfiles200Response) *NullableGetCustomerProfiles200Response {
 	return &NullableGetCustomerProfiles200Response{value: val, isSet: true}
 }
 

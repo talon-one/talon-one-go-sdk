@@ -26,7 +26,7 @@ type MultipleCustomerProfileIntegrationResponseV2 struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewMultipleCustomerProfileIntegrationResponseV2() *MultipleCustomerProfileIntegrationResponseV2 {
+func BuildMultipleCustomerProfileIntegrationResponseV2() *MultipleCustomerProfileIntegrationResponseV2 {
 	this := MultipleCustomerProfileIntegrationResponseV2{}
 	return &this
 }
@@ -110,7 +110,7 @@ func (v *NullableMultipleCustomerProfileIntegrationResponseV2) Unset() {
 	v.isSet = false
 }
 
-func NewNullableMultipleCustomerProfileIntegrationResponseV2(val *MultipleCustomerProfileIntegrationResponseV2) *NullableMultipleCustomerProfileIntegrationResponseV2 {
+func BuildNullableMultipleCustomerProfileIntegrationResponseV2(val *MultipleCustomerProfileIntegrationResponseV2) *NullableMultipleCustomerProfileIntegrationResponseV2 {
 	return &NullableMultipleCustomerProfileIntegrationResponseV2{value: val, isSet: true}
 }
 

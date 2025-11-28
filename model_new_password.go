@@ -32,7 +32,7 @@ type _NewPassword NewPassword
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewPassword(password string, resetToken string) *NewPassword {
+func BuildNewPassword(password string, resetToken string) *NewPassword {
 	this := NewPassword{}
 	this.Password = password
 	this.ResetToken = resetToken
@@ -171,7 +171,7 @@ func (v *NullableNewPassword) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewPassword(val *NewPassword) *NullableNewPassword {
+func BuildNullableNewPassword(val *NewPassword) *NullableNewPassword {
 	return &NullableNewPassword{value: val, isSet: true}
 }
 

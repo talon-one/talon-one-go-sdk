@@ -27,7 +27,7 @@ type ImportEntity struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewImportEntity() *ImportEntity {
+func BuildImportEntity() *ImportEntity {
 	this := ImportEntity{}
 	return &this
 }
@@ -111,7 +111,7 @@ func (v *NullableImportEntity) Unset() {
 	v.isSet = false
 }
 
-func NewNullableImportEntity(val *ImportEntity) *NullableImportEntity {
+func BuildNullableImportEntity(val *ImportEntity) *NullableImportEntity {
 	return &NullableImportEntity{value: val, isSet: true}
 }
 

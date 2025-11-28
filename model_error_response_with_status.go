@@ -30,7 +30,7 @@ type ErrorResponseWithStatus struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewErrorResponseWithStatus() *ErrorResponseWithStatus {
+func BuildErrorResponseWithStatus() *ErrorResponseWithStatus {
 	this := ErrorResponseWithStatus{}
 	return &this
 }
@@ -184,7 +184,7 @@ func (v *NullableErrorResponseWithStatus) Unset() {
 	v.isSet = false
 }
 
-func NewNullableErrorResponseWithStatus(val *ErrorResponseWithStatus) *NullableErrorResponseWithStatus {
+func BuildNullableErrorResponseWithStatus(val *ErrorResponseWithStatus) *NullableErrorResponseWithStatus {
 	return &NullableErrorResponseWithStatus{value: val, isSet: true}
 }
 

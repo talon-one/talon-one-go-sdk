@@ -37,7 +37,7 @@ type _UpdateCouponsData UpdateCouponsData
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdateCouponsData(batchID string, applicationID int64, campaignID int64, typeOfChange string, operation string, employeeName string, notificationType string) *UpdateCouponsData {
+func BuildUpdateCouponsData(batchID string, applicationID int64, campaignID int64, typeOfChange string, operation string, employeeName string, notificationType string) *UpdateCouponsData {
 	this := UpdateCouponsData{}
 	this.BatchID = batchID
 	this.ApplicationID = applicationID
@@ -311,7 +311,7 @@ func (v *NullableUpdateCouponsData) Unset() {
 	v.isSet = false
 }
 
-func NewNullableUpdateCouponsData(val *UpdateCouponsData) *NullableUpdateCouponsData {
+func BuildNullableUpdateCouponsData(val *UpdateCouponsData) *NullableUpdateCouponsData {
 	return &NullableUpdateCouponsData{value: val, isSet: true}
 }
 

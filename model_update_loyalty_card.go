@@ -33,7 +33,7 @@ type _UpdateLoyaltyCard UpdateLoyaltyCard
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdateLoyaltyCard(status string) *UpdateLoyaltyCard {
+func BuildUpdateLoyaltyCard(status string) *UpdateLoyaltyCard {
 	this := UpdateLoyaltyCard{}
 	this.Status = status
 	return &this
@@ -180,7 +180,7 @@ func (v *NullableUpdateLoyaltyCard) Unset() {
 	v.isSet = false
 }
 
-func NewNullableUpdateLoyaltyCard(val *UpdateLoyaltyCard) *NullableUpdateLoyaltyCard {
+func BuildNullableUpdateLoyaltyCard(val *UpdateLoyaltyCard) *NullableUpdateLoyaltyCard {
 	return &NullableUpdateLoyaltyCard{value: val, isSet: true}
 }
 

@@ -36,7 +36,7 @@ type _ExpiringCouponsNotificationPolicy ExpiringCouponsNotificationPolicy
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewExpiringCouponsNotificationPolicy(name string, triggers []ExpiringCouponsNotificationTrigger) *ExpiringCouponsNotificationPolicy {
+func BuildExpiringCouponsNotificationPolicy(name string, triggers []ExpiringCouponsNotificationTrigger) *ExpiringCouponsNotificationPolicy {
 	this := ExpiringCouponsNotificationPolicy{}
 	this.Name = name
 	this.Triggers = triggers
@@ -253,7 +253,7 @@ func (v *NullableExpiringCouponsNotificationPolicy) Unset() {
 	v.isSet = false
 }
 
-func NewNullableExpiringCouponsNotificationPolicy(val *ExpiringCouponsNotificationPolicy) *NullableExpiringCouponsNotificationPolicy {
+func BuildNullableExpiringCouponsNotificationPolicy(val *ExpiringCouponsNotificationPolicy) *NullableExpiringCouponsNotificationPolicy {
 	return &NullableExpiringCouponsNotificationPolicy{value: val, isSet: true}
 }
 

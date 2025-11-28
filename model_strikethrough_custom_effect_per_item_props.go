@@ -35,7 +35,7 @@ type _StrikethroughCustomEffectPerItemProps StrikethroughCustomEffectPerItemProp
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewStrikethroughCustomEffectPerItemProps(effectId int64, name string, payload map[string]interface{}) *StrikethroughCustomEffectPerItemProps {
+func BuildStrikethroughCustomEffectPerItemProps(effectId int64, name string, payload map[string]interface{}) *StrikethroughCustomEffectPerItemProps {
 	this := StrikethroughCustomEffectPerItemProps{}
 	this.EffectId = effectId
 	this.Name = name
@@ -201,7 +201,7 @@ func (v *NullableStrikethroughCustomEffectPerItemProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableStrikethroughCustomEffectPerItemProps(val *StrikethroughCustomEffectPerItemProps) *NullableStrikethroughCustomEffectPerItemProps {
+func BuildNullableStrikethroughCustomEffectPerItemProps(val *StrikethroughCustomEffectPerItemProps) *NullableStrikethroughCustomEffectPerItemProps {
 	return &NullableStrikethroughCustomEffectPerItemProps{value: val, isSet: true}
 }
 

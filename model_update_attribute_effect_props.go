@@ -32,7 +32,7 @@ type _UpdateAttributeEffectProps UpdateAttributeEffectProps
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdateAttributeEffectProps(path string, value interface{}) *UpdateAttributeEffectProps {
+func BuildUpdateAttributeEffectProps(path string, value interface{}) *UpdateAttributeEffectProps {
 	this := UpdateAttributeEffectProps{}
 	this.Path = path
 	this.Value = value
@@ -175,7 +175,7 @@ func (v *NullableUpdateAttributeEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableUpdateAttributeEffectProps(val *UpdateAttributeEffectProps) *NullableUpdateAttributeEffectProps {
+func BuildNullableUpdateAttributeEffectProps(val *UpdateAttributeEffectProps) *NullableUpdateAttributeEffectProps {
 	return &NullableUpdateAttributeEffectProps{value: val, isSet: true}
 }
 

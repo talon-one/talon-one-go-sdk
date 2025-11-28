@@ -42,7 +42,7 @@ type _ApplicationCIFExpression ApplicationCIFExpression
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewApplicationCIFExpression(id int64, created time.Time, applicationId int64) *ApplicationCIFExpression {
+func BuildApplicationCIFExpression(id int64, created time.Time, applicationId int64) *ApplicationCIFExpression {
 	this := ApplicationCIFExpression{}
 	this.Id = id
 	this.Created = created
@@ -313,7 +313,7 @@ func (v *NullableApplicationCIFExpression) Unset() {
 	v.isSet = false
 }
 
-func NewNullableApplicationCIFExpression(val *ApplicationCIFExpression) *NullableApplicationCIFExpression {
+func BuildNullableApplicationCIFExpression(val *ApplicationCIFExpression) *NullableApplicationCIFExpression {
 	return &NullableApplicationCIFExpression{value: val, isSet: true}
 }
 

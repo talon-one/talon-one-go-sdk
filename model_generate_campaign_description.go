@@ -35,7 +35,7 @@ type _GenerateCampaignDescription GenerateCampaignDescription
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGenerateCampaignDescription(campaignID int64, rulesetID int64, currency string) *GenerateCampaignDescription {
+func BuildGenerateCampaignDescription(campaignID int64, rulesetID int64, currency string) *GenerateCampaignDescription {
 	this := GenerateCampaignDescription{}
 	this.CampaignID = campaignID
 	this.RulesetID = rulesetID
@@ -201,7 +201,7 @@ func (v *NullableGenerateCampaignDescription) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGenerateCampaignDescription(val *GenerateCampaignDescription) *NullableGenerateCampaignDescription {
+func BuildNullableGenerateCampaignDescription(val *GenerateCampaignDescription) *NullableGenerateCampaignDescription {
 	return &NullableGenerateCampaignDescription{value: val, isSet: true}
 }
 

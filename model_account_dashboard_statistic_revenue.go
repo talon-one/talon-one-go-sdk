@@ -36,7 +36,7 @@ type _AccountDashboardStatisticRevenue AccountDashboardStatisticRevenue
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAccountDashboardStatisticRevenue(total float32, influenced float32, datetime time.Time) *AccountDashboardStatisticRevenue {
+func BuildAccountDashboardStatisticRevenue(total float32, influenced float32, datetime time.Time) *AccountDashboardStatisticRevenue {
 	this := AccountDashboardStatisticRevenue{}
 	this.Total = total
 	this.Influenced = influenced
@@ -202,7 +202,7 @@ func (v *NullableAccountDashboardStatisticRevenue) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAccountDashboardStatisticRevenue(val *AccountDashboardStatisticRevenue) *NullableAccountDashboardStatisticRevenue {
+func BuildNullableAccountDashboardStatisticRevenue(val *AccountDashboardStatisticRevenue) *NullableAccountDashboardStatisticRevenue {
 	return &NullableAccountDashboardStatisticRevenue{value: val, isSet: true}
 }
 

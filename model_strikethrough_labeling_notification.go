@@ -44,7 +44,7 @@ type _StrikethroughLabelingNotification StrikethroughLabelingNotification
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewStrikethroughLabelingNotification(applicationId int64, currentBatch int64, totalBatches int64, trigger StrikethroughTrigger, changedItems []StrikethroughChangedItem, notificationType string) *StrikethroughLabelingNotification {
+func BuildStrikethroughLabelingNotification(applicationId int64, currentBatch int64, totalBatches int64, trigger StrikethroughTrigger, changedItems []StrikethroughChangedItem, notificationType string) *StrikethroughLabelingNotification {
 	this := StrikethroughLabelingNotification{}
 	this.ApplicationId = applicationId
 	this.CurrentBatch = currentBatch
@@ -361,7 +361,7 @@ func (v *NullableStrikethroughLabelingNotification) Unset() {
 	v.isSet = false
 }
 
-func NewNullableStrikethroughLabelingNotification(val *StrikethroughLabelingNotification) *NullableStrikethroughLabelingNotification {
+func BuildNullableStrikethroughLabelingNotification(val *StrikethroughLabelingNotification) *NullableStrikethroughLabelingNotification {
 	return &NullableStrikethroughLabelingNotification{value: val, isSet: true}
 }
 

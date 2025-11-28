@@ -53,7 +53,7 @@ type _LoyaltySubLedger LoyaltySubLedger
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLoyaltySubLedger(total float32, totalActivePoints float32, totalPendingPoints float32, totalSpentPoints float32, totalExpiredPoints float32, totalNegativePoints float32) *LoyaltySubLedger {
+func BuildLoyaltySubLedger(total float32, totalActivePoints float32, totalPendingPoints float32, totalSpentPoints float32, totalExpiredPoints float32, totalNegativePoints float32) *LoyaltySubLedger {
 	this := LoyaltySubLedger{}
 	this.Total = total
 	this.TotalActivePoints = totalActivePoints
@@ -510,7 +510,7 @@ func (v *NullableLoyaltySubLedger) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLoyaltySubLedger(val *LoyaltySubLedger) *NullableLoyaltySubLedger {
+func BuildNullableLoyaltySubLedger(val *LoyaltySubLedger) *NullableLoyaltySubLedger {
 	return &NullableLoyaltySubLedger{value: val, isSet: true}
 }
 

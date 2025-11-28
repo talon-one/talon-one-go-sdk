@@ -33,7 +33,7 @@ type _IntegrationRequest IntegrationRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewIntegrationRequest(customerSession NewCustomerSessionV2) *IntegrationRequest {
+func BuildIntegrationRequest(customerSession NewCustomerSessionV2) *IntegrationRequest {
 	this := IntegrationRequest{}
 	this.CustomerSession = customerSession
 	return &this
@@ -180,7 +180,7 @@ func (v *NullableIntegrationRequest) Unset() {
 	v.isSet = false
 }
 
-func NewNullableIntegrationRequest(val *IntegrationRequest) *NullableIntegrationRequest {
+func BuildNullableIntegrationRequest(val *IntegrationRequest) *NullableIntegrationRequest {
 	return &NullableIntegrationRequest{value: val, isSet: true}
 }
 

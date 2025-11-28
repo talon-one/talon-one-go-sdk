@@ -39,7 +39,7 @@ type _CampaignStateChangedNotificationItem CampaignStateChangedNotificationItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCampaignStateChangedNotificationItem(event string, campaign Campaign, oldState string, newState string) *CampaignStateChangedNotificationItem {
+func BuildCampaignStateChangedNotificationItem(event string, campaign Campaign, oldState string, newState string) *CampaignStateChangedNotificationItem {
 	this := CampaignStateChangedNotificationItem{}
 	this.Event = event
 	this.Campaign = campaign
@@ -267,7 +267,7 @@ func (v *NullableCampaignStateChangedNotificationItem) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCampaignStateChangedNotificationItem(val *CampaignStateChangedNotificationItem) *NullableCampaignStateChangedNotificationItem {
+func BuildNullableCampaignStateChangedNotificationItem(val *CampaignStateChangedNotificationItem) *NullableCampaignStateChangedNotificationItem {
 	return &NullableCampaignStateChangedNotificationItem{value: val, isSet: true}
 }
 

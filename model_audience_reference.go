@@ -35,7 +35,7 @@ type _AudienceReference AudienceReference
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAudienceReference(id int64) *AudienceReference {
+func BuildAudienceReference(id int64) *AudienceReference {
 	this := AudienceReference{}
 	this.Id = id
 	return &this
@@ -217,7 +217,7 @@ func (v *NullableAudienceReference) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAudienceReference(val *AudienceReference) *NullableAudienceReference {
+func BuildNullableAudienceReference(val *AudienceReference) *NullableAudienceReference {
 	return &NullableAudienceReference{value: val, isSet: true}
 }
 

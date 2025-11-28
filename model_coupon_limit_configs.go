@@ -27,7 +27,7 @@ type CouponLimitConfigs struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCouponLimitConfigs() *CouponLimitConfigs {
+func BuildCouponLimitConfigs() *CouponLimitConfigs {
 	this := CouponLimitConfigs{}
 	return &this
 }
@@ -111,7 +111,7 @@ func (v *NullableCouponLimitConfigs) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCouponLimitConfigs(val *CouponLimitConfigs) *NullableCouponLimitConfigs {
+func BuildNullableCouponLimitConfigs(val *CouponLimitConfigs) *NullableCouponLimitConfigs {
 	return &NullableCouponLimitConfigs{value: val, isSet: true}
 }
 

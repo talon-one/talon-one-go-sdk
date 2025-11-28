@@ -70,7 +70,7 @@ type _AccountAnalytics AccountAnalytics
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAccountAnalytics(applications int64, liveApplications int64, sandboxApplications int64, campaigns int64, activeCampaigns int64, liveActiveCampaigns int64, coupons int64, activeCoupons int64, expiredCoupons int64, referralCodes int64, activeReferralCodes int64, expiredReferralCodes int64, activeRules int64, users int64, roles int64, customAttributes int64, webhooks int64, loyaltyPrograms int64, liveLoyaltyPrograms int64, lastUpdatedAt time.Time) *AccountAnalytics {
+func BuildAccountAnalytics(applications int64, liveApplications int64, sandboxApplications int64, campaigns int64, activeCampaigns int64, liveActiveCampaigns int64, coupons int64, activeCoupons int64, expiredCoupons int64, referralCodes int64, activeReferralCodes int64, expiredReferralCodes int64, activeRules int64, users int64, roles int64, customAttributes int64, webhooks int64, loyaltyPrograms int64, liveLoyaltyPrograms int64, lastUpdatedAt time.Time) *AccountAnalytics {
 	this := AccountAnalytics{}
 	this.Applications = applications
 	this.LiveApplications = liveApplications
@@ -695,7 +695,7 @@ func (v *NullableAccountAnalytics) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAccountAnalytics(val *AccountAnalytics) *NullableAccountAnalytics {
+func BuildNullableAccountAnalytics(val *AccountAnalytics) *NullableAccountAnalytics {
 	return &NullableAccountAnalytics{value: val, isSet: true}
 }
 

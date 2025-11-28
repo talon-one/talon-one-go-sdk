@@ -31,7 +31,7 @@ type _ActivateUserRequest ActivateUserRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewActivateUserRequest(email string) *ActivateUserRequest {
+func BuildActivateUserRequest(email string) *ActivateUserRequest {
 	this := ActivateUserRequest{}
 	this.Email = email
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableActivateUserRequest) Unset() {
 	v.isSet = false
 }
 
-func NewNullableActivateUserRequest(val *ActivateUserRequest) *NullableActivateUserRequest {
+func BuildNullableActivateUserRequest(val *ActivateUserRequest) *NullableActivateUserRequest {
 	return &NullableActivateUserRequest{value: val, isSet: true}
 }
 

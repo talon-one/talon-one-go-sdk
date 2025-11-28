@@ -33,7 +33,7 @@ type _WebhookAuthenticationBase WebhookAuthenticationBase
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewWebhookAuthenticationBase(name string, type_ string, data interface{}) *WebhookAuthenticationBase {
+func BuildWebhookAuthenticationBase(name string, type_ string, data interface{}) *WebhookAuthenticationBase {
 	this := WebhookAuthenticationBase{}
 	this.Name = name
 	this.Type = type_
@@ -203,7 +203,7 @@ func (v *NullableWebhookAuthenticationBase) Unset() {
 	v.isSet = false
 }
 
-func NewNullableWebhookAuthenticationBase(val *WebhookAuthenticationBase) *NullableWebhookAuthenticationBase {
+func BuildNullableWebhookAuthenticationBase(val *WebhookAuthenticationBase) *NullableWebhookAuthenticationBase {
 	return &NullableWebhookAuthenticationBase{value: val, isSet: true}
 }
 

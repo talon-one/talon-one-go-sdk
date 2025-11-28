@@ -33,7 +33,7 @@ type HiddenConditionsEffects struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewHiddenConditionsEffects() *HiddenConditionsEffects {
+func BuildHiddenConditionsEffects() *HiddenConditionsEffects {
 	this := HiddenConditionsEffects{}
 	return &this
 }
@@ -222,7 +222,7 @@ func (v *NullableHiddenConditionsEffects) Unset() {
 	v.isSet = false
 }
 
-func NewNullableHiddenConditionsEffects(val *HiddenConditionsEffects) *NullableHiddenConditionsEffects {
+func BuildNullableHiddenConditionsEffects(val *HiddenConditionsEffects) *NullableHiddenConditionsEffects {
 	return &NullableHiddenConditionsEffects{value: val, isSet: true}
 }
 

@@ -34,7 +34,7 @@ type _ApplicationApiHealth ApplicationApiHealth
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewApplicationApiHealth(summary string, lastUsed time.Time) *ApplicationApiHealth {
+func BuildApplicationApiHealth(summary string, lastUsed time.Time) *ApplicationApiHealth {
 	this := ApplicationApiHealth{}
 	this.Summary = summary
 	this.LastUsed = lastUsed
@@ -173,7 +173,7 @@ func (v *NullableApplicationApiHealth) Unset() {
 	v.isSet = false
 }
 
-func NewNullableApplicationApiHealth(val *ApplicationApiHealth) *NullableApplicationApiHealth {
+func BuildNullableApplicationApiHealth(val *ApplicationApiHealth) *NullableApplicationApiHealth {
 	return &NullableApplicationApiHealth{value: val, isSet: true}
 }
 

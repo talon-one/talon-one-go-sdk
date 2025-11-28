@@ -33,7 +33,7 @@ type _RoleV2PermissionSet RoleV2PermissionSet
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewRoleV2PermissionSet(name string, logicalOperations []string) *RoleV2PermissionSet {
+func BuildRoleV2PermissionSet(name string, logicalOperations []string) *RoleV2PermissionSet {
 	this := RoleV2PermissionSet{}
 	this.Name = name
 	this.LogicalOperations = logicalOperations
@@ -172,7 +172,7 @@ func (v *NullableRoleV2PermissionSet) Unset() {
 	v.isSet = false
 }
 
-func NewNullableRoleV2PermissionSet(val *RoleV2PermissionSet) *NullableRoleV2PermissionSet {
+func BuildNullableRoleV2PermissionSet(val *RoleV2PermissionSet) *NullableRoleV2PermissionSet {
 	return &NullableRoleV2PermissionSet{value: val, isSet: true}
 }
 

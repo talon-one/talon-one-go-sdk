@@ -34,7 +34,7 @@ type _AccountDashboardStatisticLoyaltyPoints AccountDashboardStatisticLoyaltyPoi
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAccountDashboardStatisticLoyaltyPoints(total float32, datetime time.Time) *AccountDashboardStatisticLoyaltyPoints {
+func BuildAccountDashboardStatisticLoyaltyPoints(total float32, datetime time.Time) *AccountDashboardStatisticLoyaltyPoints {
 	this := AccountDashboardStatisticLoyaltyPoints{}
 	this.Total = total
 	this.Datetime = datetime
@@ -173,7 +173,7 @@ func (v *NullableAccountDashboardStatisticLoyaltyPoints) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAccountDashboardStatisticLoyaltyPoints(val *AccountDashboardStatisticLoyaltyPoints) *NullableAccountDashboardStatisticLoyaltyPoints {
+func BuildNullableAccountDashboardStatisticLoyaltyPoints(val *AccountDashboardStatisticLoyaltyPoints) *NullableAccountDashboardStatisticLoyaltyPoints {
 	return &NullableAccountDashboardStatisticLoyaltyPoints{value: val, isSet: true}
 }
 

@@ -31,7 +31,7 @@ type _DeleteUserRequest DeleteUserRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewDeleteUserRequest(email string) *DeleteUserRequest {
+func BuildDeleteUserRequest(email string) *DeleteUserRequest {
 	this := DeleteUserRequest{}
 	this.Email = email
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableDeleteUserRequest) Unset() {
 	v.isSet = false
 }
 
-func NewNullableDeleteUserRequest(val *DeleteUserRequest) *NullableDeleteUserRequest {
+func BuildNullableDeleteUserRequest(val *DeleteUserRequest) *NullableDeleteUserRequest {
 	return &NullableDeleteUserRequest{value: val, isSet: true}
 }
 

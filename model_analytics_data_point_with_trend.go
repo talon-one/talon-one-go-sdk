@@ -31,7 +31,7 @@ type _AnalyticsDataPointWithTrend AnalyticsDataPointWithTrend
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAnalyticsDataPointWithTrend(value float32, trend float32) *AnalyticsDataPointWithTrend {
+func BuildAnalyticsDataPointWithTrend(value float32, trend float32) *AnalyticsDataPointWithTrend {
 	this := AnalyticsDataPointWithTrend{}
 	this.Value = value
 	this.Trend = trend
@@ -170,7 +170,7 @@ func (v *NullableAnalyticsDataPointWithTrend) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAnalyticsDataPointWithTrend(val *AnalyticsDataPointWithTrend) *NullableAnalyticsDataPointWithTrend {
+func BuildNullableAnalyticsDataPointWithTrend(val *AnalyticsDataPointWithTrend) *NullableAnalyticsDataPointWithTrend {
 	return &NullableAnalyticsDataPointWithTrend{value: val, isSet: true}
 }
 

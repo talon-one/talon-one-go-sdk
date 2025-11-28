@@ -37,7 +37,7 @@ type _OutgoingIntegrationMoEngagePolicy OutgoingIntegrationMoEngagePolicy
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewOutgoingIntegrationMoEngagePolicy(baseUrl string, appId string, dataApiId string, dataApiKey string) *OutgoingIntegrationMoEngagePolicy {
+func BuildOutgoingIntegrationMoEngagePolicy(baseUrl string, appId string, dataApiId string, dataApiKey string) *OutgoingIntegrationMoEngagePolicy {
 	this := OutgoingIntegrationMoEngagePolicy{}
 	this.BaseUrl = baseUrl
 	this.AppId = appId
@@ -230,7 +230,7 @@ func (v *NullableOutgoingIntegrationMoEngagePolicy) Unset() {
 	v.isSet = false
 }
 
-func NewNullableOutgoingIntegrationMoEngagePolicy(val *OutgoingIntegrationMoEngagePolicy) *NullableOutgoingIntegrationMoEngagePolicy {
+func BuildNullableOutgoingIntegrationMoEngagePolicy(val *OutgoingIntegrationMoEngagePolicy) *NullableOutgoingIntegrationMoEngagePolicy {
 	return &NullableOutgoingIntegrationMoEngagePolicy{value: val, isSet: true}
 }
 

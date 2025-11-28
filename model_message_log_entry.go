@@ -58,7 +58,7 @@ type _MessageLogEntry MessageLogEntry
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewMessageLogEntry(id string, service string, createdAt time.Time, entityType string) *MessageLogEntry {
+func BuildMessageLogEntry(id string, service string, createdAt time.Time, entityType string) *MessageLogEntry {
 	this := MessageLogEntry{}
 	this.Id = id
 	this.Service = service
@@ -636,7 +636,7 @@ func (v *NullableMessageLogEntry) Unset() {
 	v.isSet = false
 }
 
-func NewNullableMessageLogEntry(val *MessageLogEntry) *NullableMessageLogEntry {
+func BuildNullableMessageLogEntry(val *MessageLogEntry) *NullableMessageLogEntry {
 	return &NullableMessageLogEntry{value: val, isSet: true}
 }
 

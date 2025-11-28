@@ -74,7 +74,7 @@ type _Coupon Coupon
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCoupon(id int64, created time.Time, campaignId int64, usageCounter int64) *Coupon {
+func BuildCoupon(id int64, created time.Time, campaignId int64, usageCounter int64) *Coupon {
 	this := Coupon{}
 	this.Id = id
 	this.Created = created
@@ -905,7 +905,7 @@ func (v *NullableCoupon) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCoupon(val *Coupon) *NullableCoupon {
+func BuildNullableCoupon(val *Coupon) *NullableCoupon {
 	return &NullableCoupon{value: val, isSet: true}
 }
 

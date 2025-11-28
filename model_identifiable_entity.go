@@ -31,7 +31,7 @@ type _IdentifiableEntity IdentifiableEntity
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewIdentifiableEntity(id int64) *IdentifiableEntity {
+func BuildIdentifiableEntity(id int64) *IdentifiableEntity {
 	this := IdentifiableEntity{}
 	this.Id = id
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableIdentifiableEntity) Unset() {
 	v.isSet = false
 }
 
-func NewNullableIdentifiableEntity(val *IdentifiableEntity) *NullableIdentifiableEntity {
+func BuildNullableIdentifiableEntity(val *IdentifiableEntity) *NullableIdentifiableEntity {
 	return &NullableIdentifiableEntity{value: val, isSet: true}
 }
 

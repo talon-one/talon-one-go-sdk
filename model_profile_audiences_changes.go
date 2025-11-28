@@ -33,7 +33,7 @@ type _ProfileAudiencesChanges ProfileAudiencesChanges
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewProfileAudiencesChanges(adds []int64, deletes []int64) *ProfileAudiencesChanges {
+func BuildProfileAudiencesChanges(adds []int64, deletes []int64) *ProfileAudiencesChanges {
 	this := ProfileAudiencesChanges{}
 	this.Adds = adds
 	this.Deletes = deletes
@@ -172,7 +172,7 @@ func (v *NullableProfileAudiencesChanges) Unset() {
 	v.isSet = false
 }
 
-func NewNullableProfileAudiencesChanges(val *ProfileAudiencesChanges) *NullableProfileAudiencesChanges {
+func BuildNullableProfileAudiencesChanges(val *ProfileAudiencesChanges) *NullableProfileAudiencesChanges {
 	return &NullableProfileAudiencesChanges{value: val, isSet: true}
 }
 

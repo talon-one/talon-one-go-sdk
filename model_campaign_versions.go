@@ -39,7 +39,7 @@ type CampaignVersions struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCampaignVersions() *CampaignVersions {
+func BuildCampaignVersions() *CampaignVersions {
 	this := CampaignVersions{}
 	var stageRevision bool = false
 	this.StageRevision = &stageRevision
@@ -337,7 +337,7 @@ func (v *NullableCampaignVersions) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCampaignVersions(val *CampaignVersions) *NullableCampaignVersions {
+func BuildNullableCampaignVersions(val *CampaignVersions) *NullableCampaignVersions {
 	return &NullableCampaignVersions{value: val, isSet: true}
 }
 

@@ -30,7 +30,7 @@ type _WebhookAuthenticationDataCustom WebhookAuthenticationDataCustom
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewWebhookAuthenticationDataCustom(headers map[string]string) *WebhookAuthenticationDataCustom {
+func BuildWebhookAuthenticationDataCustom(headers map[string]string) *WebhookAuthenticationDataCustom {
 	this := WebhookAuthenticationDataCustom{}
 	this.Headers = headers
 	return &this
@@ -142,7 +142,7 @@ func (v *NullableWebhookAuthenticationDataCustom) Unset() {
 	v.isSet = false
 }
 
-func NewNullableWebhookAuthenticationDataCustom(val *WebhookAuthenticationDataCustom) *NullableWebhookAuthenticationDataCustom {
+func BuildNullableWebhookAuthenticationDataCustom(val *WebhookAuthenticationDataCustom) *NullableWebhookAuthenticationDataCustom {
 	return &NullableWebhookAuthenticationDataCustom{value: val, isSet: true}
 }
 

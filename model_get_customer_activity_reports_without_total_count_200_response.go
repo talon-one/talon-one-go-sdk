@@ -31,7 +31,7 @@ type _GetCustomerActivityReportsWithoutTotalCount200Response GetCustomerActivity
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetCustomerActivityReportsWithoutTotalCount200Response(hasMore bool, data []CustomerActivityReport) *GetCustomerActivityReportsWithoutTotalCount200Response {
+func BuildGetCustomerActivityReportsWithoutTotalCount200Response(hasMore bool, data []CustomerActivityReport) *GetCustomerActivityReportsWithoutTotalCount200Response {
 	this := GetCustomerActivityReportsWithoutTotalCount200Response{}
 	this.HasMore = hasMore
 	this.Data = data
@@ -170,7 +170,7 @@ func (v *NullableGetCustomerActivityReportsWithoutTotalCount200Response) Unset()
 	v.isSet = false
 }
 
-func NewNullableGetCustomerActivityReportsWithoutTotalCount200Response(val *GetCustomerActivityReportsWithoutTotalCount200Response) *NullableGetCustomerActivityReportsWithoutTotalCount200Response {
+func BuildNullableGetCustomerActivityReportsWithoutTotalCount200Response(val *GetCustomerActivityReportsWithoutTotalCount200Response) *NullableGetCustomerActivityReportsWithoutTotalCount200Response {
 	return &NullableGetCustomerActivityReportsWithoutTotalCount200Response{value: val, isSet: true}
 }
 

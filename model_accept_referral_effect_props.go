@@ -31,7 +31,7 @@ type _AcceptReferralEffectProps AcceptReferralEffectProps
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAcceptReferralEffectProps(value string) *AcceptReferralEffectProps {
+func BuildAcceptReferralEffectProps(value string) *AcceptReferralEffectProps {
 	this := AcceptReferralEffectProps{}
 	this.Value = value
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableAcceptReferralEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAcceptReferralEffectProps(val *AcceptReferralEffectProps) *NullableAcceptReferralEffectProps {
+func BuildNullableAcceptReferralEffectProps(val *AcceptReferralEffectProps) *NullableAcceptReferralEffectProps {
 	return &NullableAcceptReferralEffectProps{value: val, isSet: true}
 }
 

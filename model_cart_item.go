@@ -71,7 +71,7 @@ type _CartItem CartItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCartItem(sku string, quantity int64) *CartItem {
+func BuildCartItem(sku string, quantity int64) *CartItem {
 	this := CartItem{}
 	this.Sku = sku
 	this.Quantity = quantity
@@ -875,7 +875,7 @@ func (v *NullableCartItem) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCartItem(val *CartItem) *NullableCartItem {
+func BuildNullableCartItem(val *CartItem) *NullableCartItem {
 	return &NullableCartItem{value: val, isSet: true}
 }
 

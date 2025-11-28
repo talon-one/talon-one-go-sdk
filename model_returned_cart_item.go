@@ -33,7 +33,7 @@ type _ReturnedCartItem ReturnedCartItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewReturnedCartItem(position int64) *ReturnedCartItem {
+func BuildReturnedCartItem(position int64) *ReturnedCartItem {
 	this := ReturnedCartItem{}
 	this.Position = position
 	return &this
@@ -180,7 +180,7 @@ func (v *NullableReturnedCartItem) Unset() {
 	v.isSet = false
 }
 
-func NewNullableReturnedCartItem(val *ReturnedCartItem) *NullableReturnedCartItem {
+func BuildNullableReturnedCartItem(val *ReturnedCartItem) *NullableReturnedCartItem {
 	return &NullableReturnedCartItem{value: val, isSet: true}
 }
 

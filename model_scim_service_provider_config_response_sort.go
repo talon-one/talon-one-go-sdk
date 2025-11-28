@@ -27,7 +27,7 @@ type ScimServiceProviderConfigResponseSort struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewScimServiceProviderConfigResponseSort() *ScimServiceProviderConfigResponseSort {
+func BuildScimServiceProviderConfigResponseSort() *ScimServiceProviderConfigResponseSort {
 	this := ScimServiceProviderConfigResponseSort{}
 	return &this
 }
@@ -111,7 +111,7 @@ func (v *NullableScimServiceProviderConfigResponseSort) Unset() {
 	v.isSet = false
 }
 
-func NewNullableScimServiceProviderConfigResponseSort(val *ScimServiceProviderConfigResponseSort) *NullableScimServiceProviderConfigResponseSort {
+func BuildNullableScimServiceProviderConfigResponseSort(val *ScimServiceProviderConfigResponseSort) *NullableScimServiceProviderConfigResponseSort {
 	return &NullableScimServiceProviderConfigResponseSort{value: val, isSet: true}
 }
 

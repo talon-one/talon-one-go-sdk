@@ -27,7 +27,7 @@ type FeaturesFeed struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewFeaturesFeed() *FeaturesFeed {
+func BuildFeaturesFeed() *FeaturesFeed {
 	this := FeaturesFeed{}
 	return &this
 }
@@ -146,7 +146,7 @@ func (v *NullableFeaturesFeed) Unset() {
 	v.isSet = false
 }
 
-func NewNullableFeaturesFeed(val *FeaturesFeed) *NullableFeaturesFeed {
+func BuildNullableFeaturesFeed(val *FeaturesFeed) *NullableFeaturesFeed {
 	return &NullableFeaturesFeed{value: val, isSet: true}
 }
 

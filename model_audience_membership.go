@@ -33,7 +33,7 @@ type _AudienceMembership AudienceMembership
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAudienceMembership(id int64, name string) *AudienceMembership {
+func BuildAudienceMembership(id int64, name string) *AudienceMembership {
 	this := AudienceMembership{}
 	this.Id = id
 	this.Name = name
@@ -172,7 +172,7 @@ func (v *NullableAudienceMembership) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAudienceMembership(val *AudienceMembership) *NullableAudienceMembership {
+func BuildNullableAudienceMembership(val *AudienceMembership) *NullableAudienceMembership {
 	return &NullableAudienceMembership{value: val, isSet: true}
 }
 

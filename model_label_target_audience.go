@@ -31,7 +31,7 @@ type _LabelTargetAudience LabelTargetAudience
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLabelTargetAudience(type_ string, audience AudienceReference) *LabelTargetAudience {
+func BuildLabelTargetAudience(type_ string, audience AudienceReference) *LabelTargetAudience {
 	this := LabelTargetAudience{}
 	this.Type = type_
 	this.Audience = audience
@@ -170,7 +170,7 @@ func (v *NullableLabelTargetAudience) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLabelTargetAudience(val *LabelTargetAudience) *NullableLabelTargetAudience {
+func BuildNullableLabelTargetAudience(val *LabelTargetAudience) *NullableLabelTargetAudience {
 	return &NullableLabelTargetAudience{value: val, isSet: true}
 }
 

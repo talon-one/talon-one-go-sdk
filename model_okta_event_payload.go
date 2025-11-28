@@ -30,7 +30,7 @@ type _OktaEventPayload OktaEventPayload
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewOktaEventPayload(data OktaEventPayloadData) *OktaEventPayload {
+func BuildOktaEventPayload(data OktaEventPayloadData) *OktaEventPayload {
 	this := OktaEventPayload{}
 	this.Data = data
 	return &this
@@ -142,7 +142,7 @@ func (v *NullableOktaEventPayload) Unset() {
 	v.isSet = false
 }
 
-func NewNullableOktaEventPayload(val *OktaEventPayload) *NullableOktaEventPayload {
+func BuildNullableOktaEventPayload(val *OktaEventPayload) *NullableOktaEventPayload {
 	return &NullableOktaEventPayload{value: val, isSet: true}
 }
 

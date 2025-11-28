@@ -39,7 +39,7 @@ type _CampaignStoreBudgetLimitConfig CampaignStoreBudgetLimitConfig
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCampaignStoreBudgetLimitConfig(action string, limit float32, entities []string, imported bool) *CampaignStoreBudgetLimitConfig {
+func BuildCampaignStoreBudgetLimitConfig(action string, limit float32, entities []string, imported bool) *CampaignStoreBudgetLimitConfig {
 	this := CampaignStoreBudgetLimitConfig{}
 	this.Action = action
 	this.Limit = limit
@@ -267,7 +267,7 @@ func (v *NullableCampaignStoreBudgetLimitConfig) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCampaignStoreBudgetLimitConfig(val *CampaignStoreBudgetLimitConfig) *NullableCampaignStoreBudgetLimitConfig {
+func BuildNullableCampaignStoreBudgetLimitConfig(val *CampaignStoreBudgetLimitConfig) *NullableCampaignStoreBudgetLimitConfig {
 	return &NullableCampaignStoreBudgetLimitConfig{value: val, isSet: true}
 }
 

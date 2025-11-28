@@ -76,7 +76,7 @@ type _ExtendedCoupon ExtendedCoupon
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewExtendedCoupon(id int64, created time.Time, campaignId int64, usageCounter int64, applicationId int64) *ExtendedCoupon {
+func BuildExtendedCoupon(id int64, created time.Time, campaignId int64, usageCounter int64, applicationId int64) *ExtendedCoupon {
 	this := ExtendedCoupon{}
 	this.Id = id
 	this.Created = created
@@ -934,7 +934,7 @@ func (v *NullableExtendedCoupon) Unset() {
 	v.isSet = false
 }
 
-func NewNullableExtendedCoupon(val *ExtendedCoupon) *NullableExtendedCoupon {
+func BuildNullableExtendedCoupon(val *ExtendedCoupon) *NullableExtendedCoupon {
 	return &NullableExtendedCoupon{value: val, isSet: true}
 }
 

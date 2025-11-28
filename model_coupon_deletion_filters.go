@@ -54,7 +54,7 @@ type CouponDeletionFilters struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCouponDeletionFilters() *CouponDeletionFilters {
+func BuildCouponDeletionFilters() *CouponDeletionFilters {
 	this := CouponDeletionFilters{}
 	var exactMatch bool = false
 	this.ExactMatch = &exactMatch
@@ -597,7 +597,7 @@ func (v *NullableCouponDeletionFilters) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCouponDeletionFilters(val *CouponDeletionFilters) *NullableCouponDeletionFilters {
+func BuildNullableCouponDeletionFilters(val *CouponDeletionFilters) *NullableCouponDeletionFilters {
 	return &NullableCouponDeletionFilters{value: val, isSet: true}
 }
 

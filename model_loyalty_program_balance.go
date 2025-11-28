@@ -45,7 +45,7 @@ type _LoyaltyProgramBalance LoyaltyProgramBalance
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLoyaltyProgramBalance(currentBalance float32, pendingBalance float32, expiredBalance float32, spentBalance float32, tentativeCurrentBalance float32) *LoyaltyProgramBalance {
+func BuildLoyaltyProgramBalance(currentBalance float32, pendingBalance float32, expiredBalance float32, spentBalance float32, tentativeCurrentBalance float32) *LoyaltyProgramBalance {
 	this := LoyaltyProgramBalance{}
 	this.CurrentBalance = currentBalance
 	this.PendingBalance = pendingBalance
@@ -370,7 +370,7 @@ func (v *NullableLoyaltyProgramBalance) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLoyaltyProgramBalance(val *LoyaltyProgramBalance) *NullableLoyaltyProgramBalance {
+func BuildNullableLoyaltyProgramBalance(val *LoyaltyProgramBalance) *NullableLoyaltyProgramBalance {
 	return &NullableLoyaltyProgramBalance{value: val, isSet: true}
 }
 

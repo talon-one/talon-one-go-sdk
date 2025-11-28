@@ -34,7 +34,7 @@ type _ScimSchemasListResponse ScimSchemasListResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewScimSchemasListResponse(resources []ScimSchemaResource) *ScimSchemasListResponse {
+func BuildScimSchemasListResponse(resources []ScimSchemaResource) *ScimSchemasListResponse {
 	this := ScimSchemasListResponse{}
 	this.Resources = resources
 	return &this
@@ -216,7 +216,7 @@ func (v *NullableScimSchemasListResponse) Unset() {
 	v.isSet = false
 }
 
-func NewNullableScimSchemasListResponse(val *ScimSchemasListResponse) *NullableScimSchemasListResponse {
+func BuildNullableScimSchemasListResponse(val *ScimSchemasListResponse) *NullableScimSchemasListResponse {
 	return &NullableScimSchemasListResponse{value: val, isSet: true}
 }
 

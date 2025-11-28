@@ -35,7 +35,7 @@ type _ProductSearchMatch ProductSearchMatch
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewProductSearchMatch(value string) *ProductSearchMatch {
+func BuildProductSearchMatch(value string) *ProductSearchMatch {
 	this := ProductSearchMatch{}
 	this.Value = value
 	return &this
@@ -217,7 +217,7 @@ func (v *NullableProductSearchMatch) Unset() {
 	v.isSet = false
 }
 
-func NewNullableProductSearchMatch(val *ProductSearchMatch) *NullableProductSearchMatch {
+func BuildNullableProductSearchMatch(val *ProductSearchMatch) *NullableProductSearchMatch {
 	return &NullableProductSearchMatch{value: val, isSet: true}
 }
 

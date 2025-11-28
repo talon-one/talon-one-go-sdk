@@ -36,7 +36,7 @@ type _SamlConnectionMetadata SamlConnectionMetadata
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSamlConnectionMetadata(name string, enabled bool, accountId float32, metadataDocument string) *SamlConnectionMetadata {
+func BuildSamlConnectionMetadata(name string, enabled bool, accountId float32, metadataDocument string) *SamlConnectionMetadata {
 	this := SamlConnectionMetadata{}
 	this.Name = name
 	this.Enabled = enabled
@@ -229,7 +229,7 @@ func (v *NullableSamlConnectionMetadata) Unset() {
 	v.isSet = false
 }
 
-func NewNullableSamlConnectionMetadata(val *SamlConnectionMetadata) *NullableSamlConnectionMetadata {
+func BuildNullableSamlConnectionMetadata(val *SamlConnectionMetadata) *NullableSamlConnectionMetadata {
 	return &NullableSamlConnectionMetadata{value: val, isSet: true}
 }
 

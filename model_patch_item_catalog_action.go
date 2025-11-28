@@ -38,7 +38,7 @@ type _PatchItemCatalogAction PatchItemCatalogAction
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPatchItemCatalogAction(sku string) *PatchItemCatalogAction {
+func BuildPatchItemCatalogAction(sku string) *PatchItemCatalogAction {
 	this := PatchItemCatalogAction{}
 	this.Sku = sku
 	var createIfNotExists bool = false
@@ -294,7 +294,7 @@ func (v *NullablePatchItemCatalogAction) Unset() {
 	v.isSet = false
 }
 
-func NewNullablePatchItemCatalogAction(val *PatchItemCatalogAction) *NullablePatchItemCatalogAction {
+func BuildNullablePatchItemCatalogAction(val *PatchItemCatalogAction) *NullablePatchItemCatalogAction {
 	return &NullablePatchItemCatalogAction{value: val, isSet: true}
 }
 

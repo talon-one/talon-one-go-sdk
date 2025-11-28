@@ -30,7 +30,7 @@ type _CollectionItem CollectionItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCollectionItem(item string) *CollectionItem {
+func BuildCollectionItem(item string) *CollectionItem {
 	this := CollectionItem{}
 	this.Item = item
 	return &this
@@ -142,7 +142,7 @@ func (v *NullableCollectionItem) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCollectionItem(val *CollectionItem) *NullableCollectionItem {
+func BuildNullableCollectionItem(val *CollectionItem) *NullableCollectionItem {
 	return &NullableCollectionItem{value: val, isSet: true}
 }
 

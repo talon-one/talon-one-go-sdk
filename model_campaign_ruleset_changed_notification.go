@@ -35,7 +35,7 @@ type _CampaignRulesetChangedNotification CampaignRulesetChangedNotification
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCampaignRulesetChangedNotification(notificationType string, totalResultSize int64) *CampaignRulesetChangedNotification {
+func BuildCampaignRulesetChangedNotification(notificationType string, totalResultSize int64) *CampaignRulesetChangedNotification {
 	this := CampaignRulesetChangedNotification{}
 	this.NotificationType = notificationType
 	this.TotalResultSize = totalResultSize
@@ -209,7 +209,7 @@ func (v *NullableCampaignRulesetChangedNotification) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCampaignRulesetChangedNotification(val *CampaignRulesetChangedNotification) *NullableCampaignRulesetChangedNotification {
+func BuildNullableCampaignRulesetChangedNotification(val *CampaignRulesetChangedNotification) *NullableCampaignRulesetChangedNotification {
 	return &NullableCampaignRulesetChangedNotification{value: val, isSet: true}
 }
 

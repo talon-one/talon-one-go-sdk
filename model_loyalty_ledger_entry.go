@@ -51,7 +51,7 @@ type _LoyaltyLedgerEntry LoyaltyLedgerEntry
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLoyaltyLedgerEntry(created time.Time, programID int64, type_ string, amount float32, name string, subLedgerID string) *LoyaltyLedgerEntry {
+func BuildLoyaltyLedgerEntry(created time.Time, programID int64, type_ string, amount float32, name string, subLedgerID string) *LoyaltyLedgerEntry {
 	this := LoyaltyLedgerEntry{}
 	this.Created = created
 	this.ProgramID = programID
@@ -613,7 +613,7 @@ func (v *NullableLoyaltyLedgerEntry) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLoyaltyLedgerEntry(val *LoyaltyLedgerEntry) *NullableLoyaltyLedgerEntry {
+func BuildNullableLoyaltyLedgerEntry(val *LoyaltyLedgerEntry) *NullableLoyaltyLedgerEntry {
 	return &NullableLoyaltyLedgerEntry{value: val, isSet: true}
 }
 

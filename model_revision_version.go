@@ -59,7 +59,7 @@ type _RevisionVersion RevisionVersion
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewRevisionVersion(id int64, accountId int64, applicationId int64, campaignId int64, created time.Time, createdBy int64, revisionId int64, version int64) *RevisionVersion {
+func BuildRevisionVersion(id int64, accountId int64, applicationId int64, campaignId int64, created time.Time, createdBy int64, revisionId int64, version int64) *RevisionVersion {
 	this := RevisionVersion{}
 	this.Id = id
 	this.AccountId = accountId
@@ -745,7 +745,7 @@ func (v *NullableRevisionVersion) Unset() {
 	v.isSet = false
 }
 
-func NewNullableRevisionVersion(val *RevisionVersion) *NullableRevisionVersion {
+func BuildNullableRevisionVersion(val *RevisionVersion) *NullableRevisionVersion {
 	return &NullableRevisionVersion{value: val, isSet: true}
 }
 

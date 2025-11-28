@@ -34,7 +34,7 @@ type _NewAccountSignUp NewAccountSignUp
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewAccountSignUp(email string, password string, companyName string) *NewAccountSignUp {
+func BuildNewAccountSignUp(email string, password string, companyName string) *NewAccountSignUp {
 	this := NewAccountSignUp{}
 	this.Email = email
 	this.Password = password
@@ -200,7 +200,7 @@ func (v *NullableNewAccountSignUp) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewAccountSignUp(val *NewAccountSignUp) *NullableNewAccountSignUp {
+func BuildNullableNewAccountSignUp(val *NewAccountSignUp) *NullableNewAccountSignUp {
 	return &NullableNewAccountSignUp{value: val, isSet: true}
 }
 

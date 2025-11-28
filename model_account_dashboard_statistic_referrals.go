@@ -34,7 +34,7 @@ type _AccountDashboardStatisticReferrals AccountDashboardStatisticReferrals
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAccountDashboardStatisticReferrals(total float32, datetime time.Time) *AccountDashboardStatisticReferrals {
+func BuildAccountDashboardStatisticReferrals(total float32, datetime time.Time) *AccountDashboardStatisticReferrals {
 	this := AccountDashboardStatisticReferrals{}
 	this.Total = total
 	this.Datetime = datetime
@@ -173,7 +173,7 @@ func (v *NullableAccountDashboardStatisticReferrals) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAccountDashboardStatisticReferrals(val *AccountDashboardStatisticReferrals) *NullableAccountDashboardStatisticReferrals {
+func BuildNullableAccountDashboardStatisticReferrals(val *AccountDashboardStatisticReferrals) *NullableAccountDashboardStatisticReferrals {
 	return &NullableAccountDashboardStatisticReferrals{value: val, isSet: true}
 }
 

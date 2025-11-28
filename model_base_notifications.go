@@ -27,7 +27,7 @@ type BaseNotifications struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewBaseNotifications() *BaseNotifications {
+func BuildBaseNotifications() *BaseNotifications {
 	this := BaseNotifications{}
 	return &this
 }
@@ -111,7 +111,7 @@ func (v *NullableBaseNotifications) Unset() {
 	v.isSet = false
 }
 
-func NewNullableBaseNotifications(val *BaseNotifications) *NullableBaseNotifications {
+func BuildNullableBaseNotifications(val *BaseNotifications) *NullableBaseNotifications {
 	return &NullableBaseNotifications{value: val, isSet: true}
 }
 

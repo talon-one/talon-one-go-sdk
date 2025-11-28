@@ -42,7 +42,7 @@ type _Export Export
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewExport(id int64, created time.Time, accountId int64, userId int64, entity string, filter map[string]interface{}) *Export {
+func BuildExport(id int64, created time.Time, accountId int64, userId int64, entity string, filter map[string]interface{}) *Export {
 	this := Export{}
 	this.Id = id
 	this.Created = created
@@ -289,7 +289,7 @@ func (v *NullableExport) Unset() {
 	v.isSet = false
 }
 
-func NewNullableExport(val *Export) *NullableExport {
+func BuildNullableExport(val *Export) *NullableExport {
 	return &NullableExport{value: val, isSet: true}
 }
 

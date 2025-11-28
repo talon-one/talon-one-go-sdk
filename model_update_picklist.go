@@ -33,7 +33,7 @@ type _UpdatePicklist UpdatePicklist
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdatePicklist(type_ string, values []string) *UpdatePicklist {
+func BuildUpdatePicklist(type_ string, values []string) *UpdatePicklist {
 	this := UpdatePicklist{}
 	this.Type = type_
 	this.Values = values
@@ -172,7 +172,7 @@ func (v *NullableUpdatePicklist) Unset() {
 	v.isSet = false
 }
 
-func NewNullableUpdatePicklist(val *UpdatePicklist) *NullableUpdatePicklist {
+func BuildNullableUpdatePicklist(val *UpdatePicklist) *NullableUpdatePicklist {
 	return &NullableUpdatePicklist{value: val, isSet: true}
 }
 

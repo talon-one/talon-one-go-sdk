@@ -39,7 +39,7 @@ type _FunctionDef FunctionDef
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewFunctionDef(name string, type_ string, args []FuncArgDef) *FunctionDef {
+func BuildFunctionDef(name string, type_ string, args []FuncArgDef) *FunctionDef {
 	this := FunctionDef{}
 	this.Name = name
 	this.Type = type_
@@ -275,7 +275,7 @@ func (v *NullableFunctionDef) Unset() {
 	v.isSet = false
 }
 
-func NewNullableFunctionDef(val *FunctionDef) *NullableFunctionDef {
+func BuildNullableFunctionDef(val *FunctionDef) *NullableFunctionDef {
 	return &NullableFunctionDef{value: val, isSet: true}
 }
 

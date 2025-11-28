@@ -36,7 +36,7 @@ type PriceDetail struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPriceDetail() *PriceDetail {
+func BuildPriceDetail() *PriceDetail {
 	this := PriceDetail{}
 	return &this
 }
@@ -260,7 +260,7 @@ func (v *NullablePriceDetail) Unset() {
 	v.isSet = false
 }
 
-func NewNullablePriceDetail(val *PriceDetail) *NullablePriceDetail {
+func BuildNullablePriceDetail(val *PriceDetail) *NullablePriceDetail {
 	return &NullablePriceDetail{value: val, isSet: true}
 }
 

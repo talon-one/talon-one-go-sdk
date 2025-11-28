@@ -40,7 +40,7 @@ type _UpdateReferralBatch UpdateReferralBatch
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdateReferralBatch(batchID string) *UpdateReferralBatch {
+func BuildUpdateReferralBatch(batchID string) *UpdateReferralBatch {
 	this := UpdateReferralBatch{}
 	this.BatchID = batchID
 	return &this
@@ -292,7 +292,7 @@ func (v *NullableUpdateReferralBatch) Unset() {
 	v.isSet = false
 }
 
-func NewNullableUpdateReferralBatch(val *UpdateReferralBatch) *NullableUpdateReferralBatch {
+func BuildNullableUpdateReferralBatch(val *UpdateReferralBatch) *NullableUpdateReferralBatch {
 	return &NullableUpdateReferralBatch{value: val, isSet: true}
 }
 

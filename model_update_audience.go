@@ -31,7 +31,7 @@ type _UpdateAudience UpdateAudience
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdateAudience(name string) *UpdateAudience {
+func BuildUpdateAudience(name string) *UpdateAudience {
 	this := UpdateAudience{}
 	this.Name = name
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableUpdateAudience) Unset() {
 	v.isSet = false
 }
 
-func NewNullableUpdateAudience(val *UpdateAudience) *NullableUpdateAudience {
+func BuildNullableUpdateAudience(val *UpdateAudience) *NullableUpdateAudience {
 	return &NullableUpdateAudience{value: val, isSet: true}
 }
 

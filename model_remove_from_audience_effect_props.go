@@ -33,7 +33,7 @@ type RemoveFromAudienceEffectProps struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewRemoveFromAudienceEffectProps() *RemoveFromAudienceEffectProps {
+func BuildRemoveFromAudienceEffectProps() *RemoveFromAudienceEffectProps {
 	this := RemoveFromAudienceEffectProps{}
 	return &this
 }
@@ -222,7 +222,7 @@ func (v *NullableRemoveFromAudienceEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableRemoveFromAudienceEffectProps(val *RemoveFromAudienceEffectProps) *NullableRemoveFromAudienceEffectProps {
+func BuildNullableRemoveFromAudienceEffectProps(val *RemoveFromAudienceEffectProps) *NullableRemoveFromAudienceEffectProps {
 	return &NullableRemoveFromAudienceEffectProps{value: val, isSet: true}
 }
 

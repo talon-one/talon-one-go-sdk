@@ -46,7 +46,7 @@ type _Picklist Picklist
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPicklist(id int64, created time.Time, type_ string, values []string, createdBy int64) *Picklist {
+func BuildPicklist(id int64, created time.Time, type_ string, values []string, createdBy int64) *Picklist {
 	this := Picklist{}
 	this.Id = id
 	this.Created = created
@@ -371,7 +371,7 @@ func (v *NullablePicklist) Unset() {
 	v.isSet = false
 }
 
-func NewNullablePicklist(val *Picklist) *NullablePicklist {
+func BuildNullablePicklist(val *Picklist) *NullablePicklist {
 	return &NullablePicklist{value: val, isSet: true}
 }
 

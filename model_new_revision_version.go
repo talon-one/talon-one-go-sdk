@@ -46,7 +46,7 @@ type NewRevisionVersion struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewRevisionVersion() *NewRevisionVersion {
+func BuildNewRevisionVersion() *NewRevisionVersion {
 	this := NewRevisionVersion{}
 	return &this
 }
@@ -520,7 +520,7 @@ func (v *NullableNewRevisionVersion) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewRevisionVersion(val *NewRevisionVersion) *NullableNewRevisionVersion {
+func BuildNullableNewRevisionVersion(val *NewRevisionVersion) *NullableNewRevisionVersion {
 	return &NullableNewRevisionVersion{value: val, isSet: true}
 }
 

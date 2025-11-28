@@ -44,7 +44,7 @@ type _PendingActivePointsData PendingActivePointsData
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPendingActivePointsData(loyaltyProgramID int64, subledgerID string, customerProfileID string, points float32) *PendingActivePointsData {
+func BuildPendingActivePointsData(loyaltyProgramID int64, subledgerID string, customerProfileID string, points float32) *PendingActivePointsData {
 	this := PendingActivePointsData{}
 	this.LoyaltyProgramID = loyaltyProgramID
 	this.SubledgerID = subledgerID
@@ -344,7 +344,7 @@ func (v *NullablePendingActivePointsData) Unset() {
 	v.isSet = false
 }
 
-func NewNullablePendingActivePointsData(val *PendingActivePointsData) *NullablePendingActivePointsData {
+func BuildNullablePendingActivePointsData(val *PendingActivePointsData) *NullablePendingActivePointsData {
 	return &NullablePendingActivePointsData{value: val, isSet: true}
 }
 

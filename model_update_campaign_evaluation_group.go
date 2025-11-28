@@ -41,7 +41,7 @@ type _UpdateCampaignEvaluationGroup UpdateCampaignEvaluationGroup
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdateCampaignEvaluationGroup(name string, parentId int64, evaluationMode string, evaluationScope string, locked bool) *UpdateCampaignEvaluationGroup {
+func BuildUpdateCampaignEvaluationGroup(name string, parentId int64, evaluationMode string, evaluationScope string, locked bool) *UpdateCampaignEvaluationGroup {
 	this := UpdateCampaignEvaluationGroup{}
 	this.Name = name
 	this.ParentId = parentId
@@ -296,7 +296,7 @@ func (v *NullableUpdateCampaignEvaluationGroup) Unset() {
 	v.isSet = false
 }
 
-func NewNullableUpdateCampaignEvaluationGroup(val *UpdateCampaignEvaluationGroup) *NullableUpdateCampaignEvaluationGroup {
+func BuildNullableUpdateCampaignEvaluationGroup(val *UpdateCampaignEvaluationGroup) *NullableUpdateCampaignEvaluationGroup {
 	return &NullableUpdateCampaignEvaluationGroup{value: val, isSet: true}
 }
 

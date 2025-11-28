@@ -49,7 +49,7 @@ type _CreateTemplateCampaign CreateTemplateCampaign
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCreateTemplateCampaign(name string, templateId int64) *CreateTemplateCampaign {
+func BuildCreateTemplateCampaign(name string, templateId int64) *CreateTemplateCampaign {
 	this := CreateTemplateCampaign{}
 	this.Name = name
 	this.TemplateId = templateId
@@ -468,7 +468,7 @@ func (v *NullableCreateTemplateCampaign) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCreateTemplateCampaign(val *CreateTemplateCampaign) *NullableCreateTemplateCampaign {
+func BuildNullableCreateTemplateCampaign(val *CreateTemplateCampaign) *NullableCreateTemplateCampaign {
 	return &NullableCreateTemplateCampaign{value: val, isSet: true}
 }
 

@@ -43,7 +43,7 @@ type _CustomerAnalytics CustomerAnalytics
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCustomerAnalytics(acceptedCoupons int64, createdCoupons int64, freeItems int64, totalOrders int64, totalDiscountedOrders int64, totalRevenue float32, totalDiscounts float32) *CustomerAnalytics {
+func BuildCustomerAnalytics(acceptedCoupons int64, createdCoupons int64, freeItems int64, totalOrders int64, totalDiscountedOrders int64, totalRevenue float32, totalDiscounts float32) *CustomerAnalytics {
 	this := CustomerAnalytics{}
 	this.AcceptedCoupons = acceptedCoupons
 	this.CreatedCoupons = createdCoupons
@@ -317,7 +317,7 @@ func (v *NullableCustomerAnalytics) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCustomerAnalytics(val *CustomerAnalytics) *NullableCustomerAnalytics {
+func BuildNullableCustomerAnalytics(val *CustomerAnalytics) *NullableCustomerAnalytics {
 	return &NullableCustomerAnalytics{value: val, isSet: true}
 }
 

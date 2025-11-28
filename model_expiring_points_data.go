@@ -39,7 +39,7 @@ type _ExpiringPointsData ExpiringPointsData
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewExpiringPointsData(expiryDate string, loyaltyProgramID int64, customerProfileID string, amountOfExpiringPoints float32, subledgerID string) *ExpiringPointsData {
+func BuildExpiringPointsData(expiryDate string, loyaltyProgramID int64, customerProfileID string, amountOfExpiringPoints float32, subledgerID string) *ExpiringPointsData {
 	this := ExpiringPointsData{}
 	this.ExpiryDate = expiryDate
 	this.LoyaltyProgramID = loyaltyProgramID
@@ -259,7 +259,7 @@ func (v *NullableExpiringPointsData) Unset() {
 	v.isSet = false
 }
 
-func NewNullableExpiringPointsData(val *ExpiringPointsData) *NullableExpiringPointsData {
+func BuildNullableExpiringPointsData(val *ExpiringPointsData) *NullableExpiringPointsData {
 	return &NullableExpiringPointsData{value: val, isSet: true}
 }
 

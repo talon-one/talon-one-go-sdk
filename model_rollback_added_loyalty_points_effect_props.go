@@ -45,7 +45,7 @@ type _RollbackAddedLoyaltyPointsEffectProps RollbackAddedLoyaltyPointsEffectProp
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewRollbackAddedLoyaltyPointsEffectProps(programId int64, subLedgerId string, value float32, recipientIntegrationId string, transactionUUID string) *RollbackAddedLoyaltyPointsEffectProps {
+func BuildRollbackAddedLoyaltyPointsEffectProps(programId int64, subLedgerId string, value float32, recipientIntegrationId string, transactionUUID string) *RollbackAddedLoyaltyPointsEffectProps {
 	this := RollbackAddedLoyaltyPointsEffectProps{}
 	this.ProgramId = programId
 	this.SubLedgerId = subLedgerId
@@ -370,7 +370,7 @@ func (v *NullableRollbackAddedLoyaltyPointsEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableRollbackAddedLoyaltyPointsEffectProps(val *RollbackAddedLoyaltyPointsEffectProps) *NullableRollbackAddedLoyaltyPointsEffectProps {
+func BuildNullableRollbackAddedLoyaltyPointsEffectProps(val *RollbackAddedLoyaltyPointsEffectProps) *NullableRollbackAddedLoyaltyPointsEffectProps {
 	return &NullableRollbackAddedLoyaltyPointsEffectProps{value: val, isSet: true}
 }
 

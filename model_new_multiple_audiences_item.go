@@ -33,7 +33,7 @@ type _NewMultipleAudiencesItem NewMultipleAudiencesItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewMultipleAudiencesItem(name string) *NewMultipleAudiencesItem {
+func BuildNewMultipleAudiencesItem(name string) *NewMultipleAudiencesItem {
 	this := NewMultipleAudiencesItem{}
 	this.Name = name
 	return &this
@@ -180,7 +180,7 @@ func (v *NullableNewMultipleAudiencesItem) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewMultipleAudiencesItem(val *NewMultipleAudiencesItem) *NullableNewMultipleAudiencesItem {
+func BuildNullableNewMultipleAudiencesItem(val *NewMultipleAudiencesItem) *NullableNewMultipleAudiencesItem {
 	return &NullableNewMultipleAudiencesItem{value: val, isSet: true}
 }
 

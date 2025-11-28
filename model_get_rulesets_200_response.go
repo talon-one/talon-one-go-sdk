@@ -31,7 +31,7 @@ type _GetRulesets200Response GetRulesets200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetRulesets200Response(totalResultSize int64, data []Ruleset) *GetRulesets200Response {
+func BuildGetRulesets200Response(totalResultSize int64, data []Ruleset) *GetRulesets200Response {
 	this := GetRulesets200Response{}
 	this.TotalResultSize = totalResultSize
 	this.Data = data
@@ -170,7 +170,7 @@ func (v *NullableGetRulesets200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGetRulesets200Response(val *GetRulesets200Response) *NullableGetRulesets200Response {
+func BuildNullableGetRulesets200Response(val *GetRulesets200Response) *NullableGetRulesets200Response {
 	return &NullableGetRulesets200Response{value: val, isSet: true}
 }
 

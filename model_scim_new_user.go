@@ -36,7 +36,7 @@ type _ScimNewUser ScimNewUser
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewScimNewUser(userName string) *ScimNewUser {
+func BuildScimNewUser(userName string) *ScimNewUser {
 	this := ScimNewUser{}
 	this.UserName = userName
 	return &this
@@ -253,7 +253,7 @@ func (v *NullableScimNewUser) Unset() {
 	v.isSet = false
 }
 
-func NewNullableScimNewUser(val *ScimNewUser) *NullableScimNewUser {
+func BuildNullableScimNewUser(val *ScimNewUser) *NullableScimNewUser {
 	return &NullableScimNewUser{value: val, isSet: true}
 }
 

@@ -33,7 +33,7 @@ type _JWT JWT
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewJWT(accessToken string, expiresIn int64) *JWT {
+func BuildJWT(accessToken string, expiresIn int64) *JWT {
 	this := JWT{}
 	this.AccessToken = accessToken
 	this.ExpiresIn = expiresIn
@@ -172,7 +172,7 @@ func (v *NullableJWT) Unset() {
 	v.isSet = false
 }
 
-func NewNullableJWT(val *JWT) *NullableJWT {
+func BuildNullableJWT(val *JWT) *NullableJWT {
 	return &NullableJWT{value: val, isSet: true}
 }
 

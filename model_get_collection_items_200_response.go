@@ -31,7 +31,7 @@ type _GetCollectionItems200Response GetCollectionItems200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetCollectionItems200Response(hasMore bool, data []CollectionItem) *GetCollectionItems200Response {
+func BuildGetCollectionItems200Response(hasMore bool, data []CollectionItem) *GetCollectionItems200Response {
 	this := GetCollectionItems200Response{}
 	this.HasMore = hasMore
 	this.Data = data
@@ -170,7 +170,7 @@ func (v *NullableGetCollectionItems200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGetCollectionItems200Response(val *GetCollectionItems200Response) *NullableGetCollectionItems200Response {
+func BuildNullableGetCollectionItems200Response(val *GetCollectionItems200Response) *NullableGetCollectionItems200Response {
 	return &NullableGetCollectionItems200Response{value: val, isSet: true}
 }
 

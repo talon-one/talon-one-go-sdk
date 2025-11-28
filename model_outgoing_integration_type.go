@@ -39,7 +39,7 @@ type _OutgoingIntegrationType OutgoingIntegrationType
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewOutgoingIntegrationType(id int64, name string) *OutgoingIntegrationType {
+func BuildOutgoingIntegrationType(id int64, name string) *OutgoingIntegrationType {
 	this := OutgoingIntegrationType{}
 	this.Id = id
 	this.Name = name
@@ -283,7 +283,7 @@ func (v *NullableOutgoingIntegrationType) Unset() {
 	v.isSet = false
 }
 
-func NewNullableOutgoingIntegrationType(val *OutgoingIntegrationType) *NullableOutgoingIntegrationType {
+func BuildNullableOutgoingIntegrationType(val *OutgoingIntegrationType) *NullableOutgoingIntegrationType {
 	return &NullableOutgoingIntegrationType{value: val, isSet: true}
 }
 

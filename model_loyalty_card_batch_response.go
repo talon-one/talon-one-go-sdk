@@ -33,7 +33,7 @@ type _LoyaltyCardBatchResponse LoyaltyCardBatchResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLoyaltyCardBatchResponse(numberOfCardsGenerated int64, batchId string) *LoyaltyCardBatchResponse {
+func BuildLoyaltyCardBatchResponse(numberOfCardsGenerated int64, batchId string) *LoyaltyCardBatchResponse {
 	this := LoyaltyCardBatchResponse{}
 	this.NumberOfCardsGenerated = numberOfCardsGenerated
 	this.BatchId = batchId
@@ -172,7 +172,7 @@ func (v *NullableLoyaltyCardBatchResponse) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLoyaltyCardBatchResponse(val *LoyaltyCardBatchResponse) *NullableLoyaltyCardBatchResponse {
+func BuildNullableLoyaltyCardBatchResponse(val *LoyaltyCardBatchResponse) *NullableLoyaltyCardBatchResponse {
 	return &NullableLoyaltyCardBatchResponse{value: val, isSet: true}
 }
 

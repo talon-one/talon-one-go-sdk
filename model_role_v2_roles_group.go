@@ -33,7 +33,7 @@ type RoleV2RolesGroup struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewRoleV2RolesGroup() *RoleV2RolesGroup {
+func BuildRoleV2RolesGroup() *RoleV2RolesGroup {
 	this := RoleV2RolesGroup{}
 	return &this
 }
@@ -222,7 +222,7 @@ func (v *NullableRoleV2RolesGroup) Unset() {
 	v.isSet = false
 }
 
-func NewNullableRoleV2RolesGroup(val *RoleV2RolesGroup) *NullableRoleV2RolesGroup {
+func BuildNullableRoleV2RolesGroup(val *RoleV2RolesGroup) *NullableRoleV2RolesGroup {
 	return &NullableRoleV2RolesGroup{value: val, isSet: true}
 }
 

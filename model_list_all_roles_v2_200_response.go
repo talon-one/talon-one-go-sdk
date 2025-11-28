@@ -31,7 +31,7 @@ type _ListAllRolesV2200Response ListAllRolesV2200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewListAllRolesV2200Response(totalResultSize int64, data []RoleV2) *ListAllRolesV2200Response {
+func BuildListAllRolesV2200Response(totalResultSize int64, data []RoleV2) *ListAllRolesV2200Response {
 	this := ListAllRolesV2200Response{}
 	this.TotalResultSize = totalResultSize
 	this.Data = data
@@ -170,7 +170,7 @@ func (v *NullableListAllRolesV2200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableListAllRolesV2200Response(val *ListAllRolesV2200Response) *NullableListAllRolesV2200Response {
+func BuildNullableListAllRolesV2200Response(val *ListAllRolesV2200Response) *NullableListAllRolesV2200Response {
 	return &NullableListAllRolesV2200Response{value: val, isSet: true}
 }
 

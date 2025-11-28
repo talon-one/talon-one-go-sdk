@@ -41,7 +41,7 @@ type _RejectCouponEffectProps RejectCouponEffectProps
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewRejectCouponEffectProps(value string, rejectionReason string) *RejectCouponEffectProps {
+func BuildRejectCouponEffectProps(value string, rejectionReason string) *RejectCouponEffectProps {
 	this := RejectCouponEffectProps{}
 	this.Value = value
 	this.RejectionReason = rejectionReason
@@ -320,7 +320,7 @@ func (v *NullableRejectCouponEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableRejectCouponEffectProps(val *RejectCouponEffectProps) *NullableRejectCouponEffectProps {
+func BuildNullableRejectCouponEffectProps(val *RejectCouponEffectProps) *NullableRejectCouponEffectProps {
 	return &NullableRejectCouponEffectProps{value: val, isSet: true}
 }
 

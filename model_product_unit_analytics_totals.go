@@ -27,7 +27,7 @@ type ProductUnitAnalyticsTotals struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewProductUnitAnalyticsTotals() *ProductUnitAnalyticsTotals {
+func BuildProductUnitAnalyticsTotals() *ProductUnitAnalyticsTotals {
 	this := ProductUnitAnalyticsTotals{}
 	return &this
 }
@@ -111,7 +111,7 @@ func (v *NullableProductUnitAnalyticsTotals) Unset() {
 	v.isSet = false
 }
 
-func NewNullableProductUnitAnalyticsTotals(val *ProductUnitAnalyticsTotals) *NullableProductUnitAnalyticsTotals {
+func BuildNullableProductUnitAnalyticsTotals(val *ProductUnitAnalyticsTotals) *NullableProductUnitAnalyticsTotals {
 	return &NullableProductUnitAnalyticsTotals{value: val, isSet: true}
 }
 

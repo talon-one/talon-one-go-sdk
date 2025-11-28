@@ -35,7 +35,7 @@ type _SamlLoginEndpoint SamlLoginEndpoint
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSamlLoginEndpoint(id int64, name string, loginURL string) *SamlLoginEndpoint {
+func BuildSamlLoginEndpoint(id int64, name string, loginURL string) *SamlLoginEndpoint {
 	this := SamlLoginEndpoint{}
 	this.Id = id
 	this.Name = name
@@ -201,7 +201,7 @@ func (v *NullableSamlLoginEndpoint) Unset() {
 	v.isSet = false
 }
 
-func NewNullableSamlLoginEndpoint(val *SamlLoginEndpoint) *NullableSamlLoginEndpoint {
+func BuildNullableSamlLoginEndpoint(val *SamlLoginEndpoint) *NullableSamlLoginEndpoint {
 	return &NullableSamlLoginEndpoint{value: val, isSet: true}
 }
 

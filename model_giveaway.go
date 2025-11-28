@@ -52,7 +52,7 @@ type _Giveaway Giveaway
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGiveaway(id int64, created time.Time, code string, poolId int64) *Giveaway {
+func BuildGiveaway(id int64, created time.Time, code string, poolId int64) *Giveaway {
 	this := Giveaway{}
 	this.Id = id
 	this.Created = created
@@ -490,7 +490,7 @@ func (v *NullableGiveaway) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGiveaway(val *Giveaway) *NullableGiveaway {
+func BuildNullableGiveaway(val *Giveaway) *NullableGiveaway {
 	return &NullableGiveaway{value: val, isSet: true}
 }
 

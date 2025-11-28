@@ -35,7 +35,7 @@ type _ShowNotificationEffectProps ShowNotificationEffectProps
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewShowNotificationEffectProps(notificationType string, title string, body string) *ShowNotificationEffectProps {
+func BuildShowNotificationEffectProps(notificationType string, title string, body string) *ShowNotificationEffectProps {
 	this := ShowNotificationEffectProps{}
 	this.NotificationType = notificationType
 	this.Title = title
@@ -201,7 +201,7 @@ func (v *NullableShowNotificationEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableShowNotificationEffectProps(val *ShowNotificationEffectProps) *NullableShowNotificationEffectProps {
+func BuildNullableShowNotificationEffectProps(val *ShowNotificationEffectProps) *NullableShowNotificationEffectProps {
 	return &NullableShowNotificationEffectProps{value: val, isSet: true}
 }
 

@@ -29,7 +29,7 @@ type CampaignTemplateCouponReservationSettings struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCampaignTemplateCouponReservationSettings() *CampaignTemplateCouponReservationSettings {
+func BuildCampaignTemplateCouponReservationSettings() *CampaignTemplateCouponReservationSettings {
 	this := CampaignTemplateCouponReservationSettings{}
 	var isReservationMandatory bool = false
 	this.IsReservationMandatory = &isReservationMandatory
@@ -152,7 +152,7 @@ func (v *NullableCampaignTemplateCouponReservationSettings) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCampaignTemplateCouponReservationSettings(val *CampaignTemplateCouponReservationSettings) *NullableCampaignTemplateCouponReservationSettings {
+func BuildNullableCampaignTemplateCouponReservationSettings(val *CampaignTemplateCouponReservationSettings) *NullableCampaignTemplateCouponReservationSettings {
 	return &NullableCampaignTemplateCouponReservationSettings{value: val, isSet: true}
 }
 

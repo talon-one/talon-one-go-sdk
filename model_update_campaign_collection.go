@@ -27,7 +27,7 @@ type UpdateCampaignCollection struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdateCampaignCollection() *UpdateCampaignCollection {
+func BuildUpdateCampaignCollection() *UpdateCampaignCollection {
 	this := UpdateCampaignCollection{}
 	return &this
 }
@@ -111,7 +111,7 @@ func (v *NullableUpdateCampaignCollection) Unset() {
 	v.isSet = false
 }
 
-func NewNullableUpdateCampaignCollection(val *UpdateCampaignCollection) *NullableUpdateCampaignCollection {
+func BuildNullableUpdateCampaignCollection(val *UpdateCampaignCollection) *NullableUpdateCampaignCollection {
 	return &NullableUpdateCampaignCollection{value: val, isSet: true}
 }
 

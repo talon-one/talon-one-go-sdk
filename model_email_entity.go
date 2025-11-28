@@ -31,7 +31,7 @@ type _EmailEntity EmailEntity
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewEmailEntity(email string) *EmailEntity {
+func BuildEmailEntity(email string) *EmailEntity {
 	this := EmailEntity{}
 	this.Email = email
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableEmailEntity) Unset() {
 	v.isSet = false
 }
 
-func NewNullableEmailEntity(val *EmailEntity) *NullableEmailEntity {
+func BuildNullableEmailEntity(val *EmailEntity) *NullableEmailEntity {
 	return &NullableEmailEntity{value: val, isSet: true}
 }
 

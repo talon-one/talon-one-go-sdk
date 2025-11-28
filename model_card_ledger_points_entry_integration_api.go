@@ -52,7 +52,7 @@ type _CardLedgerPointsEntryIntegrationAPI CardLedgerPointsEntryIntegrationAPI
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCardLedgerPointsEntryIntegrationAPI(id int64, transactionUUID string, created time.Time, programId int64, name string, startDate string, expiryDate string, subledgerId string, amount float32) *CardLedgerPointsEntryIntegrationAPI {
+func BuildCardLedgerPointsEntryIntegrationAPI(id int64, transactionUUID string, created time.Time, programId int64, name string, startDate string, expiryDate string, subledgerId string, amount float32) *CardLedgerPointsEntryIntegrationAPI {
 	this := CardLedgerPointsEntryIntegrationAPI{}
 	this.Id = id
 	this.TransactionUUID = transactionUUID
@@ -450,7 +450,7 @@ func (v *NullableCardLedgerPointsEntryIntegrationAPI) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCardLedgerPointsEntryIntegrationAPI(val *CardLedgerPointsEntryIntegrationAPI) *NullableCardLedgerPointsEntryIntegrationAPI {
+func BuildNullableCardLedgerPointsEntryIntegrationAPI(val *CardLedgerPointsEntryIntegrationAPI) *NullableCardLedgerPointsEntryIntegrationAPI {
 	return &NullableCardLedgerPointsEntryIntegrationAPI{value: val, isSet: true}
 }
 

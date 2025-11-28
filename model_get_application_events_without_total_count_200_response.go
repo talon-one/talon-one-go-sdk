@@ -31,7 +31,7 @@ type _GetApplicationEventsWithoutTotalCount200Response GetApplicationEventsWitho
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetApplicationEventsWithoutTotalCount200Response(hasMore bool, data []ApplicationEvent) *GetApplicationEventsWithoutTotalCount200Response {
+func BuildGetApplicationEventsWithoutTotalCount200Response(hasMore bool, data []ApplicationEvent) *GetApplicationEventsWithoutTotalCount200Response {
 	this := GetApplicationEventsWithoutTotalCount200Response{}
 	this.HasMore = hasMore
 	this.Data = data
@@ -170,7 +170,7 @@ func (v *NullableGetApplicationEventsWithoutTotalCount200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGetApplicationEventsWithoutTotalCount200Response(val *GetApplicationEventsWithoutTotalCount200Response) *NullableGetApplicationEventsWithoutTotalCount200Response {
+func BuildNullableGetApplicationEventsWithoutTotalCount200Response(val *GetApplicationEventsWithoutTotalCount200Response) *NullableGetApplicationEventsWithoutTotalCount200Response {
 	return &NullableGetApplicationEventsWithoutTotalCount200Response{value: val, isSet: true}
 }
 

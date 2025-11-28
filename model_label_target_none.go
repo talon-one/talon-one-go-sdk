@@ -30,7 +30,7 @@ type _LabelTargetNone LabelTargetNone
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLabelTargetNone(type_ string) *LabelTargetNone {
+func BuildLabelTargetNone(type_ string) *LabelTargetNone {
 	this := LabelTargetNone{}
 	this.Type = type_
 	return &this
@@ -142,7 +142,7 @@ func (v *NullableLabelTargetNone) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLabelTargetNone(val *LabelTargetNone) *NullableLabelTargetNone {
+func BuildNullableLabelTargetNone(val *LabelTargetNone) *NullableLabelTargetNone {
 	return &NullableLabelTargetNone{value: val, isSet: true}
 }
 

@@ -31,7 +31,7 @@ type _ApplicationSessionEntity ApplicationSessionEntity
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewApplicationSessionEntity(sessionId int64) *ApplicationSessionEntity {
+func BuildApplicationSessionEntity(sessionId int64) *ApplicationSessionEntity {
 	this := ApplicationSessionEntity{}
 	this.SessionId = sessionId
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableApplicationSessionEntity) Unset() {
 	v.isSet = false
 }
 
-func NewNullableApplicationSessionEntity(val *ApplicationSessionEntity) *NullableApplicationSessionEntity {
+func BuildNullableApplicationSessionEntity(val *ApplicationSessionEntity) *NullableApplicationSessionEntity {
 	return &NullableApplicationSessionEntity{value: val, isSet: true}
 }
 

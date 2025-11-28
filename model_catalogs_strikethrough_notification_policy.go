@@ -35,7 +35,7 @@ type _CatalogsStrikethroughNotificationPolicy CatalogsStrikethroughNotificationP
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCatalogsStrikethroughNotificationPolicy(name string) *CatalogsStrikethroughNotificationPolicy {
+func BuildCatalogsStrikethroughNotificationPolicy(name string) *CatalogsStrikethroughNotificationPolicy {
 	this := CatalogsStrikethroughNotificationPolicy{}
 	this.Name = name
 	var batchSize int64 = 1000
@@ -221,7 +221,7 @@ func (v *NullableCatalogsStrikethroughNotificationPolicy) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCatalogsStrikethroughNotificationPolicy(val *CatalogsStrikethroughNotificationPolicy) *NullableCatalogsStrikethroughNotificationPolicy {
+func BuildNullableCatalogsStrikethroughNotificationPolicy(val *CatalogsStrikethroughNotificationPolicy) *NullableCatalogsStrikethroughNotificationPolicy {
 	return &NullableCatalogsStrikethroughNotificationPolicy{value: val, isSet: true}
 }
 

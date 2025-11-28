@@ -32,7 +32,7 @@ type _ReferralRejectionReason ReferralRejectionReason
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewReferralRejectionReason(campaignId int64, referralId int64, reason string) *ReferralRejectionReason {
+func BuildReferralRejectionReason(campaignId int64, referralId int64, reason string) *ReferralRejectionReason {
 	this := ReferralRejectionReason{}
 	this.CampaignId = campaignId
 	this.ReferralId = referralId
@@ -198,7 +198,7 @@ func (v *NullableReferralRejectionReason) Unset() {
 	v.isSet = false
 }
 
-func NewNullableReferralRejectionReason(val *ReferralRejectionReason) *NullableReferralRejectionReason {
+func BuildNullableReferralRejectionReason(val *ReferralRejectionReason) *NullableReferralRejectionReason {
 	return &NullableReferralRejectionReason{value: val, isSet: true}
 }
 

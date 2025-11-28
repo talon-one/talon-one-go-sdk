@@ -64,7 +64,7 @@ type _WebhookWithOutgoingIntegrationDetails WebhookWithOutgoingIntegrationDetail
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewWebhookWithOutgoingIntegrationDetails(id int64, created time.Time, modified time.Time, applicationIds []int64, title string, draft bool, verb string, url string, headers []string, params []TemplateArgDef, enabled bool) *WebhookWithOutgoingIntegrationDetails {
+func BuildWebhookWithOutgoingIntegrationDetails(id int64, created time.Time, modified time.Time, applicationIds []int64, title string, draft bool, verb string, url string, headers []string, params []TemplateArgDef, enabled bool) *WebhookWithOutgoingIntegrationDetails {
 	this := WebhookWithOutgoingIntegrationDetails{}
 	this.Id = id
 	this.Created = created
@@ -656,7 +656,7 @@ func (v *NullableWebhookWithOutgoingIntegrationDetails) Unset() {
 	v.isSet = false
 }
 
-func NewNullableWebhookWithOutgoingIntegrationDetails(val *WebhookWithOutgoingIntegrationDetails) *NullableWebhookWithOutgoingIntegrationDetails {
+func BuildNullableWebhookWithOutgoingIntegrationDetails(val *WebhookWithOutgoingIntegrationDetails) *NullableWebhookWithOutgoingIntegrationDetails {
 	return &NullableWebhookWithOutgoingIntegrationDetails{value: val, isSet: true}
 }
 

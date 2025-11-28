@@ -35,7 +35,7 @@ type _ProjectedTier ProjectedTier
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewProjectedTier(projectedActivePoints float32) *ProjectedTier {
+func BuildProjectedTier(projectedActivePoints float32) *ProjectedTier {
 	this := ProjectedTier{}
 	this.ProjectedActivePoints = projectedActivePoints
 	return &this
@@ -217,7 +217,7 @@ func (v *NullableProjectedTier) Unset() {
 	v.isSet = false
 }
 
-func NewNullableProjectedTier(val *ProjectedTier) *NullableProjectedTier {
+func BuildNullableProjectedTier(val *ProjectedTier) *NullableProjectedTier {
 	return &NullableProjectedTier{value: val, isSet: true}
 }
 

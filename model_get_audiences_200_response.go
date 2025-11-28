@@ -32,7 +32,7 @@ type _GetAudiences200Response GetAudiences200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetAudiences200Response(data []Audience) *GetAudiences200Response {
+func BuildGetAudiences200Response(data []Audience) *GetAudiences200Response {
 	this := GetAudiences200Response{}
 	this.Data = data
 	return &this
@@ -214,7 +214,7 @@ func (v *NullableGetAudiences200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGetAudiences200Response(val *GetAudiences200Response) *NullableGetAudiences200Response {
+func BuildNullableGetAudiences200Response(val *GetAudiences200Response) *NullableGetAudiences200Response {
 	return &NullableGetAudiences200Response{value: val, isSet: true}
 }
 

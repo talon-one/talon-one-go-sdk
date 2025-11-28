@@ -36,7 +36,7 @@ type UpdateReferral struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdateReferral() *UpdateReferral {
+func BuildUpdateReferral() *UpdateReferral {
 	this := UpdateReferral{}
 	return &this
 }
@@ -260,7 +260,7 @@ func (v *NullableUpdateReferral) Unset() {
 	v.isSet = false
 }
 
-func NewNullableUpdateReferral(val *UpdateReferral) *NullableUpdateReferral {
+func BuildNullableUpdateReferral(val *UpdateReferral) *NullableUpdateReferral {
 	return &NullableUpdateReferral{value: val, isSet: true}
 }
 

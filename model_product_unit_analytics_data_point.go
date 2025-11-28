@@ -40,7 +40,7 @@ type _ProductUnitAnalyticsDataPoint ProductUnitAnalyticsDataPoint
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewProductUnitAnalyticsDataPoint(startTime time.Time, endTime time.Time, unitsSold AnalyticsDataPointWithTrend, productId int64, productName string) *ProductUnitAnalyticsDataPoint {
+func BuildProductUnitAnalyticsDataPoint(startTime time.Time, endTime time.Time, unitsSold AnalyticsDataPointWithTrend, productId int64, productName string) *ProductUnitAnalyticsDataPoint {
 	this := ProductUnitAnalyticsDataPoint{}
 	this.StartTime = startTime
 	this.EndTime = endTime
@@ -260,7 +260,7 @@ func (v *NullableProductUnitAnalyticsDataPoint) Unset() {
 	v.isSet = false
 }
 
-func NewNullableProductUnitAnalyticsDataPoint(val *ProductUnitAnalyticsDataPoint) *NullableProductUnitAnalyticsDataPoint {
+func BuildNullableProductUnitAnalyticsDataPoint(val *ProductUnitAnalyticsDataPoint) *NullableProductUnitAnalyticsDataPoint {
 	return &NullableProductUnitAnalyticsDataPoint{value: val, isSet: true}
 }
 

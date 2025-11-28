@@ -48,7 +48,7 @@ type _NewCouponsForMultipleRecipients NewCouponsForMultipleRecipients
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewCouponsForMultipleRecipients(recipientsIntegrationIds []string) *NewCouponsForMultipleRecipients {
+func BuildNewCouponsForMultipleRecipients(recipientsIntegrationIds []string) *NewCouponsForMultipleRecipients {
 	this := NewCouponsForMultipleRecipients{}
 	this.RecipientsIntegrationIds = recipientsIntegrationIds
 	return &this
@@ -440,7 +440,7 @@ func (v *NullableNewCouponsForMultipleRecipients) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewCouponsForMultipleRecipients(val *NewCouponsForMultipleRecipients) *NullableNewCouponsForMultipleRecipients {
+func BuildNullableNewCouponsForMultipleRecipients(val *NewCouponsForMultipleRecipients) *NullableNewCouponsForMultipleRecipients {
 	return &NullableNewCouponsForMultipleRecipients{value: val, isSet: true}
 }
 

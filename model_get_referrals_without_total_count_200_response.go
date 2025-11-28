@@ -31,7 +31,7 @@ type _GetReferralsWithoutTotalCount200Response GetReferralsWithoutTotalCount200R
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetReferralsWithoutTotalCount200Response(hasMore bool, data []Referral) *GetReferralsWithoutTotalCount200Response {
+func BuildGetReferralsWithoutTotalCount200Response(hasMore bool, data []Referral) *GetReferralsWithoutTotalCount200Response {
 	this := GetReferralsWithoutTotalCount200Response{}
 	this.HasMore = hasMore
 	this.Data = data
@@ -170,7 +170,7 @@ func (v *NullableGetReferralsWithoutTotalCount200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGetReferralsWithoutTotalCount200Response(val *GetReferralsWithoutTotalCount200Response) *NullableGetReferralsWithoutTotalCount200Response {
+func BuildNullableGetReferralsWithoutTotalCount200Response(val *GetReferralsWithoutTotalCount200Response) *NullableGetReferralsWithoutTotalCount200Response {
 	return &NullableGetReferralsWithoutTotalCount200Response{value: val, isSet: true}
 }
 

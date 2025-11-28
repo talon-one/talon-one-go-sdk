@@ -35,7 +35,7 @@ type _IntegrationCustomerProfileAudienceRequestItem IntegrationCustomerProfileAu
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewIntegrationCustomerProfileAudienceRequestItem(action string, profileIntegrationId string, integrationId string) *IntegrationCustomerProfileAudienceRequestItem {
+func BuildIntegrationCustomerProfileAudienceRequestItem(action string, profileIntegrationId string, integrationId string) *IntegrationCustomerProfileAudienceRequestItem {
 	this := IntegrationCustomerProfileAudienceRequestItem{}
 	this.Action = action
 	this.ProfileIntegrationId = profileIntegrationId
@@ -201,7 +201,7 @@ func (v *NullableIntegrationCustomerProfileAudienceRequestItem) Unset() {
 	v.isSet = false
 }
 
-func NewNullableIntegrationCustomerProfileAudienceRequestItem(val *IntegrationCustomerProfileAudienceRequestItem) *NullableIntegrationCustomerProfileAudienceRequestItem {
+func BuildNullableIntegrationCustomerProfileAudienceRequestItem(val *IntegrationCustomerProfileAudienceRequestItem) *NullableIntegrationCustomerProfileAudienceRequestItem {
 	return &NullableIntegrationCustomerProfileAudienceRequestItem{value: val, isSet: true}
 }
 

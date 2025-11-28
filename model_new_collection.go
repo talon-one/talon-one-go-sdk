@@ -35,7 +35,7 @@ type _NewCollection NewCollection
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewCollection(name string) *NewCollection {
+func BuildNewCollection(name string) *NewCollection {
 	this := NewCollection{}
 	this.Name = name
 	return &this
@@ -217,7 +217,7 @@ func (v *NullableNewCollection) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewCollection(val *NewCollection) *NullableNewCollection {
+func BuildNullableNewCollection(val *NewCollection) *NullableNewCollection {
 	return &NullableNewCollection{value: val, isSet: true}
 }
 

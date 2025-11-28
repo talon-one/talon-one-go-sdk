@@ -28,7 +28,7 @@ type IntegrationCustomerSessionResponse struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewIntegrationCustomerSessionResponse() *IntegrationCustomerSessionResponse {
+func BuildIntegrationCustomerSessionResponse() *IntegrationCustomerSessionResponse {
 	this := IntegrationCustomerSessionResponse{}
 	return &this
 }
@@ -147,7 +147,7 @@ func (v *NullableIntegrationCustomerSessionResponse) Unset() {
 	v.isSet = false
 }
 
-func NewNullableIntegrationCustomerSessionResponse(val *IntegrationCustomerSessionResponse) *NullableIntegrationCustomerSessionResponse {
+func BuildNullableIntegrationCustomerSessionResponse(val *IntegrationCustomerSessionResponse) *NullableIntegrationCustomerSessionResponse {
 	return &NullableIntegrationCustomerSessionResponse{value: val, isSet: true}
 }
 

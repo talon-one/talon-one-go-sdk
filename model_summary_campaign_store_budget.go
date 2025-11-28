@@ -33,7 +33,7 @@ type _SummaryCampaignStoreBudget SummaryCampaignStoreBudget
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSummaryCampaignStoreBudget(action string, storeCount int64, imported bool) *SummaryCampaignStoreBudget {
+func BuildSummaryCampaignStoreBudget(action string, storeCount int64, imported bool) *SummaryCampaignStoreBudget {
 	this := SummaryCampaignStoreBudget{}
 	this.Action = action
 	this.StoreCount = storeCount
@@ -234,7 +234,7 @@ func (v *NullableSummaryCampaignStoreBudget) Unset() {
 	v.isSet = false
 }
 
-func NewNullableSummaryCampaignStoreBudget(val *SummaryCampaignStoreBudget) *NullableSummaryCampaignStoreBudget {
+func BuildNullableSummaryCampaignStoreBudget(val *SummaryCampaignStoreBudget) *NullableSummaryCampaignStoreBudget {
 	return &NullableSummaryCampaignStoreBudget{value: val, isSet: true}
 }
 

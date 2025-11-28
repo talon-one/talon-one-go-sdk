@@ -32,7 +32,7 @@ type CustomerInventory struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCustomerInventory() *CustomerInventory {
+func BuildCustomerInventory() *CustomerInventory {
 	this := CustomerInventory{}
 	return &this
 }
@@ -291,7 +291,7 @@ func (v *NullableCustomerInventory) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCustomerInventory(val *CustomerInventory) *NullableCustomerInventory {
+func BuildNullableCustomerInventory(val *CustomerInventory) *NullableCustomerInventory {
 	return &NullableCustomerInventory{value: val, isSet: true}
 }
 

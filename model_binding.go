@@ -45,7 +45,7 @@ type _Binding Binding
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewBinding(name string, expression []interface{}) *Binding {
+func BuildBinding(name string, expression []interface{}) *Binding {
 	this := Binding{}
 	this.Name = name
 	this.Expression = expression
@@ -394,7 +394,7 @@ func (v *NullableBinding) Unset() {
 	v.isSet = false
 }
 
-func NewNullableBinding(val *Binding) *NullableBinding {
+func BuildNullableBinding(val *Binding) *NullableBinding {
 	return &NullableBinding{value: val, isSet: true}
 }
 

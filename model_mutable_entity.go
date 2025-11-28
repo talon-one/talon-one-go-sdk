@@ -32,7 +32,7 @@ type _MutableEntity MutableEntity
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewMutableEntity(modified time.Time) *MutableEntity {
+func BuildMutableEntity(modified time.Time) *MutableEntity {
 	this := MutableEntity{}
 	this.Modified = modified
 	return &this
@@ -144,7 +144,7 @@ func (v *NullableMutableEntity) Unset() {
 	v.isSet = false
 }
 
-func NewNullableMutableEntity(val *MutableEntity) *NullableMutableEntity {
+func BuildNullableMutableEntity(val *MutableEntity) *NullableMutableEntity {
 	return &NullableMutableEntity{value: val, isSet: true}
 }
 

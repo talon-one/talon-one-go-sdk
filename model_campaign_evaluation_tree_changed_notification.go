@@ -35,7 +35,7 @@ type _CampaignEvaluationTreeChangedNotification CampaignEvaluationTreeChangedNot
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCampaignEvaluationTreeChangedNotification(applicationId int64, evaluationTree CampaignSet) *CampaignEvaluationTreeChangedNotification {
+func BuildCampaignEvaluationTreeChangedNotification(applicationId int64, evaluationTree CampaignSet) *CampaignEvaluationTreeChangedNotification {
 	this := CampaignEvaluationTreeChangedNotification{}
 	this.ApplicationId = applicationId
 	this.EvaluationTree = evaluationTree
@@ -209,7 +209,7 @@ func (v *NullableCampaignEvaluationTreeChangedNotification) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCampaignEvaluationTreeChangedNotification(val *CampaignEvaluationTreeChangedNotification) *NullableCampaignEvaluationTreeChangedNotification {
+func BuildNullableCampaignEvaluationTreeChangedNotification(val *CampaignEvaluationTreeChangedNotification) *NullableCampaignEvaluationTreeChangedNotification {
 	return &NullableCampaignEvaluationTreeChangedNotification{value: val, isSet: true}
 }
 

@@ -37,7 +37,7 @@ type _IntegrationEvent IntegrationEvent
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewIntegrationEvent(type_ string, attributes map[string]interface{}) *IntegrationEvent {
+func BuildIntegrationEvent(type_ string, attributes map[string]interface{}) *IntegrationEvent {
 	this := IntegrationEvent{}
 	this.Type = type_
 	this.Attributes = attributes
@@ -246,7 +246,7 @@ func (v *NullableIntegrationEvent) Unset() {
 	v.isSet = false
 }
 
-func NewNullableIntegrationEvent(val *IntegrationEvent) *NullableIntegrationEvent {
+func BuildNullableIntegrationEvent(val *IntegrationEvent) *NullableIntegrationEvent {
 	return &NullableIntegrationEvent{value: val, isSet: true}
 }
 

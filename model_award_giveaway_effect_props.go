@@ -39,7 +39,7 @@ type _AwardGiveawayEffectProps AwardGiveawayEffectProps
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAwardGiveawayEffectProps(poolId int64, poolName string, recipientIntegrationId string, giveawayId int64, code string) *AwardGiveawayEffectProps {
+func BuildAwardGiveawayEffectProps(poolId int64, poolName string, recipientIntegrationId string, giveawayId int64, code string) *AwardGiveawayEffectProps {
 	this := AwardGiveawayEffectProps{}
 	this.PoolId = poolId
 	this.PoolName = poolName
@@ -259,7 +259,7 @@ func (v *NullableAwardGiveawayEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAwardGiveawayEffectProps(val *AwardGiveawayEffectProps) *NullableAwardGiveawayEffectProps {
+func BuildNullableAwardGiveawayEffectProps(val *AwardGiveawayEffectProps) *NullableAwardGiveawayEffectProps {
 	return &NullableAwardGiveawayEffectProps{value: val, isSet: true}
 }
 

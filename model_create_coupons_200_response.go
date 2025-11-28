@@ -31,7 +31,7 @@ type _CreateCoupons200Response CreateCoupons200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCreateCoupons200Response(totalResultSize int64, data []Coupon) *CreateCoupons200Response {
+func BuildCreateCoupons200Response(totalResultSize int64, data []Coupon) *CreateCoupons200Response {
 	this := CreateCoupons200Response{}
 	this.TotalResultSize = totalResultSize
 	this.Data = data
@@ -170,7 +170,7 @@ func (v *NullableCreateCoupons200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCreateCoupons200Response(val *CreateCoupons200Response) *NullableCreateCoupons200Response {
+func BuildNullableCreateCoupons200Response(val *CreateCoupons200Response) *NullableCreateCoupons200Response {
 	return &NullableCreateCoupons200Response{value: val, isSet: true}
 }
 

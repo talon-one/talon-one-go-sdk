@@ -31,7 +31,7 @@ type _GetApplications200Response GetApplications200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetApplications200Response(totalResultSize int64, data []Application) *GetApplications200Response {
+func BuildGetApplications200Response(totalResultSize int64, data []Application) *GetApplications200Response {
 	this := GetApplications200Response{}
 	this.TotalResultSize = totalResultSize
 	this.Data = data
@@ -170,7 +170,7 @@ func (v *NullableGetApplications200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGetApplications200Response(val *GetApplications200Response) *NullableGetApplications200Response {
+func BuildNullableGetApplications200Response(val *GetApplications200Response) *NullableGetApplications200Response {
 	return &NullableGetApplications200Response{value: val, isSet: true}
 }
 

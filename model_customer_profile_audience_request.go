@@ -26,7 +26,7 @@ type CustomerProfileAudienceRequest struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCustomerProfileAudienceRequest() *CustomerProfileAudienceRequest {
+func BuildCustomerProfileAudienceRequest() *CustomerProfileAudienceRequest {
 	this := CustomerProfileAudienceRequest{}
 	return &this
 }
@@ -110,7 +110,7 @@ func (v *NullableCustomerProfileAudienceRequest) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCustomerProfileAudienceRequest(val *CustomerProfileAudienceRequest) *NullableCustomerProfileAudienceRequest {
+func BuildNullableCustomerProfileAudienceRequest(val *CustomerProfileAudienceRequest) *NullableCustomerProfileAudienceRequest {
 	return &NullableCustomerProfileAudienceRequest{value: val, isSet: true}
 }
 

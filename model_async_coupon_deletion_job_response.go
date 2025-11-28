@@ -31,7 +31,7 @@ type _AsyncCouponDeletionJobResponse AsyncCouponDeletionJobResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAsyncCouponDeletionJobResponse(id int64) *AsyncCouponDeletionJobResponse {
+func BuildAsyncCouponDeletionJobResponse(id int64) *AsyncCouponDeletionJobResponse {
 	this := AsyncCouponDeletionJobResponse{}
 	this.Id = id
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableAsyncCouponDeletionJobResponse) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAsyncCouponDeletionJobResponse(val *AsyncCouponDeletionJobResponse) *NullableAsyncCouponDeletionJobResponse {
+func BuildNullableAsyncCouponDeletionJobResponse(val *AsyncCouponDeletionJobResponse) *NullableAsyncCouponDeletionJobResponse {
 	return &NullableAsyncCouponDeletionJobResponse{value: val, isSet: true}
 }
 

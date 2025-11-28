@@ -31,7 +31,7 @@ type _ApplicationNotification ApplicationNotification
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewApplicationNotification(event string) *ApplicationNotification {
+func BuildApplicationNotification(event string) *ApplicationNotification {
 	this := ApplicationNotification{}
 	this.Event = event
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableApplicationNotification) Unset() {
 	v.isSet = false
 }
 
-func NewNullableApplicationNotification(val *ApplicationNotification) *NullableApplicationNotification {
+func BuildNullableApplicationNotification(val *ApplicationNotification) *NullableApplicationNotification {
 	return &NullableApplicationNotification{value: val, isSet: true}
 }
 

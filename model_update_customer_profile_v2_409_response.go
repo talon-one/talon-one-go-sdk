@@ -28,7 +28,7 @@ type UpdateCustomerProfileV2409Response struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdateCustomerProfileV2409Response() *UpdateCustomerProfileV2409Response {
+func BuildUpdateCustomerProfileV2409Response() *UpdateCustomerProfileV2409Response {
 	this := UpdateCustomerProfileV2409Response{}
 	return &this
 }
@@ -182,7 +182,7 @@ func (v *NullableUpdateCustomerProfileV2409Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableUpdateCustomerProfileV2409Response(val *UpdateCustomerProfileV2409Response) *NullableUpdateCustomerProfileV2409Response {
+func BuildNullableUpdateCustomerProfileV2409Response(val *UpdateCustomerProfileV2409Response) *NullableUpdateCustomerProfileV2409Response {
 	return &NullableUpdateCustomerProfileV2409Response{value: val, isSet: true}
 }
 

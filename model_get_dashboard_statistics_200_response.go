@@ -31,7 +31,7 @@ type _GetDashboardStatistics200Response GetDashboardStatistics200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetDashboardStatistics200Response(totalResultSize int64, data []LoyaltyDashboardData) *GetDashboardStatistics200Response {
+func BuildGetDashboardStatistics200Response(totalResultSize int64, data []LoyaltyDashboardData) *GetDashboardStatistics200Response {
 	this := GetDashboardStatistics200Response{}
 	this.TotalResultSize = totalResultSize
 	this.Data = data
@@ -170,7 +170,7 @@ func (v *NullableGetDashboardStatistics200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGetDashboardStatistics200Response(val *GetDashboardStatistics200Response) *NullableGetDashboardStatistics200Response {
+func BuildNullableGetDashboardStatistics200Response(val *GetDashboardStatistics200Response) *NullableGetDashboardStatistics200Response {
 	return &NullableGetDashboardStatistics200Response{value: val, isSet: true}
 }
 

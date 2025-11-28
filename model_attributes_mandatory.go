@@ -29,7 +29,7 @@ type AttributesMandatory struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAttributesMandatory() *AttributesMandatory {
+func BuildAttributesMandatory() *AttributesMandatory {
 	this := AttributesMandatory{}
 	return &this
 }
@@ -148,7 +148,7 @@ func (v *NullableAttributesMandatory) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAttributesMandatory(val *AttributesMandatory) *NullableAttributesMandatory {
+func BuildNullableAttributesMandatory(val *AttributesMandatory) *NullableAttributesMandatory {
 	return &NullableAttributesMandatory{value: val, isSet: true}
 }
 

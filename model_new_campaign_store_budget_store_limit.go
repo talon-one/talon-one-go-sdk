@@ -33,7 +33,7 @@ type _NewCampaignStoreBudgetStoreLimit NewCampaignStoreBudgetStoreLimit
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewCampaignStoreBudgetStoreLimit(storeId int64, limit float32) *NewCampaignStoreBudgetStoreLimit {
+func BuildNewCampaignStoreBudgetStoreLimit(storeId int64, limit float32) *NewCampaignStoreBudgetStoreLimit {
 	this := NewCampaignStoreBudgetStoreLimit{}
 	this.StoreId = storeId
 	this.Limit = limit
@@ -172,7 +172,7 @@ func (v *NullableNewCampaignStoreBudgetStoreLimit) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewCampaignStoreBudgetStoreLimit(val *NewCampaignStoreBudgetStoreLimit) *NullableNewCampaignStoreBudgetStoreLimit {
+func BuildNullableNewCampaignStoreBudgetStoreLimit(val *NewCampaignStoreBudgetStoreLimit) *NullableNewCampaignStoreBudgetStoreLimit {
 	return &NullableNewCampaignStoreBudgetStoreLimit{value: val, isSet: true}
 }
 

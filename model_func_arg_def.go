@@ -33,7 +33,7 @@ type _FuncArgDef FuncArgDef
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewFuncArgDef(type_ string) *FuncArgDef {
+func BuildFuncArgDef(type_ string) *FuncArgDef {
 	this := FuncArgDef{}
 	this.Type = type_
 	return &this
@@ -180,7 +180,7 @@ func (v *NullableFuncArgDef) Unset() {
 	v.isSet = false
 }
 
-func NewNullableFuncArgDef(val *FuncArgDef) *NullableFuncArgDef {
+func BuildNullableFuncArgDef(val *FuncArgDef) *NullableFuncArgDef {
 	return &NullableFuncArgDef{value: val, isSet: true}
 }
 

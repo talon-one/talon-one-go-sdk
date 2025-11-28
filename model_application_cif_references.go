@@ -29,7 +29,7 @@ type ApplicationCIFReferences struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewApplicationCIFReferences() *ApplicationCIFReferences {
+func BuildApplicationCIFReferences() *ApplicationCIFReferences {
 	this := ApplicationCIFReferences{}
 	return &this
 }
@@ -148,7 +148,7 @@ func (v *NullableApplicationCIFReferences) Unset() {
 	v.isSet = false
 }
 
-func NewNullableApplicationCIFReferences(val *ApplicationCIFReferences) *NullableApplicationCIFReferences {
+func BuildNullableApplicationCIFReferences(val *ApplicationCIFReferences) *NullableApplicationCIFReferences {
 	return &NullableApplicationCIFReferences{value: val, isSet: true}
 }
 

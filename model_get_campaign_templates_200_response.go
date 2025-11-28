@@ -31,7 +31,7 @@ type _GetCampaignTemplates200Response GetCampaignTemplates200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetCampaignTemplates200Response(hasMore bool, data []CampaignTemplate) *GetCampaignTemplates200Response {
+func BuildGetCampaignTemplates200Response(hasMore bool, data []CampaignTemplate) *GetCampaignTemplates200Response {
 	this := GetCampaignTemplates200Response{}
 	this.HasMore = hasMore
 	this.Data = data
@@ -170,7 +170,7 @@ func (v *NullableGetCampaignTemplates200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGetCampaignTemplates200Response(val *GetCampaignTemplates200Response) *NullableGetCampaignTemplates200Response {
+func BuildNullableGetCampaignTemplates200Response(val *GetCampaignTemplates200Response) *NullableGetCampaignTemplates200Response {
 	return &NullableGetCampaignTemplates200Response{value: val, isSet: true}
 }
 

@@ -46,7 +46,7 @@ type _NewReferralsForMultipleAdvocates NewReferralsForMultipleAdvocates
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewReferralsForMultipleAdvocates(campaignId int64, advocateProfileIntegrationIds []string) *NewReferralsForMultipleAdvocates {
+func BuildNewReferralsForMultipleAdvocates(campaignId int64, advocateProfileIntegrationIds []string) *NewReferralsForMultipleAdvocates {
 	this := NewReferralsForMultipleAdvocates{}
 	this.CampaignId = campaignId
 	this.AdvocateProfileIntegrationIds = advocateProfileIntegrationIds
@@ -395,7 +395,7 @@ func (v *NullableNewReferralsForMultipleAdvocates) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewReferralsForMultipleAdvocates(val *NewReferralsForMultipleAdvocates) *NullableNewReferralsForMultipleAdvocates {
+func BuildNullableNewReferralsForMultipleAdvocates(val *NewReferralsForMultipleAdvocates) *NullableNewReferralsForMultipleAdvocates {
 	return &NullableNewReferralsForMultipleAdvocates{value: val, isSet: true}
 }
 

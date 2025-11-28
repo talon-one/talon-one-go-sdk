@@ -29,7 +29,7 @@ type AudienceAnalytics struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAudienceAnalytics() *AudienceAnalytics {
+func BuildAudienceAnalytics() *AudienceAnalytics {
 	this := AudienceAnalytics{}
 	return &this
 }
@@ -148,7 +148,7 @@ func (v *NullableAudienceAnalytics) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAudienceAnalytics(val *AudienceAnalytics) *NullableAudienceAnalytics {
+func BuildNullableAudienceAnalytics(val *AudienceAnalytics) *NullableAudienceAnalytics {
 	return &NullableAudienceAnalytics{value: val, isSet: true}
 }
 

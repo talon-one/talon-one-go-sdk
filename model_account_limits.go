@@ -57,7 +57,7 @@ type _AccountLimits AccountLimits
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAccountLimits(liveApplications int64, sandboxApplications int64, activeCampaigns int64, coupons int64, referralCodes int64, activeRules int64, liveLoyaltyPrograms int64, sandboxLoyaltyPrograms int64, webhooks int64, users int64, apiVolume int64, promotionTypes []string, secondaryDeploymentPrice int64, currencyCode string) *AccountLimits {
+func BuildAccountLimits(liveApplications int64, sandboxApplications int64, activeCampaigns int64, coupons int64, referralCodes int64, activeRules int64, liveLoyaltyPrograms int64, sandboxLoyaltyPrograms int64, webhooks int64, users int64, apiVolume int64, promotionTypes []string, secondaryDeploymentPrice int64, currencyCode string) *AccountLimits {
 	this := AccountLimits{}
 	this.LiveApplications = liveApplications
 	this.SandboxApplications = sandboxApplications
@@ -520,7 +520,7 @@ func (v *NullableAccountLimits) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAccountLimits(val *AccountLimits) *NullableAccountLimits {
+func BuildNullableAccountLimits(val *AccountLimits) *NullableAccountLimits {
 	return &NullableAccountLimits{value: val, isSet: true}
 }
 

@@ -33,7 +33,7 @@ type AddToAudienceEffectProps struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAddToAudienceEffectProps() *AddToAudienceEffectProps {
+func BuildAddToAudienceEffectProps() *AddToAudienceEffectProps {
 	this := AddToAudienceEffectProps{}
 	return &this
 }
@@ -222,7 +222,7 @@ func (v *NullableAddToAudienceEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAddToAudienceEffectProps(val *AddToAudienceEffectProps) *NullableAddToAudienceEffectProps {
+func BuildNullableAddToAudienceEffectProps(val *AddToAudienceEffectProps) *NullableAddToAudienceEffectProps {
 	return &NullableAddToAudienceEffectProps{value: val, isSet: true}
 }
 

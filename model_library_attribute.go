@@ -43,7 +43,7 @@ type _LibraryAttribute LibraryAttribute
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLibraryAttribute(entity string, name string, title string, type_ string, description string, presets []string, suggestions []string) *LibraryAttribute {
+func BuildLibraryAttribute(entity string, name string, title string, type_ string, description string, presets []string, suggestions []string) *LibraryAttribute {
 	this := LibraryAttribute{}
 	this.Entity = entity
 	this.Name = name
@@ -317,7 +317,7 @@ func (v *NullableLibraryAttribute) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLibraryAttribute(val *LibraryAttribute) *NullableLibraryAttribute {
+func BuildNullableLibraryAttribute(val *LibraryAttribute) *NullableLibraryAttribute {
 	return &NullableLibraryAttribute{value: val, isSet: true}
 }
 

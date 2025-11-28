@@ -35,7 +35,7 @@ type _Notification Notification
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNotification(id int64, name string, description string) *Notification {
+func BuildNotification(id int64, name string, description string) *Notification {
 	this := Notification{}
 	this.Id = id
 	this.Name = name
@@ -201,7 +201,7 @@ func (v *NullableNotification) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNotification(val *Notification) *NullableNotification {
+func BuildNullableNotification(val *Notification) *NullableNotification {
 	return &NullableNotification{value: val, isSet: true}
 }
 

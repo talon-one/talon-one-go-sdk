@@ -34,7 +34,7 @@ type _CustomerProfileEntity CustomerProfileEntity
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCustomerProfileEntity(id int64, created time.Time) *CustomerProfileEntity {
+func BuildCustomerProfileEntity(id int64, created time.Time) *CustomerProfileEntity {
 	this := CustomerProfileEntity{}
 	this.Id = id
 	this.Created = created
@@ -173,7 +173,7 @@ func (v *NullableCustomerProfileEntity) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCustomerProfileEntity(val *CustomerProfileEntity) *NullableCustomerProfileEntity {
+func BuildNullableCustomerProfileEntity(val *CustomerProfileEntity) *NullableCustomerProfileEntity {
 	return &NullableCustomerProfileEntity{value: val, isSet: true}
 }
 

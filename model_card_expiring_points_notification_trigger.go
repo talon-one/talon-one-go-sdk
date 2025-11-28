@@ -33,7 +33,7 @@ type _CardExpiringPointsNotificationTrigger CardExpiringPointsNotificationTrigge
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCardExpiringPointsNotificationTrigger(amount int64, period string) *CardExpiringPointsNotificationTrigger {
+func BuildCardExpiringPointsNotificationTrigger(amount int64, period string) *CardExpiringPointsNotificationTrigger {
 	this := CardExpiringPointsNotificationTrigger{}
 	this.Amount = amount
 	this.Period = period
@@ -172,7 +172,7 @@ func (v *NullableCardExpiringPointsNotificationTrigger) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCardExpiringPointsNotificationTrigger(val *CardExpiringPointsNotificationTrigger) *NullableCardExpiringPointsNotificationTrigger {
+func BuildNullableCardExpiringPointsNotificationTrigger(val *CardExpiringPointsNotificationTrigger) *NullableCardExpiringPointsNotificationTrigger {
 	return &NullableCardExpiringPointsNotificationTrigger{value: val, isSet: true}
 }
 

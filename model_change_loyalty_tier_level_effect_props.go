@@ -42,7 +42,7 @@ type _ChangeLoyaltyTierLevelEffectProps ChangeLoyaltyTierLevelEffectProps
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewChangeLoyaltyTierLevelEffectProps(ruleTitle string, programId int64, subLedgerId string, newTierName string) *ChangeLoyaltyTierLevelEffectProps {
+func BuildChangeLoyaltyTierLevelEffectProps(ruleTitle string, programId int64, subLedgerId string, newTierName string) *ChangeLoyaltyTierLevelEffectProps {
 	this := ChangeLoyaltyTierLevelEffectProps{}
 	this.RuleTitle = ruleTitle
 	this.ProgramId = programId
@@ -305,7 +305,7 @@ func (v *NullableChangeLoyaltyTierLevelEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableChangeLoyaltyTierLevelEffectProps(val *ChangeLoyaltyTierLevelEffectProps) *NullableChangeLoyaltyTierLevelEffectProps {
+func BuildNullableChangeLoyaltyTierLevelEffectProps(val *ChangeLoyaltyTierLevelEffectProps) *NullableChangeLoyaltyTierLevelEffectProps {
 	return &NullableChangeLoyaltyTierLevelEffectProps{value: val, isSet: true}
 }
 

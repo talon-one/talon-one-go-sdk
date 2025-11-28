@@ -31,7 +31,7 @@ type _ProductUnitAnalytics ProductUnitAnalytics
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewProductUnitAnalytics(data []ProductUnitAnalyticsDataPoint, totals ProductUnitAnalyticsTotals) *ProductUnitAnalytics {
+func BuildProductUnitAnalytics(data []ProductUnitAnalyticsDataPoint, totals ProductUnitAnalyticsTotals) *ProductUnitAnalytics {
 	this := ProductUnitAnalytics{}
 	this.Data = data
 	this.Totals = totals
@@ -170,7 +170,7 @@ func (v *NullableProductUnitAnalytics) Unset() {
 	v.isSet = false
 }
 
-func NewNullableProductUnitAnalytics(val *ProductUnitAnalytics) *NullableProductUnitAnalytics {
+func BuildNullableProductUnitAnalytics(val *ProductUnitAnalytics) *NullableProductUnitAnalytics {
 	return &NullableProductUnitAnalytics{value: val, isSet: true}
 }
 

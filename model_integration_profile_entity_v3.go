@@ -31,7 +31,7 @@ type _IntegrationProfileEntityV3 IntegrationProfileEntityV3
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewIntegrationProfileEntityV3(profileId string) *IntegrationProfileEntityV3 {
+func BuildIntegrationProfileEntityV3(profileId string) *IntegrationProfileEntityV3 {
 	this := IntegrationProfileEntityV3{}
 	this.ProfileId = profileId
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableIntegrationProfileEntityV3) Unset() {
 	v.isSet = false
 }
 
-func NewNullableIntegrationProfileEntityV3(val *IntegrationProfileEntityV3) *NullableIntegrationProfileEntityV3 {
+func BuildNullableIntegrationProfileEntityV3(val *IntegrationProfileEntityV3) *NullableIntegrationProfileEntityV3 {
 	return &NullableIntegrationProfileEntityV3{value: val, isSet: true}
 }
 

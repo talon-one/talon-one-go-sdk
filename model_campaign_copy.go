@@ -44,7 +44,7 @@ type _CampaignCopy CampaignCopy
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCampaignCopy(applicationIds []int64) *CampaignCopy {
+func BuildCampaignCopy(applicationIds []int64) *CampaignCopy {
 	this := CampaignCopy{}
 	this.ApplicationIds = applicationIds
 	return &this
@@ -366,7 +366,7 @@ func (v *NullableCampaignCopy) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCampaignCopy(val *CampaignCopy) *NullableCampaignCopy {
+func BuildNullableCampaignCopy(val *CampaignCopy) *NullableCampaignCopy {
 	return &NullableCampaignCopy{value: val, isSet: true}
 }
 

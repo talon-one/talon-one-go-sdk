@@ -31,7 +31,7 @@ type _AnalyticsDataPoint AnalyticsDataPoint
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAnalyticsDataPoint(total float32, influenced float32) *AnalyticsDataPoint {
+func BuildAnalyticsDataPoint(total float32, influenced float32) *AnalyticsDataPoint {
 	this := AnalyticsDataPoint{}
 	this.Total = total
 	this.Influenced = influenced
@@ -170,7 +170,7 @@ func (v *NullableAnalyticsDataPoint) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAnalyticsDataPoint(val *AnalyticsDataPoint) *NullableAnalyticsDataPoint {
+func BuildNullableAnalyticsDataPoint(val *AnalyticsDataPoint) *NullableAnalyticsDataPoint {
 	return &NullableAnalyticsDataPoint{value: val, isSet: true}
 }
 

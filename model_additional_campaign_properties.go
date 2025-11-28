@@ -78,7 +78,7 @@ type _AdditionalCampaignProperties AdditionalCampaignProperties
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAdditionalCampaignProperties(frontendState string, storesImported bool) *AdditionalCampaignProperties {
+func BuildAdditionalCampaignProperties(frontendState string, storesImported bool) *AdditionalCampaignProperties {
 	this := AdditionalCampaignProperties{}
 	this.FrontendState = frontendState
 	this.StoresImported = storesImported
@@ -987,7 +987,7 @@ func (v *NullableAdditionalCampaignProperties) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAdditionalCampaignProperties(val *AdditionalCampaignProperties) *NullableAdditionalCampaignProperties {
+func BuildNullableAdditionalCampaignProperties(val *AdditionalCampaignProperties) *NullableAdditionalCampaignProperties {
 	return &NullableAdditionalCampaignProperties{value: val, isSet: true}
 }
 

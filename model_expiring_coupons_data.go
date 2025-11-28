@@ -50,7 +50,7 @@ type _ExpiringCouponsData ExpiringCouponsData
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewExpiringCouponsData(couponValue string, campaignId int64, usageLimit int64, usageCounter int64, attributes map[string]interface{}) *ExpiringCouponsData {
+func BuildExpiringCouponsData(couponValue string, campaignId int64, usageLimit int64, usageCounter int64, attributes map[string]interface{}) *ExpiringCouponsData {
 	this := ExpiringCouponsData{}
 	this.CouponValue = couponValue
 	this.CampaignId = campaignId
@@ -445,7 +445,7 @@ func (v *NullableExpiringCouponsData) Unset() {
 	v.isSet = false
 }
 
-func NewNullableExpiringCouponsData(val *ExpiringCouponsData) *NullableExpiringCouponsData {
+func BuildNullableExpiringCouponsData(val *ExpiringCouponsData) *NullableExpiringCouponsData {
 	return &NullableExpiringCouponsData{value: val, isSet: true}
 }
 

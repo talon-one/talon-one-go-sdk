@@ -35,7 +35,7 @@ type _CampaignDeletedNotification CampaignDeletedNotification
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCampaignDeletedNotification(notificationType string, totalResultSize int64) *CampaignDeletedNotification {
+func BuildCampaignDeletedNotification(notificationType string, totalResultSize int64) *CampaignDeletedNotification {
 	this := CampaignDeletedNotification{}
 	this.NotificationType = notificationType
 	this.TotalResultSize = totalResultSize
@@ -209,7 +209,7 @@ func (v *NullableCampaignDeletedNotification) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCampaignDeletedNotification(val *CampaignDeletedNotification) *NullableCampaignDeletedNotification {
+func BuildNullableCampaignDeletedNotification(val *CampaignDeletedNotification) *NullableCampaignDeletedNotification {
 	return &NullableCampaignDeletedNotification{value: val, isSet: true}
 }
 

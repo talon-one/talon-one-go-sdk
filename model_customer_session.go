@@ -57,7 +57,7 @@ type _CustomerSession CustomerSession
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCustomerSession(integrationId string, created time.Time, applicationId int64, firstSession bool, discounts map[string]float32, updated time.Time) *CustomerSession {
+func BuildCustomerSession(integrationId string, created time.Time, applicationId int64, firstSession bool, discounts map[string]float32, updated time.Time) *CustomerSession {
 	this := CustomerSession{}
 	this.IntegrationId = integrationId
 	this.Created = created
@@ -588,7 +588,7 @@ func (v *NullableCustomerSession) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCustomerSession(val *CustomerSession) *NullableCustomerSession {
+func BuildNullableCustomerSession(val *CustomerSession) *NullableCustomerSession {
 	return &NullableCustomerSession{value: val, isSet: true}
 }
 

@@ -35,7 +35,7 @@ type _NewInternalAudience NewInternalAudience
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewInternalAudience(name string) *NewInternalAudience {
+func BuildNewInternalAudience(name string) *NewInternalAudience {
 	this := NewInternalAudience{}
 	this.Name = name
 	return &this
@@ -217,7 +217,7 @@ func (v *NullableNewInternalAudience) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewInternalAudience(val *NewInternalAudience) *NullableNewInternalAudience {
+func BuildNullableNewInternalAudience(val *NewInternalAudience) *NullableNewInternalAudience {
 	return &NullableNewInternalAudience{value: val, isSet: true}
 }
 

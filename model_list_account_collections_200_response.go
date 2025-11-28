@@ -32,7 +32,7 @@ type _ListAccountCollections200Response ListAccountCollections200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewListAccountCollections200Response(data []CollectionWithoutPayload) *ListAccountCollections200Response {
+func BuildListAccountCollections200Response(data []CollectionWithoutPayload) *ListAccountCollections200Response {
 	this := ListAccountCollections200Response{}
 	this.Data = data
 	return &this
@@ -214,7 +214,7 @@ func (v *NullableListAccountCollections200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableListAccountCollections200Response(val *ListAccountCollections200Response) *NullableListAccountCollections200Response {
+func BuildNullableListAccountCollections200Response(val *ListAccountCollections200Response) *NullableListAccountCollections200Response {
 	return &NullableListAccountCollections200Response{value: val, isSet: true}
 }
 

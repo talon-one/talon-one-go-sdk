@@ -50,7 +50,7 @@ type _Audience Audience
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAudience(accountId int64, id int64, created time.Time, name string) *Audience {
+func BuildAudience(accountId int64, id int64, created time.Time, name string) *Audience {
 	this := Audience{}
 	this.AccountId = accountId
 	this.Id = id
@@ -453,7 +453,7 @@ func (v *NullableAudience) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAudience(val *Audience) *NullableAudience {
+func BuildNullableAudience(val *Audience) *NullableAudience {
 	return &NullableAudience{value: val, isSet: true}
 }
 

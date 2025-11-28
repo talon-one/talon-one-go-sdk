@@ -27,7 +27,7 @@ type IntegrationProfileEntity struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewIntegrationProfileEntity() *IntegrationProfileEntity {
+func BuildIntegrationProfileEntity() *IntegrationProfileEntity {
 	this := IntegrationProfileEntity{}
 	return &this
 }
@@ -111,7 +111,7 @@ func (v *NullableIntegrationProfileEntity) Unset() {
 	v.isSet = false
 }
 
-func NewNullableIntegrationProfileEntity(val *IntegrationProfileEntity) *NullableIntegrationProfileEntity {
+func BuildNullableIntegrationProfileEntity(val *IntegrationProfileEntity) *NullableIntegrationProfileEntity {
 	return &NullableIntegrationProfileEntity{value: val, isSet: true}
 }
 

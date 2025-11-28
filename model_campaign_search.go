@@ -31,7 +31,7 @@ type _CampaignSearch CampaignSearch
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCampaignSearch(attributes map[string]interface{}) *CampaignSearch {
+func BuildCampaignSearch(attributes map[string]interface{}) *CampaignSearch {
 	this := CampaignSearch{}
 	this.Attributes = attributes
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableCampaignSearch) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCampaignSearch(val *CampaignSearch) *NullableCampaignSearch {
+func BuildNullableCampaignSearch(val *CampaignSearch) *NullableCampaignSearch {
 	return &NullableCampaignSearch{value: val, isSet: true}
 }
 

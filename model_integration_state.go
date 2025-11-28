@@ -34,7 +34,7 @@ type _IntegrationState IntegrationState
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewIntegrationState(session CustomerSession, profile CustomerProfile, event Event) *IntegrationState {
+func BuildIntegrationState(session CustomerSession, profile CustomerProfile, event Event) *IntegrationState {
 	this := IntegrationState{}
 	this.Session = session
 	this.Profile = profile
@@ -270,7 +270,7 @@ func (v *NullableIntegrationState) Unset() {
 	v.isSet = false
 }
 
-func NewNullableIntegrationState(val *IntegrationState) *NullableIntegrationState {
+func BuildNullableIntegrationState(val *IntegrationState) *NullableIntegrationState {
 	return &NullableIntegrationState{value: val, isSet: true}
 }
 

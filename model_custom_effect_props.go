@@ -43,7 +43,7 @@ type _CustomEffectProps CustomEffectProps
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCustomEffectProps(effectId int64, name string, payload map[string]interface{}) *CustomEffectProps {
+func BuildCustomEffectProps(effectId int64, name string, payload map[string]interface{}) *CustomEffectProps {
 	this := CustomEffectProps{}
 	this.EffectId = effectId
 	this.Name = name
@@ -349,7 +349,7 @@ func (v *NullableCustomEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCustomEffectProps(val *CustomEffectProps) *NullableCustomEffectProps {
+func BuildNullableCustomEffectProps(val *CustomEffectProps) *NullableCustomEffectProps {
 	return &NullableCustomEffectProps{value: val, isSet: true}
 }
 

@@ -47,7 +47,7 @@ type _OutgoingIntegrationTemplateWithConfigurationDetails OutgoingIntegrationTem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewOutgoingIntegrationTemplateWithConfigurationDetails(id int64, integrationType int64, title string, description string, payload string, method string, relativeUrl string, headers []string, policy map[string]interface{}) *OutgoingIntegrationTemplateWithConfigurationDetails {
+func BuildOutgoingIntegrationTemplateWithConfigurationDetails(id int64, integrationType int64, title string, description string, payload string, method string, relativeUrl string, headers []string, policy map[string]interface{}) *OutgoingIntegrationTemplateWithConfigurationDetails {
 	this := OutgoingIntegrationTemplateWithConfigurationDetails{}
 	this.Id = id
 	this.IntegrationType = integrationType
@@ -375,7 +375,7 @@ func (v *NullableOutgoingIntegrationTemplateWithConfigurationDetails) Unset() {
 	v.isSet = false
 }
 
-func NewNullableOutgoingIntegrationTemplateWithConfigurationDetails(val *OutgoingIntegrationTemplateWithConfigurationDetails) *NullableOutgoingIntegrationTemplateWithConfigurationDetails {
+func BuildNullableOutgoingIntegrationTemplateWithConfigurationDetails(val *OutgoingIntegrationTemplateWithConfigurationDetails) *NullableOutgoingIntegrationTemplateWithConfigurationDetails {
 	return &NullableOutgoingIntegrationTemplateWithConfigurationDetails{value: val, isSet: true}
 }
 

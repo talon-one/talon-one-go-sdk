@@ -27,7 +27,7 @@ type EvaluableCampaignIds struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewEvaluableCampaignIds() *EvaluableCampaignIds {
+func BuildEvaluableCampaignIds() *EvaluableCampaignIds {
 	this := EvaluableCampaignIds{}
 	return &this
 }
@@ -111,7 +111,7 @@ func (v *NullableEvaluableCampaignIds) Unset() {
 	v.isSet = false
 }
 
-func NewNullableEvaluableCampaignIds(val *EvaluableCampaignIds) *NullableEvaluableCampaignIds {
+func BuildNullableEvaluableCampaignIds(val *EvaluableCampaignIds) *NullableEvaluableCampaignIds {
 	return &NullableEvaluableCampaignIds{value: val, isSet: true}
 }
 

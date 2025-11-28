@@ -31,7 +31,7 @@ type _GenerateItemFilterDescription GenerateItemFilterDescription
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGenerateItemFilterDescription(itemFilter []map[string]interface{}) *GenerateItemFilterDescription {
+func BuildGenerateItemFilterDescription(itemFilter []map[string]interface{}) *GenerateItemFilterDescription {
 	this := GenerateItemFilterDescription{}
 	this.ItemFilter = itemFilter
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableGenerateItemFilterDescription) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGenerateItemFilterDescription(val *GenerateItemFilterDescription) *NullableGenerateItemFilterDescription {
+func BuildNullableGenerateItemFilterDescription(val *GenerateItemFilterDescription) *NullableGenerateItemFilterDescription {
 	return &NullableGenerateItemFilterDescription{value: val, isSet: true}
 }
 

@@ -43,7 +43,7 @@ type _IntegrationEventV2Request IntegrationEventV2Request
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewIntegrationEventV2Request(type_ string) *IntegrationEventV2Request {
+func BuildIntegrationEventV2Request(type_ string) *IntegrationEventV2Request {
 	this := IntegrationEventV2Request{}
 	this.Type = type_
 	return &this
@@ -365,7 +365,7 @@ func (v *NullableIntegrationEventV2Request) Unset() {
 	v.isSet = false
 }
 
-func NewNullableIntegrationEventV2Request(val *IntegrationEventV2Request) *NullableIntegrationEventV2Request {
+func BuildNullableIntegrationEventV2Request(val *IntegrationEventV2Request) *NullableIntegrationEventV2Request {
 	return &NullableIntegrationEventV2Request{value: val, isSet: true}
 }
 

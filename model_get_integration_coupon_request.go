@@ -33,7 +33,7 @@ type _GetIntegrationCouponRequest GetIntegrationCouponRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetIntegrationCouponRequest(campaignIds []int64, limit int64) *GetIntegrationCouponRequest {
+func BuildGetIntegrationCouponRequest(campaignIds []int64, limit int64) *GetIntegrationCouponRequest {
 	this := GetIntegrationCouponRequest{}
 	this.CampaignIds = campaignIds
 	this.Limit = limit
@@ -174,7 +174,7 @@ func (v *NullableGetIntegrationCouponRequest) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGetIntegrationCouponRequest(val *GetIntegrationCouponRequest) *NullableGetIntegrationCouponRequest {
+func BuildNullableGetIntegrationCouponRequest(val *GetIntegrationCouponRequest) *NullableGetIntegrationCouponRequest {
 	return &NullableGetIntegrationCouponRequest{value: val, isSet: true}
 }
 

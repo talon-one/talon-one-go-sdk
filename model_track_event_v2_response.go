@@ -39,7 +39,7 @@ type _TrackEventV2Response TrackEventV2Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewTrackEventV2Response(effects []Effect, createdCoupons []Coupon, createdReferrals []Referral) *TrackEventV2Response {
+func BuildTrackEventV2Response(effects []Effect, createdCoupons []Coupon, createdReferrals []Referral) *TrackEventV2Response {
 	this := TrackEventV2Response{}
 	this.Effects = effects
 	this.CreatedCoupons = createdCoupons
@@ -415,7 +415,7 @@ func (v *NullableTrackEventV2Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableTrackEventV2Response(val *TrackEventV2Response) *NullableTrackEventV2Response {
+func BuildNullableTrackEventV2Response(val *TrackEventV2Response) *NullableTrackEventV2Response {
 	return &NullableTrackEventV2Response{value: val, isSet: true}
 }
 

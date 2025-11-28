@@ -60,7 +60,7 @@ type _ApplicationSession ApplicationSession
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewApplicationSession(id int64, created time.Time, integrationId string, applicationId int64, coupon string, referral string, state string, cartItems []CartItem, discounts map[string]float32, totalDiscounts float32, total float32) *ApplicationSession {
+func BuildApplicationSession(id int64, created time.Time, integrationId string, applicationId int64, coupon string, referral string, state string, cartItems []CartItem, discounts map[string]float32, totalDiscounts float32, total float32) *ApplicationSession {
 	this := ApplicationSession{}
 	this.Id = id
 	this.Created = created
@@ -582,7 +582,7 @@ func (v *NullableApplicationSession) Unset() {
 	v.isSet = false
 }
 
-func NewNullableApplicationSession(val *ApplicationSession) *NullableApplicationSession {
+func BuildNullableApplicationSession(val *ApplicationSession) *NullableApplicationSession {
 	return &NullableApplicationSession{value: val, isSet: true}
 }
 

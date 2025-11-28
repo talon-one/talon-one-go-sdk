@@ -29,7 +29,7 @@ type ScimGroupMember struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewScimGroupMember() *ScimGroupMember {
+func BuildScimGroupMember() *ScimGroupMember {
 	this := ScimGroupMember{}
 	return &this
 }
@@ -148,7 +148,7 @@ func (v *NullableScimGroupMember) Unset() {
 	v.isSet = false
 }
 
-func NewNullableScimGroupMember(val *ScimGroupMember) *NullableScimGroupMember {
+func BuildNullableScimGroupMember(val *ScimGroupMember) *NullableScimGroupMember {
 	return &NullableScimGroupMember{value: val, isSet: true}
 }
 

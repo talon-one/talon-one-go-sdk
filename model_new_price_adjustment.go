@@ -44,7 +44,7 @@ type _NewPriceAdjustment NewPriceAdjustment
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewPriceAdjustment(priceType string, referenceId string) *NewPriceAdjustment {
+func BuildNewPriceAdjustment(priceType string, referenceId string) *NewPriceAdjustment {
 	this := NewPriceAdjustment{}
 	this.PriceType = priceType
 	this.ReferenceId = referenceId
@@ -368,7 +368,7 @@ func (v *NullableNewPriceAdjustment) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewPriceAdjustment(val *NewPriceAdjustment) *NullableNewPriceAdjustment {
+func BuildNullableNewPriceAdjustment(val *NewPriceAdjustment) *NullableNewPriceAdjustment {
 	return &NullableNewPriceAdjustment{value: val, isSet: true}
 }
 

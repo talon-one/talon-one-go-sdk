@@ -34,7 +34,7 @@ type _LoyaltyMembership LoyaltyMembership
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLoyaltyMembership(loyaltyProgramId int64) *LoyaltyMembership {
+func BuildLoyaltyMembership(loyaltyProgramId int64) *LoyaltyMembership {
 	this := LoyaltyMembership{}
 	this.LoyaltyProgramId = loyaltyProgramId
 	return &this
@@ -181,7 +181,7 @@ func (v *NullableLoyaltyMembership) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLoyaltyMembership(val *LoyaltyMembership) *NullableLoyaltyMembership {
+func BuildNullableLoyaltyMembership(val *LoyaltyMembership) *NullableLoyaltyMembership {
 	return &NullableLoyaltyMembership{value: val, isSet: true}
 }
 

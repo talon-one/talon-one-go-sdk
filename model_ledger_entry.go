@@ -50,7 +50,7 @@ type _LedgerEntry LedgerEntry
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLedgerEntry(id int64, created time.Time, accountId int64, loyaltyProgramId int64, eventId int64, amount int64, reason string, expiryDate time.Time) *LedgerEntry {
+func BuildLedgerEntry(id int64, created time.Time, accountId int64, loyaltyProgramId int64, eventId int64, amount int64, reason string, expiryDate time.Time) *LedgerEntry {
 	this := LedgerEntry{}
 	this.Id = id
 	this.Created = created
@@ -421,7 +421,7 @@ func (v *NullableLedgerEntry) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLedgerEntry(val *LedgerEntry) *NullableLedgerEntry {
+func BuildNullableLedgerEntry(val *LedgerEntry) *NullableLedgerEntry {
 	return &NullableLedgerEntry{value: val, isSet: true}
 }
 

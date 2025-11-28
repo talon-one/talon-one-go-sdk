@@ -27,7 +27,7 @@ type CouponValue struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCouponValue() *CouponValue {
+func BuildCouponValue() *CouponValue {
 	this := CouponValue{}
 	return &this
 }
@@ -111,7 +111,7 @@ func (v *NullableCouponValue) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCouponValue(val *CouponValue) *NullableCouponValue {
+func BuildNullableCouponValue(val *CouponValue) *NullableCouponValue {
 	return &NullableCouponValue{value: val, isSet: true}
 }
 

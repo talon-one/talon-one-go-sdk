@@ -42,7 +42,7 @@ type LoyaltyBalanceWithTier struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLoyaltyBalanceWithTier() *LoyaltyBalanceWithTier {
+func BuildLoyaltyBalanceWithTier() *LoyaltyBalanceWithTier {
 	this := LoyaltyBalanceWithTier{}
 	return &this
 }
@@ -406,7 +406,7 @@ func (v *NullableLoyaltyBalanceWithTier) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLoyaltyBalanceWithTier(val *LoyaltyBalanceWithTier) *NullableLoyaltyBalanceWithTier {
+func BuildNullableLoyaltyBalanceWithTier(val *LoyaltyBalanceWithTier) *NullableLoyaltyBalanceWithTier {
 	return &NullableLoyaltyBalanceWithTier{value: val, isSet: true}
 }
 

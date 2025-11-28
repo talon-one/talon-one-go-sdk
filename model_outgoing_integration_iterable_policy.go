@@ -33,7 +33,7 @@ type _OutgoingIntegrationIterablePolicy OutgoingIntegrationIterablePolicy
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewOutgoingIntegrationIterablePolicy(baseUrl string, apiKey string) *OutgoingIntegrationIterablePolicy {
+func BuildOutgoingIntegrationIterablePolicy(baseUrl string, apiKey string) *OutgoingIntegrationIterablePolicy {
 	this := OutgoingIntegrationIterablePolicy{}
 	this.BaseUrl = baseUrl
 	this.ApiKey = apiKey
@@ -172,7 +172,7 @@ func (v *NullableOutgoingIntegrationIterablePolicy) Unset() {
 	v.isSet = false
 }
 
-func NewNullableOutgoingIntegrationIterablePolicy(val *OutgoingIntegrationIterablePolicy) *NullableOutgoingIntegrationIterablePolicy {
+func BuildNullableOutgoingIntegrationIterablePolicy(val *OutgoingIntegrationIterablePolicy) *NullableOutgoingIntegrationIterablePolicy {
 	return &NullableOutgoingIntegrationIterablePolicy{value: val, isSet: true}
 }
 

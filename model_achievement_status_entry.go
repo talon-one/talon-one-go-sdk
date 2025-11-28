@@ -60,7 +60,7 @@ type _AchievementStatusEntry AchievementStatusEntry
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAchievementStatusEntry(id int64, created time.Time, name string, title string, description string, target float32) *AchievementStatusEntry {
+func BuildAchievementStatusEntry(id int64, created time.Time, name string, title string, description string, target float32) *AchievementStatusEntry {
 	this := AchievementStatusEntry{}
 	this.Id = id
 	this.Created = created
@@ -657,7 +657,7 @@ func (v *NullableAchievementStatusEntry) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAchievementStatusEntry(val *AchievementStatusEntry) *NullableAchievementStatusEntry {
+func BuildNullableAchievementStatusEntry(val *AchievementStatusEntry) *NullableAchievementStatusEntry {
 	return &NullableAchievementStatusEntry{value: val, isSet: true}
 }
 

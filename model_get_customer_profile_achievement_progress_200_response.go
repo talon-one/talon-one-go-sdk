@@ -31,7 +31,7 @@ type _GetCustomerProfileAchievementProgress200Response GetCustomerProfileAchieve
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetCustomerProfileAchievementProgress200Response(hasMore bool, data []AchievementProgressWithDefinition) *GetCustomerProfileAchievementProgress200Response {
+func BuildGetCustomerProfileAchievementProgress200Response(hasMore bool, data []AchievementProgressWithDefinition) *GetCustomerProfileAchievementProgress200Response {
 	this := GetCustomerProfileAchievementProgress200Response{}
 	this.HasMore = hasMore
 	this.Data = data
@@ -170,7 +170,7 @@ func (v *NullableGetCustomerProfileAchievementProgress200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGetCustomerProfileAchievementProgress200Response(val *GetCustomerProfileAchievementProgress200Response) *NullableGetCustomerProfileAchievementProgress200Response {
+func BuildNullableGetCustomerProfileAchievementProgress200Response(val *GetCustomerProfileAchievementProgress200Response) *NullableGetCustomerProfileAchievementProgress200Response {
 	return &NullableGetCustomerProfileAchievementProgress200Response{value: val, isSet: true}
 }
 

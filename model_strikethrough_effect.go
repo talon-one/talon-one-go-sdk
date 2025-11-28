@@ -53,7 +53,7 @@ type _StrikethroughEffect StrikethroughEffect
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewStrikethroughEffect(campaignId int64, rulesetId int64, ruleIndex int64, ruleName string, type_ string, props map[string]interface{}) *StrikethroughEffect {
+func BuildStrikethroughEffect(campaignId int64, rulesetId int64, ruleIndex int64, ruleName string, type_ string, props map[string]interface{}) *StrikethroughEffect {
 	this := StrikethroughEffect{}
 	this.CampaignId = campaignId
 	this.RulesetId = rulesetId
@@ -510,7 +510,7 @@ func (v *NullableStrikethroughEffect) Unset() {
 	v.isSet = false
 }
 
-func NewNullableStrikethroughEffect(val *StrikethroughEffect) *NullableStrikethroughEffect {
+func BuildNullableStrikethroughEffect(val *StrikethroughEffect) *NullableStrikethroughEffect {
 	return &NullableStrikethroughEffect{value: val, isSet: true}
 }
 

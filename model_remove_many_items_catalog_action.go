@@ -27,7 +27,7 @@ type RemoveManyItemsCatalogAction struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewRemoveManyItemsCatalogAction() *RemoveManyItemsCatalogAction {
+func BuildRemoveManyItemsCatalogAction() *RemoveManyItemsCatalogAction {
 	this := RemoveManyItemsCatalogAction{}
 	return &this
 }
@@ -111,7 +111,7 @@ func (v *NullableRemoveManyItemsCatalogAction) Unset() {
 	v.isSet = false
 }
 
-func NewNullableRemoveManyItemsCatalogAction(val *RemoveManyItemsCatalogAction) *NullableRemoveManyItemsCatalogAction {
+func BuildNullableRemoveManyItemsCatalogAction(val *RemoveManyItemsCatalogAction) *NullableRemoveManyItemsCatalogAction {
 	return &NullableRemoveManyItemsCatalogAction{value: val, isSet: true}
 }
 

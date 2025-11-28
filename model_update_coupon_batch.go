@@ -40,7 +40,7 @@ type UpdateCouponBatch struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdateCouponBatch() *UpdateCouponBatch {
+func BuildUpdateCouponBatch() *UpdateCouponBatch {
 	this := UpdateCouponBatch{}
 	return &this
 }
@@ -334,7 +334,7 @@ func (v *NullableUpdateCouponBatch) Unset() {
 	v.isSet = false
 }
 
-func NewNullableUpdateCouponBatch(val *UpdateCouponBatch) *NullableUpdateCouponBatch {
+func BuildNullableUpdateCouponBatch(val *UpdateCouponBatch) *NullableUpdateCouponBatch {
 	return &NullableUpdateCouponBatch{value: val, isSet: true}
 }
 

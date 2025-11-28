@@ -65,7 +65,7 @@ type _Account Account
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAccount(id int64, created time.Time, modified time.Time, companyName string, domainName string, state string, billingEmail string, applicationCount int64, userCount int64, campaignsActiveCount int64, campaignsInactiveCount int64) *Account {
+func BuildAccount(id int64, created time.Time, modified time.Time, companyName string, domainName string, state string, billingEmail string, applicationCount int64, userCount int64, campaignsActiveCount int64, campaignsInactiveCount int64) *Account {
 	this := Account{}
 	this.Id = id
 	this.Created = created
@@ -692,7 +692,7 @@ func (v *NullableAccount) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAccount(val *Account) *NullableAccount {
+func BuildNullableAccount(val *Account) *NullableAccount {
 	return &NullableAccount{value: val, isSet: true}
 }
 

@@ -58,7 +58,7 @@ type _CustomEffect CustomEffect
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCustomEffect(id int64, created time.Time, accountId int64, modified time.Time, applicationIds []int64, name string, title string, payload string, enabled bool, createdBy int64) *CustomEffect {
+func BuildCustomEffect(id int64, created time.Time, accountId int64, modified time.Time, applicationIds []int64, name string, title string, payload string, enabled bool, createdBy int64) *CustomEffect {
 	this := CustomEffect{}
 	this.Id = id
 	this.Created = created
@@ -553,7 +553,7 @@ func (v *NullableCustomEffect) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCustomEffect(val *CustomEffect) *NullableCustomEffect {
+func BuildNullableCustomEffect(val *CustomEffect) *NullableCustomEffect {
 	return &NullableCustomEffect{value: val, isSet: true}
 }
 

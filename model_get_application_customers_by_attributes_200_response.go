@@ -32,7 +32,7 @@ type _GetApplicationCustomersByAttributes200Response GetApplicationCustomersByAt
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetApplicationCustomersByAttributes200Response(data []ApplicationCustomer) *GetApplicationCustomersByAttributes200Response {
+func BuildGetApplicationCustomersByAttributes200Response(data []ApplicationCustomer) *GetApplicationCustomersByAttributes200Response {
 	this := GetApplicationCustomersByAttributes200Response{}
 	this.Data = data
 	return &this
@@ -214,7 +214,7 @@ func (v *NullableGetApplicationCustomersByAttributes200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGetApplicationCustomersByAttributes200Response(val *GetApplicationCustomersByAttributes200Response) *NullableGetApplicationCustomersByAttributes200Response {
+func BuildNullableGetApplicationCustomersByAttributes200Response(val *GetApplicationCustomersByAttributes200Response) *NullableGetApplicationCustomersByAttributes200Response {
 	return &NullableGetApplicationCustomersByAttributes200Response{value: val, isSet: true}
 }
 

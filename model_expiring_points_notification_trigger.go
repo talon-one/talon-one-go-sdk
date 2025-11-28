@@ -33,7 +33,7 @@ type _ExpiringPointsNotificationTrigger ExpiringPointsNotificationTrigger
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewExpiringPointsNotificationTrigger(amount int64, period string) *ExpiringPointsNotificationTrigger {
+func BuildExpiringPointsNotificationTrigger(amount int64, period string) *ExpiringPointsNotificationTrigger {
 	this := ExpiringPointsNotificationTrigger{}
 	this.Amount = amount
 	this.Period = period
@@ -172,7 +172,7 @@ func (v *NullableExpiringPointsNotificationTrigger) Unset() {
 	v.isSet = false
 }
 
-func NewNullableExpiringPointsNotificationTrigger(val *ExpiringPointsNotificationTrigger) *NullableExpiringPointsNotificationTrigger {
+func BuildNullableExpiringPointsNotificationTrigger(val *ExpiringPointsNotificationTrigger) *NullableExpiringPointsNotificationTrigger {
 	return &NullableExpiringPointsNotificationTrigger{value: val, isSet: true}
 }
 

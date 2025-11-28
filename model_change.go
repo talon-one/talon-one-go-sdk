@@ -46,7 +46,7 @@ type _Change Change
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewChange(id int64, created time.Time, userId int64, entity string) *Change {
+func BuildChange(id int64, created time.Time, userId int64, entity string) *Change {
 	this := Change{}
 	this.Id = id
 	this.Created = created
@@ -379,7 +379,7 @@ func (v *NullableChange) Unset() {
 	v.isSet = false
 }
 
-func NewNullableChange(val *Change) *NullableChange {
+func BuildNullableChange(val *Change) *NullableChange {
 	return &NullableChange{value: val, isSet: true}
 }
 

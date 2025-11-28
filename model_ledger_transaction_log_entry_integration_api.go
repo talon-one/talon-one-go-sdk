@@ -58,7 +58,7 @@ type _LedgerTransactionLogEntryIntegrationAPI LedgerTransactionLogEntryIntegrati
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLedgerTransactionLogEntryIntegrationAPI(transactionUUID string, created time.Time, programId int64, type_ string, name string, startDate string, expiryDate string, subledgerId string, amount float32, id int64) *LedgerTransactionLogEntryIntegrationAPI {
+func BuildLedgerTransactionLogEntryIntegrationAPI(transactionUUID string, created time.Time, programId int64, type_ string, name string, startDate string, expiryDate string, subledgerId string, amount float32, id int64) *LedgerTransactionLogEntryIntegrationAPI {
 	this := LedgerTransactionLogEntryIntegrationAPI{}
 	this.TransactionUUID = transactionUUID
 	this.Created = created
@@ -553,7 +553,7 @@ func (v *NullableLedgerTransactionLogEntryIntegrationAPI) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLedgerTransactionLogEntryIntegrationAPI(val *LedgerTransactionLogEntryIntegrationAPI) *NullableLedgerTransactionLogEntryIntegrationAPI {
+func BuildNullableLedgerTransactionLogEntryIntegrationAPI(val *LedgerTransactionLogEntryIntegrationAPI) *NullableLedgerTransactionLogEntryIntegrationAPI {
 	return &NullableLedgerTransactionLogEntryIntegrationAPI{value: val, isSet: true}
 }
 

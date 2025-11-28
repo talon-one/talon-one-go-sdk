@@ -43,7 +43,7 @@ type _TemplateArgDef TemplateArgDef
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewTemplateArgDef(type_ string, title string, ui map[string]interface{}) *TemplateArgDef {
+func BuildTemplateArgDef(type_ string, title string, ui map[string]interface{}) *TemplateArgDef {
 	this := TemplateArgDef{}
 	this.Type = type_
 	this.Title = title
@@ -349,7 +349,7 @@ func (v *NullableTemplateArgDef) Unset() {
 	v.isSet = false
 }
 
-func NewNullableTemplateArgDef(val *TemplateArgDef) *NullableTemplateArgDef {
+func BuildNullableTemplateArgDef(val *TemplateArgDef) *NullableTemplateArgDef {
 	return &NullableTemplateArgDef{value: val, isSet: true}
 }
 

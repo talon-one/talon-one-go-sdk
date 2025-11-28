@@ -31,7 +31,7 @@ type _NewReturn NewReturn
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewReturn(returnedCartItems []ReturnedCartItem) *NewReturn {
+func BuildNewReturn(returnedCartItems []ReturnedCartItem) *NewReturn {
 	this := NewReturn{}
 	this.ReturnedCartItems = returnedCartItems
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableNewReturn) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewReturn(val *NewReturn) *NullableNewReturn {
+func BuildNullableNewReturn(val *NewReturn) *NullableNewReturn {
 	return &NullableNewReturn{value: val, isSet: true}
 }
 

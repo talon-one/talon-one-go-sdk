@@ -43,7 +43,7 @@ type _SetDiscountPerAdditionalCostPerItemEffectProps SetDiscountPerAdditionalCos
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSetDiscountPerAdditionalCostPerItemEffectProps(name string, additionalCostId int64, value float32, position float32, additionalCost string) *SetDiscountPerAdditionalCostPerItemEffectProps {
+func BuildSetDiscountPerAdditionalCostPerItemEffectProps(name string, additionalCostId int64, value float32, position float32, additionalCost string) *SetDiscountPerAdditionalCostPerItemEffectProps {
 	this := SetDiscountPerAdditionalCostPerItemEffectProps{}
 	this.Name = name
 	this.AdditionalCostId = additionalCostId
@@ -333,7 +333,7 @@ func (v *NullableSetDiscountPerAdditionalCostPerItemEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableSetDiscountPerAdditionalCostPerItemEffectProps(val *SetDiscountPerAdditionalCostPerItemEffectProps) *NullableSetDiscountPerAdditionalCostPerItemEffectProps {
+func BuildNullableSetDiscountPerAdditionalCostPerItemEffectProps(val *SetDiscountPerAdditionalCostPerItemEffectProps) *NullableSetDiscountPerAdditionalCostPerItemEffectProps {
 	return &NullableSetDiscountPerAdditionalCostPerItemEffectProps{value: val, isSet: true}
 }
 

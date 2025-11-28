@@ -33,7 +33,7 @@ type _TransferLoyaltyCard TransferLoyaltyCard
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewTransferLoyaltyCard(newCardIdentifier string) *TransferLoyaltyCard {
+func BuildTransferLoyaltyCard(newCardIdentifier string) *TransferLoyaltyCard {
 	this := TransferLoyaltyCard{}
 	this.NewCardIdentifier = newCardIdentifier
 	return &this
@@ -180,7 +180,7 @@ func (v *NullableTransferLoyaltyCard) Unset() {
 	v.isSet = false
 }
 
-func NewNullableTransferLoyaltyCard(val *TransferLoyaltyCard) *NullableTransferLoyaltyCard {
+func BuildNullableTransferLoyaltyCard(val *TransferLoyaltyCard) *NullableTransferLoyaltyCard {
 	return &NullableTransferLoyaltyCard{value: val, isSet: true}
 }
 

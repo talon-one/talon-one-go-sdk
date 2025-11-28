@@ -33,7 +33,7 @@ type UpdateRole struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdateRole() *UpdateRole {
+func BuildUpdateRole() *UpdateRole {
 	this := UpdateRole{}
 	return &this
 }
@@ -222,7 +222,7 @@ func (v *NullableUpdateRole) Unset() {
 	v.isSet = false
 }
 
-func NewNullableUpdateRole(val *UpdateRole) *NullableUpdateRole {
+func BuildNullableUpdateRole(val *UpdateRole) *NullableUpdateRole {
 	return &NullableUpdateRole{value: val, isSet: true}
 }
 

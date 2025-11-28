@@ -78,7 +78,7 @@ type _InventoryCoupon InventoryCoupon
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewInventoryCoupon(id int64, created time.Time, campaignId int64, usageCounter int64, profileRedemptionCount int64, state string) *InventoryCoupon {
+func BuildInventoryCoupon(id int64, created time.Time, campaignId int64, usageCounter int64, profileRedemptionCount int64, state string) *InventoryCoupon {
 	this := InventoryCoupon{}
 	this.Id = id
 	this.Created = created
@@ -963,7 +963,7 @@ func (v *NullableInventoryCoupon) Unset() {
 	v.isSet = false
 }
 
-func NewNullableInventoryCoupon(val *InventoryCoupon) *NullableInventoryCoupon {
+func BuildNullableInventoryCoupon(val *InventoryCoupon) *NullableInventoryCoupon {
 	return &NullableInventoryCoupon{value: val, isSet: true}
 }
 

@@ -34,7 +34,7 @@ type _EntityWithTalangVisibleID EntityWithTalangVisibleID
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewEntityWithTalangVisibleID(id int64, created time.Time) *EntityWithTalangVisibleID {
+func BuildEntityWithTalangVisibleID(id int64, created time.Time) *EntityWithTalangVisibleID {
 	this := EntityWithTalangVisibleID{}
 	this.Id = id
 	this.Created = created
@@ -173,7 +173,7 @@ func (v *NullableEntityWithTalangVisibleID) Unset() {
 	v.isSet = false
 }
 
-func NewNullableEntityWithTalangVisibleID(val *EntityWithTalangVisibleID) *NullableEntityWithTalangVisibleID {
+func BuildNullableEntityWithTalangVisibleID(val *EntityWithTalangVisibleID) *NullableEntityWithTalangVisibleID {
 	return &NullableEntityWithTalangVisibleID{value: val, isSet: true}
 }
 

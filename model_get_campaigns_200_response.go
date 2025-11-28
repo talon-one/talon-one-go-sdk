@@ -31,7 +31,7 @@ type _GetCampaigns200Response GetCampaigns200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetCampaigns200Response(totalResultSize int64, data []Campaign) *GetCampaigns200Response {
+func BuildGetCampaigns200Response(totalResultSize int64, data []Campaign) *GetCampaigns200Response {
 	this := GetCampaigns200Response{}
 	this.TotalResultSize = totalResultSize
 	this.Data = data
@@ -170,7 +170,7 @@ func (v *NullableGetCampaigns200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGetCampaigns200Response(val *GetCampaigns200Response) *NullableGetCampaigns200Response {
+func BuildNullableGetCampaigns200Response(val *GetCampaigns200Response) *NullableGetCampaigns200Response {
 	return &NullableGetCampaigns200Response{value: val, isSet: true}
 }
 

@@ -31,7 +31,7 @@ type _GetApplicationSessions200Response GetApplicationSessions200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetApplicationSessions200Response(data []ApplicationSession) *GetApplicationSessions200Response {
+func BuildGetApplicationSessions200Response(data []ApplicationSession) *GetApplicationSessions200Response {
 	this := GetApplicationSessions200Response{}
 	this.Data = data
 	return &this
@@ -178,7 +178,7 @@ func (v *NullableGetApplicationSessions200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGetApplicationSessions200Response(val *GetApplicationSessions200Response) *NullableGetApplicationSessions200Response {
+func BuildNullableGetApplicationSessions200Response(val *GetApplicationSessions200Response) *NullableGetApplicationSessions200Response {
 	return &NullableGetApplicationSessions200Response{value: val, isSet: true}
 }
 

@@ -34,7 +34,7 @@ type _IntegrationEntity IntegrationEntity
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewIntegrationEntity(integrationId string, created time.Time) *IntegrationEntity {
+func BuildIntegrationEntity(integrationId string, created time.Time) *IntegrationEntity {
 	this := IntegrationEntity{}
 	this.IntegrationId = integrationId
 	this.Created = created
@@ -173,7 +173,7 @@ func (v *NullableIntegrationEntity) Unset() {
 	v.isSet = false
 }
 
-func NewNullableIntegrationEntity(val *IntegrationEntity) *NullableIntegrationEntity {
+func BuildNullableIntegrationEntity(val *IntegrationEntity) *NullableIntegrationEntity {
 	return &NullableIntegrationEntity{value: val, isSet: true}
 }
 

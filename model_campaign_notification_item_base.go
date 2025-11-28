@@ -31,7 +31,7 @@ type _CampaignNotificationItemBase CampaignNotificationItemBase
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCampaignNotificationItemBase(event string) *CampaignNotificationItemBase {
+func BuildCampaignNotificationItemBase(event string) *CampaignNotificationItemBase {
 	this := CampaignNotificationItemBase{}
 	this.Event = event
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableCampaignNotificationItemBase) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCampaignNotificationItemBase(val *CampaignNotificationItemBase) *NullableCampaignNotificationItemBase {
+func BuildNullableCampaignNotificationItemBase(val *CampaignNotificationItemBase) *NullableCampaignNotificationItemBase {
 	return &NullableCampaignNotificationItemBase{value: val, isSet: true}
 }
 

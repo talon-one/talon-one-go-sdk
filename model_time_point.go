@@ -41,7 +41,7 @@ type _TimePoint TimePoint
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewTimePoint(hour int64, minute int64, second int64) *TimePoint {
+func BuildTimePoint(hour int64, minute int64, second int64) *TimePoint {
 	this := TimePoint{}
 	this.Hour = hour
 	this.Minute = minute
@@ -312,7 +312,7 @@ func (v *NullableTimePoint) Unset() {
 	v.isSet = false
 }
 
-func NewNullableTimePoint(val *TimePoint) *NullableTimePoint {
+func BuildNullableTimePoint(val *TimePoint) *NullableTimePoint {
 	return &NullableTimePoint{value: val, isSet: true}
 }
 

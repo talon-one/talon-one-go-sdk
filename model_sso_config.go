@@ -33,7 +33,7 @@ type _SSOConfig SSOConfig
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSSOConfig(enforced bool) *SSOConfig {
+func BuildSSOConfig(enforced bool) *SSOConfig {
 	this := SSOConfig{}
 	this.Enforced = enforced
 	return &this
@@ -180,7 +180,7 @@ func (v *NullableSSOConfig) Unset() {
 	v.isSet = false
 }
 
-func NewNullableSSOConfig(val *SSOConfig) *NullableSSOConfig {
+func BuildNullableSSOConfig(val *SSOConfig) *NullableSSOConfig {
 	return &NullableSSOConfig{value: val, isSet: true}
 }
 

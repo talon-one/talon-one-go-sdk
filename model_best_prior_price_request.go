@@ -39,7 +39,7 @@ type _BestPriorPriceRequest BestPriorPriceRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewBestPriorPriceRequest(skus []string, timeframeEndDate time.Time, timeframe int32, strictEndDate bool) *BestPriorPriceRequest {
+func BuildBestPriorPriceRequest(skus []string, timeframeEndDate time.Time, timeframe int32, strictEndDate bool) *BestPriorPriceRequest {
 	this := BestPriorPriceRequest{}
 	this.Skus = skus
 	this.TimeframeEndDate = timeframeEndDate
@@ -267,7 +267,7 @@ func (v *NullableBestPriorPriceRequest) Unset() {
 	v.isSet = false
 }
 
-func NewNullableBestPriorPriceRequest(val *BestPriorPriceRequest) *NullableBestPriorPriceRequest {
+func BuildNullableBestPriorPriceRequest(val *BestPriorPriceRequest) *NullableBestPriorPriceRequest {
 	return &NullableBestPriorPriceRequest{value: val, isSet: true}
 }
 

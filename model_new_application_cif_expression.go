@@ -31,7 +31,7 @@ type NewApplicationCIFExpression struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewApplicationCIFExpression() *NewApplicationCIFExpression {
+func BuildNewApplicationCIFExpression() *NewApplicationCIFExpression {
 	this := NewApplicationCIFExpression{}
 	return &this
 }
@@ -185,7 +185,7 @@ func (v *NullableNewApplicationCIFExpression) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewApplicationCIFExpression(val *NewApplicationCIFExpression) *NullableNewApplicationCIFExpression {
+func BuildNullableNewApplicationCIFExpression(val *NewApplicationCIFExpression) *NullableNewApplicationCIFExpression {
 	return &NullableNewApplicationCIFExpression{value: val, isSet: true}
 }
 

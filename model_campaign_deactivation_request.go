@@ -31,7 +31,7 @@ type _CampaignDeactivationRequest CampaignDeactivationRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCampaignDeactivationRequest(userIds []int64) *CampaignDeactivationRequest {
+func BuildCampaignDeactivationRequest(userIds []int64) *CampaignDeactivationRequest {
 	this := CampaignDeactivationRequest{}
 	this.UserIds = userIds
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableCampaignDeactivationRequest) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCampaignDeactivationRequest(val *CampaignDeactivationRequest) *NullableCampaignDeactivationRequest {
+func BuildNullableCampaignDeactivationRequest(val *CampaignDeactivationRequest) *NullableCampaignDeactivationRequest {
 	return &NullableCampaignDeactivationRequest{value: val, isSet: true}
 }
 

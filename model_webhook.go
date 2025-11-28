@@ -58,7 +58,7 @@ type _Webhook Webhook
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewWebhook(id int64, created time.Time, modified time.Time, applicationIds []int64, title string, draft bool, verb string, url string, headers []string, params []TemplateArgDef, enabled bool) *Webhook {
+func BuildWebhook(id int64, created time.Time, modified time.Time, applicationIds []int64, title string, draft bool, verb string, url string, headers []string, params []TemplateArgDef, enabled bool) *Webhook {
 	this := Webhook{}
 	this.Id = id
 	this.Created = created
@@ -545,7 +545,7 @@ func (v *NullableWebhook) Unset() {
 	v.isSet = false
 }
 
-func NewNullableWebhook(val *Webhook) *NullableWebhook {
+func BuildNullableWebhook(val *Webhook) *NullableWebhook {
 	return &NullableWebhook{value: val, isSet: true}
 }
 

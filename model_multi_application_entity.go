@@ -31,7 +31,7 @@ type _MultiApplicationEntity MultiApplicationEntity
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewMultiApplicationEntity(applicationIds []int64) *MultiApplicationEntity {
+func BuildMultiApplicationEntity(applicationIds []int64) *MultiApplicationEntity {
 	this := MultiApplicationEntity{}
 	this.ApplicationIds = applicationIds
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableMultiApplicationEntity) Unset() {
 	v.isSet = false
 }
 
-func NewNullableMultiApplicationEntity(val *MultiApplicationEntity) *NullableMultiApplicationEntity {
+func BuildNullableMultiApplicationEntity(val *MultiApplicationEntity) *NullableMultiApplicationEntity {
 	return &NullableMultiApplicationEntity{value: val, isSet: true}
 }
 

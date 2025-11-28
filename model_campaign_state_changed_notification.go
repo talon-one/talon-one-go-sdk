@@ -35,7 +35,7 @@ type _CampaignStateChangedNotification CampaignStateChangedNotification
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCampaignStateChangedNotification(notificationType string, totalResultSize int64) *CampaignStateChangedNotification {
+func BuildCampaignStateChangedNotification(notificationType string, totalResultSize int64) *CampaignStateChangedNotification {
 	this := CampaignStateChangedNotification{}
 	this.NotificationType = notificationType
 	this.TotalResultSize = totalResultSize
@@ -209,7 +209,7 @@ func (v *NullableCampaignStateChangedNotification) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCampaignStateChangedNotification(val *CampaignStateChangedNotification) *NullableCampaignStateChangedNotification {
+func BuildNullableCampaignStateChangedNotification(val *CampaignStateChangedNotification) *NullableCampaignStateChangedNotification {
 	return &NullableCampaignStateChangedNotification{value: val, isSet: true}
 }
 

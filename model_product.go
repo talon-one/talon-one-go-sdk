@@ -31,7 +31,7 @@ type _Product Product
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewProduct(name string) *Product {
+func BuildProduct(name string) *Product {
 	this := Product{}
 	this.Name = name
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableProduct) Unset() {
 	v.isSet = false
 }
 
-func NewNullableProduct(val *Product) *NullableProduct {
+func BuildNullableProduct(val *Product) *NullableProduct {
 	return &NullableProduct{value: val, isSet: true}
 }
 

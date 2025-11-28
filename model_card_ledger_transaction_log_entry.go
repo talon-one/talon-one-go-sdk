@@ -58,7 +58,7 @@ type _CardLedgerTransactionLogEntry CardLedgerTransactionLogEntry
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCardLedgerTransactionLogEntry(transactionUUID string, created time.Time, programId int64, cardIdentifier string, type_ string, name string, startDate string, expiryDate string, subledgerId string, amount float32, id int64) *CardLedgerTransactionLogEntry {
+func BuildCardLedgerTransactionLogEntry(transactionUUID string, created time.Time, programId int64, cardIdentifier string, type_ string, name string, startDate string, expiryDate string, subledgerId string, amount float32, id int64) *CardLedgerTransactionLogEntry {
 	this := CardLedgerTransactionLogEntry{}
 	this.TransactionUUID = transactionUUID
 	this.Created = created
@@ -545,7 +545,7 @@ func (v *NullableCardLedgerTransactionLogEntry) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCardLedgerTransactionLogEntry(val *CardLedgerTransactionLogEntry) *NullableCardLedgerTransactionLogEntry {
+func BuildNullableCardLedgerTransactionLogEntry(val *CardLedgerTransactionLogEntry) *NullableCardLedgerTransactionLogEntry {
 	return &NullableCardLedgerTransactionLogEntry{value: val, isSet: true}
 }
 

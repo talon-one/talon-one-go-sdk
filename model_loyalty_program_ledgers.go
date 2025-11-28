@@ -42,7 +42,7 @@ type _LoyaltyProgramLedgers LoyaltyProgramLedgers
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLoyaltyProgramLedgers(id int64, title string, name string, ledger LedgerInfo) *LoyaltyProgramLedgers {
+func BuildLoyaltyProgramLedgers(id int64, title string, name string, ledger LedgerInfo) *LoyaltyProgramLedgers {
 	this := LoyaltyProgramLedgers{}
 	this.Id = id
 	this.Title = title
@@ -305,7 +305,7 @@ func (v *NullableLoyaltyProgramLedgers) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLoyaltyProgramLedgers(val *LoyaltyProgramLedgers) *NullableLoyaltyProgramLedgers {
+func BuildNullableLoyaltyProgramLedgers(val *LoyaltyProgramLedgers) *NullableLoyaltyProgramLedgers {
 	return &NullableLoyaltyProgramLedgers{value: val, isSet: true}
 }
 

@@ -34,7 +34,7 @@ type _CouponEntity CouponEntity
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCouponEntity(id int64, created time.Time) *CouponEntity {
+func BuildCouponEntity(id int64, created time.Time) *CouponEntity {
 	this := CouponEntity{}
 	this.Id = id
 	this.Created = created
@@ -173,7 +173,7 @@ func (v *NullableCouponEntity) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCouponEntity(val *CouponEntity) *NullableCouponEntity {
+func BuildNullableCouponEntity(val *CouponEntity) *NullableCouponEntity {
 	return &NullableCouponEntity{value: val, isSet: true}
 }
 

@@ -35,7 +35,7 @@ type _NewNotificationWebhook NewNotificationWebhook
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewNotificationWebhook(url string, headers []string) *NewNotificationWebhook {
+func BuildNewNotificationWebhook(url string, headers []string) *NewNotificationWebhook {
 	this := NewNotificationWebhook{}
 	this.Url = url
 	this.Headers = headers
@@ -213,7 +213,7 @@ func (v *NullableNewNotificationWebhook) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewNotificationWebhook(val *NewNotificationWebhook) *NullableNewNotificationWebhook {
+func BuildNullableNewNotificationWebhook(val *NewNotificationWebhook) *NullableNewNotificationWebhook {
 	return &NullableNewNotificationWebhook{value: val, isSet: true}
 }
 

@@ -40,7 +40,7 @@ type _AchievementProgress AchievementProgress
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAchievementProgress(status string, progress float32) *AchievementProgress {
+func BuildAchievementProgress(status string, progress float32) *AchievementProgress {
 	this := AchievementProgress{}
 	this.Status = status
 	this.Progress = progress
@@ -284,7 +284,7 @@ func (v *NullableAchievementProgress) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAchievementProgress(val *AchievementProgress) *NullableAchievementProgress {
+func BuildNullableAchievementProgress(val *AchievementProgress) *NullableAchievementProgress {
 	return &NullableAchievementProgress{value: val, isSet: true}
 }
 

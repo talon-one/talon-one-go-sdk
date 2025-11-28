@@ -31,7 +31,7 @@ type _AcceptCouponEffectProps AcceptCouponEffectProps
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAcceptCouponEffectProps(value string) *AcceptCouponEffectProps {
+func BuildAcceptCouponEffectProps(value string) *AcceptCouponEffectProps {
 	this := AcceptCouponEffectProps{}
 	this.Value = value
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableAcceptCouponEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAcceptCouponEffectProps(val *AcceptCouponEffectProps) *NullableAcceptCouponEffectProps {
+func BuildNullableAcceptCouponEffectProps(val *AcceptCouponEffectProps) *NullableAcceptCouponEffectProps {
 	return &NullableAcceptCouponEffectProps{value: val, isSet: true}
 }
 

@@ -32,7 +32,7 @@ type _CatalogSyncRequest CatalogSyncRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCatalogSyncRequest(actions []map[string]interface{}) *CatalogSyncRequest {
+func BuildCatalogSyncRequest(actions []map[string]interface{}) *CatalogSyncRequest {
 	this := CatalogSyncRequest{}
 	this.Actions = actions
 	return &this
@@ -179,7 +179,7 @@ func (v *NullableCatalogSyncRequest) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCatalogSyncRequest(val *CatalogSyncRequest) *NullableCatalogSyncRequest {
+func BuildNullableCatalogSyncRequest(val *CatalogSyncRequest) *NullableCatalogSyncRequest {
 	return &NullableCatalogSyncRequest{value: val, isSet: true}
 }
 

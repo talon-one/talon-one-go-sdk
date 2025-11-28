@@ -31,7 +31,7 @@ type _AccountEntity AccountEntity
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAccountEntity(accountId int64) *AccountEntity {
+func BuildAccountEntity(accountId int64) *AccountEntity {
 	this := AccountEntity{}
 	this.AccountId = accountId
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableAccountEntity) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAccountEntity(val *AccountEntity) *NullableAccountEntity {
+func BuildNullableAccountEntity(val *AccountEntity) *NullableAccountEntity {
 	return &NullableAccountEntity{value: val, isSet: true}
 }
 

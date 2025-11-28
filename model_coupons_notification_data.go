@@ -40,7 +40,7 @@ type _CouponsNotificationData CouponsNotificationData
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCouponsNotificationData(typeOfChange string, operation string, employeeName string, notificationType string) *CouponsNotificationData {
+func BuildCouponsNotificationData(typeOfChange string, operation string, employeeName string, notificationType string) *CouponsNotificationData {
 	this := CouponsNotificationData{}
 	this.TypeOfChange = typeOfChange
 	this.Operation = operation
@@ -303,7 +303,7 @@ func (v *NullableCouponsNotificationData) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCouponsNotificationData(val *CouponsNotificationData) *NullableCouponsNotificationData {
+func BuildNullableCouponsNotificationData(val *CouponsNotificationData) *NullableCouponsNotificationData {
 	return &NullableCouponsNotificationData{value: val, isSet: true}
 }
 

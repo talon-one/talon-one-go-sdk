@@ -58,7 +58,7 @@ type _NewCoupons NewCoupons
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewCoupons(numberOfCoupons int64) *NewCoupons {
+func BuildNewCoupons(numberOfCoupons int64) *NewCoupons {
 	this := NewCoupons{}
 	this.NumberOfCoupons = numberOfCoupons
 	var isReservationMandatory bool = false
@@ -629,7 +629,7 @@ func (v *NullableNewCoupons) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewCoupons(val *NewCoupons) *NullableNewCoupons {
+func BuildNullableNewCoupons(val *NewCoupons) *NullableNewCoupons {
 	return &NullableNewCoupons{value: val, isSet: true}
 }
 

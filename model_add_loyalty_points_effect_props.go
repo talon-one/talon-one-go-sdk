@@ -58,7 +58,7 @@ type _AddLoyaltyPointsEffectProps AddLoyaltyPointsEffectProps
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAddLoyaltyPointsEffectProps(name string, programId int64, subLedgerId string, value float32, recipientIntegrationId string, transactionUUID string) *AddLoyaltyPointsEffectProps {
+func BuildAddLoyaltyPointsEffectProps(name string, programId int64, subLedgerId string, value float32, recipientIntegrationId string, transactionUUID string) *AddLoyaltyPointsEffectProps {
 	this := AddLoyaltyPointsEffectProps{}
 	this.Name = name
 	this.ProgramId = programId
@@ -585,7 +585,7 @@ func (v *NullableAddLoyaltyPointsEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAddLoyaltyPointsEffectProps(val *AddLoyaltyPointsEffectProps) *NullableAddLoyaltyPointsEffectProps {
+func BuildNullableAddLoyaltyPointsEffectProps(val *AddLoyaltyPointsEffectProps) *NullableAddLoyaltyPointsEffectProps {
 	return &NullableAddLoyaltyPointsEffectProps{value: val, isSet: true}
 }
 

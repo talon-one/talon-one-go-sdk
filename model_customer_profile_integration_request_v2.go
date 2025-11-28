@@ -33,7 +33,7 @@ type CustomerProfileIntegrationRequestV2 struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCustomerProfileIntegrationRequestV2() *CustomerProfileIntegrationRequestV2 {
+func BuildCustomerProfileIntegrationRequestV2() *CustomerProfileIntegrationRequestV2 {
 	this := CustomerProfileIntegrationRequestV2{}
 	return &this
 }
@@ -222,7 +222,7 @@ func (v *NullableCustomerProfileIntegrationRequestV2) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCustomerProfileIntegrationRequestV2(val *CustomerProfileIntegrationRequestV2) *NullableCustomerProfileIntegrationRequestV2 {
+func BuildNullableCustomerProfileIntegrationRequestV2(val *CustomerProfileIntegrationRequestV2) *NullableCustomerProfileIntegrationRequestV2 {
 	return &NullableCustomerProfileIntegrationRequestV2{value: val, isSet: true}
 }
 

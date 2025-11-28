@@ -40,7 +40,7 @@ type _CampaignStoreBudget CampaignStoreBudget
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCampaignStoreBudget(id int64, created time.Time, campaignId int64, storeId int64, limits []CampaignStoreBudgetLimitConfig) *CampaignStoreBudget {
+func BuildCampaignStoreBudget(id int64, created time.Time, campaignId int64, storeId int64, limits []CampaignStoreBudgetLimitConfig) *CampaignStoreBudget {
 	this := CampaignStoreBudget{}
 	this.Id = id
 	this.Created = created
@@ -260,7 +260,7 @@ func (v *NullableCampaignStoreBudget) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCampaignStoreBudget(val *CampaignStoreBudget) *NullableCampaignStoreBudget {
+func BuildNullableCampaignStoreBudget(val *CampaignStoreBudget) *NullableCampaignStoreBudget {
 	return &NullableCampaignStoreBudget{value: val, isSet: true}
 }
 

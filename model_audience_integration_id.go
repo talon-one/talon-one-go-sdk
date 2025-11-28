@@ -27,7 +27,7 @@ type AudienceIntegrationID struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAudienceIntegrationID() *AudienceIntegrationID {
+func BuildAudienceIntegrationID() *AudienceIntegrationID {
 	this := AudienceIntegrationID{}
 	return &this
 }
@@ -111,7 +111,7 @@ func (v *NullableAudienceIntegrationID) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAudienceIntegrationID(val *AudienceIntegrationID) *NullableAudienceIntegrationID {
+func BuildNullableAudienceIntegrationID(val *AudienceIntegrationID) *NullableAudienceIntegrationID {
 	return &NullableAudienceIntegrationID{value: val, isSet: true}
 }
 

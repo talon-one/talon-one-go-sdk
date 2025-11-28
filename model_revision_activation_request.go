@@ -34,7 +34,7 @@ type _RevisionActivationRequest RevisionActivationRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewRevisionActivationRequest(userIds []int64) *RevisionActivationRequest {
+func BuildRevisionActivationRequest(userIds []int64) *RevisionActivationRequest {
 	this := RevisionActivationRequest{}
 	this.UserIds = userIds
 	return &this
@@ -181,7 +181,7 @@ func (v *NullableRevisionActivationRequest) Unset() {
 	v.isSet = false
 }
 
-func NewNullableRevisionActivationRequest(val *RevisionActivationRequest) *NullableRevisionActivationRequest {
+func BuildNullableRevisionActivationRequest(val *RevisionActivationRequest) *NullableRevisionActivationRequest {
 	return &NullableRevisionActivationRequest{value: val, isSet: true}
 }
 

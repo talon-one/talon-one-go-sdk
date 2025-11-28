@@ -42,7 +42,7 @@ type _ApplicationReferee ApplicationReferee
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewApplicationReferee(applicationId int64, sessionId string, advocateIntegrationId string, friendIntegrationId string, code string, created time.Time) *ApplicationReferee {
+func BuildApplicationReferee(applicationId int64, sessionId string, advocateIntegrationId string, friendIntegrationId string, code string, created time.Time) *ApplicationReferee {
 	this := ApplicationReferee{}
 	this.ApplicationId = applicationId
 	this.SessionId = sessionId
@@ -289,7 +289,7 @@ func (v *NullableApplicationReferee) Unset() {
 	v.isSet = false
 }
 
-func NewNullableApplicationReferee(val *ApplicationReferee) *NullableApplicationReferee {
+func BuildNullableApplicationReferee(val *ApplicationReferee) *NullableApplicationReferee {
 	return &NullableApplicationReferee{value: val, isSet: true}
 }
 

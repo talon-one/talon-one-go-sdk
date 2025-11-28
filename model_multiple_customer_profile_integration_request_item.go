@@ -33,7 +33,7 @@ type _MultipleCustomerProfileIntegrationRequestItem MultipleCustomerProfileInteg
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewMultipleCustomerProfileIntegrationRequestItem(integrationId string) *MultipleCustomerProfileIntegrationRequestItem {
+func BuildMultipleCustomerProfileIntegrationRequestItem(integrationId string) *MultipleCustomerProfileIntegrationRequestItem {
 	this := MultipleCustomerProfileIntegrationRequestItem{}
 	this.IntegrationId = integrationId
 	return &this
@@ -180,7 +180,7 @@ func (v *NullableMultipleCustomerProfileIntegrationRequestItem) Unset() {
 	v.isSet = false
 }
 
-func NewNullableMultipleCustomerProfileIntegrationRequestItem(val *MultipleCustomerProfileIntegrationRequestItem) *NullableMultipleCustomerProfileIntegrationRequestItem {
+func BuildNullableMultipleCustomerProfileIntegrationRequestItem(val *MultipleCustomerProfileIntegrationRequestItem) *NullableMultipleCustomerProfileIntegrationRequestItem {
 	return &NullableMultipleCustomerProfileIntegrationRequestItem{value: val, isSet: true}
 }
 

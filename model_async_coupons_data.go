@@ -39,7 +39,7 @@ type _AsyncCouponsData AsyncCouponsData
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAsyncCouponsData(batchID string, typeOfChange string, operation string, employeeName string, notificationType string) *AsyncCouponsData {
+func BuildAsyncCouponsData(batchID string, typeOfChange string, operation string, employeeName string, notificationType string) *AsyncCouponsData {
 	this := AsyncCouponsData{}
 	this.BatchID = batchID
 	this.TypeOfChange = typeOfChange
@@ -259,7 +259,7 @@ func (v *NullableAsyncCouponsData) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAsyncCouponsData(val *AsyncCouponsData) *NullableAsyncCouponsData {
+func BuildNullableAsyncCouponsData(val *AsyncCouponsData) *NullableAsyncCouponsData {
 	return &NullableAsyncCouponsData{value: val, isSet: true}
 }
 

@@ -33,7 +33,7 @@ type _TierWillDowngradeNotificationTrigger TierWillDowngradeNotificationTrigger
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewTierWillDowngradeNotificationTrigger(amount int64, period string) *TierWillDowngradeNotificationTrigger {
+func BuildTierWillDowngradeNotificationTrigger(amount int64, period string) *TierWillDowngradeNotificationTrigger {
 	this := TierWillDowngradeNotificationTrigger{}
 	this.Amount = amount
 	this.Period = period
@@ -172,7 +172,7 @@ func (v *NullableTierWillDowngradeNotificationTrigger) Unset() {
 	v.isSet = false
 }
 
-func NewNullableTierWillDowngradeNotificationTrigger(val *TierWillDowngradeNotificationTrigger) *NullableTierWillDowngradeNotificationTrigger {
+func BuildNullableTierWillDowngradeNotificationTrigger(val *TierWillDowngradeNotificationTrigger) *NullableTierWillDowngradeNotificationTrigger {
 	return &NullableTierWillDowngradeNotificationTrigger{value: val, isSet: true}
 }
 

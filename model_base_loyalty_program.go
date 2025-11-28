@@ -55,7 +55,7 @@ type BaseLoyaltyProgram struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewBaseLoyaltyProgram() *BaseLoyaltyProgram {
+func BuildBaseLoyaltyProgram() *BaseLoyaltyProgram {
 	this := BaseLoyaltyProgram{}
 	return &this
 }
@@ -629,7 +629,7 @@ func (v *NullableBaseLoyaltyProgram) Unset() {
 	v.isSet = false
 }
 
-func NewNullableBaseLoyaltyProgram(val *BaseLoyaltyProgram) *NullableBaseLoyaltyProgram {
+func BuildNullableBaseLoyaltyProgram(val *BaseLoyaltyProgram) *NullableBaseLoyaltyProgram {
 	return &NullableBaseLoyaltyProgram{value: val, isSet: true}
 }
 

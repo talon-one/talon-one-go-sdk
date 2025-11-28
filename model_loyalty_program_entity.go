@@ -35,7 +35,7 @@ type _LoyaltyProgramEntity LoyaltyProgramEntity
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLoyaltyProgramEntity(programID int64) *LoyaltyProgramEntity {
+func BuildLoyaltyProgramEntity(programID int64) *LoyaltyProgramEntity {
 	this := LoyaltyProgramEntity{}
 	this.ProgramID = programID
 	return &this
@@ -217,7 +217,7 @@ func (v *NullableLoyaltyProgramEntity) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLoyaltyProgramEntity(val *LoyaltyProgramEntity) *NullableLoyaltyProgramEntity {
+func BuildNullableLoyaltyProgramEntity(val *LoyaltyProgramEntity) *NullableLoyaltyProgramEntity {
 	return &NullableLoyaltyProgramEntity{value: val, isSet: true}
 }
 

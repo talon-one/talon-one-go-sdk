@@ -31,7 +31,7 @@ type _GetEventTypes200Response GetEventTypes200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetEventTypes200Response(totalResultSize int64, data []EventType) *GetEventTypes200Response {
+func BuildGetEventTypes200Response(totalResultSize int64, data []EventType) *GetEventTypes200Response {
 	this := GetEventTypes200Response{}
 	this.TotalResultSize = totalResultSize
 	this.Data = data
@@ -170,7 +170,7 @@ func (v *NullableGetEventTypes200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGetEventTypes200Response(val *GetEventTypes200Response) *NullableGetEventTypes200Response {
+func BuildNullableGetEventTypes200Response(val *GetEventTypes200Response) *NullableGetEventTypes200Response {
 	return &NullableGetEventTypes200Response{value: val, isSet: true}
 }
 

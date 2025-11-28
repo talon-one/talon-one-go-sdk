@@ -39,7 +39,7 @@ type _IntegrationEventV3Response IntegrationEventV3Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewIntegrationEventV3Response(effects []Effect, createdCoupons []Coupon, createdReferrals []Referral) *IntegrationEventV3Response {
+func BuildIntegrationEventV3Response(effects []Effect, createdCoupons []Coupon, createdReferrals []Referral) *IntegrationEventV3Response {
 	this := IntegrationEventV3Response{}
 	this.Effects = effects
 	this.CreatedCoupons = createdCoupons
@@ -415,7 +415,7 @@ func (v *NullableIntegrationEventV3Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableIntegrationEventV3Response(val *IntegrationEventV3Response) *NullableIntegrationEventV3Response {
+func BuildNullableIntegrationEventV3Response(val *IntegrationEventV3Response) *NullableIntegrationEventV3Response {
 	return &NullableIntegrationEventV3Response{value: val, isSet: true}
 }
 

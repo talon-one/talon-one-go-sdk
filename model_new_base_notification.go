@@ -34,7 +34,7 @@ type _NewBaseNotification NewBaseNotification
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewBaseNotification(policy map[string]interface{}, webhook NewNotificationWebhook) *NewBaseNotification {
+func BuildNewBaseNotification(policy map[string]interface{}, webhook NewNotificationWebhook) *NewBaseNotification {
 	this := NewBaseNotification{}
 	this.Policy = policy
 	var enabled bool = true
@@ -212,7 +212,7 @@ func (v *NullableNewBaseNotification) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewBaseNotification(val *NewBaseNotification) *NullableNewBaseNotification {
+func BuildNullableNewBaseNotification(val *NewBaseNotification) *NullableNewBaseNotification {
 	return &NullableNewBaseNotification{value: val, isSet: true}
 }
 

@@ -37,7 +37,7 @@ type _LimitConfig LimitConfig
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLimitConfig(action string, limit float32, entities []string) *LimitConfig {
+func BuildLimitConfig(action string, limit float32, entities []string) *LimitConfig {
 	this := LimitConfig{}
 	this.Action = action
 	this.Limit = limit
@@ -238,7 +238,7 @@ func (v *NullableLimitConfig) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLimitConfig(val *LimitConfig) *NullableLimitConfig {
+func BuildNullableLimitConfig(val *LimitConfig) *NullableLimitConfig {
 	return &NullableLimitConfig{value: val, isSet: true}
 }
 

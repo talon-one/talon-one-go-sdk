@@ -62,7 +62,7 @@ type _AchievementProgressWithDefinition AchievementProgressWithDefinition
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAchievementProgressWithDefinition(status string, progress float32, achievementId int64, name string, title string, description string, campaignId int64, achievementRecurrencePolicy string, achievementActivationPolicy string) *AchievementProgressWithDefinition {
+func BuildAchievementProgressWithDefinition(status string, progress float32, achievementId int64, name string, title string, description string, campaignId int64, achievementRecurrencePolicy string, achievementActivationPolicy string) *AchievementProgressWithDefinition {
 	this := AchievementProgressWithDefinition{}
 	this.Status = status
 	this.Progress = progress
@@ -635,7 +635,7 @@ func (v *NullableAchievementProgressWithDefinition) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAchievementProgressWithDefinition(val *AchievementProgressWithDefinition) *NullableAchievementProgressWithDefinition {
+func BuildNullableAchievementProgressWithDefinition(val *AchievementProgressWithDefinition) *NullableAchievementProgressWithDefinition {
 	return &NullableAchievementProgressWithDefinition{value: val, isSet: true}
 }
 

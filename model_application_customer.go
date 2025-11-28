@@ -54,7 +54,7 @@ type _ApplicationCustomer ApplicationCustomer
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewApplicationCustomer(id int64, created time.Time, integrationId string, accountId int64, closedSessions int64, totalSales float32, lastActivity time.Time) *ApplicationCustomer {
+func BuildApplicationCustomer(id int64, created time.Time, integrationId string, accountId int64, closedSessions int64, totalSales float32, lastActivity time.Time) *ApplicationCustomer {
 	this := ApplicationCustomer{}
 	this.Id = id
 	this.Created = created
@@ -503,7 +503,7 @@ func (v *NullableApplicationCustomer) Unset() {
 	v.isSet = false
 }
 
-func NewNullableApplicationCustomer(val *ApplicationCustomer) *NullableApplicationCustomer {
+func BuildNullableApplicationCustomer(val *ApplicationCustomer) *NullableApplicationCustomer {
 	return &NullableApplicationCustomer{value: val, isSet: true}
 }
 

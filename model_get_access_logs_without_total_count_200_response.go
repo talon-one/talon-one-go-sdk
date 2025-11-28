@@ -31,7 +31,7 @@ type _GetAccessLogsWithoutTotalCount200Response GetAccessLogsWithoutTotalCount20
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetAccessLogsWithoutTotalCount200Response(hasMore bool, data []AccessLogEntry) *GetAccessLogsWithoutTotalCount200Response {
+func BuildGetAccessLogsWithoutTotalCount200Response(hasMore bool, data []AccessLogEntry) *GetAccessLogsWithoutTotalCount200Response {
 	this := GetAccessLogsWithoutTotalCount200Response{}
 	this.HasMore = hasMore
 	this.Data = data
@@ -170,7 +170,7 @@ func (v *NullableGetAccessLogsWithoutTotalCount200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGetAccessLogsWithoutTotalCount200Response(val *GetAccessLogsWithoutTotalCount200Response) *NullableGetAccessLogsWithoutTotalCount200Response {
+func BuildNullableGetAccessLogsWithoutTotalCount200Response(val *GetAccessLogsWithoutTotalCount200Response) *NullableGetAccessLogsWithoutTotalCount200Response {
 	return &NullableGetAccessLogsWithoutTotalCount200Response{value: val, isSet: true}
 }
 

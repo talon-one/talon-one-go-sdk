@@ -30,7 +30,7 @@ type _NewPasswordEmail NewPasswordEmail
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewPasswordEmail(email string) *NewPasswordEmail {
+func BuildNewPasswordEmail(email string) *NewPasswordEmail {
 	this := NewPasswordEmail{}
 	this.Email = email
 	return &this
@@ -142,7 +142,7 @@ func (v *NullableNewPasswordEmail) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewPasswordEmail(val *NewPasswordEmail) *NullableNewPasswordEmail {
+func BuildNullableNewPasswordEmail(val *NewPasswordEmail) *NullableNewPasswordEmail {
 	return &NullableNewPasswordEmail{value: val, isSet: true}
 }
 

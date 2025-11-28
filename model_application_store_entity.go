@@ -27,7 +27,7 @@ type ApplicationStoreEntity struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewApplicationStoreEntity() *ApplicationStoreEntity {
+func BuildApplicationStoreEntity() *ApplicationStoreEntity {
 	this := ApplicationStoreEntity{}
 	return &this
 }
@@ -111,7 +111,7 @@ func (v *NullableApplicationStoreEntity) Unset() {
 	v.isSet = false
 }
 
-func NewNullableApplicationStoreEntity(val *ApplicationStoreEntity) *NullableApplicationStoreEntity {
+func BuildNullableApplicationStoreEntity(val *ApplicationStoreEntity) *NullableApplicationStoreEntity {
 	return &NullableApplicationStoreEntity{value: val, isSet: true}
 }
 

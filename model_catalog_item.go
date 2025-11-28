@@ -44,7 +44,7 @@ type _CatalogItem CatalogItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCatalogItem(id int64, created time.Time, sku string, catalogid int64, version int64) *CatalogItem {
+func BuildCatalogItem(id int64, created time.Time, sku string, catalogid int64, version int64) *CatalogItem {
 	this := CatalogItem{}
 	this.Id = id
 	this.Created = created
@@ -369,7 +369,7 @@ func (v *NullableCatalogItem) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCatalogItem(val *CatalogItem) *NullableCatalogItem {
+func BuildNullableCatalogItem(val *CatalogItem) *NullableCatalogItem {
 	return &NullableCatalogItem{value: val, isSet: true}
 }
 

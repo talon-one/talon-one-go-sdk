@@ -36,7 +36,7 @@ type _Session Session
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSession(userId int64, token string, created time.Time) *Session {
+func BuildSession(userId int64, token string, created time.Time) *Session {
 	this := Session{}
 	this.UserId = userId
 	this.Token = token
@@ -202,7 +202,7 @@ func (v *NullableSession) Unset() {
 	v.isSet = false
 }
 
-func NewNullableSession(val *Session) *NullableSession {
+func BuildNullableSession(val *Session) *NullableSession {
 	return &NullableSession{value: val, isSet: true}
 }
 

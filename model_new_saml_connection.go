@@ -47,7 +47,7 @@ type _NewSamlConnection NewSamlConnection
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewSamlConnection(accountId int64, name string, enabled bool, issuer string, signOnURL string, x509certificate string) *NewSamlConnection {
+func BuildNewSamlConnection(accountId int64, name string, enabled bool, issuer string, signOnURL string, x509certificate string) *NewSamlConnection {
 	this := NewSamlConnection{}
 	this.AccountId = accountId
 	this.Name = name
@@ -399,7 +399,7 @@ func (v *NullableNewSamlConnection) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewSamlConnection(val *NewSamlConnection) *NullableNewSamlConnection {
+func BuildNullableNewSamlConnection(val *NewSamlConnection) *NullableNewSamlConnection {
 	return &NullableNewSamlConnection{value: val, isSet: true}
 }
 

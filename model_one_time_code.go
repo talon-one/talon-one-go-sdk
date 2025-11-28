@@ -37,7 +37,7 @@ type _OneTimeCode OneTimeCode
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewOneTimeCode(userId int64, accountId int64, token string) *OneTimeCode {
+func BuildOneTimeCode(userId int64, accountId int64, token string) *OneTimeCode {
 	this := OneTimeCode{}
 	this.UserId = userId
 	this.AccountId = accountId
@@ -238,7 +238,7 @@ func (v *NullableOneTimeCode) Unset() {
 	v.isSet = false
 }
 
-func NewNullableOneTimeCode(val *OneTimeCode) *NullableOneTimeCode {
+func BuildNullableOneTimeCode(val *OneTimeCode) *NullableOneTimeCode {
 	return &NullableOneTimeCode{value: val, isSet: true}
 }
 

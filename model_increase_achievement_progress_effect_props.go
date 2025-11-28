@@ -43,7 +43,7 @@ type _IncreaseAchievementProgressEffectProps IncreaseAchievementProgressEffectPr
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewIncreaseAchievementProgressEffectProps(achievementId int64, achievementName string, delta float32, value float32, target float32, isJustCompleted bool) *IncreaseAchievementProgressEffectProps {
+func BuildIncreaseAchievementProgressEffectProps(achievementId int64, achievementName string, delta float32, value float32, target float32, isJustCompleted bool) *IncreaseAchievementProgressEffectProps {
 	this := IncreaseAchievementProgressEffectProps{}
 	this.AchievementId = achievementId
 	this.AchievementName = achievementName
@@ -325,7 +325,7 @@ func (v *NullableIncreaseAchievementProgressEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableIncreaseAchievementProgressEffectProps(val *IncreaseAchievementProgressEffectProps) *NullableIncreaseAchievementProgressEffectProps {
+func BuildNullableIncreaseAchievementProgressEffectProps(val *IncreaseAchievementProgressEffectProps) *NullableIncreaseAchievementProgressEffectProps {
 	return &NullableIncreaseAchievementProgressEffectProps{value: val, isSet: true}
 }
 

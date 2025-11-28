@@ -45,7 +45,7 @@ type _StrikethroughChangedItem StrikethroughChangedItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewStrikethroughChangedItem(id int64, catalogId int64, sku string, version int64, price float32, evaluatedAt time.Time) *StrikethroughChangedItem {
+func BuildStrikethroughChangedItem(id int64, catalogId int64, sku string, version int64, price float32, evaluatedAt time.Time) *StrikethroughChangedItem {
 	this := StrikethroughChangedItem{}
 	this.Id = id
 	this.CatalogId = catalogId
@@ -362,7 +362,7 @@ func (v *NullableStrikethroughChangedItem) Unset() {
 	v.isSet = false
 }
 
-func NewNullableStrikethroughChangedItem(val *StrikethroughChangedItem) *NullableStrikethroughChangedItem {
+func BuildNullableStrikethroughChangedItem(val *StrikethroughChangedItem) *NullableStrikethroughChangedItem {
 	return &NullableStrikethroughChangedItem{value: val, isSet: true}
 }
 

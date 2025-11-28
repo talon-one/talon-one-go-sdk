@@ -41,7 +41,7 @@ type _SlotDef SlotDef
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSlotDef(name string, type_ string, title string, writable bool) *SlotDef {
+func BuildSlotDef(name string, type_ string, title string, writable bool) *SlotDef {
 	this := SlotDef{}
 	this.Name = name
 	this.Type = type_
@@ -304,7 +304,7 @@ func (v *NullableSlotDef) Unset() {
 	v.isSet = false
 }
 
-func NewNullableSlotDef(val *SlotDef) *NullableSlotDef {
+func BuildNullableSlotDef(val *SlotDef) *NullableSlotDef {
 	return &NullableSlotDef{value: val, isSet: true}
 }
 

@@ -50,7 +50,7 @@ type _TierUpgradeData TierUpgradeData
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewTierUpgradeData(customerProfileID string, loyaltyProgramID int64, subledgerID string, currentTier string, currentPoints float32, tierExpirationDate time.Time, timestampOfTierChange time.Time) *TierUpgradeData {
+func BuildTierUpgradeData(customerProfileID string, loyaltyProgramID int64, subledgerID string, currentTier string, currentPoints float32, tierExpirationDate time.Time, timestampOfTierChange time.Time) *TierUpgradeData {
 	this := TierUpgradeData{}
 	this.CustomerProfileID = customerProfileID
 	this.LoyaltyProgramID = loyaltyProgramID
@@ -431,7 +431,7 @@ func (v *NullableTierUpgradeData) Unset() {
 	v.isSet = false
 }
 
-func NewNullableTierUpgradeData(val *TierUpgradeData) *NullableTierUpgradeData {
+func BuildNullableTierUpgradeData(val *TierUpgradeData) *NullableTierUpgradeData {
 	return &NullableTierUpgradeData{value: val, isSet: true}
 }
 

@@ -83,7 +83,7 @@ type _LoyaltyProgram LoyaltyProgram
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLoyaltyProgram(id int64, created time.Time, accountID int64, name string, timezone string, cardBased bool) *LoyaltyProgram {
+func BuildLoyaltyProgram(id int64, created time.Time, accountID int64, name string, timezone string, cardBased bool) *LoyaltyProgram {
 	this := LoyaltyProgram{}
 	this.Id = id
 	this.Created = created
@@ -1079,7 +1079,7 @@ func (v *NullableLoyaltyProgram) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLoyaltyProgram(val *LoyaltyProgram) *NullableLoyaltyProgram {
+func BuildNullableLoyaltyProgram(val *LoyaltyProgram) *NullableLoyaltyProgram {
 	return &NullableLoyaltyProgram{value: val, isSet: true}
 }
 

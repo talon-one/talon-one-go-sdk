@@ -31,7 +31,7 @@ type _ReferralCreatedEffectProps ReferralCreatedEffectProps
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewReferralCreatedEffectProps(value string) *ReferralCreatedEffectProps {
+func BuildReferralCreatedEffectProps(value string) *ReferralCreatedEffectProps {
 	this := ReferralCreatedEffectProps{}
 	this.Value = value
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableReferralCreatedEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableReferralCreatedEffectProps(val *ReferralCreatedEffectProps) *NullableReferralCreatedEffectProps {
+func BuildNullableReferralCreatedEffectProps(val *ReferralCreatedEffectProps) *NullableReferralCreatedEffectProps {
 	return &NullableReferralCreatedEffectProps{value: val, isSet: true}
 }
 

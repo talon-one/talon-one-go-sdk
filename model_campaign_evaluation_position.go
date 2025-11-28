@@ -35,7 +35,7 @@ type _CampaignEvaluationPosition CampaignEvaluationPosition
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCampaignEvaluationPosition(groupId int64, groupName string, position int64) *CampaignEvaluationPosition {
+func BuildCampaignEvaluationPosition(groupId int64, groupName string, position int64) *CampaignEvaluationPosition {
 	this := CampaignEvaluationPosition{}
 	this.GroupId = groupId
 	this.GroupName = groupName
@@ -201,7 +201,7 @@ func (v *NullableCampaignEvaluationPosition) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCampaignEvaluationPosition(val *CampaignEvaluationPosition) *NullableCampaignEvaluationPosition {
+func BuildNullableCampaignEvaluationPosition(val *CampaignEvaluationPosition) *NullableCampaignEvaluationPosition {
 	return &NullableCampaignEvaluationPosition{value: val, isSet: true}
 }
 

@@ -33,7 +33,7 @@ type _CouponCreatedEffectProps CouponCreatedEffectProps
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCouponCreatedEffectProps(value string, profileId string) *CouponCreatedEffectProps {
+func BuildCouponCreatedEffectProps(value string, profileId string) *CouponCreatedEffectProps {
 	this := CouponCreatedEffectProps{}
 	this.Value = value
 	this.ProfileId = profileId
@@ -172,7 +172,7 @@ func (v *NullableCouponCreatedEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCouponCreatedEffectProps(val *CouponCreatedEffectProps) *NullableCouponCreatedEffectProps {
+func BuildNullableCouponCreatedEffectProps(val *CouponCreatedEffectProps) *NullableCouponCreatedEffectProps {
 	return &NullableCouponCreatedEffectProps{value: val, isSet: true}
 }
 

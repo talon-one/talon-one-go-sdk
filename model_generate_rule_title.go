@@ -32,7 +32,7 @@ type _GenerateRuleTitle GenerateRuleTitle
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGenerateRuleTitle(rule GenerateRuleTitleRule, currency string) *GenerateRuleTitle {
+func BuildGenerateRuleTitle(rule GenerateRuleTitleRule, currency string) *GenerateRuleTitle {
 	this := GenerateRuleTitle{}
 	this.Rule = rule
 	this.Currency = currency
@@ -171,7 +171,7 @@ func (v *NullableGenerateRuleTitle) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGenerateRuleTitle(val *GenerateRuleTitle) *NullableGenerateRuleTitle {
+func BuildNullableGenerateRuleTitle(val *GenerateRuleTitle) *NullableGenerateRuleTitle {
 	return &NullableGenerateRuleTitle{value: val, isSet: true}
 }
 

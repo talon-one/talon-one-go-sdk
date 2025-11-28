@@ -31,7 +31,7 @@ type _RemoveItemCatalogAction RemoveItemCatalogAction
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewRemoveItemCatalogAction(sku string) *RemoveItemCatalogAction {
+func BuildRemoveItemCatalogAction(sku string) *RemoveItemCatalogAction {
 	this := RemoveItemCatalogAction{}
 	this.Sku = sku
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableRemoveItemCatalogAction) Unset() {
 	v.isSet = false
 }
 
-func NewNullableRemoveItemCatalogAction(val *RemoveItemCatalogAction) *NullableRemoveItemCatalogAction {
+func BuildNullableRemoveItemCatalogAction(val *RemoveItemCatalogAction) *NullableRemoveItemCatalogAction {
 	return &NullableRemoveItemCatalogAction{value: val, isSet: true}
 }
 

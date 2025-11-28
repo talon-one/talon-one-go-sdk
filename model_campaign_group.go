@@ -46,7 +46,7 @@ type _CampaignGroup CampaignGroup
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCampaignGroup(id int64, created time.Time, modified time.Time, accountId int64, name string) *CampaignGroup {
+func BuildCampaignGroup(id int64, created time.Time, modified time.Time, accountId int64, name string) *CampaignGroup {
 	this := CampaignGroup{}
 	this.Id = id
 	this.Created = created
@@ -371,7 +371,7 @@ func (v *NullableCampaignGroup) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCampaignGroup(val *CampaignGroup) *NullableCampaignGroup {
+func BuildNullableCampaignGroup(val *CampaignGroup) *NullableCampaignGroup {
 	return &NullableCampaignGroup{value: val, isSet: true}
 }
 

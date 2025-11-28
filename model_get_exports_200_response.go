@@ -31,7 +31,7 @@ type _GetExports200Response GetExports200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetExports200Response(totalResultSize int64, data []Export) *GetExports200Response {
+func BuildGetExports200Response(totalResultSize int64, data []Export) *GetExports200Response {
 	this := GetExports200Response{}
 	this.TotalResultSize = totalResultSize
 	this.Data = data
@@ -170,7 +170,7 @@ func (v *NullableGetExports200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGetExports200Response(val *GetExports200Response) *NullableGetExports200Response {
+func BuildNullableGetExports200Response(val *GetExports200Response) *NullableGetExports200Response {
 	return &NullableGetExports200Response{value: val, isSet: true}
 }
 

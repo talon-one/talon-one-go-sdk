@@ -32,7 +32,7 @@ type _GetApplicationCustomerFriends200Response GetApplicationCustomerFriends200R
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetApplicationCustomerFriends200Response(data []ApplicationReferee) *GetApplicationCustomerFriends200Response {
+func BuildGetApplicationCustomerFriends200Response(data []ApplicationReferee) *GetApplicationCustomerFriends200Response {
 	this := GetApplicationCustomerFriends200Response{}
 	this.Data = data
 	return &this
@@ -214,7 +214,7 @@ func (v *NullableGetApplicationCustomerFriends200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGetApplicationCustomerFriends200Response(val *GetApplicationCustomerFriends200Response) *NullableGetApplicationCustomerFriends200Response {
+func BuildNullableGetApplicationCustomerFriends200Response(val *GetApplicationCustomerFriends200Response) *NullableGetApplicationCustomerFriends200Response {
 	return &NullableGetApplicationCustomerFriends200Response{value: val, isSet: true}
 }
 

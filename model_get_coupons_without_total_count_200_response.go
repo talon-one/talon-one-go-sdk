@@ -31,7 +31,7 @@ type _GetCouponsWithoutTotalCount200Response GetCouponsWithoutTotalCount200Respo
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetCouponsWithoutTotalCount200Response(hasMore bool, data []Coupon) *GetCouponsWithoutTotalCount200Response {
+func BuildGetCouponsWithoutTotalCount200Response(hasMore bool, data []Coupon) *GetCouponsWithoutTotalCount200Response {
 	this := GetCouponsWithoutTotalCount200Response{}
 	this.HasMore = hasMore
 	this.Data = data
@@ -170,7 +170,7 @@ func (v *NullableGetCouponsWithoutTotalCount200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGetCouponsWithoutTotalCount200Response(val *GetCouponsWithoutTotalCount200Response) *NullableGetCouponsWithoutTotalCount200Response {
+func BuildNullableGetCouponsWithoutTotalCount200Response(val *GetCouponsWithoutTotalCount200Response) *NullableGetCouponsWithoutTotalCount200Response {
 	return &NullableGetCouponsWithoutTotalCount200Response{value: val, isSet: true}
 }
 

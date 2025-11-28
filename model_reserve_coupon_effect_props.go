@@ -35,7 +35,7 @@ type _ReserveCouponEffectProps ReserveCouponEffectProps
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewReserveCouponEffectProps(couponValue string, profileIntegrationId string, isNewReservation bool) *ReserveCouponEffectProps {
+func BuildReserveCouponEffectProps(couponValue string, profileIntegrationId string, isNewReservation bool) *ReserveCouponEffectProps {
 	this := ReserveCouponEffectProps{}
 	this.CouponValue = couponValue
 	this.ProfileIntegrationId = profileIntegrationId
@@ -201,7 +201,7 @@ func (v *NullableReserveCouponEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableReserveCouponEffectProps(val *ReserveCouponEffectProps) *NullableReserveCouponEffectProps {
+func BuildNullableReserveCouponEffectProps(val *ReserveCouponEffectProps) *NullableReserveCouponEffectProps {
 	return &NullableReserveCouponEffectProps{value: val, isSet: true}
 }
 

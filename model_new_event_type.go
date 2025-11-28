@@ -35,7 +35,7 @@ type _NewEventType NewEventType
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewEventType(title string, name string) *NewEventType {
+func BuildNewEventType(title string, name string) *NewEventType {
 	this := NewEventType{}
 	this.Title = title
 	this.Name = name
@@ -209,7 +209,7 @@ func (v *NullableNewEventType) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewEventType(val *NewEventType) *NullableNewEventType {
+func BuildNullableNewEventType(val *NewEventType) *NullableNewEventType {
 	return &NullableNewEventType{value: val, isSet: true}
 }
 

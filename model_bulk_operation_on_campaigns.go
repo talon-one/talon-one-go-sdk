@@ -36,7 +36,7 @@ type _BulkOperationOnCampaigns BulkOperationOnCampaigns
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewBulkOperationOnCampaigns(operation string, campaignIds []int64) *BulkOperationOnCampaigns {
+func BuildBulkOperationOnCampaigns(operation string, campaignIds []int64) *BulkOperationOnCampaigns {
 	this := BulkOperationOnCampaigns{}
 	this.Operation = operation
 	this.CampaignIds = campaignIds
@@ -210,7 +210,7 @@ func (v *NullableBulkOperationOnCampaigns) Unset() {
 	v.isSet = false
 }
 
-func NewNullableBulkOperationOnCampaigns(val *BulkOperationOnCampaigns) *NullableBulkOperationOnCampaigns {
+func BuildNullableBulkOperationOnCampaigns(val *BulkOperationOnCampaigns) *NullableBulkOperationOnCampaigns {
 	return &NullableBulkOperationOnCampaigns{value: val, isSet: true}
 }
 

@@ -32,7 +32,7 @@ type _StrikethroughSetDiscountPerItemEffectProps StrikethroughSetDiscountPerItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewStrikethroughSetDiscountPerItemEffectProps(name string, value interface{}) *StrikethroughSetDiscountPerItemEffectProps {
+func BuildStrikethroughSetDiscountPerItemEffectProps(name string, value interface{}) *StrikethroughSetDiscountPerItemEffectProps {
 	this := StrikethroughSetDiscountPerItemEffectProps{}
 	this.Name = name
 	this.Value = value
@@ -175,7 +175,7 @@ func (v *NullableStrikethroughSetDiscountPerItemEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableStrikethroughSetDiscountPerItemEffectProps(val *StrikethroughSetDiscountPerItemEffectProps) *NullableStrikethroughSetDiscountPerItemEffectProps {
+func BuildNullableStrikethroughSetDiscountPerItemEffectProps(val *StrikethroughSetDiscountPerItemEffectProps) *NullableStrikethroughSetDiscountPerItemEffectProps {
 	return &NullableStrikethroughSetDiscountPerItemEffectProps{value: val, isSet: true}
 }
 

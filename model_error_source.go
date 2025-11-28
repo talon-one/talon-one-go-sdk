@@ -33,7 +33,7 @@ type ErrorSource struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewErrorSource() *ErrorSource {
+func BuildErrorSource() *ErrorSource {
 	this := ErrorSource{}
 	return &this
 }
@@ -222,7 +222,7 @@ func (v *NullableErrorSource) Unset() {
 	v.isSet = false
 }
 
-func NewNullableErrorSource(val *ErrorSource) *NullableErrorSource {
+func BuildNullableErrorSource(val *ErrorSource) *NullableErrorSource {
 	return &NullableErrorSource{value: val, isSet: true}
 }
 

@@ -54,7 +54,7 @@ type _ApplicationCampaignAnalytics ApplicationCampaignAnalytics
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewApplicationCampaignAnalytics(startTime time.Time, endTime time.Time, campaignId int64, campaignName string, campaignTags []string, campaignState string) *ApplicationCampaignAnalytics {
+func BuildApplicationCampaignAnalytics(startTime time.Time, endTime time.Time, campaignId int64, campaignName string, campaignTags []string, campaignState string) *ApplicationCampaignAnalytics {
 	this := ApplicationCampaignAnalytics{}
 	this.StartTime = startTime
 	this.EndTime = endTime
@@ -511,7 +511,7 @@ func (v *NullableApplicationCampaignAnalytics) Unset() {
 	v.isSet = false
 }
 
-func NewNullableApplicationCampaignAnalytics(val *ApplicationCampaignAnalytics) *NullableApplicationCampaignAnalytics {
+func BuildNullableApplicationCampaignAnalytics(val *ApplicationCampaignAnalytics) *NullableApplicationCampaignAnalytics {
 	return &NullableApplicationCampaignAnalytics{value: val, isSet: true}
 }
 

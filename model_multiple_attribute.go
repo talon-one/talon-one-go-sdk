@@ -26,7 +26,7 @@ type MultipleAttribute struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewMultipleAttribute() *MultipleAttribute {
+func BuildMultipleAttribute() *MultipleAttribute {
 	this := MultipleAttribute{}
 	return &this
 }
@@ -110,7 +110,7 @@ func (v *NullableMultipleAttribute) Unset() {
 	v.isSet = false
 }
 
-func NewNullableMultipleAttribute(val *MultipleAttribute) *NullableMultipleAttribute {
+func BuildNullableMultipleAttribute(val *MultipleAttribute) *NullableMultipleAttribute {
 	return &NullableMultipleAttribute{value: val, isSet: true}
 }
 

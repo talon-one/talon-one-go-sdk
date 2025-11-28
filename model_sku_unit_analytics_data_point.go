@@ -38,7 +38,7 @@ type _SkuUnitAnalyticsDataPoint SkuUnitAnalyticsDataPoint
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSkuUnitAnalyticsDataPoint(startTime time.Time, endTime time.Time, unitsSold AnalyticsDataPointWithTrend, sku string) *SkuUnitAnalyticsDataPoint {
+func BuildSkuUnitAnalyticsDataPoint(startTime time.Time, endTime time.Time, unitsSold AnalyticsDataPointWithTrend, sku string) *SkuUnitAnalyticsDataPoint {
 	this := SkuUnitAnalyticsDataPoint{}
 	this.StartTime = startTime
 	this.EndTime = endTime
@@ -231,7 +231,7 @@ func (v *NullableSkuUnitAnalyticsDataPoint) Unset() {
 	v.isSet = false
 }
 
-func NewNullableSkuUnitAnalyticsDataPoint(val *SkuUnitAnalyticsDataPoint) *NullableSkuUnitAnalyticsDataPoint {
+func BuildNullableSkuUnitAnalyticsDataPoint(val *SkuUnitAnalyticsDataPoint) *NullableSkuUnitAnalyticsDataPoint {
 	return &NullableSkuUnitAnalyticsDataPoint{value: val, isSet: true}
 }
 

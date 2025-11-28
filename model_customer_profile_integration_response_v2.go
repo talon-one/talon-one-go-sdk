@@ -39,7 +39,7 @@ type _CustomerProfileIntegrationResponseV2 CustomerProfileIntegrationResponseV2
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCustomerProfileIntegrationResponseV2(effects []Effect, createdCoupons []Coupon, createdReferrals []Referral) *CustomerProfileIntegrationResponseV2 {
+func BuildCustomerProfileIntegrationResponseV2(effects []Effect, createdCoupons []Coupon, createdReferrals []Referral) *CustomerProfileIntegrationResponseV2 {
 	this := CustomerProfileIntegrationResponseV2{}
 	this.Effects = effects
 	this.CreatedCoupons = createdCoupons
@@ -415,7 +415,7 @@ func (v *NullableCustomerProfileIntegrationResponseV2) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCustomerProfileIntegrationResponseV2(val *CustomerProfileIntegrationResponseV2) *NullableCustomerProfileIntegrationResponseV2 {
+func BuildNullableCustomerProfileIntegrationResponseV2(val *CustomerProfileIntegrationResponseV2) *NullableCustomerProfileIntegrationResponseV2 {
 	return &NullableCustomerProfileIntegrationResponseV2{value: val, isSet: true}
 }
 

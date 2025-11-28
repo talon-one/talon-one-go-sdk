@@ -31,7 +31,7 @@ type _CampaignEntity CampaignEntity
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCampaignEntity(campaignId int64) *CampaignEntity {
+func BuildCampaignEntity(campaignId int64) *CampaignEntity {
 	this := CampaignEntity{}
 	this.CampaignId = campaignId
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableCampaignEntity) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCampaignEntity(val *CampaignEntity) *NullableCampaignEntity {
+func BuildNullableCampaignEntity(val *CampaignEntity) *NullableCampaignEntity {
 	return &NullableCampaignEntity{value: val, isSet: true}
 }
 

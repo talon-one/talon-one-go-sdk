@@ -41,7 +41,7 @@ type _ApplicationCampaignStats ApplicationCampaignStats
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewApplicationCampaignStats(disabled int64, staged int64, scheduled int64, running int64, expired int64, archived int64) *ApplicationCampaignStats {
+func BuildApplicationCampaignStats(disabled int64, staged int64, scheduled int64, running int64, expired int64, archived int64) *ApplicationCampaignStats {
 	this := ApplicationCampaignStats{}
 	this.Disabled = disabled
 	this.Staged = staged
@@ -288,7 +288,7 @@ func (v *NullableApplicationCampaignStats) Unset() {
 	v.isSet = false
 }
 
-func NewNullableApplicationCampaignStats(val *ApplicationCampaignStats) *NullableApplicationCampaignStats {
+func BuildNullableApplicationCampaignStats(val *ApplicationCampaignStats) *NullableApplicationCampaignStats {
 	return &NullableApplicationCampaignStats{value: val, isSet: true}
 }
 

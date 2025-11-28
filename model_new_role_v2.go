@@ -37,7 +37,7 @@ type _NewRoleV2 NewRoleV2
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewRoleV2(name string, description string) *NewRoleV2 {
+func BuildNewRoleV2(name string, description string) *NewRoleV2 {
 	this := NewRoleV2{}
 	this.Name = name
 	this.Description = description
@@ -246,7 +246,7 @@ func (v *NullableNewRoleV2) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewRoleV2(val *NewRoleV2) *NullableNewRoleV2 {
+func BuildNullableNewRoleV2(val *NewRoleV2) *NullableNewRoleV2 {
 	return &NullableNewRoleV2{value: val, isSet: true}
 }
 

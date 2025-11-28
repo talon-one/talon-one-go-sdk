@@ -33,7 +33,7 @@ type _TriggerWebhookEffectProps TriggerWebhookEffectProps
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewTriggerWebhookEffectProps(webhookId float32, webhookName string) *TriggerWebhookEffectProps {
+func BuildTriggerWebhookEffectProps(webhookId float32, webhookName string) *TriggerWebhookEffectProps {
 	this := TriggerWebhookEffectProps{}
 	this.WebhookId = webhookId
 	this.WebhookName = webhookName
@@ -172,7 +172,7 @@ func (v *NullableTriggerWebhookEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableTriggerWebhookEffectProps(val *TriggerWebhookEffectProps) *NullableTriggerWebhookEffectProps {
+func BuildNullableTriggerWebhookEffectProps(val *TriggerWebhookEffectProps) *NullableTriggerWebhookEffectProps {
 	return &NullableTriggerWebhookEffectProps{value: val, isSet: true}
 }
 

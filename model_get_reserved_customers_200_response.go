@@ -31,7 +31,7 @@ type _GetReservedCustomers200Response GetReservedCustomers200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetReservedCustomers200Response(totalResultSize int64, data []CustomerProfile) *GetReservedCustomers200Response {
+func BuildGetReservedCustomers200Response(totalResultSize int64, data []CustomerProfile) *GetReservedCustomers200Response {
 	this := GetReservedCustomers200Response{}
 	this.TotalResultSize = totalResultSize
 	this.Data = data
@@ -170,7 +170,7 @@ func (v *NullableGetReservedCustomers200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGetReservedCustomers200Response(val *GetReservedCustomers200Response) *NullableGetReservedCustomers200Response {
+func BuildNullableGetReservedCustomers200Response(val *GetReservedCustomers200Response) *NullableGetReservedCustomers200Response {
 	return &NullableGetReservedCustomers200Response{value: val, isSet: true}
 }
 

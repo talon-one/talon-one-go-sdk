@@ -173,7 +173,7 @@ SetCondition sets Condition field to given value.
 
 ### GetEffects
 
-`func (o *Rule) GetEffects() []map[string]interface{}`
+`func (o *Rule) GetEffects() [][]interface{}`
 
 GetEffects returns the Effects field if non-nil, zero value otherwise.
 
@@ -186,7 +186,7 @@ and a boolean to check if the value has been set.
 
 ### SetEffects
 
-`func (o *Rule) SetEffects(v []map[string]interface{})`
+`func (o *Rule) SetEffects(v [][]interface{})`
 
 SetEffects sets Effects field to given value.
 

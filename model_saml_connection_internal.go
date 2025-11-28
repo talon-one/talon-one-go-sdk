@@ -33,7 +33,7 @@ type _SamlConnectionInternal SamlConnectionInternal
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSamlConnectionInternal(name string, metadataDocument string) *SamlConnectionInternal {
+func BuildSamlConnectionInternal(name string, metadataDocument string) *SamlConnectionInternal {
 	this := SamlConnectionInternal{}
 	this.Name = name
 	this.MetadataDocument = metadataDocument
@@ -172,7 +172,7 @@ func (v *NullableSamlConnectionInternal) Unset() {
 	v.isSet = false
 }
 
-func NewNullableSamlConnectionInternal(val *SamlConnectionInternal) *NullableSamlConnectionInternal {
+func BuildNullableSamlConnectionInternal(val *SamlConnectionInternal) *NullableSamlConnectionInternal {
 	return &NullableSamlConnectionInternal{value: val, isSet: true}
 }
 

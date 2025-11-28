@@ -29,7 +29,7 @@ type CustomerProfileSearchQuery struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCustomerProfileSearchQuery() *CustomerProfileSearchQuery {
+func BuildCustomerProfileSearchQuery() *CustomerProfileSearchQuery {
 	this := CustomerProfileSearchQuery{}
 	return &this
 }
@@ -183,7 +183,7 @@ func (v *NullableCustomerProfileSearchQuery) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCustomerProfileSearchQuery(val *CustomerProfileSearchQuery) *NullableCustomerProfileSearchQuery {
+func BuildNullableCustomerProfileSearchQuery(val *CustomerProfileSearchQuery) *NullableCustomerProfileSearchQuery {
 	return &NullableCustomerProfileSearchQuery{value: val, isSet: true}
 }
 

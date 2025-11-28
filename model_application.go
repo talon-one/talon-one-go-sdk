@@ -73,7 +73,7 @@ type _Application Application
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewApplication(id int64, created time.Time, modified time.Time, accountId int64, name string, timezone string, currency string, loyaltyPrograms []LoyaltyProgram) *Application {
+func BuildApplication(id int64, created time.Time, modified time.Time, accountId int64, name string, timezone string, currency string, loyaltyPrograms []LoyaltyProgram) *Application {
 	this := Application{}
 	this.Id = id
 	this.Created = created
@@ -864,7 +864,7 @@ func (v *NullableApplication) Unset() {
 	v.isSet = false
 }
 
-func NewNullableApplication(val *Application) *NullableApplication {
+func BuildNullableApplication(val *Application) *NullableApplication {
 	return &NullableApplication{value: val, isSet: true}
 }
 

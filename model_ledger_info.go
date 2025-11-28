@@ -49,7 +49,7 @@ type _LedgerInfo LedgerInfo
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLedgerInfo(currentBalance float32, pendingBalance float32, expiredBalance float32, spentBalance float32, tentativeCurrentBalance float32) *LedgerInfo {
+func BuildLedgerInfo(currentBalance float32, pendingBalance float32, expiredBalance float32, spentBalance float32, tentativeCurrentBalance float32) *LedgerInfo {
 	this := LedgerInfo{}
 	this.CurrentBalance = currentBalance
 	this.PendingBalance = pendingBalance
@@ -444,7 +444,7 @@ func (v *NullableLedgerInfo) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLedgerInfo(val *LedgerInfo) *NullableLedgerInfo {
+func BuildNullableLedgerInfo(val *LedgerInfo) *NullableLedgerInfo {
 	return &NullableLedgerInfo{value: val, isSet: true}
 }
 

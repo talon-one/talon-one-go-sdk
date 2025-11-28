@@ -31,7 +31,7 @@ type _DeactivateUserRequest DeactivateUserRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewDeactivateUserRequest(email string) *DeactivateUserRequest {
+func BuildDeactivateUserRequest(email string) *DeactivateUserRequest {
 	this := DeactivateUserRequest{}
 	this.Email = email
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableDeactivateUserRequest) Unset() {
 	v.isSet = false
 }
 
-func NewNullableDeactivateUserRequest(val *DeactivateUserRequest) *NullableDeactivateUserRequest {
+func BuildNullableDeactivateUserRequest(val *DeactivateUserRequest) *NullableDeactivateUserRequest {
 	return &NullableDeactivateUserRequest{value: val, isSet: true}
 }
 

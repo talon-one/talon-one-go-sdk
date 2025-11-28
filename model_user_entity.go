@@ -31,7 +31,7 @@ type _UserEntity UserEntity
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUserEntity(userId int64) *UserEntity {
+func BuildUserEntity(userId int64) *UserEntity {
 	this := UserEntity{}
 	this.UserId = userId
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableUserEntity) Unset() {
 	v.isSet = false
 }
 
-func NewNullableUserEntity(val *UserEntity) *NullableUserEntity {
+func BuildNullableUserEntity(val *UserEntity) *NullableUserEntity {
 	return &NullableUserEntity{value: val, isSet: true}
 }
 

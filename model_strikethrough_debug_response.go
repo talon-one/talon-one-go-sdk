@@ -29,7 +29,7 @@ type StrikethroughDebugResponse struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewStrikethroughDebugResponse() *StrikethroughDebugResponse {
+func BuildStrikethroughDebugResponse() *StrikethroughDebugResponse {
 	this := StrikethroughDebugResponse{}
 	return &this
 }
@@ -148,7 +148,7 @@ func (v *NullableStrikethroughDebugResponse) Unset() {
 	v.isSet = false
 }
 
-func NewNullableStrikethroughDebugResponse(val *StrikethroughDebugResponse) *NullableStrikethroughDebugResponse {
+func BuildNullableStrikethroughDebugResponse(val *StrikethroughDebugResponse) *NullableStrikethroughDebugResponse {
 	return &NullableStrikethroughDebugResponse{value: val, isSet: true}
 }
 

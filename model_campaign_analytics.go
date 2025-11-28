@@ -79,7 +79,7 @@ type _CampaignAnalytics CampaignAnalytics
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCampaignAnalytics(date time.Time, campaignRevenue float32, totalCampaignRevenue float32, campaignRefund float32, totalCampaignRefund float32, campaignDiscountCosts float32, totalCampaignDiscountCosts float32, campaignRefundedDiscounts float32, totalCampaignRefundedDiscounts float32, campaignFreeItems int64, totalCampaignFreeItems int64, couponRedemptions int64, totalCouponRedemptions int64, couponRolledbackRedemptions int64, totalCouponRolledbackRedemptions int64, referralRedemptions int64, totalReferralRedemptions int64, couponsCreated int64, totalCouponsCreated int64, referralsCreated int64, totalReferralsCreated int64, addedLoyaltyPoints float32, totalAddedLoyaltyPoints float32, deductedLoyaltyPoints float32, totalDeductedLoyaltyPoints float32) *CampaignAnalytics {
+func BuildCampaignAnalytics(date time.Time, campaignRevenue float32, totalCampaignRevenue float32, campaignRefund float32, totalCampaignRefund float32, campaignDiscountCosts float32, totalCampaignDiscountCosts float32, campaignRefundedDiscounts float32, totalCampaignRefundedDiscounts float32, campaignFreeItems int64, totalCampaignFreeItems int64, couponRedemptions int64, totalCouponRedemptions int64, couponRolledbackRedemptions int64, totalCouponRolledbackRedemptions int64, referralRedemptions int64, totalReferralRedemptions int64, couponsCreated int64, totalCouponsCreated int64, referralsCreated int64, totalReferralsCreated int64, addedLoyaltyPoints float32, totalAddedLoyaltyPoints float32, deductedLoyaltyPoints float32, totalDeductedLoyaltyPoints float32) *CampaignAnalytics {
 	this := CampaignAnalytics{}
 	this.Date = date
 	this.CampaignRevenue = campaignRevenue
@@ -839,7 +839,7 @@ func (v *NullableCampaignAnalytics) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCampaignAnalytics(val *CampaignAnalytics) *NullableCampaignAnalytics {
+func BuildNullableCampaignAnalytics(val *CampaignAnalytics) *NullableCampaignAnalytics {
 	return &NullableCampaignAnalytics{value: val, isSet: true}
 }
 

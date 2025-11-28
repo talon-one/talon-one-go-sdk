@@ -31,7 +31,7 @@ type _ReopenSessionResponse ReopenSessionResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewReopenSessionResponse(effects []Effect) *ReopenSessionResponse {
+func BuildReopenSessionResponse(effects []Effect) *ReopenSessionResponse {
 	this := ReopenSessionResponse{}
 	this.Effects = effects
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableReopenSessionResponse) Unset() {
 	v.isSet = false
 }
 
-func NewNullableReopenSessionResponse(val *ReopenSessionResponse) *NullableReopenSessionResponse {
+func BuildNullableReopenSessionResponse(val *ReopenSessionResponse) *NullableReopenSessionResponse {
 	return &NullableReopenSessionResponse{value: val, isSet: true}
 }
 

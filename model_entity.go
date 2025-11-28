@@ -34,7 +34,7 @@ type _Entity Entity
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewEntity(id int64, created time.Time) *Entity {
+func BuildEntity(id int64, created time.Time) *Entity {
 	this := Entity{}
 	this.Id = id
 	this.Created = created
@@ -173,7 +173,7 @@ func (v *NullableEntity) Unset() {
 	v.isSet = false
 }
 
-func NewNullableEntity(val *Entity) *NullableEntity {
+func BuildNullableEntity(val *Entity) *NullableEntity {
 	return &NullableEntity{value: val, isSet: true}
 }
 

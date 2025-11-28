@@ -54,7 +54,7 @@ type _NewAttribute NewAttribute
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewAttribute(entity string, name string, title string, type_ string, description string, suggestions []string, editable bool) *NewAttribute {
+func BuildNewAttribute(entity string, name string, title string, type_ string, description string, suggestions []string, editable bool) *NewAttribute {
 	this := NewAttribute{}
 	this.Entity = entity
 	this.Name = name
@@ -546,7 +546,7 @@ func (v *NullableNewAttribute) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewAttribute(val *NewAttribute) *NullableNewAttribute {
+func BuildNullableNewAttribute(val *NewAttribute) *NullableNewAttribute {
 	return &NullableNewAttribute{value: val, isSet: true}
 }
 

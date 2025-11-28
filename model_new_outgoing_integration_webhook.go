@@ -35,7 +35,7 @@ type _NewOutgoingIntegrationWebhook NewOutgoingIntegrationWebhook
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewOutgoingIntegrationWebhook(title string, applicationIds []int64) *NewOutgoingIntegrationWebhook {
+func BuildNewOutgoingIntegrationWebhook(title string, applicationIds []int64) *NewOutgoingIntegrationWebhook {
 	this := NewOutgoingIntegrationWebhook{}
 	this.Title = title
 	this.ApplicationIds = applicationIds
@@ -209,7 +209,7 @@ func (v *NullableNewOutgoingIntegrationWebhook) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewOutgoingIntegrationWebhook(val *NewOutgoingIntegrationWebhook) *NullableNewOutgoingIntegrationWebhook {
+func BuildNullableNewOutgoingIntegrationWebhook(val *NewOutgoingIntegrationWebhook) *NullableNewOutgoingIntegrationWebhook {
 	return &NullableNewOutgoingIntegrationWebhook{value: val, isSet: true}
 }
 

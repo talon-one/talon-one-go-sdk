@@ -31,7 +31,7 @@ type _LoyaltyCardRegistration LoyaltyCardRegistration
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLoyaltyCardRegistration(integrationId string) *LoyaltyCardRegistration {
+func BuildLoyaltyCardRegistration(integrationId string) *LoyaltyCardRegistration {
 	this := LoyaltyCardRegistration{}
 	this.IntegrationId = integrationId
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableLoyaltyCardRegistration) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLoyaltyCardRegistration(val *LoyaltyCardRegistration) *NullableLoyaltyCardRegistration {
+func BuildNullableLoyaltyCardRegistration(val *LoyaltyCardRegistration) *NullableLoyaltyCardRegistration {
 	return &NullableLoyaltyCardRegistration{value: val, isSet: true}
 }
 

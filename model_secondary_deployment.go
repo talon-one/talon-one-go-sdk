@@ -46,7 +46,7 @@ type _SecondaryDeployment SecondaryDeployment
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSecondaryDeployment(id int64, name string, userId int64, status string, createdAt time.Time) *SecondaryDeployment {
+func BuildSecondaryDeployment(id int64, name string, userId int64, status string, createdAt time.Time) *SecondaryDeployment {
 	this := SecondaryDeployment{}
 	this.Id = id
 	this.Name = name
@@ -371,7 +371,7 @@ func (v *NullableSecondaryDeployment) Unset() {
 	v.isSet = false
 }
 
-func NewNullableSecondaryDeployment(val *SecondaryDeployment) *NullableSecondaryDeployment {
+func BuildNullableSecondaryDeployment(val *SecondaryDeployment) *NullableSecondaryDeployment {
 	return &NullableSecondaryDeployment{value: val, isSet: true}
 }
 

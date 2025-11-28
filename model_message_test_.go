@@ -33,7 +33,7 @@ type _MessageTest MessageTest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewMessageTest(httpResponse string, httpStatus int64) *MessageTest {
+func BuildMessageTest(httpResponse string, httpStatus int64) *MessageTest {
 	this := MessageTest{}
 	this.HttpResponse = httpResponse
 	this.HttpStatus = httpStatus
@@ -172,7 +172,7 @@ func (v *NullableMessageTest) Unset() {
 	v.isSet = false
 }
 
-func NewNullableMessageTest(val *MessageTest) *NullableMessageTest {
+func BuildNullableMessageTest(val *MessageTest) *NullableMessageTest {
 	return &NullableMessageTest{value: val, isSet: true}
 }
 

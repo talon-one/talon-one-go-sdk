@@ -50,7 +50,7 @@ type _LedgerPointsEntryIntegrationAPI LedgerPointsEntryIntegrationAPI
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLedgerPointsEntryIntegrationAPI(id int64, transactionUUID string, created time.Time, programId int64, name string, startDate string, expiryDate string, subledgerId string, amount float32) *LedgerPointsEntryIntegrationAPI {
+func BuildLedgerPointsEntryIntegrationAPI(id int64, transactionUUID string, created time.Time, programId int64, name string, startDate string, expiryDate string, subledgerId string, amount float32) *LedgerPointsEntryIntegrationAPI {
 	this := LedgerPointsEntryIntegrationAPI{}
 	this.Id = id
 	this.TransactionUUID = transactionUUID
@@ -413,7 +413,7 @@ func (v *NullableLedgerPointsEntryIntegrationAPI) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLedgerPointsEntryIntegrationAPI(val *LedgerPointsEntryIntegrationAPI) *NullableLedgerPointsEntryIntegrationAPI {
+func BuildNullableLedgerPointsEntryIntegrationAPI(val *LedgerPointsEntryIntegrationAPI) *NullableLedgerPointsEntryIntegrationAPI {
 	return &NullableLedgerPointsEntryIntegrationAPI{value: val, isSet: true}
 }
 

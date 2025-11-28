@@ -32,7 +32,7 @@ type _OktaEvent OktaEvent
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewOktaEvent(eventType string, target []OktaEventTarget) *OktaEvent {
+func BuildOktaEvent(eventType string, target []OktaEventTarget) *OktaEvent {
 	this := OktaEvent{}
 	this.EventType = eventType
 	this.Target = target
@@ -171,7 +171,7 @@ func (v *NullableOktaEvent) Unset() {
 	v.isSet = false
 }
 
-func NewNullableOktaEvent(val *OktaEvent) *NullableOktaEvent {
+func BuildNullableOktaEvent(val *OktaEvent) *NullableOktaEvent {
 	return &NullableOktaEvent{value: val, isSet: true}
 }
 

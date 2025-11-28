@@ -37,7 +37,7 @@ type _NewPriceType NewPriceType
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewPriceType(name string, title string) *NewPriceType {
+func BuildNewPriceType(name string, title string) *NewPriceType {
 	this := NewPriceType{}
 	this.Name = name
 	this.Title = title
@@ -246,7 +246,7 @@ func (v *NullableNewPriceType) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewPriceType(val *NewPriceType) *NullableNewPriceType {
+func BuildNullableNewPriceType(val *NewPriceType) *NullableNewPriceType {
 	return &NullableNewPriceType{value: val, isSet: true}
 }
 

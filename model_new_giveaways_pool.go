@@ -37,7 +37,7 @@ type _NewGiveawaysPool NewGiveawaysPool
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewGiveawaysPool(name string, sandbox bool) *NewGiveawaysPool {
+func BuildNewGiveawaysPool(name string, sandbox bool) *NewGiveawaysPool {
 	this := NewGiveawaysPool{}
 	this.Name = name
 	this.Sandbox = sandbox
@@ -246,7 +246,7 @@ func (v *NullableNewGiveawaysPool) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewGiveawaysPool(val *NewGiveawaysPool) *NullableNewGiveawaysPool {
+func BuildNullableNewGiveawaysPool(val *NewGiveawaysPool) *NullableNewGiveawaysPool {
 	return &NullableNewGiveawaysPool{value: val, isSet: true}
 }
 

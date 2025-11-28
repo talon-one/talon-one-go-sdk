@@ -32,7 +32,7 @@ type _AddedDeductedPointsNotificationPolicy AddedDeductedPointsNotificationPolic
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAddedDeductedPointsNotificationPolicy(name string, scopes []string) *AddedDeductedPointsNotificationPolicy {
+func BuildAddedDeductedPointsNotificationPolicy(name string, scopes []string) *AddedDeductedPointsNotificationPolicy {
 	this := AddedDeductedPointsNotificationPolicy{}
 	this.Name = name
 	this.Scopes = scopes
@@ -171,7 +171,7 @@ func (v *NullableAddedDeductedPointsNotificationPolicy) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAddedDeductedPointsNotificationPolicy(val *AddedDeductedPointsNotificationPolicy) *NullableAddedDeductedPointsNotificationPolicy {
+func BuildNullableAddedDeductedPointsNotificationPolicy(val *AddedDeductedPointsNotificationPolicy) *NullableAddedDeductedPointsNotificationPolicy {
 	return &NullableAddedDeductedPointsNotificationPolicy{value: val, isSet: true}
 }
 

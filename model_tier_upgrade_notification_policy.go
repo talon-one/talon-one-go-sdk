@@ -35,7 +35,7 @@ type _TierUpgradeNotificationPolicy TierUpgradeNotificationPolicy
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewTierUpgradeNotificationPolicy(name string) *TierUpgradeNotificationPolicy {
+func BuildTierUpgradeNotificationPolicy(name string) *TierUpgradeNotificationPolicy {
 	this := TierUpgradeNotificationPolicy{}
 	this.Name = name
 	var batchingEnabled bool = true
@@ -225,7 +225,7 @@ func (v *NullableTierUpgradeNotificationPolicy) Unset() {
 	v.isSet = false
 }
 
-func NewNullableTierUpgradeNotificationPolicy(val *TierUpgradeNotificationPolicy) *NullableTierUpgradeNotificationPolicy {
+func BuildNullableTierUpgradeNotificationPolicy(val *TierUpgradeNotificationPolicy) *NullableTierUpgradeNotificationPolicy {
 	return &NullableTierUpgradeNotificationPolicy{value: val, isSet: true}
 }
 

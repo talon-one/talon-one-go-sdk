@@ -37,7 +37,7 @@ type _NotificationListItem NotificationListItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNotificationListItem(notificationId int64, notificationName string, entityId int64, enabled bool) *NotificationListItem {
+func BuildNotificationListItem(notificationId int64, notificationName string, entityId int64, enabled bool) *NotificationListItem {
 	this := NotificationListItem{}
 	this.NotificationId = notificationId
 	this.NotificationName = notificationName
@@ -230,7 +230,7 @@ func (v *NullableNotificationListItem) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNotificationListItem(val *NotificationListItem) *NullableNotificationListItem {
+func BuildNullableNotificationListItem(val *NotificationListItem) *NullableNotificationListItem {
 	return &NullableNotificationListItem{value: val, isSet: true}
 }
 

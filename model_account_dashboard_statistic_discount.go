@@ -36,7 +36,7 @@ type _AccountDashboardStatisticDiscount AccountDashboardStatisticDiscount
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAccountDashboardStatisticDiscount(total float32, average float32, datetime time.Time) *AccountDashboardStatisticDiscount {
+func BuildAccountDashboardStatisticDiscount(total float32, average float32, datetime time.Time) *AccountDashboardStatisticDiscount {
 	this := AccountDashboardStatisticDiscount{}
 	this.Total = total
 	this.Average = average
@@ -202,7 +202,7 @@ func (v *NullableAccountDashboardStatisticDiscount) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAccountDashboardStatisticDiscount(val *AccountDashboardStatisticDiscount) *NullableAccountDashboardStatisticDiscount {
+func BuildNullableAccountDashboardStatisticDiscount(val *AccountDashboardStatisticDiscount) *NullableAccountDashboardStatisticDiscount {
 	return &NullableAccountDashboardStatisticDiscount{value: val, isSet: true}
 }
 

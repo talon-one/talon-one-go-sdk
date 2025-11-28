@@ -31,7 +31,7 @@ type GenerateLoyaltyCard struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGenerateLoyaltyCard() *GenerateLoyaltyCard {
+func BuildGenerateLoyaltyCard() *GenerateLoyaltyCard {
 	this := GenerateLoyaltyCard{}
 	var status string = "active"
 	this.Status = &status
@@ -189,7 +189,7 @@ func (v *NullableGenerateLoyaltyCard) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGenerateLoyaltyCard(val *GenerateLoyaltyCard) *NullableGenerateLoyaltyCard {
+func BuildNullableGenerateLoyaltyCard(val *GenerateLoyaltyCard) *NullableGenerateLoyaltyCard {
 	return &NullableGenerateLoyaltyCard{value: val, isSet: true}
 }
 

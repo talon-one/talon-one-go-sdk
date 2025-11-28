@@ -33,7 +33,7 @@ type _NewCampaignCollection NewCampaignCollection
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewCampaignCollection(name string) *NewCampaignCollection {
+func BuildNewCampaignCollection(name string) *NewCampaignCollection {
 	this := NewCampaignCollection{}
 	this.Name = name
 	return &this
@@ -180,7 +180,7 @@ func (v *NullableNewCampaignCollection) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewCampaignCollection(val *NewCampaignCollection) *NullableNewCampaignCollection {
+func BuildNullableNewCampaignCollection(val *NewCampaignCollection) *NullableNewCampaignCollection {
 	return &NullableNewCampaignCollection{value: val, isSet: true}
 }
 

@@ -62,7 +62,7 @@ type _UpdateApplication UpdateApplication
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdateApplication(name string, timezone string, currency string) *UpdateApplication {
+func BuildUpdateApplication(name string, timezone string, currency string) *UpdateApplication {
 	this := UpdateApplication{}
 	this.Name = name
 	this.Timezone = timezone
@@ -718,7 +718,7 @@ func (v *NullableUpdateApplication) Unset() {
 	v.isSet = false
 }
 
-func NewNullableUpdateApplication(val *UpdateApplication) *NullableUpdateApplication {
+func BuildNullableUpdateApplication(val *UpdateApplication) *NullableUpdateApplication {
 	return &NullableUpdateApplication{value: val, isSet: true}
 }
 

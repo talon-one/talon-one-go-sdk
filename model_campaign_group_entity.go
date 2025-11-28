@@ -27,7 +27,7 @@ type CampaignGroupEntity struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCampaignGroupEntity() *CampaignGroupEntity {
+func BuildCampaignGroupEntity() *CampaignGroupEntity {
 	this := CampaignGroupEntity{}
 	return &this
 }
@@ -111,7 +111,7 @@ func (v *NullableCampaignGroupEntity) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCampaignGroupEntity(val *CampaignGroupEntity) *NullableCampaignGroupEntity {
+func BuildNullableCampaignGroupEntity(val *CampaignGroupEntity) *NullableCampaignGroupEntity {
 	return &NullableCampaignGroupEntity{value: val, isSet: true}
 }
 

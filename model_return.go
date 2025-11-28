@@ -52,7 +52,7 @@ type _Return Return
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewReturn(id int64, created time.Time, applicationId int64, accountId int64, returnedCartItems []ReturnedCartItem, eventId int64, sessionId int64, sessionIntegrationId string) *Return {
+func BuildReturn(id int64, created time.Time, applicationId int64, accountId int64, returnedCartItems []ReturnedCartItem, eventId int64, sessionId int64, sessionIntegrationId string) *Return {
 	this := Return{}
 	this.Id = id
 	this.Created = created
@@ -458,7 +458,7 @@ func (v *NullableReturn) Unset() {
 	v.isSet = false
 }
 
-func NewNullableReturn(val *Return) *NullableReturn {
+func BuildNullableReturn(val *Return) *NullableReturn {
 	return &NullableReturn{value: val, isSet: true}
 }
 

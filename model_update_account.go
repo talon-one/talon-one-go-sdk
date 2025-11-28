@@ -40,7 +40,7 @@ type _UpdateAccount UpdateAccount
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdateAccount(companyName string, billingEmail string) *UpdateAccount {
+func BuildUpdateAccount(companyName string, billingEmail string) *UpdateAccount {
 	this := UpdateAccount{}
 	this.CompanyName = companyName
 	this.BillingEmail = billingEmail
@@ -284,7 +284,7 @@ func (v *NullableUpdateAccount) Unset() {
 	v.isSet = false
 }
 
-func NewNullableUpdateAccount(val *UpdateAccount) *NullableUpdateAccount {
+func BuildNullableUpdateAccount(val *UpdateAccount) *NullableUpdateAccount {
 	return &NullableUpdateAccount{value: val, isSet: true}
 }
 

@@ -38,7 +38,7 @@ type _CouponsNotificationPolicy CouponsNotificationPolicy
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCouponsNotificationPolicy(name string, scopes []string) *CouponsNotificationPolicy {
+func BuildCouponsNotificationPolicy(name string, scopes []string) *CouponsNotificationPolicy {
 	this := CouponsNotificationPolicy{}
 	this.Name = name
 	this.Scopes = scopes
@@ -294,7 +294,7 @@ func (v *NullableCouponsNotificationPolicy) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCouponsNotificationPolicy(val *CouponsNotificationPolicy) *NullableCouponsNotificationPolicy {
+func BuildNullableCouponsNotificationPolicy(val *CouponsNotificationPolicy) *NullableCouponsNotificationPolicy {
 	return &NullableCouponsNotificationPolicy{value: val, isSet: true}
 }
 

@@ -31,7 +31,7 @@ type _GetCustomerAchievementHistory200Response GetCustomerAchievementHistory200R
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetCustomerAchievementHistory200Response(totalResultSize int64, data []AchievementProgress) *GetCustomerAchievementHistory200Response {
+func BuildGetCustomerAchievementHistory200Response(totalResultSize int64, data []AchievementProgress) *GetCustomerAchievementHistory200Response {
 	this := GetCustomerAchievementHistory200Response{}
 	this.TotalResultSize = totalResultSize
 	this.Data = data
@@ -170,7 +170,7 @@ func (v *NullableGetCustomerAchievementHistory200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGetCustomerAchievementHistory200Response(val *GetCustomerAchievementHistory200Response) *NullableGetCustomerAchievementHistory200Response {
+func BuildNullableGetCustomerAchievementHistory200Response(val *GetCustomerAchievementHistory200Response) *NullableGetCustomerAchievementHistory200Response {
 	return &NullableGetCustomerAchievementHistory200Response{value: val, isSet: true}
 }
 

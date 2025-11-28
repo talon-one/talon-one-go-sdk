@@ -33,7 +33,7 @@ type Meta struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewMeta() *Meta {
+func BuildMeta() *Meta {
 	this := Meta{}
 	return &this
 }
@@ -257,7 +257,7 @@ func (v *NullableMeta) Unset() {
 	v.isSet = false
 }
 
-func NewNullableMeta(val *Meta) *NullableMeta {
+func BuildNullableMeta(val *Meta) *NullableMeta {
 	return &NullableMeta{value: val, isSet: true}
 }
 

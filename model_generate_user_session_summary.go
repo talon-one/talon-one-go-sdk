@@ -33,7 +33,7 @@ type _GenerateUserSessionSummary GenerateUserSessionSummary
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGenerateUserSessionSummary(sessionID string, applicationID float32) *GenerateUserSessionSummary {
+func BuildGenerateUserSessionSummary(sessionID string, applicationID float32) *GenerateUserSessionSummary {
 	this := GenerateUserSessionSummary{}
 	this.SessionID = sessionID
 	this.ApplicationID = applicationID
@@ -172,7 +172,7 @@ func (v *NullableGenerateUserSessionSummary) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGenerateUserSessionSummary(val *GenerateUserSessionSummary) *NullableGenerateUserSessionSummary {
+func BuildNullableGenerateUserSessionSummary(val *GenerateUserSessionSummary) *NullableGenerateUserSessionSummary {
 	return &NullableGenerateUserSessionSummary{value: val, isSet: true}
 }
 

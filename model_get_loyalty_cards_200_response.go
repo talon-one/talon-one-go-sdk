@@ -31,7 +31,7 @@ type _GetLoyaltyCards200Response GetLoyaltyCards200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetLoyaltyCards200Response(hasMore bool, data []LoyaltyCard) *GetLoyaltyCards200Response {
+func BuildGetLoyaltyCards200Response(hasMore bool, data []LoyaltyCard) *GetLoyaltyCards200Response {
 	this := GetLoyaltyCards200Response{}
 	this.HasMore = hasMore
 	this.Data = data
@@ -170,7 +170,7 @@ func (v *NullableGetLoyaltyCards200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGetLoyaltyCards200Response(val *GetLoyaltyCards200Response) *NullableGetLoyaltyCards200Response {
+func BuildNullableGetLoyaltyCards200Response(val *GetLoyaltyCards200Response) *NullableGetLoyaltyCards200Response {
 	return &NullableGetLoyaltyCards200Response{value: val, isSet: true}
 }
 

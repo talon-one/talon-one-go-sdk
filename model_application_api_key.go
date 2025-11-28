@@ -50,7 +50,7 @@ type _ApplicationAPIKey ApplicationAPIKey
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewApplicationAPIKey(title string, expires time.Time, id int64, createdBy int64, accountID int64, applicationID int64, created time.Time) *ApplicationAPIKey {
+func BuildApplicationAPIKey(title string, expires time.Time, id int64, createdBy int64, accountID int64, applicationID int64, created time.Time) *ApplicationAPIKey {
 	this := ApplicationAPIKey{}
 	this.Title = title
 	this.Expires = expires
@@ -429,7 +429,7 @@ func (v *NullableApplicationAPIKey) Unset() {
 	v.isSet = false
 }
 
-func NewNullableApplicationAPIKey(val *ApplicationAPIKey) *NullableApplicationAPIKey {
+func BuildNullableApplicationAPIKey(val *ApplicationAPIKey) *NullableApplicationAPIKey {
 	return &NullableApplicationAPIKey{value: val, isSet: true}
 }
 

@@ -29,7 +29,7 @@ type UpdateCollection struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdateCollection() *UpdateCollection {
+func BuildUpdateCollection() *UpdateCollection {
 	this := UpdateCollection{}
 	return &this
 }
@@ -148,7 +148,7 @@ func (v *NullableUpdateCollection) Unset() {
 	v.isSet = false
 }
 
-func NewNullableUpdateCollection(val *UpdateCollection) *NullableUpdateCollection {
+func BuildNullableUpdateCollection(val *UpdateCollection) *NullableUpdateCollection {
 	return &NullableUpdateCollection{value: val, isSet: true}
 }
 

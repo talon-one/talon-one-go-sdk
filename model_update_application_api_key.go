@@ -31,7 +31,7 @@ type _UpdateApplicationAPIKey UpdateApplicationAPIKey
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdateApplicationAPIKey(timeOffset int64) *UpdateApplicationAPIKey {
+func BuildUpdateApplicationAPIKey(timeOffset int64) *UpdateApplicationAPIKey {
 	this := UpdateApplicationAPIKey{}
 	this.TimeOffset = timeOffset
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableUpdateApplicationAPIKey) Unset() {
 	v.isSet = false
 }
 
-func NewNullableUpdateApplicationAPIKey(val *UpdateApplicationAPIKey) *NullableUpdateApplicationAPIKey {
+func BuildNullableUpdateApplicationAPIKey(val *UpdateApplicationAPIKey) *NullableUpdateApplicationAPIKey {
 	return &NullableUpdateApplicationAPIKey{value: val, isSet: true}
 }
 

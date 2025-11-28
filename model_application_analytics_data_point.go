@@ -46,7 +46,7 @@ type _ApplicationAnalyticsDataPoint ApplicationAnalyticsDataPoint
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewApplicationAnalyticsDataPoint(startTime time.Time, endTime time.Time) *ApplicationAnalyticsDataPoint {
+func BuildApplicationAnalyticsDataPoint(startTime time.Time, endTime time.Time) *ApplicationAnalyticsDataPoint {
 	this := ApplicationAnalyticsDataPoint{}
 	this.StartTime = startTime
 	this.EndTime = endTime
@@ -395,7 +395,7 @@ func (v *NullableApplicationAnalyticsDataPoint) Unset() {
 	v.isSet = false
 }
 
-func NewNullableApplicationAnalyticsDataPoint(val *ApplicationAnalyticsDataPoint) *NullableApplicationAnalyticsDataPoint {
+func BuildNullableApplicationAnalyticsDataPoint(val *ApplicationAnalyticsDataPoint) *NullableApplicationAnalyticsDataPoint {
 	return &NullableApplicationAnalyticsDataPoint{value: val, isSet: true}
 }
 

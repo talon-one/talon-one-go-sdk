@@ -31,7 +31,7 @@ type _ListAchievements200Response ListAchievements200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewListAchievements200Response(data []Achievement) *ListAchievements200Response {
+func BuildListAchievements200Response(data []Achievement) *ListAchievements200Response {
 	this := ListAchievements200Response{}
 	this.Data = data
 	return &this
@@ -178,7 +178,7 @@ func (v *NullableListAchievements200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableListAchievements200Response(val *ListAchievements200Response) *NullableListAchievements200Response {
+func BuildNullableListAchievements200Response(val *ListAchievements200Response) *NullableListAchievements200Response {
 	return &NullableListAchievements200Response{value: val, isSet: true}
 }
 

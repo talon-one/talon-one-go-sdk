@@ -31,7 +31,7 @@ type _SkuUnitAnalytics SkuUnitAnalytics
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSkuUnitAnalytics(data []SkuUnitAnalyticsDataPoint, totals ProductUnitAnalyticsTotals) *SkuUnitAnalytics {
+func BuildSkuUnitAnalytics(data []SkuUnitAnalyticsDataPoint, totals ProductUnitAnalyticsTotals) *SkuUnitAnalytics {
 	this := SkuUnitAnalytics{}
 	this.Data = data
 	this.Totals = totals
@@ -170,7 +170,7 @@ func (v *NullableSkuUnitAnalytics) Unset() {
 	v.isSet = false
 }
 
-func NewNullableSkuUnitAnalytics(val *SkuUnitAnalytics) *NullableSkuUnitAnalytics {
+func BuildNullableSkuUnitAnalytics(val *SkuUnitAnalytics) *NullableSkuUnitAnalytics {
 	return &NullableSkuUnitAnalytics{value: val, isSet: true}
 }
 

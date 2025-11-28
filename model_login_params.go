@@ -33,7 +33,7 @@ type _LoginParams LoginParams
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLoginParams(email string, password string) *LoginParams {
+func BuildLoginParams(email string, password string) *LoginParams {
 	this := LoginParams{}
 	this.Email = email
 	this.Password = password
@@ -172,7 +172,7 @@ func (v *NullableLoginParams) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLoginParams(val *LoginParams) *NullableLoginParams {
+func BuildNullableLoginParams(val *LoginParams) *NullableLoginParams {
 	return &NullableLoginParams{value: val, isSet: true}
 }
 

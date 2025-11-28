@@ -42,7 +42,7 @@ type _BaseNotificationWebhook BaseNotificationWebhook
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewBaseNotificationWebhook(id int64, created time.Time, modified time.Time, url string, headers []string) *BaseNotificationWebhook {
+func BuildBaseNotificationWebhook(id int64, created time.Time, modified time.Time, url string, headers []string) *BaseNotificationWebhook {
 	this := BaseNotificationWebhook{}
 	this.Id = id
 	this.Created = created
@@ -301,7 +301,7 @@ func (v *NullableBaseNotificationWebhook) Unset() {
 	v.isSet = false
 }
 
-func NewNullableBaseNotificationWebhook(val *BaseNotificationWebhook) *NullableBaseNotificationWebhook {
+func BuildNullableBaseNotificationWebhook(val *BaseNotificationWebhook) *NullableBaseNotificationWebhook {
 	return &NullableBaseNotificationWebhook{value: val, isSet: true}
 }
 

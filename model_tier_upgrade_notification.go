@@ -34,7 +34,7 @@ type _TierUpgradeNotification TierUpgradeNotification
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewTierUpgradeNotification(totalResultSize int64, data []TierUpgradeData, notificationType string) *TierUpgradeNotification {
+func BuildTierUpgradeNotification(totalResultSize int64, data []TierUpgradeData, notificationType string) *TierUpgradeNotification {
 	this := TierUpgradeNotification{}
 	this.TotalResultSize = totalResultSize
 	this.Data = data
@@ -200,7 +200,7 @@ func (v *NullableTierUpgradeNotification) Unset() {
 	v.isSet = false
 }
 
-func NewNullableTierUpgradeNotification(val *TierUpgradeNotification) *NullableTierUpgradeNotification {
+func BuildNullableTierUpgradeNotification(val *TierUpgradeNotification) *NullableTierUpgradeNotification {
 	return &NullableTierUpgradeNotification{value: val, isSet: true}
 }
 

@@ -45,7 +45,7 @@ type _UpdateCustomEffect UpdateCustomEffect
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdateCustomEffect(applicationIds []int64, name string, title string, payload string, enabled bool) *UpdateCustomEffect {
+func BuildUpdateCustomEffect(applicationIds []int64, name string, title string, payload string, enabled bool) *UpdateCustomEffect {
 	this := UpdateCustomEffect{}
 	this.ApplicationIds = applicationIds
 	this.Name = name
@@ -370,7 +370,7 @@ func (v *NullableUpdateCustomEffect) Unset() {
 	v.isSet = false
 }
 
-func NewNullableUpdateCustomEffect(val *UpdateCustomEffect) *NullableUpdateCustomEffect {
+func BuildNullableUpdateCustomEffect(val *UpdateCustomEffect) *NullableUpdateCustomEffect {
 	return &NullableUpdateCustomEffect{value: val, isSet: true}
 }
 

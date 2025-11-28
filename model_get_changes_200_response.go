@@ -32,7 +32,7 @@ type _GetChanges200Response GetChanges200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetChanges200Response(data []Change) *GetChanges200Response {
+func BuildGetChanges200Response(data []Change) *GetChanges200Response {
 	this := GetChanges200Response{}
 	this.Data = data
 	return &this
@@ -214,7 +214,7 @@ func (v *NullableGetChanges200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGetChanges200Response(val *GetChanges200Response) *NullableGetChanges200Response {
+func BuildNullableGetChanges200Response(val *GetChanges200Response) *NullableGetChanges200Response {
 	return &NullableGetChanges200Response{value: val, isSet: true}
 }
 

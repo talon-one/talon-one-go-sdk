@@ -31,7 +31,7 @@ type _AsyncCouponCreationResponse AsyncCouponCreationResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAsyncCouponCreationResponse(batchId string) *AsyncCouponCreationResponse {
+func BuildAsyncCouponCreationResponse(batchId string) *AsyncCouponCreationResponse {
 	this := AsyncCouponCreationResponse{}
 	this.BatchId = batchId
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableAsyncCouponCreationResponse) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAsyncCouponCreationResponse(val *AsyncCouponCreationResponse) *NullableAsyncCouponCreationResponse {
+func BuildNullableAsyncCouponCreationResponse(val *AsyncCouponCreationResponse) *NullableAsyncCouponCreationResponse {
 	return &NullableAsyncCouponCreationResponse{value: val, isSet: true}
 }
 

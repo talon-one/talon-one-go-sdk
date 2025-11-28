@@ -38,7 +38,7 @@ type _DeleteCouponsData DeleteCouponsData
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewDeleteCouponsData(typeOfChange string, operation string, employeeName string, batchID string, applicationID int64, campaignID int64, totalResultSize int64, notificationType string) *DeleteCouponsData {
+func BuildDeleteCouponsData(typeOfChange string, operation string, employeeName string, batchID string, applicationID int64, campaignID int64, totalResultSize int64, notificationType string) *DeleteCouponsData {
 	this := DeleteCouponsData{}
 	this.TypeOfChange = typeOfChange
 	this.Operation = operation
@@ -339,7 +339,7 @@ func (v *NullableDeleteCouponsData) Unset() {
 	v.isSet = false
 }
 
-func NewNullableDeleteCouponsData(val *DeleteCouponsData) *NullableDeleteCouponsData {
+func BuildNullableDeleteCouponsData(val *DeleteCouponsData) *NullableDeleteCouponsData {
 	return &NullableDeleteCouponsData{value: val, isSet: true}
 }
 

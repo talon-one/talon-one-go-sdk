@@ -33,7 +33,7 @@ type _CodeGeneratorSettings CodeGeneratorSettings
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCodeGeneratorSettings(validCharacters []string, couponPattern string) *CodeGeneratorSettings {
+func BuildCodeGeneratorSettings(validCharacters []string, couponPattern string) *CodeGeneratorSettings {
 	this := CodeGeneratorSettings{}
 	this.ValidCharacters = validCharacters
 	this.CouponPattern = couponPattern
@@ -172,7 +172,7 @@ func (v *NullableCodeGeneratorSettings) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCodeGeneratorSettings(val *CodeGeneratorSettings) *NullableCodeGeneratorSettings {
+func BuildNullableCodeGeneratorSettings(val *CodeGeneratorSettings) *NullableCodeGeneratorSettings {
 	return &NullableCodeGeneratorSettings{value: val, isSet: true}
 }
 

@@ -35,7 +35,7 @@ type _UpdateLoyaltyProgramTier UpdateLoyaltyProgramTier
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdateLoyaltyProgramTier(id int64) *UpdateLoyaltyProgramTier {
+func BuildUpdateLoyaltyProgramTier(id int64) *UpdateLoyaltyProgramTier {
 	this := UpdateLoyaltyProgramTier{}
 	this.Id = id
 	return &this
@@ -217,7 +217,7 @@ func (v *NullableUpdateLoyaltyProgramTier) Unset() {
 	v.isSet = false
 }
 
-func NewNullableUpdateLoyaltyProgramTier(val *UpdateLoyaltyProgramTier) *NullableUpdateLoyaltyProgramTier {
+func BuildNullableUpdateLoyaltyProgramTier(val *UpdateLoyaltyProgramTier) *NullableUpdateLoyaltyProgramTier {
 	return &NullableUpdateLoyaltyProgramTier{value: val, isSet: true}
 }
 

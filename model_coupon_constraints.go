@@ -36,7 +36,7 @@ type CouponConstraints struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCouponConstraints() *CouponConstraints {
+func BuildCouponConstraints() *CouponConstraints {
 	this := CouponConstraints{}
 	return &this
 }
@@ -260,7 +260,7 @@ func (v *NullableCouponConstraints) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCouponConstraints(val *CouponConstraints) *NullableCouponConstraints {
+func BuildNullableCouponConstraints(val *CouponConstraints) *NullableCouponConstraints {
 	return &NullableCouponConstraints{value: val, isSet: true}
 }
 

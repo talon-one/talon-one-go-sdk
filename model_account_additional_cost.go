@@ -46,7 +46,7 @@ type _AccountAdditionalCost AccountAdditionalCost
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAccountAdditionalCost(id int64, created time.Time, accountId int64, name string, title string, description string) *AccountAdditionalCost {
+func BuildAccountAdditionalCost(id int64, created time.Time, accountId int64, name string, title string, description string) *AccountAdditionalCost {
 	this := AccountAdditionalCost{}
 	this.Id = id
 	this.Created = created
@@ -367,7 +367,7 @@ func (v *NullableAccountAdditionalCost) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAccountAdditionalCost(val *AccountAdditionalCost) *NullableAccountAdditionalCost {
+func BuildNullableAccountAdditionalCost(val *AccountAdditionalCost) *NullableAccountAdditionalCost {
 	return &NullableAccountAdditionalCost{value: val, isSet: true}
 }
 

@@ -33,7 +33,7 @@ type _BaseNotificationEntity BaseNotificationEntity
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewBaseNotificationEntity(policy map[string]interface{}) *BaseNotificationEntity {
+func BuildBaseNotificationEntity(policy map[string]interface{}) *BaseNotificationEntity {
 	this := BaseNotificationEntity{}
 	this.Policy = policy
 	var enabled bool = true
@@ -184,7 +184,7 @@ func (v *NullableBaseNotificationEntity) Unset() {
 	v.isSet = false
 }
 
-func NewNullableBaseNotificationEntity(val *BaseNotificationEntity) *NullableBaseNotificationEntity {
+func BuildNullableBaseNotificationEntity(val *BaseNotificationEntity) *NullableBaseNotificationEntity {
 	return &NullableBaseNotificationEntity{value: val, isSet: true}
 }
 

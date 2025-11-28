@@ -35,7 +35,7 @@ type _AccountDashboardStatisticCampaigns AccountDashboardStatisticCampaigns
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAccountDashboardStatisticCampaigns(live int64, endingSoon int64, lowOnBudget int64) *AccountDashboardStatisticCampaigns {
+func BuildAccountDashboardStatisticCampaigns(live int64, endingSoon int64, lowOnBudget int64) *AccountDashboardStatisticCampaigns {
 	this := AccountDashboardStatisticCampaigns{}
 	this.Live = live
 	this.EndingSoon = endingSoon
@@ -201,7 +201,7 @@ func (v *NullableAccountDashboardStatisticCampaigns) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAccountDashboardStatisticCampaigns(val *AccountDashboardStatisticCampaigns) *NullableAccountDashboardStatisticCampaigns {
+func BuildNullableAccountDashboardStatisticCampaigns(val *AccountDashboardStatisticCampaigns) *NullableAccountDashboardStatisticCampaigns {
 	return &NullableAccountDashboardStatisticCampaigns{value: val, isSet: true}
 }
 

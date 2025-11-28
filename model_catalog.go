@@ -48,7 +48,7 @@ type _Catalog Catalog
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCatalog(id int64, created time.Time, accountId int64, modified time.Time, name string, description string, version int64, createdBy int64) *Catalog {
+func BuildCatalog(id int64, created time.Time, accountId int64, modified time.Time, name string, description string, version int64, createdBy int64) *Catalog {
 	this := Catalog{}
 	this.Id = id
 	this.Created = created
@@ -384,7 +384,7 @@ func (v *NullableCatalog) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCatalog(val *Catalog) *NullableCatalog {
+func BuildNullableCatalog(val *Catalog) *NullableCatalog {
 	return &NullableCatalog{value: val, isSet: true}
 }
 

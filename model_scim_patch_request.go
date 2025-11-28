@@ -32,7 +32,7 @@ type _ScimPatchRequest ScimPatchRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewScimPatchRequest(operations []ScimPatchOperation) *ScimPatchRequest {
+func BuildScimPatchRequest(operations []ScimPatchOperation) *ScimPatchRequest {
 	this := ScimPatchRequest{}
 	this.Operations = operations
 	return &this
@@ -179,7 +179,7 @@ func (v *NullableScimPatchRequest) Unset() {
 	v.isSet = false
 }
 
-func NewNullableScimPatchRequest(val *ScimPatchRequest) *NullableScimPatchRequest {
+func BuildNullableScimPatchRequest(val *ScimPatchRequest) *NullableScimPatchRequest {
 	return &NullableScimPatchRequest{value: val, isSet: true}
 }
 

@@ -42,7 +42,7 @@ type _Import Import
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewImport(id int64, created time.Time, accountId int64, userId int64, entity string, amount int64) *Import {
+func BuildImport(id int64, created time.Time, accountId int64, userId int64, entity string, amount int64) *Import {
 	this := Import{}
 	this.Id = id
 	this.Created = created
@@ -289,7 +289,7 @@ func (v *NullableImport) Unset() {
 	v.isSet = false
 }
 
-func NewNullableImport(val *Import) *NullableImport {
+func BuildNullableImport(val *Import) *NullableImport {
 	return &NullableImport{value: val, isSet: true}
 }
 

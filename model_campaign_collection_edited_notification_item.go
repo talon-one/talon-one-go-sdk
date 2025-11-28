@@ -37,7 +37,7 @@ type _CampaignCollectionEditedNotificationItem CampaignCollectionEditedNotificat
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCampaignCollectionEditedNotificationItem(event string, campaign Campaign, collection CollectionWithoutPayload) *CampaignCollectionEditedNotificationItem {
+func BuildCampaignCollectionEditedNotificationItem(event string, campaign Campaign, collection CollectionWithoutPayload) *CampaignCollectionEditedNotificationItem {
 	this := CampaignCollectionEditedNotificationItem{}
 	this.Event = event
 	this.Campaign = campaign
@@ -238,7 +238,7 @@ func (v *NullableCampaignCollectionEditedNotificationItem) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCampaignCollectionEditedNotificationItem(val *CampaignCollectionEditedNotificationItem) *NullableCampaignCollectionEditedNotificationItem {
+func BuildNullableCampaignCollectionEditedNotificationItem(val *CampaignCollectionEditedNotificationItem) *NullableCampaignCollectionEditedNotificationItem {
 	return &NullableCampaignCollectionEditedNotificationItem{value: val, isSet: true}
 }
 

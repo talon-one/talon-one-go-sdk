@@ -31,7 +31,7 @@ type _CreateReferralsForMultipleAdvocates201Response CreateReferralsForMultipleA
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCreateReferralsForMultipleAdvocates201Response(totalResultSize int64, data []Referral) *CreateReferralsForMultipleAdvocates201Response {
+func BuildCreateReferralsForMultipleAdvocates201Response(totalResultSize int64, data []Referral) *CreateReferralsForMultipleAdvocates201Response {
 	this := CreateReferralsForMultipleAdvocates201Response{}
 	this.TotalResultSize = totalResultSize
 	this.Data = data
@@ -170,7 +170,7 @@ func (v *NullableCreateReferralsForMultipleAdvocates201Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCreateReferralsForMultipleAdvocates201Response(val *CreateReferralsForMultipleAdvocates201Response) *NullableCreateReferralsForMultipleAdvocates201Response {
+func BuildNullableCreateReferralsForMultipleAdvocates201Response(val *CreateReferralsForMultipleAdvocates201Response) *NullableCreateReferralsForMultipleAdvocates201Response {
 	return &NullableCreateReferralsForMultipleAdvocates201Response{value: val, isSet: true}
 }
 

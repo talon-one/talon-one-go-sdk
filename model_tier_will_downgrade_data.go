@@ -46,7 +46,7 @@ type _TierWillDowngradeData TierWillDowngradeData
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewTierWillDowngradeData(customerProfileID string, loyaltyProgramID int64, subledgerID string, currentTier string, currentPoints float32, pointsRequiredToRemain float32) *TierWillDowngradeData {
+func BuildTierWillDowngradeData(customerProfileID string, loyaltyProgramID int64, subledgerID string, currentTier string, currentPoints float32, pointsRequiredToRemain float32) *TierWillDowngradeData {
 	this := TierWillDowngradeData{}
 	this.CustomerProfileID = customerProfileID
 	this.LoyaltyProgramID = loyaltyProgramID
@@ -365,7 +365,7 @@ func (v *NullableTierWillDowngradeData) Unset() {
 	v.isSet = false
 }
 
-func NewNullableTierWillDowngradeData(val *TierWillDowngradeData) *NullableTierWillDowngradeData {
+func BuildNullableTierWillDowngradeData(val *TierWillDowngradeData) *NullableTierWillDowngradeData {
 	return &NullableTierWillDowngradeData{value: val, isSet: true}
 }
 

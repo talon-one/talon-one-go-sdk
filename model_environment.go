@@ -62,7 +62,7 @@ type _Environment Environment
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewEnvironment(id int64, created time.Time, applicationId int64, slots []SlotDef, functions []FunctionDef, templates []TemplateDef, variables string) *Environment {
+func BuildEnvironment(id int64, created time.Time, applicationId int64, slots []SlotDef, functions []FunctionDef, templates []TemplateDef, variables string) *Environment {
 	this := Environment{}
 	this.Id = id
 	this.Created = created
@@ -651,7 +651,7 @@ func (v *NullableEnvironment) Unset() {
 	v.isSet = false
 }
 
-func NewNullableEnvironment(val *Environment) *NullableEnvironment {
+func BuildNullableEnvironment(val *Environment) *NullableEnvironment {
 	return &NullableEnvironment{value: val, isSet: true}
 }
 

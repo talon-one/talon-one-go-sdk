@@ -31,7 +31,7 @@ type _RollbackCouponEffectProps RollbackCouponEffectProps
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewRollbackCouponEffectProps(value string) *RollbackCouponEffectProps {
+func BuildRollbackCouponEffectProps(value string) *RollbackCouponEffectProps {
 	this := RollbackCouponEffectProps{}
 	this.Value = value
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableRollbackCouponEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableRollbackCouponEffectProps(val *RollbackCouponEffectProps) *NullableRollbackCouponEffectProps {
+func BuildNullableRollbackCouponEffectProps(val *RollbackCouponEffectProps) *NullableRollbackCouponEffectProps {
 	return &NullableRollbackCouponEffectProps{value: val, isSet: true}
 }
 

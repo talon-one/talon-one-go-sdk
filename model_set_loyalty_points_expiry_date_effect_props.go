@@ -38,7 +38,7 @@ type _SetLoyaltyPointsExpiryDateEffectProps SetLoyaltyPointsExpiryDateEffectProp
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSetLoyaltyPointsExpiryDateEffectProps(programId int64, subLedgerId string, newExpiryDate time.Time) *SetLoyaltyPointsExpiryDateEffectProps {
+func BuildSetLoyaltyPointsExpiryDateEffectProps(programId int64, subLedgerId string, newExpiryDate time.Time) *SetLoyaltyPointsExpiryDateEffectProps {
 	this := SetLoyaltyPointsExpiryDateEffectProps{}
 	this.ProgramId = programId
 	this.SubLedgerId = subLedgerId
@@ -239,7 +239,7 @@ func (v *NullableSetLoyaltyPointsExpiryDateEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableSetLoyaltyPointsExpiryDateEffectProps(val *SetLoyaltyPointsExpiryDateEffectProps) *NullableSetLoyaltyPointsExpiryDateEffectProps {
+func BuildNullableSetLoyaltyPointsExpiryDateEffectProps(val *SetLoyaltyPointsExpiryDateEffectProps) *NullableSetLoyaltyPointsExpiryDateEffectProps {
 	return &NullableSetLoyaltyPointsExpiryDateEffectProps{value: val, isSet: true}
 }
 

@@ -44,7 +44,7 @@ type _IntegrationStateV2 IntegrationStateV2
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewIntegrationStateV2(effects []Effect, createdCoupons []Coupon, createdReferrals []Referral) *IntegrationStateV2 {
+func BuildIntegrationStateV2(effects []Effect, createdCoupons []Coupon, createdReferrals []Referral) *IntegrationStateV2 {
 	this := IntegrationStateV2{}
 	this.Effects = effects
 	this.CreatedCoupons = createdCoupons
@@ -595,7 +595,7 @@ func (v *NullableIntegrationStateV2) Unset() {
 	v.isSet = false
 }
 
-func NewNullableIntegrationStateV2(val *IntegrationStateV2) *NullableIntegrationStateV2 {
+func BuildNullableIntegrationStateV2(val *IntegrationStateV2) *NullableIntegrationStateV2 {
 	return &NullableIntegrationStateV2{value: val, isSet: true}
 }
 

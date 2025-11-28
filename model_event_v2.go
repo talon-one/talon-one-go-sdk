@@ -39,7 +39,7 @@ type _EventV2 EventV2
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewEventV2(type_ string) *EventV2 {
+func BuildEventV2(type_ string) *EventV2 {
 	this := EventV2{}
 	this.Type = type_
 	return &this
@@ -291,7 +291,7 @@ func (v *NullableEventV2) Unset() {
 	v.isSet = false
 }
 
-func NewNullableEventV2(val *EventV2) *NullableEventV2 {
+func BuildNullableEventV2(val *EventV2) *NullableEventV2 {
 	return &NullableEventV2{value: val, isSet: true}
 }
 

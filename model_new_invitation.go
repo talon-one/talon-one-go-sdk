@@ -39,7 +39,7 @@ type _NewInvitation NewInvitation
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewInvitation(email string) *NewInvitation {
+func BuildNewInvitation(email string) *NewInvitation {
 	this := NewInvitation{}
 	this.Email = email
 	return &this
@@ -291,7 +291,7 @@ func (v *NullableNewInvitation) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewInvitation(val *NewInvitation) *NullableNewInvitation {
+func BuildNullableNewInvitation(val *NewInvitation) *NullableNewInvitation {
 	return &NullableNewInvitation{value: val, isSet: true}
 }
 

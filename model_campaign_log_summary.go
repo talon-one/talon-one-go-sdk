@@ -40,7 +40,7 @@ type _CampaignLogSummary CampaignLogSummary
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCampaignLogSummary(name string, email string, created time.Time, action string, summary string) *CampaignLogSummary {
+func BuildCampaignLogSummary(name string, email string, created time.Time, action string, summary string) *CampaignLogSummary {
 	this := CampaignLogSummary{}
 	this.Name = name
 	this.Email = email
@@ -260,7 +260,7 @@ func (v *NullableCampaignLogSummary) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCampaignLogSummary(val *CampaignLogSummary) *NullableCampaignLogSummary {
+func BuildNullableCampaignLogSummary(val *CampaignLogSummary) *NullableCampaignLogSummary {
 	return &NullableCampaignLogSummary{value: val, isSet: true}
 }
 

@@ -28,7 +28,7 @@ type BestPriorPriceMetadata struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewBestPriorPriceMetadata() *BestPriorPriceMetadata {
+func BuildBestPriorPriceMetadata() *BestPriorPriceMetadata {
 	this := BestPriorPriceMetadata{}
 	return &this
 }
@@ -147,7 +147,7 @@ func (v *NullableBestPriorPriceMetadata) Unset() {
 	v.isSet = false
 }
 
-func NewNullableBestPriorPriceMetadata(val *BestPriorPriceMetadata) *NullableBestPriorPriceMetadata {
+func BuildNullableBestPriorPriceMetadata(val *BestPriorPriceMetadata) *NullableBestPriorPriceMetadata {
 	return &NullableBestPriorPriceMetadata{value: val, isSet: true}
 }
 

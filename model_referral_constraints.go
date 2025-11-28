@@ -32,7 +32,7 @@ type ReferralConstraints struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewReferralConstraints() *ReferralConstraints {
+func BuildReferralConstraints() *ReferralConstraints {
 	this := ReferralConstraints{}
 	return &this
 }
@@ -186,7 +186,7 @@ func (v *NullableReferralConstraints) Unset() {
 	v.isSet = false
 }
 
-func NewNullableReferralConstraints(val *ReferralConstraints) *NullableReferralConstraints {
+func BuildNullableReferralConstraints(val *ReferralConstraints) *NullableReferralConstraints {
 	return &NullableReferralConstraints{value: val, isSet: true}
 }
 

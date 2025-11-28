@@ -33,7 +33,7 @@ type _RedeemReferralEffectProps RedeemReferralEffectProps
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewRedeemReferralEffectProps(id int64, value string) *RedeemReferralEffectProps {
+func BuildRedeemReferralEffectProps(id int64, value string) *RedeemReferralEffectProps {
 	this := RedeemReferralEffectProps{}
 	this.Id = id
 	this.Value = value
@@ -172,7 +172,7 @@ func (v *NullableRedeemReferralEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableRedeemReferralEffectProps(val *RedeemReferralEffectProps) *NullableRedeemReferralEffectProps {
+func BuildNullableRedeemReferralEffectProps(val *RedeemReferralEffectProps) *NullableRedeemReferralEffectProps {
 	return &NullableRedeemReferralEffectProps{value: val, isSet: true}
 }
 

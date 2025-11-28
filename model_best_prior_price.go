@@ -40,7 +40,7 @@ type _BestPriorPrice BestPriorPrice
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewBestPriorPrice(sku string, observedAt time.Time, contextId string, price float32, metadata BestPriorPriceMetadata, target map[string]interface{}) *BestPriorPrice {
+func BuildBestPriorPrice(sku string, observedAt time.Time, contextId string, price float32, metadata BestPriorPriceMetadata, target map[string]interface{}) *BestPriorPrice {
 	this := BestPriorPrice{}
 	this.Sku = sku
 	this.ObservedAt = observedAt
@@ -287,7 +287,7 @@ func (v *NullableBestPriorPrice) Unset() {
 	v.isSet = false
 }
 
-func NewNullableBestPriorPrice(val *BestPriorPrice) *NullableBestPriorPrice {
+func BuildNullableBestPriorPrice(val *BestPriorPrice) *NullableBestPriorPrice {
 	return &NullableBestPriorPrice{value: val, isSet: true}
 }
 

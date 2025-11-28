@@ -36,7 +36,7 @@ type _CardExpiringPointsNotificationPolicy CardExpiringPointsNotificationPolicy
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCardExpiringPointsNotificationPolicy(name string, triggers []CardExpiringPointsNotificationTrigger) *CardExpiringPointsNotificationPolicy {
+func BuildCardExpiringPointsNotificationPolicy(name string, triggers []CardExpiringPointsNotificationTrigger) *CardExpiringPointsNotificationPolicy {
 	this := CardExpiringPointsNotificationPolicy{}
 	this.Name = name
 	this.Triggers = triggers
@@ -253,7 +253,7 @@ func (v *NullableCardExpiringPointsNotificationPolicy) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCardExpiringPointsNotificationPolicy(val *CardExpiringPointsNotificationPolicy) *NullableCardExpiringPointsNotificationPolicy {
+func BuildNullableCardExpiringPointsNotificationPolicy(val *CardExpiringPointsNotificationPolicy) *NullableCardExpiringPointsNotificationPolicy {
 	return &NullableCardExpiringPointsNotificationPolicy{value: val, isSet: true}
 }
 

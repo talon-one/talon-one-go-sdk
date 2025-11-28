@@ -41,7 +41,7 @@ type _RejectReferralEffectProps RejectReferralEffectProps
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewRejectReferralEffectProps(value string, rejectionReason string) *RejectReferralEffectProps {
+func BuildRejectReferralEffectProps(value string, rejectionReason string) *RejectReferralEffectProps {
 	this := RejectReferralEffectProps{}
 	this.Value = value
 	this.RejectionReason = rejectionReason
@@ -320,7 +320,7 @@ func (v *NullableRejectReferralEffectProps) Unset() {
 	v.isSet = false
 }
 
-func NewNullableRejectReferralEffectProps(val *RejectReferralEffectProps) *NullableRejectReferralEffectProps {
+func BuildNullableRejectReferralEffectProps(val *RejectReferralEffectProps) *NullableRejectReferralEffectProps {
 	return &NullableRejectReferralEffectProps{value: val, isSet: true}
 }
 

@@ -31,7 +31,7 @@ type _GetAdditionalCosts200Response GetAdditionalCosts200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetAdditionalCosts200Response(totalResultSize int64, data []AccountAdditionalCost) *GetAdditionalCosts200Response {
+func BuildGetAdditionalCosts200Response(totalResultSize int64, data []AccountAdditionalCost) *GetAdditionalCosts200Response {
 	this := GetAdditionalCosts200Response{}
 	this.TotalResultSize = totalResultSize
 	this.Data = data
@@ -170,7 +170,7 @@ func (v *NullableGetAdditionalCosts200Response) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGetAdditionalCosts200Response(val *GetAdditionalCosts200Response) *NullableGetAdditionalCosts200Response {
+func BuildNullableGetAdditionalCosts200Response(val *GetAdditionalCosts200Response) *NullableGetAdditionalCosts200Response {
 	return &NullableGetAdditionalCosts200Response{value: val, isSet: true}
 }
 

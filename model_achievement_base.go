@@ -47,7 +47,7 @@ type AchievementBase struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAchievementBase() *AchievementBase {
+func BuildAchievementBase() *AchievementBase {
 	this := AchievementBase{}
 	return &this
 }
@@ -481,7 +481,7 @@ func (v *NullableAchievementBase) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAchievementBase(val *AchievementBase) *NullableAchievementBase {
+func BuildNullableAchievementBase(val *AchievementBase) *NullableAchievementBase {
 	return &NullableAchievementBase{value: val, isSet: true}
 }
 

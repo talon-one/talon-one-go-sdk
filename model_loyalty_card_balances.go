@@ -30,7 +30,7 @@ type LoyaltyCardBalances struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLoyaltyCardBalances() *LoyaltyCardBalances {
+func BuildLoyaltyCardBalances() *LoyaltyCardBalances {
 	this := LoyaltyCardBalances{}
 	return &this
 }
@@ -184,7 +184,7 @@ func (v *NullableLoyaltyCardBalances) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLoyaltyCardBalances(val *LoyaltyCardBalances) *NullableLoyaltyCardBalances {
+func BuildNullableLoyaltyCardBalances(val *LoyaltyCardBalances) *NullableLoyaltyCardBalances {
 	return &NullableLoyaltyCardBalances{value: val, isSet: true}
 }
 

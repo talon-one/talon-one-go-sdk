@@ -31,7 +31,7 @@ type _GenerateAuditLogSummary GenerateAuditLogSummary
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGenerateAuditLogSummary(logID int64) *GenerateAuditLogSummary {
+func BuildGenerateAuditLogSummary(logID int64) *GenerateAuditLogSummary {
 	this := GenerateAuditLogSummary{}
 	this.LogID = logID
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableGenerateAuditLogSummary) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGenerateAuditLogSummary(val *GenerateAuditLogSummary) *NullableGenerateAuditLogSummary {
+func BuildNullableGenerateAuditLogSummary(val *GenerateAuditLogSummary) *NullableGenerateAuditLogSummary {
 	return &NullableGenerateAuditLogSummary{value: val, isSet: true}
 }
 

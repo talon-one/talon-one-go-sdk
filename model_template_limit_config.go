@@ -37,7 +37,7 @@ type _TemplateLimitConfig TemplateLimitConfig
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewTemplateLimitConfig(action string, limit float32, entities []string) *TemplateLimitConfig {
+func BuildTemplateLimitConfig(action string, limit float32, entities []string) *TemplateLimitConfig {
 	this := TemplateLimitConfig{}
 	this.Action = action
 	this.Limit = limit
@@ -238,7 +238,7 @@ func (v *NullableTemplateLimitConfig) Unset() {
 	v.isSet = false
 }
 
-func NewNullableTemplateLimitConfig(val *TemplateLimitConfig) *NullableTemplateLimitConfig {
+func BuildNullableTemplateLimitConfig(val *TemplateLimitConfig) *NullableTemplateLimitConfig {
 	return &NullableTemplateLimitConfig{value: val, isSet: true}
 }
 

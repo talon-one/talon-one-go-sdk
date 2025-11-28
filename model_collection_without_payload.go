@@ -52,7 +52,7 @@ type _CollectionWithoutPayload CollectionWithoutPayload
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCollectionWithoutPayload(id int64, created time.Time, accountId int64, modified time.Time, name string, createdBy int64) *CollectionWithoutPayload {
+func BuildCollectionWithoutPayload(id int64, created time.Time, accountId int64, modified time.Time, name string, createdBy int64) *CollectionWithoutPayload {
 	this := CollectionWithoutPayload{}
 	this.Id = id
 	this.Created = created
@@ -474,7 +474,7 @@ func (v *NullableCollectionWithoutPayload) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCollectionWithoutPayload(val *CollectionWithoutPayload) *NullableCollectionWithoutPayload {
+func BuildNullableCollectionWithoutPayload(val *CollectionWithoutPayload) *NullableCollectionWithoutPayload {
 	return &NullableCollectionWithoutPayload{value: val, isSet: true}
 }
 

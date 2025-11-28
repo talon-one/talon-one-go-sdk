@@ -128,7 +128,7 @@ type _Campaign Campaign
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCampaign(id int64, created time.Time, applicationId int64, userId int64, name string, state string, tags []string, features []string, limits []LimitConfig, frontendState string, storesImported bool) *Campaign {
+func BuildCampaign(id int64, created time.Time, applicationId int64, userId int64, name string, state string, tags []string, features []string, limits []LimitConfig, frontendState string, storesImported bool) *Campaign {
 	this := Campaign{}
 	this.Id = id
 	this.Created = created
@@ -1885,7 +1885,7 @@ func (v *NullableCampaign) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCampaign(val *Campaign) *NullableCampaign {
+func BuildNullableCampaign(val *Campaign) *NullableCampaign {
 	return &NullableCampaign{value: val, isSet: true}
 }
 

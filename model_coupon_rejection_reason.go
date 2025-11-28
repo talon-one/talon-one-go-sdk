@@ -32,7 +32,7 @@ type _CouponRejectionReason CouponRejectionReason
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCouponRejectionReason(campaignId int64, couponId int64, reason string) *CouponRejectionReason {
+func BuildCouponRejectionReason(campaignId int64, couponId int64, reason string) *CouponRejectionReason {
 	this := CouponRejectionReason{}
 	this.CampaignId = campaignId
 	this.CouponId = couponId
@@ -198,7 +198,7 @@ func (v *NullableCouponRejectionReason) Unset() {
 	v.isSet = false
 }
 
-func NewNullableCouponRejectionReason(val *CouponRejectionReason) *NullableCouponRejectionReason {
+func BuildNullableCouponRejectionReason(val *CouponRejectionReason) *NullableCouponRejectionReason {
 	return &NullableCouponRejectionReason{value: val, isSet: true}
 }
 

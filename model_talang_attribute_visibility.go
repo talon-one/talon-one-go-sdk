@@ -29,7 +29,7 @@ type TalangAttributeVisibility struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewTalangAttributeVisibility() *TalangAttributeVisibility {
+func BuildTalangAttributeVisibility() *TalangAttributeVisibility {
 	this := TalangAttributeVisibility{}
 	return &this
 }
@@ -148,7 +148,7 @@ func (v *NullableTalangAttributeVisibility) Unset() {
 	v.isSet = false
 }
 
-func NewNullableTalangAttributeVisibility(val *TalangAttributeVisibility) *NullableTalangAttributeVisibility {
+func BuildNullableTalangAttributeVisibility(val *TalangAttributeVisibility) *NullableTalangAttributeVisibility {
 	return &NullableTalangAttributeVisibility{value: val, isSet: true}
 }
 

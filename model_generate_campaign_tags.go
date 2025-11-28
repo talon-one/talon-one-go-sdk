@@ -31,7 +31,7 @@ type _GenerateCampaignTags GenerateCampaignTags
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGenerateCampaignTags(rulesetID int64) *GenerateCampaignTags {
+func BuildGenerateCampaignTags(rulesetID int64) *GenerateCampaignTags {
 	this := GenerateCampaignTags{}
 	this.RulesetID = rulesetID
 	return &this
@@ -143,7 +143,7 @@ func (v *NullableGenerateCampaignTags) Unset() {
 	v.isSet = false
 }
 
-func NewNullableGenerateCampaignTags(val *GenerateCampaignTags) *NullableGenerateCampaignTags {
+func BuildNullableGenerateCampaignTags(val *GenerateCampaignTags) *NullableGenerateCampaignTags {
 	return &NullableGenerateCampaignTags{value: val, isSet: true}
 }
 

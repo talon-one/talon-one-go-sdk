@@ -26,7 +26,7 @@ type AttributesSettings struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAttributesSettings() *AttributesSettings {
+func BuildAttributesSettings() *AttributesSettings {
 	this := AttributesSettings{}
 	return &this
 }
@@ -110,7 +110,7 @@ func (v *NullableAttributesSettings) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAttributesSettings(val *AttributesSettings) *NullableAttributesSettings {
+func BuildNullableAttributesSettings(val *AttributesSettings) *NullableAttributesSettings {
 	return &NullableAttributesSettings{value: val, isSet: true}
 }
 

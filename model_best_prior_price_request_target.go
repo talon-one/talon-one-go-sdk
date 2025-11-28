@@ -33,7 +33,7 @@ type _BestPriorPriceRequestTarget BestPriorPriceRequestTarget
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewBestPriorPriceRequestTarget(targetType string) *BestPriorPriceRequestTarget {
+func BuildBestPriorPriceRequestTarget(targetType string) *BestPriorPriceRequestTarget {
 	this := BestPriorPriceRequestTarget{}
 	this.TargetType = targetType
 	return &this
@@ -180,7 +180,7 @@ func (v *NullableBestPriorPriceRequestTarget) Unset() {
 	v.isSet = false
 }
 
-func NewNullableBestPriorPriceRequestTarget(val *BestPriorPriceRequestTarget) *NullableBestPriorPriceRequestTarget {
+func BuildNullableBestPriorPriceRequestTarget(val *BestPriorPriceRequestTarget) *NullableBestPriorPriceRequestTarget {
 	return &NullableBestPriorPriceRequestTarget{value: val, isSet: true}
 }
 

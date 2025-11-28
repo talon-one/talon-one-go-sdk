@@ -31,7 +31,7 @@ type _BulkApplicationNotification BulkApplicationNotification
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewBulkApplicationNotification(totalResultSize int64, data []ApplicationNotification) *BulkApplicationNotification {
+func BuildBulkApplicationNotification(totalResultSize int64, data []ApplicationNotification) *BulkApplicationNotification {
 	this := BulkApplicationNotification{}
 	this.TotalResultSize = totalResultSize
 	this.Data = data
@@ -170,7 +170,7 @@ func (v *NullableBulkApplicationNotification) Unset() {
 	v.isSet = false
 }
 
-func NewNullableBulkApplicationNotification(val *BulkApplicationNotification) *NullableBulkApplicationNotification {
+func BuildNullableBulkApplicationNotification(val *BulkApplicationNotification) *NullableBulkApplicationNotification {
 	return &NullableBulkApplicationNotification{value: val, isSet: true}
 }
 

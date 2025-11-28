@@ -40,7 +40,7 @@ type _StrikethroughTrigger StrikethroughTrigger
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewStrikethroughTrigger(id int64, type_ string, triggeredAt time.Time, totalAffectedItems int32, payload map[string]interface{}) *StrikethroughTrigger {
+func BuildStrikethroughTrigger(id int64, type_ string, triggeredAt time.Time, totalAffectedItems int32, payload map[string]interface{}) *StrikethroughTrigger {
 	this := StrikethroughTrigger{}
 	this.Id = id
 	this.Type = type_
@@ -260,7 +260,7 @@ func (v *NullableStrikethroughTrigger) Unset() {
 	v.isSet = false
 }
 
-func NewNullableStrikethroughTrigger(val *StrikethroughTrigger) *NullableStrikethroughTrigger {
+func BuildNullableStrikethroughTrigger(val *StrikethroughTrigger) *NullableStrikethroughTrigger {
 	return &NullableStrikethroughTrigger{value: val, isSet: true}
 }
 

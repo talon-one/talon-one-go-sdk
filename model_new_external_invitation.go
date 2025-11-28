@@ -35,7 +35,7 @@ type _NewExternalInvitation NewExternalInvitation
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewNewExternalInvitation(email string) *NewExternalInvitation {
+func BuildNewExternalInvitation(email string) *NewExternalInvitation {
 	this := NewExternalInvitation{}
 	this.Email = email
 	return &this
@@ -217,7 +217,7 @@ func (v *NullableNewExternalInvitation) Unset() {
 	v.isSet = false
 }
 
-func NewNullableNewExternalInvitation(val *NewExternalInvitation) *NullableNewExternalInvitation {
+func BuildNullableNewExternalInvitation(val *NewExternalInvitation) *NullableNewExternalInvitation {
 	return &NullableNewExternalInvitation{value: val, isSet: true}
 }
 

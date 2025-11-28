@@ -70,7 +70,7 @@ type _LoyaltyProgramTransaction LoyaltyProgramTransaction
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLoyaltyProgramTransaction(id int64, transactionUUID string, programId int64, created time.Time, type_ string, amount float32, name string, startDate string, expiryDate string, subledgerId string) *LoyaltyProgramTransaction {
+func BuildLoyaltyProgramTransaction(id int64, transactionUUID string, programId int64, created time.Time, type_ string, amount float32, name string, startDate string, expiryDate string, subledgerId string) *LoyaltyProgramTransaction {
 	this := LoyaltyProgramTransaction{}
 	this.Id = id
 	this.TransactionUUID = transactionUUID
@@ -775,7 +775,7 @@ func (v *NullableLoyaltyProgramTransaction) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLoyaltyProgramTransaction(val *LoyaltyProgramTransaction) *NullableLoyaltyProgramTransaction {
+func BuildNullableLoyaltyProgramTransaction(val *LoyaltyProgramTransaction) *NullableLoyaltyProgramTransaction {
 	return &NullableLoyaltyProgramTransaction{value: val, isSet: true}
 }
 

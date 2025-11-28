@@ -35,7 +35,7 @@ type _WebhookAuthenticationWebhookRef WebhookAuthenticationWebhookRef
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewWebhookAuthenticationWebhookRef(id int64, title string) *WebhookAuthenticationWebhookRef {
+func BuildWebhookAuthenticationWebhookRef(id int64, title string) *WebhookAuthenticationWebhookRef {
 	this := WebhookAuthenticationWebhookRef{}
 	this.Id = id
 	this.Title = title
@@ -209,7 +209,7 @@ func (v *NullableWebhookAuthenticationWebhookRef) Unset() {
 	v.isSet = false
 }
 
-func NewNullableWebhookAuthenticationWebhookRef(val *WebhookAuthenticationWebhookRef) *NullableWebhookAuthenticationWebhookRef {
+func BuildNullableWebhookAuthenticationWebhookRef(val *WebhookAuthenticationWebhookRef) *NullableWebhookAuthenticationWebhookRef {
 	return &NullableWebhookAuthenticationWebhookRef{value: val, isSet: true}
 }
 

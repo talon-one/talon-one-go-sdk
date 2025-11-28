@@ -32,7 +32,7 @@ type _AnalyticsDataPointWithTrendAndInfluencedRate AnalyticsDataPointWithTrendAn
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAnalyticsDataPointWithTrendAndInfluencedRate(value float32, influencedRate float32, trend float32) *AnalyticsDataPointWithTrendAndInfluencedRate {
+func BuildAnalyticsDataPointWithTrendAndInfluencedRate(value float32, influencedRate float32, trend float32) *AnalyticsDataPointWithTrendAndInfluencedRate {
 	this := AnalyticsDataPointWithTrendAndInfluencedRate{}
 	this.Value = value
 	this.InfluencedRate = influencedRate
@@ -198,7 +198,7 @@ func (v *NullableAnalyticsDataPointWithTrendAndInfluencedRate) Unset() {
 	v.isSet = false
 }
 
-func NewNullableAnalyticsDataPointWithTrendAndInfluencedRate(val *AnalyticsDataPointWithTrendAndInfluencedRate) *NullableAnalyticsDataPointWithTrendAndInfluencedRate {
+func BuildNullableAnalyticsDataPointWithTrendAndInfluencedRate(val *AnalyticsDataPointWithTrendAndInfluencedRate) *NullableAnalyticsDataPointWithTrendAndInfluencedRate {
 	return &NullableAnalyticsDataPointWithTrendAndInfluencedRate{value: val, isSet: true}
 }
 

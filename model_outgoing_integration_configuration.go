@@ -37,7 +37,7 @@ type _OutgoingIntegrationConfiguration OutgoingIntegrationConfiguration
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewOutgoingIntegrationConfiguration(id int64, accountId int64, typeId int64, policy map[string]interface{}) *OutgoingIntegrationConfiguration {
+func BuildOutgoingIntegrationConfiguration(id int64, accountId int64, typeId int64, policy map[string]interface{}) *OutgoingIntegrationConfiguration {
 	this := OutgoingIntegrationConfiguration{}
 	this.Id = id
 	this.AccountId = accountId
@@ -230,7 +230,7 @@ func (v *NullableOutgoingIntegrationConfiguration) Unset() {
 	v.isSet = false
 }
 
-func NewNullableOutgoingIntegrationConfiguration(val *OutgoingIntegrationConfiguration) *NullableOutgoingIntegrationConfiguration {
+func BuildNullableOutgoingIntegrationConfiguration(val *OutgoingIntegrationConfiguration) *NullableOutgoingIntegrationConfiguration {
 	return &NullableOutgoingIntegrationConfiguration{value: val, isSet: true}
 }
 

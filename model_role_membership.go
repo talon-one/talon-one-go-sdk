@@ -33,7 +33,7 @@ type _RoleMembership RoleMembership
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewRoleMembership(roleID int64, userID int64) *RoleMembership {
+func BuildRoleMembership(roleID int64, userID int64) *RoleMembership {
 	this := RoleMembership{}
 	this.RoleID = roleID
 	this.UserID = userID
@@ -172,7 +172,7 @@ func (v *NullableRoleMembership) Unset() {
 	v.isSet = false
 }
 
-func NewNullableRoleMembership(val *RoleMembership) *NullableRoleMembership {
+func BuildNullableRoleMembership(val *RoleMembership) *NullableRoleMembership {
 	return &NullableRoleMembership{value: val, isSet: true}
 }
 

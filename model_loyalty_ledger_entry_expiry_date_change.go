@@ -36,7 +36,7 @@ type _LoyaltyLedgerEntryExpiryDateChange LoyaltyLedgerEntryExpiryDateChange
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewLoyaltyLedgerEntryExpiryDateChange(transactionUUID string, newExpiryDate time.Time) *LoyaltyLedgerEntryExpiryDateChange {
+func BuildLoyaltyLedgerEntryExpiryDateChange(transactionUUID string, newExpiryDate time.Time) *LoyaltyLedgerEntryExpiryDateChange {
 	this := LoyaltyLedgerEntryExpiryDateChange{}
 	this.TransactionUUID = transactionUUID
 	this.NewExpiryDate = newExpiryDate
@@ -210,7 +210,7 @@ func (v *NullableLoyaltyLedgerEntryExpiryDateChange) Unset() {
 	v.isSet = false
 }
 
-func NewNullableLoyaltyLedgerEntryExpiryDateChange(val *LoyaltyLedgerEntryExpiryDateChange) *NullableLoyaltyLedgerEntryExpiryDateChange {
+func BuildNullableLoyaltyLedgerEntryExpiryDateChange(val *LoyaltyLedgerEntryExpiryDateChange) *NullableLoyaltyLedgerEntryExpiryDateChange {
 	return &NullableLoyaltyLedgerEntryExpiryDateChange{value: val, isSet: true}
 }
 
