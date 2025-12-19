@@ -1,6 +1,10 @@
-.example/go.mod
-.example/go.sum
-.example/main.go
+.github/.example/go.mod
+.github/.example/go.sum
+.github/.example/main.go
+.github/dependabot.yml
+.github/workflows/autorelease.yml
+.github/workflows/publish.yml
+.github/workflows/test.yml
 .gitignore
 .openapi-generator-ignore
 .travis.yml
