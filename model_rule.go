@@ -238,8 +238,7 @@ func (o *Rule) SetCondition(v []interface{}) {
 // GetEffects returns the Effects field value
 func (o *Rule) GetEffects() [][]interface{} {
 	if o == nil {
-		var ret [][]interface{}
-
+		var ret []interface{}
 		return ret
 	}
 

@@ -1,3 +1,6 @@
+.example/go.mod
+.example/go.sum
+.example/main.go
 .gitignore
 .openapi-generator-ignore
 .travis.yml

@@ -36,7 +36,7 @@ import (
     "encoding/json"
     "fmt"
 
-    talon "github.com/talon-one/talon_go/v8"
+    talon "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -101,9 +101,9 @@ func main() {
     // })
 
     // Create/update a customer session using `UpdateCustomerSessionV2` function
-    integrationState, _, err := integrationClient.IntegrationApi.
+    integrationState, _, err := integrationClient.IntegrationAPI.
         UpdateCustomerSessionV2(integrationAuthContext, "deetdoot_2").
-        Body(integrationRequest).
+        IntegrationRequest(integrationRequest).
         Execute()
 
     if err != nil {
@@ -164,7 +164,7 @@ import (
     "context"
     "fmt"
 
-    talon "github.com/talon-one/talon_go/v8"
+    talon "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -191,7 +191,7 @@ func main() {
     })
 
     // Calling `GetApplication` function with the desired id (7)
-    application, response, err := managementClient.ManagementApi.
+    application, response, err := managementClient.ManagementAPI.
         GetApplication(managerAuthContext, 7).
         Execute()
 
