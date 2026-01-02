@@ -3,7 +3,7 @@
 update-pkg-cache:
 	@echo "Updating new package version..."
 	GOPROXY=https://proxy.golang.org GO111MODULE=on \
-	go get github.com/talon-one/talon_go/v25
+	go get github.com/talon-one/talon-one-go-sdk
 
 apply-patches:
 	@echo "Applying gopatch patches..."
