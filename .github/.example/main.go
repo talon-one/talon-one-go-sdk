@@ -36,7 +36,7 @@ func main() {
 	newCustomerSession := talon.NewCustomerSessionV2{
 		// You can use either struct literals
 		ProfileId:   talon.PtrString("DEADBEEF"),
-		CouponCodes: &[]string{"Cool-Stuff!"},
+		CouponCodes: []string{"Cool-Stuff!"},
 	}
 
 	// Or alternatively, using the relevant setter in a later stage in the code
@@ -71,11 +71,10 @@ func main() {
 	// })
 
 	// Create/update a customer session using `UpdateCustomerSessionV2` function
-	integrationState, _, err := integrationClient.IntegrationApi.
+	integrationState, _, err := integrationClient.IntegrationAPI.
 		UpdateCustomerSessionV2(integrationAuthContext, "deetdoot_2").
-		Body(integrationRequest).
+		IntegrationRequest(integrationRequest).
 		Execute()
-
 	if err != nil {
 		fmt.Printf("ERROR while calling UpdateCustomerSessionV2: %s\n", err)
 		return
@@ -114,7 +113,7 @@ func main() {
 
 // quick decoding of props-map into our library structures using JSON marshaling,
 // or alternatively using a library like https://github.com/mitchellh/mapstructure
-func decodeHelper(propsMap map[string]interface{}, v interface{}) error {
+func decodeHelper(propsMap any, v interface{}) error {
 	propsJSON, err := json.Marshal(propsMap)
 	if err != nil {
 		return err
