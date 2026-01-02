@@ -13945,7 +13945,7 @@ components:
     GenerateRuleTitle:
       properties:
         rule:
-          $ref: '#/components/schemas/GenerateRuleTitleRule'
+          $ref: '#/components/schemas/GenerateRuleTitle_rule'
         currency:
           description: Currency for the campaign.
           type: string
@@ -36013,35 +36013,6 @@ components:
       - newExpiryDate
       - programId
       - subLedgerId
-    GenerateRuleTitleRule:
-      properties:
-        effects:
-          description: An array of effectful Talang expressions in arrays that will
-            be evaluated when a rule matches.
-          example:
-          - catch
-          - - noop
-          - - setDiscount
-            - 10% off
-            - - '*'
-              - - "."
-                - Session
-                - Total
-              - - /
-                - 10
-                - 100
-          items:
-            type: object
-          type: array
-        condition:
-          description: A Talang expression that will be evaluated in the context of
-            the given event.
-          example:
-          - and
-          - - couponValid
-          items: {}
-          minItems: 1
-          type: array
     updateCustomerSessionV2_409_response:
       example:
         message: Too many requests are updating this session at the same time
@@ -40115,6 +40086,35 @@ components:
       required:
       - data
       - hasMore
+    GenerateRuleTitle_rule:
+      properties:
+        effects:
+          description: An array of effectful Talang expressions in arrays that will
+            be evaluated when a rule matches.
+          example:
+          - catch
+          - - noop
+          - - setDiscount
+            - 10% off
+            - - '*'
+              - - "."
+                - Session
+                - Total
+              - - /
+                - 10
+                - 100
+          items:
+            type: object
+          type: array
+        condition:
+          description: A Talang expression that will be evaluated in the context of
+            the given event.
+          example:
+          - and
+          - - couponValid
+          items: {}
+          minItems: 1
+          type: array
     NewCustomerSessionV2_allOf_attributes:
       description: |
         Use this property to set a value for the attributes of your choice. Attributes represent any information to attach to your session, like the shipping city.
