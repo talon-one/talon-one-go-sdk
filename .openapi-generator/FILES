@@ -15,6 +15,7 @@ api_integration.go
 api_management.go
 client.go
 configuration.go
+docker-compose.yml
 docs/APIError.md
 docs/AcceptCouponEffectProps.md
 docs/AcceptReferralEffectProps.md

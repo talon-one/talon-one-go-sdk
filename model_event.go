@@ -51,7 +51,7 @@ type _Event Event
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildEvent(id int64, created time.Time, applicationId int64, type_ string, attributes map[string]interface{}, effects [][]interface{}) *Event {
+func BuildEvent(id int64, created time.Time, applicationId int64, type_ string, attributes map[string]interface{}, effects []map[string]interface{}) *Event {
 	this := Event{}
 	this.Id = id
 	this.Created = created

@@ -44,8 +44,6 @@ func BuildCouponsNotificationPolicy(name string, scopes []string) *CouponsNotifi
 	this.Scopes = scopes
 	var batchingEnabled bool = true
 	this.BatchingEnabled = &batchingEnabled
-	var includeData bool = null
-	this.IncludeData = &includeData
 	var batchSize int64 = 1000
 	this.BatchSize = &batchSize
 	return &this
@@ -58,8 +56,6 @@ func NewCouponsNotificationPolicyWithDefaults() *CouponsNotificationPolicy {
 	this := CouponsNotificationPolicy{}
 	var batchingEnabled bool = true
 	this.BatchingEnabled = &batchingEnabled
-	var includeData bool = null
-	this.IncludeData = &includeData
 	var batchSize int64 = 1000
 	this.BatchSize = &batchSize
 	return &this
