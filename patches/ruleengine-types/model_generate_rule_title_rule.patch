@@ -1,7 +1,15 @@
 @@
 @@
+type GenerateRuleTitleRule struct {
+-	Effects []map[string]interface{} `json:"effects,omitempty"`
++	Effects [][]interface{} `json:"effects,omitempty"`
+	...
+}
+
+@@
+@@
 func (o *GenerateRuleTitleRule) GetEffects() [][]interface{} {
-	if o == nil || o.Effects == nil {
+	if o == nil || IsNil(o.Effects) {
 -		var ret []interface{}
 +		var ret [][]interface{}
 		return ret
