@@ -1,6 +1,6 @@
 @@
 @@
--func BuildRule(title string, condition []map[string]interface{}, effects []map[string]interface{}) *Rule {
+-func BuildRule(title string, condition []interface{}, effects []map[string]interface{}) *Rule {
 +func BuildRule(title string, condition []interface{}, effects [][]interface{}) *Rule {
 	...
 }

@@ -17,8 +17,9 @@ var _ MappedNullable = &GenerateRuleTitleRule{}
 
 // GenerateRuleTitleRule struct for GenerateRuleTitleRule
 type GenerateRuleTitleRule struct {
+	Effects [][]interface{} `json:"effects,omitempty"`
 	// An array of effectful Talang expressions in arrays that will be evaluated when a rule matches.
-	Effects []map[string]interface{} `json:"effects,omitempty"`
+
 	// A Talang expression that will be evaluated in the context of the given event.
 	Condition []interface{} `json:"condition,omitempty"`
 }
@@ -43,7 +44,8 @@ func NewGenerateRuleTitleRuleWithDefaults() *GenerateRuleTitleRule {
 // GetEffects returns the Effects field value if set, zero value otherwise.
 func (o *GenerateRuleTitleRule) GetEffects() [][]interface{} {
 	if o == nil || IsNil(o.Effects) {
-		var ret []interface{}
+		var ret [][]interface{}
+
 		return ret
 	}
 	return o.Effects
