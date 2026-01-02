@@ -43,7 +43,7 @@ type _Rule Rule
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildRule(title string, condition []interface{}, effects []map[string]interface{}) *Rule {
+func BuildRule(title string, condition []interface{}, effects [][]interface{}) *Rule {
 	this := Rule{}
 	this.Title = title
 	this.Condition = condition
