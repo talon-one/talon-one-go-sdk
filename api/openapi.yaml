@@ -14593,6 +14593,13 @@ components:
             example: true
             title: First session ever?
             type: boolean
+          updateCount:
+            description: "The number of times the session was updated. When the session\
+              \ is created, this value is initialized to `1`."
+            example: 3
+            format: int64
+            title: Update count
+            type: integer
           total:
             description: "The total value of cart items and additional costs in the\
               \ session, before any discounts are applied."
@@ -14622,10 +14629,12 @@ components:
         - cartItemTotal
         - firstSession
         - total
+        - updateCount
         - updated
       example:
         couponCodes:
         - XMAS-20-2021
+        updateCount: 3
         created: 2020-02-07T08:15:22Z
         identifiers:
         - d41306257915f83fe01e54092ae470f631161ea16fcf4415842eed41470386ea
@@ -15842,6 +15851,7 @@ components:
         customerSession:
           couponCodes:
           - XMAS-20-2021
+          updateCount: 3
           created: 2020-02-07T08:15:22Z
           identifiers:
           - d41306257915f83fe01e54092ae470f631161ea16fcf4415842eed41470386ea
@@ -19098,6 +19108,7 @@ components:
         customerSession:
           couponCodes:
           - XMAS-20-2021
+          updateCount: 3
           created: 2020-02-07T08:15:22Z
           identifiers:
           - d41306257915f83fe01e54092ae470f631161ea16fcf4415842eed41470386ea

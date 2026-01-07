@@ -20,6 +20,7 @@ Name | Type | Description | Notes
 **Identifiers** | Pointer to **[]string** | Session custom identifiers that you can set limits on or use inside your rules.  For example, you can use IP addresses as identifiers to potentially identify devices and limit discounts abuse in case of customers creating multiple accounts. See the [tutorial](https://docs.talon.one/docs/dev/tutorials/using-identifiers).  **Important**: Ensure the session contains an identifier by the time you close it if: - You [create a unique identifier budget](https://docs.talon.one/docs/product/campaigns/settings/managing-campaign-budgets/#budget-types) for your campaign. - Your campaign has [coupons](https://docs.talon.one/docs/product/campaigns/coupons/coupon-page-overview). - We recommend passing an anonymized (hashed) version of the identifier value.  | [optional] 
 **Attributes** | Pointer to **map[string]interface{}** | Use this property to set a value for the attributes of your choice. Attributes represent any information to attach to your session, like the shipping city.  You can use [built-in attributes](https://docs.talon.one/docs/dev/concepts/attributes#built-in-attributes) or [custom ones](https://docs.talon.one/docs/dev/concepts/attributes#custom-attributes). Custom attributes must be created in the Campaign Manager before you set them with this property.  | [optional] 
 **FirstSession** | **bool** | Indicates whether this is the first session for the customer&#39;s profile. It&#39;s always &#x60;true&#x60; for anonymous sessions. | 
+**UpdateCount** | **int64** | The number of times the session was updated. When the session is created, this value is initialized to &#x60;1&#x60;. | 
 **Total** | **float32** | The total value of cart items and additional costs in the session, before any discounts are applied. | 
 **CartItemTotal** | **float32** | The total value of cart items, before any discounts are applied. | 
 **AdditionalCostTotal** | **float32** | The total value of additional costs, before any discounts are applied. | 
@@ -29,7 +30,7 @@ Name | Type | Description | Notes
 
 ### NewCustomerSessionV2
 
-`func NewCustomerSessionV2(id int64, created time.Time, integrationId string, applicationId int64, firstSession bool, total float32, cartItemTotal float32, additionalCostTotal float32, updated time.Time, ) *CustomerSessionV2`
+`func NewCustomerSessionV2(id int64, created time.Time, integrationId string, applicationId int64, firstSession bool, updateCount int64, total float32, cartItemTotal float32, additionalCostTotal float32, updated time.Time, ) *CustomerSessionV2`
 
 NewCustomerSessionV2 instantiates a new CustomerSessionV2 object
 This constructor will assign default values to properties that have it defined,
@@ -417,6 +418,26 @@ and a boolean to check if the value has been set.
 `func (o *CustomerSessionV2) SetFirstSession(v bool)`
 
 SetFirstSession sets FirstSession field to given value.
+
+
+### GetUpdateCount
+
+`func (o *CustomerSessionV2) GetUpdateCount() int64`
+
+GetUpdateCount returns the UpdateCount field if non-nil, zero value otherwise.
+
+### GetUpdateCountOk
+
+`func (o *CustomerSessionV2) GetUpdateCountOk() (*int64, bool)`
+
+GetUpdateCountOk returns a tuple with the UpdateCount field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetUpdateCount
+
+`func (o *CustomerSessionV2) SetUpdateCount(v int64)`
+
+SetUpdateCount sets UpdateCount field to given value.
 
 
 ### GetTotal

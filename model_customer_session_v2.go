@@ -54,6 +54,8 @@ type CustomerSessionV2 struct {
 	Attributes map[string]interface{} `json:"attributes,omitempty"`
 	// Indicates whether this is the first session for the customer's profile. It's always `true` for anonymous sessions.
 	FirstSession bool `json:"firstSession"`
+	// The number of times the session was updated. When the session is created, this value is initialized to `1`.
+	UpdateCount int64 `json:"updateCount"`
 	// The total value of cart items and additional costs in the session, before any discounts are applied.
 	Total float32 `json:"total"`
 	// The total value of cart items, before any discounts are applied.
@@ -70,7 +72,7 @@ type _CustomerSessionV2 CustomerSessionV2
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCustomerSessionV2(id int64, created time.Time, integrationId string, applicationId int64, firstSession bool, total float32, cartItemTotal float32, additionalCostTotal float32, updated time.Time) *CustomerSessionV2 {
+func BuildCustomerSessionV2(id int64, created time.Time, integrationId string, applicationId int64, firstSession bool, updateCount int64, total float32, cartItemTotal float32, additionalCostTotal float32, updated time.Time) *CustomerSessionV2 {
 	this := CustomerSessionV2{}
 	this.Id = id
 	this.Created = created
@@ -79,6 +81,7 @@ func BuildCustomerSessionV2(id int64, created time.Time, integrationId string, a
 	var state string = "open"
 	this.State = &state
 	this.FirstSession = firstSession
+	this.UpdateCount = updateCount
 	this.Total = total
 	this.CartItemTotal = cartItemTotal
 	this.AdditionalCostTotal = additionalCostTotal
@@ -568,6 +571,30 @@ func (o *CustomerSessionV2) SetFirstSession(v bool) {
 	o.FirstSession = v
 }
 
+// GetUpdateCount returns the UpdateCount field value
+func (o *CustomerSessionV2) GetUpdateCount() int64 {
+	if o == nil {
+		var ret int64
+		return ret
+	}
+
+	return o.UpdateCount
+}
+
+// GetUpdateCountOk returns a tuple with the UpdateCount field value
+// and a boolean to check if the value has been set.
+func (o *CustomerSessionV2) GetUpdateCountOk() (*int64, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.UpdateCount, true
+}
+
+// SetUpdateCount sets field value
+func (o *CustomerSessionV2) SetUpdateCount(v int64) {
+	o.UpdateCount = v
+}
+
 // GetTotal returns the Total field value
 func (o *CustomerSessionV2) GetTotal() float32 {
 	if o == nil {
@@ -712,6 +739,7 @@ func (o CustomerSessionV2) ToMap() (map[string]interface{}, error) {
 		toSerialize["attributes"] = o.Attributes
 	}
 	toSerialize["firstSession"] = o.FirstSession
+	toSerialize["updateCount"] = o.UpdateCount
 	toSerialize["total"] = o.Total
 	toSerialize["cartItemTotal"] = o.CartItemTotal
 	toSerialize["additionalCostTotal"] = o.AdditionalCostTotal
@@ -729,6 +757,7 @@ func (o *CustomerSessionV2) UnmarshalJSON(data []byte) (err error) {
 		"integrationId",
 		"applicationId",
 		"firstSession",
+		"updateCount",
 		"total",
 		"cartItemTotal",
 		"additionalCostTotal",
