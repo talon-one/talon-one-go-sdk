@@ -2159,6 +2159,7 @@ func (a *ManagementAPIService) CreateCouponsExecute(r ApiCreateCouponsRequest) (
 		parameterAddToHeaderOrQuery(localVarQueryParams, "silent", r.silent, "form", "")
 	} else {
 		var defaultValue string = "yes"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "silent", defaultValue, "form", "")
 		r.silent = &defaultValue
 	}
 	// to determine the Content-Type header
@@ -2660,6 +2661,7 @@ func (a *ManagementAPIService) CreateCouponsForMultipleRecipientsExecute(r ApiCr
 		parameterAddToHeaderOrQuery(localVarQueryParams, "silent", r.silent, "form", "")
 	} else {
 		var defaultValue string = "yes"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "silent", defaultValue, "form", "")
 		r.silent = &defaultValue
 	}
 	// to determine the Content-Type header
@@ -4994,6 +4996,7 @@ func (a *ManagementAPIService) DeleteCouponsExecute(r ApiDeleteCouponsRequest) (
 		parameterAddToHeaderOrQuery(localVarQueryParams, "exactMatch", r.exactMatch, "form", "")
 	} else {
 		var defaultValue bool = false
+		parameterAddToHeaderOrQuery(localVarQueryParams, "exactMatch", defaultValue, "form", "")
 		r.exactMatch = &defaultValue
 	}
 	// to determine the Content-Type header
@@ -7471,6 +7474,7 @@ func (a *ManagementAPIService) ExportCouponsExecute(r ApiExportCouponsRequest) (
 		parameterAddToHeaderOrQuery(localVarQueryParams, "exactMatch", r.exactMatch, "form", "")
 	} else {
 		var defaultValue bool = false
+		parameterAddToHeaderOrQuery(localVarQueryParams, "exactMatch", defaultValue, "form", "")
 		r.exactMatch = &defaultValue
 	}
 	if r.dateFormat != nil {
@@ -7483,6 +7487,7 @@ func (a *ManagementAPIService) ExportCouponsExecute(r ApiExportCouponsRequest) (
 		parameterAddToHeaderOrQuery(localVarQueryParams, "valuesOnly", r.valuesOnly, "form", "")
 	} else {
 		var defaultValue bool = false
+		parameterAddToHeaderOrQuery(localVarQueryParams, "valuesOnly", defaultValue, "form", "")
 		r.valuesOnly = &defaultValue
 	}
 	// to determine the Content-Type header
@@ -9934,6 +9939,7 @@ func (a *ManagementAPIService) GetAccessLogsWithoutTotalCountExecute(r ApiGetAcc
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -10878,6 +10884,7 @@ func (a *ManagementAPIService) GetAdditionalCostsExecute(r ApiGetAdditionalCosts
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -11514,6 +11521,7 @@ func (a *ManagementAPIService) GetApplicationCustomerFriendsExecute(r ApiGetAppl
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -11706,6 +11714,7 @@ func (a *ManagementAPIService) GetApplicationCustomersExecute(r ApiGetApplicatio
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -11897,6 +11906,7 @@ func (a *ManagementAPIService) GetApplicationCustomersByAttributesExecute(r ApiG
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -12080,6 +12090,7 @@ func (a *ManagementAPIService) GetApplicationEventTypesExecute(r ApiGetApplicati
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -12343,6 +12354,7 @@ func (a *ManagementAPIService) GetApplicationEventsWithoutTotalCountExecute(r Ap
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -12765,6 +12777,7 @@ func (a *ManagementAPIService) GetApplicationSessionsExecute(r ApiGetApplication
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -12964,6 +12977,7 @@ func (a *ManagementAPIService) GetApplicationsExecute(r ApiGetApplicationsReques
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -13320,6 +13334,7 @@ func (a *ManagementAPIService) GetAttributesExecute(r ApiGetAttributesRequest) (
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -13523,6 +13538,7 @@ func (a *ManagementAPIService) GetAudienceMembershipsExecute(r ApiGetAudienceMem
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -13718,6 +13734,7 @@ func (a *ManagementAPIService) GetAudiencesExecute(r ApiGetAudiencesRequest) (*G
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -14412,6 +14429,7 @@ func (a *ManagementAPIService) GetCampaignByAttributesExecute(r ApiGetCampaignBy
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -14738,6 +14756,7 @@ func (a *ManagementAPIService) GetCampaignGroupsExecute(r ApiGetCampaignGroupsRe
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -14941,6 +14960,7 @@ func (a *ManagementAPIService) GetCampaignTemplatesExecute(r ApiGetCampaignTempl
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -15188,6 +15208,7 @@ func (a *ManagementAPIService) GetCampaignsExecute(r ApiGetCampaignsRequest) (*G
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -15453,6 +15474,7 @@ func (a *ManagementAPIService) GetChangesExecute(r ApiGetChangesRequest) (*GetCh
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -15815,6 +15837,7 @@ func (a *ManagementAPIService) GetCollectionItemsExecute(r ApiGetCollectionItems
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -16110,6 +16133,7 @@ func (a *ManagementAPIService) GetCouponsWithoutTotalCountExecute(r ApiGetCoupon
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -16149,6 +16173,7 @@ func (a *ManagementAPIService) GetCouponsWithoutTotalCountExecute(r ApiGetCoupon
 		parameterAddToHeaderOrQuery(localVarQueryParams, "exactMatch", r.exactMatch, "form", "")
 	} else {
 		var defaultValue bool = false
+		parameterAddToHeaderOrQuery(localVarQueryParams, "exactMatch", defaultValue, "form", "")
 		r.exactMatch = &defaultValue
 	}
 	if r.expiresBefore != nil {
@@ -16167,6 +16192,7 @@ func (a *ManagementAPIService) GetCouponsWithoutTotalCountExecute(r ApiGetCoupon
 		parameterAddToHeaderOrQuery(localVarQueryParams, "valuesOnly", r.valuesOnly, "form", "")
 	} else {
 		var defaultValue bool = false
+		parameterAddToHeaderOrQuery(localVarQueryParams, "valuesOnly", defaultValue, "form", "")
 		r.valuesOnly = &defaultValue
 	}
 	// to determine the Content-Type header
@@ -16357,6 +16383,7 @@ func (a *ManagementAPIService) GetCustomerActivityReportExecute(r ApiGetCustomer
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -16584,6 +16611,7 @@ func (a *ManagementAPIService) GetCustomerActivityReportsWithoutTotalCountExecut
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -16781,6 +16809,7 @@ func (a *ManagementAPIService) GetCustomerAnalyticsExecute(r ApiGetCustomerAnaly
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -17129,6 +17158,7 @@ func (a *ManagementAPIService) GetCustomerProfileAchievementProgressExecute(r Ap
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 50
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -17328,6 +17358,7 @@ func (a *ManagementAPIService) GetCustomerProfilesExecute(r ApiGetCustomerProfil
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -17337,6 +17368,7 @@ func (a *ManagementAPIService) GetCustomerProfilesExecute(r ApiGetCustomerProfil
 		parameterAddToHeaderOrQuery(localVarQueryParams, "sandbox", r.sandbox, "form", "")
 	} else {
 		var defaultValue bool = false
+		parameterAddToHeaderOrQuery(localVarQueryParams, "sandbox", defaultValue, "form", "")
 		r.sandbox = &defaultValue
 	}
 	// to determine the Content-Type header
@@ -17518,6 +17550,7 @@ func (a *ManagementAPIService) GetCustomersByAttributesExecute(r ApiGetCustomers
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -17527,6 +17560,7 @@ func (a *ManagementAPIService) GetCustomersByAttributesExecute(r ApiGetCustomers
 		parameterAddToHeaderOrQuery(localVarQueryParams, "sandbox", r.sandbox, "form", "")
 	} else {
 		var defaultValue bool = false
+		parameterAddToHeaderOrQuery(localVarQueryParams, "sandbox", defaultValue, "form", "")
 		r.sandbox = &defaultValue
 	}
 	// to determine the Content-Type header
@@ -17897,12 +17931,14 @@ func (a *ManagementAPIService) GetEventTypesExecute(r ApiGetEventTypesRequest) (
 		parameterAddToHeaderOrQuery(localVarQueryParams, "includeOldVersions", r.includeOldVersions, "form", "")
 	} else {
 		var defaultValue bool = false
+		parameterAddToHeaderOrQuery(localVarQueryParams, "includeOldVersions", defaultValue, "form", "")
 		r.includeOldVersions = &defaultValue
 	}
 	if r.pageSize != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -18092,6 +18128,7 @@ func (a *ManagementAPIService) GetExportsExecute(r ApiGetExportsRequest) (*GetEx
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -18511,6 +18548,7 @@ func (a *ManagementAPIService) GetLoyaltyCardTransactionLogsExecute(r ApiGetLoya
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -18754,6 +18792,7 @@ func (a *ManagementAPIService) GetLoyaltyCardsExecute(r ApiGetLoyaltyCardsReques
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -19349,6 +19388,7 @@ func (a *ManagementAPIService) GetLoyaltyProgramTransactionsExecute(r ApiGetLoya
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 50
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -20187,6 +20227,7 @@ func (a *ManagementAPIService) GetReferralsWithoutTotalCountExecute(r ApiGetRefe
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -20690,6 +20731,7 @@ func (a *ManagementAPIService) GetRulesetsExecute(r ApiGetRulesetsRequest) (*Get
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -21171,6 +21213,7 @@ func (a *ManagementAPIService) GetUsersExecute(r ApiGetUsersRequest) (*GetUsers2
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -21533,6 +21576,7 @@ func (a *ManagementAPIService) GetWebhooksExecute(r ApiGetWebhooksRequest) (*Get
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -24272,6 +24316,7 @@ func (a *ManagementAPIService) ListAccountCollectionsExecute(r ApiListAccountCol
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -24493,6 +24538,7 @@ func (a *ManagementAPIService) ListAchievementsExecute(r ApiListAchievementsRequ
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 50
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -25030,6 +25076,7 @@ func (a *ManagementAPIService) ListCatalogItemsExecute(r ApiListCatalogItemsRequ
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -25249,6 +25296,7 @@ func (a *ManagementAPIService) ListCollectionsExecute(r ApiListCollectionsReques
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -25458,6 +25506,7 @@ func (a *ManagementAPIService) ListCollectionsInApplicationExecute(r ApiListColl
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -25688,6 +25737,7 @@ func (a *ManagementAPIService) ListStoresExecute(r ApiListStoresRequest) (*ListS
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -28668,6 +28718,7 @@ func (a *ManagementAPIService) SearchCouponsAdvancedApplicationWideWithoutTotalC
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -28704,6 +28755,7 @@ func (a *ManagementAPIService) SearchCouponsAdvancedApplicationWideWithoutTotalC
 		parameterAddToHeaderOrQuery(localVarQueryParams, "exactMatch", r.exactMatch, "form", "")
 	} else {
 		var defaultValue bool = false
+		parameterAddToHeaderOrQuery(localVarQueryParams, "exactMatch", defaultValue, "form", "")
 		r.exactMatch = &defaultValue
 	}
 	if r.campaignState != nil {
@@ -28965,6 +29017,7 @@ func (a *ManagementAPIService) SearchCouponsAdvancedWithoutTotalCountExecute(r A
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -28998,6 +29051,7 @@ func (a *ManagementAPIService) SearchCouponsAdvancedWithoutTotalCountExecute(r A
 		parameterAddToHeaderOrQuery(localVarQueryParams, "exactMatch", r.exactMatch, "form", "")
 	} else {
 		var defaultValue bool = false
+		parameterAddToHeaderOrQuery(localVarQueryParams, "exactMatch", defaultValue, "form", "")
 		r.exactMatch = &defaultValue
 	}
 	if r.batchId != nil {

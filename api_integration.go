@@ -766,6 +766,7 @@ func (a *IntegrationAPIService) CreateReferralsForMultipleAdvocatesExecute(r Api
 		parameterAddToHeaderOrQuery(localVarQueryParams, "silent", r.silent, "form", "")
 	} else {
 		var defaultValue string = "yes"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "silent", defaultValue, "form", "")
 		r.silent = &defaultValue
 	}
 	// to determine the Content-Type header
@@ -1674,6 +1675,7 @@ func (a *IntegrationAPIService) GetCustomerAchievementHistoryExecute(r ApiGetCus
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -1887,6 +1889,7 @@ func (a *IntegrationAPIService) GetCustomerAchievementsExecute(r ApiGetCustomerA
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -2439,12 +2442,14 @@ func (a *IntegrationAPIService) GetLoyaltyBalancesExecute(r ApiGetLoyaltyBalance
 		parameterAddToHeaderOrQuery(localVarQueryParams, "includeTiers", r.includeTiers, "form", "")
 	} else {
 		var defaultValue bool = false
+		parameterAddToHeaderOrQuery(localVarQueryParams, "includeTiers", defaultValue, "form", "")
 		r.includeTiers = &defaultValue
 	}
 	if r.includeProjectedTier != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "includeProjectedTier", r.includeProjectedTier, "form", "")
 	} else {
 		var defaultValue bool = false
+		parameterAddToHeaderOrQuery(localVarQueryParams, "includeProjectedTier", defaultValue, "form", "")
 		r.includeProjectedTier = &defaultValue
 	}
 	// to determine the Content-Type header
@@ -2854,6 +2859,7 @@ func (a *IntegrationAPIService) GetLoyaltyCardPointsExecute(r ApiGetLoyaltyCardP
 		parameterAddToHeaderOrQuery(localVarQueryParams, "status", r.status, "form", "")
 	} else {
 		var defaultValue string = "active"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "status", defaultValue, "form", "")
 		r.status = &defaultValue
 	}
 	if r.subledgerId != nil {
@@ -2893,6 +2899,7 @@ func (a *IntegrationAPIService) GetLoyaltyCardPointsExecute(r ApiGetLoyaltyCardP
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 50
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -3171,6 +3178,7 @@ func (a *IntegrationAPIService) GetLoyaltyCardTransactionsExecute(r ApiGetLoyalt
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 50
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -3391,6 +3399,7 @@ func (a *IntegrationAPIService) GetLoyaltyProgramProfilePointsExecute(r ApiGetLo
 		parameterAddToHeaderOrQuery(localVarQueryParams, "status", r.status, "form", "")
 	} else {
 		var defaultValue string = "active"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "status", defaultValue, "form", "")
 		r.status = &defaultValue
 	}
 	if r.subledgerId != nil {
@@ -3422,6 +3431,7 @@ func (a *IntegrationAPIService) GetLoyaltyProgramProfilePointsExecute(r ApiGetLo
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 50
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -3690,6 +3700,7 @@ func (a *IntegrationAPIService) GetLoyaltyProgramProfileTransactionsExecute(r Ap
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
 	} else {
 		var defaultValue int64 = 50
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
 	}
 	if r.skip != nil {
@@ -4999,6 +5010,7 @@ func (a *IntegrationAPIService) TrackEventV2Execute(r ApiTrackEventV2Request) (*
 		parameterAddToHeaderOrQuery(localVarQueryParams, "silent", r.silent, "form", "")
 	} else {
 		var defaultValue string = "yes"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "silent", defaultValue, "form", "")
 		r.silent = &defaultValue
 	}
 	if r.dry != nil {
@@ -5008,6 +5020,7 @@ func (a *IntegrationAPIService) TrackEventV2Execute(r ApiTrackEventV2Request) (*
 		parameterAddToHeaderOrQuery(localVarQueryParams, "forceCompleteEvaluation", r.forceCompleteEvaluation, "form", "")
 	} else {
 		var defaultValue bool = false
+		parameterAddToHeaderOrQuery(localVarQueryParams, "forceCompleteEvaluation", defaultValue, "form", "")
 		r.forceCompleteEvaluation = &defaultValue
 	}
 	// to determine the Content-Type header
@@ -5648,6 +5661,7 @@ func (a *IntegrationAPIService) UpdateCustomerProfileV2Execute(r ApiUpdateCustom
 		parameterAddToHeaderOrQuery(localVarQueryParams, "runRuleEngine", r.runRuleEngine, "form", "")
 	} else {
 		var defaultValue bool = false
+		parameterAddToHeaderOrQuery(localVarQueryParams, "runRuleEngine", defaultValue, "form", "")
 		r.runRuleEngine = &defaultValue
 	}
 	if r.dry != nil {
@@ -5831,6 +5845,7 @@ func (a *IntegrationAPIService) UpdateCustomerProfilesV2Execute(r ApiUpdateCusto
 		parameterAddToHeaderOrQuery(localVarQueryParams, "silent", r.silent, "form", "")
 	} else {
 		var defaultValue string = "yes"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "silent", defaultValue, "form", "")
 		r.silent = &defaultValue
 	}
 	// to determine the Content-Type header
