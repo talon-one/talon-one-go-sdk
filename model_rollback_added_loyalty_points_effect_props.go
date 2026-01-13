@@ -35,7 +35,7 @@ type RollbackAddedLoyaltyPointsEffectProps struct {
 	CartItemPosition *float32 `json:"cartItemPosition,omitempty"`
 	// For cart items with `quantity` > 1, the sub-position indicates to which item the loyalty points were rolled back.
 	CartItemSubPosition *float32 `json:"cartItemSubPosition,omitempty"`
-	// The alphanumeric identifier of the loyalty card.
+	// The card on which these points were originally added.
 	CardIdentifier *string `json:"cardIdentifier,omitempty" validate:"regexp=^[A-Za-z0-9_-]*$"`
 }
 

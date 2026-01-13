@@ -16,87 +16,59 @@ import (
 	"fmt"
 )
 
-// checks if the JWT type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &JWT{}
+// checks if the PrismaticFlowConfig type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &PrismaticFlowConfig{}
 
-// JWT JSON web token used for accessing integrations in Prismatic
-type JWT struct {
-	// Access token used to authenticate a user in Talon.One.
-	AccessToken string `json:"accessToken"`
-	// Time until the token expires (in seconds).
-	ExpiresIn int64 `json:"expiresIn"`
+// PrismaticFlowConfig struct for PrismaticFlowConfig
+type PrismaticFlowConfig struct {
+	ApiKey string `json:"ApiKey"`
 }
 
-type _JWT JWT
+type _PrismaticFlowConfig PrismaticFlowConfig
 
-// NewJWT instantiates a new JWT object
+// NewPrismaticFlowConfig instantiates a new PrismaticFlowConfig object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildJWT(accessToken string, expiresIn int64) *JWT {
-	this := JWT{}
-	this.AccessToken = accessToken
-	this.ExpiresIn = expiresIn
+func BuildPrismaticFlowConfig(apiKey string) *PrismaticFlowConfig {
+	this := PrismaticFlowConfig{}
+	this.ApiKey = apiKey
 	return &this
 }
 
-// NewJWTWithDefaults instantiates a new JWT object
+// NewPrismaticFlowConfigWithDefaults instantiates a new PrismaticFlowConfig object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewJWTWithDefaults() *JWT {
-	this := JWT{}
+func NewPrismaticFlowConfigWithDefaults() *PrismaticFlowConfig {
+	this := PrismaticFlowConfig{}
 	return &this
 }
 
-// GetAccessToken returns the AccessToken field value
-func (o *JWT) GetAccessToken() string {
+// GetApiKey returns the ApiKey field value
+func (o *PrismaticFlowConfig) GetApiKey() string {
 	if o == nil {
 		var ret string
 		return ret
 	}
 
-	return o.AccessToken
+	return o.ApiKey
 }
 
-// GetAccessTokenOk returns a tuple with the AccessToken field value
+// GetApiKeyOk returns a tuple with the ApiKey field value
 // and a boolean to check if the value has been set.
-func (o *JWT) GetAccessTokenOk() (*string, bool) {
+func (o *PrismaticFlowConfig) GetApiKeyOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.AccessToken, true
+	return &o.ApiKey, true
 }
 
-// SetAccessToken sets field value
-func (o *JWT) SetAccessToken(v string) {
-	o.AccessToken = v
+// SetApiKey sets field value
+func (o *PrismaticFlowConfig) SetApiKey(v string) {
+	o.ApiKey = v
 }
 
-// GetExpiresIn returns the ExpiresIn field value
-func (o *JWT) GetExpiresIn() int64 {
-	if o == nil {
-		var ret int64
-		return ret
-	}
-
-	return o.ExpiresIn
-}
-
-// GetExpiresInOk returns a tuple with the ExpiresIn field value
-// and a boolean to check if the value has been set.
-func (o *JWT) GetExpiresInOk() (*int64, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.ExpiresIn, true
-}
-
-// SetExpiresIn sets field value
-func (o *JWT) SetExpiresIn(v int64) {
-	o.ExpiresIn = v
-}
-
-func (o JWT) MarshalJSON() ([]byte, error) {
+func (o PrismaticFlowConfig) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -104,20 +76,18 @@ func (o JWT) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-func (o JWT) ToMap() (map[string]interface{}, error) {
+func (o PrismaticFlowConfig) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["accessToken"] = o.AccessToken
-	toSerialize["expiresIn"] = o.ExpiresIn
+	toSerialize["ApiKey"] = o.ApiKey
 	return toSerialize, nil
 }
 
-func (o *JWT) UnmarshalJSON(data []byte) (err error) {
+func (o *PrismaticFlowConfig) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"accessToken",
-		"expiresIn",
+		"ApiKey",
 	}
 
 	allProperties := make(map[string]interface{})
@@ -134,53 +104,53 @@ func (o *JWT) UnmarshalJSON(data []byte) (err error) {
 		}
 	}
 
-	varJWT := _JWT{}
+	varPrismaticFlowConfig := _PrismaticFlowConfig{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varJWT)
+	err = decoder.Decode(&varPrismaticFlowConfig)
 
 	if err != nil {
 		return err
 	}
 
-	*o = JWT(varJWT)
+	*o = PrismaticFlowConfig(varPrismaticFlowConfig)
 
 	return err
 }
 
-type NullableJWT struct {
-	value *JWT
+type NullablePrismaticFlowConfig struct {
+	value *PrismaticFlowConfig
 	isSet bool
 }
 
-func (v NullableJWT) Get() *JWT {
+func (v NullablePrismaticFlowConfig) Get() *PrismaticFlowConfig {
 	return v.value
 }
 
-func (v *NullableJWT) Set(val *JWT) {
+func (v *NullablePrismaticFlowConfig) Set(val *PrismaticFlowConfig) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableJWT) IsSet() bool {
+func (v NullablePrismaticFlowConfig) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableJWT) Unset() {
+func (v *NullablePrismaticFlowConfig) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func BuildNullableJWT(val *JWT) *NullableJWT {
-	return &NullableJWT{value: val, isSet: true}
+func BuildNullablePrismaticFlowConfig(val *PrismaticFlowConfig) *NullablePrismaticFlowConfig {
+	return &NullablePrismaticFlowConfig{value: val, isSet: true}
 }
 
-func (v NullableJWT) MarshalJSON() ([]byte, error) {
+func (v NullablePrismaticFlowConfig) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableJWT) UnmarshalJSON(src []byte) error {
+func (v *NullablePrismaticFlowConfig) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }

@@ -48,9 +48,9 @@ type LoyaltyCard struct {
 	Subledgers map[string]LedgerInfo `json:"subledgers,omitempty"`
 	// Timestamp of the most recent update of the loyalty card.
 	Modified *time.Time `json:"modified,omitempty"`
-	// The alphanumeric identifier of the loyalty card.
+	// The identifier of the card from which the points were transferred.
 	OldCardIdentifier *string `json:"oldCardIdentifier,omitempty" validate:"regexp=^[A-Za-z0-9_-]*$"`
-	// The alphanumeric identifier of the loyalty card.
+	// The identifier of the card to which the points were transferred.
 	NewCardIdentifier *string `json:"newCardIdentifier,omitempty" validate:"regexp=^[A-Za-z0-9_-]*$"`
 	// The ID of the batch in which the loyalty card was created.
 	BatchId *string `json:"batchId,omitempty"`

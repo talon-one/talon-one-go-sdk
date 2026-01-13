@@ -6409,7 +6409,7 @@ Name | Type | Description  | Notes
 
 ## GetCampaigns
 
-> GetCampaigns200Response GetCampaigns(ctx, applicationId).PageSize(pageSize).Skip(skip).Sort(sort).CampaignState(campaignState).Name(name).Tags(tags).CreatedBefore(createdBefore).CreatedAfter(createdAfter).CampaignGroupId(campaignGroupId).TemplateId(templateId).StoreId(storeId).Execute()
+> GetCampaigns200Response GetCampaigns(ctx, applicationId).PageSize(pageSize).Skip(skip).Sort(sort).CampaignState(campaignState).Name(name).Tags(tags).CreatedBefore(createdBefore).CreatedAfter(createdAfter).StartBefore(startBefore).StartAfter(startAfter).EndBefore(endBefore).EndAfter(endAfter).CampaignGroupId(campaignGroupId).TemplateId(templateId).StoreId(storeId).Execute()
 
 List campaigns
 
@@ -6438,13 +6438,17 @@ func main() {
 	tags := "tags_example" // string | Filter results performing case-insensitive matching against the tags of the campaign. When used in conjunction with the \"name\" query parameter, a logical OR will be performed to search both tags and name for the provided values  (optional)
 	createdBefore := time.Now() // time.Time | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the campaign creation timestamp. You can use any time zone setting. Talon.One will convert to UTC internally. (optional)
 	createdAfter := time.Now() // time.Time | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the campaign creation timestamp. You can use any time zone setting. Talon.One will convert to UTC internally. (optional)
+	startBefore := time.Now() // time.Time | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the campaign start time timestamp. You can use any time zone setting. Talon.One will convert to UTC internally. (optional)
+	startAfter := time.Now() // time.Time | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the campaign start time timestamp. You can use any time zone setting. Talon.One will convert to UTC internally. (optional)
+	endBefore := time.Now() // time.Time | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the campaign end time timestamp. You can use any time zone setting. Talon.One will convert to UTC internally. (optional)
+	endAfter := time.Now() // time.Time | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the campaign end time timestamp. You can use any time zone setting. Talon.One will convert to UTC internally. (optional)
 	campaignGroupId := int64(789) // int64 | Filter results to campaigns owned by the specified campaign access group ID. (optional)
 	templateId := int64(789) // int64 | The ID of the campaign template this campaign was created from. (optional)
 	storeId := int64(789) // int64 | Filter results to campaigns linked to the specified store ID. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ManagementAPI.GetCampaigns(context.Background(), applicationId).PageSize(pageSize).Skip(skip).Sort(sort).CampaignState(campaignState).Name(name).Tags(tags).CreatedBefore(createdBefore).CreatedAfter(createdAfter).CampaignGroupId(campaignGroupId).TemplateId(templateId).StoreId(storeId).Execute()
+	resp, r, err := apiClient.ManagementAPI.GetCampaigns(context.Background(), applicationId).PageSize(pageSize).Skip(skip).Sort(sort).CampaignState(campaignState).Name(name).Tags(tags).CreatedBefore(createdBefore).CreatedAfter(createdAfter).StartBefore(startBefore).StartAfter(startAfter).EndBefore(endBefore).EndAfter(endAfter).CampaignGroupId(campaignGroupId).TemplateId(templateId).StoreId(storeId).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.GetCampaigns``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -6478,6 +6482,10 @@ Name | Type | Description  | Notes
  **tags** | **string** | Filter results performing case-insensitive matching against the tags of the campaign. When used in conjunction with the \&quot;name\&quot; query parameter, a logical OR will be performed to search both tags and name for the provided values  | 
  **createdBefore** | **time.Time** | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the campaign creation timestamp. You can use any time zone setting. Talon.One will convert to UTC internally. | 
  **createdAfter** | **time.Time** | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the campaign creation timestamp. You can use any time zone setting. Talon.One will convert to UTC internally. | 
+ **startBefore** | **time.Time** | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the campaign start time timestamp. You can use any time zone setting. Talon.One will convert to UTC internally. | 
+ **startAfter** | **time.Time** | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the campaign start time timestamp. You can use any time zone setting. Talon.One will convert to UTC internally. | 
+ **endBefore** | **time.Time** | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the campaign end time timestamp. You can use any time zone setting. Talon.One will convert to UTC internally. | 
+ **endAfter** | **time.Time** | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the campaign end time timestamp. You can use any time zone setting. Talon.One will convert to UTC internally. | 
  **campaignGroupId** | **int64** | Filter results to campaigns owned by the specified campaign access group ID. | 
  **templateId** | **int64** | The ID of the campaign template this campaign was created from. | 
  **storeId** | **int64** | Filter results to campaigns linked to the specified store ID. | 
@@ -8003,7 +8011,7 @@ Name | Type | Description  | Notes
 
 ## GetLoyaltyProgramTransactions
 
-> GetLoyaltyProgramTransactions200Response GetLoyaltyProgramTransactions(ctx, loyaltyProgramId).LoyaltyTransactionType(loyaltyTransactionType).SubledgerId(subledgerId).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).StartDate(startDate).EndDate(endDate).PageSize(pageSize).Skip(skip).AwaitsActivation(awaitsActivation).Execute()
+> GetLoyaltyProgramTransactions200Response GetLoyaltyProgramTransactions(ctx, loyaltyProgramId).LoyaltyTransactionType(loyaltyTransactionType).SubledgerId(subledgerId).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).StartDate(startDate).EndDate(endDate).PageSize(pageSize).Skip(skip).Execute()
 
 List loyalty program transactions
 
@@ -8032,11 +8040,10 @@ func main() {
 	endDate := time.Now() // time.Time | Date and time by which results are returned. Results are filtered by transaction creation date.  **Note:**  - It must be an RFC3339 timestamp string. - You can include a time component in your string, for example, `T23:59:59` to specify the end of the day. The time zone setting considered is `UTC`. If you do not include a time component, a default time value of `T00:00:00` (midnight) in `UTC` is considered.  (optional)
 	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 50)
 	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
-	awaitsActivation := true // bool | If `true`: Filters results to include only point transactions that have action-based activation and have not expired. If `false`: Returns an error.  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ManagementAPI.GetLoyaltyProgramTransactions(context.Background(), loyaltyProgramId).LoyaltyTransactionType(loyaltyTransactionType).SubledgerId(subledgerId).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).StartDate(startDate).EndDate(endDate).PageSize(pageSize).Skip(skip).AwaitsActivation(awaitsActivation).Execute()
+	resp, r, err := apiClient.ManagementAPI.GetLoyaltyProgramTransactions(context.Background(), loyaltyProgramId).LoyaltyTransactionType(loyaltyTransactionType).SubledgerId(subledgerId).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).StartDate(startDate).EndDate(endDate).PageSize(pageSize).Skip(skip).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.GetLoyaltyProgramTransactions``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -8070,7 +8077,6 @@ Name | Type | Description  | Notes
  **endDate** | **time.Time** | Date and time by which results are returned. Results are filtered by transaction creation date.  **Note:**  - It must be an RFC3339 timestamp string. - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.  | 
  **pageSize** | **int64** | The number of items in the response. | [default to 50]
  **skip** | **int64** | The number of items to skip when paging through large result sets. | 
- **awaitsActivation** | **bool** | If &#x60;true&#x60;: Filters results to include only point transactions that have action-based activation and have not expired. If &#x60;false&#x60;: Returns an error.  | 
 
 ### Return type
 

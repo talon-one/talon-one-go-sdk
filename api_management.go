@@ -15089,6 +15089,10 @@ type ApiGetCampaignsRequest struct {
 	tags            *string
 	createdBefore   *time.Time
 	createdAfter    *time.Time
+	startBefore     *time.Time
+	startAfter      *time.Time
+	endBefore       *time.Time
+	endAfter        *time.Time
 	campaignGroupId *int64
 	templateId      *int64
 	storeId         *int64
@@ -15139,6 +15143,30 @@ func (r ApiGetCampaignsRequest) CreatedBefore(createdBefore time.Time) ApiGetCam
 // Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the campaign creation timestamp. You can use any time zone setting. Talon.One will convert to UTC internally.
 func (r ApiGetCampaignsRequest) CreatedAfter(createdAfter time.Time) ApiGetCampaignsRequest {
 	r.createdAfter = &createdAfter
+	return r
+}
+
+// Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the campaign start time timestamp. You can use any time zone setting. Talon.One will convert to UTC internally.
+func (r ApiGetCampaignsRequest) StartBefore(startBefore time.Time) ApiGetCampaignsRequest {
+	r.startBefore = &startBefore
+	return r
+}
+
+// Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the campaign start time timestamp. You can use any time zone setting. Talon.One will convert to UTC internally.
+func (r ApiGetCampaignsRequest) StartAfter(startAfter time.Time) ApiGetCampaignsRequest {
+	r.startAfter = &startAfter
+	return r
+}
+
+// Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the campaign end time timestamp. You can use any time zone setting. Talon.One will convert to UTC internally.
+func (r ApiGetCampaignsRequest) EndBefore(endBefore time.Time) ApiGetCampaignsRequest {
+	r.endBefore = &endBefore
+	return r
+}
+
+// Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the campaign end time timestamp. You can use any time zone setting. Talon.One will convert to UTC internally.
+func (r ApiGetCampaignsRequest) EndAfter(endAfter time.Time) ApiGetCampaignsRequest {
+	r.endAfter = &endAfter
 	return r
 }
 
@@ -15231,6 +15259,18 @@ func (a *ManagementAPIService) GetCampaignsExecute(r ApiGetCampaignsRequest) (*G
 	}
 	if r.createdAfter != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "createdAfter", r.createdAfter, "form", "")
+	}
+	if r.startBefore != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "startBefore", r.startBefore, "form", "")
+	}
+	if r.startAfter != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "startAfter", r.startAfter, "form", "")
+	}
+	if r.endBefore != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "endBefore", r.endBefore, "form", "")
+	}
+	if r.endAfter != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "endAfter", r.endAfter, "form", "")
 	}
 	if r.campaignGroupId != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "campaignGroupId", r.campaignGroupId, "form", "")
@@ -19245,7 +19285,6 @@ type ApiGetLoyaltyProgramTransactionsRequest struct {
 	endDate                *time.Time
 	pageSize               *int64
 	skip                   *int64
-	awaitsActivation       *bool
 }
 
 // Filter results by loyalty transaction type: - &#x60;manual&#x60;: Loyalty transaction that was done manually. - &#x60;session&#x60;: Loyalty transaction that resulted from a customer session. - &#x60;import&#x60;: Loyalty transaction that was imported from a CSV file.
@@ -19293,12 +19332,6 @@ func (r ApiGetLoyaltyProgramTransactionsRequest) PageSize(pageSize int64) ApiGet
 // The number of items to skip when paging through large result sets.
 func (r ApiGetLoyaltyProgramTransactionsRequest) Skip(skip int64) ApiGetLoyaltyProgramTransactionsRequest {
 	r.skip = &skip
-	return r
-}
-
-// If &#x60;true&#x60;: Filters results to include only point transactions that have action-based activation and have not expired. If &#x60;false&#x60;: Returns an error.
-func (r ApiGetLoyaltyProgramTransactionsRequest) AwaitsActivation(awaitsActivation bool) ApiGetLoyaltyProgramTransactionsRequest {
-	r.awaitsActivation = &awaitsActivation
 	return r
 }
 
@@ -19393,9 +19426,6 @@ func (a *ManagementAPIService) GetLoyaltyProgramTransactionsExecute(r ApiGetLoya
 	}
 	if r.skip != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "skip", r.skip, "form", "")
-	}
-	if r.awaitsActivation != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "awaitsActivation", r.awaitsActivation, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -23554,6 +23584,40 @@ The CSV file contains the following columns:
 - `expirydate` (optional): The latest date when the points can be redeemed. The points are `expired` after this date.
 
 	**Note**: It must be an RFC3339 timestamp string or string `unlimited`. Empty or missing values are considered `unlimited`.
+
+	If passed, `validityDuration` should be omitted.
+
+  - `validityDuration` (optional): The duration for which the points remain active, relative to the
+    activation date.
+
+    The time format is an **integer** followed by one letter indicating the time unit.
+
+    Examples: `30s`, `40m`, `1h`, `5D`, `7W`, `10M`, `15Y`.
+
+    Available units:
+
+  - `s`: seconds
+
+  - `m`: minutes
+
+  - `h`: hours
+
+  - `D`: days
+
+  - `W`: weeks
+
+  - `M`: months
+
+  - `Y`: years
+
+    You can round certain units up or down:
+
+  - `_D` for rounding down days only. Signifies the start of the day.
+
+  - `_U` for rounding up days, weeks, months and years. Signifies the end of
+    the day, week, month or year.
+
+    If passed, `expirydate` should be omitted.
 
 - `subledgerid` (optional): The ID of the subledger that should received the points.
 - `reason` (optional): The reason why these points are awarded.

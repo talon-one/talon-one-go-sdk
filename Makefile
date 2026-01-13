@@ -27,9 +27,9 @@ apply-sed-changes:
 	@sed -i -f patches/effects.sed docs/Rule.md
 	@sed -i -f patches/expr.sed docs/NewTemplateDef.md
 	@sed -i -f patches/expr.sed docs/TemplateDef.md
-	@sed -i -f patches/expression.sed docs/ApplicationCifExpression.md
+	@sed -i -f patches/expression.sed docs/ApplicationCIFExpression.md
 	@sed -i -f patches/expression.sed docs/Binding.md
-	@sed -i -f patches/expression.sed docs/NewApplicationCifExpression.md
+	@sed -i -f patches/expression.sed docs/NewApplicationCIFExpression.md
 
 rename-constructors:
 	@find . -name 'model_*.go' -print0 | \

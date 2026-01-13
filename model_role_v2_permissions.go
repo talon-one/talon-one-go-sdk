@@ -21,7 +21,7 @@ var _ MappedNullable = &RoleV2Permissions{}
 type RoleV2Permissions struct {
 	// List of grouped logical operations referenced by roles.
 	PermissionSets []RoleV2PermissionSet `json:"permissionSets,omitempty"`
-	Roles          *RoleV2RolesGroup     `json:"roles,omitempty"`
+	Roles          RoleV2RolesGroup      `json:"roles,omitempty"`
 }
 
 // NewRoleV2Permissions instantiates a new RoleV2Permissions object
@@ -79,14 +79,14 @@ func (o *RoleV2Permissions) GetRoles() RoleV2RolesGroup {
 		var ret RoleV2RolesGroup
 		return ret
 	}
-	return *o.Roles
+	return o.Roles
 }
 
 // GetRolesOk returns a tuple with the Roles field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *RoleV2Permissions) GetRolesOk() (*RoleV2RolesGroup, bool) {
+func (o *RoleV2Permissions) GetRolesOk() (RoleV2RolesGroup, bool) {
 	if o == nil || IsNil(o.Roles) {
-		return nil, false
+		return RoleV2RolesGroup{}, false
 	}
 	return o.Roles, true
 }
@@ -102,7 +102,7 @@ func (o *RoleV2Permissions) HasRoles() bool {
 
 // SetRoles gets a reference to the given RoleV2RolesGroup and assigns it to the Roles field.
 func (o *RoleV2Permissions) SetRoles(v RoleV2RolesGroup) {
-	o.Roles = &v
+	o.Roles = v
 }
 
 func (o RoleV2Permissions) MarshalJSON() ([]byte, error) {

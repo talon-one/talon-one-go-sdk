@@ -67,8 +67,6 @@ type LoyaltyProgram struct {
 	CardBased bool `json:"cardBased"`
 	// `True` if the tier definitions can be updated.
 	CanUpdateTiers *bool `json:"canUpdateTiers,omitempty"`
-	// `True` if the program join policy can be updated.
-	CanUpdateJoinPolicy *bool `json:"canUpdateJoinPolicy,omitempty"`
 	// `True` if the tier expiration policy can be updated.
 	CanUpdateTierExpirationPolicy *bool `json:"canUpdateTierExpirationPolicy,omitempty"`
 	// `True` if the program can be upgraded to use the `tiersExpireIn` and `tiersDowngradePolicy` properties.
@@ -804,38 +802,6 @@ func (o *LoyaltyProgram) SetCanUpdateTiers(v bool) {
 	o.CanUpdateTiers = &v
 }
 
-// GetCanUpdateJoinPolicy returns the CanUpdateJoinPolicy field value if set, zero value otherwise.
-func (o *LoyaltyProgram) GetCanUpdateJoinPolicy() bool {
-	if o == nil || IsNil(o.CanUpdateJoinPolicy) {
-		var ret bool
-		return ret
-	}
-	return *o.CanUpdateJoinPolicy
-}
-
-// GetCanUpdateJoinPolicyOk returns a tuple with the CanUpdateJoinPolicy field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *LoyaltyProgram) GetCanUpdateJoinPolicyOk() (*bool, bool) {
-	if o == nil || IsNil(o.CanUpdateJoinPolicy) {
-		return nil, false
-	}
-	return o.CanUpdateJoinPolicy, true
-}
-
-// HasCanUpdateJoinPolicy returns a boolean if a field has been set.
-func (o *LoyaltyProgram) HasCanUpdateJoinPolicy() bool {
-	if o != nil && !IsNil(o.CanUpdateJoinPolicy) {
-		return true
-	}
-
-	return false
-}
-
-// SetCanUpdateJoinPolicy gets a reference to the given bool and assigns it to the CanUpdateJoinPolicy field.
-func (o *LoyaltyProgram) SetCanUpdateJoinPolicy(v bool) {
-	o.CanUpdateJoinPolicy = &v
-}
-
 // GetCanUpdateTierExpirationPolicy returns the CanUpdateTierExpirationPolicy field value if set, zero value otherwise.
 func (o *LoyaltyProgram) GetCanUpdateTierExpirationPolicy() bool {
 	if o == nil || IsNil(o.CanUpdateTierExpirationPolicy) {
@@ -998,9 +964,6 @@ func (o LoyaltyProgram) ToMap() (map[string]interface{}, error) {
 	toSerialize["cardBased"] = o.CardBased
 	if !IsNil(o.CanUpdateTiers) {
 		toSerialize["canUpdateTiers"] = o.CanUpdateTiers
-	}
-	if !IsNil(o.CanUpdateJoinPolicy) {
-		toSerialize["canUpdateJoinPolicy"] = o.CanUpdateJoinPolicy
 	}
 	if !IsNil(o.CanUpdateTierExpirationPolicy) {
 		toSerialize["canUpdateTierExpirationPolicy"] = o.CanUpdateTierExpirationPolicy

@@ -24,7 +24,7 @@ type CampaignRulesetChangedNotificationItem struct {
 	// The type of the event. Can be one of the following: ['campaign_state_changed', 'campaign_ruleset_changed', 'campaign_edited', 'campaign_created', 'campaign_deleted']
 	Event string `json:"Event"`
 	// The campaign whose state changed.
-	Campaign Campaign `json:"campaign"`
+	Campaign interface{} `json:"campaign"`
 	// The old ruleset, if the ruleset was changed.
 	OldRuleset *Ruleset `json:"oldRuleset,omitempty"`
 	// The current ruleset.
@@ -37,7 +37,7 @@ type _CampaignRulesetChangedNotificationItem CampaignRulesetChangedNotificationI
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCampaignRulesetChangedNotificationItem(event string, campaign Campaign) *CampaignRulesetChangedNotificationItem {
+func BuildCampaignRulesetChangedNotificationItem(event string, campaign interface{}) *CampaignRulesetChangedNotificationItem {
 	this := CampaignRulesetChangedNotificationItem{}
 	this.Event = event
 	this.Campaign = campaign
@@ -77,9 +77,10 @@ func (o *CampaignRulesetChangedNotificationItem) SetEvent(v string) {
 }
 
 // GetCampaign returns the Campaign field value
-func (o *CampaignRulesetChangedNotificationItem) GetCampaign() Campaign {
+// If the value is explicit nil, the zero value for interface{} will be returned
+func (o *CampaignRulesetChangedNotificationItem) GetCampaign() interface{} {
 	if o == nil {
-		var ret Campaign
+		var ret interface{}
 		return ret
 	}
 
@@ -88,15 +89,16 @@ func (o *CampaignRulesetChangedNotificationItem) GetCampaign() Campaign {
 
 // GetCampaignOk returns a tuple with the Campaign field value
 // and a boolean to check if the value has been set.
-func (o *CampaignRulesetChangedNotificationItem) GetCampaignOk() (*Campaign, bool) {
-	if o == nil {
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *CampaignRulesetChangedNotificationItem) GetCampaignOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.Campaign) {
 		return nil, false
 	}
 	return &o.Campaign, true
 }
 
 // SetCampaign sets field value
-func (o *CampaignRulesetChangedNotificationItem) SetCampaign(v Campaign) {
+func (o *CampaignRulesetChangedNotificationItem) SetCampaign(v interface{}) {
 	o.Campaign = v
 }
 
@@ -175,7 +177,9 @@ func (o CampaignRulesetChangedNotificationItem) MarshalJSON() ([]byte, error) {
 func (o CampaignRulesetChangedNotificationItem) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["Event"] = o.Event
-	toSerialize["campaign"] = o.Campaign
+	if o.Campaign != nil {
+		toSerialize["campaign"] = o.Campaign
+	}
 	if !IsNil(o.OldRuleset) {
 		toSerialize["oldRuleset"] = o.OldRuleset
 	}
