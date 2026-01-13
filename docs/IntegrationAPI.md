@@ -1291,7 +1291,7 @@ Name | Type | Description  | Notes
 
 ## GetLoyaltyCardTransactions
 
-> GetLoyaltyCardTransactions200Response GetLoyaltyCardTransactions(ctx, loyaltyProgramId, loyaltyCardId).SubledgerId(subledgerId).LoyaltyTransactionType(loyaltyTransactionType).StartDate(startDate).EndDate(endDate).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).PageSize(pageSize).Skip(skip).AwaitsActivation(awaitsActivation).Execute()
+> GetLoyaltyCardTransactions200Response GetLoyaltyCardTransactions(ctx, loyaltyProgramId, loyaltyCardId).SubledgerId(subledgerId).LoyaltyTransactionType(loyaltyTransactionType).StartDate(startDate).EndDate(endDate).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).PageSize(pageSize).Skip(skip).Execute()
 
 List card's transactions
 
@@ -1321,11 +1321,10 @@ func main() {
 	transactionUUIDs := []string{"Inner_example"} // []string | Filter the results by a list of transaction UUIDs.  To include multiple IDs, repeat the parameter for each one, for example,  `?transactionUUIDs=uuid1&transactionUUIDs=uuid2`.  The response contains only data associated with the specified transactions.  (optional)
 	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 50)
 	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
-	awaitsActivation := true // bool | If `true`: Filters results to include only point transactions that have action-based activation and have not expired. If `false`: Returns an error.  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.IntegrationAPI.GetLoyaltyCardTransactions(context.Background(), loyaltyProgramId, loyaltyCardId).SubledgerId(subledgerId).LoyaltyTransactionType(loyaltyTransactionType).StartDate(startDate).EndDate(endDate).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).PageSize(pageSize).Skip(skip).AwaitsActivation(awaitsActivation).Execute()
+	resp, r, err := apiClient.IntegrationAPI.GetLoyaltyCardTransactions(context.Background(), loyaltyProgramId, loyaltyCardId).SubledgerId(subledgerId).LoyaltyTransactionType(loyaltyTransactionType).StartDate(startDate).EndDate(endDate).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).PageSize(pageSize).Skip(skip).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `IntegrationAPI.GetLoyaltyCardTransactions``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -1361,7 +1360,6 @@ Name | Type | Description  | Notes
  **transactionUUIDs** | **[]string** | Filter the results by a list of transaction UUIDs.  To include multiple IDs, repeat the parameter for each one, for example,  &#x60;?transactionUUIDs&#x3D;uuid1&amp;transactionUUIDs&#x3D;uuid2&#x60;.  The response contains only data associated with the specified transactions.  | 
  **pageSize** | **int64** | The number of items in the response. | [default to 50]
  **skip** | **int64** | The number of items to skip when paging through large result sets. | 
- **awaitsActivation** | **bool** | If &#x60;true&#x60;: Filters results to include only point transactions that have action-based activation and have not expired. If &#x60;false&#x60;: Returns an error.  | 
 
 ### Return type
 
@@ -1470,7 +1468,7 @@ Name | Type | Description  | Notes
 
 ## GetLoyaltyProgramProfileTransactions
 
-> GetLoyaltyProgramProfileTransactions200Response GetLoyaltyProgramProfileTransactions(ctx, loyaltyProgramId, integrationId).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).SubledgerId(subledgerId).LoyaltyTransactionType(loyaltyTransactionType).StartDate(startDate).EndDate(endDate).PageSize(pageSize).Skip(skip).AwaitsActivation(awaitsActivation).Execute()
+> GetLoyaltyProgramProfileTransactions200Response GetLoyaltyProgramProfileTransactions(ctx, loyaltyProgramId, integrationId).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).SubledgerId(subledgerId).LoyaltyTransactionType(loyaltyTransactionType).StartDate(startDate).EndDate(endDate).PageSize(pageSize).Skip(skip).Execute()
 
 List customer's loyalty transactions
 
@@ -1500,11 +1498,10 @@ func main() {
 	endDate := time.Now() // time.Time | Date and time by which results are returned. Results are filtered by transaction creation date.  **Note:**  - It must be an RFC3339 timestamp string. - You can include a time component in your string, for example, `T23:59:59` to specify the end of the day. The time zone setting considered is `UTC`. If you do not include a time component, a default time value of `T00:00:00` (midnight) in `UTC` is considered.  (optional)
 	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 50)
 	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
-	awaitsActivation := true // bool | If `true`: Filters results to include only point transactions that have action-based activation and have not expired. If `false`: Returns an error.  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.IntegrationAPI.GetLoyaltyProgramProfileTransactions(context.Background(), loyaltyProgramId, integrationId).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).SubledgerId(subledgerId).LoyaltyTransactionType(loyaltyTransactionType).StartDate(startDate).EndDate(endDate).PageSize(pageSize).Skip(skip).AwaitsActivation(awaitsActivation).Execute()
+	resp, r, err := apiClient.IntegrationAPI.GetLoyaltyProgramProfileTransactions(context.Background(), loyaltyProgramId, integrationId).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).SubledgerId(subledgerId).LoyaltyTransactionType(loyaltyTransactionType).StartDate(startDate).EndDate(endDate).PageSize(pageSize).Skip(skip).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `IntegrationAPI.GetLoyaltyProgramProfileTransactions``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -1540,7 +1537,6 @@ Name | Type | Description  | Notes
  **endDate** | **time.Time** | Date and time by which results are returned. Results are filtered by transaction creation date.  **Note:**  - It must be an RFC3339 timestamp string. - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.  | 
  **pageSize** | **int64** | The number of items in the response. | [default to 50]
  **skip** | **int64** | The number of items to skip when paging through large result sets. | 
- **awaitsActivation** | **bool** | If &#x60;true&#x60;: Filters results to include only point transactions that have action-based activation and have not expired. If &#x60;false&#x60;: Returns an error.  | 
 
 ### Return type
 
@@ -1797,7 +1793,7 @@ import (
 
 func main() {
 	customerSessionId := "customerSessionId_example" // string | The `integration ID` of the customer session. You set this ID when you create a customer session.  You can see existing customer session integration IDs in the Campaign Manager's **Sessions** menu, or via the [List Application session](https://docs.talon.one/management-api#operation/getApplicationSessions) endpoint. 
-	returnIntegrationRequest := *openapiclient.NewReturnIntegrationRequest(*openapiclient.NewNewReturn([]openapiclient.ReturnedCartItem{*openapiclient.NewReturnedCartItem(int64(2))})) // ReturnIntegrationRequest | body
+	returnIntegrationRequest := *openapiclient.NewReturnIntegrationRequest(*openapiclient.NewNewReturn([]openapiclient.ReturnedCartItem{*openapiclient.NewReturnedCartItem()})) // ReturnIntegrationRequest | body
 	dry := true // bool | Indicates whether to persist the changes. Changes are ignored when `dry=true`.  (optional)
 
 	configuration := openapiclient.NewConfiguration()

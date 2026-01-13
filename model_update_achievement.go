@@ -29,7 +29,8 @@ type UpdateAchievement struct {
 	// The required number of actions or the transactional milestone to complete the achievement.
 	Target *float32 `json:"target,omitempty"`
 	// The relative duration after which the achievement ends and resets for a particular customer profile.  **Note**: The `period` does not start when the achievement is created.  The period is a **positive real number** followed by one letter indicating the time unit.  Examples: `30s`, `40m`, `1h`, `5D`, `7W`, `10M`, `15Y`.  Available units:  - `s`: seconds - `m`: minutes - `h`: hours - `D`: days - `W`: weeks - `M`: months - `Y`: years  You can also round certain units down to the beginning of period and up to the end of period.: - `_D` for rounding down days only. Signifies the start of the day. Example: `30D_D` - `_U` for rounding up days, weeks, months and years. Signifies the end of the day, week, month or year. Example: `23W_U`  **Note**: You can either use the round down and round up option or set an absolute period.
-	Period            *string    `json:"period,omitempty"`
+	Period *string `json:"period,omitempty"`
+	// Deprecated
 	PeriodEndOverride *TimePoint `json:"periodEndOverride,omitempty"`
 	// The policy that determines if and how the achievement recurs. - `no_recurrence`: The achievement can be completed only once. - `on_expiration`: The achievement resets after it expires and becomes available again. - `on_completion`: When the customer progress status reaches `completed`, the achievement resets and becomes available again.
 	RecurrencePolicy *string `json:"recurrencePolicy,omitempty"`
@@ -221,6 +222,7 @@ func (o *UpdateAchievement) SetPeriod(v string) {
 }
 
 // GetPeriodEndOverride returns the PeriodEndOverride field value if set, zero value otherwise.
+// Deprecated
 func (o *UpdateAchievement) GetPeriodEndOverride() TimePoint {
 	if o == nil || IsNil(o.PeriodEndOverride) {
 		var ret TimePoint
@@ -231,6 +233,7 @@ func (o *UpdateAchievement) GetPeriodEndOverride() TimePoint {
 
 // GetPeriodEndOverrideOk returns a tuple with the PeriodEndOverride field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *UpdateAchievement) GetPeriodEndOverrideOk() (*TimePoint, bool) {
 	if o == nil || IsNil(o.PeriodEndOverride) {
 		return nil, false
@@ -248,6 +251,7 @@ func (o *UpdateAchievement) HasPeriodEndOverride() bool {
 }
 
 // SetPeriodEndOverride gets a reference to the given TimePoint and assigns it to the PeriodEndOverride field.
+// Deprecated
 func (o *UpdateAchievement) SetPeriodEndOverride(v TimePoint) {
 	o.PeriodEndOverride = &v
 }

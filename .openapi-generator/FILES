@@ -37,6 +37,8 @@ docs/AchievementBase.md
 docs/AchievementProgress.md
 docs/AchievementProgressWithDefinition.md
 docs/AchievementStatusEntry.md
+docs/ActivateLoyaltyPoints.md
+docs/ActivateLoyaltyPointsResponse.md
 docs/ActivateUserRequest.md
 docs/AddFreeItemEffectProps.md
 docs/AddItemCatalogAction.md
@@ -44,6 +46,8 @@ docs/AddLoyaltyPoints.md
 docs/AddLoyaltyPointsEffectProps.md
 docs/AddPriceAdjustmentCatalogAction.md
 docs/AddToAudienceEffectProps.md
+docs/AddedDeductedPointsBalancesAction.md
+docs/AddedDeductedPointsBalancesNotification.md
 docs/AddedDeductedPointsBalancesNotificationPolicy.md
 docs/AddedDeductedPointsNotification.md
 docs/AddedDeductedPointsNotificationPolicy.md
@@ -145,6 +149,7 @@ docs/CampaignTemplateCollection.md
 docs/CampaignTemplateCouponReservationSettings.md
 docs/CampaignTemplateParams.md
 docs/CampaignVersions.md
+docs/CardAddedDeductedPointsBalancesNotification.md
 docs/CardAddedDeductedPointsBalancesNotificationPolicy.md
 docs/CardAddedDeductedPointsNotification.md
 docs/CardAddedDeductedPointsNotificationPolicy.md
@@ -173,8 +178,10 @@ docs/CouponCreationJob.md
 docs/CouponDeletionFilters.md
 docs/CouponDeletionJob.md
 docs/CouponEntity.md
+docs/CouponFailureSummary.md
 docs/CouponLimitConfigs.md
 docs/CouponRejectionReason.md
+docs/CouponRejections.md
 docs/CouponReservations.md
 docs/CouponSearch.md
 docs/CouponValue.md
@@ -243,6 +250,7 @@ docs/FuncArgDef.md
 docs/FunctionDef.md
 docs/GenerateAuditLogSummary.md
 docs/GenerateCampaignDescription.md
+docs/GenerateCampaignSummary.md
 docs/GenerateCampaignTags.md
 docs/GenerateCouponFailureDetailedSummary.md
 docs/GenerateCouponFailureSummary.md
@@ -320,7 +328,6 @@ docs/IntegrationStoreEntity.md
 docs/InventoryCoupon.md
 docs/InventoryReferral.md
 docs/ItemAttribute.md
-docs/JWT.md
 docs/LabelTargetAudience.md
 docs/LabelTargetNone.md
 docs/LedgerEntry.md
@@ -473,6 +480,15 @@ docs/PriceDetail.md
 docs/PriceType.md
 docs/PriceTypeReferenceDetail.md
 docs/PriceTypeReferences.md
+docs/PrismaticConfig.md
+docs/PrismaticEventPayloadCouponBasedNotifications.md
+docs/PrismaticEventPayloadCouponBasedNotificationsLimits.md
+docs/PrismaticEventPayloadLoyaltyProfileBasedNotifications.md
+docs/PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction.md
+docs/PrismaticFlow.md
+docs/PrismaticFlowConfig.md
+docs/PrismaticFlowWithConfig.md
+docs/PrismaticPaginatedEventPayload.md
 docs/Product.md
 docs/ProductSearchMatch.md
 docs/ProductUnitAnalytics.md
@@ -507,6 +523,7 @@ docs/RoleV2ApplicationDetails.md
 docs/RoleV2Base.md
 docs/RoleV2PermissionSet.md
 docs/RoleV2Permissions.md
+docs/RoleV2Readonly.md
 docs/RoleV2RolesGroup.md
 docs/RollbackAddedLoyaltyPointsEffectProps.md
 docs/RollbackCouponEffectProps.md
@@ -545,6 +562,7 @@ docs/ScimUser.md
 docs/ScimUsersListResponse.md
 docs/SecondaryDeployment.md
 docs/Session.md
+docs/SessionCoupons.md
 docs/SetDiscountEffectProps.md
 docs/SetDiscountPerAdditionalCostEffectProps.md
 docs/SetDiscountPerAdditionalCostPerItemEffectProps.md
@@ -562,6 +580,7 @@ docs/StrikethroughDebugResponse.md
 docs/StrikethroughEffect.md
 docs/StrikethroughLabelingNotification.md
 docs/StrikethroughSetDiscountPerItemEffectProps.md
+docs/StrikethroughSetDiscountPerItemMemberEffectProps.md
 docs/StrikethroughTrigger.md
 docs/SummarizeCampaignStoreBudget200Response.md
 docs/SummaryCampaignStoreBudget.md
@@ -650,6 +669,8 @@ model_achievement_base.go
 model_achievement_progress.go
 model_achievement_progress_with_definition.go
 model_achievement_status_entry.go
+model_activate_loyalty_points.go
+model_activate_loyalty_points_response.go
 model_activate_user_request.go
 model_add_free_item_effect_props.go
 model_add_item_catalog_action.go
@@ -657,6 +678,8 @@ model_add_loyalty_points.go
 model_add_loyalty_points_effect_props.go
 model_add_price_adjustment_catalog_action.go
 model_add_to_audience_effect_props.go
+model_added_deducted_points_balances_action.go
+model_added_deducted_points_balances_notification.go
 model_added_deducted_points_balances_notification_policy.go
 model_added_deducted_points_notification.go
 model_added_deducted_points_notification_policy.go
@@ -759,6 +782,7 @@ model_campaign_template_collection.go
 model_campaign_template_coupon_reservation_settings.go
 model_campaign_template_params.go
 model_campaign_versions.go
+model_card_added_deducted_points_balances_notification.go
 model_card_added_deducted_points_balances_notification_policy.go
 model_card_added_deducted_points_notification.go
 model_card_added_deducted_points_notification_policy.go
@@ -787,8 +811,10 @@ model_coupon_creation_job.go
 model_coupon_deletion_filters.go
 model_coupon_deletion_job.go
 model_coupon_entity.go
+model_coupon_failure_summary.go
 model_coupon_limit_configs.go
 model_coupon_rejection_reason.go
+model_coupon_rejections.go
 model_coupon_reservations.go
 model_coupon_search.go
 model_coupon_value.go
@@ -857,6 +883,7 @@ model_func_arg_def.go
 model_function_def.go
 model_generate_audit_log_summary.go
 model_generate_campaign_description.go
+model_generate_campaign_summary.go
 model_generate_campaign_tags.go
 model_generate_coupon_failure_detailed_summary.go
 model_generate_coupon_failure_summary.go
@@ -933,7 +960,6 @@ model_integration_store_entity.go
 model_inventory_coupon.go
 model_inventory_referral.go
 model_item_attribute.go
-model_jwt.go
 model_label_target_audience.go
 model_label_target_none.go
 model_ledger_entry.go
@@ -1085,6 +1111,15 @@ model_price_detail.go
 model_price_type.go
 model_price_type_reference_detail.go
 model_price_type_references.go
+model_prismatic_config.go
+model_prismatic_event_payload_coupon_based_notifications.go
+model_prismatic_event_payload_coupon_based_notifications_limits.go
+model_prismatic_event_payload_loyalty_profile_based_notifications.go
+model_prismatic_event_payload_loyalty_profile_based_notifications_action.go
+model_prismatic_flow.go
+model_prismatic_flow_config.go
+model_prismatic_flow_with_config.go
+model_prismatic_paginated_event_payload.go
 model_product.go
 model_product_search_match.go
 model_product_unit_analytics.go
@@ -1119,6 +1154,7 @@ model_role_v2_application_details.go
 model_role_v2_base.go
 model_role_v2_permission_set.go
 model_role_v2_permissions.go
+model_role_v2_readonly.go
 model_role_v2_roles_group.go
 model_rollback_added_loyalty_points_effect_props.go
 model_rollback_coupon_effect_props.go
@@ -1156,6 +1192,7 @@ model_scim_user.go
 model_scim_users_list_response.go
 model_secondary_deployment.go
 model_session.go
+model_session_coupons.go
 model_set_discount_effect_props.go
 model_set_discount_per_additional_cost_effect_props.go
 model_set_discount_per_additional_cost_per_item_effect_props.go
@@ -1174,6 +1211,7 @@ model_strikethrough_debug_response.go
 model_strikethrough_effect.go
 model_strikethrough_labeling_notification.go
 model_strikethrough_set_discount_per_item_effect_props.go
+model_strikethrough_set_discount_per_item_member_effect_props.go
 model_strikethrough_trigger.go
 model_summarize_campaign_store_budget_200_response.go
 model_summary_campaign_store_budget.go

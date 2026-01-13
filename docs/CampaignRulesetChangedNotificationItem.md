@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Event** | **string** | The type of the event. Can be one of the following: [&#39;campaign_state_changed&#39;, &#39;campaign_ruleset_changed&#39;, &#39;campaign_edited&#39;, &#39;campaign_created&#39;, &#39;campaign_deleted&#39;]  | 
-**Campaign** | [**Campaign**](Campaign.md) | The campaign whose state changed. | 
+**Campaign** | **interface{}** | The campaign whose state changed. | 
 **OldRuleset** | Pointer to [**Ruleset**](Ruleset.md) | The old ruleset, if the ruleset was changed. | [optional] 
 **Ruleset** | Pointer to [**Ruleset**](Ruleset.md) | The current ruleset. | [optional] 
 
@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 
 ### NewCampaignRulesetChangedNotificationItem
 
-`func NewCampaignRulesetChangedNotificationItem(event string, campaign Campaign, ) *CampaignRulesetChangedNotificationItem`
+`func NewCampaignRulesetChangedNotificationItem(event string, campaign interface{}, ) *CampaignRulesetChangedNotificationItem`
 
 NewCampaignRulesetChangedNotificationItem instantiates a new CampaignRulesetChangedNotificationItem object
 This constructor will assign default values to properties that have it defined,
@@ -50,24 +50,34 @@ SetEvent sets Event field to given value.
 
 ### GetCampaign
 
-`func (o *CampaignRulesetChangedNotificationItem) GetCampaign() Campaign`
+`func (o *CampaignRulesetChangedNotificationItem) GetCampaign() interface{}`
 
 GetCampaign returns the Campaign field if non-nil, zero value otherwise.
 
 ### GetCampaignOk
 
-`func (o *CampaignRulesetChangedNotificationItem) GetCampaignOk() (*Campaign, bool)`
+`func (o *CampaignRulesetChangedNotificationItem) GetCampaignOk() (*interface{}, bool)`
 
 GetCampaignOk returns a tuple with the Campaign field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetCampaign
 
-`func (o *CampaignRulesetChangedNotificationItem) SetCampaign(v Campaign)`
+`func (o *CampaignRulesetChangedNotificationItem) SetCampaign(v interface{})`
 
 SetCampaign sets Campaign field to given value.
 
 
+### SetCampaignNil
+
+`func (o *CampaignRulesetChangedNotificationItem) SetCampaignNil(b bool)`
+
+ SetCampaignNil sets the value for Campaign to be an explicit nil
+
+### UnsetCampaign
+`func (o *CampaignRulesetChangedNotificationItem) UnsetCampaign()`
+
+UnsetCampaign ensures that no value is present for Campaign, not even an explicit nil
 ### GetOldRuleset
 
 `func (o *CampaignRulesetChangedNotificationItem) GetOldRuleset() Ruleset`

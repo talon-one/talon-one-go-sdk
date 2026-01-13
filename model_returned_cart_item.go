@@ -11,9 +11,7 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
-	"fmt"
 )
 
 // checks if the ReturnedCartItem type satisfies the MappedNullable interface at compile time
@@ -22,20 +20,19 @@ var _ MappedNullable = &ReturnedCartItem{}
 // ReturnedCartItem struct for ReturnedCartItem
 type ReturnedCartItem struct {
 	// The index of the cart item in the provided customer session's `cartItems` property.
-	Position int64 `json:"position"`
+	Position *int64 `json:"position,omitempty"`
 	// Number of cart items to return.
 	Quantity *int64 `json:"quantity,omitempty"`
+	// The SKU of the cart item in the provided customer session's `cartItems` property.
+	Sku *string `json:"sku,omitempty"`
 }
-
-type _ReturnedCartItem ReturnedCartItem
 
 // NewReturnedCartItem instantiates a new ReturnedCartItem object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildReturnedCartItem(position int64) *ReturnedCartItem {
+func BuildReturnedCartItem() *ReturnedCartItem {
 	this := ReturnedCartItem{}
-	this.Position = position
 	return &this
 }
 
@@ -47,28 +44,36 @@ func NewReturnedCartItemWithDefaults() *ReturnedCartItem {
 	return &this
 }
 
-// GetPosition returns the Position field value
+// GetPosition returns the Position field value if set, zero value otherwise.
 func (o *ReturnedCartItem) GetPosition() int64 {
-	if o == nil {
+	if o == nil || IsNil(o.Position) {
 		var ret int64
 		return ret
 	}
-
-	return o.Position
+	return *o.Position
 }
 
-// GetPositionOk returns a tuple with the Position field value
+// GetPositionOk returns a tuple with the Position field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ReturnedCartItem) GetPositionOk() (*int64, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Position) {
 		return nil, false
 	}
-	return &o.Position, true
+	return o.Position, true
 }
 
-// SetPosition sets field value
+// HasPosition returns a boolean if a field has been set.
+func (o *ReturnedCartItem) HasPosition() bool {
+	if o != nil && !IsNil(o.Position) {
+		return true
+	}
+
+	return false
+}
+
+// SetPosition gets a reference to the given int64 and assigns it to the Position field.
 func (o *ReturnedCartItem) SetPosition(v int64) {
-	o.Position = v
+	o.Position = &v
 }
 
 // GetQuantity returns the Quantity field value if set, zero value otherwise.
@@ -103,6 +108,38 @@ func (o *ReturnedCartItem) SetQuantity(v int64) {
 	o.Quantity = &v
 }
 
+// GetSku returns the Sku field value if set, zero value otherwise.
+func (o *ReturnedCartItem) GetSku() string {
+	if o == nil || IsNil(o.Sku) {
+		var ret string
+		return ret
+	}
+	return *o.Sku
+}
+
+// GetSkuOk returns a tuple with the Sku field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ReturnedCartItem) GetSkuOk() (*string, bool) {
+	if o == nil || IsNil(o.Sku) {
+		return nil, false
+	}
+	return o.Sku, true
+}
+
+// HasSku returns a boolean if a field has been set.
+func (o *ReturnedCartItem) HasSku() bool {
+	if o != nil && !IsNil(o.Sku) {
+		return true
+	}
+
+	return false
+}
+
+// SetSku gets a reference to the given string and assigns it to the Sku field.
+func (o *ReturnedCartItem) SetSku(v string) {
+	o.Sku = &v
+}
+
 func (o ReturnedCartItem) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -113,48 +150,16 @@ func (o ReturnedCartItem) MarshalJSON() ([]byte, error) {
 
 func (o ReturnedCartItem) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["position"] = o.Position
+	if !IsNil(o.Position) {
+		toSerialize["position"] = o.Position
+	}
 	if !IsNil(o.Quantity) {
 		toSerialize["quantity"] = o.Quantity
 	}
+	if !IsNil(o.Sku) {
+		toSerialize["sku"] = o.Sku
+	}
 	return toSerialize, nil
-}
-
-func (o *ReturnedCartItem) UnmarshalJSON(data []byte) (err error) {
-	// This validates that all required properties are included in the JSON object
-	// by unmarshalling the object into a generic map with string keys and checking
-	// that every required field exists as a key in the generic map.
-	requiredProperties := []string{
-		"position",
-	}
-
-	allProperties := make(map[string]interface{})
-
-	err = json.Unmarshal(data, &allProperties)
-
-	if err != nil {
-		return err
-	}
-
-	for _, requiredProperty := range requiredProperties {
-		if _, exists := allProperties[requiredProperty]; !exists {
-			return fmt.Errorf("no value given for required property %v", requiredProperty)
-		}
-	}
-
-	varReturnedCartItem := _ReturnedCartItem{}
-
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varReturnedCartItem)
-
-	if err != nil {
-		return err
-	}
-
-	*o = ReturnedCartItem(varReturnedCartItem)
-
-	return err
 }
 
 type NullableReturnedCartItem struct {

@@ -38,6 +38,8 @@ type RoleV2 struct {
 	Permissions *RoleV2Permissions `json:"permissions,omitempty"`
 	// A list of user IDs the role is assigned to.
 	Members []int64 `json:"members,omitempty"`
+	// Identifies if the role is read-only. For read-only roles, you can only assign or unassign users. You cannot edit any other properties, such as the name, description, or permissions. The 'isReadonly' property cannot be set for new or existing roles. It is reserved for predefined roles, such as the Talon.One support role.
+	IsReadonly *bool `json:"isReadonly,omitempty"`
 }
 
 type _RoleV2 RoleV2
@@ -52,6 +54,8 @@ func BuildRoleV2(id int64, created time.Time, modified time.Time, accountId int6
 	this.Created = created
 	this.Modified = modified
 	this.AccountId = accountId
+	var isReadonly bool = false
+	this.IsReadonly = &isReadonly
 	return &this
 }
 
@@ -60,6 +64,8 @@ func BuildRoleV2(id int64, created time.Time, modified time.Time, accountId int6
 // but it doesn't guarantee that properties required by API are set
 func NewRoleV2WithDefaults() *RoleV2 {
 	this := RoleV2{}
+	var isReadonly bool = false
+	this.IsReadonly = &isReadonly
 	return &this
 }
 
@@ -287,6 +293,38 @@ func (o *RoleV2) SetMembers(v []int64) {
 	o.Members = v
 }
 
+// GetIsReadonly returns the IsReadonly field value if set, zero value otherwise.
+func (o *RoleV2) GetIsReadonly() bool {
+	if o == nil || IsNil(o.IsReadonly) {
+		var ret bool
+		return ret
+	}
+	return *o.IsReadonly
+}
+
+// GetIsReadonlyOk returns a tuple with the IsReadonly field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *RoleV2) GetIsReadonlyOk() (*bool, bool) {
+	if o == nil || IsNil(o.IsReadonly) {
+		return nil, false
+	}
+	return o.IsReadonly, true
+}
+
+// HasIsReadonly returns a boolean if a field has been set.
+func (o *RoleV2) HasIsReadonly() bool {
+	if o != nil && !IsNil(o.IsReadonly) {
+		return true
+	}
+
+	return false
+}
+
+// SetIsReadonly gets a reference to the given bool and assigns it to the IsReadonly field.
+func (o *RoleV2) SetIsReadonly(v bool) {
+	o.IsReadonly = &v
+}
+
 func (o RoleV2) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -312,6 +350,9 @@ func (o RoleV2) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Members) {
 		toSerialize["members"] = o.Members
+	}
+	if !IsNil(o.IsReadonly) {
+		toSerialize["isReadonly"] = o.IsReadonly
 	}
 	return toSerialize, nil
 }

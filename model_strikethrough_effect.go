@@ -31,7 +31,8 @@ type StrikethroughEffect struct {
 	// The name of the rule that triggered this effect.
 	RuleName string `json:"ruleName"`
 	// The type of this effect.
-	Type  string                 `json:"type"`
+	Type string `json:"type"`
+	// Arbitrary properties associated with this effect type.
 	Props map[string]interface{} `json:"props"`
 	// The start of the time frame where the effect is active in UTC.
 	StartTime *time.Time `json:"startTime,omitempty"`

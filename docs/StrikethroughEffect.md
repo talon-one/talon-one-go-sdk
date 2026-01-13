@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **RuleIndex** | **int64** | The position of the rule that triggered this effect within the ruleset. | 
 **RuleName** | **string** | The name of the rule that triggered this effect. | 
 **Type** | **string** | The type of this effect. | 
-**Props** | **map[string]interface{}** |  | 
+**Props** | **map[string]interface{}** | Arbitrary properties associated with this effect type. | 
 **StartTime** | Pointer to **time.Time** | The start of the time frame where the effect is active in UTC. | [optional] 
 **EndTime** | Pointer to **time.Time** | The end of the time frame where the effect is active in UTC. | [optional] 
 **SelectedPriceType** | Pointer to **string** | The selected price type for this cart item (e.g. the price for members only). | [optional] 

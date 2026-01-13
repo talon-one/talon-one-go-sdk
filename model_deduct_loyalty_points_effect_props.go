@@ -33,7 +33,7 @@ type DeductLoyaltyPointsEffectProps struct {
 	TransactionUUID string `json:"transactionUUID"`
 	// The name property gets one of the following two values. It can be the loyalty program name or it can represent a reason for the respective deduction of loyalty points. The latter is an optional value defined in a deduction rule.
 	Name string `json:"name"`
-	// The alphanumeric identifier of the loyalty card.
+	// The card on which these points were added.
 	CardIdentifier *string `json:"cardIdentifier,omitempty" validate:"regexp=^[A-Za-z0-9_-]*$"`
 }
 

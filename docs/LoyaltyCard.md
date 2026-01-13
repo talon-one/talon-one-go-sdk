@@ -17,8 +17,8 @@ Name | Type | Description | Notes
 **Ledger** | Pointer to [**LedgerInfo**](LedgerInfo.md) | Displays point balances of the card in the main ledger of the loyalty program. | [optional] 
 **Subledgers** | Pointer to [**map[string]LedgerInfo**](LedgerInfo.md) | Displays point balances of the card in the subledgers of the loyalty program. | [optional] 
 **Modified** | Pointer to **time.Time** | Timestamp of the most recent update of the loyalty card. | [optional] 
-**OldCardIdentifier** | Pointer to **string** | The alphanumeric identifier of the loyalty card.  | [optional] 
-**NewCardIdentifier** | Pointer to **string** | The alphanumeric identifier of the loyalty card.  | [optional] 
+**OldCardIdentifier** | Pointer to **string** | The identifier of the card from which the points were transferred. | [optional] 
+**NewCardIdentifier** | Pointer to **string** | The identifier of the card to which the points were transferred. | [optional] 
 **BatchId** | Pointer to **string** | The ID of the batch in which the loyalty card was created. | [optional] 
 
 ## Methods
