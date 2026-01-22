@@ -18,6 +18,7 @@ Name | Type | Description | Notes
 **Id** | **int64** | ID of the loyalty ledger transaction. | 
 **RulesetId** | Pointer to **int64** | The ID of the ruleset containing the rule that triggered this effect. | [optional] 
 **RuleName** | Pointer to **string** | The name of the rule that triggered this effect. | [optional] 
+**ValidityDuration** | Pointer to **string** | The duration for which the points remain active, relative to the  activation date.  **Note**: This only applies to points for which &#x60;awaitsActivation&#x60; is &#x60;true&#x60; and &#x60;expiryDate&#x60; is not set.  | [optional] 
 
 ## Methods
 
@@ -332,6 +333,31 @@ SetRuleName sets RuleName field to given value.
 `func (o *CardLedgerTransactionLogEntryIntegrationAPI) HasRuleName() bool`
 
 HasRuleName returns a boolean if a field has been set.
+
+### GetValidityDuration
+
+`func (o *CardLedgerTransactionLogEntryIntegrationAPI) GetValidityDuration() string`
+
+GetValidityDuration returns the ValidityDuration field if non-nil, zero value otherwise.
+
+### GetValidityDurationOk
+
+`func (o *CardLedgerTransactionLogEntryIntegrationAPI) GetValidityDurationOk() (*string, bool)`
+
+GetValidityDurationOk returns a tuple with the ValidityDuration field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetValidityDuration
+
+`func (o *CardLedgerTransactionLogEntryIntegrationAPI) SetValidityDuration(v string)`
+
+SetValidityDuration sets ValidityDuration field to given value.
+
+### HasValidityDuration
+
+`func (o *CardLedgerTransactionLogEntryIntegrationAPI) HasValidityDuration() bool`
+
+HasValidityDuration returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

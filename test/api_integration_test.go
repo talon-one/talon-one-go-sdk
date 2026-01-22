@@ -22,6 +22,20 @@ func Test_talon_IntegrationAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
+	t.Run("Test IntegrationAPIService ActivateLoyaltyPoints", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var loyaltyProgramId int64
+
+		resp, httpRes, err := apiClient.IntegrationAPI.ActivateLoyaltyPoints(context.Background(), loyaltyProgramId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test IntegrationAPIService BestPriorPrice", func(t *testing.T) {
 
 		t.Skip("skip test")  // remove to run test
@@ -130,6 +144,20 @@ func Test_talon_IntegrationAPIService(t *testing.T) {
 		var integrationId string
 
 		httpRes, err := apiClient.IntegrationAPI.DeleteCustomerData(context.Background(), integrationId).Execute()
+
+		require.Nil(t, err)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test IntegrationAPIService DeleteLoyaltyTransactionsFromLedgers", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var loyaltyProgramId int64
+		var integrationId string
+
+		httpRes, err := apiClient.IntegrationAPI.DeleteLoyaltyTransactionsFromLedgers(context.Background(), loyaltyProgramId, integrationId).Execute()
 
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)
@@ -373,6 +401,21 @@ func Test_talon_IntegrationAPIService(t *testing.T) {
 		t.Skip("skip test")  // remove to run test
 
 		resp, httpRes, err := apiClient.IntegrationAPI.TrackEventV2(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test IntegrationAPIService UnlinkLoyaltyCardFromProfile", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var loyaltyProgramId int64
+		var loyaltyCardId string
+
+		resp, httpRes, err := apiClient.IntegrationAPI.UnlinkLoyaltyCardFromProfile(context.Background(), loyaltyProgramId, loyaltyCardId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

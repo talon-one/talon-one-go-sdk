@@ -4,6 +4,7 @@ All URIs are relative to *https://yourbaseurl.talon.one*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**ActivateLoyaltyPoints**](IntegrationAPI.md#ActivateLoyaltyPoints) | **Post** /v1/loyalty_programs/{loyaltyProgramId}/activate_points | Activate loyalty points
 [**BestPriorPrice**](IntegrationAPI.md#BestPriorPrice) | **Post** /v1/best_prior_price | Fetch best prior price
 [**CreateAudienceV2**](IntegrationAPI.md#CreateAudienceV2) | **Post** /v2/audiences | Create audience
 [**CreateCouponReservation**](IntegrationAPI.md#CreateCouponReservation) | **Post** /v1/coupon_reservations/{couponValue} | Create coupon reservation
@@ -13,6 +14,7 @@ Method | HTTP request | Description
 [**DeleteAudienceV2**](IntegrationAPI.md#DeleteAudienceV2) | **Delete** /v2/audiences/{audienceId} | Delete audience
 [**DeleteCouponReservation**](IntegrationAPI.md#DeleteCouponReservation) | **Delete** /v1/coupon_reservations/{couponValue} | Delete coupon reservations
 [**DeleteCustomerData**](IntegrationAPI.md#DeleteCustomerData) | **Delete** /v1/customer_data/{integrationId} | Delete customer&#39;s personal data
+[**DeleteLoyaltyTransactionsFromLedgers**](IntegrationAPI.md#DeleteLoyaltyTransactionsFromLedgers) | **Post** /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/delete_transactions | Delete customer&#39;s transactions from loyalty ledgers
 [**GenerateLoyaltyCard**](IntegrationAPI.md#GenerateLoyaltyCard) | **Post** /v1/loyalty_programs/{loyaltyProgramId}/cards | Generate loyalty card
 [**GetCustomerAchievementHistory**](IntegrationAPI.md#GetCustomerAchievementHistory) | **Get** /v1/customer_profiles/{integrationId}/achievements/{achievementId} | List customer&#39;s achievement history
 [**GetCustomerAchievements**](IntegrationAPI.md#GetCustomerAchievements) | **Get** /v1/customer_profiles/{integrationId}/achievements | List customer&#39;s available achievements
@@ -30,6 +32,7 @@ Method | HTTP request | Description
 [**ReturnCartItems**](IntegrationAPI.md#ReturnCartItems) | **Post** /v2/customer_sessions/{customerSessionId}/returns | Return cart items
 [**SyncCatalog**](IntegrationAPI.md#SyncCatalog) | **Put** /v1/catalogs/{catalogId}/sync | Sync cart item catalog
 [**TrackEventV2**](IntegrationAPI.md#TrackEventV2) | **Post** /v2/events | Track event
+[**UnlinkLoyaltyCardFromProfile**](IntegrationAPI.md#UnlinkLoyaltyCardFromProfile) | **Post** /v2/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/unlink_profile | Unlink customer profile from a loyalty card
 [**UpdateAudienceCustomersAttributes**](IntegrationAPI.md#UpdateAudienceCustomersAttributes) | **Put** /v2/audience_customers/{audienceId}/attributes | Update profile attributes for all customers in audience
 [**UpdateAudienceV2**](IntegrationAPI.md#UpdateAudienceV2) | **Put** /v2/audiences/{audienceId} | Update audience name
 [**UpdateCustomerProfileAudiences**](IntegrationAPI.md#UpdateCustomerProfileAudiences) | **Post** /v2/customer_audiences | Update multiple customer profiles&#39; audiences
@@ -37,6 +40,78 @@ Method | HTTP request | Description
 [**UpdateCustomerProfilesV2**](IntegrationAPI.md#UpdateCustomerProfilesV2) | **Put** /v2/customer_profiles | Update multiple customer profiles
 [**UpdateCustomerSessionV2**](IntegrationAPI.md#UpdateCustomerSessionV2) | **Put** /v2/customer_sessions/{customerSessionId} | Update customer session
 
+
+
+## ActivateLoyaltyPoints
+
+> ActivateLoyaltyPointsResponse ActivateLoyaltyPoints(ctx, loyaltyProgramId).ActivateLoyaltyPoints(activateLoyaltyPoints).Execute()
+
+Activate loyalty points
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	loyaltyProgramId := int64(789) // int64 | The identifier for the loyalty program. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint. 
+	activateLoyaltyPoints := *openapiclient.NewActivateLoyaltyPoints() // ActivateLoyaltyPoints | body
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.IntegrationAPI.ActivateLoyaltyPoints(context.Background(), loyaltyProgramId).ActivateLoyaltyPoints(activateLoyaltyPoints).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `IntegrationAPI.ActivateLoyaltyPoints``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ActivateLoyaltyPoints`: ActivateLoyaltyPointsResponse
+	fmt.Fprintf(os.Stdout, "Response from `IntegrationAPI.ActivateLoyaltyPoints`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**loyaltyProgramId** | **int64** | The identifier for the loyalty program. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiActivateLoyaltyPointsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **activateLoyaltyPoints** | [**ActivateLoyaltyPoints**](ActivateLoyaltyPoints.md) | body | 
+
+### Return type
+
+[**ActivateLoyaltyPointsResponse**](ActivateLoyaltyPointsResponse.md)
+
+### Authorization
+
+[api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
 
 ## BestPriorPrice
@@ -645,6 +720,79 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## DeleteLoyaltyTransactionsFromLedgers
+
+> DeleteLoyaltyTransactionsFromLedgers(ctx, loyaltyProgramId, integrationId).DeleteLoyaltyTransactionsRequest(deleteLoyaltyTransactionsRequest).Execute()
+
+Delete customer's transactions from loyalty ledgers
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	loyaltyProgramId := int64(789) // int64 | Identifier of the profile-based loyalty program. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint. 
+	integrationId := "integrationId_example" // string | The integration ID of the customer profile. You can get the `integrationId` of a profile using: - A customer session integration ID with the [Update customer session](https://docs.talon.one/integration-api#operation/updateCustomerSessionV2) endpoint. - The Management API with the [List application's customers](https://docs.talon.one/management-api#operation/getApplicationCustomers) endpoint. 
+	deleteLoyaltyTransactionsRequest := *openapiclient.NewDeleteLoyaltyTransactionsRequest("SelectedSubledgers") // DeleteLoyaltyTransactionsRequest | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	r, err := apiClient.IntegrationAPI.DeleteLoyaltyTransactionsFromLedgers(context.Background(), loyaltyProgramId, integrationId).DeleteLoyaltyTransactionsRequest(deleteLoyaltyTransactionsRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `IntegrationAPI.DeleteLoyaltyTransactionsFromLedgers``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**loyaltyProgramId** | **int64** | Identifier of the profile-based loyalty program. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.  | 
+**integrationId** | **string** | The integration ID of the customer profile. You can get the &#x60;integrationId&#x60; of a profile using: - A customer session integration ID with the [Update customer session](https://docs.talon.one/integration-api#operation/updateCustomerSessionV2) endpoint. - The Management API with the [List application&#39;s customers](https://docs.talon.one/management-api#operation/getApplicationCustomers) endpoint.  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiDeleteLoyaltyTransactionsFromLedgersRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+ **deleteLoyaltyTransactionsRequest** | [**DeleteLoyaltyTransactionsRequest**](DeleteLoyaltyTransactionsRequest.md) |  | 
+
+### Return type
+
+ (empty response body)
+
+### Authorization
+
+[api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
@@ -1291,7 +1439,7 @@ Name | Type | Description  | Notes
 
 ## GetLoyaltyCardTransactions
 
-> GetLoyaltyCardTransactions200Response GetLoyaltyCardTransactions(ctx, loyaltyProgramId, loyaltyCardId).SubledgerId(subledgerId).LoyaltyTransactionType(loyaltyTransactionType).StartDate(startDate).EndDate(endDate).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).PageSize(pageSize).Skip(skip).Execute()
+> GetLoyaltyCardTransactions200Response GetLoyaltyCardTransactions(ctx, loyaltyProgramId, loyaltyCardId).SubledgerId(subledgerId).LoyaltyTransactionType(loyaltyTransactionType).StartDate(startDate).EndDate(endDate).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).PageSize(pageSize).Skip(skip).AwaitsActivation(awaitsActivation).Execute()
 
 List card's transactions
 
@@ -1321,10 +1469,11 @@ func main() {
 	transactionUUIDs := []string{"Inner_example"} // []string | Filter the results by a list of transaction UUIDs.  To include multiple IDs, repeat the parameter for each one, for example,  `?transactionUUIDs=uuid1&transactionUUIDs=uuid2`.  The response contains only data associated with the specified transactions.  (optional)
 	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 50)
 	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
+	awaitsActivation := true // bool | If `true`: Filters results to include only point transactions that have action-based activation and have not expired.  If `false`: Returns a `400` response.  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.IntegrationAPI.GetLoyaltyCardTransactions(context.Background(), loyaltyProgramId, loyaltyCardId).SubledgerId(subledgerId).LoyaltyTransactionType(loyaltyTransactionType).StartDate(startDate).EndDate(endDate).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).PageSize(pageSize).Skip(skip).Execute()
+	resp, r, err := apiClient.IntegrationAPI.GetLoyaltyCardTransactions(context.Background(), loyaltyProgramId, loyaltyCardId).SubledgerId(subledgerId).LoyaltyTransactionType(loyaltyTransactionType).StartDate(startDate).EndDate(endDate).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).PageSize(pageSize).Skip(skip).AwaitsActivation(awaitsActivation).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `IntegrationAPI.GetLoyaltyCardTransactions``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -1360,6 +1509,7 @@ Name | Type | Description  | Notes
  **transactionUUIDs** | **[]string** | Filter the results by a list of transaction UUIDs.  To include multiple IDs, repeat the parameter for each one, for example,  &#x60;?transactionUUIDs&#x3D;uuid1&amp;transactionUUIDs&#x3D;uuid2&#x60;.  The response contains only data associated with the specified transactions.  | 
  **pageSize** | **int64** | The number of items in the response. | [default to 50]
  **skip** | **int64** | The number of items to skip when paging through large result sets. | 
+ **awaitsActivation** | **bool** | If &#x60;true&#x60;: Filters results to include only point transactions that have action-based activation and have not expired.  If &#x60;false&#x60;: Returns a &#x60;400&#x60; response.  | 
 
 ### Return type
 
@@ -1468,7 +1618,7 @@ Name | Type | Description  | Notes
 
 ## GetLoyaltyProgramProfileTransactions
 
-> GetLoyaltyProgramProfileTransactions200Response GetLoyaltyProgramProfileTransactions(ctx, loyaltyProgramId, integrationId).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).SubledgerId(subledgerId).LoyaltyTransactionType(loyaltyTransactionType).StartDate(startDate).EndDate(endDate).PageSize(pageSize).Skip(skip).Execute()
+> GetLoyaltyProgramProfileTransactions200Response GetLoyaltyProgramProfileTransactions(ctx, loyaltyProgramId, integrationId).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).SubledgerId(subledgerId).LoyaltyTransactionType(loyaltyTransactionType).StartDate(startDate).EndDate(endDate).PageSize(pageSize).Skip(skip).AwaitsActivation(awaitsActivation).Execute()
 
 List customer's loyalty transactions
 
@@ -1498,10 +1648,11 @@ func main() {
 	endDate := time.Now() // time.Time | Date and time by which results are returned. Results are filtered by transaction creation date.  **Note:**  - It must be an RFC3339 timestamp string. - You can include a time component in your string, for example, `T23:59:59` to specify the end of the day. The time zone setting considered is `UTC`. If you do not include a time component, a default time value of `T00:00:00` (midnight) in `UTC` is considered.  (optional)
 	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 50)
 	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
+	awaitsActivation := true // bool | If `true`: Filters results to include only point transactions that have action-based activation and have not expired.  If `false`: Returns a `400` response.  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.IntegrationAPI.GetLoyaltyProgramProfileTransactions(context.Background(), loyaltyProgramId, integrationId).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).SubledgerId(subledgerId).LoyaltyTransactionType(loyaltyTransactionType).StartDate(startDate).EndDate(endDate).PageSize(pageSize).Skip(skip).Execute()
+	resp, r, err := apiClient.IntegrationAPI.GetLoyaltyProgramProfileTransactions(context.Background(), loyaltyProgramId, integrationId).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).SubledgerId(subledgerId).LoyaltyTransactionType(loyaltyTransactionType).StartDate(startDate).EndDate(endDate).PageSize(pageSize).Skip(skip).AwaitsActivation(awaitsActivation).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `IntegrationAPI.GetLoyaltyProgramProfileTransactions``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -1537,6 +1688,7 @@ Name | Type | Description  | Notes
  **endDate** | **time.Time** | Date and time by which results are returned. Results are filtered by transaction creation date.  **Note:**  - It must be an RFC3339 timestamp string. - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.  | 
  **pageSize** | **int64** | The number of items in the response. | [default to 50]
  **skip** | **int64** | The number of items to skip when paging through large result sets. | 
+ **awaitsActivation** | **bool** | If &#x60;true&#x60;: Filters results to include only point transactions that have action-based activation and have not expired.  If &#x60;false&#x60;: Returns a &#x60;400&#x60; response.  | 
 
 ### Return type
 
@@ -1974,6 +2126,81 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**TrackEventV2Response**](TrackEventV2Response.md)
+
+### Authorization
+
+[api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## UnlinkLoyaltyCardFromProfile
+
+> LoyaltyCard UnlinkLoyaltyCardFromProfile(ctx, loyaltyProgramId, loyaltyCardId).LoyaltyCardRegistration(loyaltyCardRegistration).Execute()
+
+Unlink customer profile from a loyalty card
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	loyaltyProgramId := int64(789) // int64 | The identifier of the card-based loyalty program containing the loyalty card. You can get this ID using the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint. 
+	loyaltyCardId := "loyaltyCardId_example" // string | The identifier of the loyalty card. You can get this ID using the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint. 
+	loyaltyCardRegistration := *openapiclient.NewLoyaltyCardRegistration("R195412") // LoyaltyCardRegistration | body
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.IntegrationAPI.UnlinkLoyaltyCardFromProfile(context.Background(), loyaltyProgramId, loyaltyCardId).LoyaltyCardRegistration(loyaltyCardRegistration).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `IntegrationAPI.UnlinkLoyaltyCardFromProfile``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `UnlinkLoyaltyCardFromProfile`: LoyaltyCard
+	fmt.Fprintf(os.Stdout, "Response from `IntegrationAPI.UnlinkLoyaltyCardFromProfile`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**loyaltyProgramId** | **int64** | The identifier of the card-based loyalty program containing the loyalty card. You can get this ID using the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.  | 
+**loyaltyCardId** | **string** | The identifier of the loyalty card. You can get this ID using the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiUnlinkLoyaltyCardFromProfileRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+ **loyaltyCardRegistration** | [**LoyaltyCardRegistration**](LoyaltyCardRegistration.md) | body | 
+
+### Return type
+
+[**LoyaltyCard**](LoyaltyCard.md)
 
 ### Authorization
 

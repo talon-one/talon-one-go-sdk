@@ -409,10 +409,10 @@ paths:
         \      <li>Update attribute value</li>\n      <li>Update cart item attribute\
         \ value</li>\n    </ul>\n  </div>\n\n\n</details>\n<p>To see an example of\
         \ a rollback, see the <a href=\"https://docs.talon.one/docs/dev/tutorials/rolling-back-effects\"\
-        >Cancelling a session with campaign budgets</a>tutorial.</p>\n\n**Note:**\
+        >Cancelling a session with campaign budgets</a> tutorial.</p>\n\n**Note:**\
         \ If your order workflow requires you to create a new session instead of reopening\
-        \ a session, use the\n[Update customer session](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2)\
-        \ endpoint to cancel\na closed session and create a new one.\n"
+        \ a session, use the [Update customer session](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2)\
+        \ endpoint to cancel a closed session and create a new one.\n"
       operationId: reopenCustomerSession
       parameters:
       - description: |
@@ -945,6 +945,74 @@ paths:
       security:
       - api_key_v1: []
       summary: Link customer profile to card
+      tags:
+      - integration
+  /v2/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/unlink_profile:
+    post:
+      description: |
+        Unlink a customer profile from a [registered](https://docs.talon.one/docs/product/loyalty-programs/card-based/managing-loyalty-cards#linking-customer-profiles-to-a-loyalty-card) loyalty card.
+
+        To get the `integrationId` of a customer profile, you can use the
+        [Update customer session](https://docs.talon.one/integration-api#operation/updateCustomerSessionV2)
+        endpoint.
+      operationId: unlinkLoyaltyCardFromProfile
+      parameters:
+      - description: |
+          The identifier of the card-based loyalty program containing the loyalty card. You can get this ID using the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
+        explode: false
+        in: path
+        name: loyaltyProgramId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      - description: |
+          The identifier of the loyalty card. You can get this ID using the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.
+        explode: false
+        in: path
+        name: loyaltyCardId
+        required: true
+        schema:
+          maxLength: 108
+          minLength: 4
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoyaltyCardRegistration"
+        description: body
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoyaltyCard"
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Not found
+      security:
+      - api_key_v1: []
+      summary: Unlink customer profile from a loyalty card
       tags:
       - integration
   /v2/events:
@@ -1850,6 +1918,123 @@ paths:
       summary: Get customer's loyalty balances
       tags:
       - integration
+  /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/ledger_balances:
+    get:
+      description: |
+        Retrieve loyalty ledger balances for the given Integration ID in the specified loyalty program.
+        You can filter balances by date and subledger ID, and include tier-related information in the response.
+
+        **Note**: If no filtering options are applied, you retrieve all loyalty balances on the current date for the given integration ID.
+
+        Loyalty balances are calculated when Talon.One receives your request using the points stored in our database, so retrieving a large number of balances at once can impact performance.
+
+        For more information, see:
+        - [Managing card-based loyalty program data](https://docs.talon.one/docs/product/loyalty-programs/card-based/managing-loyalty-cards)
+        - [Managing profile-based loyalty program data](https://docs.talon.one/docs/product/loyalty-programs/profile-based/managing-pb-lp-data)
+      operationId: getLoyaltyLedgerBalances
+      parameters:
+      - description: |
+          Identifier of the profile-based loyalty program. You can get the ID with
+          the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
+        explode: false
+        in: path
+        name: loyaltyProgramId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      - description: |
+          The integration identifier for this customer profile. Must be:
+          - Unique within the deployment.
+          - Stable for the customer. Do not use an ID that the customer can update themselves. For example, you can use a database ID.
+
+          Once set, you cannot update this identifier.
+        explode: false
+        in: path
+        name: integrationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: |
+          Used to return expired, active, and pending loyalty balances before this timestamp. You can enter any past, present, or future timestamp value.
+
+          **Note:**
+
+          - It must be an RFC3339 timestamp string.
+          - You can include a time component in your string, for example, `T23:59:59` to specify the end of the day. The time zone setting considered is `UTC`. If you do not include a time component, a default time value of `T00:00:00` (midnight) in `UTC` is considered.
+        explode: true
+        in: query
+        name: endDate
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: The ID of the subledger used to filter the data. Leave this value
+          empty ("") to query the main ledger.
+        explode: true
+        in: query
+        name: subledgerId
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: |
+          Indicates whether tier information is included in the response.
+
+          When set to `true`, the response includes information about the current tier and the number of points required to move to next tier.
+        explode: true
+        in: query
+        name: includeTiers
+        required: false
+        schema:
+          default: false
+          type: boolean
+        style: form
+      - description: |
+          Indicates whether the customer's projected tier information is included in the response.
+
+          When set to `true`, the response includes information about the customer's active points and the name of the projected tier.
+
+          **Note** We recommend filtering by `subledgerId` for better performance.
+        explode: true
+        in: query
+        name: includeProjectedTier
+        required: false
+        schema:
+          default: false
+          type: boolean
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoyaltyBalancesWithTiers"
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Not found
+      summary: Get customer's loyalty balances
+      tags:
+      - management
   /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/transactions:
     get:
       description: |
@@ -1974,6 +2159,17 @@ paths:
           type: integer
         style: form
       - $ref: "#/components/parameters/skip"
+      - description: |
+          If `true`: Filters results to include only point transactions that have action-based activation and have not expired.
+
+          If `false`: Returns a `400` response.
+        explode: true
+        in: query
+        name: awaitsActivation
+        required: false
+        schema:
+          type: boolean
+        style: form
       responses:
         "200":
           content:
@@ -2131,6 +2327,17 @@ paths:
           type: integer
         style: form
       - $ref: "#/components/parameters/skip"
+      - description: |
+          If `true`: Filters results to include only point transactions that have action-based activation and have not expired.
+
+          If `false`: Returns a `400` response.
+        explode: true
+        in: query
+        name: awaitsActivation
+        required: false
+        schema:
+          type: boolean
+        style: form
       responses:
         "200":
           content:
@@ -2159,6 +2366,237 @@ paths:
       security:
       - api_key_v1: []
       summary: List customer's loyalty transactions
+      tags:
+      - integration
+  /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/ledger_transactions:
+    get:
+      description: |
+        Retrieve paginated results of loyalty transaction logs for the given Integration ID in the specified loyalty program.
+
+        You can filter transactions by date or by ledger (subledger or main ledger). If no filters are applied, the last 50 loyalty transactions for the given integration ID are returned.
+
+        **Note:** To retrieve all loyalty program transaction logs in a given loyalty program,
+        use the [List loyalty program transactions](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyProgramTransactions) endpoint.
+      operationId: getLoyaltyProgramProfileLedgerTransactions
+      parameters:
+      - description: |
+          Identifier of the profile-based loyalty program. You can get the ID with
+          the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
+        explode: false
+        in: path
+        name: loyaltyProgramId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      - description: |
+          The integration identifier for this customer profile. Must be:
+          - Unique within the deployment.
+          - Stable for the customer. Do not use an ID that the customer can update themselves. For example, you can use a database ID.
+
+          Once set, you cannot update this identifier.
+        explode: false
+        in: path
+        name: integrationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: "Filter the results by a list of customer session IDs. \n\nTo\
+          \ include multiple IDs, repeat the parameter for each one, for example,\
+          \ \n`?customerSessionIDs=id1&customerSessionIDs=id2`.\n\nThe response contains\
+          \ only data associated with the specified sessions.\n"
+        explode: true
+        in: query
+        name: customerSessionIDs
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: "Filter the results by a list of transaction UUIDs.\n\nTo include\
+          \ multiple IDs, repeat the parameter for each one, for example, \n`?transactionUUIDs=uuid1&transactionUUIDs=uuid2`.\n\
+          \nThe response contains only data associated with the specified transactions.\n"
+        explode: true
+        in: query
+        name: transactionUUIDs
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: The ID of the subledger used to filter the data. Leave this value
+          empty ("") to query the main ledger.
+        explode: true
+        in: query
+        name: subledgerId
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: |
+          Filter results by loyalty transaction type:
+          - `manual`: Loyalty transaction that was done manually.
+          - `session`: Loyalty transaction that resulted from a customer session.
+          - `import`: Loyalty transaction that was imported from a CSV file.
+        explode: true
+        in: query
+        name: loyaltyTransactionType
+        required: false
+        schema:
+          enum:
+          - manual
+          - session
+          - import
+          type: string
+        style: form
+      - description: |
+          Date and time from which results are returned. Results are filtered by transaction creation date.
+
+          **Note:**
+
+          - It must be an RFC3339 timestamp string.
+          - You can include a time component in your string, for example, `T23:59:59` to specify the end of the day. The time zone setting considered is `UTC`. If you do not include a time component, a default time value of `T00:00:00` (midnight) in `UTC` is considered.
+        explode: true
+        in: query
+        name: startDate
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: |
+          Date and time by which results are returned. Results are filtered by transaction creation date.
+
+          **Note:**
+
+          - It must be an RFC3339 timestamp string.
+          - You can include a time component in your string, for example, `T23:59:59` to specify the end of the day. The time zone setting considered is `UTC`. If you do not include a time component, a default time value of `T00:00:00` (midnight) in `UTC` is considered.
+        explode: true
+        in: query
+        name: endDate
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: The number of items in the response.
+        explode: true
+        in: query
+        name: pageSize
+        required: false
+        schema:
+          default: 50
+          format: int64
+          maximum: 1000
+          minimum: 1
+          type: integer
+        style: form
+      - $ref: "#/components/parameters/skip"
+      - description: |
+          If `true`: Filters results to include only point transactions that have action-based activation and have not expired.
+
+          If `false`: Returns a `400` response.
+        explode: true
+        in: query
+        name: awaitsActivation
+        required: false
+        schema:
+          type: boolean
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/getLoyaltyProgramProfileTransactions_200_response"
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Not found
+      summary: List customer's loyalty transactions
+      tags:
+      - management
+  /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/delete_transactions:
+    post:
+      description: |
+        Delete a customer's transactions in all loyalty ledgers or a specified ledger.
+
+        **Note:** To retrieve loyalty transaction logs for a specific customer in a given
+        loyalty program, use the [List customer's loyalty transactions](https://docs.talon.one/integration-api#tag/Loyalty/operation/getLoyaltyProgramProfileTransactions)
+        endpoint.
+      operationId: deleteLoyaltyTransactionsFromLedgers
+      parameters:
+      - description: |
+          Identifier of the profile-based loyalty program. You can get the ID with
+          the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
+        explode: false
+        in: path
+        name: loyaltyProgramId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      - description: |
+          The integration ID of the customer profile. You can get the `integrationId` of a profile using:
+          - A customer session integration ID with the [Update customer session](https://docs.talon.one/integration-api#operation/updateCustomerSessionV2) endpoint.
+          - The Management API with the [List application's customers](https://docs.talon.one/management-api#operation/getApplicationCustomers) endpoint.
+        explode: false
+        in: path
+        name: integrationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteLoyaltyTransactionsRequest"
+        required: true
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Not found
+      security:
+      - api_key_v1: []
+      summary: Delete customer's transactions from loyalty ledgers
       tags:
       - integration
   /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/points:
@@ -3959,6 +4397,58 @@ paths:
       summary: Get loyalty program
       tags:
       - management
+  /v1/loyalty_programs/{loyaltyProgramId}/activate_points:
+    post:
+      description: "Activate points when a defined action occurs.\n\nYou can activate\
+        \ pending points using one of the following parameters:\n- `sessionId`: Activates\
+        \ all points earned in the specified session. \n- `transactionUUIDs`: Activates\
+        \ points earned in the transactions specified by the \ngiven UUIDs. \n"
+      operationId: activateLoyaltyPoints
+      parameters:
+      - description: |
+          The identifier for the loyalty program. You can get the ID with the [List loyalty
+          programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms)
+          endpoint.
+        explode: false
+        in: path
+        name: loyaltyProgramId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+        $ref: "#/components/requestBodies/ActivateLoyaltyPoints"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ActivateLoyaltyPointsResponse"
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Not found
+      security:
+      - api_key_v1: []
+      summary: Activate loyalty points
+      tags:
+      - integration
   /v1/loyalty_programs/{loyaltyProgramId}/dashboard:
     get:
       description: |
@@ -4192,6 +4682,7 @@ paths:
       - management
   /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}:
     get:
+      deprecated: true
       description: |
         Get the loyalty ledger for this profile integration ID.
 
@@ -4795,6 +5286,17 @@ paths:
           type: integer
         style: form
       - $ref: "#/components/parameters/skip"
+      - description: |
+          If `true`: Filters results to include only point transactions that have action-based activation and have not expired.
+
+          If `false`: Returns a `400` response.
+        explode: true
+        in: query
+        name: awaitsActivation
+        required: false
+        schema:
+          type: boolean
+        style: form
       responses:
         "200":
           content:
@@ -11157,6 +11659,56 @@ paths:
       summary: List customer achievements
       tags:
       - management
+  /v1/coupon_rejections:
+    get:
+      description: |
+        Create a summary of the reasons for coupon redemption failures in a given customer session.
+      operationId: generateCouponRejections
+      parameters:
+      - description: The integration ID of the session to summarize.
+        explode: true
+        in: query
+        name: sessionIntegrationId
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: Filter results by Application ID.
+        explode: true
+        in: query
+        name: applicationId
+        required: false
+        schema:
+          type: number
+        style: form
+      - description: |
+          The [ISO-639](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes) code of the language
+          in which the summary will be generated.
+        explode: true
+        in: query
+        name: language
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The coupon code for which to get the rejection reason.
+        explode: true
+        in: query
+        name: couponCode
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/generateCouponRejections_200_response"
+          description: OK
+      summary: Summarize coupon redemption failures in session
+      tags:
+      - management
 components:
   parameters:
     applicationId:
@@ -11661,6 +12213,7 @@ components:
             - attribute 'PizzaLover' not found on entity 'Coupons'
             items:
               type: string
+            title: Errors
             type: array
           createdBy:
             description: ID of the user who created this effect.
@@ -11736,6 +12289,7 @@ components:
             - failed to delete codes
             items:
               type: string
+            title: Errors
             type: array
           createdBy:
             description: ID of the user who created this effect.
@@ -12033,6 +12587,7 @@ components:
           items:
             format: int64
             type: integer
+          title: Campaigns to evaluate
           type: array
     Product:
       description: "The specific properties of the product this item belongs to, if\
@@ -12278,6 +12833,7 @@ components:
             items:
               maxLength: 100
               type: string
+            title: Coupons entered in session
             type: array
           referralCode:
             description: |
@@ -12326,6 +12882,7 @@ components:
               The items to add to this session. **Do not exceed 1000 items** and ensure the sum of all cart item's `quantity` **does not exceed 10.000** per request.
             items:
               $ref: "#/components/schemas/CartItem"
+            title: Customer session's cart items
             type: array
           additionalCosts:
             additionalProperties:
@@ -12356,6 +12913,7 @@ components:
             items:
               type: string
             maxItems: 5
+            title: Session identifiers
             type: array
           attributes:
             $ref: "#/components/schemas/NewCustomerSessionV2_allOf_attributes"
@@ -13960,11 +14518,13 @@ components:
               **DEPRECATED. Always returns `null`.** A list of loyalty programs joined by the customer.
             items:
               $ref: "#/components/schemas/LoyaltyMembership"
+            title: Loyalty programed joined
             type: array
           audienceMemberships:
             description: The audiences the customer belongs to.
             items:
               $ref: "#/components/schemas/AudienceMembership"
+            title: Audience memberships
             type: array
           lastActivity:
             description: |
@@ -14661,6 +15221,7 @@ components:
           description: Displays information about the balances of the loyalty cards.
           items:
             $ref: "#/components/schemas/LoyaltyCard"
+          title: Point balances of the loyalty cards used.
           type: array
         programs:
           additionalProperties:
@@ -16999,6 +17560,7 @@ components:
           items:
             format: int64
             type: integer
+          title: Audiences to join
           type: array
         deletes:
           description: The IDs of the audiences for the customer to leave.
@@ -17007,6 +17569,7 @@ components:
           items:
             format: int64
             type: integer
+          title: Audiences to leave
           type: array
       required:
       - adds
@@ -19240,6 +19803,7 @@ components:
             description: Serialized JSON representation.
             items:
               $ref: "#/components/schemas/CartItem"
+            title: Items in customer's cart
             type: array
           identifiers:
             description: |
@@ -19252,6 +19816,7 @@ components:
             items:
               type: string
             maxItems: 5
+            title: Session identifiers
             type: array
           total:
             description: The total sum of the cart in one session.
@@ -20021,6 +20586,7 @@ components:
               type: string
             maxItems: 1000
             minItems: 1
+            title: Advocate Profile List
             type: array
           attributes:
             $ref: "#/components/schemas/NewReferralsForMultipleAdvocates_allOf_attributes"
@@ -20932,6 +21498,7 @@ components:
         transactionUUID: ce59f12a-f53b-4014-a745-636d93f2bd3f
         subledgerId: sub-123
         name: Reward 10% points of a purchase's current total
+        validityDuration: 30D
         ruleName: Add 2 points
         id: 123
         programId: 324
@@ -21020,6 +21587,13 @@ components:
           description: The name of the rule that triggered this effect.
           example: Add 2 points
           type: string
+        validityDuration:
+          description: |
+            The duration for which the points remain active, relative to the  activation date.
+
+            **Note**: This only applies to points for which `awaitsActivation` is `true` and `expiryDate` is not set.
+          example: 30D
+          type: string
       required:
       - amount
       - cardIdentifier
@@ -21051,6 +21625,7 @@ components:
         transactionUUID: ce59f12a-f53b-4014-a745-636d93f2bd3f
         subledgerId: sub-123
         name: Reward 10% points of a purchase's current total
+        validityDuration: 30D
         ruleName: Add 2 points
         id: 123
         programId: 324
@@ -21136,6 +21711,13 @@ components:
           - $ref: "#/components/schemas/LoyaltyLedgerEntryFlags"
           description: "The flags of the transaction, when applicable. The `createsNegativeBalance`\
             \  flag indicates whether the transaction results in a negative balance."
+        validityDuration:
+          description: |
+            The duration for which the points remain active, relative to the  activation date.
+
+            **Note**: This only applies to points for which `awaitsActivation` is `true` and `expiryDate` is not set.
+          example: 30D
+          type: string
       required:
       - amount
       - created
@@ -21147,6 +21729,38 @@ components:
       - subledgerId
       - transactionUUID
       - type
+    DeleteLoyaltyTransactionsRequest:
+      description: Request to delete transactions based on the specified scope.
+      example:
+        subledgerIds:
+        - subledger1
+        - subledger2
+        scope: SelectedSubledgers
+      properties:
+        scope:
+          description: |
+            `AllSubledgers` deletes all transactions for the specified customer profile from all ledgers in the loyalty program.
+
+            `SelectedSubledgers` deletes all transactions for the specified customer profile only from the given ledgers in the loyalty program.
+          enum:
+          - AllSubledgers
+          - SelectedSubledgers
+          example: SelectedSubledgers
+          type: string
+        subledgerIds:
+          description: |
+            The IDs of the ledgers from which to delete the customer's transactions. This parameter is required if the `scope` is set to `SelectedSubledgers`.
+
+            To specify the main ledger, provide an empty string ("").
+          example:
+          - subledger1
+          - subledger2
+          items:
+            type: string
+          nullable: true
+          type: array
+      required:
+      - scope
     CardLedgerPointsEntryIntegrationAPI:
       description: Loyalty card points with start and expiry dates.
       example:
@@ -21157,6 +21771,7 @@ components:
         created: 2022-01-02T15:04:05Z07:00
         subledgerId: sub-123
         name: Reward 10% points of a purchase's current total
+        validityDuration: 30D
         customerSessionId: 05c2da0d-48fa-4aa1-b629-898f58f1584d
         id: 123
         programId: 324
@@ -21219,6 +21834,13 @@ components:
           description: Amount of loyalty points added in the transaction.
           example: 10.25
           type: number
+        validityDuration:
+          description: |
+            The duration for which the points remain active, relative to the  activation date.
+
+            **Note**: This only applies to points for which `awaitsActivation` is `true` and `expiryDate` is not set.
+          example: 30D
+          type: string
       required:
       - amount
       - created
@@ -21238,6 +21860,7 @@ components:
         created: 2022-01-02T15:04:05Z07:00
         subledgerId: sub-123
         name: Reward 10% points of a purchase's current total
+        validityDuration: 30D
         customerSessionId: 05c2da0d-48fa-4aa1-b629-898f58f1584d
         id: 123
         programId: 324
@@ -21296,6 +21919,13 @@ components:
           description: Amount of loyalty points added in the transaction.
           example: 10.25
           type: number
+        validityDuration:
+          description: |
+            The duration for which the points remain active, relative to the  activation date.
+
+            **Note**: This only applies to points for which `awaitsActivation` is `true` and `expiryDate` is not set.
+          example: 30D
+          type: string
       required:
       - amount
       - created
@@ -23879,6 +24509,7 @@ components:
               type: string
             maxItems: 1000
             minItems: 1
+            title: Receiving customer profiles integration IDs
             type: array
           validCharacters:
             description: |
@@ -24448,6 +25079,7 @@ components:
           - boolean
           - percent
           - (list string)
+          - (list number)
           - time
           example: number
           type: string
@@ -25549,6 +26181,14 @@ components:
             type: array
     ActivateLoyaltyPoints:
       description: Activate loyalty points
+      example:
+        transactionUUIDs:
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        sessionId: sessionId
       properties:
         transactionUUIDs:
           description: "An array of transaction UUIDs used to activate specific pending\
@@ -25570,6 +26210,23 @@ components:
           type: string
     LoyaltyLedgerEntry:
       description: "A single row of the ledger, describing one addition or deduction."
+      example:
+        eventID: 5
+        amount: 100
+        created: 2021-07-20T22:00:00Z
+        flags: ""
+        subLedgerID: mysubledger
+        customerSessionID: t2gy5s-47274
+        type: addition
+        userID: 499
+        expiryDate: 2022-07-20T22:00:00Z
+        archived: false
+        customerProfileID: URNGV8294NV
+        cardID: 241
+        name: Add points on purchase
+        validityDuration: 30D
+        programID: 5
+        startDate: 2021-07-20T22:00:00Z
       properties:
         created:
           example: 2021-07-20T22:00:00Z
@@ -25637,6 +26294,13 @@ components:
           allOf:
           - $ref: "#/components/schemas/LoyaltyLedgerEntryFlags"
           description: A map of flags providing additional details about the entry.
+        validityDuration:
+          description: |
+            The duration for which the points remain active, relative to the  activation date.
+
+            **Note**: This only applies to points for which `awaitsActivation` is `true` and `expiryDate` is not set.
+          example: 30D
+          type: string
       required:
       - amount
       - created
@@ -25645,6 +26309,40 @@ components:
       - subLedgerID
       - type
     ActivateLoyaltyPointsResponse:
+      example:
+        ledgerEntries:
+        - eventID: 5
+          amount: 100
+          created: 2021-07-20T22:00:00Z
+          flags: ""
+          subLedgerID: mysubledger
+          customerSessionID: t2gy5s-47274
+          type: addition
+          userID: 499
+          expiryDate: 2022-07-20T22:00:00Z
+          archived: false
+          customerProfileID: URNGV8294NV
+          cardID: 241
+          name: Add points on purchase
+          validityDuration: 30D
+          programID: 5
+          startDate: 2021-07-20T22:00:00Z
+        - eventID: 5
+          amount: 100
+          created: 2021-07-20T22:00:00Z
+          flags: ""
+          subLedgerID: mysubledger
+          customerSessionID: t2gy5s-47274
+          type: addition
+          userID: 499
+          expiryDate: 2022-07-20T22:00:00Z
+          archived: false
+          customerProfileID: URNGV8294NV
+          cardID: 241
+          name: Add points on purchase
+          validityDuration: 30D
+          programID: 5
+          startDate: 2021-07-20T22:00:00Z
       properties:
         ledgerEntries:
           description: Updated ledger entries after activation.
@@ -25929,6 +26627,7 @@ components:
         customerProfileId: kda0fajs0-fad9f-fd9dfsa9-fd9dasjf9
         subledgerId: sub-123
         name: Reward 50 points for each $500 purchase
+        validityDuration: 30D
         ruleName: 10 points for every $100 spent
         userEmail: john.doe@example.com
         id: 123
@@ -26050,6 +26749,13 @@ components:
           - $ref: "#/components/schemas/LoyaltyLedgerEntryFlags"
           description: "The flags of the transaction, when applicable. The `createsNegativeBalance`\
             \  flag indicates whether the transaction results in a negative balance."
+        validityDuration:
+          description: |
+            The duration for which the points remain active, relative to the  activation date.
+
+            **Note**: This only applies to points for which `awaitsActivation` is `true` and `expiryDate` is not set.
+          example: 30D
+          type: string
       required:
       - amount
       - created
@@ -28117,6 +28823,28 @@ components:
         - tags
         - title
         - type
+    BestPriorTarget:
+      description: Specifies the target for which the best prior price calculation
+        is taken into consideration.
+      example:
+        targetType: AUDIENCE
+        audienceID: 4
+      properties:
+        targetType:
+          description: The type of price target.
+          enum:
+          - NONE
+          - AUDIENCE
+          example: AUDIENCE
+          type: string
+        audienceID:
+          description: The AudienceID of an audience. Must be used with "AUDIENCE"
+            target type.
+          example: 4
+          format: int64
+          type: integer
+      required:
+      - targetType
     BestPriorPriceRequest:
       example:
         timeframeEndDate: 2020-11-10T23:00:00Z
@@ -28149,7 +28877,6 @@ components:
           description: The number of days prior to the timeframeEndDate. Only prices
             within this look back period are considered for the best prior price evaluation.
           example: 30
-          format: integer
           type: string
         strictEndDate:
           description: |
@@ -28159,7 +28886,7 @@ components:
           example: true
           type: boolean
         target:
-          $ref: "#/components/schemas/BestPriorPriceRequest_target"
+          $ref: "#/components/schemas/BestPriorTarget"
       required:
       - skus
       - strictEndDate
@@ -28718,22 +29445,6 @@ components:
             type: string
       required:
       - headers
-    WebhookAuthenticationBase:
-      properties:
-        name:
-          description: The name of the webhook authentication.
-          example: My basic auth
-          type: string
-        type:
-          enum:
-          - basic
-          - custom
-          type: string
-        data: {}
-      required:
-      - data
-      - name
-      - type
     WebhookAuthentication:
       allOf:
       - properties:
@@ -28747,13 +29458,31 @@ components:
             items:
               $ref: "#/components/schemas/WebhookAuthenticationWebhookRef"
             type: array
+          name:
+            description: The name of the webhook authentication.
+            example: My basic auth
+            type: string
+          type:
+            enum:
+            - basic
+            - custom
+            type: string
+          data: {}
         required:
         - createdBy
+        - data
         - modifiedBy
+        - name
+        - type
         - webhooks
-      - $ref: "#/components/schemas/WebhookAuthenticationBase"
       - $ref: "#/components/schemas/Entity"
       - $ref: "#/components/schemas/MutableEntity"
+    WebhookAuthenticationBase:
+      required:
+      - data
+      - name
+      - type
+      type: object
     MessageLogRequest:
       description: Details of the request.
       example:
@@ -29081,7 +29810,7 @@ components:
         latestFeedTimestamp: 2020-06-01T00:00:00Z
         lastSignedIn: 2021-09-12T10:12:42Z
         email: john.doe@example.com
-        policy: "{Role=127, Applications=null}"
+        policy: "{Role=127}"
         additionalAttributes: "{}"
     UpdateUser:
       example:
@@ -29094,7 +29823,6 @@ components:
         isAdmin: false
         policy:
           Role: 127
-          Applications: null
       properties:
         name:
           description: Name of the user.
@@ -29120,7 +29848,6 @@ components:
           description: Indicates the access level of the user.
           example:
             Role: 127
-            Applications: null
           type: string
         roles:
           description: |
@@ -30232,7 +30959,6 @@ components:
             This represents the access control on the user level.
           example:
             Role: 128
-            Applications: null
           type: string
         members:
           description: An array of user identifiers.
@@ -30936,6 +31662,224 @@ components:
             type: integer
         required:
         - applicationId
+    CatalogRule:
+      description: "A rule template stored in a catalog entry. Rules in catalog entries\
+        \ only contain title (no description, as description is at the catalog entry\
+        \ level)."
+      properties:
+        title:
+          description: A short description of the rule.
+          example: Give discount via coupon
+          type: string
+        bindings:
+          description: An array that provides objects with variable names (name) and
+            talang expressions to whose result they are bound (expression) during
+            rule evaluation. The order of the evaluation is decided by the position
+            in the array.
+          items:
+            $ref: "#/components/schemas/Binding"
+          type: array
+        condition:
+          description: A Talang expression that will be evaluated in the context of
+            the given event.
+          example:
+          - and
+          - - couponValid
+          items: {}
+          minItems: 1
+          type: array
+        effects:
+          description: An array of effectful Talang expressions in arrays that will
+            be evaluated when a rule matches.
+          example:
+          - catch
+          - - noop
+          - - setDiscount
+            - 10% off
+            - - '*'
+              - - "."
+                - Session
+                - Total
+              - - /
+                - 10
+                - 100
+          items:
+            type: object
+          type: array
+      required:
+      - condition
+      - effects
+      - title
+    CartItemFilterTemplate:
+      description: "A cart item filter template stored in a library entry. Cart item\
+        \ filters in library entries only contain name (no description, as description\
+        \ is at the library entry level)."
+      properties:
+        name:
+          description: The name of the Application cart item filter.
+          example: Filter items by product
+          type: string
+        expression:
+          description: The Talang expression for the cart item filter.
+          example:
+          - filter
+          - - "."
+            - Session
+            - CartItems
+          - - - Item
+            - - catch
+              - false
+              - - =
+                - - "."
+                  - Item
+                  - Category
+                - Kitchen
+          items: {}
+          type: array
+      required:
+      - expression
+      - name
+    CollectionsCatalog:
+      properties:
+        id:
+          description: The internal ID of this collection.
+          format: int64
+          type: integer
+        accountId:
+          description: The ID of the account that owns this collection.
+          format: int64
+          type: integer
+        applicationId:
+          description: The ID of the Application that owns this collection.
+          format: int64
+          type: integer
+        title:
+          description: A short description of the collection catalog.
+          example: High value cart discount
+          type: string
+        description:
+          description: "A longer, more detailed description of the collection catalog."
+          type: string
+        category:
+          description: Category used to group collection catalogs.
+          enum:
+          - promotions
+          - pricing
+          - loyalty
+          - custom
+          type: string
+        source:
+          description: Indicates whether the collection is custom or shipped by Talon.One.
+          enum:
+          - custom
+          - default
+          type: string
+        rules:
+          description: "Array of rule templates in this collection catalog. Rules\
+            \ only contain title (no description, as description is at the collection\
+            \ catalog level)."
+          items:
+            $ref: "#/components/schemas/CatalogRule"
+          type: array
+        cartItemFilters:
+          description: "Array of cart item filter templates in this collection catalog.\
+            \ Cart item filters only contain name (no description, as description\
+            \ is at the collection catalog level)."
+          items:
+            $ref: "#/components/schemas/CartItemFilterTemplate"
+          type: array
+        created:
+          description: Timestamp when the collection was created.
+          format: date-time
+          type: string
+        createdBy:
+          description: ID of the user who created the collection.
+          format: int64
+          type: integer
+        modified:
+          description: Timestamp when the collection was last updated.
+          format: date-time
+          type: string
+        modifiedBy:
+          description: ID of the user who last updated the collection.
+          format: int64
+          type: integer
+      required:
+      - accountId
+      - applicationId
+      - cartItemFilters
+      - category
+      - created
+      - createdBy
+      - id
+      - rules
+      - source
+      - title
+    NewCollectionsCatalog:
+      properties:
+        title:
+          description: The display name for the collection catalog.
+          example: Customer loyalty boost
+          type: string
+        description:
+          description: "A longer, more detailed description of the collection catalog."
+          type: string
+        category:
+          default: custom
+          description: Category used to group collection catalogs.
+          enum:
+          - promotions
+          - pricing
+          - loyalty
+          - custom
+          type: string
+        rules:
+          description: "Array of rules to store in this collection catalog. Rules\
+            \ should only contain title (no description, as description is at the\
+            \ collection catalog level). At least one rule or cart item filter is\
+            \ required."
+          items:
+            $ref: "#/components/schemas/CatalogRule"
+          type: array
+        cartItemFilters:
+          description: "Array of cart item filters to store in this collection catalog.\
+            \ If not provided, will be extracted from the rules. Cart item filters\
+            \ should only contain name (no description, as description is at the collection\
+            \ catalog level)."
+          items:
+            $ref: "#/components/schemas/CartItemFilterTemplate"
+          type: array
+      required:
+      - title
+    UpdateCollectionsCatalog:
+      properties:
+        title:
+          description: The display name for the collection catalog.
+          type: string
+        description:
+          description: "A longer, more detailed description of the collection catalog."
+          type: string
+        category:
+          description: Category used to group collection catalogs.
+          enum:
+          - promotions
+          - pricing
+          - loyalty
+          - custom
+          type: string
+        rules:
+          description: "Replaces the stored rules. Rules should only contain title\
+            \ (no description, as description is at the collection catalog level)."
+          items:
+            $ref: "#/components/schemas/CatalogRule"
+          type: array
+        cartItemFilters:
+          description: "Replaces the stored cart item filters. Cart item filters should\
+            \ only contain name (no description, as description is at the collection\
+            \ catalog level)."
+          items:
+            $ref: "#/components/schemas/CartItemFilterTemplate"
+          type: array
     ListCampaignStoreBudgetsStore:
       example:
         name: name
@@ -31521,6 +32465,17 @@ components:
       - eventID
     CouponFailureSummary:
       description: Summary of the reasons for coupon redemption failure.
+      example:
+        summary: Session total was less than the required total.
+        eventID: 1011
+        createdAt: 2021-07-20T21:59:00Z
+        profileID: a48f10dddb5c9493aad194e49bb9c1dac
+        language: en
+        id: 1
+        sessionID: 1
+        couponCode: ABC123
+        status: rejected
+        updatedAt: 2021-07-20T21:59:00Z
       properties:
         id:
           description: ID of the evaluation record.
@@ -31552,15 +32507,9 @@ components:
           description: Language of the summary.
           example: en
           type: string
-        shortSummary:
+        summary:
           description: A summary of the reasons for coupon redemption failure.
           example: Session total was less than the required total.
-          type: string
-        longSummary:
-          description: A detailed summary of the reasons for coupon redemption failure
-            based on events of the entire session.
-          example: "There were 5 items in the cart with SKUs 1,2,3,4,5 and the total\
-            \ is $60 which is less than the required cart total."
           type: string
         createdAt:
           description: Timestamp when the request was made.
@@ -31578,9 +32527,8 @@ components:
       - eventID
       - id
       - language
-      - longSummary
-      - shortSummary
       - status
+      - summary
       - updatedAt
     GenerateCouponFailureDetailedSummary:
       properties:
@@ -31643,39 +32591,6 @@ components:
       - email
       - name
       - summary
-    SessionCoupons:
-      properties:
-        sessionIntegrationId:
-          description: The integration ID of the session in which the coupons were
-            applied.
-          example: cc53e4fa-547f-4f5e-8333-76e05c381f67
-          type: string
-        couponCode:
-          description: The coupon codes for which rejection reason is needed.
-          example: SUMMER2025
-          type: string
-      required:
-      - sessionIntegrationId
-    CouponRejections:
-      properties:
-        sessionDetails:
-          description: Array containing details from session like session id and optional
-            coupon code used in the session. Only the first 15 entries will be processed.
-          items:
-            $ref: "#/components/schemas/SessionCoupons"
-          type: array
-        applicationId:
-          description: The application ID for which the coupon was used.
-          example: 123
-          format: int64
-          type: integer
-        language:
-          description: The language the summary will be generated in.
-          example: en
-          type: string
-      required:
-      - applicationId
-      - sessionDetails
     PrismaticFlowConfig:
       properties:
         ApiKey:
@@ -33383,10 +34298,16 @@ components:
             items:
               $ref: "#/components/schemas/PrismaticEventPayloadCouponBasedNotificationsLimits"
             type: array
+          SourceOfEvent:
+            type: string
+          EmployeeName:
+            type: string
         required:
         - CampaignId
         - Created
+        - EmployeeName
         - Id
+        - SourceOfEvent
         - UsageCounter
         - UsageLimit
         - Value
@@ -33650,6 +34571,7 @@ components:
           transactionUUID: ce59f12a-f53b-4014-a745-636d93f2bd3f
           subledgerId: sub-123
           name: Reward 10% points of a purchase's current total
+          validityDuration: 30D
           ruleName: Add 2 points
           id: 123
           programId: 324
@@ -33664,6 +34586,7 @@ components:
           transactionUUID: ce59f12a-f53b-4014-a745-636d93f2bd3f
           subledgerId: sub-123
           name: Reward 10% points of a purchase's current total
+          validityDuration: 30D
           ruleName: Add 2 points
           id: 123
           programId: 324
@@ -33693,6 +34616,7 @@ components:
           transactionUUID: ce59f12a-f53b-4014-a745-636d93f2bd3f
           subledgerId: sub-123
           name: Reward 10% points of a purchase's current total
+          validityDuration: 30D
           ruleName: Add 2 points
           id: 123
           programId: 324
@@ -33707,6 +34631,7 @@ components:
           transactionUUID: ce59f12a-f53b-4014-a745-636d93f2bd3f
           subledgerId: sub-123
           name: Reward 10% points of a purchase's current total
+          validityDuration: 30D
           ruleName: Add 2 points
           id: 123
           programId: 324
@@ -33733,6 +34658,7 @@ components:
           created: 2022-01-02T15:04:05Z07:00
           subledgerId: sub-123
           name: Reward 10% points of a purchase's current total
+          validityDuration: 30D
           customerSessionId: 05c2da0d-48fa-4aa1-b629-898f58f1584d
           id: 123
           programId: 324
@@ -33744,6 +34670,7 @@ components:
           created: 2022-01-02T15:04:05Z07:00
           subledgerId: sub-123
           name: Reward 10% points of a purchase's current total
+          validityDuration: 30D
           customerSessionId: 05c2da0d-48fa-4aa1-b629-898f58f1584d
           id: 123
           programId: 324
@@ -33769,6 +34696,7 @@ components:
           created: 2022-01-02T15:04:05Z07:00
           subledgerId: sub-123
           name: Reward 10% points of a purchase's current total
+          validityDuration: 30D
           customerSessionId: 05c2da0d-48fa-4aa1-b629-898f58f1584d
           id: 123
           programId: 324
@@ -33779,6 +34707,7 @@ components:
           created: 2022-01-02T15:04:05Z07:00
           subledgerId: sub-123
           name: Reward 10% points of a purchase's current total
+          validityDuration: 30D
           customerSessionId: 05c2da0d-48fa-4aa1-b629-898f58f1584d
           id: 123
           programId: 324
@@ -35666,6 +36595,7 @@ components:
           customerProfileId: kda0fajs0-fad9f-fd9dfsa9-fd9dasjf9
           subledgerId: sub-123
           name: Reward 50 points for each $500 purchase
+          validityDuration: 30D
           ruleName: 10 points for every $100 spent
           userEmail: john.doe@example.com
           id: 123
@@ -35686,6 +36616,7 @@ components:
           customerProfileId: kda0fajs0-fad9f-fd9dfsa9-fd9dasjf9
           subledgerId: sub-123
           name: Reward 50 points for each $500 purchase
+          validityDuration: 30D
           ruleName: 10 points for every $100 spent
           userEmail: john.doe@example.com
           id: 123
@@ -37019,7 +37950,7 @@ components:
           latestFeedTimestamp: 2020-06-01T00:00:00Z
           lastSignedIn: 2021-09-12T10:12:42Z
           email: john.doe@example.com
-          policy: "{Role=127, Applications=null}"
+          policy: "{Role=127}"
           additionalAttributes: "{}"
         - created: 2020-06-10T09:05:27.993483Z
           roles:
@@ -37037,7 +37968,7 @@ components:
           latestFeedTimestamp: 2020-06-01T00:00:00Z
           lastSignedIn: 2021-09-12T10:12:42Z
           email: john.doe@example.com
-          policy: "{Role=127, Applications=null}"
+          policy: "{Role=127}"
           additionalAttributes: "{}"
         totalResultSize: 1
       properties:
@@ -37338,6 +38269,36 @@ components:
       required:
       - data
       - hasMore
+    generateCouponRejections_200_response:
+      example:
+        data:
+        - summary: Session total was less than the required total.
+          eventID: 1011
+          createdAt: 2021-07-20T21:59:00Z
+          profileID: a48f10dddb5c9493aad194e49bb9c1dac
+          language: en
+          id: 1
+          sessionID: 1
+          couponCode: ABC123
+          status: rejected
+          updatedAt: 2021-07-20T21:59:00Z
+        - summary: Session total was less than the required total.
+          eventID: 1011
+          createdAt: 2021-07-20T21:59:00Z
+          profileID: a48f10dddb5c9493aad194e49bb9c1dac
+          language: en
+          id: 1
+          sessionID: 1
+          couponCode: ABC123
+          status: rejected
+          updatedAt: 2021-07-20T21:59:00Z
+      properties:
+        data:
+          items:
+            $ref: "#/components/schemas/CouponFailureSummary"
+          type: array
+      required:
+      - data
     GenerateRuleTitle_rule:
       properties:
         effects:
@@ -37437,31 +38398,9 @@ components:
     ApplicationEvent_allOf_attributes:
       description: Additional JSON serialized data associated with the event.
       type: object
-    BestPriorPriceRequest_target:
-      description: Specifies the target for which the best prior price calculation
-        is taken into consideration.
-      example:
-        targetType: AUDIENCE
-        audienceID: 4
-      properties:
-        targetType:
-          description: The type of price target.
-          enum:
-          - NONE
-          - AUDIENCE
-          example: AUDIENCE
-          type: string
-        audienceID:
-          description: The AudienceID of an audience. Must be used with "AUDIENCE"
-            target type.
-          example: 4
-          format: int64
-          type: integer
-      required:
-      - targetType
     User_allOf_policy:
       description: Access level of the user.
-      example: "{Role=127, Applications=null}"
+      example: "{Role=127}"
       format: acl
       type: object
     User_allOf_applicationNotificationSubscriptions:
@@ -37584,6 +38523,10 @@ components:
         1. Click **Settings** > **Integration API Keys**.
         1. Click **Create API Key** and give it a name and an expiration date, then click **Create API Key**.
 
+           **Tip**: Avoid choosing expiration dates that fall at the end of
+           the year or during other high-traffic periods.
+
+
         You can now use the API key in the HTTP header, prefixing it with `ApiKey-v1`:
 
         ```
@@ -37627,6 +38570,10 @@ components:
         1. Sign in to the Campaign Manager and click **Account** > **Tools** > **Management API Keys**.
         1. Click **Create Key** and give it a name.
         1. Set an expiration date.
+
+           **Tip**: Avoid choosing expiration dates that fall at the end of
+           the year or during other high-traffic periods.
+
         1. Choose the endpoints the key should give access to.
         1. Click **Create Key**.
         1. Share it with your developer.

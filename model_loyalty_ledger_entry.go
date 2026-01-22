@@ -43,6 +43,8 @@ type LoyaltyLedgerEntry struct {
 	Archived *bool `json:"archived,omitempty"`
 	// A map of flags providing additional details about the entry.
 	Flags *LoyaltyLedgerEntryFlags `json:"flags,omitempty"`
+	// The duration for which the points remain active, relative to the  activation date.  **Note**: This only applies to points for which `awaitsActivation` is `true` and `expiryDate` is not set.
+	ValidityDuration *string `json:"validityDuration,omitempty"`
 }
 
 type _LoyaltyLedgerEntry LoyaltyLedgerEntry
@@ -502,6 +504,38 @@ func (o *LoyaltyLedgerEntry) SetFlags(v LoyaltyLedgerEntryFlags) {
 	o.Flags = &v
 }
 
+// GetValidityDuration returns the ValidityDuration field value if set, zero value otherwise.
+func (o *LoyaltyLedgerEntry) GetValidityDuration() string {
+	if o == nil || IsNil(o.ValidityDuration) {
+		var ret string
+		return ret
+	}
+	return *o.ValidityDuration
+}
+
+// GetValidityDurationOk returns a tuple with the ValidityDuration field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *LoyaltyLedgerEntry) GetValidityDurationOk() (*string, bool) {
+	if o == nil || IsNil(o.ValidityDuration) {
+		return nil, false
+	}
+	return o.ValidityDuration, true
+}
+
+// HasValidityDuration returns a boolean if a field has been set.
+func (o *LoyaltyLedgerEntry) HasValidityDuration() bool {
+	if o != nil && !IsNil(o.ValidityDuration) {
+		return true
+	}
+
+	return false
+}
+
+// SetValidityDuration gets a reference to the given string and assigns it to the ValidityDuration field.
+func (o *LoyaltyLedgerEntry) SetValidityDuration(v string) {
+	o.ValidityDuration = &v
+}
+
 func (o LoyaltyLedgerEntry) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -544,6 +578,9 @@ func (o LoyaltyLedgerEntry) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Flags) {
 		toSerialize["flags"] = o.Flags
+	}
+	if !IsNil(o.ValidityDuration) {
+		toSerialize["validityDuration"] = o.ValidityDuration
 	}
 	return toSerialize, nil
 }

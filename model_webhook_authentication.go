@@ -22,10 +22,6 @@ var _ MappedNullable = &WebhookAuthentication{}
 
 // WebhookAuthentication struct for WebhookAuthentication
 type WebhookAuthentication struct {
-	// The name of the webhook authentication.
-	Name string      `json:"name"`
-	Type string      `json:"type"`
-	Data interface{} `json:"data"`
 	// The internal ID of this entity.
 	Id int64 `json:"id"`
 	// The time this entity was created.
@@ -37,6 +33,10 @@ type WebhookAuthentication struct {
 	// The name of the user who last modified the webhook authentication.
 	ModifiedBy string                            `json:"modifiedBy"`
 	Webhooks   []WebhookAuthenticationWebhookRef `json:"webhooks"`
+	// The name of the webhook authentication.
+	Name string      `json:"name"`
+	Type string      `json:"type"`
+	Data interface{} `json:"data"`
 }
 
 type _WebhookAuthentication WebhookAuthentication
@@ -45,17 +45,17 @@ type _WebhookAuthentication WebhookAuthentication
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildWebhookAuthentication(name string, type_ string, data interface{}, id int64, created time.Time, modified time.Time, createdBy string, modifiedBy string, webhooks []WebhookAuthenticationWebhookRef) *WebhookAuthentication {
+func BuildWebhookAuthentication(id int64, created time.Time, modified time.Time, createdBy string, modifiedBy string, webhooks []WebhookAuthenticationWebhookRef, name string, type_ string, data interface{}) *WebhookAuthentication {
 	this := WebhookAuthentication{}
-	this.Name = name
-	this.Type = type_
-	this.Data = data
 	this.Id = id
 	this.Created = created
 	this.Modified = modified
 	this.CreatedBy = createdBy
 	this.ModifiedBy = modifiedBy
 	this.Webhooks = webhooks
+	this.Name = name
+	this.Type = type_
+	this.Data = data
 	return &this
 }
 
@@ -65,80 +65,6 @@ func BuildWebhookAuthentication(name string, type_ string, data interface{}, id 
 func NewWebhookAuthenticationWithDefaults() *WebhookAuthentication {
 	this := WebhookAuthentication{}
 	return &this
-}
-
-// GetName returns the Name field value
-func (o *WebhookAuthentication) GetName() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Name
-}
-
-// GetNameOk returns a tuple with the Name field value
-// and a boolean to check if the value has been set.
-func (o *WebhookAuthentication) GetNameOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Name, true
-}
-
-// SetName sets field value
-func (o *WebhookAuthentication) SetName(v string) {
-	o.Name = v
-}
-
-// GetType returns the Type field value
-func (o *WebhookAuthentication) GetType() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Type
-}
-
-// GetTypeOk returns a tuple with the Type field value
-// and a boolean to check if the value has been set.
-func (o *WebhookAuthentication) GetTypeOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Type, true
-}
-
-// SetType sets field value
-func (o *WebhookAuthentication) SetType(v string) {
-	o.Type = v
-}
-
-// GetData returns the Data field value
-// If the value is explicit nil, the zero value for interface{} will be returned
-func (o *WebhookAuthentication) GetData() interface{} {
-	if o == nil {
-		var ret interface{}
-		return ret
-	}
-
-	return o.Data
-}
-
-// GetDataOk returns a tuple with the Data field value
-// and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *WebhookAuthentication) GetDataOk() (*interface{}, bool) {
-	if o == nil || IsNil(o.Data) {
-		return nil, false
-	}
-	return &o.Data, true
-}
-
-// SetData sets field value
-func (o *WebhookAuthentication) SetData(v interface{}) {
-	o.Data = v
 }
 
 // GetId returns the Id field value
@@ -285,6 +211,80 @@ func (o *WebhookAuthentication) SetWebhooks(v []WebhookAuthenticationWebhookRef)
 	o.Webhooks = v
 }
 
+// GetName returns the Name field value
+func (o *WebhookAuthentication) GetName() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Name
+}
+
+// GetNameOk returns a tuple with the Name field value
+// and a boolean to check if the value has been set.
+func (o *WebhookAuthentication) GetNameOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Name, true
+}
+
+// SetName sets field value
+func (o *WebhookAuthentication) SetName(v string) {
+	o.Name = v
+}
+
+// GetType returns the Type field value
+func (o *WebhookAuthentication) GetType() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Type
+}
+
+// GetTypeOk returns a tuple with the Type field value
+// and a boolean to check if the value has been set.
+func (o *WebhookAuthentication) GetTypeOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Type, true
+}
+
+// SetType sets field value
+func (o *WebhookAuthentication) SetType(v string) {
+	o.Type = v
+}
+
+// GetData returns the Data field value
+// If the value is explicit nil, the zero value for interface{} will be returned
+func (o *WebhookAuthentication) GetData() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+
+	return o.Data
+}
+
+// GetDataOk returns a tuple with the Data field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *WebhookAuthentication) GetDataOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.Data) {
+		return nil, false
+	}
+	return &o.Data, true
+}
+
+// SetData sets field value
+func (o *WebhookAuthentication) SetData(v interface{}) {
+	o.Data = v
+}
+
 func (o WebhookAuthentication) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -295,17 +295,17 @@ func (o WebhookAuthentication) MarshalJSON() ([]byte, error) {
 
 func (o WebhookAuthentication) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["name"] = o.Name
-	toSerialize["type"] = o.Type
-	if o.Data != nil {
-		toSerialize["data"] = o.Data
-	}
 	toSerialize["id"] = o.Id
 	toSerialize["created"] = o.Created
 	toSerialize["modified"] = o.Modified
 	toSerialize["createdBy"] = o.CreatedBy
 	toSerialize["modifiedBy"] = o.ModifiedBy
 	toSerialize["webhooks"] = o.Webhooks
+	toSerialize["name"] = o.Name
+	toSerialize["type"] = o.Type
+	if o.Data != nil {
+		toSerialize["data"] = o.Data
+	}
 	return toSerialize, nil
 }
 
@@ -314,15 +314,15 @@ func (o *WebhookAuthentication) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"name",
-		"type",
-		"data",
 		"id",
 		"created",
 		"modified",
 		"createdBy",
 		"modifiedBy",
 		"webhooks",
+		"name",
+		"type",
+		"data",
 	}
 
 	allProperties := make(map[string]interface{})

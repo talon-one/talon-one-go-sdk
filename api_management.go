@@ -9812,6 +9812,189 @@ func (a *ManagementAPIService) ExportReferralsExecute(r ApiExportReferralsReques
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiGenerateCouponRejectionsRequest struct {
+	ctx                  context.Context
+	ApiService           *ManagementAPIService
+	sessionIntegrationId *string
+	applicationId        *float32
+	language             *string
+	couponCode           *string
+}
+
+// The integration ID of the session to summarize.
+func (r ApiGenerateCouponRejectionsRequest) SessionIntegrationId(sessionIntegrationId string) ApiGenerateCouponRejectionsRequest {
+	r.sessionIntegrationId = &sessionIntegrationId
+	return r
+}
+
+// Filter results by Application ID.
+func (r ApiGenerateCouponRejectionsRequest) ApplicationId(applicationId float32) ApiGenerateCouponRejectionsRequest {
+	r.applicationId = &applicationId
+	return r
+}
+
+// The [ISO-639](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes) code of the language in which the summary will be generated.
+func (r ApiGenerateCouponRejectionsRequest) Language(language string) ApiGenerateCouponRejectionsRequest {
+	r.language = &language
+	return r
+}
+
+// The coupon code for which to get the rejection reason.
+func (r ApiGenerateCouponRejectionsRequest) CouponCode(couponCode string) ApiGenerateCouponRejectionsRequest {
+	r.couponCode = &couponCode
+	return r
+}
+
+func (r ApiGenerateCouponRejectionsRequest) Execute() (*GenerateCouponRejections200Response, *http.Response, error) {
+	return r.ApiService.GenerateCouponRejectionsExecute(r)
+}
+
+/*
+GenerateCouponRejections Summarize coupon redemption failures in session
+
+Create a summary of the reasons for coupon redemption failures in a given customer session.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGenerateCouponRejectionsRequest
+*/
+func (a *ManagementAPIService) GenerateCouponRejections(ctx context.Context) ApiGenerateCouponRejectionsRequest {
+	return ApiGenerateCouponRejectionsRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return GenerateCouponRejections200Response
+func (a *ManagementAPIService) GenerateCouponRejectionsExecute(r ApiGenerateCouponRejectionsRequest) (*GenerateCouponRejections200Response, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *GenerateCouponRejections200Response
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagementAPIService.GenerateCouponRejections")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v1/coupon_rejections"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.sessionIntegrationId == nil {
+		return localVarReturnValue, nil, reportError("sessionIntegrationId is required and must be specified")
+	}
+
+	parameterAddToHeaderOrQuery(localVarQueryParams, "sessionIntegrationId", r.sessionIntegrationId, "form", "")
+	if r.applicationId != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "applicationId", r.applicationId, "form", "")
+	}
+	if r.language != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "language", r.language, "form", "")
+	}
+	if r.couponCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "couponCode", r.couponCode, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["management_key"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["manager_auth"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiGetAccessLogsWithoutTotalCountRequest struct {
 	ctx           context.Context
 	ApiService    *ManagementAPIService
@@ -18967,6 +19150,245 @@ func (a *ManagementAPIService) GetLoyaltyCardsExecute(r ApiGetLoyaltyCardsReques
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiGetLoyaltyLedgerBalancesRequest struct {
+	ctx                  context.Context
+	ApiService           *ManagementAPIService
+	loyaltyProgramId     int64
+	integrationId        string
+	endDate              *time.Time
+	subledgerId          *string
+	includeTiers         *bool
+	includeProjectedTier *bool
+}
+
+// Used to return expired, active, and pending loyalty balances before this timestamp. You can enter any past, present, or future timestamp value.  **Note:**  - It must be an RFC3339 timestamp string. - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.
+func (r ApiGetLoyaltyLedgerBalancesRequest) EndDate(endDate time.Time) ApiGetLoyaltyLedgerBalancesRequest {
+	r.endDate = &endDate
+	return r
+}
+
+// The ID of the subledger used to filter the data. Leave this value empty (\&quot;\&quot;) to query the main ledger.
+func (r ApiGetLoyaltyLedgerBalancesRequest) SubledgerId(subledgerId string) ApiGetLoyaltyLedgerBalancesRequest {
+	r.subledgerId = &subledgerId
+	return r
+}
+
+// Indicates whether tier information is included in the response.  When set to &#x60;true&#x60;, the response includes information about the current tier and the number of points required to move to next tier.
+func (r ApiGetLoyaltyLedgerBalancesRequest) IncludeTiers(includeTiers bool) ApiGetLoyaltyLedgerBalancesRequest {
+	r.includeTiers = &includeTiers
+	return r
+}
+
+// Indicates whether the customer&#39;s projected tier information is included in the response.  When set to &#x60;true&#x60;, the response includes information about the customer&#39;s active points and the name of the projected tier.  **Note** We recommend filtering by &#x60;subledgerId&#x60; for better performance.
+func (r ApiGetLoyaltyLedgerBalancesRequest) IncludeProjectedTier(includeProjectedTier bool) ApiGetLoyaltyLedgerBalancesRequest {
+	r.includeProjectedTier = &includeProjectedTier
+	return r
+}
+
+func (r ApiGetLoyaltyLedgerBalancesRequest) Execute() (*LoyaltyBalancesWithTiers, *http.Response, error) {
+	return r.ApiService.GetLoyaltyLedgerBalancesExecute(r)
+}
+
+/*
+GetLoyaltyLedgerBalances Get customer's loyalty balances
+
+Retrieve loyalty ledger balances for the given Integration ID in the specified loyalty program.
+You can filter balances by date and subledger ID, and include tier-related information in the response.
+
+**Note**: If no filtering options are applied, you retrieve all loyalty balances on the current date for the given integration ID.
+
+Loyalty balances are calculated when Talon.One receives your request using the points stored in our database, so retrieving a large number of balances at once can impact performance.
+
+For more information, see:
+- [Managing card-based loyalty program data](https://docs.talon.one/docs/product/loyalty-programs/card-based/managing-loyalty-cards)
+- [Managing profile-based loyalty program data](https://docs.talon.one/docs/product/loyalty-programs/profile-based/managing-pb-lp-data)
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param loyaltyProgramId Identifier of the profile-based loyalty program. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
+	@param integrationId The integration identifier for this customer profile. Must be: - Unique within the deployment. - Stable for the customer. Do not use an ID that the customer can update themselves. For example, you can use a database ID.  Once set, you cannot update this identifier.
+	@return ApiGetLoyaltyLedgerBalancesRequest
+*/
+func (a *ManagementAPIService) GetLoyaltyLedgerBalances(ctx context.Context, loyaltyProgramId int64, integrationId string) ApiGetLoyaltyLedgerBalancesRequest {
+	return ApiGetLoyaltyLedgerBalancesRequest{
+		ApiService:       a,
+		ctx:              ctx,
+		loyaltyProgramId: loyaltyProgramId,
+		integrationId:    integrationId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return LoyaltyBalancesWithTiers
+func (a *ManagementAPIService) GetLoyaltyLedgerBalancesExecute(r ApiGetLoyaltyLedgerBalancesRequest) (*LoyaltyBalancesWithTiers, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *LoyaltyBalancesWithTiers
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagementAPIService.GetLoyaltyLedgerBalances")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/ledger_balances"
+	localVarPath = strings.Replace(localVarPath, "{"+"loyaltyProgramId"+"}", url.PathEscape(parameterValueToString(r.loyaltyProgramId, "loyaltyProgramId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"integrationId"+"}", url.PathEscape(parameterValueToString(r.integrationId, "integrationId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.endDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "endDate", r.endDate, "form", "")
+	}
+	if r.subledgerId != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "subledgerId", r.subledgerId, "form", "")
+	}
+	if r.includeTiers != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "includeTiers", r.includeTiers, "form", "")
+	} else {
+		var defaultValue bool = false
+		parameterAddToHeaderOrQuery(localVarQueryParams, "includeTiers", defaultValue, "form", "")
+		r.includeTiers = &defaultValue
+	}
+	if r.includeProjectedTier != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "includeProjectedTier", r.includeProjectedTier, "form", "")
+	} else {
+		var defaultValue bool = false
+		parameterAddToHeaderOrQuery(localVarQueryParams, "includeProjectedTier", defaultValue, "form", "")
+		r.includeProjectedTier = &defaultValue
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["management_key"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["manager_auth"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiGetLoyaltyPointsRequest struct {
 	ctx              context.Context
 	ApiService       *ManagementAPIService
@@ -18993,6 +19415,8 @@ we recommend using the Integration API's [Get customer's loyalty logs](https://d
 	@param loyaltyProgramId The identifier for the loyalty program.
 	@param integrationId The integration identifier for this customer profile. Must be: - Unique within the deployment. - Stable for the customer. Do not use an ID that the customer can update themselves. For example, you can use a database ID.  Once set, you cannot update this identifier.
 	@return ApiGetLoyaltyPointsRequest
+
+Deprecated
 */
 func (a *ManagementAPIService) GetLoyaltyPoints(ctx context.Context, loyaltyProgramId string, integrationId string) ApiGetLoyaltyPointsRequest {
 	return ApiGetLoyaltyPointsRequest{
@@ -19006,6 +19430,8 @@ func (a *ManagementAPIService) GetLoyaltyPoints(ctx context.Context, loyaltyProg
 // Execute executes the request
 //
 //	@return LoyaltyLedger
+//
+// Deprecated
 func (a *ManagementAPIService) GetLoyaltyPointsExecute(r ApiGetLoyaltyPointsRequest) (*LoyaltyLedger, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
@@ -19273,6 +19699,303 @@ func (a *ManagementAPIService) GetLoyaltyProgramExecute(r ApiGetLoyaltyProgramRe
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiGetLoyaltyProgramProfileLedgerTransactionsRequest struct {
+	ctx                    context.Context
+	ApiService             *ManagementAPIService
+	loyaltyProgramId       int64
+	integrationId          string
+	customerSessionIDs     *[]string
+	transactionUUIDs       *[]string
+	subledgerId            *string
+	loyaltyTransactionType *string
+	startDate              *time.Time
+	endDate                *time.Time
+	pageSize               *int64
+	skip                   *int64
+	awaitsActivation       *bool
+}
+
+// Filter the results by a list of customer session IDs.   To include multiple IDs, repeat the parameter for each one, for example,  &#x60;?customerSessionIDs&#x3D;id1&amp;customerSessionIDs&#x3D;id2&#x60;.  The response contains only data associated with the specified sessions.
+func (r ApiGetLoyaltyProgramProfileLedgerTransactionsRequest) CustomerSessionIDs(customerSessionIDs []string) ApiGetLoyaltyProgramProfileLedgerTransactionsRequest {
+	r.customerSessionIDs = &customerSessionIDs
+	return r
+}
+
+// Filter the results by a list of transaction UUIDs.  To include multiple IDs, repeat the parameter for each one, for example,  &#x60;?transactionUUIDs&#x3D;uuid1&amp;transactionUUIDs&#x3D;uuid2&#x60;.  The response contains only data associated with the specified transactions.
+func (r ApiGetLoyaltyProgramProfileLedgerTransactionsRequest) TransactionUUIDs(transactionUUIDs []string) ApiGetLoyaltyProgramProfileLedgerTransactionsRequest {
+	r.transactionUUIDs = &transactionUUIDs
+	return r
+}
+
+// The ID of the subledger used to filter the data. Leave this value empty (\&quot;\&quot;) to query the main ledger.
+func (r ApiGetLoyaltyProgramProfileLedgerTransactionsRequest) SubledgerId(subledgerId string) ApiGetLoyaltyProgramProfileLedgerTransactionsRequest {
+	r.subledgerId = &subledgerId
+	return r
+}
+
+// Filter results by loyalty transaction type: - &#x60;manual&#x60;: Loyalty transaction that was done manually. - &#x60;session&#x60;: Loyalty transaction that resulted from a customer session. - &#x60;import&#x60;: Loyalty transaction that was imported from a CSV file.
+func (r ApiGetLoyaltyProgramProfileLedgerTransactionsRequest) LoyaltyTransactionType(loyaltyTransactionType string) ApiGetLoyaltyProgramProfileLedgerTransactionsRequest {
+	r.loyaltyTransactionType = &loyaltyTransactionType
+	return r
+}
+
+// Date and time from which results are returned. Results are filtered by transaction creation date.  **Note:**  - It must be an RFC3339 timestamp string. - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.
+func (r ApiGetLoyaltyProgramProfileLedgerTransactionsRequest) StartDate(startDate time.Time) ApiGetLoyaltyProgramProfileLedgerTransactionsRequest {
+	r.startDate = &startDate
+	return r
+}
+
+// Date and time by which results are returned. Results are filtered by transaction creation date.  **Note:**  - It must be an RFC3339 timestamp string. - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.
+func (r ApiGetLoyaltyProgramProfileLedgerTransactionsRequest) EndDate(endDate time.Time) ApiGetLoyaltyProgramProfileLedgerTransactionsRequest {
+	r.endDate = &endDate
+	return r
+}
+
+// The number of items in the response.
+func (r ApiGetLoyaltyProgramProfileLedgerTransactionsRequest) PageSize(pageSize int64) ApiGetLoyaltyProgramProfileLedgerTransactionsRequest {
+	r.pageSize = &pageSize
+	return r
+}
+
+// The number of items to skip when paging through large result sets.
+func (r ApiGetLoyaltyProgramProfileLedgerTransactionsRequest) Skip(skip int64) ApiGetLoyaltyProgramProfileLedgerTransactionsRequest {
+	r.skip = &skip
+	return r
+}
+
+// If &#x60;true&#x60;: Filters results to include only point transactions that have action-based activation and have not expired.  If &#x60;false&#x60;: Returns a &#x60;400&#x60; response.
+func (r ApiGetLoyaltyProgramProfileLedgerTransactionsRequest) AwaitsActivation(awaitsActivation bool) ApiGetLoyaltyProgramProfileLedgerTransactionsRequest {
+	r.awaitsActivation = &awaitsActivation
+	return r
+}
+
+func (r ApiGetLoyaltyProgramProfileLedgerTransactionsRequest) Execute() (*GetLoyaltyProgramProfileTransactions200Response, *http.Response, error) {
+	return r.ApiService.GetLoyaltyProgramProfileLedgerTransactionsExecute(r)
+}
+
+/*
+GetLoyaltyProgramProfileLedgerTransactions List customer's loyalty transactions
+
+Retrieve paginated results of loyalty transaction logs for the given Integration ID in the specified loyalty program.
+
+You can filter transactions by date or by ledger (subledger or main ledger). If no filters are applied, the last 50 loyalty transactions for the given integration ID are returned.
+
+**Note:** To retrieve all loyalty program transaction logs in a given loyalty program,
+use the [List loyalty program transactions](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyProgramTransactions) endpoint.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param loyaltyProgramId Identifier of the profile-based loyalty program. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
+	@param integrationId The integration identifier for this customer profile. Must be: - Unique within the deployment. - Stable for the customer. Do not use an ID that the customer can update themselves. For example, you can use a database ID.  Once set, you cannot update this identifier.
+	@return ApiGetLoyaltyProgramProfileLedgerTransactionsRequest
+*/
+func (a *ManagementAPIService) GetLoyaltyProgramProfileLedgerTransactions(ctx context.Context, loyaltyProgramId int64, integrationId string) ApiGetLoyaltyProgramProfileLedgerTransactionsRequest {
+	return ApiGetLoyaltyProgramProfileLedgerTransactionsRequest{
+		ApiService:       a,
+		ctx:              ctx,
+		loyaltyProgramId: loyaltyProgramId,
+		integrationId:    integrationId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return GetLoyaltyProgramProfileTransactions200Response
+func (a *ManagementAPIService) GetLoyaltyProgramProfileLedgerTransactionsExecute(r ApiGetLoyaltyProgramProfileLedgerTransactionsRequest) (*GetLoyaltyProgramProfileTransactions200Response, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *GetLoyaltyProgramProfileTransactions200Response
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagementAPIService.GetLoyaltyProgramProfileLedgerTransactions")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/ledger_transactions"
+	localVarPath = strings.Replace(localVarPath, "{"+"loyaltyProgramId"+"}", url.PathEscape(parameterValueToString(r.loyaltyProgramId, "loyaltyProgramId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"integrationId"+"}", url.PathEscape(parameterValueToString(r.integrationId, "integrationId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.customerSessionIDs != nil {
+		t := *r.customerSessionIDs
+		if reflect.TypeOf(t).Kind() == reflect.Slice {
+			s := reflect.ValueOf(t)
+			for i := 0; i < s.Len(); i++ {
+				parameterAddToHeaderOrQuery(localVarQueryParams, "customerSessionIDs", s.Index(i).Interface(), "form", "multi")
+			}
+		} else {
+			parameterAddToHeaderOrQuery(localVarQueryParams, "customerSessionIDs", t, "form", "multi")
+		}
+	}
+	if r.transactionUUIDs != nil {
+		t := *r.transactionUUIDs
+		if reflect.TypeOf(t).Kind() == reflect.Slice {
+			s := reflect.ValueOf(t)
+			for i := 0; i < s.Len(); i++ {
+				parameterAddToHeaderOrQuery(localVarQueryParams, "transactionUUIDs", s.Index(i).Interface(), "form", "multi")
+			}
+		} else {
+			parameterAddToHeaderOrQuery(localVarQueryParams, "transactionUUIDs", t, "form", "multi")
+		}
+	}
+	if r.subledgerId != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "subledgerId", r.subledgerId, "form", "")
+	}
+	if r.loyaltyTransactionType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "loyaltyTransactionType", r.loyaltyTransactionType, "form", "")
+	}
+	if r.startDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "startDate", r.startDate, "form", "")
+	}
+	if r.endDate != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "endDate", r.endDate, "form", "")
+	}
+	if r.pageSize != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
+	} else {
+		var defaultValue int64 = 50
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
+		r.pageSize = &defaultValue
+	}
+	if r.skip != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "skip", r.skip, "form", "")
+	}
+	if r.awaitsActivation != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "awaitsActivation", r.awaitsActivation, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["management_key"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["manager_auth"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiGetLoyaltyProgramTransactionsRequest struct {
 	ctx                    context.Context
 	ApiService             *ManagementAPIService
@@ -19285,6 +20008,7 @@ type ApiGetLoyaltyProgramTransactionsRequest struct {
 	endDate                *time.Time
 	pageSize               *int64
 	skip                   *int64
+	awaitsActivation       *bool
 }
 
 // Filter results by loyalty transaction type: - &#x60;manual&#x60;: Loyalty transaction that was done manually. - &#x60;session&#x60;: Loyalty transaction that resulted from a customer session. - &#x60;import&#x60;: Loyalty transaction that was imported from a CSV file.
@@ -19332,6 +20056,12 @@ func (r ApiGetLoyaltyProgramTransactionsRequest) PageSize(pageSize int64) ApiGet
 // The number of items to skip when paging through large result sets.
 func (r ApiGetLoyaltyProgramTransactionsRequest) Skip(skip int64) ApiGetLoyaltyProgramTransactionsRequest {
 	r.skip = &skip
+	return r
+}
+
+// If &#x60;true&#x60;: Filters results to include only point transactions that have action-based activation and have not expired.  If &#x60;false&#x60;: Returns a &#x60;400&#x60; response.
+func (r ApiGetLoyaltyProgramTransactionsRequest) AwaitsActivation(awaitsActivation bool) ApiGetLoyaltyProgramTransactionsRequest {
+	r.awaitsActivation = &awaitsActivation
 	return r
 }
 
@@ -19426,6 +20156,9 @@ func (a *ManagementAPIService) GetLoyaltyProgramTransactionsExecute(r ApiGetLoya
 	}
 	if r.skip != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "skip", r.skip, "form", "")
+	}
+	if r.awaitsActivation != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "awaitsActivation", r.awaitsActivation, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

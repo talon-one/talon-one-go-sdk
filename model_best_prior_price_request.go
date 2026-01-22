@@ -27,10 +27,10 @@ type BestPriorPriceRequest struct {
 	// The end date and time that defines the latest time for retrieving historical SKU prices.
 	TimeframeEndDate time.Time `json:"timeframeEndDate"`
 	// The number of days prior to the timeframeEndDate. Only prices within this look back period are considered for the best prior price evaluation.
-	Timeframe int32 `json:"timeframe"`
+	Timeframe string `json:"timeframe"`
 	// Indicates whether the timeframe includes the start of the current sale. - When `false`, the timeframe includes the start date of the current sale. - When `true`, the timeframe striclty uses the number of days specified in `timeframe`.
-	StrictEndDate bool                         `json:"strictEndDate"`
-	Target        *BestPriorPriceRequestTarget `json:"target,omitempty"`
+	StrictEndDate bool             `json:"strictEndDate"`
+	Target        *BestPriorTarget `json:"target,omitempty"`
 }
 
 type _BestPriorPriceRequest BestPriorPriceRequest
@@ -39,7 +39,7 @@ type _BestPriorPriceRequest BestPriorPriceRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildBestPriorPriceRequest(skus []string, timeframeEndDate time.Time, timeframe int32, strictEndDate bool) *BestPriorPriceRequest {
+func BuildBestPriorPriceRequest(skus []string, timeframeEndDate time.Time, timeframe string, strictEndDate bool) *BestPriorPriceRequest {
 	this := BestPriorPriceRequest{}
 	this.Skus = skus
 	this.TimeframeEndDate = timeframeEndDate
@@ -105,9 +105,9 @@ func (o *BestPriorPriceRequest) SetTimeframeEndDate(v time.Time) {
 }
 
 // GetTimeframe returns the Timeframe field value
-func (o *BestPriorPriceRequest) GetTimeframe() int32 {
+func (o *BestPriorPriceRequest) GetTimeframe() string {
 	if o == nil {
-		var ret int32
+		var ret string
 		return ret
 	}
 
@@ -116,7 +116,7 @@ func (o *BestPriorPriceRequest) GetTimeframe() int32 {
 
 // GetTimeframeOk returns a tuple with the Timeframe field value
 // and a boolean to check if the value has been set.
-func (o *BestPriorPriceRequest) GetTimeframeOk() (*int32, bool) {
+func (o *BestPriorPriceRequest) GetTimeframeOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -124,7 +124,7 @@ func (o *BestPriorPriceRequest) GetTimeframeOk() (*int32, bool) {
 }
 
 // SetTimeframe sets field value
-func (o *BestPriorPriceRequest) SetTimeframe(v int32) {
+func (o *BestPriorPriceRequest) SetTimeframe(v string) {
 	o.Timeframe = v
 }
 
@@ -153,9 +153,9 @@ func (o *BestPriorPriceRequest) SetStrictEndDate(v bool) {
 }
 
 // GetTarget returns the Target field value if set, zero value otherwise.
-func (o *BestPriorPriceRequest) GetTarget() BestPriorPriceRequestTarget {
+func (o *BestPriorPriceRequest) GetTarget() BestPriorTarget {
 	if o == nil || IsNil(o.Target) {
-		var ret BestPriorPriceRequestTarget
+		var ret BestPriorTarget
 		return ret
 	}
 	return *o.Target
@@ -163,7 +163,7 @@ func (o *BestPriorPriceRequest) GetTarget() BestPriorPriceRequestTarget {
 
 // GetTargetOk returns a tuple with the Target field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *BestPriorPriceRequest) GetTargetOk() (*BestPriorPriceRequestTarget, bool) {
+func (o *BestPriorPriceRequest) GetTargetOk() (*BestPriorTarget, bool) {
 	if o == nil || IsNil(o.Target) {
 		return nil, false
 	}
@@ -179,8 +179,8 @@ func (o *BestPriorPriceRequest) HasTarget() bool {
 	return false
 }
 
-// SetTarget gets a reference to the given BestPriorPriceRequestTarget and assigns it to the Target field.
-func (o *BestPriorPriceRequest) SetTarget(v BestPriorPriceRequestTarget) {
+// SetTarget gets a reference to the given BestPriorTarget and assigns it to the Target field.
+func (o *BestPriorPriceRequest) SetTarget(v BestPriorTarget) {
 	o.Target = &v
 }
 

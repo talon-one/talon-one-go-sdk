@@ -50,6 +50,8 @@ type LedgerTransactionLogEntryIntegrationAPI struct {
 	RuleName *string `json:"ruleName,omitempty"`
 	// The flags of the transaction, when applicable. The `createsNegativeBalance`  flag indicates whether the transaction results in a negative balance.
 	Flags *LoyaltyLedgerEntryFlags `json:"flags,omitempty"`
+	// The duration for which the points remain active, relative to the  activation date.  **Note**: This only applies to points for which `awaitsActivation` is `true` and `expiryDate` is not set.
+	ValidityDuration *string `json:"validityDuration,omitempty"`
 }
 
 type _LedgerTransactionLogEntryIntegrationAPI LedgerTransactionLogEntryIntegrationAPI
@@ -449,6 +451,38 @@ func (o *LedgerTransactionLogEntryIntegrationAPI) SetFlags(v LoyaltyLedgerEntryF
 	o.Flags = &v
 }
 
+// GetValidityDuration returns the ValidityDuration field value if set, zero value otherwise.
+func (o *LedgerTransactionLogEntryIntegrationAPI) GetValidityDuration() string {
+	if o == nil || IsNil(o.ValidityDuration) {
+		var ret string
+		return ret
+	}
+	return *o.ValidityDuration
+}
+
+// GetValidityDurationOk returns a tuple with the ValidityDuration field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *LedgerTransactionLogEntryIntegrationAPI) GetValidityDurationOk() (*string, bool) {
+	if o == nil || IsNil(o.ValidityDuration) {
+		return nil, false
+	}
+	return o.ValidityDuration, true
+}
+
+// HasValidityDuration returns a boolean if a field has been set.
+func (o *LedgerTransactionLogEntryIntegrationAPI) HasValidityDuration() bool {
+	if o != nil && !IsNil(o.ValidityDuration) {
+		return true
+	}
+
+	return false
+}
+
+// SetValidityDuration gets a reference to the given string and assigns it to the ValidityDuration field.
+func (o *LedgerTransactionLogEntryIntegrationAPI) SetValidityDuration(v string) {
+	o.ValidityDuration = &v
+}
+
 func (o LedgerTransactionLogEntryIntegrationAPI) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -480,6 +514,9 @@ func (o LedgerTransactionLogEntryIntegrationAPI) ToMap() (map[string]interface{}
 	}
 	if !IsNil(o.Flags) {
 		toSerialize["flags"] = o.Flags
+	}
+	if !IsNil(o.ValidityDuration) {
+		toSerialize["validityDuration"] = o.ValidityDuration
 	}
 	return toSerialize, nil
 }
