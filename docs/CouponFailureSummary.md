@@ -11,8 +11,7 @@ Name | Type | Description | Notes
 **Status** | **string** | Status defines if the coupon code was applied or rejected. | 
 **CouponCode** | **string** | Coupon code passed for evaluation. | 
 **Language** | **string** | Language of the summary. | 
-**ShortSummary** | **string** | A summary of the reasons for coupon redemption failure. | 
-**LongSummary** | **string** | A detailed summary of the reasons for coupon redemption failure based on events of the entire session. | 
+**Summary** | **string** | A summary of the reasons for coupon redemption failure. | 
 **CreatedAt** | **time.Time** | Timestamp when the request was made. | 
 **UpdatedAt** | **time.Time** | Timestamp when the request was last updated. | 
 
@@ -20,7 +19,7 @@ Name | Type | Description | Notes
 
 ### NewCouponFailureSummary
 
-`func NewCouponFailureSummary(id int64, eventID int64, status string, couponCode string, language string, shortSummary string, longSummary string, createdAt time.Time, updatedAt time.Time, ) *CouponFailureSummary`
+`func NewCouponFailureSummary(id int64, eventID int64, status string, couponCode string, language string, summary string, createdAt time.Time, updatedAt time.Time, ) *CouponFailureSummary`
 
 NewCouponFailureSummary instantiates a new CouponFailureSummary object
 This constructor will assign default values to properties that have it defined,
@@ -185,44 +184,24 @@ and a boolean to check if the value has been set.
 SetLanguage sets Language field to given value.
 
 
-### GetShortSummary
+### GetSummary
 
-`func (o *CouponFailureSummary) GetShortSummary() string`
+`func (o *CouponFailureSummary) GetSummary() string`
 
-GetShortSummary returns the ShortSummary field if non-nil, zero value otherwise.
+GetSummary returns the Summary field if non-nil, zero value otherwise.
 
-### GetShortSummaryOk
+### GetSummaryOk
 
-`func (o *CouponFailureSummary) GetShortSummaryOk() (*string, bool)`
+`func (o *CouponFailureSummary) GetSummaryOk() (*string, bool)`
 
-GetShortSummaryOk returns a tuple with the ShortSummary field if it's non-nil, zero value otherwise
+GetSummaryOk returns a tuple with the Summary field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetShortSummary
+### SetSummary
 
-`func (o *CouponFailureSummary) SetShortSummary(v string)`
+`func (o *CouponFailureSummary) SetSummary(v string)`
 
-SetShortSummary sets ShortSummary field to given value.
-
-
-### GetLongSummary
-
-`func (o *CouponFailureSummary) GetLongSummary() string`
-
-GetLongSummary returns the LongSummary field if non-nil, zero value otherwise.
-
-### GetLongSummaryOk
-
-`func (o *CouponFailureSummary) GetLongSummaryOk() (*string, bool)`
-
-GetLongSummaryOk returns a tuple with the LongSummary field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetLongSummary
-
-`func (o *CouponFailureSummary) SetLongSummary(v string)`
-
-SetLongSummary sets LongSummary field to given value.
+SetSummary sets Summary field to given value.
 
 
 ### GetCreatedAt

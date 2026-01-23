@@ -100,7 +100,7 @@ docs/BaseSamlConnection.md
 docs/BestPriorPrice.md
 docs/BestPriorPriceMetadata.md
 docs/BestPriorPriceRequest.md
-docs/BestPriorPriceRequestTarget.md
+docs/BestPriorTarget.md
 docs/Binding.md
 docs/BulkApplicationNotification.md
 docs/BulkOperationOnCampaigns.md
@@ -159,9 +159,11 @@ docs/CardLedgerPointsEntryIntegrationAPI.md
 docs/CardLedgerTransactionLogEntry.md
 docs/CardLedgerTransactionLogEntryIntegrationAPI.md
 docs/CartItem.md
+docs/CartItemFilterTemplate.md
 docs/Catalog.md
 docs/CatalogActionFilter.md
 docs/CatalogItem.md
+docs/CatalogRule.md
 docs/CatalogSyncRequest.md
 docs/CatalogsStrikethroughNotificationPolicy.md
 docs/Change.md
@@ -171,6 +173,7 @@ docs/CodeGeneratorSettings.md
 docs/Collection.md
 docs/CollectionItem.md
 docs/CollectionWithoutPayload.md
+docs/CollectionsCatalog.md
 docs/Coupon.md
 docs/CouponConstraints.md
 docs/CouponCreatedEffectProps.md
@@ -181,7 +184,6 @@ docs/CouponEntity.md
 docs/CouponFailureSummary.md
 docs/CouponLimitConfigs.md
 docs/CouponRejectionReason.md
-docs/CouponRejections.md
 docs/CouponReservations.md
 docs/CouponSearch.md
 docs/CouponValue.md
@@ -214,6 +216,7 @@ docs/DeactivateUserRequest.md
 docs/DeductLoyaltyPoints.md
 docs/DeductLoyaltyPointsEffectProps.md
 docs/DeleteCouponsData.md
+docs/DeleteLoyaltyTransactionsRequest.md
 docs/DeleteUserRequest.md
 docs/Effect.md
 docs/EffectEntity.md
@@ -254,6 +257,7 @@ docs/GenerateCampaignSummary.md
 docs/GenerateCampaignTags.md
 docs/GenerateCouponFailureDetailedSummary.md
 docs/GenerateCouponFailureSummary.md
+docs/GenerateCouponRejections200Response.md
 docs/GenerateItemFilterDescription.md
 docs/GenerateLoyaltyCard.md
 docs/GenerateRuleTitle.md
@@ -412,6 +416,7 @@ docs/NewCampaignStoreBudgetStoreLimit.md
 docs/NewCampaignTemplate.md
 docs/NewCatalog.md
 docs/NewCollection.md
+docs/NewCollectionsCatalog.md
 docs/NewCouponCreationJob.md
 docs/NewCouponDeletionJob.md
 docs/NewCoupons.md
@@ -562,7 +567,6 @@ docs/ScimUser.md
 docs/ScimUsersListResponse.md
 docs/SecondaryDeployment.md
 docs/Session.md
-docs/SessionCoupons.md
 docs/SetDiscountEffectProps.md
 docs/SetDiscountPerAdditionalCostEffectProps.md
 docs/SetDiscountPerAdditionalCostPerItemEffectProps.md
@@ -619,6 +623,7 @@ docs/UpdateCampaignGroup.md
 docs/UpdateCampaignTemplate.md
 docs/UpdateCatalog.md
 docs/UpdateCollection.md
+docs/UpdateCollectionsCatalog.md
 docs/UpdateCoupon.md
 docs/UpdateCouponBatch.md
 docs/UpdateCouponsData.md
@@ -640,7 +645,6 @@ docs/UserEntity.md
 docs/ValueMap.md
 docs/Webhook.md
 docs/WebhookAuthentication.md
-docs/WebhookAuthenticationBase.md
 docs/WebhookAuthenticationDataBasic.md
 docs/WebhookAuthenticationDataCustom.md
 docs/WebhookAuthenticationWebhookRef.md
@@ -733,7 +737,7 @@ model_base_saml_connection.go
 model_best_prior_price.go
 model_best_prior_price_metadata.go
 model_best_prior_price_request.go
-model_best_prior_price_request_target.go
+model_best_prior_target.go
 model_binding.go
 model_bulk_application_notification.go
 model_bulk_operation_on_campaigns.go
@@ -792,9 +796,11 @@ model_card_ledger_points_entry_integration_api.go
 model_card_ledger_transaction_log_entry.go
 model_card_ledger_transaction_log_entry_integration_api.go
 model_cart_item.go
+model_cart_item_filter_template.go
 model_catalog.go
 model_catalog_action_filter.go
 model_catalog_item.go
+model_catalog_rule.go
 model_catalog_sync_request.go
 model_catalogs_strikethrough_notification_policy.go
 model_change.go
@@ -804,6 +810,7 @@ model_code_generator_settings.go
 model_collection.go
 model_collection_item.go
 model_collection_without_payload.go
+model_collections_catalog.go
 model_coupon.go
 model_coupon_constraints.go
 model_coupon_created_effect_props.go
@@ -814,7 +821,6 @@ model_coupon_entity.go
 model_coupon_failure_summary.go
 model_coupon_limit_configs.go
 model_coupon_rejection_reason.go
-model_coupon_rejections.go
 model_coupon_reservations.go
 model_coupon_search.go
 model_coupon_value.go
@@ -847,6 +853,7 @@ model_deactivate_user_request.go
 model_deduct_loyalty_points.go
 model_deduct_loyalty_points_effect_props.go
 model_delete_coupons_data.go
+model_delete_loyalty_transactions_request.go
 model_delete_user_request.go
 model_effect.go
 model_effect_entity.go
@@ -887,6 +894,7 @@ model_generate_campaign_summary.go
 model_generate_campaign_tags.go
 model_generate_coupon_failure_detailed_summary.go
 model_generate_coupon_failure_summary.go
+model_generate_coupon_rejections_200_response.go
 model_generate_item_filter_description.go
 model_generate_loyalty_card.go
 model_generate_rule_title.go
@@ -1043,6 +1051,7 @@ model_new_campaign_store_budget_store_limit.go
 model_new_campaign_template.go
 model_new_catalog.go
 model_new_collection.go
+model_new_collections_catalog.go
 model_new_coupon_creation_job.go
 model_new_coupon_deletion_job.go
 model_new_coupons.go
@@ -1192,7 +1201,6 @@ model_scim_user.go
 model_scim_users_list_response.go
 model_secondary_deployment.go
 model_session.go
-model_session_coupons.go
 model_set_discount_effect_props.go
 model_set_discount_per_additional_cost_effect_props.go
 model_set_discount_per_additional_cost_per_item_effect_props.go
@@ -1250,6 +1258,7 @@ model_update_campaign_group.go
 model_update_campaign_template.go
 model_update_catalog.go
 model_update_collection.go
+model_update_collections_catalog.go
 model_update_coupon.go
 model_update_coupon_batch.go
 model_update_coupons_data.go
@@ -1271,7 +1280,6 @@ model_user_entity.go
 model_value_map.go
 model_webhook.go
 model_webhook_authentication.go
-model_webhook_authentication_base.go
 model_webhook_authentication_data_basic.go
 model_webhook_authentication_data_custom.go
 model_webhook_authentication_webhook_ref.go

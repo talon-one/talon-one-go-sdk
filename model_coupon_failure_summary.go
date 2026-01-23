@@ -37,9 +37,7 @@ type CouponFailureSummary struct {
 	// Language of the summary.
 	Language string `json:"language"`
 	// A summary of the reasons for coupon redemption failure.
-	ShortSummary string `json:"shortSummary"`
-	// A detailed summary of the reasons for coupon redemption failure based on events of the entire session.
-	LongSummary string `json:"longSummary"`
+	Summary string `json:"summary"`
 	// Timestamp when the request was made.
 	CreatedAt time.Time `json:"createdAt"`
 	// Timestamp when the request was last updated.
@@ -52,15 +50,14 @@ type _CouponFailureSummary CouponFailureSummary
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCouponFailureSummary(id int64, eventID int64, status string, couponCode string, language string, shortSummary string, longSummary string, createdAt time.Time, updatedAt time.Time) *CouponFailureSummary {
+func BuildCouponFailureSummary(id int64, eventID int64, status string, couponCode string, language string, summary string, createdAt time.Time, updatedAt time.Time) *CouponFailureSummary {
 	this := CouponFailureSummary{}
 	this.Id = id
 	this.EventID = eventID
 	this.Status = status
 	this.CouponCode = couponCode
 	this.Language = language
-	this.ShortSummary = shortSummary
-	this.LongSummary = longSummary
+	this.Summary = summary
 	this.CreatedAt = createdAt
 	this.UpdatedAt = updatedAt
 	return &this
@@ -258,52 +255,28 @@ func (o *CouponFailureSummary) SetLanguage(v string) {
 	o.Language = v
 }
 
-// GetShortSummary returns the ShortSummary field value
-func (o *CouponFailureSummary) GetShortSummary() string {
+// GetSummary returns the Summary field value
+func (o *CouponFailureSummary) GetSummary() string {
 	if o == nil {
 		var ret string
 		return ret
 	}
 
-	return o.ShortSummary
+	return o.Summary
 }
 
-// GetShortSummaryOk returns a tuple with the ShortSummary field value
+// GetSummaryOk returns a tuple with the Summary field value
 // and a boolean to check if the value has been set.
-func (o *CouponFailureSummary) GetShortSummaryOk() (*string, bool) {
+func (o *CouponFailureSummary) GetSummaryOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.ShortSummary, true
+	return &o.Summary, true
 }
 
-// SetShortSummary sets field value
-func (o *CouponFailureSummary) SetShortSummary(v string) {
-	o.ShortSummary = v
-}
-
-// GetLongSummary returns the LongSummary field value
-func (o *CouponFailureSummary) GetLongSummary() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.LongSummary
-}
-
-// GetLongSummaryOk returns a tuple with the LongSummary field value
-// and a boolean to check if the value has been set.
-func (o *CouponFailureSummary) GetLongSummaryOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.LongSummary, true
-}
-
-// SetLongSummary sets field value
-func (o *CouponFailureSummary) SetLongSummary(v string) {
-	o.LongSummary = v
+// SetSummary sets field value
+func (o *CouponFailureSummary) SetSummary(v string) {
+	o.Summary = v
 }
 
 // GetCreatedAt returns the CreatedAt field value
@@ -375,8 +348,7 @@ func (o CouponFailureSummary) ToMap() (map[string]interface{}, error) {
 	toSerialize["status"] = o.Status
 	toSerialize["couponCode"] = o.CouponCode
 	toSerialize["language"] = o.Language
-	toSerialize["shortSummary"] = o.ShortSummary
-	toSerialize["longSummary"] = o.LongSummary
+	toSerialize["summary"] = o.Summary
 	toSerialize["createdAt"] = o.CreatedAt
 	toSerialize["updatedAt"] = o.UpdatedAt
 	return toSerialize, nil
@@ -392,8 +364,7 @@ func (o *CouponFailureSummary) UnmarshalJSON(data []byte) (err error) {
 		"status",
 		"couponCode",
 		"language",
-		"shortSummary",
-		"longSummary",
+		"summary",
 		"createdAt",
 		"updatedAt",
 	}

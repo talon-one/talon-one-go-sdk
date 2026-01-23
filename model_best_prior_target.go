@@ -16,39 +16,39 @@ import (
 	"fmt"
 )
 
-// checks if the BestPriorPriceRequestTarget type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &BestPriorPriceRequestTarget{}
+// checks if the BestPriorTarget type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &BestPriorTarget{}
 
-// BestPriorPriceRequestTarget Specifies the target for which the best prior price calculation is taken into consideration.
-type BestPriorPriceRequestTarget struct {
+// BestPriorTarget Specifies the target for which the best prior price calculation is taken into consideration.
+type BestPriorTarget struct {
 	// The type of price target.
 	TargetType string `json:"targetType"`
 	// The AudienceID of an audience. Must be used with \"AUDIENCE\" target type.
 	AudienceID *int64 `json:"audienceID,omitempty"`
 }
 
-type _BestPriorPriceRequestTarget BestPriorPriceRequestTarget
+type _BestPriorTarget BestPriorTarget
 
-// NewBestPriorPriceRequestTarget instantiates a new BestPriorPriceRequestTarget object
+// NewBestPriorTarget instantiates a new BestPriorTarget object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildBestPriorPriceRequestTarget(targetType string) *BestPriorPriceRequestTarget {
-	this := BestPriorPriceRequestTarget{}
+func BuildBestPriorTarget(targetType string) *BestPriorTarget {
+	this := BestPriorTarget{}
 	this.TargetType = targetType
 	return &this
 }
 
-// NewBestPriorPriceRequestTargetWithDefaults instantiates a new BestPriorPriceRequestTarget object
+// NewBestPriorTargetWithDefaults instantiates a new BestPriorTarget object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewBestPriorPriceRequestTargetWithDefaults() *BestPriorPriceRequestTarget {
-	this := BestPriorPriceRequestTarget{}
+func NewBestPriorTargetWithDefaults() *BestPriorTarget {
+	this := BestPriorTarget{}
 	return &this
 }
 
 // GetTargetType returns the TargetType field value
-func (o *BestPriorPriceRequestTarget) GetTargetType() string {
+func (o *BestPriorTarget) GetTargetType() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -59,7 +59,7 @@ func (o *BestPriorPriceRequestTarget) GetTargetType() string {
 
 // GetTargetTypeOk returns a tuple with the TargetType field value
 // and a boolean to check if the value has been set.
-func (o *BestPriorPriceRequestTarget) GetTargetTypeOk() (*string, bool) {
+func (o *BestPriorTarget) GetTargetTypeOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -67,12 +67,12 @@ func (o *BestPriorPriceRequestTarget) GetTargetTypeOk() (*string, bool) {
 }
 
 // SetTargetType sets field value
-func (o *BestPriorPriceRequestTarget) SetTargetType(v string) {
+func (o *BestPriorTarget) SetTargetType(v string) {
 	o.TargetType = v
 }
 
 // GetAudienceID returns the AudienceID field value if set, zero value otherwise.
-func (o *BestPriorPriceRequestTarget) GetAudienceID() int64 {
+func (o *BestPriorTarget) GetAudienceID() int64 {
 	if o == nil || IsNil(o.AudienceID) {
 		var ret int64
 		return ret
@@ -82,7 +82,7 @@ func (o *BestPriorPriceRequestTarget) GetAudienceID() int64 {
 
 // GetAudienceIDOk returns a tuple with the AudienceID field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *BestPriorPriceRequestTarget) GetAudienceIDOk() (*int64, bool) {
+func (o *BestPriorTarget) GetAudienceIDOk() (*int64, bool) {
 	if o == nil || IsNil(o.AudienceID) {
 		return nil, false
 	}
@@ -90,7 +90,7 @@ func (o *BestPriorPriceRequestTarget) GetAudienceIDOk() (*int64, bool) {
 }
 
 // HasAudienceID returns a boolean if a field has been set.
-func (o *BestPriorPriceRequestTarget) HasAudienceID() bool {
+func (o *BestPriorTarget) HasAudienceID() bool {
 	if o != nil && !IsNil(o.AudienceID) {
 		return true
 	}
@@ -99,11 +99,11 @@ func (o *BestPriorPriceRequestTarget) HasAudienceID() bool {
 }
 
 // SetAudienceID gets a reference to the given int64 and assigns it to the AudienceID field.
-func (o *BestPriorPriceRequestTarget) SetAudienceID(v int64) {
+func (o *BestPriorTarget) SetAudienceID(v int64) {
 	o.AudienceID = &v
 }
 
-func (o BestPriorPriceRequestTarget) MarshalJSON() ([]byte, error) {
+func (o BestPriorTarget) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -111,7 +111,7 @@ func (o BestPriorPriceRequestTarget) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-func (o BestPriorPriceRequestTarget) ToMap() (map[string]interface{}, error) {
+func (o BestPriorTarget) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["targetType"] = o.TargetType
 	if !IsNil(o.AudienceID) {
@@ -120,7 +120,7 @@ func (o BestPriorPriceRequestTarget) ToMap() (map[string]interface{}, error) {
 	return toSerialize, nil
 }
 
-func (o *BestPriorPriceRequestTarget) UnmarshalJSON(data []byte) (err error) {
+func (o *BestPriorTarget) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
@@ -142,53 +142,53 @@ func (o *BestPriorPriceRequestTarget) UnmarshalJSON(data []byte) (err error) {
 		}
 	}
 
-	varBestPriorPriceRequestTarget := _BestPriorPriceRequestTarget{}
+	varBestPriorTarget := _BestPriorTarget{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varBestPriorPriceRequestTarget)
+	err = decoder.Decode(&varBestPriorTarget)
 
 	if err != nil {
 		return err
 	}
 
-	*o = BestPriorPriceRequestTarget(varBestPriorPriceRequestTarget)
+	*o = BestPriorTarget(varBestPriorTarget)
 
 	return err
 }
 
-type NullableBestPriorPriceRequestTarget struct {
-	value *BestPriorPriceRequestTarget
+type NullableBestPriorTarget struct {
+	value *BestPriorTarget
 	isSet bool
 }
 
-func (v NullableBestPriorPriceRequestTarget) Get() *BestPriorPriceRequestTarget {
+func (v NullableBestPriorTarget) Get() *BestPriorTarget {
 	return v.value
 }
 
-func (v *NullableBestPriorPriceRequestTarget) Set(val *BestPriorPriceRequestTarget) {
+func (v *NullableBestPriorTarget) Set(val *BestPriorTarget) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableBestPriorPriceRequestTarget) IsSet() bool {
+func (v NullableBestPriorTarget) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableBestPriorPriceRequestTarget) Unset() {
+func (v *NullableBestPriorTarget) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func BuildNullableBestPriorPriceRequestTarget(val *BestPriorPriceRequestTarget) *NullableBestPriorPriceRequestTarget {
-	return &NullableBestPriorPriceRequestTarget{value: val, isSet: true}
+func BuildNullableBestPriorTarget(val *BestPriorTarget) *NullableBestPriorTarget {
+	return &NullableBestPriorTarget{value: val, isSet: true}
 }
 
-func (v NullableBestPriorPriceRequestTarget) MarshalJSON() ([]byte, error) {
+func (v NullableBestPriorTarget) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableBestPriorPriceRequestTarget) UnmarshalJSON(src []byte) error {
+func (v *NullableBestPriorTarget) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }

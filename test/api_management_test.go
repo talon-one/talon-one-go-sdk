@@ -783,6 +783,18 @@ func Test_talon_ManagementAPIService(t *testing.T) {
 
 	})
 
+	t.Run("Test ManagementAPIService GenerateCouponRejections", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		resp, httpRes, err := apiClient.ManagementAPI.GenerateCouponRejections(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test ManagementAPIService GetAccessLogsWithoutTotalCount", func(t *testing.T) {
 
 		t.Skip("skip test")  // remove to run test
@@ -1432,6 +1444,21 @@ func Test_talon_ManagementAPIService(t *testing.T) {
 
 	})
 
+	t.Run("Test ManagementAPIService GetLoyaltyLedgerBalances", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var loyaltyProgramId int64
+		var integrationId string
+
+		resp, httpRes, err := apiClient.ManagementAPI.GetLoyaltyLedgerBalances(context.Background(), loyaltyProgramId, integrationId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test ManagementAPIService GetLoyaltyPoints", func(t *testing.T) {
 
 		t.Skip("skip test")  // remove to run test
@@ -1454,6 +1481,21 @@ func Test_talon_ManagementAPIService(t *testing.T) {
 		var loyaltyProgramId int64
 
 		resp, httpRes, err := apiClient.ManagementAPI.GetLoyaltyProgram(context.Background(), loyaltyProgramId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test ManagementAPIService GetLoyaltyProgramProfileLedgerTransactions", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var loyaltyProgramId int64
+		var integrationId string
+
+		resp, httpRes, err := apiClient.ManagementAPI.GetLoyaltyProgramProfileLedgerTransactions(context.Background(), loyaltyProgramId, integrationId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

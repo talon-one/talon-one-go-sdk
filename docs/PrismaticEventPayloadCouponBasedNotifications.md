@@ -22,12 +22,14 @@ Name | Type | Description | Notes
 **BatchId** | Pointer to **string** |  | [optional] 
 **Attributes** | Pointer to **map[string]interface{}** |  | [optional] 
 **Limits** | Pointer to [**[]PrismaticEventPayloadCouponBasedNotificationsLimits**](PrismaticEventPayloadCouponBasedNotificationsLimits.md) |  | [optional] 
+**SourceOfEvent** | **string** |  | 
+**EmployeeName** | **string** |  | 
 
 ## Methods
 
 ### NewPrismaticEventPayloadCouponBasedNotifications
 
-`func NewPrismaticEventPayloadCouponBasedNotifications(id int64, created time.Time, campaignId int64, value string, usageLimit int64, usageCounter int64, ) *PrismaticEventPayloadCouponBasedNotifications`
+`func NewPrismaticEventPayloadCouponBasedNotifications(id int64, created time.Time, campaignId int64, value string, usageLimit int64, usageCounter int64, sourceOfEvent string, employeeName string, ) *PrismaticEventPayloadCouponBasedNotifications`
 
 NewPrismaticEventPayloadCouponBasedNotifications instantiates a new PrismaticEventPayloadCouponBasedNotifications object
 This constructor will assign default values to properties that have it defined,
@@ -461,6 +463,46 @@ SetLimits sets Limits field to given value.
 `func (o *PrismaticEventPayloadCouponBasedNotifications) HasLimits() bool`
 
 HasLimits returns a boolean if a field has been set.
+
+### GetSourceOfEvent
+
+`func (o *PrismaticEventPayloadCouponBasedNotifications) GetSourceOfEvent() string`
+
+GetSourceOfEvent returns the SourceOfEvent field if non-nil, zero value otherwise.
+
+### GetSourceOfEventOk
+
+`func (o *PrismaticEventPayloadCouponBasedNotifications) GetSourceOfEventOk() (*string, bool)`
+
+GetSourceOfEventOk returns a tuple with the SourceOfEvent field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSourceOfEvent
+
+`func (o *PrismaticEventPayloadCouponBasedNotifications) SetSourceOfEvent(v string)`
+
+SetSourceOfEvent sets SourceOfEvent field to given value.
+
+
+### GetEmployeeName
+
+`func (o *PrismaticEventPayloadCouponBasedNotifications) GetEmployeeName() string`
+
+GetEmployeeName returns the EmployeeName field if non-nil, zero value otherwise.
+
+### GetEmployeeNameOk
+
+`func (o *PrismaticEventPayloadCouponBasedNotifications) GetEmployeeNameOk() (*string, bool)`
+
+GetEmployeeNameOk returns a tuple with the EmployeeName field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetEmployeeName
+
+`func (o *PrismaticEventPayloadCouponBasedNotifications) SetEmployeeName(v string)`
+
+SetEmployeeName sets EmployeeName field to given value.
+
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

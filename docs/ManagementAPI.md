@@ -59,6 +59,7 @@ Method | HTTP request | Description
 [**ExportLoyaltyLedger**](ManagementAPI.md#ExportLoyaltyLedger) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/export_log | Export customer&#39;s transaction logs
 [**ExportPoolGiveaways**](ManagementAPI.md#ExportPoolGiveaways) | **Get** /v1/giveaways/pools/{poolId}/export | Export giveaway codes of a giveaway pool
 [**ExportReferrals**](ManagementAPI.md#ExportReferrals) | **Get** /v1/applications/{applicationId}/export_referrals | Export referrals
+[**GenerateCouponRejections**](ManagementAPI.md#GenerateCouponRejections) | **Get** /v1/coupon_rejections | Summarize coupon redemption failures in session
 [**GetAccessLogsWithoutTotalCount**](ManagementAPI.md#GetAccessLogsWithoutTotalCount) | **Get** /v1/applications/{applicationId}/access_logs/no_total | Get access logs for Application
 [**GetAccount**](ManagementAPI.md#GetAccount) | **Get** /v1/accounts/{accountId} | Get account details
 [**GetAccountAnalytics**](ManagementAPI.md#GetAccountAnalytics) | **Get** /v1/accounts/{accountId}/analytics | Get account analytics
@@ -106,8 +107,10 @@ Method | HTTP request | Description
 [**GetLoyaltyCard**](ManagementAPI.md#GetLoyaltyCard) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId} | Get loyalty card
 [**GetLoyaltyCardTransactionLogs**](ManagementAPI.md#GetLoyaltyCardTransactionLogs) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/logs | List card&#39;s transactions
 [**GetLoyaltyCards**](ManagementAPI.md#GetLoyaltyCards) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/cards | List loyalty cards
+[**GetLoyaltyLedgerBalances**](ManagementAPI.md#GetLoyaltyLedgerBalances) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/ledger_balances | Get customer&#39;s loyalty balances
 [**GetLoyaltyPoints**](ManagementAPI.md#GetLoyaltyPoints) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId} | Get customer&#39;s full loyalty ledger
 [**GetLoyaltyProgram**](ManagementAPI.md#GetLoyaltyProgram) | **Get** /v1/loyalty_programs/{loyaltyProgramId} | Get loyalty program
+[**GetLoyaltyProgramProfileLedgerTransactions**](ManagementAPI.md#GetLoyaltyProgramProfileLedgerTransactions) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/ledger_transactions | List customer&#39;s loyalty transactions
 [**GetLoyaltyProgramTransactions**](ManagementAPI.md#GetLoyaltyProgramTransactions) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/transactions | List loyalty program transactions
 [**GetLoyaltyPrograms**](ManagementAPI.md#GetLoyaltyPrograms) | **Get** /v1/loyalty_programs | List loyalty programs
 [**GetLoyaltyStatistics**](ManagementAPI.md#GetLoyaltyStatistics) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/statistics | Get loyalty program statistics
@@ -4212,6 +4215,78 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## GenerateCouponRejections
+
+> GenerateCouponRejections200Response GenerateCouponRejections(ctx).SessionIntegrationId(sessionIntegrationId).ApplicationId(applicationId).Language(language).CouponCode(couponCode).Execute()
+
+Summarize coupon redemption failures in session
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	sessionIntegrationId := "sessionIntegrationId_example" // string | The integration ID of the session to summarize.
+	applicationId := float32(8.14) // float32 | Filter results by Application ID. (optional)
+	language := "language_example" // string | The [ISO-639](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes) code of the language in which the summary will be generated.  (optional)
+	couponCode := "couponCode_example" // string | The coupon code for which to get the rejection reason. (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ManagementAPI.GenerateCouponRejections(context.Background()).SessionIntegrationId(sessionIntegrationId).ApplicationId(applicationId).Language(language).CouponCode(couponCode).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.GenerateCouponRejections``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GenerateCouponRejections`: GenerateCouponRejections200Response
+	fmt.Fprintf(os.Stdout, "Response from `ManagementAPI.GenerateCouponRejections`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGenerateCouponRejectionsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **sessionIntegrationId** | **string** | The integration ID of the session to summarize. | 
+ **applicationId** | **float32** | Filter results by Application ID. | 
+ **language** | **string** | The [ISO-639](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes) code of the language in which the summary will be generated.  | 
+ **couponCode** | **string** | The coupon code for which to get the rejection reason. | 
+
+### Return type
+
+[**GenerateCouponRejections200Response**](GenerateCouponRejections200Response.md)
+
+### Authorization
+
+[management_key](../README.md#management_key), [manager_auth](../README.md#manager_auth), [api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## GetAccessLogsWithoutTotalCount
 
 > GetAccessLogsWithoutTotalCount200Response GetAccessLogsWithoutTotalCount(ctx, applicationId).RangeStart(rangeStart).RangeEnd(rangeEnd).Path(path).Method(method).Status(status).PageSize(pageSize).Skip(skip).Sort(sort).Execute()
@@ -7866,6 +7941,88 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## GetLoyaltyLedgerBalances
+
+> LoyaltyBalancesWithTiers GetLoyaltyLedgerBalances(ctx, loyaltyProgramId, integrationId).EndDate(endDate).SubledgerId(subledgerId).IncludeTiers(includeTiers).IncludeProjectedTier(includeProjectedTier).Execute()
+
+Get customer's loyalty balances
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+    "time"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	loyaltyProgramId := int64(789) // int64 | Identifier of the profile-based loyalty program. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint. 
+	integrationId := "integrationId_example" // string | The integration identifier for this customer profile. Must be: - Unique within the deployment. - Stable for the customer. Do not use an ID that the customer can update themselves. For example, you can use a database ID.  Once set, you cannot update this identifier. 
+	endDate := time.Now() // time.Time | Used to return expired, active, and pending loyalty balances before this timestamp. You can enter any past, present, or future timestamp value.  **Note:**  - It must be an RFC3339 timestamp string. - You can include a time component in your string, for example, `T23:59:59` to specify the end of the day. The time zone setting considered is `UTC`. If you do not include a time component, a default time value of `T00:00:00` (midnight) in `UTC` is considered.  (optional)
+	subledgerId := "subledgerId_example" // string | The ID of the subledger used to filter the data. Leave this value empty (\"\") to query the main ledger. (optional)
+	includeTiers := true // bool | Indicates whether tier information is included in the response.  When set to `true`, the response includes information about the current tier and the number of points required to move to next tier.  (optional) (default to false)
+	includeProjectedTier := true // bool | Indicates whether the customer's projected tier information is included in the response.  When set to `true`, the response includes information about the customer's active points and the name of the projected tier.  **Note** We recommend filtering by `subledgerId` for better performance.  (optional) (default to false)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ManagementAPI.GetLoyaltyLedgerBalances(context.Background(), loyaltyProgramId, integrationId).EndDate(endDate).SubledgerId(subledgerId).IncludeTiers(includeTiers).IncludeProjectedTier(includeProjectedTier).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.GetLoyaltyLedgerBalances``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetLoyaltyLedgerBalances`: LoyaltyBalancesWithTiers
+	fmt.Fprintf(os.Stdout, "Response from `ManagementAPI.GetLoyaltyLedgerBalances`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**loyaltyProgramId** | **int64** | Identifier of the profile-based loyalty program. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.  | 
+**integrationId** | **string** | The integration identifier for this customer profile. Must be: - Unique within the deployment. - Stable for the customer. Do not use an ID that the customer can update themselves. For example, you can use a database ID.  Once set, you cannot update this identifier.  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetLoyaltyLedgerBalancesRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+ **endDate** | **time.Time** | Used to return expired, active, and pending loyalty balances before this timestamp. You can enter any past, present, or future timestamp value.  **Note:**  - It must be an RFC3339 timestamp string. - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.  | 
+ **subledgerId** | **string** | The ID of the subledger used to filter the data. Leave this value empty (\&quot;\&quot;) to query the main ledger. | 
+ **includeTiers** | **bool** | Indicates whether tier information is included in the response.  When set to &#x60;true&#x60;, the response includes information about the current tier and the number of points required to move to next tier.  | [default to false]
+ **includeProjectedTier** | **bool** | Indicates whether the customer&#39;s projected tier information is included in the response.  When set to &#x60;true&#x60;, the response includes information about the customer&#39;s active points and the name of the projected tier.  **Note** We recommend filtering by &#x60;subledgerId&#x60; for better performance.  | [default to false]
+
+### Return type
+
+[**LoyaltyBalancesWithTiers**](LoyaltyBalancesWithTiers.md)
+
+### Authorization
+
+[management_key](../README.md#management_key), [manager_auth](../README.md#manager_auth), [api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## GetLoyaltyPoints
 
 > LoyaltyLedger GetLoyaltyPoints(ctx, loyaltyProgramId, integrationId).Execute()
@@ -8009,9 +8166,101 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## GetLoyaltyProgramProfileLedgerTransactions
+
+> GetLoyaltyProgramProfileTransactions200Response GetLoyaltyProgramProfileLedgerTransactions(ctx, loyaltyProgramId, integrationId).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).SubledgerId(subledgerId).LoyaltyTransactionType(loyaltyTransactionType).StartDate(startDate).EndDate(endDate).PageSize(pageSize).Skip(skip).AwaitsActivation(awaitsActivation).Execute()
+
+List customer's loyalty transactions
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+    "time"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	loyaltyProgramId := int64(789) // int64 | Identifier of the profile-based loyalty program. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint. 
+	integrationId := "integrationId_example" // string | The integration identifier for this customer profile. Must be: - Unique within the deployment. - Stable for the customer. Do not use an ID that the customer can update themselves. For example, you can use a database ID.  Once set, you cannot update this identifier. 
+	customerSessionIDs := []string{"Inner_example"} // []string | Filter the results by a list of customer session IDs.   To include multiple IDs, repeat the parameter for each one, for example,  `?customerSessionIDs=id1&customerSessionIDs=id2`.  The response contains only data associated with the specified sessions.  (optional)
+	transactionUUIDs := []string{"Inner_example"} // []string | Filter the results by a list of transaction UUIDs.  To include multiple IDs, repeat the parameter for each one, for example,  `?transactionUUIDs=uuid1&transactionUUIDs=uuid2`.  The response contains only data associated with the specified transactions.  (optional)
+	subledgerId := "subledgerId_example" // string | The ID of the subledger used to filter the data. Leave this value empty (\"\") to query the main ledger. (optional)
+	loyaltyTransactionType := "loyaltyTransactionType_example" // string | Filter results by loyalty transaction type: - `manual`: Loyalty transaction that was done manually. - `session`: Loyalty transaction that resulted from a customer session. - `import`: Loyalty transaction that was imported from a CSV file.  (optional)
+	startDate := time.Now() // time.Time | Date and time from which results are returned. Results are filtered by transaction creation date.  **Note:**  - It must be an RFC3339 timestamp string. - You can include a time component in your string, for example, `T23:59:59` to specify the end of the day. The time zone setting considered is `UTC`. If you do not include a time component, a default time value of `T00:00:00` (midnight) in `UTC` is considered.  (optional)
+	endDate := time.Now() // time.Time | Date and time by which results are returned. Results are filtered by transaction creation date.  **Note:**  - It must be an RFC3339 timestamp string. - You can include a time component in your string, for example, `T23:59:59` to specify the end of the day. The time zone setting considered is `UTC`. If you do not include a time component, a default time value of `T00:00:00` (midnight) in `UTC` is considered.  (optional)
+	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 50)
+	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
+	awaitsActivation := true // bool | If `true`: Filters results to include only point transactions that have action-based activation and have not expired.  If `false`: Returns a `400` response.  (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ManagementAPI.GetLoyaltyProgramProfileLedgerTransactions(context.Background(), loyaltyProgramId, integrationId).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).SubledgerId(subledgerId).LoyaltyTransactionType(loyaltyTransactionType).StartDate(startDate).EndDate(endDate).PageSize(pageSize).Skip(skip).AwaitsActivation(awaitsActivation).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.GetLoyaltyProgramProfileLedgerTransactions``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetLoyaltyProgramProfileLedgerTransactions`: GetLoyaltyProgramProfileTransactions200Response
+	fmt.Fprintf(os.Stdout, "Response from `ManagementAPI.GetLoyaltyProgramProfileLedgerTransactions`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**loyaltyProgramId** | **int64** | Identifier of the profile-based loyalty program. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.  | 
+**integrationId** | **string** | The integration identifier for this customer profile. Must be: - Unique within the deployment. - Stable for the customer. Do not use an ID that the customer can update themselves. For example, you can use a database ID.  Once set, you cannot update this identifier.  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetLoyaltyProgramProfileLedgerTransactionsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+ **customerSessionIDs** | **[]string** | Filter the results by a list of customer session IDs.   To include multiple IDs, repeat the parameter for each one, for example,  &#x60;?customerSessionIDs&#x3D;id1&amp;customerSessionIDs&#x3D;id2&#x60;.  The response contains only data associated with the specified sessions.  | 
+ **transactionUUIDs** | **[]string** | Filter the results by a list of transaction UUIDs.  To include multiple IDs, repeat the parameter for each one, for example,  &#x60;?transactionUUIDs&#x3D;uuid1&amp;transactionUUIDs&#x3D;uuid2&#x60;.  The response contains only data associated with the specified transactions.  | 
+ **subledgerId** | **string** | The ID of the subledger used to filter the data. Leave this value empty (\&quot;\&quot;) to query the main ledger. | 
+ **loyaltyTransactionType** | **string** | Filter results by loyalty transaction type: - &#x60;manual&#x60;: Loyalty transaction that was done manually. - &#x60;session&#x60;: Loyalty transaction that resulted from a customer session. - &#x60;import&#x60;: Loyalty transaction that was imported from a CSV file.  | 
+ **startDate** | **time.Time** | Date and time from which results are returned. Results are filtered by transaction creation date.  **Note:**  - It must be an RFC3339 timestamp string. - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.  | 
+ **endDate** | **time.Time** | Date and time by which results are returned. Results are filtered by transaction creation date.  **Note:**  - It must be an RFC3339 timestamp string. - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.  | 
+ **pageSize** | **int64** | The number of items in the response. | [default to 50]
+ **skip** | **int64** | The number of items to skip when paging through large result sets. | 
+ **awaitsActivation** | **bool** | If &#x60;true&#x60;: Filters results to include only point transactions that have action-based activation and have not expired.  If &#x60;false&#x60;: Returns a &#x60;400&#x60; response.  | 
+
+### Return type
+
+[**GetLoyaltyProgramProfileTransactions200Response**](GetLoyaltyProgramProfileTransactions200Response.md)
+
+### Authorization
+
+[management_key](../README.md#management_key), [manager_auth](../README.md#manager_auth), [api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## GetLoyaltyProgramTransactions
 
-> GetLoyaltyProgramTransactions200Response GetLoyaltyProgramTransactions(ctx, loyaltyProgramId).LoyaltyTransactionType(loyaltyTransactionType).SubledgerId(subledgerId).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).StartDate(startDate).EndDate(endDate).PageSize(pageSize).Skip(skip).Execute()
+> GetLoyaltyProgramTransactions200Response GetLoyaltyProgramTransactions(ctx, loyaltyProgramId).LoyaltyTransactionType(loyaltyTransactionType).SubledgerId(subledgerId).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).StartDate(startDate).EndDate(endDate).PageSize(pageSize).Skip(skip).AwaitsActivation(awaitsActivation).Execute()
 
 List loyalty program transactions
 
@@ -8040,10 +8289,11 @@ func main() {
 	endDate := time.Now() // time.Time | Date and time by which results are returned. Results are filtered by transaction creation date.  **Note:**  - It must be an RFC3339 timestamp string. - You can include a time component in your string, for example, `T23:59:59` to specify the end of the day. The time zone setting considered is `UTC`. If you do not include a time component, a default time value of `T00:00:00` (midnight) in `UTC` is considered.  (optional)
 	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 50)
 	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
+	awaitsActivation := true // bool | If `true`: Filters results to include only point transactions that have action-based activation and have not expired.  If `false`: Returns a `400` response.  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ManagementAPI.GetLoyaltyProgramTransactions(context.Background(), loyaltyProgramId).LoyaltyTransactionType(loyaltyTransactionType).SubledgerId(subledgerId).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).StartDate(startDate).EndDate(endDate).PageSize(pageSize).Skip(skip).Execute()
+	resp, r, err := apiClient.ManagementAPI.GetLoyaltyProgramTransactions(context.Background(), loyaltyProgramId).LoyaltyTransactionType(loyaltyTransactionType).SubledgerId(subledgerId).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).StartDate(startDate).EndDate(endDate).PageSize(pageSize).Skip(skip).AwaitsActivation(awaitsActivation).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.GetLoyaltyProgramTransactions``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -8077,6 +8327,7 @@ Name | Type | Description  | Notes
  **endDate** | **time.Time** | Date and time by which results are returned. Results are filtered by transaction creation date.  **Note:**  - It must be an RFC3339 timestamp string. - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.  | 
  **pageSize** | **int64** | The number of items in the response. | [default to 50]
  **skip** | **int64** | The number of items to skip when paging through large result sets. | 
+ **awaitsActivation** | **bool** | If &#x60;true&#x60;: Filters results to include only point transactions that have action-based activation and have not expired.  If &#x60;false&#x60;: Returns a &#x60;400&#x60; response.  | 
 
 ### Return type
 

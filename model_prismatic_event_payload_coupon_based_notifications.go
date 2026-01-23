@@ -40,6 +40,8 @@ type PrismaticEventPayloadCouponBasedNotifications struct {
 	BatchId                *string                                               `json:"BatchId,omitempty"`
 	Attributes             map[string]interface{}                                `json:"Attributes,omitempty"`
 	Limits                 []PrismaticEventPayloadCouponBasedNotificationsLimits `json:"Limits,omitempty"`
+	SourceOfEvent          string                                                `json:"SourceOfEvent"`
+	EmployeeName           string                                                `json:"EmployeeName"`
 }
 
 type _PrismaticEventPayloadCouponBasedNotifications PrismaticEventPayloadCouponBasedNotifications
@@ -48,7 +50,7 @@ type _PrismaticEventPayloadCouponBasedNotifications PrismaticEventPayloadCouponB
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildPrismaticEventPayloadCouponBasedNotifications(id int64, created time.Time, campaignId int64, value string, usageLimit int64, usageCounter int64) *PrismaticEventPayloadCouponBasedNotifications {
+func BuildPrismaticEventPayloadCouponBasedNotifications(id int64, created time.Time, campaignId int64, value string, usageLimit int64, usageCounter int64, sourceOfEvent string, employeeName string) *PrismaticEventPayloadCouponBasedNotifications {
 	this := PrismaticEventPayloadCouponBasedNotifications{}
 	this.Id = id
 	this.Created = created
@@ -56,6 +58,8 @@ func BuildPrismaticEventPayloadCouponBasedNotifications(id int64, created time.T
 	this.Value = value
 	this.UsageLimit = usageLimit
 	this.UsageCounter = usageCounter
+	this.SourceOfEvent = sourceOfEvent
+	this.EmployeeName = employeeName
 	return &this
 }
 
@@ -595,6 +599,54 @@ func (o *PrismaticEventPayloadCouponBasedNotifications) SetLimits(v []PrismaticE
 	o.Limits = v
 }
 
+// GetSourceOfEvent returns the SourceOfEvent field value
+func (o *PrismaticEventPayloadCouponBasedNotifications) GetSourceOfEvent() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.SourceOfEvent
+}
+
+// GetSourceOfEventOk returns a tuple with the SourceOfEvent field value
+// and a boolean to check if the value has been set.
+func (o *PrismaticEventPayloadCouponBasedNotifications) GetSourceOfEventOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.SourceOfEvent, true
+}
+
+// SetSourceOfEvent sets field value
+func (o *PrismaticEventPayloadCouponBasedNotifications) SetSourceOfEvent(v string) {
+	o.SourceOfEvent = v
+}
+
+// GetEmployeeName returns the EmployeeName field value
+func (o *PrismaticEventPayloadCouponBasedNotifications) GetEmployeeName() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.EmployeeName
+}
+
+// GetEmployeeNameOk returns a tuple with the EmployeeName field value
+// and a boolean to check if the value has been set.
+func (o *PrismaticEventPayloadCouponBasedNotifications) GetEmployeeNameOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.EmployeeName, true
+}
+
+// SetEmployeeName sets field value
+func (o *PrismaticEventPayloadCouponBasedNotifications) SetEmployeeName(v string) {
+	o.EmployeeName = v
+}
+
 func (o PrismaticEventPayloadCouponBasedNotifications) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -647,6 +699,8 @@ func (o PrismaticEventPayloadCouponBasedNotifications) ToMap() (map[string]inter
 	if !IsNil(o.Limits) {
 		toSerialize["Limits"] = o.Limits
 	}
+	toSerialize["SourceOfEvent"] = o.SourceOfEvent
+	toSerialize["EmployeeName"] = o.EmployeeName
 	return toSerialize, nil
 }
 
@@ -661,6 +715,8 @@ func (o *PrismaticEventPayloadCouponBasedNotifications) UnmarshalJSON(data []byt
 		"Value",
 		"UsageLimit",
 		"UsageCounter",
+		"SourceOfEvent",
+		"EmployeeName",
 	}
 
 	allProperties := make(map[string]interface{})

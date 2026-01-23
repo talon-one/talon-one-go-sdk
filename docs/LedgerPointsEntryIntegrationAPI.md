@@ -14,6 +14,7 @@ Name | Type | Description | Notes
 **ExpiryDate** | **string** | Date when points expire. Possible values are:   - &#x60;unlimited&#x60;: Points have no expiration date.   - &#x60;timestamp value&#x60;: Points expire on the given date and time.  | 
 **SubledgerId** | **string** | ID of the subledger. | 
 **Amount** | **float32** | Amount of loyalty points added in the transaction. | 
+**ValidityDuration** | Pointer to **string** | The duration for which the points remain active, relative to the  activation date.  **Note**: This only applies to points for which &#x60;awaitsActivation&#x60; is &#x60;true&#x60; and &#x60;expiryDate&#x60; is not set.  | [optional] 
 
 ## Methods
 
@@ -238,6 +239,31 @@ and a boolean to check if the value has been set.
 
 SetAmount sets Amount field to given value.
 
+
+### GetValidityDuration
+
+`func (o *LedgerPointsEntryIntegrationAPI) GetValidityDuration() string`
+
+GetValidityDuration returns the ValidityDuration field if non-nil, zero value otherwise.
+
+### GetValidityDurationOk
+
+`func (o *LedgerPointsEntryIntegrationAPI) GetValidityDurationOk() (*string, bool)`
+
+GetValidityDurationOk returns a tuple with the ValidityDuration field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetValidityDuration
+
+`func (o *LedgerPointsEntryIntegrationAPI) SetValidityDuration(v string)`
+
+SetValidityDuration sets ValidityDuration field to given value.
+
+### HasValidityDuration
+
+`func (o *LedgerPointsEntryIntegrationAPI) HasValidityDuration() bool`
+
+HasValidityDuration returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
