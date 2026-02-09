@@ -22,6 +22,12 @@ var _ MappedNullable = &PrismaticFlowConfig{}
 // PrismaticFlowConfig struct for PrismaticFlowConfig
 type PrismaticFlowConfig struct {
 	ApiKey string `json:"ApiKey"`
+	// Number of Prismatic workers to run in parallel for this flow (maximum 500).
+	WorkerCount *int64 `json:"WorkerCount,omitempty"`
+	// Maximum number of events to send in a single message to Prismatic.
+	MaxEventsPerMessage *int64 `json:"MaxEventsPerMessage,omitempty"`
+	// Maximum number of retries for a Prismatic event before it is ignored.
+	MaxRetries *int64 `json:"MaxRetries,omitempty"`
 }
 
 type _PrismaticFlowConfig PrismaticFlowConfig
@@ -33,6 +39,12 @@ type _PrismaticFlowConfig PrismaticFlowConfig
 func BuildPrismaticFlowConfig(apiKey string) *PrismaticFlowConfig {
 	this := PrismaticFlowConfig{}
 	this.ApiKey = apiKey
+	var workerCount int64 = 10
+	this.WorkerCount = &workerCount
+	var maxEventsPerMessage int64 = 1000
+	this.MaxEventsPerMessage = &maxEventsPerMessage
+	var maxRetries int64 = 10
+	this.MaxRetries = &maxRetries
 	return &this
 }
 
@@ -41,6 +53,12 @@ func BuildPrismaticFlowConfig(apiKey string) *PrismaticFlowConfig {
 // but it doesn't guarantee that properties required by API are set
 func NewPrismaticFlowConfigWithDefaults() *PrismaticFlowConfig {
 	this := PrismaticFlowConfig{}
+	var workerCount int64 = 10
+	this.WorkerCount = &workerCount
+	var maxEventsPerMessage int64 = 1000
+	this.MaxEventsPerMessage = &maxEventsPerMessage
+	var maxRetries int64 = 10
+	this.MaxRetries = &maxRetries
 	return &this
 }
 
@@ -68,6 +86,102 @@ func (o *PrismaticFlowConfig) SetApiKey(v string) {
 	o.ApiKey = v
 }
 
+// GetWorkerCount returns the WorkerCount field value if set, zero value otherwise.
+func (o *PrismaticFlowConfig) GetWorkerCount() int64 {
+	if o == nil || IsNil(o.WorkerCount) {
+		var ret int64
+		return ret
+	}
+	return *o.WorkerCount
+}
+
+// GetWorkerCountOk returns a tuple with the WorkerCount field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PrismaticFlowConfig) GetWorkerCountOk() (*int64, bool) {
+	if o == nil || IsNil(o.WorkerCount) {
+		return nil, false
+	}
+	return o.WorkerCount, true
+}
+
+// HasWorkerCount returns a boolean if a field has been set.
+func (o *PrismaticFlowConfig) HasWorkerCount() bool {
+	if o != nil && !IsNil(o.WorkerCount) {
+		return true
+	}
+
+	return false
+}
+
+// SetWorkerCount gets a reference to the given int64 and assigns it to the WorkerCount field.
+func (o *PrismaticFlowConfig) SetWorkerCount(v int64) {
+	o.WorkerCount = &v
+}
+
+// GetMaxEventsPerMessage returns the MaxEventsPerMessage field value if set, zero value otherwise.
+func (o *PrismaticFlowConfig) GetMaxEventsPerMessage() int64 {
+	if o == nil || IsNil(o.MaxEventsPerMessage) {
+		var ret int64
+		return ret
+	}
+	return *o.MaxEventsPerMessage
+}
+
+// GetMaxEventsPerMessageOk returns a tuple with the MaxEventsPerMessage field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PrismaticFlowConfig) GetMaxEventsPerMessageOk() (*int64, bool) {
+	if o == nil || IsNil(o.MaxEventsPerMessage) {
+		return nil, false
+	}
+	return o.MaxEventsPerMessage, true
+}
+
+// HasMaxEventsPerMessage returns a boolean if a field has been set.
+func (o *PrismaticFlowConfig) HasMaxEventsPerMessage() bool {
+	if o != nil && !IsNil(o.MaxEventsPerMessage) {
+		return true
+	}
+
+	return false
+}
+
+// SetMaxEventsPerMessage gets a reference to the given int64 and assigns it to the MaxEventsPerMessage field.
+func (o *PrismaticFlowConfig) SetMaxEventsPerMessage(v int64) {
+	o.MaxEventsPerMessage = &v
+}
+
+// GetMaxRetries returns the MaxRetries field value if set, zero value otherwise.
+func (o *PrismaticFlowConfig) GetMaxRetries() int64 {
+	if o == nil || IsNil(o.MaxRetries) {
+		var ret int64
+		return ret
+	}
+	return *o.MaxRetries
+}
+
+// GetMaxRetriesOk returns a tuple with the MaxRetries field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PrismaticFlowConfig) GetMaxRetriesOk() (*int64, bool) {
+	if o == nil || IsNil(o.MaxRetries) {
+		return nil, false
+	}
+	return o.MaxRetries, true
+}
+
+// HasMaxRetries returns a boolean if a field has been set.
+func (o *PrismaticFlowConfig) HasMaxRetries() bool {
+	if o != nil && !IsNil(o.MaxRetries) {
+		return true
+	}
+
+	return false
+}
+
+// SetMaxRetries gets a reference to the given int64 and assigns it to the MaxRetries field.
+func (o *PrismaticFlowConfig) SetMaxRetries(v int64) {
+	o.MaxRetries = &v
+}
+
 func (o PrismaticFlowConfig) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -79,6 +193,15 @@ func (o PrismaticFlowConfig) MarshalJSON() ([]byte, error) {
 func (o PrismaticFlowConfig) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["ApiKey"] = o.ApiKey
+	if !IsNil(o.WorkerCount) {
+		toSerialize["WorkerCount"] = o.WorkerCount
+	}
+	if !IsNil(o.MaxEventsPerMessage) {
+		toSerialize["MaxEventsPerMessage"] = o.MaxEventsPerMessage
+	}
+	if !IsNil(o.MaxRetries) {
+		toSerialize["MaxRetries"] = o.MaxRetries
+	}
 	return toSerialize, nil
 }
 

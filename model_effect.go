@@ -21,6 +21,8 @@ var _ MappedNullable = &Effect{}
 
 // Effect struct for Effect
 type Effect struct {
+	// The ID of the experiment that campaign belongs to.
+	ExperimentId *int64 `json:"experimentId,omitempty"`
 	// The ID of the campaign that triggered this effect.
 	CampaignId int64 `json:"campaignId"`
 	// The ID of the ruleset that was active in the campaign when this effect was triggered.
@@ -77,6 +79,38 @@ func BuildEffect(campaignId int64, rulesetId int64, ruleIndex int64, ruleName st
 func NewEffectWithDefaults() *Effect {
 	this := Effect{}
 	return &this
+}
+
+// GetExperimentId returns the ExperimentId field value if set, zero value otherwise.
+func (o *Effect) GetExperimentId() int64 {
+	if o == nil || IsNil(o.ExperimentId) {
+		var ret int64
+		return ret
+	}
+	return *o.ExperimentId
+}
+
+// GetExperimentIdOk returns a tuple with the ExperimentId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Effect) GetExperimentIdOk() (*int64, bool) {
+	if o == nil || IsNil(o.ExperimentId) {
+		return nil, false
+	}
+	return o.ExperimentId, true
+}
+
+// HasExperimentId returns a boolean if a field has been set.
+func (o *Effect) HasExperimentId() bool {
+	if o != nil && !IsNil(o.ExperimentId) {
+		return true
+	}
+
+	return false
+}
+
+// SetExperimentId gets a reference to the given int64 and assigns it to the ExperimentId field.
+func (o *Effect) SetExperimentId(v int64) {
+	o.ExperimentId = &v
 }
 
 // GetCampaignId returns the CampaignId field value
@@ -555,6 +589,9 @@ func (o Effect) MarshalJSON() ([]byte, error) {
 
 func (o Effect) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
+	if !IsNil(o.ExperimentId) {
+		toSerialize["experimentId"] = o.ExperimentId
+	}
 	toSerialize["campaignId"] = o.CampaignId
 	toSerialize["rulesetId"] = o.RulesetId
 	toSerialize["ruleIndex"] = o.RuleIndex

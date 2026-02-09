@@ -46,6 +46,8 @@ type Campaign struct {
 	ActiveRulesetId *int64 `json:"activeRulesetId,omitempty"`
 	// A list of tags for the campaign.
 	Tags []string `json:"tags"`
+	// Indicates whether this campaign should be reevaluated when a customer returns an item.
+	ReevaluateOnReturn bool `json:"reevaluateOnReturn"`
 	// The features enabled in this campaign.
 	Features         []string               `json:"features"`
 	CouponSettings   *CodeGeneratorSettings `json:"couponSettings,omitempty"`
@@ -106,6 +108,8 @@ type Campaign struct {
 	StoresImported bool `json:"storesImported"`
 	// A list of value map IDs for the campaign.
 	ValueMapsIds []int64 `json:"valueMapsIds,omitempty"`
+	// The ID of the Experiment this Campaign is part of.
+	ExperimentId *int64 `json:"experimentId,omitempty"`
 	// The campaign revision state displayed in the Campaign Manager.
 	RevisionFrontendState *string `json:"revisionFrontendState,omitempty"`
 	// ID of the revision that was last activated on this campaign.
@@ -128,7 +132,7 @@ type _Campaign Campaign
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCampaign(id int64, created time.Time, applicationId int64, userId int64, name string, state string, tags []string, features []string, limits []LimitConfig, frontendState string, storesImported bool) *Campaign {
+func BuildCampaign(id int64, created time.Time, applicationId int64, userId int64, name string, state string, tags []string, reevaluateOnReturn bool, features []string, limits []LimitConfig, frontendState string, storesImported bool) *Campaign {
 	this := Campaign{}
 	this.Id = id
 	this.Created = created
@@ -137,6 +141,7 @@ func BuildCampaign(id int64, created time.Time, applicationId int64, userId int6
 	this.Name = name
 	this.State = state
 	this.Tags = tags
+	this.ReevaluateOnReturn = reevaluateOnReturn
 	this.Features = features
 	this.Limits = limits
 	var type_ string = "advanced"
@@ -488,6 +493,30 @@ func (o *Campaign) GetTagsOk() ([]string, bool) {
 // SetTags sets field value
 func (o *Campaign) SetTags(v []string) {
 	o.Tags = v
+}
+
+// GetReevaluateOnReturn returns the ReevaluateOnReturn field value
+func (o *Campaign) GetReevaluateOnReturn() bool {
+	if o == nil {
+		var ret bool
+		return ret
+	}
+
+	return o.ReevaluateOnReturn
+}
+
+// GetReevaluateOnReturnOk returns a tuple with the ReevaluateOnReturn field value
+// and a boolean to check if the value has been set.
+func (o *Campaign) GetReevaluateOnReturnOk() (*bool, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.ReevaluateOnReturn, true
+}
+
+// SetReevaluateOnReturn sets field value
+func (o *Campaign) SetReevaluateOnReturn(v bool) {
+	o.ReevaluateOnReturn = v
 }
 
 // GetFeatures returns the Features field value
@@ -1450,6 +1479,38 @@ func (o *Campaign) SetValueMapsIds(v []int64) {
 	o.ValueMapsIds = v
 }
 
+// GetExperimentId returns the ExperimentId field value if set, zero value otherwise.
+func (o *Campaign) GetExperimentId() int64 {
+	if o == nil || IsNil(o.ExperimentId) {
+		var ret int64
+		return ret
+	}
+	return *o.ExperimentId
+}
+
+// GetExperimentIdOk returns a tuple with the ExperimentId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Campaign) GetExperimentIdOk() (*int64, bool) {
+	if o == nil || IsNil(o.ExperimentId) {
+		return nil, false
+	}
+	return o.ExperimentId, true
+}
+
+// HasExperimentId returns a boolean if a field has been set.
+func (o *Campaign) HasExperimentId() bool {
+	if o != nil && !IsNil(o.ExperimentId) {
+		return true
+	}
+
+	return false
+}
+
+// SetExperimentId gets a reference to the given int64 and assigns it to the ExperimentId field.
+func (o *Campaign) SetExperimentId(v int64) {
+	o.ExperimentId = &v
+}
+
 // GetRevisionFrontendState returns the RevisionFrontendState field value if set, zero value otherwise.
 func (o *Campaign) GetRevisionFrontendState() string {
 	if o == nil || IsNil(o.RevisionFrontendState) {
@@ -1706,6 +1767,7 @@ func (o Campaign) ToMap() (map[string]interface{}, error) {
 		toSerialize["activeRulesetId"] = o.ActiveRulesetId
 	}
 	toSerialize["tags"] = o.Tags
+	toSerialize["reevaluateOnReturn"] = o.ReevaluateOnReturn
 	toSerialize["features"] = o.Features
 	if !IsNil(o.CouponSettings) {
 		toSerialize["couponSettings"] = o.CouponSettings
@@ -1791,6 +1853,9 @@ func (o Campaign) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ValueMapsIds) {
 		toSerialize["valueMapsIds"] = o.ValueMapsIds
 	}
+	if !IsNil(o.ExperimentId) {
+		toSerialize["experimentId"] = o.ExperimentId
+	}
 	if !IsNil(o.RevisionFrontendState) {
 		toSerialize["revisionFrontendState"] = o.RevisionFrontendState
 	}
@@ -1827,6 +1892,7 @@ func (o *Campaign) UnmarshalJSON(data []byte) (err error) {
 		"name",
 		"state",
 		"tags",
+		"reevaluateOnReturn",
 		"features",
 		"limits",
 		"frontendState",
