@@ -47,6 +47,8 @@ type CouponCreationJob struct {
 	CouponSettings  *CodeGeneratorSettings `json:"couponSettings,omitempty"`
 	// Arbitrary properties associated with coupons.
 	Attributes map[string]interface{} `json:"attributes"`
+	// An indication of whether the code can be redeemed only if it has been reserved first.
+	IsReservationMandatory *bool `json:"isReservationMandatory,omitempty"`
 	// The batch ID coupons created by this job will bear.
 	BatchId string `json:"batchId"`
 	// The current status of this request. Possible values: - `pending verification` - `pending` - `completed` - `failed` - `coupon pattern full`
@@ -83,6 +85,8 @@ func BuildCouponCreationJob(id int64, created time.Time, campaignId int64, appli
 	this.UsageLimit = usageLimit
 	this.NumberOfCoupons = numberOfCoupons
 	this.Attributes = attributes
+	var isReservationMandatory bool = false
+	this.IsReservationMandatory = &isReservationMandatory
 	this.BatchId = batchId
 	this.Status = status
 	this.CreatedAmount = createdAmount
@@ -99,6 +103,8 @@ func BuildCouponCreationJob(id int64, created time.Time, campaignId int64, appli
 // but it doesn't guarantee that properties required by API are set
 func NewCouponCreationJobWithDefaults() *CouponCreationJob {
 	this := CouponCreationJob{}
+	var isReservationMandatory bool = false
+	this.IsReservationMandatory = &isReservationMandatory
 	return &this
 }
 
@@ -454,6 +460,38 @@ func (o *CouponCreationJob) SetAttributes(v map[string]interface{}) {
 	o.Attributes = v
 }
 
+// GetIsReservationMandatory returns the IsReservationMandatory field value if set, zero value otherwise.
+func (o *CouponCreationJob) GetIsReservationMandatory() bool {
+	if o == nil || IsNil(o.IsReservationMandatory) {
+		var ret bool
+		return ret
+	}
+	return *o.IsReservationMandatory
+}
+
+// GetIsReservationMandatoryOk returns a tuple with the IsReservationMandatory field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CouponCreationJob) GetIsReservationMandatoryOk() (*bool, bool) {
+	if o == nil || IsNil(o.IsReservationMandatory) {
+		return nil, false
+	}
+	return o.IsReservationMandatory, true
+}
+
+// HasIsReservationMandatory returns a boolean if a field has been set.
+func (o *CouponCreationJob) HasIsReservationMandatory() bool {
+	if o != nil && !IsNil(o.IsReservationMandatory) {
+		return true
+	}
+
+	return false
+}
+
+// SetIsReservationMandatory gets a reference to the given bool and assigns it to the IsReservationMandatory field.
+func (o *CouponCreationJob) SetIsReservationMandatory(v bool) {
+	o.IsReservationMandatory = &v
+}
+
 // GetBatchId returns the BatchId field value
 func (o *CouponCreationJob) GetBatchId() string {
 	if o == nil {
@@ -711,6 +749,9 @@ func (o CouponCreationJob) ToMap() (map[string]interface{}, error) {
 		toSerialize["couponSettings"] = o.CouponSettings
 	}
 	toSerialize["attributes"] = o.Attributes
+	if !IsNil(o.IsReservationMandatory) {
+		toSerialize["isReservationMandatory"] = o.IsReservationMandatory
+	}
 	toSerialize["batchId"] = o.BatchId
 	toSerialize["status"] = o.Status
 	toSerialize["createdAmount"] = o.CreatedAmount

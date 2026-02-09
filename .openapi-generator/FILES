@@ -8,6 +8,7 @@
 .gitignore
 .openapi-generator-ignore
 .travis.yml
+MIGRATION.md
 Makefile
 README.md
 api/openapi.yaml
@@ -53,6 +54,7 @@ docs/AddedDeductedPointsNotification.md
 docs/AddedDeductedPointsNotificationPolicy.md
 docs/AdditionalCampaignProperties.md
 docs/AdditionalCost.md
+docs/AdjustmentDetails.md
 docs/AnalyticsDataPoint.md
 docs/AnalyticsDataPointWithTrend.md
 docs/AnalyticsDataPointWithTrendAndInfluencedRate.md
@@ -234,6 +236,12 @@ docs/Event.md
 docs/EventType.md
 docs/EventV2.md
 docs/EventV3.md
+docs/Experiment.md
+docs/ExperimentResults.md
+docs/ExperimentVariant.md
+docs/ExperimentVariantAllocation.md
+docs/ExperimentVariantResult.md
+docs/ExperimentVariantResultConfidence.md
 docs/ExpiringCardPointsData.md
 docs/ExpiringCardPointsNotification.md
 docs/ExpiringCouponsData.md
@@ -313,6 +321,7 @@ docs/IdentifiableEntity.md
 docs/Import.md
 docs/ImportEntity.md
 docs/IncreaseAchievementProgressEffectProps.md
+docs/InfluencingCampaignDetails.md
 docs/IntegrationAPI.md
 docs/IntegrationCoupon.md
 docs/IntegrationCustomerProfileAudienceRequest.md
@@ -427,6 +436,9 @@ docs/NewCustomerSession.md
 docs/NewCustomerSessionV2.md
 docs/NewEvent.md
 docs/NewEventType.md
+docs/NewExperiment.md
+docs/NewExperimentVariant.md
+docs/NewExperimentVariantArray.md
 docs/NewExternalInvitation.md
 docs/NewGiveawaysPool.md
 docs/NewInternalAudience.md
@@ -630,6 +642,9 @@ docs/UpdateCouponsData.md
 docs/UpdateCustomEffect.md
 docs/UpdateCustomerProfileV2409Response.md
 docs/UpdateCustomerSessionV2409Response.md
+docs/UpdateExperiment.md
+docs/UpdateExperimentVariant.md
+docs/UpdateExperimentVariantArray.md
 docs/UpdateLoyaltyCard.md
 docs/UpdateLoyaltyProgram.md
 docs/UpdateLoyaltyProgramTier.md
@@ -689,6 +704,7 @@ model_added_deducted_points_notification.go
 model_added_deducted_points_notification_policy.go
 model_additional_campaign_properties.go
 model_additional_cost.go
+model_adjustment_details.go
 model_analytics_data_point.go
 model_analytics_data_point_with_trend.go
 model_analytics_data_point_with_trend_and_influenced_rate.go
@@ -871,6 +887,12 @@ model_event.go
 model_event_type.go
 model_event_v2.go
 model_event_v3.go
+model_experiment.go
+model_experiment_results.go
+model_experiment_variant.go
+model_experiment_variant_allocation.go
+model_experiment_variant_result.go
+model_experiment_variant_result_confidence.go
 model_expiring_card_points_data.go
 model_expiring_card_points_notification.go
 model_expiring_coupons_data.go
@@ -950,6 +972,7 @@ model_identifiable_entity.go
 model_import.go
 model_import_entity.go
 model_increase_achievement_progress_effect_props.go
+model_influencing_campaign_details.go
 model_integration_coupon.go
 model_integration_customer_profile_audience_request.go
 model_integration_customer_profile_audience_request_item.go
@@ -1062,6 +1085,9 @@ model_new_customer_session.go
 model_new_customer_session_v2.go
 model_new_event.go
 model_new_event_type.go
+model_new_experiment.go
+model_new_experiment_variant.go
+model_new_experiment_variant_array.go
 model_new_external_invitation.go
 model_new_giveaways_pool.go
 model_new_internal_audience.go
@@ -1265,6 +1291,9 @@ model_update_coupons_data.go
 model_update_custom_effect.go
 model_update_customer_profile_v2_409_response.go
 model_update_customer_session_v2_409_response.go
+model_update_experiment.go
+model_update_experiment_variant.go
+model_update_experiment_variant_array.go
 model_update_loyalty_card.go
 model_update_loyalty_program.go
 model_update_loyalty_program_tier.go
