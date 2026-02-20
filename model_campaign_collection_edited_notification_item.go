@@ -24,11 +24,13 @@ type CampaignCollectionEditedNotificationItem struct {
 	// The type of the event. Can be one of the following: ['campaign_state_changed', 'campaign_ruleset_changed', 'campaign_edited', 'campaign_created', 'campaign_deleted']
 	Event string `json:"Event"`
 	// The current campaign.
-	Campaign interface{} `json:"campaign"`
+	Campaign Campaign `json:"campaign"`
 	// The current ruleset.
-	Ruleset interface{} `json:"ruleset,omitempty"`
+	Ruleset *Ruleset `json:"ruleset,omitempty"`
+	// The current details of the [placeholders](https://docs.talon.one/docs/product/campaigns/templates/create-templates#use-placeholders) in the campaign.
+	Placeholders []PlaceholderDetails `json:"placeholders,omitempty"`
 	// The collection that was edited.
-	Collection interface{} `json:"collection"`
+	Collection CollectionWithoutPayload `json:"collection"`
 }
 
 type _CampaignCollectionEditedNotificationItem CampaignCollectionEditedNotificationItem
@@ -37,7 +39,7 @@ type _CampaignCollectionEditedNotificationItem CampaignCollectionEditedNotificat
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCampaignCollectionEditedNotificationItem(event string, campaign interface{}, collection interface{}) *CampaignCollectionEditedNotificationItem {
+func BuildCampaignCollectionEditedNotificationItem(event string, campaign Campaign, collection CollectionWithoutPayload) *CampaignCollectionEditedNotificationItem {
 	this := CampaignCollectionEditedNotificationItem{}
 	this.Event = event
 	this.Campaign = campaign
@@ -78,10 +80,9 @@ func (o *CampaignCollectionEditedNotificationItem) SetEvent(v string) {
 }
 
 // GetCampaign returns the Campaign field value
-// If the value is explicit nil, the zero value for interface{} will be returned
-func (o *CampaignCollectionEditedNotificationItem) GetCampaign() interface{} {
+func (o *CampaignCollectionEditedNotificationItem) GetCampaign() Campaign {
 	if o == nil {
-		var ret interface{}
+		var ret Campaign
 		return ret
 	}
 
@@ -90,36 +91,34 @@ func (o *CampaignCollectionEditedNotificationItem) GetCampaign() interface{} {
 
 // GetCampaignOk returns a tuple with the Campaign field value
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *CampaignCollectionEditedNotificationItem) GetCampaignOk() (*interface{}, bool) {
-	if o == nil || IsNil(o.Campaign) {
+func (o *CampaignCollectionEditedNotificationItem) GetCampaignOk() (*Campaign, bool) {
+	if o == nil {
 		return nil, false
 	}
 	return &o.Campaign, true
 }
 
 // SetCampaign sets field value
-func (o *CampaignCollectionEditedNotificationItem) SetCampaign(v interface{}) {
+func (o *CampaignCollectionEditedNotificationItem) SetCampaign(v Campaign) {
 	o.Campaign = v
 }
 
-// GetRuleset returns the Ruleset field value if set, zero value otherwise (both if not set or set to explicit null).
-func (o *CampaignCollectionEditedNotificationItem) GetRuleset() interface{} {
-	if o == nil {
-		var ret interface{}
+// GetRuleset returns the Ruleset field value if set, zero value otherwise.
+func (o *CampaignCollectionEditedNotificationItem) GetRuleset() Ruleset {
+	if o == nil || IsNil(o.Ruleset) {
+		var ret Ruleset
 		return ret
 	}
-	return o.Ruleset
+	return *o.Ruleset
 }
 
 // GetRulesetOk returns a tuple with the Ruleset field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *CampaignCollectionEditedNotificationItem) GetRulesetOk() (*interface{}, bool) {
+func (o *CampaignCollectionEditedNotificationItem) GetRulesetOk() (*Ruleset, bool) {
 	if o == nil || IsNil(o.Ruleset) {
 		return nil, false
 	}
-	return &o.Ruleset, true
+	return o.Ruleset, true
 }
 
 // HasRuleset returns a boolean if a field has been set.
@@ -131,16 +130,47 @@ func (o *CampaignCollectionEditedNotificationItem) HasRuleset() bool {
 	return false
 }
 
-// SetRuleset gets a reference to the given interface{} and assigns it to the Ruleset field.
-func (o *CampaignCollectionEditedNotificationItem) SetRuleset(v interface{}) {
-	o.Ruleset = v
+// SetRuleset gets a reference to the given Ruleset and assigns it to the Ruleset field.
+func (o *CampaignCollectionEditedNotificationItem) SetRuleset(v Ruleset) {
+	o.Ruleset = &v
+}
+
+// GetPlaceholders returns the Placeholders field value if set, zero value otherwise.
+func (o *CampaignCollectionEditedNotificationItem) GetPlaceholders() []PlaceholderDetails {
+	if o == nil || IsNil(o.Placeholders) {
+		var ret []PlaceholderDetails
+		return ret
+	}
+	return o.Placeholders
+}
+
+// GetPlaceholdersOk returns a tuple with the Placeholders field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CampaignCollectionEditedNotificationItem) GetPlaceholdersOk() ([]PlaceholderDetails, bool) {
+	if o == nil || IsNil(o.Placeholders) {
+		return nil, false
+	}
+	return o.Placeholders, true
+}
+
+// HasPlaceholders returns a boolean if a field has been set.
+func (o *CampaignCollectionEditedNotificationItem) HasPlaceholders() bool {
+	if o != nil && !IsNil(o.Placeholders) {
+		return true
+	}
+
+	return false
+}
+
+// SetPlaceholders gets a reference to the given []PlaceholderDetails and assigns it to the Placeholders field.
+func (o *CampaignCollectionEditedNotificationItem) SetPlaceholders(v []PlaceholderDetails) {
+	o.Placeholders = v
 }
 
 // GetCollection returns the Collection field value
-// If the value is explicit nil, the zero value for interface{} will be returned
-func (o *CampaignCollectionEditedNotificationItem) GetCollection() interface{} {
+func (o *CampaignCollectionEditedNotificationItem) GetCollection() CollectionWithoutPayload {
 	if o == nil {
-		var ret interface{}
+		var ret CollectionWithoutPayload
 		return ret
 	}
 
@@ -149,16 +179,15 @@ func (o *CampaignCollectionEditedNotificationItem) GetCollection() interface{} {
 
 // GetCollectionOk returns a tuple with the Collection field value
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *CampaignCollectionEditedNotificationItem) GetCollectionOk() (*interface{}, bool) {
-	if o == nil || IsNil(o.Collection) {
+func (o *CampaignCollectionEditedNotificationItem) GetCollectionOk() (*CollectionWithoutPayload, bool) {
+	if o == nil {
 		return nil, false
 	}
 	return &o.Collection, true
 }
 
 // SetCollection sets field value
-func (o *CampaignCollectionEditedNotificationItem) SetCollection(v interface{}) {
+func (o *CampaignCollectionEditedNotificationItem) SetCollection(v CollectionWithoutPayload) {
 	o.Collection = v
 }
 
@@ -173,15 +202,14 @@ func (o CampaignCollectionEditedNotificationItem) MarshalJSON() ([]byte, error) 
 func (o CampaignCollectionEditedNotificationItem) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["Event"] = o.Event
-	if o.Campaign != nil {
-		toSerialize["campaign"] = o.Campaign
-	}
-	if o.Ruleset != nil {
+	toSerialize["campaign"] = o.Campaign
+	if !IsNil(o.Ruleset) {
 		toSerialize["ruleset"] = o.Ruleset
 	}
-	if o.Collection != nil {
-		toSerialize["collection"] = o.Collection
+	if !IsNil(o.Placeholders) {
+		toSerialize["placeholders"] = o.Placeholders
 	}
+	toSerialize["collection"] = o.Collection
 	return toSerialize, nil
 }
 

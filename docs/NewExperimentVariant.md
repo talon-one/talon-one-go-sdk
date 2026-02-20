@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Name** | **string** | The name of this variant. | 
-**Weight** | Pointer to **int64** |  | [optional] 
+**Weight** | **int64** | The percentage split of this variant. The sum of all variant percentages must be 100. | 
 **Ruleset** | [**NewRuleset**](NewRuleset.md) |  | 
 **IsPrimary** | **bool** |  | 
 
@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 
 ### NewNewExperimentVariant
 
-`func NewNewExperimentVariant(name string, ruleset NewRuleset, isPrimary bool, ) *NewExperimentVariant`
+`func NewNewExperimentVariant(name string, weight int64, ruleset NewRuleset, isPrimary bool, ) *NewExperimentVariant`
 
 NewNewExperimentVariant instantiates a new NewExperimentVariant object
 This constructor will assign default values to properties that have it defined,
@@ -67,11 +67,6 @@ and a boolean to check if the value has been set.
 
 SetWeight sets Weight field to given value.
 
-### HasWeight
-
-`func (o *NewExperimentVariant) HasWeight() bool`
-
-HasWeight returns a boolean if a field has been set.
 
 ### GetRuleset
 

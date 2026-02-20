@@ -11,8 +11,6 @@ conventions.
 
 The following changes were required to update our example code:
 
-**Before**
-
 ```diff
 import (
 -  talon "github.com/talon-one/talon_go/v25"

@@ -214,11 +214,11 @@ func (o *StrikethroughLabelingNotification) GetTrigger() StrikethroughTrigger {
 
 // GetTriggerOk returns a tuple with the Trigger field value
 // and a boolean to check if the value has been set.
-func (o *StrikethroughLabelingNotification) GetTriggerOk() (StrikethroughTrigger, bool) {
+func (o *StrikethroughLabelingNotification) GetTriggerOk() (*StrikethroughTrigger, bool) {
 	if o == nil {
-		return StrikethroughTrigger{}, false
+		return nil, false
 	}
-	return o.Trigger, true
+	return &o.Trigger, true
 }
 
 // SetTrigger sets field value

@@ -22,6 +22,7 @@ Name | Type | Description | Notes
 **BatchId** | Pointer to **string** |  | [optional] 
 **Attributes** | Pointer to **map[string]interface{}** |  | [optional] 
 **Limits** | Pointer to [**[]PrismaticEventPayloadCouponBasedNotificationsLimits**](PrismaticEventPayloadCouponBasedNotificationsLimits.md) |  | [optional] 
+**PublishedAt** | **time.Time** | Timestamp when the event was published. | 
 **SourceOfEvent** | **string** |  | 
 **EmployeeName** | **string** |  | 
 
@@ -29,7 +30,7 @@ Name | Type | Description | Notes
 
 ### NewPrismaticEventPayloadCouponBasedNotifications
 
-`func NewPrismaticEventPayloadCouponBasedNotifications(id int64, created time.Time, campaignId int64, value string, usageLimit int64, usageCounter int64, sourceOfEvent string, employeeName string, ) *PrismaticEventPayloadCouponBasedNotifications`
+`func NewPrismaticEventPayloadCouponBasedNotifications(id int64, created time.Time, campaignId int64, value string, usageLimit int64, usageCounter int64, publishedAt time.Time, sourceOfEvent string, employeeName string, ) *PrismaticEventPayloadCouponBasedNotifications`
 
 NewPrismaticEventPayloadCouponBasedNotifications instantiates a new PrismaticEventPayloadCouponBasedNotifications object
 This constructor will assign default values to properties that have it defined,
@@ -463,6 +464,26 @@ SetLimits sets Limits field to given value.
 `func (o *PrismaticEventPayloadCouponBasedNotifications) HasLimits() bool`
 
 HasLimits returns a boolean if a field has been set.
+
+### GetPublishedAt
+
+`func (o *PrismaticEventPayloadCouponBasedNotifications) GetPublishedAt() time.Time`
+
+GetPublishedAt returns the PublishedAt field if non-nil, zero value otherwise.
+
+### GetPublishedAtOk
+
+`func (o *PrismaticEventPayloadCouponBasedNotifications) GetPublishedAtOk() (*time.Time, bool)`
+
+GetPublishedAtOk returns a tuple with the PublishedAt field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPublishedAt
+
+`func (o *PrismaticEventPayloadCouponBasedNotifications) SetPublishedAt(v time.Time)`
+
+SetPublishedAt sets PublishedAt field to given value.
+
 
 ### GetSourceOfEvent
 

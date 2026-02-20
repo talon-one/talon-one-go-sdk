@@ -5,15 +5,16 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Event** | **string** | The type of the event. Can be one of the following: [&#39;campaign_state_changed&#39;, &#39;campaign_ruleset_changed&#39;, &#39;campaign_edited&#39;, &#39;campaign_created&#39;, &#39;campaign_deleted&#39;]  | 
-**Campaign** | **interface{}** | The current campaign. | 
-**Ruleset** | Pointer to **interface{}** | The current ruleset. | [optional] 
-**Collection** | **interface{}** | The collection that was edited. | 
+**Campaign** | [**Campaign**](Campaign.md) | The current campaign. | 
+**Ruleset** | Pointer to [**Ruleset**](Ruleset.md) | The current ruleset. | [optional] 
+**Placeholders** | Pointer to [**[]PlaceholderDetails**](PlaceholderDetails.md) | The current details of the [placeholders](https://docs.talon.one/docs/product/campaigns/templates/create-templates#use-placeholders) in the campaign. | [optional] 
+**Collection** | [**CollectionWithoutPayload**](CollectionWithoutPayload.md) | The collection that was edited. | 
 
 ## Methods
 
 ### NewCampaignCollectionEditedNotificationItem
 
-`func NewCampaignCollectionEditedNotificationItem(event string, campaign interface{}, collection interface{}, ) *CampaignCollectionEditedNotificationItem`
+`func NewCampaignCollectionEditedNotificationItem(event string, campaign Campaign, collection CollectionWithoutPayload, ) *CampaignCollectionEditedNotificationItem`
 
 NewCampaignCollectionEditedNotificationItem instantiates a new CampaignCollectionEditedNotificationItem object
 This constructor will assign default values to properties that have it defined,
@@ -50,50 +51,40 @@ SetEvent sets Event field to given value.
 
 ### GetCampaign
 
-`func (o *CampaignCollectionEditedNotificationItem) GetCampaign() interface{}`
+`func (o *CampaignCollectionEditedNotificationItem) GetCampaign() Campaign`
 
 GetCampaign returns the Campaign field if non-nil, zero value otherwise.
 
 ### GetCampaignOk
 
-`func (o *CampaignCollectionEditedNotificationItem) GetCampaignOk() (*interface{}, bool)`
+`func (o *CampaignCollectionEditedNotificationItem) GetCampaignOk() (*Campaign, bool)`
 
 GetCampaignOk returns a tuple with the Campaign field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetCampaign
 
-`func (o *CampaignCollectionEditedNotificationItem) SetCampaign(v interface{})`
+`func (o *CampaignCollectionEditedNotificationItem) SetCampaign(v Campaign)`
 
 SetCampaign sets Campaign field to given value.
 
 
-### SetCampaignNil
-
-`func (o *CampaignCollectionEditedNotificationItem) SetCampaignNil(b bool)`
-
- SetCampaignNil sets the value for Campaign to be an explicit nil
-
-### UnsetCampaign
-`func (o *CampaignCollectionEditedNotificationItem) UnsetCampaign()`
-
-UnsetCampaign ensures that no value is present for Campaign, not even an explicit nil
 ### GetRuleset
 
-`func (o *CampaignCollectionEditedNotificationItem) GetRuleset() interface{}`
+`func (o *CampaignCollectionEditedNotificationItem) GetRuleset() Ruleset`
 
 GetRuleset returns the Ruleset field if non-nil, zero value otherwise.
 
 ### GetRulesetOk
 
-`func (o *CampaignCollectionEditedNotificationItem) GetRulesetOk() (*interface{}, bool)`
+`func (o *CampaignCollectionEditedNotificationItem) GetRulesetOk() (*Ruleset, bool)`
 
 GetRulesetOk returns a tuple with the Ruleset field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetRuleset
 
-`func (o *CampaignCollectionEditedNotificationItem) SetRuleset(v interface{})`
+`func (o *CampaignCollectionEditedNotificationItem) SetRuleset(v Ruleset)`
 
 SetRuleset sets Ruleset field to given value.
 
@@ -103,46 +94,51 @@ SetRuleset sets Ruleset field to given value.
 
 HasRuleset returns a boolean if a field has been set.
 
-### SetRulesetNil
+### GetPlaceholders
 
-`func (o *CampaignCollectionEditedNotificationItem) SetRulesetNil(b bool)`
+`func (o *CampaignCollectionEditedNotificationItem) GetPlaceholders() []PlaceholderDetails`
 
- SetRulesetNil sets the value for Ruleset to be an explicit nil
+GetPlaceholders returns the Placeholders field if non-nil, zero value otherwise.
 
-### UnsetRuleset
-`func (o *CampaignCollectionEditedNotificationItem) UnsetRuleset()`
+### GetPlaceholdersOk
 
-UnsetRuleset ensures that no value is present for Ruleset, not even an explicit nil
+`func (o *CampaignCollectionEditedNotificationItem) GetPlaceholdersOk() (*[]PlaceholderDetails, bool)`
+
+GetPlaceholdersOk returns a tuple with the Placeholders field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPlaceholders
+
+`func (o *CampaignCollectionEditedNotificationItem) SetPlaceholders(v []PlaceholderDetails)`
+
+SetPlaceholders sets Placeholders field to given value.
+
+### HasPlaceholders
+
+`func (o *CampaignCollectionEditedNotificationItem) HasPlaceholders() bool`
+
+HasPlaceholders returns a boolean if a field has been set.
+
 ### GetCollection
 
-`func (o *CampaignCollectionEditedNotificationItem) GetCollection() interface{}`
+`func (o *CampaignCollectionEditedNotificationItem) GetCollection() CollectionWithoutPayload`
 
 GetCollection returns the Collection field if non-nil, zero value otherwise.
 
 ### GetCollectionOk
 
-`func (o *CampaignCollectionEditedNotificationItem) GetCollectionOk() (*interface{}, bool)`
+`func (o *CampaignCollectionEditedNotificationItem) GetCollectionOk() (*CollectionWithoutPayload, bool)`
 
 GetCollectionOk returns a tuple with the Collection field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetCollection
 
-`func (o *CampaignCollectionEditedNotificationItem) SetCollection(v interface{})`
+`func (o *CampaignCollectionEditedNotificationItem) SetCollection(v CollectionWithoutPayload)`
 
 SetCollection sets Collection field to given value.
 
 
-### SetCollectionNil
-
-`func (o *CampaignCollectionEditedNotificationItem) SetCollectionNil(b bool)`
-
- SetCollectionNil sets the value for Collection to be an explicit nil
-
-### UnsetCollection
-`func (o *CampaignCollectionEditedNotificationItem) UnsetCollection()`
-
-UnsetCollection ensures that no value is present for Collection, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
