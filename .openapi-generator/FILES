@@ -104,6 +104,7 @@ docs/BestPriorPriceMetadata.md
 docs/BestPriorPriceRequest.md
 docs/BestPriorTarget.md
 docs/Binding.md
+docs/Blueprint.md
 docs/BulkApplicationNotification.md
 docs/BulkOperationOnCampaigns.md
 docs/Campaign.md
@@ -175,7 +176,6 @@ docs/CodeGeneratorSettings.md
 docs/Collection.md
 docs/CollectionItem.md
 docs/CollectionWithoutPayload.md
-docs/CollectionsCatalog.md
 docs/Coupon.md
 docs/CouponConstraints.md
 docs/CouponCreatedEffectProps.md
@@ -189,6 +189,7 @@ docs/CouponRejectionReason.md
 docs/CouponReservations.md
 docs/CouponSearch.md
 docs/CouponValue.md
+docs/CouponWithApplication.md
 docs/CouponsNotificationData.md
 docs/CouponsNotificationPolicy.md
 docs/CreateAchievement.md
@@ -233,6 +234,7 @@ docs/ErrorResponseWithStatus.md
 docs/ErrorSource.md
 docs/EvaluableCampaignIds.md
 docs/Event.md
+docs/EventAttributesEntity.md
 docs/EventType.md
 docs/EventV2.md
 docs/EventV3.md
@@ -330,11 +332,13 @@ docs/IntegrationCustomerSessionResponse.md
 docs/IntegrationEntity.md
 docs/IntegrationEvent.md
 docs/IntegrationEventV2Request.md
+docs/IntegrationEventV2Response.md
 docs/IntegrationEventV3Request.md
 docs/IntegrationEventV3Response.md
 docs/IntegrationProfileEntity.md
 docs/IntegrationProfileEntityV3.md
 docs/IntegrationRequest.md
+docs/IntegrationResponse.md
 docs/IntegrationState.md
 docs/IntegrationStateV2.md
 docs/IntegrationStoreEntity.md
@@ -415,6 +419,7 @@ docs/NewApplicationCIFExpression.md
 docs/NewAttribute.md
 docs/NewAudience.md
 docs/NewBaseNotification.md
+docs/NewBlueprint.md
 docs/NewCampaign.md
 docs/NewCampaignCollection.md
 docs/NewCampaignEvaluationGroup.md
@@ -425,7 +430,6 @@ docs/NewCampaignStoreBudgetStoreLimit.md
 docs/NewCampaignTemplate.md
 docs/NewCatalog.md
 docs/NewCollection.md
-docs/NewCollectionsCatalog.md
 docs/NewCouponCreationJob.md
 docs/NewCouponDeletionJob.md
 docs/NewCoupons.md
@@ -493,6 +497,7 @@ docs/PendingActivePointsData.md
 docs/PendingActivePointsNotification.md
 docs/PendingPointsNotificationPolicy.md
 docs/Picklist.md
+docs/PlaceholderDetails.md
 docs/PriceDetail.md
 docs/PriceType.md
 docs/PriceTypeReferenceDetail.md
@@ -500,10 +505,16 @@ docs/PriceTypeReferences.md
 docs/PrismaticConfig.md
 docs/PrismaticEventPayloadCouponBasedNotifications.md
 docs/PrismaticEventPayloadCouponBasedNotificationsLimits.md
-docs/PrismaticEventPayloadLoyaltyProfileBasedNotifications.md
-docs/PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction.md
+docs/PrismaticEventPayloadLoyaltyProfileBasedNotification.md
+docs/PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotification.md
+docs/PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction.md
+docs/PrismaticEventPayloadLoyaltyProfileBasedTierDowngradeNotification.md
+docs/PrismaticEventPayloadLoyaltyProfileBasedTierUpgradeNotification.md
+docs/PrismaticEventRecord.md
 docs/PrismaticFlow.md
 docs/PrismaticFlowConfig.md
+docs/PrismaticFlowConfigResponse.md
+docs/PrismaticFlowResponse.md
 docs/PrismaticFlowWithConfig.md
 docs/PrismaticPaginatedEventPayload.md
 docs/Product.md
@@ -525,6 +536,7 @@ docs/RemoveItemCatalogAction.md
 docs/RemoveManyItemsCatalogAction.md
 docs/ReopenSessionResponse.md
 docs/ReserveCouponEffectProps.md
+docs/ResponseContentObject.md
 docs/Return.md
 docs/ReturnIntegrationRequest.md
 docs/ReturnedCartItem.md
@@ -617,7 +629,6 @@ docs/TierWillDowngradeNotification.md
 docs/TierWillDowngradeNotificationPolicy.md
 docs/TierWillDowngradeNotificationTrigger.md
 docs/TimePoint.md
-docs/TrackEventV2Response.md
 docs/TransferLoyaltyCard.md
 docs/TriggerWebhookEffectProps.md
 docs/TwoFAConfig.md
@@ -628,6 +639,7 @@ docs/UpdateApplicationAPIKey.md
 docs/UpdateApplicationCIF.md
 docs/UpdateAttributeEffectProps.md
 docs/UpdateAudience.md
+docs/UpdateBlueprint.md
 docs/UpdateCampaign.md
 docs/UpdateCampaignCollection.md
 docs/UpdateCampaignEvaluationGroup.md
@@ -635,7 +647,6 @@ docs/UpdateCampaignGroup.md
 docs/UpdateCampaignTemplate.md
 docs/UpdateCatalog.md
 docs/UpdateCollection.md
-docs/UpdateCollectionsCatalog.md
 docs/UpdateCoupon.md
 docs/UpdateCouponBatch.md
 docs/UpdateCouponsData.md
@@ -645,7 +656,9 @@ docs/UpdateCustomerSessionV2409Response.md
 docs/UpdateExperiment.md
 docs/UpdateExperimentVariant.md
 docs/UpdateExperimentVariantArray.md
+docs/UpdateExperimentVariantName.md
 docs/UpdateLoyaltyCard.md
+docs/UpdateLoyaltyCardRequest.md
 docs/UpdateLoyaltyProgram.md
 docs/UpdateLoyaltyProgramTier.md
 docs/UpdatePicklist.md
@@ -755,6 +768,7 @@ model_best_prior_price_metadata.go
 model_best_prior_price_request.go
 model_best_prior_target.go
 model_binding.go
+model_blueprint.go
 model_bulk_application_notification.go
 model_bulk_operation_on_campaigns.go
 model_campaign.go
@@ -826,7 +840,6 @@ model_code_generator_settings.go
 model_collection.go
 model_collection_item.go
 model_collection_without_payload.go
-model_collections_catalog.go
 model_coupon.go
 model_coupon_constraints.go
 model_coupon_created_effect_props.go
@@ -840,6 +853,7 @@ model_coupon_rejection_reason.go
 model_coupon_reservations.go
 model_coupon_search.go
 model_coupon_value.go
+model_coupon_with_application.go
 model_coupons_notification_data.go
 model_coupons_notification_policy.go
 model_create_achievement.go
@@ -884,6 +898,7 @@ model_error_response_with_status.go
 model_error_source.go
 model_evaluable_campaign_ids.go
 model_event.go
+model_event_attributes_entity.go
 model_event_type.go
 model_event_v2.go
 model_event_v3.go
@@ -980,11 +995,13 @@ model_integration_customer_session_response.go
 model_integration_entity.go
 model_integration_event.go
 model_integration_event_v2_request.go
+model_integration_event_v2_response.go
 model_integration_event_v3_request.go
 model_integration_event_v3_response.go
 model_integration_profile_entity.go
 model_integration_profile_entity_v3.go
 model_integration_request.go
+model_integration_response.go
 model_integration_state.go
 model_integration_state_v2.go
 model_integration_store_entity.go
@@ -1064,6 +1081,7 @@ model_new_application_cif_expression.go
 model_new_attribute.go
 model_new_audience.go
 model_new_base_notification.go
+model_new_blueprint.go
 model_new_campaign.go
 model_new_campaign_collection.go
 model_new_campaign_evaluation_group.go
@@ -1074,7 +1092,6 @@ model_new_campaign_store_budget_store_limit.go
 model_new_campaign_template.go
 model_new_catalog.go
 model_new_collection.go
-model_new_collections_catalog.go
 model_new_coupon_creation_job.go
 model_new_coupon_deletion_job.go
 model_new_coupons.go
@@ -1142,6 +1159,7 @@ model_pending_active_points_data.go
 model_pending_active_points_notification.go
 model_pending_points_notification_policy.go
 model_picklist.go
+model_placeholder_details.go
 model_price_detail.go
 model_price_type.go
 model_price_type_reference_detail.go
@@ -1149,10 +1167,16 @@ model_price_type_references.go
 model_prismatic_config.go
 model_prismatic_event_payload_coupon_based_notifications.go
 model_prismatic_event_payload_coupon_based_notifications_limits.go
-model_prismatic_event_payload_loyalty_profile_based_notifications.go
-model_prismatic_event_payload_loyalty_profile_based_notifications_action.go
+model_prismatic_event_payload_loyalty_profile_based_notification.go
+model_prismatic_event_payload_loyalty_profile_based_points_changed_notification.go
+model_prismatic_event_payload_loyalty_profile_based_points_changed_notification_action.go
+model_prismatic_event_payload_loyalty_profile_based_tier_downgrade_notification.go
+model_prismatic_event_payload_loyalty_profile_based_tier_upgrade_notification.go
+model_prismatic_event_record.go
 model_prismatic_flow.go
 model_prismatic_flow_config.go
+model_prismatic_flow_config_response.go
+model_prismatic_flow_response.go
 model_prismatic_flow_with_config.go
 model_prismatic_paginated_event_payload.go
 model_product.go
@@ -1174,6 +1198,7 @@ model_remove_item_catalog_action.go
 model_remove_many_items_catalog_action.go
 model_reopen_session_response.go
 model_reserve_coupon_effect_props.go
+model_response_content_object.go
 model_return.go
 model_return_integration_request.go
 model_returned_cart_item.go
@@ -1266,7 +1291,6 @@ model_tier_will_downgrade_notification.go
 model_tier_will_downgrade_notification_policy.go
 model_tier_will_downgrade_notification_trigger.go
 model_time_point.go
-model_track_event_v2_response.go
 model_transfer_loyalty_card.go
 model_trigger_webhook_effect_props.go
 model_two_fa_config.go
@@ -1277,6 +1301,7 @@ model_update_application_api_key.go
 model_update_application_cif.go
 model_update_attribute_effect_props.go
 model_update_audience.go
+model_update_blueprint.go
 model_update_campaign.go
 model_update_campaign_collection.go
 model_update_campaign_evaluation_group.go
@@ -1284,7 +1309,6 @@ model_update_campaign_group.go
 model_update_campaign_template.go
 model_update_catalog.go
 model_update_collection.go
-model_update_collections_catalog.go
 model_update_coupon.go
 model_update_coupon_batch.go
 model_update_coupons_data.go
@@ -1294,7 +1318,9 @@ model_update_customer_session_v2_409_response.go
 model_update_experiment.go
 model_update_experiment_variant.go
 model_update_experiment_variant_array.go
+model_update_experiment_variant_name.go
 model_update_loyalty_card.go
+model_update_loyalty_card_request.go
 model_update_loyalty_program.go
 model_update_loyalty_program_tier.go
 model_update_picklist.go

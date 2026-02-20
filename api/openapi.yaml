@@ -1081,7 +1081,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TrackEventV2Response"
+                $ref: "#/components/schemas/IntegrationEventV2Response"
           description: OK
         "400":
           content:
@@ -5590,13 +5590,22 @@ paths:
       - management
     post:
       description: |
-        Generate a loyalty card in a specified [card-based loyalty program](https://docs.talon.one/docs/product/loyalty-programs/card-based/card-based-overview).
+        Generate a loyalty card in a specified [card-based loyalty
+        program](https://docs.talon.one/docs/product/loyalty-programs/card-based/card-based-overview).
 
-        To link the card to one or more customer profiles, use the `customerProfileIds` parameter in the request body.
+        To link the card to one or more customer profiles, use the
+        `customerProfileIds` parameter in the request body.
 
         **Note:**
-        - The number of customer profiles linked to the loyalty card cannot exceed the loyalty program's `usersPerCardLimit`. To find the program's limit, use the [Get loyalty program](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyProgram) endpoint.
-        - If the loyalty program has a defined code format, it will be used for the loyalty card identifier.
+
+        - The number of customer profiles linked to the loyalty card cannot exceed
+        the loyalty program's `usersPerCardLimit`. To find the program's limit, use
+        the [Get loyalty
+        program](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyProgram)
+        endpoint.
+
+        - If the loyalty program has a defined code format, it will be used for the
+        loyalty card identifier.
       operationId: generateLoyaltyCard
       parameters:
       - description: |
@@ -5845,8 +5854,9 @@ paths:
       tags:
       - management
     put:
-      description: Update the status of the given loyalty card. A card can be _active_
-        or _inactive_.
+      description: 'Update the details of a specific loyalty card. You can set the
+        card''s status to `active` or `inactive` through this endpoint. At least one
+        of `status` or `attributes` must be provided. '
       operationId: updateLoyaltyCard
       parameters:
       - description: |
@@ -5876,7 +5886,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UpdateLoyaltyCard"
+              $ref: "#/components/schemas/UpdateLoyaltyCardRequest"
         description: body
         required: true
       responses:
@@ -5904,7 +5914,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponseWithStatus"
           description: Not found
-      summary: Update loyalty card status
+      summary: Update loyalty card
       tags:
       - management
   /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/add_points:
@@ -12492,6 +12502,10 @@ components:
         TotalResultSize:
           format: int64
           type: integer
+        BatchedAt:
+          description: Timestamp when the batch was created.
+          format: date-time
+          type: string
         EventType:
           enum:
           - LoyaltyPointsChanged
@@ -12506,9 +12520,9 @@ components:
           items:
             discriminator:
               mapping:
-                LoyaltyPointsChanged: "#/components/schemas/PrismaticEventPayloadLoyaltyProfileBasedNotifications"
-                LoyaltyTierDowngrade: "#/components/schemas/PrismaticEventPayloadLoyaltyProfileBasedNotifications"
-                LoyaltyTierUpgrade: "#/components/schemas/PrismaticEventPayloadLoyaltyProfileBasedNotifications"
+                LoyaltyPointsChanged: "#/components/schemas/PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotification"
+                LoyaltyTierDowngrade: "#/components/schemas/PrismaticEventPayloadLoyaltyProfileBasedTierDowngradeNotification"
+                LoyaltyTierUpgrade: "#/components/schemas/PrismaticEventPayloadLoyaltyProfileBasedTierUpgradeNotification"
                 CouponCreated: "#/components/schemas/PrismaticEventPayloadCouponBasedNotifications"
                 CouponUpdated: "#/components/schemas/PrismaticEventPayloadCouponBasedNotifications"
                 CouponDeleted: "#/components/schemas/PrismaticEventPayloadCouponBasedNotifications"
@@ -14616,252 +14630,6 @@ components:
           id: 2
         - name: Travel audience
           id: 2
-    IntegrationEvent:
-      allOf:
-      - $ref: "#/components/schemas/IntegrationProfileEntity"
-      - $ref: "#/components/schemas/IntegrationStoreEntity"
-      - properties:
-          type:
-            description: A string representing the event. Must not be a reserved event
-              name.
-            example: pageViewed
-            minLength: 1
-            title: Event Type
-            type: string
-          attributes:
-            $ref: "#/components/schemas/IntegrationEvent_allOf_attributes"
-        required:
-        - attributes
-        - type
-    LedgerEntry:
-      allOf:
-      - $ref: "#/components/schemas/Entity"
-      - $ref: "#/components/schemas/IntegrationProfileEntity"
-      - description: Entry in the point ledger.
-        properties:
-          accountId:
-            description: The ID of the Talon.One account that owns this profile.
-            format: int64
-            type: integer
-          loyaltyProgramId:
-            description: ID of the ledger.
-            example: 323414846
-            format: int64
-            type: integer
-          eventId:
-            description: ID of the related event.
-            example: 3
-            format: int64
-            type: integer
-          amount:
-            description: Amount of loyalty points.
-            example: 100
-            format: int64
-            type: integer
-          reason:
-            description: reason for awarding/deducting points.
-            example: Customer appeasement.
-            type: string
-          expiryDate:
-            description: Expiration date of the points.
-            example: 2022-04-26T11:02:38Z
-            format: date-time
-            type: string
-          referenceId:
-            description: The ID of the balancing ledgerEntry.
-            format: int64
-            type: integer
-        required:
-        - accountId
-        - amount
-        - eventId
-        - expiryDate
-        - loyaltyProgramId
-        - reason
-      example:
-        expiryDate: 2022-04-26T11:02:38Z
-        accountId: 0
-        eventId: 3
-        reason: Customer appeasement.
-        amount: 100
-        created: 2020-06-10T09:05:27.993483Z
-        profileId: URNGV8294NV
-        loyaltyProgramId: 323414846
-        id: 6
-        referenceId: 6
-    CouponRejectionReason:
-      description: "Holds a reference to the campaign, the coupon and the reason for\
-        \ which that coupon was rejected. Should only be present when there is a 'rejectCoupon'\
-        \ effect."
-      example:
-        reason: CouponNotFound
-        campaignId: 244
-        couponId: 4928
-      properties:
-        campaignId:
-          example: 244
-          format: int64
-          type: integer
-        couponId:
-          example: 4928
-          format: int64
-          type: integer
-        reason:
-          enum:
-          - CouponNotFound
-          - CouponPartOfNotRunningCampaign
-          - CampaignLimitReached
-          - ProfileLimitReached
-          - CouponRecipientDoesNotMatch
-          - CouponExpired
-          - CouponStartDateInFuture
-          - CouponRejectedByCondition
-          - EffectCouldNotBeApplied
-          - CouponPartOfNotTriggeredCampaign
-          - CouponReservationRequired
-          - ProfileRequired
-          example: CouponNotFound
-          type: string
-      required:
-      - campaignId
-      - couponId
-      - reason
-    ReferralRejectionReason:
-      description: "Holds a reference to the campaign, the referral and the reason\
-        \ for which that referral was rejected. Should only be present when there\
-        \ is a 'rejectReferral' effect."
-      example:
-        reason: ReferralNotFound
-        campaignId: 1
-        referralId: 5
-      properties:
-        campaignId:
-          format: int64
-          type: integer
-        referralId:
-          format: int64
-          type: integer
-        reason:
-          enum:
-          - ReferralNotFound
-          - ReferralRecipientIdSameAsAdvocate
-          - ReferralPartOfNotRunningCampaign
-          - ReferralLimitReached
-          - CampaignLimitReached
-          - ProfileLimitReached
-          - ReferralRecipientDoesNotMatch
-          - ReferralExpired
-          - ReferralStartDateInFuture
-          - ReferralRejectedByCondition
-          - EffectCouldNotBeApplied
-          - ReferralPartOfNotTriggeredCampaign
-          example: ReferralNotFound
-          type: string
-      required:
-      - campaignId
-      - reason
-      - referralId
-    Meta:
-      example:
-        campaigns: "{}"
-        coupons: "{}"
-        referralRejectionReason:
-          reason: ReferralNotFound
-          campaignId: 1
-          referralId: 5
-        warnings: "{}"
-        couponRejectionReason:
-          reason: CouponNotFound
-          campaignId: 244
-          couponId: 4928
-      properties:
-        campaigns:
-          description: Maps each evaluated campaign ID to a key-value list of that
-            campaigns attributes. Campaigns without attributes will be omitted.
-          type: object
-        coupons:
-          description: Maps the coupon value to a key-value list of that coupons attributes.
-          type: object
-        couponRejectionReason:
-          $ref: "#/components/schemas/CouponRejectionReason"
-        referralRejectionReason:
-          $ref: "#/components/schemas/ReferralRejectionReason"
-        warnings:
-          description: Contains warnings about possible misuse.
-          type: object
-    Event:
-      allOf:
-      - $ref: "#/components/schemas/Entity"
-      - $ref: "#/components/schemas/ApplicationEntity"
-      - $ref: "#/components/schemas/IntegrationEvent"
-      - properties:
-          sessionId:
-            description: The ID of the session that this event occurred in.
-            example: 175KJPS947296
-            title: Session ID of Event
-            type: string
-          effects:
-            description: |
-              An array of effects generated by the rules of the enabled campaigns of the Application.
-
-              You decide how to apply them in your system. See the list of [API effects](https://docs.talon.one/docs/dev/integration-api/api-effects).
-            items:
-              type: object
-            type: array
-          ledgerEntries:
-            description: Ledger entries for the event.
-            items:
-              $ref: "#/components/schemas/LedgerEntry"
-            type: array
-          meta:
-            $ref: "#/components/schemas/Meta"
-        required:
-        - effects
-      example:
-        effects:
-        - "{}"
-        - "{}"
-        storeIntegrationId: STORE-001
-        created: 2020-06-10T09:05:27.993483Z
-        profileId: URNGV8294NV
-        meta:
-          campaigns: "{}"
-          coupons: "{}"
-          referralRejectionReason:
-            reason: ReferralNotFound
-            campaignId: 1
-            referralId: 5
-          warnings: "{}"
-          couponRejectionReason:
-            reason: CouponNotFound
-            campaignId: 244
-            couponId: 4928
-        ledgerEntries:
-        - expiryDate: 2022-04-26T11:02:38Z
-          accountId: 0
-          eventId: 3
-          reason: Customer appeasement.
-          amount: 100
-          created: 2020-06-10T09:05:27.993483Z
-          profileId: URNGV8294NV
-          loyaltyProgramId: 323414846
-          id: 6
-          referenceId: 6
-        - expiryDate: 2022-04-26T11:02:38Z
-          accountId: 0
-          eventId: 3
-          reason: Customer appeasement.
-          amount: 100
-          created: 2020-06-10T09:05:27.993483Z
-          profileId: URNGV8294NV
-          loyaltyProgramId: 323414846
-          id: 6
-          referenceId: 6
-        attributes: "{myAttribute=myValue}"
-        id: 6
-        sessionId: 175KJPS947296
-        applicationId: 322
-        type: pageViewed
     LoyaltyProgramEntity:
       properties:
         programID:
@@ -14882,9 +14650,6 @@ components:
       required:
       - programID
     UpdateLoyaltyCard:
-      example:
-        blockReason: Current card lost. Customer needs a new card.
-        status: active
       properties:
         status:
           description: |
@@ -15276,431 +15041,6 @@ components:
           title: Customer's current loyalty program balance.
       required:
       - programs
-    ReferralConstraints:
-      properties:
-        startDate:
-          description: Timestamp at which point the referral code becomes valid.
-          example: 2020-11-10T23:00:00Z
-          format: date-time
-          title: Referral code valid from
-          type: string
-        expiryDate:
-          description: Expiration date of the referral code. Referral never expires
-            if this is omitted.
-          example: 2021-11-10T23:00:00Z
-          format: date-time
-          title: Referral code valid until
-          type: string
-        usageLimit:
-          description: |
-            The number of times a referral code can be used. `0` means no limit but any campaign usage limits will still apply.
-          example: 1
-          format: int64
-          maximum: 999999
-          minimum: 0
-          title: Referral code Usage Limit
-          type: integer
-    NewReferral:
-      allOf:
-      - $ref: "#/components/schemas/ReferralConstraints"
-      - properties:
-          campaignId:
-            description: ID of the campaign from which the referral received the referral
-              code.
-            example: 78
-            format: int64
-            title: Referral's Campaign ID
-            type: integer
-          advocateProfileIntegrationId:
-            description: The Integration ID of the Advocate's Profile.
-            example: URNGV8294NV
-            maxLength: 1000
-            title: Advocate's Profile ID
-            type: string
-          friendProfileIntegrationId:
-            description: An optional Integration ID of the Friend's Profile.
-            example: BZGGC2454PA
-            title: Friend's Profile ID
-            type: string
-          attributes:
-            $ref: "#/components/schemas/NewReferral_allOf_attributes"
-        required:
-        - advocateProfileIntegrationId
-        - campaignId
-      example:
-        expiryDate: 2021-11-10T23:00:00Z
-        friendProfileIntegrationId: BZGGC2454PA
-        usageLimit: 1
-        campaignId: 78
-        attributes: "{channel=web}"
-        startDate: 2020-11-10T23:00:00Z
-        advocateProfileIntegrationId: URNGV8294NV
-    ImportEntity:
-      properties:
-        importId:
-          description: The ID of the Import which created this referral.
-          example: 4
-          format: int64
-          type: integer
-    Referral:
-      allOf:
-      - $ref: "#/components/schemas/Entity"
-      - $ref: "#/components/schemas/NewReferral"
-      - $ref: "#/components/schemas/ImportEntity"
-      - properties:
-          code:
-            description: The referral code.
-            example: 27G47Y54VH9L
-            minLength: 4
-            title: Referral code
-            type: string
-          usageCounter:
-            description: The number of times this referral code has been successfully
-              used.
-            example: 1
-            format: int64
-            title: Referral code Usages
-            type: integer
-          batchId:
-            description: The ID of the batch the referrals belong to.
-            example: tqyrgahe
-            title: Batch ID
-            type: string
-        required:
-        - code
-        - usageCounter
-      example:
-        code: 27G47Y54VH9L
-        created: 2020-06-10T09:05:27.993483Z
-        usageLimit: 1
-        campaignId: 78
-        usageCounter: 1
-        batchId: tqyrgahe
-        advocateProfileIntegrationId: URNGV8294NV
-        expiryDate: 2021-11-10T23:00:00Z
-        importId: 4
-        friendProfileIntegrationId: BZGGC2454PA
-        attributes: "{channel=web}"
-        id: 6
-        startDate: 2020-11-10T23:00:00Z
-    InventoryReferral:
-      allOf:
-      - $ref: "#/components/schemas/Referral"
-      - properties:
-          referredCustomers:
-            description: An array of referred customers.
-            items:
-              type: string
-            type: array
-        required:
-        - referredCustomers
-      example:
-        code: 27G47Y54VH9L
-        created: 2020-06-10T09:05:27.993483Z
-        usageLimit: 1
-        campaignId: 78
-        usageCounter: 1
-        batchId: tqyrgahe
-        advocateProfileIntegrationId: URNGV8294NV
-        expiryDate: 2021-11-10T23:00:00Z
-        importId: 4
-        friendProfileIntegrationId: BZGGC2454PA
-        attributes: "{channel=web}"
-        referredCustomers:
-        - referredCustomers
-        - referredCustomers
-        id: 6
-        startDate: 2020-11-10T23:00:00Z
-    CouponEntity:
-      properties:
-        id:
-          description: The internal ID of the coupon.
-          example: 6
-          format: int64
-          type: integer
-        created:
-          description: The time the coupon was created.
-          example: 2020-06-10T09:05:27.993483Z
-          format: date-time
-          type: string
-      required:
-      - created
-      - id
-    CampaignEntity:
-      properties:
-        campaignId:
-          description: The ID of the campaign that owns this entity.
-          example: 211
-          format: int64
-          title: Campaign ID
-          type: integer
-      required:
-      - campaignId
-    CouponValue:
-      properties:
-        value:
-          description: The coupon code.
-          example: XMAS-20-2021
-          minLength: 4
-          title: Coupon Code
-          type: string
-    CouponConstraints:
-      properties:
-        usageLimit:
-          description: |
-            The number of times the coupon code can be redeemed. `0` means unlimited redemptions but any campaign usage limits will still apply.
-          example: 100
-          format: int64
-          maximum: 999999
-          minimum: 0
-          type: integer
-        discountLimit:
-          description: |
-            The total discount value that the code can give. Typically used to represent a gift card value.
-          example: 30
-          maximum: 1000000000000000
-          minimum: 0
-          type: number
-        reservationLimit:
-          description: |
-            The number of reservations that can be made with this coupon code.
-          example: 45
-          format: int64
-          maximum: 999999
-          minimum: 0
-          type: integer
-        startDate:
-          description: Timestamp at which point the coupon becomes valid.
-          example: 2020-01-24T14:15:22Z
-          format: date-time
-          type: string
-        expiryDate:
-          description: Expiration date of the coupon. Coupon never expires if this
-            is omitted.
-          example: 2023-08-24T14:15:22Z
-          format: date-time
-          type: string
-    LimitConfig:
-      example:
-        period: yearly
-        entities:
-        - Coupon
-        limit: 1000
-        action: createCoupon
-      properties:
-        action:
-          description: |
-            The limitable action to which this limit applies. For example:
-            - `setDiscount`
-            - `setDiscountEffect`
-            - `redeemCoupon`
-            - `createCoupon`
-          example: createCoupon
-          type: string
-        limit:
-          description: The value to set for the limit.
-          example: 1000
-          minimum: 0
-          type: number
-        period:
-          description: The period on which the budget limit recurs.
-          enum:
-          - daily
-          - weekly
-          - monthly
-          - yearly
-          example: yearly
-          type: string
-        entities:
-          description: The entity that this limit applies to.
-          example:
-          - Coupon
-          items:
-            enum:
-            - Coupon
-            - Referral
-            - Profile
-            - Identifier
-            - Store
-            - Session
-            type: string
-          type: array
-      required:
-      - action
-      - entities
-      - limit
-    CouponLimitConfigs:
-      properties:
-        limits:
-          description: |
-            Limits configuration for a coupon. These limits will override the limits
-            set from the campaign.
-
-            **Note:** Only usable when creating a single coupon which is not tied to a specific recipient.
-            Only per-profile limits are allowed to be configured.
-          items:
-            $ref: "#/components/schemas/LimitConfig"
-          type: array
-    Coupon:
-      allOf:
-      - $ref: "#/components/schemas/CouponEntity"
-      - $ref: "#/components/schemas/CampaignEntity"
-      - $ref: "#/components/schemas/CouponValue"
-      - $ref: "#/components/schemas/CouponConstraints"
-      - $ref: "#/components/schemas/CouponLimitConfigs"
-      - properties:
-          usageCounter:
-            description: The number of times the coupon has been successfully redeemed.
-            example: 10
-            format: int64
-            title: Total coupon redemptions
-            type: integer
-          discountCounter:
-            description: The amount of discounts given on rules redeeming this coupon.
-              Only usable if a coupon discount budget was set for this coupon.
-            example: 10
-            title: Discounts Given
-            type: number
-          discountRemainder:
-            description: The remaining discount this coupon can give.
-            example: 5
-            title: Coupon Discount Remainder
-            type: number
-          reservationCounter:
-            description: The number of times this coupon has been reserved.
-            example: 1
-            title: Number of reservations
-            type: number
-          attributes:
-            $ref: "#/components/schemas/Attributes_of_coupon"
-          referralId:
-            description: The integration ID of the referring customer (if any) for
-              whom this coupon was created as an effect.
-            example: 326632952
-            format: int64
-            title: Advocate ID
-            type: integer
-          recipientIntegrationId:
-            description: The Integration ID of the customer that is allowed to redeem
-              this coupon.
-            example: URNGV8294NV
-            maxLength: 1000
-            title: Recipient ID
-            type: string
-          importId:
-            description: The ID of the Import which created this coupon.
-            example: 4
-            format: int64
-            title: Import ID
-            type: integer
-          reservation:
-            default: true
-            description: |
-              Defines the reservation type:
-              - `true`: The coupon can be reserved for multiple customers.
-              - `false`: The coupon can be reserved only for one customer. It is a personal code.
-            example: false
-            title: Reservation Type
-            type: boolean
-          batchId:
-            description: The id of the batch the coupon belongs to.
-            example: 32535-43255
-            title: Batch ID
-            type: string
-          isReservationMandatory:
-            default: false
-            description: An indication of whether the code can be redeemed only if
-              it has been reserved first.
-            example: false
-            title: Is reservation mandatory
-            type: boolean
-          implicitlyReserved:
-            description: An indication of whether the coupon is implicitly reserved
-              for all customers.
-            example: false
-            title: Is coupon implicitly reserved for all customers
-            type: boolean
-        required:
-        - usageCounter
-      example:
-        recipientIntegrationId: URNGV8294NV
-        implicitlyReserved: false
-        created: 2020-06-10T09:05:27.993483Z
-        campaignId: 211
-        usageLimit: 100
-        referralId: 326632952
-        usageCounter: 10
-        batchId: 32535-43255
-        discountCounter: 10
-        expiryDate: 2023-08-24T14:15:22Z
-        importId: 4
-        reservationLimit: 45
-        reservationCounter: 1
-        reservation: false
-        attributes: null
-        id: 6
-        value: XMAS-20-2021
-        discountLimit: 30
-        startDate: 2020-01-24T14:15:22Z
-        limits:
-        - period: yearly
-          entities:
-          - Coupon
-          limit: 1000
-          action: createCoupon
-        - period: yearly
-          entities:
-          - Coupon
-          limit: 1000
-          action: createCoupon
-        discountRemainder: 5
-        isReservationMandatory: false
-    IntegrationCoupon:
-      allOf:
-      - $ref: "#/components/schemas/Coupon"
-      - properties:
-          profileRedemptionCount:
-            description: The number of times the coupon was redeemed by the profile.
-            example: 5
-            format: int64
-            title: Coupon redemptions for the profile
-            type: integer
-        required:
-        - profileRedemptionCount
-      example:
-        recipientIntegrationId: URNGV8294NV
-        implicitlyReserved: false
-        created: 2020-06-10T09:05:27.993483Z
-        campaignId: 211
-        usageLimit: 100
-        referralId: 326632952
-        profileRedemptionCount: 5
-        usageCounter: 10
-        batchId: 32535-43255
-        discountCounter: 10
-        expiryDate: 2023-08-24T14:15:22Z
-        importId: 4
-        reservationLimit: 45
-        reservationCounter: 1
-        reservation: false
-        attributes: null
-        id: 6
-        value: XMAS-20-2021
-        discountLimit: 30
-        startDate: 2020-01-24T14:15:22Z
-        limits:
-        - period: yearly
-          entities:
-          - Coupon
-          limit: 1000
-          action: createCoupon
-        - period: yearly
-          entities:
-          - Coupon
-          limit: 1000
-          action: createCoupon
-        discountRemainder: 5
-        isReservationMandatory: false
     EntityWithTalangVisibleID:
       properties:
         id:
@@ -15820,6 +15160,55 @@ components:
       required:
       - couponPattern
       - validCharacters
+    LimitConfig:
+      example:
+        period: yearly
+        entities:
+        - Coupon
+        limit: 1000
+        action: createCoupon
+      properties:
+        action:
+          description: |
+            The limitable action to which this limit applies. For example:
+            - `setDiscount`
+            - `setDiscountEffect`
+            - `redeemCoupon`
+            - `createCoupon`
+          example: createCoupon
+          type: string
+        limit:
+          description: The value to set for the limit.
+          example: 1000
+          minimum: 0
+          type: number
+        period:
+          description: The period on which the budget limit recurs.
+          enum:
+          - daily
+          - weekly
+          - monthly
+          - yearly
+          example: yearly
+          type: string
+        entities:
+          description: The entity that this limit applies to.
+          example:
+          - Coupon
+          items:
+            enum:
+            - Coupon
+            - Referral
+            - Profile
+            - Identifier
+            - Store
+            - Session
+            type: string
+          type: array
+      required:
+      - action
+      - entities
+      - limit
     BaseCampaign:
       properties:
         name:
@@ -16362,11 +15751,11 @@ components:
     RuleFailureReason:
       description: Details about why a rule failed.
       example:
-        rulesetID: 2
-        ruleIndex: 9
-        campaignID: 5
-        referralID: 7
-        conditionIndex: 3
+        rulesetID: 6
+        ruleIndex: 5
+        campaignID: 0
+        referralID: 1
+        conditionIndex: 5
         effectIndex: 2
         evaluationGroupMode: stackable
         couponID: 4928
@@ -16442,6 +15831,308 @@ components:
       - ruleIndex
       - ruleName
       - rulesetID
+    CouponEntity:
+      properties:
+        id:
+          description: The internal ID of the coupon.
+          example: 6
+          format: int64
+          type: integer
+        created:
+          description: The time the coupon was created.
+          example: 2020-06-10T09:05:27.993483Z
+          format: date-time
+          type: string
+      required:
+      - created
+      - id
+    CampaignEntity:
+      properties:
+        campaignId:
+          description: The ID of the campaign that owns this entity.
+          example: 211
+          format: int64
+          title: Campaign ID
+          type: integer
+      required:
+      - campaignId
+    CouponValue:
+      properties:
+        value:
+          description: The coupon code.
+          example: XMAS-20-2021
+          minLength: 4
+          title: Coupon Code
+          type: string
+    CouponConstraints:
+      properties:
+        usageLimit:
+          description: |
+            The number of times the coupon code can be redeemed. `0` means unlimited redemptions but any campaign usage limits will still apply.
+          example: 100
+          format: int64
+          maximum: 999999
+          minimum: 0
+          type: integer
+        discountLimit:
+          description: |
+            The total discount value that the code can give. Typically used to represent a gift card value.
+          example: 30
+          maximum: 1000000000000000
+          minimum: 0
+          type: number
+        reservationLimit:
+          description: |
+            The number of reservations that can be made with this coupon code.
+          example: 45
+          format: int64
+          maximum: 999999
+          minimum: 0
+          type: integer
+        startDate:
+          description: Timestamp at which point the coupon becomes valid.
+          example: 2020-01-24T14:15:22Z
+          format: date-time
+          type: string
+        expiryDate:
+          description: Expiration date of the coupon. Coupon never expires if this
+            is omitted.
+          example: 2023-08-24T14:15:22Z
+          format: date-time
+          type: string
+    CouponLimitConfigs:
+      properties:
+        limits:
+          description: |
+            Limits configuration for a coupon. These limits will override the limits
+            set from the campaign.
+
+            **Note:** Only usable when creating a single coupon which is not tied to a specific recipient.
+            Only per-profile limits are allowed to be configured.
+          items:
+            $ref: "#/components/schemas/LimitConfig"
+          type: array
+    Coupon:
+      allOf:
+      - $ref: "#/components/schemas/CouponEntity"
+      - $ref: "#/components/schemas/CampaignEntity"
+      - $ref: "#/components/schemas/CouponValue"
+      - $ref: "#/components/schemas/CouponConstraints"
+      - $ref: "#/components/schemas/CouponLimitConfigs"
+      - properties:
+          usageCounter:
+            description: The number of times the coupon has been successfully redeemed.
+            example: 10
+            format: int64
+            title: Total coupon redemptions
+            type: integer
+          discountCounter:
+            description: The amount of discounts given on rules redeeming this coupon.
+              Only usable if a coupon discount budget was set for this coupon.
+            example: 10
+            title: Discounts Given
+            type: number
+          discountRemainder:
+            description: The remaining discount this coupon can give.
+            example: 5
+            title: Coupon Discount Remainder
+            type: number
+          reservationCounter:
+            description: The number of times this coupon has been reserved.
+            example: 1
+            title: Number of reservations
+            type: number
+          attributes:
+            $ref: "#/components/schemas/Attributes_of_coupon"
+          referralId:
+            description: The integration ID of the referring customer (if any) for
+              whom this coupon was created as an effect.
+            example: 326632952
+            format: int64
+            title: Advocate ID
+            type: integer
+          recipientIntegrationId:
+            description: The Integration ID of the customer that is allowed to redeem
+              this coupon.
+            example: URNGV8294NV
+            maxLength: 1000
+            title: Recipient ID
+            type: string
+          importId:
+            description: The ID of the Import which created this coupon.
+            example: 4
+            format: int64
+            title: Import ID
+            type: integer
+          reservation:
+            default: true
+            description: |
+              Defines the reservation type:
+              - `true`: The coupon can be reserved for multiple customers.
+              - `false`: The coupon can be reserved only for one customer. It is a personal code.
+            example: false
+            title: Reservation Type
+            type: boolean
+          batchId:
+            description: The id of the batch the coupon belongs to.
+            example: 32535-43255
+            title: Batch ID
+            type: string
+          isReservationMandatory:
+            default: false
+            description: An indication of whether the code can be redeemed only if
+              it has been reserved first.
+            example: false
+            title: Is reservation mandatory
+            type: boolean
+          implicitlyReserved:
+            description: An indication of whether the coupon is implicitly reserved
+              for all customers.
+            example: false
+            title: Is coupon implicitly reserved for all customers
+            type: boolean
+        required:
+        - usageCounter
+      example:
+        recipientIntegrationId: URNGV8294NV
+        implicitlyReserved: false
+        created: 2020-06-10T09:05:27.993483Z
+        campaignId: 211
+        usageLimit: 100
+        referralId: 326632952
+        usageCounter: 10
+        batchId: 32535-43255
+        discountCounter: 10
+        expiryDate: 2023-08-24T14:15:22Z
+        importId: 4
+        reservationLimit: 45
+        reservationCounter: 1
+        reservation: false
+        attributes: null
+        id: 6
+        value: XMAS-20-2021
+        discountLimit: 30
+        startDate: 2020-01-24T14:15:22Z
+        limits:
+        - period: yearly
+          entities:
+          - Coupon
+          limit: 1000
+          action: createCoupon
+        - period: yearly
+          entities:
+          - Coupon
+          limit: 1000
+          action: createCoupon
+        discountRemainder: 5
+        isReservationMandatory: false
+    ReferralConstraints:
+      properties:
+        startDate:
+          description: Timestamp at which point the referral code becomes valid.
+          example: 2020-11-10T23:00:00Z
+          format: date-time
+          title: Referral code valid from
+          type: string
+        expiryDate:
+          description: Expiration date of the referral code. Referral never expires
+            if this is omitted.
+          example: 2021-11-10T23:00:00Z
+          format: date-time
+          title: Referral code valid until
+          type: string
+        usageLimit:
+          description: |
+            The number of times a referral code can be used. `0` means no limit but any campaign usage limits will still apply.
+          example: 1
+          format: int64
+          maximum: 999999
+          minimum: 0
+          title: Referral code Usage Limit
+          type: integer
+    NewReferral:
+      allOf:
+      - $ref: "#/components/schemas/ReferralConstraints"
+      - properties:
+          campaignId:
+            description: ID of the campaign from which the referral received the referral
+              code.
+            example: 78
+            format: int64
+            title: Referral's Campaign ID
+            type: integer
+          advocateProfileIntegrationId:
+            description: The Integration ID of the Advocate's Profile.
+            example: URNGV8294NV
+            maxLength: 1000
+            title: Advocate's Profile ID
+            type: string
+          friendProfileIntegrationId:
+            description: An optional Integration ID of the Friend's Profile.
+            example: BZGGC2454PA
+            title: Friend's Profile ID
+            type: string
+          attributes:
+            $ref: "#/components/schemas/NewReferral_allOf_attributes"
+        required:
+        - advocateProfileIntegrationId
+        - campaignId
+      example:
+        expiryDate: 2021-11-10T23:00:00Z
+        friendProfileIntegrationId: BZGGC2454PA
+        usageLimit: 1
+        campaignId: 78
+        attributes: "{channel=web}"
+        startDate: 2020-11-10T23:00:00Z
+        advocateProfileIntegrationId: URNGV8294NV
+    ImportEntity:
+      properties:
+        importId:
+          description: The ID of the Import which created this referral.
+          example: 4
+          format: int64
+          type: integer
+    Referral:
+      allOf:
+      - $ref: "#/components/schemas/Entity"
+      - $ref: "#/components/schemas/NewReferral"
+      - $ref: "#/components/schemas/ImportEntity"
+      - properties:
+          code:
+            description: The referral code.
+            example: 27G47Y54VH9L
+            minLength: 4
+            title: Referral code
+            type: string
+          usageCounter:
+            description: The number of times this referral code has been successfully
+              used.
+            example: 1
+            format: int64
+            title: Referral code Usages
+            type: integer
+          batchId:
+            description: The ID of the batch the referrals belong to.
+            example: tqyrgahe
+            title: Batch ID
+            type: string
+        required:
+        - code
+        - usageCounter
+      example:
+        code: 27G47Y54VH9L
+        created: 2020-06-10T09:05:27.993483Z
+        usageLimit: 1
+        campaignId: 78
+        usageCounter: 1
+        batchId: tqyrgahe
+        advocateProfileIntegrationId: URNGV8294NV
+        expiryDate: 2021-11-10T23:00:00Z
+        importId: 4
+        friendProfileIntegrationId: BZGGC2454PA
+        attributes: "{channel=web}"
+        id: 6
+        startDate: 2020-11-10T23:00:00Z
     Giveaway:
       allOf:
       - $ref: "#/components/schemas/Entity"
@@ -16502,6 +16193,421 @@ components:
         id: 6
         used: true
         startDate: 2022-01-02T15:04:05Z07:00
+    IntegrationResponse:
+      description: |
+        Contains entities that might be valuable in Talon.One integrations.
+      properties:
+        customerProfile:
+          allOf:
+          - $ref: "#/components/schemas/CustomerProfile"
+          description: The customer profile associated with the event.
+        loyalty:
+          allOf:
+          - $ref: "#/components/schemas/Loyalty"
+          description: The loyalty program status of the customer.
+        triggeredCampaigns:
+          description: The campaigns that were triggered as a result of processing
+            the event.
+          items:
+            $ref: "#/components/schemas/Campaign"
+          type: array
+        effects:
+          description: "The effects generated by the rules in your running campaigns.\
+            \ See [API effects](https://docs.talon.one/docs/dev/integration-api/api-effects)."
+          items:
+            $ref: "#/components/schemas/Effect"
+          type: array
+        ruleFailureReasons:
+          description: |
+            The reasons why certain rules were not triggered during the event
+            processing.
+          items:
+            $ref: "#/components/schemas/RuleFailureReason"
+          type: array
+        createdCoupons:
+          description: The coupons that were created during the event processing.
+          items:
+            $ref: "#/components/schemas/Coupon"
+          type: array
+        createdReferrals:
+          description: The referrals that were created during the event processing.
+          items:
+            $ref: "#/components/schemas/Referral"
+          type: array
+        awardedGiveaways:
+          description: The giveaways that were awarded during the event processing.
+          items:
+            $ref: "#/components/schemas/Giveaway"
+          type: array
+      required:
+      - createdCoupons
+      - createdReferrals
+      - effects
+    InventoryReferral:
+      allOf:
+      - $ref: "#/components/schemas/Referral"
+      - properties:
+          referredCustomers:
+            description: An array of referred customers.
+            items:
+              type: string
+            type: array
+        required:
+        - referredCustomers
+      example:
+        code: 27G47Y54VH9L
+        created: 2020-06-10T09:05:27.993483Z
+        usageLimit: 1
+        campaignId: 78
+        usageCounter: 1
+        batchId: tqyrgahe
+        advocateProfileIntegrationId: URNGV8294NV
+        expiryDate: 2021-11-10T23:00:00Z
+        importId: 4
+        friendProfileIntegrationId: BZGGC2454PA
+        attributes: "{channel=web}"
+        referredCustomers:
+        - referredCustomers
+        - referredCustomers
+        id: 6
+        startDate: 2020-11-10T23:00:00Z
+    IntegrationCoupon:
+      allOf:
+      - $ref: "#/components/schemas/Coupon"
+      - properties:
+          profileRedemptionCount:
+            description: The number of times the coupon was redeemed by the profile.
+            example: 5
+            format: int64
+            title: Coupon redemptions for the profile
+            type: integer
+        required:
+        - profileRedemptionCount
+      example:
+        recipientIntegrationId: URNGV8294NV
+        implicitlyReserved: false
+        created: 2020-06-10T09:05:27.993483Z
+        campaignId: 211
+        usageLimit: 100
+        referralId: 326632952
+        profileRedemptionCount: 5
+        usageCounter: 10
+        batchId: 32535-43255
+        discountCounter: 10
+        expiryDate: 2023-08-24T14:15:22Z
+        importId: 4
+        reservationLimit: 45
+        reservationCounter: 1
+        reservation: false
+        attributes: null
+        id: 6
+        value: XMAS-20-2021
+        discountLimit: 30
+        startDate: 2020-01-24T14:15:22Z
+        limits:
+        - period: yearly
+          entities:
+          - Coupon
+          limit: 1000
+          action: createCoupon
+        - period: yearly
+          entities:
+          - Coupon
+          limit: 1000
+          action: createCoupon
+        discountRemainder: 5
+        isReservationMandatory: false
+    IntegrationEvent:
+      allOf:
+      - $ref: "#/components/schemas/IntegrationProfileEntity"
+      - $ref: "#/components/schemas/IntegrationStoreEntity"
+      - properties:
+          type:
+            description: A string representing the event. Must not be a reserved event
+              name.
+            example: pageViewed
+            minLength: 1
+            title: Event Type
+            type: string
+          attributes:
+            $ref: "#/components/schemas/IntegrationEvent_allOf_attributes"
+        required:
+        - attributes
+        - type
+    LedgerEntry:
+      allOf:
+      - $ref: "#/components/schemas/Entity"
+      - $ref: "#/components/schemas/IntegrationProfileEntity"
+      - description: Entry in the point ledger.
+        properties:
+          accountId:
+            description: The ID of the Talon.One account that owns this profile.
+            format: int64
+            type: integer
+          loyaltyProgramId:
+            description: ID of the ledger.
+            example: 323414846
+            format: int64
+            type: integer
+          eventId:
+            description: ID of the related event.
+            example: 3
+            format: int64
+            type: integer
+          amount:
+            description: Amount of loyalty points.
+            example: 100
+            format: int64
+            type: integer
+          reason:
+            description: reason for awarding/deducting points.
+            example: Customer appeasement.
+            type: string
+          expiryDate:
+            description: Expiration date of the points.
+            example: 2022-04-26T11:02:38Z
+            format: date-time
+            type: string
+          referenceId:
+            description: The ID of the balancing ledgerEntry.
+            format: int64
+            type: integer
+        required:
+        - accountId
+        - amount
+        - eventId
+        - expiryDate
+        - loyaltyProgramId
+        - reason
+      example:
+        expiryDate: 2022-04-26T11:02:38Z
+        accountId: 0
+        eventId: 3
+        reason: Customer appeasement.
+        amount: 100
+        created: 2020-06-10T09:05:27.993483Z
+        profileId: URNGV8294NV
+        loyaltyProgramId: 323414846
+        id: 6
+        referenceId: 6
+    CouponRejectionReason:
+      description: "Holds a reference to the campaign, the coupon and the reason for\
+        \ which that coupon was rejected. Should only be present when there is a 'rejectCoupon'\
+        \ effect."
+      example:
+        reason: CouponNotFound
+        campaignId: 244
+        couponId: 4928
+      properties:
+        campaignId:
+          example: 244
+          format: int64
+          type: integer
+        couponId:
+          example: 4928
+          format: int64
+          type: integer
+        reason:
+          enum:
+          - CouponNotFound
+          - CouponPartOfNotRunningCampaign
+          - CampaignLimitReached
+          - ProfileLimitReached
+          - CouponRecipientDoesNotMatch
+          - CouponExpired
+          - CouponStartDateInFuture
+          - CouponRejectedByCondition
+          - EffectCouldNotBeApplied
+          - CouponPartOfNotTriggeredCampaign
+          - CouponReservationRequired
+          - ProfileRequired
+          example: CouponNotFound
+          type: string
+      required:
+      - campaignId
+      - couponId
+      - reason
+    ReferralRejectionReason:
+      description: "Holds a reference to the campaign, the referral and the reason\
+        \ for which that referral was rejected. Should only be present when there\
+        \ is a 'rejectReferral' effect."
+      example:
+        reason: ReferralNotFound
+        campaignId: 1
+        referralId: 5
+      properties:
+        campaignId:
+          format: int64
+          type: integer
+        referralId:
+          format: int64
+          type: integer
+        reason:
+          enum:
+          - ReferralNotFound
+          - ReferralRecipientIdSameAsAdvocate
+          - ReferralPartOfNotRunningCampaign
+          - ReferralLimitReached
+          - CampaignLimitReached
+          - ProfileLimitReached
+          - ReferralRecipientDoesNotMatch
+          - ReferralExpired
+          - ReferralStartDateInFuture
+          - ReferralRejectedByCondition
+          - EffectCouldNotBeApplied
+          - ReferralPartOfNotTriggeredCampaign
+          example: ReferralNotFound
+          type: string
+      required:
+      - campaignId
+      - reason
+      - referralId
+    Meta:
+      example:
+        campaigns: "{}"
+        coupons: "{}"
+        referralRejectionReason:
+          reason: ReferralNotFound
+          campaignId: 1
+          referralId: 5
+        warnings: "{}"
+        couponRejectionReason:
+          reason: CouponNotFound
+          campaignId: 244
+          couponId: 4928
+      properties:
+        campaigns:
+          description: Maps each evaluated campaign ID to a key-value list of that
+            campaigns attributes. Campaigns without attributes will be omitted.
+          type: object
+        coupons:
+          description: Maps the coupon value to a key-value list of that coupons attributes.
+          type: object
+        couponRejectionReason:
+          $ref: "#/components/schemas/CouponRejectionReason"
+        referralRejectionReason:
+          $ref: "#/components/schemas/ReferralRejectionReason"
+        warnings:
+          description: Contains warnings about possible misuse.
+          type: object
+    Event:
+      allOf:
+      - $ref: "#/components/schemas/Entity"
+      - $ref: "#/components/schemas/ApplicationEntity"
+      - $ref: "#/components/schemas/IntegrationEvent"
+      - properties:
+          sessionId:
+            description: The ID of the session that this event occurred in.
+            example: 175KJPS947296
+            title: Session ID of Event
+            type: string
+          effects:
+            description: |
+              An array of effects generated by the rules of the enabled campaigns of the Application.
+
+              You decide how to apply them in your system. See the list of [API effects](https://docs.talon.one/docs/dev/integration-api/api-effects).
+            items:
+              type: object
+            type: array
+          ledgerEntries:
+            description: Ledger entries for the event.
+            items:
+              $ref: "#/components/schemas/LedgerEntry"
+            type: array
+          meta:
+            $ref: "#/components/schemas/Meta"
+        required:
+        - effects
+      example:
+        effects:
+        - "{}"
+        - "{}"
+        storeIntegrationId: STORE-001
+        created: 2020-06-10T09:05:27.993483Z
+        profileId: URNGV8294NV
+        meta:
+          campaigns: "{}"
+          coupons: "{}"
+          referralRejectionReason:
+            reason: ReferralNotFound
+            campaignId: 1
+            referralId: 5
+          warnings: "{}"
+          couponRejectionReason:
+            reason: CouponNotFound
+            campaignId: 244
+            couponId: 4928
+        ledgerEntries:
+        - expiryDate: 2022-04-26T11:02:38Z
+          accountId: 0
+          eventId: 3
+          reason: Customer appeasement.
+          amount: 100
+          created: 2020-06-10T09:05:27.993483Z
+          profileId: URNGV8294NV
+          loyaltyProgramId: 323414846
+          id: 6
+          referenceId: 6
+        - expiryDate: 2022-04-26T11:02:38Z
+          accountId: 0
+          eventId: 3
+          reason: Customer appeasement.
+          amount: 100
+          created: 2020-06-10T09:05:27.993483Z
+          profileId: URNGV8294NV
+          loyaltyProgramId: 323414846
+          id: 6
+          referenceId: 6
+        attributes: "{myAttribute=myValue}"
+        id: 6
+        sessionId: 175KJPS947296
+        applicationId: 322
+        type: pageViewed
+    IntegrationProfileEntityV3:
+      properties:
+        profileId:
+          description: |
+            ID of the customer profile set by your integration layer.
+
+            **Note:** If the customer does not yet have a known `profileId`, we recommend you use a guest `profileId`.
+          example: URNGV8294NV
+          type: string
+      required:
+      - profileId
+    EventV3:
+      allOf:
+      - $ref: "#/components/schemas/IntegrationProfileEntityV3"
+      - $ref: "#/components/schemas/IntegrationStoreEntity"
+      - $ref: "#/components/schemas/EvaluableCampaignIds"
+      - properties:
+          integrationId:
+            description: |
+              The unique ID of the current event. Only one event with this ID could be activated, duplicated events are forbidden.
+            example: 175KJPS947296
+            minLength: 1
+            type: string
+          type:
+            description: |
+              A string representing the event name. Must not be a reserved event name. You create this value when you [create an attribute](https://docs.talon.one/docs/dev/concepts/entities/events#creating-a-custom-event) of type `event` in the Campaign Manager.
+            example: pageViewed
+            minLength: 1
+            title: Event Type
+            type: string
+          attributes:
+            $ref: "#/components/schemas/EventV3_allOf_attributes"
+          connectedSessionID:
+            description: The ID of the session that happened in the past.
+            example: 175KJPS947296
+            minLength: 1
+            type: string
+          previousEventID:
+            description: The unique identifier of the event that happened in the past.
+            example: 175KJPS947296
+            minLength: 1
+            type: string
+        required:
+        - integrationId
+        - type
     AccountEntity:
       properties:
         accountId:
@@ -16614,114 +16720,44 @@ components:
         sessionId: 123
         applicationId: 322
     IntegrationStateV2:
-      description: |
-        Contains all entities that might interest Talon.One integrations.
+      allOf:
+      - $ref: "#/components/schemas/IntegrationResponse"
+      - description: |
+          Contains all entities that might interest Talon.One integrations.
+        properties:
+          referral:
+            allOf:
+            - $ref: "#/components/schemas/InventoryReferral"
+            description: The referral that was processed.
+          coupons:
+            description: The coupons that were processed.
+            items:
+              $ref: "#/components/schemas/IntegrationCoupon"
+            type: array
+          event:
+            allOf:
+            - $ref: "#/components/schemas/Event"
+            description: The event that was processed.
+          advancedEvent:
+            allOf:
+            - $ref: "#/components/schemas/EventV3"
+            description: The advanced event that was processed.
+          customerSession:
+            allOf:
+            - $ref: "#/components/schemas/CustomerSessionV2"
+            description: The session that was processed.
+          return:
+            allOf:
+            - $ref: "#/components/schemas/Return"
+            description: The return that was processed.
+          previousReturns:
+            description: The previous returns associated with the event.
+            items:
+              $ref: "#/components/schemas/Return"
+            type: array
       example:
-        customerProfile:
-          accountId: 31
-          closedSessions: 3
-          created: 2020-02-07T08:15:22Z
-          sandbox: false
-          integrationId: URNGV8294NV
-          attributes:
-            Language: english
-            ShippingCountry: DE
-          totalSales: 299.99
-          lastActivity: 2020-02-08T14:15:20Z
-          id: 6
-          loyaltyMemberships:
-          - joined: 2012-03-20T14:15:22Z
-            loyaltyProgramId: 323414846
-          - joined: 2012-03-20T14:15:22Z
-            loyaltyProgramId: 323414846
-          audienceMemberships:
-          - name: Travel audience
-            id: 2
-          - name: Travel audience
-            id: 2
-        loyalty:
-          cards:
-          - ledger: ""
-            identifier: summer-loyalty-card-0543
-            oldCardIdentifier: summer-loyalty-card-0543
-            usersPerCardLimit: 111
-            created: 2020-06-10T09:05:27.993483Z
-            profiles:
-            - integrationId: R195412
-              timestamp: 2021-09-12T10:12:42Z
-            - integrationId: R195412
-              timestamp: 2021-09-12T10:12:42Z
-            subledgers:
-              key:
-                pendingBalance: 10
-                negativeBalance: 10
-                currentBalance: 100
-                spentBalance: 0
-                tentativeCurrentBalance: 100
-                tentativePendingBalance: 20
-                pointsToNextTier: 20
-                expiredBalance: 0
-                currentTier: bronze
-                tentativeNegativeBalance: 100
-            batchId: wdefpov
-            programTitle: Loyalty program
-            programName: Loyalty_program
-            modified: 2021-09-12T10:12:42Z
-            id: 6
-            blockReason: Current card lost. Customer needs a new card.
-            newCardIdentifier: autumn-loyalty-card-5822
-            programID: 125
-            status: active
-          - ledger: ""
-            identifier: summer-loyalty-card-0543
-            oldCardIdentifier: summer-loyalty-card-0543
-            usersPerCardLimit: 111
-            created: 2020-06-10T09:05:27.993483Z
-            profiles:
-            - integrationId: R195412
-              timestamp: 2021-09-12T10:12:42Z
-            - integrationId: R195412
-              timestamp: 2021-09-12T10:12:42Z
-            subledgers:
-              key:
-                pendingBalance: 10
-                negativeBalance: 10
-                currentBalance: 100
-                spentBalance: 0
-                tentativeCurrentBalance: 100
-                tentativePendingBalance: 20
-                pointsToNextTier: 20
-                expiredBalance: 0
-                currentTier: bronze
-                tentativeNegativeBalance: 100
-            batchId: wdefpov
-            programTitle: Loyalty program
-            programName: Loyalty_program
-            modified: 2021-09-12T10:12:42Z
-            id: 6
-            blockReason: Current card lost. Customer needs a new card.
-            newCardIdentifier: autumn-loyalty-card-5822
-            programID: 125
-            status: active
-          programs:
-            key:
-              ledger: ""
-              joinDate: 2024-04-30T15:04:05Z07:00
-              subLedgers:
-                key:
-                  pendingBalance: 10
-                  negativeBalance: 10
-                  currentBalance: 100
-                  spentBalance: 0
-                  tentativeCurrentBalance: 100
-                  tentativePendingBalance: 20
-                  pointsToNextTier: 20
-                  expiredBalance: 0
-                  currentTier: bronze
-                  tentativeNegativeBalance: 100
-              name: program1
-              id: 5
-              title: My loyalty program
+        customerProfile: ""
+        loyalty: ""
         awardedGiveaways:
         - profileIntegrationId: R195412
           code: GIVEAWAY1
@@ -16872,23 +16908,7 @@ components:
           ruleName: Give 20% discount
           experimentId: 12
           triggeredByCoupon: 4928
-        referral:
-          code: 27G47Y54VH9L
-          created: 2020-06-10T09:05:27.993483Z
-          usageLimit: 1
-          campaignId: 78
-          usageCounter: 1
-          batchId: tqyrgahe
-          advocateProfileIntegrationId: URNGV8294NV
-          expiryDate: 2021-11-10T23:00:00Z
-          importId: 4
-          friendProfileIntegrationId: BZGGC2454PA
-          attributes: "{channel=web}"
-          referredCustomers:
-          - referredCustomers
-          - referredCustomers
-          id: 6
-          startDate: 2020-11-10T23:00:00Z
+        referral: ""
         triggeredCampaigns:
         - type: advanced
           templateId: 3
@@ -17265,104 +17285,7 @@ components:
             action: createCoupon
           discountRemainder: 5
           isReservationMandatory: false
-        customerSession:
-          couponCodes:
-          - XMAS-20-2021
-          updateCount: 3
-          created: 2020-02-07T08:15:22Z
-          identifiers:
-          - d41306257915f83fe01e54092ae470f631161ea16fcf4415842eed41470386ea
-          integrationId: URNGV8294NV
-          experimentVariantAllocations:
-          - experimentID: 1
-            variantID: 2
-          - experimentID: 1
-            variantID: 2
-          total: 119.99
-          loyaltyCards:
-          - loyalty-card-1
-          additionalCosts:
-            shipping:
-              price: 9
-          additionalCostTotal: 20
-          storeIntegrationId: STORE-001
-          profileId: URNGV8294NV
-          evaluableCampaignIds:
-          - 10
-          - 12
-          referralCode: NT2K54D9
-          attributes: "{ShippingCity=Berlin}"
-          id: 6
-          state: open
-          applicationId: 322
-          cartItems:
-          - remainingQuantity: 1
-            product: ""
-            quantity: 1
-            returnedQuantity: 1
-            length: 1.4658129805029452
-            weight: 1130
-            adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-            adjustmentEffectiveFrom: 2021-09-12T10:12:42Z
-            catalogItemID: 5
-            additionalCosts:
-              shipping:
-                price: 9
-            price: 99.99
-            selectedPriceType: member
-            name: Air Glide
-            width: 6.027456183070403
-            attributes:
-              image: 11.jpeg
-              material: leather
-            adjustmentEffectiveUntil: 2021-09-12T10:12:42Z
-            position: 5.962133916683182
-            sku: SKU1241028
-            category: shoes
-            prices:
-              member:
-                price: 90
-                adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-                effectiveFrom: 2025-05-25T00:00:00Z
-                effectiveUntil: 2025-05-30T00:00:00Z
-              base:
-                price: 100
-            height: 0.8008281904610115
-          - remainingQuantity: 1
-            product: ""
-            quantity: 1
-            returnedQuantity: 1
-            length: 1.4658129805029452
-            weight: 1130
-            adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-            adjustmentEffectiveFrom: 2021-09-12T10:12:42Z
-            catalogItemID: 5
-            additionalCosts:
-              shipping:
-                price: 9
-            price: 99.99
-            selectedPriceType: member
-            name: Air Glide
-            width: 6.027456183070403
-            attributes:
-              image: 11.jpeg
-              material: leather
-            adjustmentEffectiveUntil: 2021-09-12T10:12:42Z
-            position: 5.962133916683182
-            sku: SKU1241028
-            category: shoes
-            prices:
-              member:
-                price: 90
-                adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-                effectiveFrom: 2025-05-25T00:00:00Z
-                effectiveUntil: 2025-05-30T00:00:00Z
-              base:
-                price: 100
-            height: 0.8008281904610115
-          updated: 2020-02-08T14:15:22Z
-          firstSession: true
-          cartItemTotal: 99.99
+        customerSession: ""
         previousReturns:
         - returnedCartItems:
           - quantity: 1
@@ -17398,57 +17321,14 @@ components:
           id: 6
           sessionId: 123
           applicationId: 322
-        event:
-          effects:
-          - "{}"
-          - "{}"
-          storeIntegrationId: STORE-001
-          created: 2020-06-10T09:05:27.993483Z
-          profileId: URNGV8294NV
-          meta:
-            campaigns: "{}"
-            coupons: "{}"
-            referralRejectionReason:
-              reason: ReferralNotFound
-              campaignId: 1
-              referralId: 5
-            warnings: "{}"
-            couponRejectionReason:
-              reason: CouponNotFound
-              campaignId: 244
-              couponId: 4928
-          ledgerEntries:
-          - expiryDate: 2022-04-26T11:02:38Z
-            accountId: 0
-            eventId: 3
-            reason: Customer appeasement.
-            amount: 100
-            created: 2020-06-10T09:05:27.993483Z
-            profileId: URNGV8294NV
-            loyaltyProgramId: 323414846
-            id: 6
-            referenceId: 6
-          - expiryDate: 2022-04-26T11:02:38Z
-            accountId: 0
-            eventId: 3
-            reason: Customer appeasement.
-            amount: 100
-            created: 2020-06-10T09:05:27.993483Z
-            profileId: URNGV8294NV
-            loyaltyProgramId: 323414846
-            id: 6
-            referenceId: 6
-          attributes: "{myAttribute=myValue}"
-          id: 6
-          sessionId: 175KJPS947296
-          applicationId: 322
-          type: pageViewed
+        advancedEvent: ""
+        event: ""
         ruleFailureReasons:
-        - rulesetID: 2
-          ruleIndex: 9
-          campaignID: 5
-          referralID: 7
-          conditionIndex: 3
+        - rulesetID: 6
+          ruleIndex: 5
+          campaignID: 0
+          referralID: 1
+          conditionIndex: 5
           effectIndex: 2
           evaluationGroupMode: stackable
           couponID: 4928
@@ -17458,11 +17338,11 @@ components:
           ruleName: ruleName
           details: details
           campaignName: campaignName
-        - rulesetID: 2
-          ruleIndex: 9
-          campaignID: 5
-          referralID: 7
-          conditionIndex: 3
+        - rulesetID: 6
+          ruleIndex: 5
+          campaignID: 0
+          referralID: 1
+          conditionIndex: 5
           effectIndex: 2
           evaluationGroupMode: stackable
           couponID: 4928
@@ -17472,75 +17352,7 @@ components:
           ruleName: ruleName
           details: details
           campaignName: campaignName
-        return:
-          returnedCartItems:
-          - quantity: 1
-            position: 2
-            sku: SKU1241028
-          - quantity: 1
-            position: 2
-            sku: SKU1241028
-          accountId: 3886
-          eventId: 123
-          profileIntegrationId: 0c0e0207-eb30-4e06-a56c-2b7c8a64953c
-          sessionIntegrationId: 0c0e0207-eb30-4e06-a56c-2b7c8a64953c
-          createdBy: 123
-          created: 2020-06-10T09:05:27.993483Z
-          profileId: 123
-          id: 6
-          sessionId: 123
-          applicationId: 322
-      properties:
-        customerSession:
-          $ref: "#/components/schemas/CustomerSessionV2"
-        customerProfile:
-          $ref: "#/components/schemas/CustomerProfile"
-        event:
-          $ref: "#/components/schemas/Event"
-        loyalty:
-          $ref: "#/components/schemas/Loyalty"
-        referral:
-          $ref: "#/components/schemas/InventoryReferral"
-        coupons:
-          items:
-            $ref: "#/components/schemas/IntegrationCoupon"
-          type: array
-        triggeredCampaigns:
-          items:
-            $ref: "#/components/schemas/Campaign"
-          type: array
-        effects:
-          description: "The effects generated by the rules in your running campaigns.\
-            \ See [API effects](https://docs.talon.one/docs/dev/integration-api/api-effects)."
-          items:
-            $ref: "#/components/schemas/Effect"
-          type: array
-        ruleFailureReasons:
-          items:
-            $ref: "#/components/schemas/RuleFailureReason"
-          type: array
-        createdCoupons:
-          items:
-            $ref: "#/components/schemas/Coupon"
-          type: array
-        createdReferrals:
-          items:
-            $ref: "#/components/schemas/Referral"
-          type: array
-        awardedGiveaways:
-          items:
-            $ref: "#/components/schemas/Giveaway"
-          type: array
-        return:
-          $ref: "#/components/schemas/Return"
-        previousReturns:
-          items:
-            $ref: "#/components/schemas/Return"
-          type: array
-      required:
-      - createdCoupons
-      - createdReferrals
-      - effects
+        return: ""
     ReturnIntegrationRequest:
       description: "The body of a return integration API request. Next to the cart\
         \ items details, this contains an optional listing of extra properties that\
@@ -17624,6 +17436,24 @@ components:
           type: array
       required:
       - effects
+    ResponseContentObject:
+      properties:
+        responseContent:
+          description: |
+            Extends the response with the chosen data entities. Use this property to get as much data back as needed from one request instead of sending extra requests to other endpoints.
+          example:
+          - triggeredCampaigns
+          - customerProfile
+          items:
+            enum:
+            - customerProfile
+            - triggeredCampaigns
+            - loyalty
+            - event
+            - awardedGiveaways
+            - ruleFailureReasons
+            type: string
+          type: array
     ProfileAudiencesChanges:
       properties:
         adds:
@@ -17652,29 +17482,15 @@ components:
       allOf:
       - $ref: "#/components/schemas/NewCustomerProfile"
       - $ref: "#/components/schemas/EvaluableCampaignIds"
+      - $ref: "#/components/schemas/ResponseContentObject"
       - description: "The body of a V2 integration API request (customer profile update).\
           \ Next to the customer profile details, this contains an optional listing\
           \ of extra properties that should be returned in the response."
         properties:
           audiencesChanges:
-            $ref: "#/components/schemas/CustomerProfileIntegrationRequestV2_allOf_audiencesChanges"
-          responseContent:
-            description: |
-              Extends the response with the chosen data entities. Use this property to get as much data
-              as you need in one _Update customer profile_ request instead of sending extra requests to other endpoints.
-            example:
-            - triggeredCampaigns
-            - customerProfile
-            items:
-              enum:
-              - customerProfile
-              - triggeredCampaigns
-              - loyalty
-              - event
-              - awardedGiveaways
-              - ruleFailureReasons
-              type: string
-            type: array
+            allOf:
+            - $ref: "#/components/schemas/ProfileAudiencesChanges"
+            description: Audiences memberships changes for this profile.
       example:
         evaluableCampaignIds:
         - 10
@@ -17682,7 +17498,7 @@ components:
         attributes:
           Language: english
           ShippingCountry: DE
-        audiencesChanges: null
+        audiencesChanges: ""
         responseContent:
         - triggeredCampaigns
         - customerProfile
@@ -18273,11 +18089,11 @@ components:
           discountRemainder: 5
           isReservationMandatory: false
         ruleFailureReasons:
-        - rulesetID: 2
-          ruleIndex: 9
-          campaignID: 5
-          referralID: 7
-          conditionIndex: 3
+        - rulesetID: 6
+          ruleIndex: 5
+          campaignID: 0
+          referralID: 1
+          conditionIndex: 5
           effectIndex: 2
           evaluationGroupMode: stackable
           couponID: 4928
@@ -18287,11 +18103,11 @@ components:
           ruleName: ruleName
           details: details
           campaignName: campaignName
-        - rulesetID: 2
-          ruleIndex: 9
-          campaignID: 5
-          referralID: 7
-          conditionIndex: 3
+        - rulesetID: 6
+          ruleIndex: 5
+          campaignID: 0
+          referralID: 1
+          conditionIndex: 5
           effectIndex: 2
           evaluationGroupMode: stackable
           couponID: 4928
@@ -18688,6 +18504,7 @@ components:
             - Coupon
             - Event
             - Giveaway
+            - LoyaltyCard
             - Referral
             - Store
             example: Event
@@ -18946,50 +18763,42 @@ components:
           action: createCoupon
         discountRemainder: 5
         isReservationMandatory: false
+    EventAttributesEntity:
+      properties:
+        type:
+          description: |
+            A string representing the event name. Must not be a reserved event name. You create this value when you [create an attribute](https://docs.talon.one/docs/dev/concepts/entities/events#creating-a-custom-event) of type `event` in the Campaign Manager.
+          example: pageViewed
+          minLength: 1
+          title: Event Type
+          type: string
+        attributes:
+          description: "Arbitrary additional JSON properties associated with the event.\
+            \ They must be created in the Campaign Manager before setting them with\
+            \ this property. See [creating custom attributes](https://docs.talon.one/docs/product/account/dev-tools/managing-attributes#creating-a-custom-attribute)."
+          example:
+            myAttribute: myValue
+          type: object
+      required:
+      - type
     EventV2:
       allOf:
       - $ref: "#/components/schemas/IntegrationProfileEntity"
       - $ref: "#/components/schemas/IntegrationStoreEntity"
       - $ref: "#/components/schemas/EvaluableCampaignIds"
-      - properties:
-          type:
-            description: |
-              A string representing the event name. Must not be a reserved event name. You create this value when you [create an attribute](https://docs.talon.one/docs/dev/concepts/entities/events#creating-a-custom-event) of type `event` in the Campaign Manager.
-            example: pageViewed
-            minLength: 1
-            title: Event Type
-            type: string
-          attributes:
-            $ref: "#/components/schemas/EventV2_allOf_attributes"
-        required:
-        - type
+      - $ref: "#/components/schemas/EventAttributesEntity"
     IntegrationEventV2Request:
       allOf:
       - $ref: "#/components/schemas/EventV2"
+      - $ref: "#/components/schemas/ResponseContentObject"
       - properties:
           loyaltyCards:
-            description: Identifier of the loyalty card used during this event.
+            description: Identifiers of the loyalty cards used during this event.
             example:
             - loyalty-card-1
             items:
               type: string
             maxItems: 1
-            type: array
-          responseContent:
-            description: |
-              Optional list of requested information to be present on the response related to the tracking custom event.
-            example:
-            - triggeredCampaigns
-            - customerProfile
-            items:
-              enum:
-              - customerProfile
-              - triggeredCampaigns
-              - loyalty
-              - event
-              - awardedGiveaways
-              - ruleFailureReasons
-              type: string
             type: array
       example:
         loyaltyCards:
@@ -18999,7 +18808,8 @@ components:
         evaluableCampaignIds:
         - 10
         - 12
-        attributes: "{myAttribute=myValue}"
+        attributes:
+          myAttribute: myValue
         type: pageViewed
         responseContent:
         - triggeredCampaigns
@@ -19019,7 +18829,9 @@ components:
         points:
           description: Amount of loyalty points.
           example: 300
+          exclusiveMinimum: true
           maximum: 999999999999.99
+          minimum: 0
           type: number
         name:
           description: Name / reason for the point addition.
@@ -19973,9 +19785,16 @@ components:
             type: string
         required:
         - sessionId
-    TrackEventV2Response:
-      description: |
-        This is the response type returned by the trackEventV2 endpoint.
+    IntegrationEventV2Response:
+      allOf:
+      - $ref: "#/components/schemas/IntegrationResponse"
+      - description: |
+          This is the response type returned by the trackEventV2 endpoint.
+        properties:
+          event:
+            allOf:
+            - $ref: "#/components/schemas/Event"
+            description: The event that was processed.
       example:
         effects:
         - rulesetId: 73
@@ -20321,111 +20140,8 @@ components:
           lastActivity: 2022-11-10T23:00:00Z
           endTime: 2021-09-22T22:00:00Z
           referralRedemptionCount: 3
-        customerProfile:
-          accountId: 31
-          closedSessions: 3
-          created: 2020-02-07T08:15:22Z
-          sandbox: false
-          integrationId: URNGV8294NV
-          attributes:
-            Language: english
-            ShippingCountry: DE
-          totalSales: 299.99
-          lastActivity: 2020-02-08T14:15:20Z
-          id: 6
-          loyaltyMemberships:
-          - joined: 2012-03-20T14:15:22Z
-            loyaltyProgramId: 323414846
-          - joined: 2012-03-20T14:15:22Z
-            loyaltyProgramId: 323414846
-          audienceMemberships:
-          - name: Travel audience
-            id: 2
-          - name: Travel audience
-            id: 2
-        loyalty:
-          cards:
-          - ledger: ""
-            identifier: summer-loyalty-card-0543
-            oldCardIdentifier: summer-loyalty-card-0543
-            usersPerCardLimit: 111
-            created: 2020-06-10T09:05:27.993483Z
-            profiles:
-            - integrationId: R195412
-              timestamp: 2021-09-12T10:12:42Z
-            - integrationId: R195412
-              timestamp: 2021-09-12T10:12:42Z
-            subledgers:
-              key:
-                pendingBalance: 10
-                negativeBalance: 10
-                currentBalance: 100
-                spentBalance: 0
-                tentativeCurrentBalance: 100
-                tentativePendingBalance: 20
-                pointsToNextTier: 20
-                expiredBalance: 0
-                currentTier: bronze
-                tentativeNegativeBalance: 100
-            batchId: wdefpov
-            programTitle: Loyalty program
-            programName: Loyalty_program
-            modified: 2021-09-12T10:12:42Z
-            id: 6
-            blockReason: Current card lost. Customer needs a new card.
-            newCardIdentifier: autumn-loyalty-card-5822
-            programID: 125
-            status: active
-          - ledger: ""
-            identifier: summer-loyalty-card-0543
-            oldCardIdentifier: summer-loyalty-card-0543
-            usersPerCardLimit: 111
-            created: 2020-06-10T09:05:27.993483Z
-            profiles:
-            - integrationId: R195412
-              timestamp: 2021-09-12T10:12:42Z
-            - integrationId: R195412
-              timestamp: 2021-09-12T10:12:42Z
-            subledgers:
-              key:
-                pendingBalance: 10
-                negativeBalance: 10
-                currentBalance: 100
-                spentBalance: 0
-                tentativeCurrentBalance: 100
-                tentativePendingBalance: 20
-                pointsToNextTier: 20
-                expiredBalance: 0
-                currentTier: bronze
-                tentativeNegativeBalance: 100
-            batchId: wdefpov
-            programTitle: Loyalty program
-            programName: Loyalty_program
-            modified: 2021-09-12T10:12:42Z
-            id: 6
-            blockReason: Current card lost. Customer needs a new card.
-            newCardIdentifier: autumn-loyalty-card-5822
-            programID: 125
-            status: active
-          programs:
-            key:
-              ledger: ""
-              joinDate: 2024-04-30T15:04:05Z07:00
-              subLedgers:
-                key:
-                  pendingBalance: 10
-                  negativeBalance: 10
-                  currentBalance: 100
-                  spentBalance: 0
-                  tentativeCurrentBalance: 100
-                  tentativePendingBalance: 20
-                  pointsToNextTier: 20
-                  expiredBalance: 0
-                  currentTier: bronze
-                  tentativeNegativeBalance: 100
-              name: program1
-              id: 5
-              title: My loyalty program
+        customerProfile: ""
+        loyalty: ""
         awardedGiveaways:
         - profileIntegrationId: R195412
           code: GIVEAWAY1
@@ -20449,51 +20165,6 @@ components:
           id: 6
           used: true
           startDate: 2022-01-02T15:04:05Z07:00
-        event:
-          effects:
-          - "{}"
-          - "{}"
-          storeIntegrationId: STORE-001
-          created: 2020-06-10T09:05:27.993483Z
-          profileId: URNGV8294NV
-          meta:
-            campaigns: "{}"
-            coupons: "{}"
-            referralRejectionReason:
-              reason: ReferralNotFound
-              campaignId: 1
-              referralId: 5
-            warnings: "{}"
-            couponRejectionReason:
-              reason: CouponNotFound
-              campaignId: 244
-              couponId: 4928
-          ledgerEntries:
-          - expiryDate: 2022-04-26T11:02:38Z
-            accountId: 0
-            eventId: 3
-            reason: Customer appeasement.
-            amount: 100
-            created: 2020-06-10T09:05:27.993483Z
-            profileId: URNGV8294NV
-            loyaltyProgramId: 323414846
-            id: 6
-            referenceId: 6
-          - expiryDate: 2022-04-26T11:02:38Z
-            accountId: 0
-            eventId: 3
-            reason: Customer appeasement.
-            amount: 100
-            created: 2020-06-10T09:05:27.993483Z
-            profileId: URNGV8294NV
-            loyaltyProgramId: 323414846
-            id: 6
-            referenceId: 6
-          attributes: "{myAttribute=myValue}"
-          id: 6
-          sessionId: 175KJPS947296
-          applicationId: 322
-          type: pageViewed
         createdCoupons:
         - recipientIntegrationId: URNGV8294NV
           implicitlyReserved: false
@@ -20559,12 +20230,13 @@ components:
             action: createCoupon
           discountRemainder: 5
           isReservationMandatory: false
+        event: ""
         ruleFailureReasons:
-        - rulesetID: 2
-          ruleIndex: 9
-          campaignID: 5
-          referralID: 7
-          conditionIndex: 3
+        - rulesetID: 6
+          ruleIndex: 5
+          campaignID: 0
+          referralID: 1
+          conditionIndex: 5
           effectIndex: 2
           evaluationGroupMode: stackable
           couponID: 4928
@@ -20574,11 +20246,11 @@ components:
           ruleName: ruleName
           details: details
           campaignName: campaignName
-        - rulesetID: 2
-          ruleIndex: 9
-          campaignID: 5
-          referralID: 7
-          conditionIndex: 3
+        - rulesetID: 6
+          ruleIndex: 5
+          campaignID: 0
+          referralID: 1
+          conditionIndex: 5
           effectIndex: 2
           evaluationGroupMode: stackable
           couponID: 4928
@@ -20615,43 +20287,6 @@ components:
           attributes: "{channel=web}"
           id: 6
           startDate: 2020-11-10T23:00:00Z
-      properties:
-        customerProfile:
-          $ref: "#/components/schemas/CustomerProfile"
-        event:
-          $ref: "#/components/schemas/Event"
-        loyalty:
-          $ref: "#/components/schemas/Loyalty"
-        triggeredCampaigns:
-          items:
-            $ref: "#/components/schemas/Campaign"
-          type: array
-        ruleFailureReasons:
-          items:
-            $ref: "#/components/schemas/RuleFailureReason"
-          type: array
-        awardedGiveaways:
-          items:
-            $ref: "#/components/schemas/Giveaway"
-          type: array
-        effects:
-          description: "The effects generated by the rules in your running campaigns.\
-            \ See [API effects](https://docs.talon.one/docs/dev/integration-api/api-effects)."
-          items:
-            $ref: "#/components/schemas/Effect"
-          type: array
-        createdCoupons:
-          items:
-            $ref: "#/components/schemas/Coupon"
-          type: array
-        createdReferrals:
-          items:
-            $ref: "#/components/schemas/Referral"
-          type: array
-      required:
-      - createdCoupons
-      - createdReferrals
-      - effects
     NewReferralsForMultipleAdvocates:
       allOf:
       - $ref: "#/components/schemas/ReferralConstraints"
@@ -21692,6 +21327,15 @@ components:
       - subledgerId
       - transactionUUID
       - type
+    UpdateLoyaltyCardRequest:
+      example:
+        status: active
+      properties:
+        status:
+          description: |
+            Status of the loyalty card. Can be `active` or `inactive`.
+          example: active
+          type: string
     LoyaltyLedgerEntryFlags:
       description: A map of flags providing additional details about the entry.
       properties:
@@ -25745,8 +25389,12 @@ components:
           ruleset:
             $ref: "#/components/schemas/NewRuleset"
           weight:
-            example: 12
+            description: The percentage split of this variant. The sum of all variant
+              percentages must be 100.
+            example: 13
             format: int64
+            maximum: 99
+            minimum: 1
             type: integer
         required:
         - id
@@ -25770,8 +25418,12 @@ components:
           pattern: "^[A-Za-z](\\w|\\s)*$"
           type: string
         weight:
+          description: The percentage split of this variant. The sum of all variant
+            percentages must be 100.
           example: 13
           format: int64
+          maximum: 99
+          minimum: 1
           type: integer
         ruleset:
           $ref: "#/components/schemas/NewRuleset"
@@ -25782,6 +25434,7 @@ components:
       - isPrimary
       - name
       - ruleset
+      - weight
     NewExperimentVariantArray:
       properties:
         variants:
@@ -25791,6 +25444,17 @@ components:
           type: array
       required:
       - variants
+    UpdateExperimentVariantName:
+      allOf:
+      - properties:
+          name:
+            description: The name of the variant.
+            example: Variant A
+            maxLength: 255
+            minLength: 1
+            type: string
+        required:
+        - name
     ExperimentVariantResult:
       properties:
         variantId:
@@ -26951,7 +26615,9 @@ components:
         points:
           description: Amount of loyalty points.
           example: 300
+          exclusiveMinimum: true
           maximum: 999999999999.99
+          minimum: 0
           type: number
         name:
           description: Name / reason for the point deduction.
@@ -27220,6 +26886,9 @@ components:
         - R195412
         - G244519
         cardIdentifier: summer-loyalty-card-0543
+        attributes:
+          preferredReward: discount
+          enrollmentSource: mobile
       properties:
         status:
           default: active
@@ -28665,11 +28334,11 @@ components:
         storeId: 0
         type: type
         ruleFailureReasons:
-        - rulesetID: 2
-          ruleIndex: 9
-          campaignID: 5
-          referralID: 7
-          conditionIndex: 3
+        - rulesetID: 6
+          ruleIndex: 5
+          campaignID: 0
+          referralID: 1
+          conditionIndex: 5
           effectIndex: 2
           evaluationGroupMode: stackable
           couponID: 4928
@@ -28679,11 +28348,11 @@ components:
           ruleName: ruleName
           details: details
           campaignName: campaignName
-        - rulesetID: 2
-          ruleIndex: 9
-          campaignID: 5
-          referralID: 7
-          conditionIndex: 3
+        - rulesetID: 6
+          ruleIndex: 5
+          campaignID: 0
+          referralID: 1
+          conditionIndex: 5
           effectIndex: 2
           evaluationGroupMode: stackable
           couponID: 4928
@@ -29290,7 +28959,7 @@ components:
     BestPriorPriceMetadata:
       description: Auxiliary data for found price observation.
       example:
-        adjustmentDetails: "{}"
+        adjustmentDetails: ""
         influencingCampaignDetails:
         - campaignId: 0
           discountValue: 6.027456183070403
@@ -29311,7 +28980,7 @@ components:
     BestPriorPrice:
       example:
         metadata:
-          adjustmentDetails: "{}"
+          adjustmentDetails: ""
           influencingCampaignDetails:
           - campaignId: 0
             discountValue: 6.027456183070403
@@ -29375,6 +29044,7 @@ components:
             - Event
             - Item
             - Loyalty
+            - LoyaltyCard
             - Profile
             - Giveaway
             - Referral
@@ -31544,7 +31214,7 @@ components:
           $ref: "#/components/schemas/RoleV2RolesGroup"
     RoleV2Base:
       example:
-        permissions: "{}"
+        permissions: ""
         members:
         - 10
         - 12
@@ -31596,7 +31266,7 @@ components:
         accountId: 3886
         isReadonly: false
         created: 2020-06-10T09:05:27.993483Z
-        permissions: "{}"
+        permissions: ""
         members:
         - 10
         - 12
@@ -32140,29 +31810,29 @@ components:
       required:
       - expression
       - name
-    CollectionsCatalog:
+    Blueprint:
       properties:
         id:
-          description: The internal ID of this collection.
+          description: The internal ID of this blueprint.
           format: int64
           type: integer
         accountId:
-          description: The ID of the account that owns this collection.
+          description: The ID of the account that owns this blueprint.
           format: int64
           type: integer
         applicationId:
-          description: The ID of the Application that owns this collection.
+          description: The ID of the Application that owns this blueprint.
           format: int64
           type: integer
         title:
-          description: A short description of the collection catalog.
+          description: A short description of the blueprint.
           example: High value cart discount
           type: string
         description:
-          description: "A longer, more detailed description of the collection catalog."
+          description: "A longer, more detailed description of the blueprint."
           type: string
         category:
-          description: Category used to group collection catalogs.
+          description: Category used to group blueprints.
           enum:
           - promotions
           - pricing
@@ -32170,39 +31840,38 @@ components:
           - custom
           type: string
         source:
-          description: Indicates whether the collection is custom or shipped by Talon.One.
+          description: Indicates whether the blueprint is custom or shipped by Talon.One.
           enum:
           - custom
           - default
           type: string
         rules:
-          description: "Array of rule templates in this collection catalog. Rules\
-            \ only contain title (no description, as description is at the collection\
-            \ catalog level)."
+          description: "Array of rule templates in this blueprint. Rules only contain\
+            \ title (no description, as description is at the blueprint level)."
           items:
             $ref: "#/components/schemas/CatalogRule"
           type: array
         cartItemFilters:
-          description: "Array of cart item filter templates in this collection catalog.\
-            \ Cart item filters only contain name (no description, as description\
-            \ is at the collection catalog level)."
+          description: "Array of cart item filter templates in this blueprint. Cart\
+            \ item filters only contain name (no description, as description is at\
+            \ the blueprint level)."
           items:
             $ref: "#/components/schemas/CartItemFilterTemplate"
           type: array
         created:
-          description: Timestamp when the collection was created.
+          description: Timestamp when the blueprint was created.
           format: date-time
           type: string
         createdBy:
-          description: ID of the user who created the collection.
+          description: ID of the user who created the blueprint.
           format: int64
           type: integer
         modified:
-          description: Timestamp when the collection was last updated.
+          description: Timestamp when the blueprint was last updated.
           format: date-time
           type: string
         modifiedBy:
-          description: ID of the user who last updated the collection.
+          description: ID of the user who last updated the blueprint.
           format: int64
           type: integer
       required:
@@ -32216,18 +31885,18 @@ components:
       - rules
       - source
       - title
-    NewCollectionsCatalog:
+    NewBlueprint:
       properties:
         title:
-          description: The display name for the collection catalog.
+          description: The display name for the blueprint.
           example: Customer loyalty boost
           type: string
         description:
-          description: "A longer, more detailed description of the collection catalog."
+          description: "A longer, more detailed description of the blueprint."
           type: string
         category:
           default: custom
-          description: Category used to group collection catalogs.
+          description: Category used to group blueprints.
           enum:
           - promotions
           - pricing
@@ -32235,33 +31904,32 @@ components:
           - custom
           type: string
         rules:
-          description: "Array of rules to store in this collection catalog. Rules\
-            \ should only contain title (no description, as description is at the\
-            \ collection catalog level). At least one rule or cart item filter is\
-            \ required."
+          description: "Array of rules to store in this blueprint. Rules should only\
+            \ contain title (no description, as description is at the blueprint level).\
+            \ At least one rule or cart item filter is required."
           items:
             $ref: "#/components/schemas/CatalogRule"
           type: array
         cartItemFilters:
-          description: "Array of cart item filters to store in this collection catalog.\
-            \ If not provided, will be extracted from the rules. Cart item filters\
-            \ should only contain name (no description, as description is at the collection\
-            \ catalog level)."
+          description: "Array of cart item filters to store in this blueprint. If\
+            \ not provided, will be extracted from the rules. Cart item filters should\
+            \ only contain name (no description, as description is at the blueprint\
+            \ level)."
           items:
             $ref: "#/components/schemas/CartItemFilterTemplate"
           type: array
       required:
       - title
-    UpdateCollectionsCatalog:
+    UpdateBlueprint:
       properties:
         title:
-          description: The display name for the collection catalog.
+          description: The display name for the blueprint.
           type: string
         description:
-          description: "A longer, more detailed description of the collection catalog."
+          description: "A longer, more detailed description of the blueprint."
           type: string
         category:
-          description: Category used to group collection catalogs.
+          description: Category used to group blueprints.
           enum:
           - promotions
           - pricing
@@ -32270,14 +31938,14 @@ components:
           type: string
         rules:
           description: "Replaces the stored rules. Rules should only contain title\
-            \ (no description, as description is at the collection catalog level)."
+            \ (no description, as description is at the blueprint level)."
           items:
             $ref: "#/components/schemas/CatalogRule"
           type: array
         cartItemFilters:
           description: "Replaces the stored cart item filters. Cart item filters should\
-            \ only contain name (no description, as description is at the collection\
-            \ catalog level)."
+            \ only contain name (no description, as description is at the blueprint\
+            \ level)."
           items:
             $ref: "#/components/schemas/CartItemFilterTemplate"
           type: array
@@ -32992,6 +32660,52 @@ components:
       - email
       - name
       - summary
+    PrismaticFlowConfigResponse:
+      properties:
+        WorkerCount:
+          description: Number of Prismatic workers to run in parallel for this flow
+            (maximum 500).
+          format: int64
+          maximum: 500
+          minimum: 1
+          type: integer
+        MaxEventsPerMessage:
+          description: Maximum number of events to send in a single message to Prismatic.
+          format: int64
+          minimum: 1
+          type: integer
+        MaxRetries:
+          description: Maximum number of retries for a Prismatic event before it is
+            ignored.
+          format: int64
+          minimum: 0
+          type: integer
+    PrismaticFlowResponse:
+      properties:
+        Id:
+          description: ID of the prismatic flow.
+          format: int64
+          type: integer
+        ApplicationID:
+          description: ID of application the flow is registered for.
+          example: 54
+          format: int64
+          type: integer
+        EventType:
+          description: The event type we want to register a flow for.
+          type: string
+          x-fieldType: PrismaticEventType
+        PrismaticFlowUrl:
+          description: The URL of the prismatic flow that we want to trigger for the
+            event.
+          type: string
+        Config:
+          $ref: "#/components/schemas/PrismaticFlowConfigResponse"
+      required:
+      - Config
+      - EventType
+      - Id
+      - PrismaticFlowUrl
     PrismaticFlowConfig:
       properties:
         ApiKey:
@@ -33058,6 +32772,266 @@ components:
       required:
       - EventType
       - PrismaticFlowUrl
+    PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction:
+      allOf:
+      - properties:
+          Amount:
+            format: float
+            type: number
+          Reason:
+            type: string
+          Operation:
+            enum:
+            - addition
+            - deduction
+            type: string
+          StartDate:
+            format: date-time
+            type: string
+          ExpiryDate:
+            format: date-time
+            type: string
+        required:
+        - Amount
+        - Operation
+    PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotification:
+      allOf:
+      - properties:
+          ProfileIntegrationID:
+            type: string
+          LoyaltyProgramID:
+            format: int64
+            type: integer
+          SubledgerID:
+            type: string
+          SourceOfEvent:
+            type: string
+          EmployeeName:
+            type: string
+          UserID:
+            format: int64
+            type: integer
+          CurrentPoints:
+            format: float
+            type: number
+          Actions:
+            items:
+              $ref: "#/components/schemas/PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction"
+            type: array
+          PublishedAt:
+            description: Timestamp when the event was published.
+            format: date-time
+            type: string
+        required:
+        - CurrentPoints
+        - LoyaltyProgramID
+        - ProfileIntegrationID
+        - PublishedAt
+        - SourceOfEvent
+        - SubledgerID
+    PrismaticEventPayloadLoyaltyProfileBasedTierDowngradeNotification:
+      allOf:
+      - properties:
+          ProfileIntegrationID:
+            type: string
+          LoyaltyProgramID:
+            format: int64
+            type: integer
+          SubledgerID:
+            type: string
+          SourceOfEvent:
+            type: string
+          CurrentTier:
+            type: string
+          CurrentPoints:
+            format: float
+            type: number
+          OldTier:
+            type: string
+          TierExpirationDate:
+            format: date-time
+            type: string
+          TimestampOfTierChange:
+            format: date-time
+            type: string
+          PublishedAt:
+            description: Timestamp when the event was published.
+            format: date-time
+            type: string
+        required:
+        - CurrentPoints
+        - LoyaltyProgramID
+        - ProfileIntegrationID
+        - PublishedAt
+        - SourceOfEvent
+        - SubledgerID
+    PrismaticEventPayloadLoyaltyProfileBasedTierUpgradeNotification:
+      allOf:
+      - properties:
+          ProfileIntegrationID:
+            type: string
+          LoyaltyProgramID:
+            format: int64
+            type: integer
+          SubledgerID:
+            type: string
+          SourceOfEvent:
+            type: string
+          CurrentTier:
+            type: string
+          CurrentPoints:
+            format: float
+            type: number
+          OldTier:
+            type: string
+          PointsRequiredToTheNextTier:
+            format: float
+            type: number
+          NextTier:
+            type: string
+          TierExpirationDate:
+            format: date-time
+            type: string
+          TimestampOfTierChange:
+            format: date-time
+            type: string
+          PublishedAt:
+            description: Timestamp when the event was published.
+            format: date-time
+            type: string
+        required:
+        - CurrentPoints
+        - LoyaltyProgramID
+        - ProfileIntegrationID
+        - PublishedAt
+        - SourceOfEvent
+        - SubledgerID
+    PrismaticEventPayloadLoyaltyProfileBasedNotification:
+      allOf:
+      - $ref: "#/components/schemas/PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotification"
+      - $ref: "#/components/schemas/PrismaticEventPayloadLoyaltyProfileBasedTierDowngradeNotification"
+      - $ref: "#/components/schemas/PrismaticEventPayloadLoyaltyProfileBasedTierUpgradeNotification"
+    PrismaticEventPayloadCouponBasedNotificationsLimits:
+      properties:
+        Action:
+          type: string
+        Limit:
+          format: float
+          type: number
+        Period:
+          type: string
+        Entities:
+          items:
+            type: string
+          type: array
+      required:
+      - Action
+      - Entities
+      - Limit
+    PrismaticEventPayloadCouponBasedNotifications:
+      allOf:
+      - properties:
+          Id:
+            format: int64
+            type: integer
+          Created:
+            format: date-time
+            type: string
+          CampaignId:
+            format: int64
+            type: integer
+          Value:
+            type: string
+          UsageLimit:
+            format: int64
+            type: integer
+          DiscountLimit:
+            format: float
+            type: number
+          ReservationLimit:
+            format: int64
+            type: integer
+          StartDate:
+            format: date-time
+            type: string
+          ExpiryDate:
+            format: date-time
+            type: string
+          UsageCounter:
+            format: int64
+            type: integer
+          DiscountCounter:
+            format: float
+            type: number
+          DiscountRemainder:
+            format: float
+            type: number
+          ReferralId:
+            format: int64
+            type: integer
+          RecipientIntegrationId:
+            type: string
+          ImportId:
+            format: int64
+            type: integer
+          BatchId:
+            type: string
+          Attributes:
+            $ref: "#/components/schemas/PrismaticEventPayloadCouponBasedNotifications_allOf_Attributes"
+          Limits:
+            items:
+              $ref: "#/components/schemas/PrismaticEventPayloadCouponBasedNotificationsLimits"
+            type: array
+          PublishedAt:
+            description: Timestamp when the event was published.
+            format: date-time
+            type: string
+          SourceOfEvent:
+            type: string
+          EmployeeName:
+            type: string
+        required:
+        - CampaignId
+        - Created
+        - EmployeeName
+        - Id
+        - PublishedAt
+        - SourceOfEvent
+        - UsageCounter
+        - UsageLimit
+        - Value
+    PrismaticEventRecord:
+      properties:
+        Id:
+          format: int64
+          type: integer
+        FlowId:
+          format: int64
+          type: integer
+        EventType:
+          type: string
+          x-fieldType: PrismaticEventType
+        EventData: {}
+        PublishedAt:
+          format: date-time
+          type: string
+        ProcessedAt:
+          format: date-time
+          type: string
+        ProcessAfter:
+          format: date-time
+          type: string
+        Retry:
+          format: int64
+          type: integer
+      required:
+      - EventData
+      - EventType
+      - FlowId
+      - Id
+      - ProcessAfter
+      - PublishedAt
+      - Retry
     PrismaticConfig:
       description: Config used for accessing integrations in Prismatic
       properties:
@@ -33072,51 +33046,22 @@ components:
       required:
       - accessToken
       - prismaticUrl
-    IntegrationProfileEntityV3:
-      properties:
-        profileId:
-          description: |
-            ID of the customer profile set by your integration layer.
-
-            **Note:** If the customer does not yet have a known `profileId`, we recommend you use a guest `profileId`.
-          example: URNGV8294NV
-          type: string
-      required:
-      - profileId
-    EventV3:
+    CouponWithApplication:
       allOf:
-      - $ref: "#/components/schemas/IntegrationProfileEntityV3"
-      - $ref: "#/components/schemas/IntegrationStoreEntity"
-      - $ref: "#/components/schemas/EvaluableCampaignIds"
+      - $ref: "#/components/schemas/Coupon"
       - properties:
-          integrationId:
-            description: |
-              The unique ID of the current event. Only one event with this ID could be activated, duplicated events are forbidden.
-            example: 175KJPS947296
-            minLength: 1
-            type: string
-          type:
-            description: |
-              A string representing the event name. Must not be a reserved event name. You create this value when you [create an attribute](https://docs.talon.one/docs/dev/concepts/entities/events#creating-a-custom-event) of type `event` in the Campaign Manager.
-            example: pageViewed
-            minLength: 1
-            title: Event Type
-            type: string
-          attributes:
-            $ref: "#/components/schemas/EventV2_allOf_attributes"
-          connectedSessionID:
-            description: The ID of the session that happened in the past.
-            example: 175KJPS947296
-            minLength: 1
-            type: string
-          previousEventID:
-            description: The unique identifier of the event that happened in the past.
-            example: 175KJPS947296
-            minLength: 1
+          applicationId:
+            description: The ID of the application.
+            example: 123
+            format: int64
+            type: integer
+          applicationName:
+            description: Name of the Application that is connected to the coupon.
+            example: Test Application
             type: string
         required:
-        - integrationId
-        - type
+        - applicationId
+        - applicationName
     IntegrationEventV3Request:
       allOf:
       - $ref: "#/components/schemas/EventV3"
@@ -33140,51 +33085,21 @@ components:
               - customerProfile
               - triggeredCampaigns
               - loyalty
-              - event
+              - advancedEvent
               - awardedGiveaways
               - ruleFailureReasons
               type: string
             type: array
     IntegrationEventV3Response:
-      description: |
-        This is the response type returned by the trackEventV3 endpoint.
-      properties:
-        customerProfile:
-          $ref: "#/components/schemas/CustomerProfile"
-        event:
-          $ref: "#/components/schemas/EventV3"
-        loyalty:
-          $ref: "#/components/schemas/Loyalty"
-        triggeredCampaigns:
-          items:
-            $ref: "#/components/schemas/Campaign"
-          type: array
-        ruleFailureReasons:
-          items:
-            $ref: "#/components/schemas/RuleFailureReason"
-          type: array
-        awardedGiveaways:
-          items:
-            $ref: "#/components/schemas/Giveaway"
-          type: array
-        effects:
-          description: "The effects generated by the rules in your running campaigns.\
-            \ See [API effects](https://docs.talon.one/docs/dev/integration-api/api-effects)."
-          items:
-            $ref: "#/components/schemas/Effect"
-          type: array
-        createdCoupons:
-          items:
-            $ref: "#/components/schemas/Coupon"
-          type: array
-        createdReferrals:
-          items:
-            $ref: "#/components/schemas/Referral"
-          type: array
-      required:
-      - createdCoupons
-      - createdReferrals
-      - effects
+      allOf:
+      - $ref: "#/components/schemas/IntegrationResponse"
+      - description: |
+          This is the response type returned by the trackEventV3 endpoint.
+        properties:
+          advancedEvent:
+            allOf:
+            - $ref: "#/components/schemas/EventV3"
+            description: The advanced event that was processed.
     CampaignNotificationBase:
       properties:
         NotificationType:
@@ -33209,6 +33124,27 @@ components:
           type: string
       required:
       - Event
+    PlaceholderDetails:
+      properties:
+        name:
+          description: The name of the placeholder.
+          example: my property
+          type: string
+        type:
+          description: The type of the value assigned to the placeholder.
+          example: list string
+          type: string
+        value:
+          description: The current value of the placeholder.
+          example:
+          - 1
+          - sku_value
+          items: {}
+          type: array
+      required:
+      - name
+      - type
+      - value
     CampaignEvaluationPosition:
       description: The campaign position within the evaluation tree.
       properties:
@@ -33238,11 +33174,23 @@ components:
       - description: A notification regarding a campaign that was created.
         properties:
           campaign:
-            $ref: "#/components/schemas/CampaignCreatedNotificationItem_allOf_campaign"
+            allOf:
+            - $ref: "#/components/schemas/Campaign"
+            description: The campaign whose state changed.
           ruleset:
-            $ref: "#/components/schemas/CampaignCreatedNotificationItem_allOf_ruleset"
+            allOf:
+            - $ref: "#/components/schemas/Ruleset"
+            description: The current ruleset.
+          placeholders:
+            description: "The current details of the [placeholders](https://docs.talon.one/docs/product/campaigns/templates/create-templates#use-placeholders)\
+              \ in the campaign."
+            items:
+              $ref: "#/components/schemas/PlaceholderDetails"
+            type: array
           evaluationPosition:
-            $ref: "#/components/schemas/CampaignCreatedNotificationItem_allOf_evaluationPosition"
+            allOf:
+            - $ref: "#/components/schemas/CampaignEvaluationPosition"
+            description: The campaign position within the evaluation tree.
         required:
         - campaign
         - evaluationPosition
@@ -33263,7 +33211,9 @@ components:
       - description: A notification regarding a campaign whose state changed.
         properties:
           campaign:
-            $ref: "#/components/schemas/CampaignCreatedNotificationItem_allOf_campaign"
+            allOf:
+            - $ref: "#/components/schemas/Campaign"
+            description: The campaign whose state changed.
           oldState:
             description: |
               The campaign's old state. Can be one of the following: ['running', 'disabled', 'scheduled', 'expired', 'archived']
@@ -33275,7 +33225,15 @@ components:
             example: running
             type: string
           ruleset:
-            $ref: "#/components/schemas/CampaignCreatedNotificationItem_allOf_ruleset"
+            allOf:
+            - $ref: "#/components/schemas/Ruleset"
+            description: The current ruleset.
+          placeholders:
+            description: "The current details of the [placeholders](https://docs.talon.one/docs/product/campaigns/templates/create-templates#use-placeholders)\
+              \ in the campaign."
+            items:
+              $ref: "#/components/schemas/PlaceholderDetails"
+            type: array
         required:
         - campaign
         - newState
@@ -33297,15 +33255,29 @@ components:
       - description: A notification regarding a campaign whose ruleset was changed.
         properties:
           campaign:
-            $ref: "#/components/schemas/CampaignCreatedNotificationItem_allOf_campaign"
+            allOf:
+            - $ref: "#/components/schemas/Campaign"
+            description: The campaign whose state changed.
           oldRuleset:
             allOf:
             - $ref: "#/components/schemas/Ruleset"
             description: "The old ruleset, if the ruleset was changed."
+          oldPlaceholders:
+            description: The previous details of the placeholders before the ruleset
+              was changed.
+            items:
+              $ref: "#/components/schemas/PlaceholderDetails"
+            type: array
           ruleset:
             allOf:
             - $ref: "#/components/schemas/Ruleset"
             description: The current ruleset.
+          placeholders:
+            description: "The current details of the [placeholders](https://docs.talon.one/docs/product/campaigns/templates/create-templates#use-placeholders)\
+              \ in the campaign."
+            items:
+              $ref: "#/components/schemas/PlaceholderDetails"
+            type: array
         required:
         - campaign
     CampaignRulesetChangedNotification:
@@ -33325,11 +33297,23 @@ components:
       - description: A notification regarding a campaign which was edited.
         properties:
           campaign:
-            $ref: "#/components/schemas/CampaignCreatedNotificationItem_allOf_campaign"
+            allOf:
+            - $ref: "#/components/schemas/Campaign"
+            description: The campaign whose state changed.
           oldCampaign:
-            $ref: "#/components/schemas/CampaignEditedNotificationItem_allOf_oldCampaign"
+            allOf:
+            - $ref: "#/components/schemas/Campaign"
+            description: The campaign before the change.
           ruleset:
-            $ref: "#/components/schemas/CampaignCreatedNotificationItem_allOf_ruleset"
+            allOf:
+            - $ref: "#/components/schemas/Ruleset"
+            description: The current ruleset.
+          placeholders:
+            description: "The current details of the [placeholders](https://docs.talon.one/docs/product/campaigns/templates/create-templates#use-placeholders)\
+              \ in the campaign."
+            items:
+              $ref: "#/components/schemas/PlaceholderDetails"
+            type: array
         required:
         - campaign
         - oldCampaign
@@ -33350,11 +33334,23 @@ components:
       - description: A notification regarding a collection that was edited.
         properties:
           campaign:
-            $ref: "#/components/schemas/CampaignCollectionEditedNotificationItem_allOf_campaign"
+            allOf:
+            - $ref: "#/components/schemas/Campaign"
+            description: The current campaign.
           ruleset:
-            $ref: "#/components/schemas/CampaignCreatedNotificationItem_allOf_ruleset"
+            allOf:
+            - $ref: "#/components/schemas/Ruleset"
+            description: The current ruleset.
+          placeholders:
+            description: "The current details of the [placeholders](https://docs.talon.one/docs/product/campaigns/templates/create-templates#use-placeholders)\
+              \ in the campaign."
+            items:
+              $ref: "#/components/schemas/PlaceholderDetails"
+            type: array
           collection:
-            $ref: "#/components/schemas/CampaignCollectionEditedNotificationItem_allOf_collection"
+            allOf:
+            - $ref: "#/components/schemas/CollectionWithoutPayload"
+            description: The collection that was edited.
         required:
         - campaign
         - collection
@@ -33375,7 +33371,9 @@ components:
       - description: A notification regarding a campaign that was deleted.
         properties:
           campaign:
-            $ref: "#/components/schemas/CampaignCreatedNotificationItem_allOf_campaign"
+            allOf:
+            - $ref: "#/components/schemas/Campaign"
+            description: The campaign whose state changed.
           deletedAt:
             description: Time when the campaign was deleted.
             example: 2022-11-10T23:00:00Z
@@ -34581,159 +34579,6 @@ components:
       - TypeOfChange
       - UserID
       - UsersPerCardLimit
-    PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction:
-      allOf:
-      - properties:
-          Amount:
-            format: float
-            type: number
-          Reason:
-            type: string
-          Operation:
-            enum:
-            - addition
-            - deduction
-            type: string
-          StartDate:
-            format: date-time
-            type: string
-          ExpiryDate:
-            format: date-time
-            type: string
-        required:
-        - Amount
-        - Operation
-    PrismaticEventPayloadLoyaltyProfileBasedNotifications:
-      allOf:
-      - properties:
-          ProfileIntegrationID:
-            type: string
-          LoyaltyProgramID:
-            format: int64
-            type: integer
-          SubledgerID:
-            type: string
-          SourceOfEvent:
-            type: string
-          EmployeeName:
-            type: string
-          UserID:
-            format: int64
-            type: integer
-          SessionIntegrationID:
-            type: string
-          CurrentTier:
-            type: string
-          CurrentPoints:
-            format: float
-            type: number
-          OldTier:
-            type: string
-          PointsRequiredToTheNextTier:
-            format: float
-            type: number
-          NextTier:
-            type: string
-          TierExpirationDate:
-            format: date-time
-            type: string
-          TimestampOfTierChange:
-            format: date-time
-            type: string
-          Actions:
-            items:
-              $ref: "#/components/schemas/PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction"
-            type: array
-        required:
-        - CurrentPoints
-        - LoyaltyProgramID
-        - ProfileIntegrationID
-        - SourceOfEvent
-        - SubledgerID
-    PrismaticEventPayloadCouponBasedNotificationsLimits:
-      properties:
-        Action:
-          type: string
-        Limit:
-          format: float
-          type: number
-        Period:
-          type: string
-        Entities:
-          items:
-            type: string
-          type: array
-      required:
-      - Action
-      - Entities
-      - Limit
-    PrismaticEventPayloadCouponBasedNotifications:
-      allOf:
-      - properties:
-          Id:
-            format: int64
-            type: integer
-          Created:
-            format: date-time
-            type: string
-          CampaignId:
-            format: int64
-            type: integer
-          Value:
-            type: string
-          UsageLimit:
-            format: int64
-            type: integer
-          DiscountLimit:
-            format: float
-            type: number
-          ReservationLimit:
-            format: int64
-            type: integer
-          StartDate:
-            format: date-time
-            type: string
-          ExpiryDate:
-            format: date-time
-            type: string
-          UsageCounter:
-            format: int64
-            type: integer
-          DiscountCounter:
-            format: float
-            type: number
-          DiscountRemainder:
-            format: float
-            type: number
-          ReferralId:
-            format: int64
-            type: integer
-          RecipientIntegrationId:
-            type: string
-          ImportId:
-            format: int64
-            type: integer
-          BatchId:
-            type: string
-          Attributes:
-            $ref: "#/components/schemas/PrismaticEventPayloadCouponBasedNotifications_allOf_Attributes"
-          Limits:
-            items:
-              $ref: "#/components/schemas/PrismaticEventPayloadCouponBasedNotificationsLimits"
-            type: array
-          SourceOfEvent:
-            type: string
-          EmployeeName:
-            type: string
-        required:
-        - CampaignId
-        - Created
-        - EmployeeName
-        - Id
-        - SourceOfEvent
-        - UsageCounter
-        - UsageLimit
-        - Value
     SetLoyaltyPointsExpiryDateEffectProps:
       description: |
         The properties specific to the "setLoyaltyPointsExpiryDate" effect. This gets triggered when a validated rule contains the "set expiry date" effect. The current expiry date gets set to the date given in the effect.
@@ -37852,11 +37697,11 @@ components:
           storeId: 0
           type: type
           ruleFailureReasons:
-          - rulesetID: 2
-            ruleIndex: 9
-            campaignID: 5
-            referralID: 7
-            conditionIndex: 3
+          - rulesetID: 6
+            ruleIndex: 5
+            campaignID: 0
+            referralID: 1
+            conditionIndex: 5
             effectIndex: 2
             evaluationGroupMode: stackable
             couponID: 4928
@@ -37866,11 +37711,11 @@ components:
             ruleName: ruleName
             details: details
             campaignName: campaignName
-          - rulesetID: 2
-            ruleIndex: 9
-            campaignID: 5
-            referralID: 7
-            conditionIndex: 3
+          - rulesetID: 6
+            ruleIndex: 5
+            campaignID: 0
+            referralID: 1
+            conditionIndex: 5
             effectIndex: 2
             evaluationGroupMode: stackable
             couponID: 4928
@@ -37925,11 +37770,11 @@ components:
           storeId: 0
           type: type
           ruleFailureReasons:
-          - rulesetID: 2
-            ruleIndex: 9
-            campaignID: 5
-            referralID: 7
-            conditionIndex: 3
+          - rulesetID: 6
+            ruleIndex: 5
+            campaignID: 0
+            referralID: 1
+            conditionIndex: 5
             effectIndex: 2
             evaluationGroupMode: stackable
             couponID: 4928
@@ -37939,11 +37784,11 @@ components:
             ruleName: ruleName
             details: details
             campaignName: campaignName
-          - rulesetID: 2
-            ruleIndex: 9
-            campaignID: 5
-            referralID: 7
-            conditionIndex: 3
+          - rulesetID: 6
+            ruleIndex: 5
+            campaignID: 0
+            referralID: 1
+            conditionIndex: 5
             effectIndex: 2
             evaluationGroupMode: stackable
             couponID: 4928
@@ -38488,7 +38333,7 @@ components:
         - accountId: 3886
           isReadonly: false
           created: 2020-06-10T09:05:27.993483Z
-          permissions: "{}"
+          permissions: ""
           members:
           - 10
           - 12
@@ -38500,7 +38345,7 @@ components:
         - accountId: 3886
           isReadonly: false
           created: 2020-06-10T09:05:27.993483Z
-          permissions: "{}"
+          permissions: ""
           members:
           - 10
           - 12
@@ -38769,24 +38614,22 @@ components:
         Custom attributes must be created in the Campaign Manager before you set them with this property.
       example: "{ShippingCity=Berlin}"
       type: object
-    IntegrationEvent_allOf_attributes:
-      description: Arbitrary additional JSON data associated with the event.
-      example: "{myAttribute=myValue}"
+    Attributes_of_coupon:
+      description: Custom attributes associated with this coupon.
+      title: Attributes of coupon
       type: object
     NewReferral_allOf_attributes:
       description: Arbitrary properties associated with this item.
       example: "{channel=web}"
       type: object
-    Attributes_of_coupon:
-      description: Custom attributes associated with this coupon.
-      title: Attributes of coupon
-      type: object
     Giveaway_allOf_attributes:
       description: Arbitrary properties associated with this giveaway.
       type: object
-    CustomerProfileIntegrationRequestV2_allOf_audiencesChanges:
-      description: Audiences memberships changes for this profile.
-    EventV2_allOf_attributes:
+    IntegrationEvent_allOf_attributes:
+      description: Arbitrary additional JSON data associated with the event.
+      example: "{myAttribute=myValue}"
+      type: object
+    EventV3_allOf_attributes:
       description: "Arbitrary additional JSON properties associated with the event.\
         \ They must be created in the Campaign Manager before setting them with this\
         \ property. See [creating custom attributes](https://docs.talon.one/docs/product/account/dev-tools/managing-attributes#creating-a-custom-attribute)."
@@ -38930,18 +38773,6 @@ components:
           allOf:
           - $ref: "#/components/schemas/AnalyticsDataPointWithTrend"
           description: The number of times the product or SKU was purchased.
-    CampaignCreatedNotificationItem_allOf_campaign:
-      description: The campaign whose state changed.
-    CampaignCreatedNotificationItem_allOf_ruleset:
-      description: The current ruleset.
-    CampaignCreatedNotificationItem_allOf_evaluationPosition:
-      description: The campaign position within the evaluation tree.
-    CampaignEditedNotificationItem_allOf_oldCampaign:
-      description: The campaign before the change.
-    CampaignCollectionEditedNotificationItem_allOf_campaign:
-      description: The current campaign.
-    CampaignCollectionEditedNotificationItem_allOf_collection:
-      description: The collection that was edited.
     PrismaticEventPayloadCouponBasedNotifications_allOf_Attributes:
       type: object
   securitySchemes:

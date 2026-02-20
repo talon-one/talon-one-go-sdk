@@ -5,6 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **TotalResultSize** | **int64** |  | 
+**BatchedAt** | Pointer to **time.Time** | Timestamp when the batch was created. | [optional] 
 **EventType** | **string** |  | 
 **Data** | **[]interface{}** |  | 
 
@@ -46,6 +47,31 @@ and a boolean to check if the value has been set.
 
 SetTotalResultSize sets TotalResultSize field to given value.
 
+
+### GetBatchedAt
+
+`func (o *PrismaticPaginatedEventPayload) GetBatchedAt() time.Time`
+
+GetBatchedAt returns the BatchedAt field if non-nil, zero value otherwise.
+
+### GetBatchedAtOk
+
+`func (o *PrismaticPaginatedEventPayload) GetBatchedAtOk() (*time.Time, bool)`
+
+GetBatchedAtOk returns a tuple with the BatchedAt field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetBatchedAt
+
+`func (o *PrismaticPaginatedEventPayload) SetBatchedAt(v time.Time)`
+
+SetBatchedAt sets BatchedAt field to given value.
+
+### HasBatchedAt
+
+`func (o *PrismaticPaginatedEventPayload) HasBatchedAt() bool`
+
+HasBatchedAt returns a boolean if a field has been set.
 
 ### GetEventType
 

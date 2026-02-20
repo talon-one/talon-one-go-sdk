@@ -24,7 +24,8 @@ type UpdateExperimentVariant struct {
 	Id      int64      `json:"id"`
 	Name    string     `json:"name"`
 	Ruleset NewRuleset `json:"ruleset"`
-	Weight  int64      `json:"weight"`
+	// The percentage split of this variant. The sum of all variant percentages must be 100.
+	Weight int64 `json:"weight"`
 }
 
 type _UpdateExperimentVariant UpdateExperimentVariant

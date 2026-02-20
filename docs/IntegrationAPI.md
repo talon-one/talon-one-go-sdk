@@ -2071,7 +2071,7 @@ Name | Type | Description  | Notes
 
 ## TrackEventV2
 
-> TrackEventV2Response TrackEventV2(ctx).IntegrationEventV2Request(integrationEventV2Request).Silent(silent).Dry(dry).ForceCompleteEvaluation(forceCompleteEvaluation).Execute()
+> IntegrationEventV2Response TrackEventV2(ctx).IntegrationEventV2Request(integrationEventV2Request).Silent(silent).Dry(dry).ForceCompleteEvaluation(forceCompleteEvaluation).Execute()
 
 Track event
 
@@ -2102,7 +2102,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Error when calling `IntegrationAPI.TrackEventV2``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `TrackEventV2`: TrackEventV2Response
+	// response from `TrackEventV2`: IntegrationEventV2Response
 	fmt.Fprintf(os.Stdout, "Response from `IntegrationAPI.TrackEventV2`: %v\n", resp)
 }
 ```
@@ -2125,7 +2125,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TrackEventV2Response**](TrackEventV2Response.md)
+[**IntegrationEventV2Response**](IntegrationEventV2Response.md)
 
 ### Authorization
 

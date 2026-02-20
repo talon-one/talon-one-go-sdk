@@ -175,7 +175,7 @@ Method | HTTP request | Description
 [**UpdateCollection**](ManagementAPI.md#UpdateCollection) | **Put** /v1/applications/{applicationId}/campaigns/{campaignId}/collections/{collectionId} | Update campaign-level collection&#39;s description
 [**UpdateCoupon**](ManagementAPI.md#UpdateCoupon) | **Put** /v1/applications/{applicationId}/campaigns/{campaignId}/coupons/{couponId} | Update coupon
 [**UpdateCouponBatch**](ManagementAPI.md#UpdateCouponBatch) | **Put** /v1/applications/{applicationId}/campaigns/{campaignId}/coupons | Update coupons
-[**UpdateLoyaltyCard**](ManagementAPI.md#UpdateLoyaltyCard) | **Put** /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId} | Update loyalty card status
+[**UpdateLoyaltyCard**](ManagementAPI.md#UpdateLoyaltyCard) | **Put** /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId} | Update loyalty card
 [**UpdateReferral**](ManagementAPI.md#UpdateReferral) | **Put** /v1/applications/{applicationId}/campaigns/{campaignId}/referrals/{referralId} | Update referral
 [**UpdateRoleV2**](ManagementAPI.md#UpdateRoleV2) | **Put** /v2/roles/{roleId} | Update role
 [**UpdateStore**](ManagementAPI.md#UpdateStore) | **Put** /v1/applications/{applicationId}/stores/{storeId} | Update store
@@ -12969,9 +12969,9 @@ Name | Type | Description  | Notes
 
 ## UpdateLoyaltyCard
 
-> LoyaltyCard UpdateLoyaltyCard(ctx, loyaltyProgramId, loyaltyCardId).UpdateLoyaltyCard(updateLoyaltyCard).Execute()
+> LoyaltyCard UpdateLoyaltyCard(ctx, loyaltyProgramId, loyaltyCardId).UpdateLoyaltyCardRequest(updateLoyaltyCardRequest).Execute()
 
-Update loyalty card status
+Update loyalty card
 
 
 
@@ -12990,11 +12990,11 @@ import (
 func main() {
 	loyaltyProgramId := int64(789) // int64 | Identifier of the card-based loyalty program containing the loyalty card. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint. 
 	loyaltyCardId := "loyaltyCardId_example" // string | Identifier of the loyalty card. You can get the identifier with the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint. 
-	updateLoyaltyCard := *openapiclient.NewUpdateLoyaltyCard("active") // UpdateLoyaltyCard | body
+	updateLoyaltyCardRequest := *openapiclient.NewUpdateLoyaltyCardRequest() // UpdateLoyaltyCardRequest | body
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ManagementAPI.UpdateLoyaltyCard(context.Background(), loyaltyProgramId, loyaltyCardId).UpdateLoyaltyCard(updateLoyaltyCard).Execute()
+	resp, r, err := apiClient.ManagementAPI.UpdateLoyaltyCard(context.Background(), loyaltyProgramId, loyaltyCardId).UpdateLoyaltyCardRequest(updateLoyaltyCardRequest).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.UpdateLoyaltyCard``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -13022,7 +13022,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **updateLoyaltyCard** | [**UpdateLoyaltyCard**](UpdateLoyaltyCard.md) | body | 
+ **updateLoyaltyCardRequest** | [**UpdateLoyaltyCardRequest**](UpdateLoyaltyCardRequest.md) | body | 
 
 ### Return type
 

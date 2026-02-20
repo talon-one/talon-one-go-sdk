@@ -6,8 +6,8 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Attributes** | Pointer to **map[string]interface{}** | Arbitrary properties associated with this item. | [optional] 
 **EvaluableCampaignIds** | Pointer to **[]int64** | When using the &#x60;dry&#x60; query parameter, use this property to list the campaign to be evaluated by the Rule Engine.  These campaigns will be evaluated, even if they are disabled, allowing you to test specific campaigns before activating them.  | [optional] 
-**AudiencesChanges** | Pointer to **interface{}** | Audiences memberships changes for this profile. | [optional] 
-**ResponseContent** | Pointer to **[]string** | Extends the response with the chosen data entities. Use this property to get as much data as you need in one _Update customer profile_ request instead of sending extra requests to other endpoints.  | [optional] 
+**ResponseContent** | Pointer to **[]string** | Extends the response with the chosen data entities. Use this property to get as much data back as needed from one request instead of sending extra requests to other endpoints.  | [optional] 
+**AudiencesChanges** | Pointer to [**ProfileAudiencesChanges**](ProfileAudiencesChanges.md) | Audiences memberships changes for this profile. | [optional] 
 
 ## Methods
 
@@ -78,41 +78,6 @@ SetEvaluableCampaignIds sets EvaluableCampaignIds field to given value.
 
 HasEvaluableCampaignIds returns a boolean if a field has been set.
 
-### GetAudiencesChanges
-
-`func (o *CustomerProfileIntegrationRequestV2) GetAudiencesChanges() interface{}`
-
-GetAudiencesChanges returns the AudiencesChanges field if non-nil, zero value otherwise.
-
-### GetAudiencesChangesOk
-
-`func (o *CustomerProfileIntegrationRequestV2) GetAudiencesChangesOk() (*interface{}, bool)`
-
-GetAudiencesChangesOk returns a tuple with the AudiencesChanges field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetAudiencesChanges
-
-`func (o *CustomerProfileIntegrationRequestV2) SetAudiencesChanges(v interface{})`
-
-SetAudiencesChanges sets AudiencesChanges field to given value.
-
-### HasAudiencesChanges
-
-`func (o *CustomerProfileIntegrationRequestV2) HasAudiencesChanges() bool`
-
-HasAudiencesChanges returns a boolean if a field has been set.
-
-### SetAudiencesChangesNil
-
-`func (o *CustomerProfileIntegrationRequestV2) SetAudiencesChangesNil(b bool)`
-
- SetAudiencesChangesNil sets the value for AudiencesChanges to be an explicit nil
-
-### UnsetAudiencesChanges
-`func (o *CustomerProfileIntegrationRequestV2) UnsetAudiencesChanges()`
-
-UnsetAudiencesChanges ensures that no value is present for AudiencesChanges, not even an explicit nil
 ### GetResponseContent
 
 `func (o *CustomerProfileIntegrationRequestV2) GetResponseContent() []string`
@@ -137,6 +102,31 @@ SetResponseContent sets ResponseContent field to given value.
 `func (o *CustomerProfileIntegrationRequestV2) HasResponseContent() bool`
 
 HasResponseContent returns a boolean if a field has been set.
+
+### GetAudiencesChanges
+
+`func (o *CustomerProfileIntegrationRequestV2) GetAudiencesChanges() ProfileAudiencesChanges`
+
+GetAudiencesChanges returns the AudiencesChanges field if non-nil, zero value otherwise.
+
+### GetAudiencesChangesOk
+
+`func (o *CustomerProfileIntegrationRequestV2) GetAudiencesChangesOk() (*ProfileAudiencesChanges, bool)`
+
+GetAudiencesChangesOk returns a tuple with the AudiencesChanges field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAudiencesChanges
+
+`func (o *CustomerProfileIntegrationRequestV2) SetAudiencesChanges(v ProfileAudiencesChanges)`
+
+SetAudiencesChanges sets AudiencesChanges field to given value.
+
+### HasAudiencesChanges
+
+`func (o *CustomerProfileIntegrationRequestV2) HasAudiencesChanges() bool`
+
+HasAudiencesChanges returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

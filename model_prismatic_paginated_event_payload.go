@@ -14,6 +14,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"time"
 )
 
 // checks if the PrismaticPaginatedEventPayload type satisfies the MappedNullable interface at compile time
@@ -21,9 +22,11 @@ var _ MappedNullable = &PrismaticPaginatedEventPayload{}
 
 // PrismaticPaginatedEventPayload struct for PrismaticPaginatedEventPayload
 type PrismaticPaginatedEventPayload struct {
-	TotalResultSize int64         `json:"TotalResultSize"`
-	EventType       string        `json:"EventType"`
-	Data            []interface{} `json:"Data"`
+	TotalResultSize int64 `json:"TotalResultSize"`
+	// Timestamp when the batch was created.
+	BatchedAt *time.Time    `json:"BatchedAt,omitempty"`
+	EventType string        `json:"EventType"`
+	Data      []interface{} `json:"Data"`
 }
 
 type _PrismaticPaginatedEventPayload PrismaticPaginatedEventPayload
@@ -70,6 +73,38 @@ func (o *PrismaticPaginatedEventPayload) GetTotalResultSizeOk() (*int64, bool) {
 // SetTotalResultSize sets field value
 func (o *PrismaticPaginatedEventPayload) SetTotalResultSize(v int64) {
 	o.TotalResultSize = v
+}
+
+// GetBatchedAt returns the BatchedAt field value if set, zero value otherwise.
+func (o *PrismaticPaginatedEventPayload) GetBatchedAt() time.Time {
+	if o == nil || IsNil(o.BatchedAt) {
+		var ret time.Time
+		return ret
+	}
+	return *o.BatchedAt
+}
+
+// GetBatchedAtOk returns a tuple with the BatchedAt field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PrismaticPaginatedEventPayload) GetBatchedAtOk() (*time.Time, bool) {
+	if o == nil || IsNil(o.BatchedAt) {
+		return nil, false
+	}
+	return o.BatchedAt, true
+}
+
+// HasBatchedAt returns a boolean if a field has been set.
+func (o *PrismaticPaginatedEventPayload) HasBatchedAt() bool {
+	if o != nil && !IsNil(o.BatchedAt) {
+		return true
+	}
+
+	return false
+}
+
+// SetBatchedAt gets a reference to the given time.Time and assigns it to the BatchedAt field.
+func (o *PrismaticPaginatedEventPayload) SetBatchedAt(v time.Time) {
+	o.BatchedAt = &v
 }
 
 // GetEventType returns the EventType field value
@@ -131,6 +166,9 @@ func (o PrismaticPaginatedEventPayload) MarshalJSON() ([]byte, error) {
 func (o PrismaticPaginatedEventPayload) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["TotalResultSize"] = o.TotalResultSize
+	if !IsNil(o.BatchedAt) {
+		toSerialize["BatchedAt"] = o.BatchedAt
+	}
 	toSerialize["EventType"] = o.EventType
 	toSerialize["Data"] = o.Data
 	return toSerialize, nil

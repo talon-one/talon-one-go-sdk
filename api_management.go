@@ -31716,16 +31716,16 @@ func (a *ManagementAPIService) UpdateCouponBatchExecute(r ApiUpdateCouponBatchRe
 }
 
 type ApiUpdateLoyaltyCardRequest struct {
-	ctx               context.Context
-	ApiService        *ManagementAPIService
-	loyaltyProgramId  int64
-	loyaltyCardId     string
-	updateLoyaltyCard *UpdateLoyaltyCard
+	ctx                      context.Context
+	ApiService               *ManagementAPIService
+	loyaltyProgramId         int64
+	loyaltyCardId            string
+	updateLoyaltyCardRequest *UpdateLoyaltyCardRequest
 }
 
 // body
-func (r ApiUpdateLoyaltyCardRequest) UpdateLoyaltyCard(updateLoyaltyCard UpdateLoyaltyCard) ApiUpdateLoyaltyCardRequest {
-	r.updateLoyaltyCard = &updateLoyaltyCard
+func (r ApiUpdateLoyaltyCardRequest) UpdateLoyaltyCardRequest(updateLoyaltyCardRequest UpdateLoyaltyCardRequest) ApiUpdateLoyaltyCardRequest {
+	r.updateLoyaltyCardRequest = &updateLoyaltyCardRequest
 	return r
 }
 
@@ -31734,9 +31734,9 @@ func (r ApiUpdateLoyaltyCardRequest) Execute() (*LoyaltyCard, *http.Response, er
 }
 
 /*
-UpdateLoyaltyCard Update loyalty card status
+UpdateLoyaltyCard Update loyalty card
 
-Update the status of the given loyalty card. A card can be _active_ or _inactive_.
+Update the details of a specific loyalty card. You can set the card's status to `active` or `inactive` through this endpoint. At least one of `status` or `attributes` must be provided.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param loyaltyProgramId Identifier of the card-based loyalty program containing the loyalty card. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
@@ -31781,8 +31781,8 @@ func (a *ManagementAPIService) UpdateLoyaltyCardExecute(r ApiUpdateLoyaltyCardRe
 	if strlen(r.loyaltyCardId) > 108 {
 		return localVarReturnValue, nil, reportError("loyaltyCardId must have less than 108 elements")
 	}
-	if r.updateLoyaltyCard == nil {
-		return localVarReturnValue, nil, reportError("updateLoyaltyCard is required and must be specified")
+	if r.updateLoyaltyCardRequest == nil {
+		return localVarReturnValue, nil, reportError("updateLoyaltyCardRequest is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -31803,7 +31803,7 @@ func (a *ManagementAPIService) UpdateLoyaltyCardExecute(r ApiUpdateLoyaltyCardRe
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.updateLoyaltyCard
+	localVarPostBody = r.updateLoyaltyCardRequest
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {

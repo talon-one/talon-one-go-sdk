@@ -24,13 +24,15 @@ type CampaignStateChangedNotificationItem struct {
 	// The type of the event. Can be one of the following: ['campaign_state_changed', 'campaign_ruleset_changed', 'campaign_edited', 'campaign_created', 'campaign_deleted']
 	Event string `json:"Event"`
 	// The campaign whose state changed.
-	Campaign interface{} `json:"campaign"`
+	Campaign Campaign `json:"campaign"`
 	// The campaign's old state. Can be one of the following: ['running', 'disabled', 'scheduled', 'expired', 'archived']
 	OldState string `json:"oldState"`
 	// The campaign's new state. Can be one of the following: ['running', 'disabled', 'scheduled', 'expired', 'archived']
 	NewState string `json:"newState"`
 	// The current ruleset.
-	Ruleset interface{} `json:"ruleset,omitempty"`
+	Ruleset *Ruleset `json:"ruleset,omitempty"`
+	// The current details of the [placeholders](https://docs.talon.one/docs/product/campaigns/templates/create-templates#use-placeholders) in the campaign.
+	Placeholders []PlaceholderDetails `json:"placeholders,omitempty"`
 }
 
 type _CampaignStateChangedNotificationItem CampaignStateChangedNotificationItem
@@ -39,7 +41,7 @@ type _CampaignStateChangedNotificationItem CampaignStateChangedNotificationItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCampaignStateChangedNotificationItem(event string, campaign interface{}, oldState string, newState string) *CampaignStateChangedNotificationItem {
+func BuildCampaignStateChangedNotificationItem(event string, campaign Campaign, oldState string, newState string) *CampaignStateChangedNotificationItem {
 	this := CampaignStateChangedNotificationItem{}
 	this.Event = event
 	this.Campaign = campaign
@@ -81,10 +83,9 @@ func (o *CampaignStateChangedNotificationItem) SetEvent(v string) {
 }
 
 // GetCampaign returns the Campaign field value
-// If the value is explicit nil, the zero value for interface{} will be returned
-func (o *CampaignStateChangedNotificationItem) GetCampaign() interface{} {
+func (o *CampaignStateChangedNotificationItem) GetCampaign() Campaign {
 	if o == nil {
-		var ret interface{}
+		var ret Campaign
 		return ret
 	}
 
@@ -93,16 +94,15 @@ func (o *CampaignStateChangedNotificationItem) GetCampaign() interface{} {
 
 // GetCampaignOk returns a tuple with the Campaign field value
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *CampaignStateChangedNotificationItem) GetCampaignOk() (*interface{}, bool) {
-	if o == nil || IsNil(o.Campaign) {
+func (o *CampaignStateChangedNotificationItem) GetCampaignOk() (*Campaign, bool) {
+	if o == nil {
 		return nil, false
 	}
 	return &o.Campaign, true
 }
 
 // SetCampaign sets field value
-func (o *CampaignStateChangedNotificationItem) SetCampaign(v interface{}) {
+func (o *CampaignStateChangedNotificationItem) SetCampaign(v Campaign) {
 	o.Campaign = v
 }
 
@@ -154,23 +154,22 @@ func (o *CampaignStateChangedNotificationItem) SetNewState(v string) {
 	o.NewState = v
 }
 
-// GetRuleset returns the Ruleset field value if set, zero value otherwise (both if not set or set to explicit null).
-func (o *CampaignStateChangedNotificationItem) GetRuleset() interface{} {
-	if o == nil {
-		var ret interface{}
+// GetRuleset returns the Ruleset field value if set, zero value otherwise.
+func (o *CampaignStateChangedNotificationItem) GetRuleset() Ruleset {
+	if o == nil || IsNil(o.Ruleset) {
+		var ret Ruleset
 		return ret
 	}
-	return o.Ruleset
+	return *o.Ruleset
 }
 
 // GetRulesetOk returns a tuple with the Ruleset field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *CampaignStateChangedNotificationItem) GetRulesetOk() (*interface{}, bool) {
+func (o *CampaignStateChangedNotificationItem) GetRulesetOk() (*Ruleset, bool) {
 	if o == nil || IsNil(o.Ruleset) {
 		return nil, false
 	}
-	return &o.Ruleset, true
+	return o.Ruleset, true
 }
 
 // HasRuleset returns a boolean if a field has been set.
@@ -182,9 +181,41 @@ func (o *CampaignStateChangedNotificationItem) HasRuleset() bool {
 	return false
 }
 
-// SetRuleset gets a reference to the given interface{} and assigns it to the Ruleset field.
-func (o *CampaignStateChangedNotificationItem) SetRuleset(v interface{}) {
-	o.Ruleset = v
+// SetRuleset gets a reference to the given Ruleset and assigns it to the Ruleset field.
+func (o *CampaignStateChangedNotificationItem) SetRuleset(v Ruleset) {
+	o.Ruleset = &v
+}
+
+// GetPlaceholders returns the Placeholders field value if set, zero value otherwise.
+func (o *CampaignStateChangedNotificationItem) GetPlaceholders() []PlaceholderDetails {
+	if o == nil || IsNil(o.Placeholders) {
+		var ret []PlaceholderDetails
+		return ret
+	}
+	return o.Placeholders
+}
+
+// GetPlaceholdersOk returns a tuple with the Placeholders field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CampaignStateChangedNotificationItem) GetPlaceholdersOk() ([]PlaceholderDetails, bool) {
+	if o == nil || IsNil(o.Placeholders) {
+		return nil, false
+	}
+	return o.Placeholders, true
+}
+
+// HasPlaceholders returns a boolean if a field has been set.
+func (o *CampaignStateChangedNotificationItem) HasPlaceholders() bool {
+	if o != nil && !IsNil(o.Placeholders) {
+		return true
+	}
+
+	return false
+}
+
+// SetPlaceholders gets a reference to the given []PlaceholderDetails and assigns it to the Placeholders field.
+func (o *CampaignStateChangedNotificationItem) SetPlaceholders(v []PlaceholderDetails) {
+	o.Placeholders = v
 }
 
 func (o CampaignStateChangedNotificationItem) MarshalJSON() ([]byte, error) {
@@ -198,13 +229,14 @@ func (o CampaignStateChangedNotificationItem) MarshalJSON() ([]byte, error) {
 func (o CampaignStateChangedNotificationItem) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["Event"] = o.Event
-	if o.Campaign != nil {
-		toSerialize["campaign"] = o.Campaign
-	}
+	toSerialize["campaign"] = o.Campaign
 	toSerialize["oldState"] = o.OldState
 	toSerialize["newState"] = o.NewState
-	if o.Ruleset != nil {
+	if !IsNil(o.Ruleset) {
 		toSerialize["ruleset"] = o.Ruleset
+	}
+	if !IsNil(o.Placeholders) {
+		toSerialize["placeholders"] = o.Placeholders
 	}
 	return toSerialize, nil
 }

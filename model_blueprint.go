@@ -17,47 +17,47 @@ import (
 	"time"
 )
 
-// checks if the CollectionsCatalog type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &CollectionsCatalog{}
+// checks if the Blueprint type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Blueprint{}
 
-// CollectionsCatalog struct for CollectionsCatalog
-type CollectionsCatalog struct {
-	// The internal ID of this collection.
+// Blueprint struct for Blueprint
+type Blueprint struct {
+	// The internal ID of this blueprint.
 	Id int64 `json:"id"`
-	// The ID of the account that owns this collection.
+	// The ID of the account that owns this blueprint.
 	AccountId int64 `json:"accountId"`
-	// The ID of the Application that owns this collection.
+	// The ID of the Application that owns this blueprint.
 	ApplicationId int64 `json:"applicationId"`
-	// A short description of the collection catalog.
+	// A short description of the blueprint.
 	Title string `json:"title"`
-	// A longer, more detailed description of the collection catalog.
+	// A longer, more detailed description of the blueprint.
 	Description *string `json:"description,omitempty"`
-	// Category used to group collection catalogs.
+	// Category used to group blueprints.
 	Category string `json:"category"`
-	// Indicates whether the collection is custom or shipped by Talon.One.
+	// Indicates whether the blueprint is custom or shipped by Talon.One.
 	Source string `json:"source"`
-	// Array of rule templates in this collection catalog. Rules only contain title (no description, as description is at the collection catalog level).
+	// Array of rule templates in this blueprint. Rules only contain title (no description, as description is at the blueprint level).
 	Rules []CatalogRule `json:"rules"`
-	// Array of cart item filter templates in this collection catalog. Cart item filters only contain name (no description, as description is at the collection catalog level).
+	// Array of cart item filter templates in this blueprint. Cart item filters only contain name (no description, as description is at the blueprint level).
 	CartItemFilters []CartItemFilterTemplate `json:"cartItemFilters"`
-	// Timestamp when the collection was created.
+	// Timestamp when the blueprint was created.
 	Created time.Time `json:"created"`
-	// ID of the user who created the collection.
+	// ID of the user who created the blueprint.
 	CreatedBy int64 `json:"createdBy"`
-	// Timestamp when the collection was last updated.
+	// Timestamp when the blueprint was last updated.
 	Modified *time.Time `json:"modified,omitempty"`
-	// ID of the user who last updated the collection.
+	// ID of the user who last updated the blueprint.
 	ModifiedBy *int64 `json:"modifiedBy,omitempty"`
 }
 
-type _CollectionsCatalog CollectionsCatalog
+type _Blueprint Blueprint
 
-// NewCollectionsCatalog instantiates a new CollectionsCatalog object
+// NewBlueprint instantiates a new Blueprint object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCollectionsCatalog(id int64, accountId int64, applicationId int64, title string, category string, source string, rules []CatalogRule, cartItemFilters []CartItemFilterTemplate, created time.Time, createdBy int64) *CollectionsCatalog {
-	this := CollectionsCatalog{}
+func BuildBlueprint(id int64, accountId int64, applicationId int64, title string, category string, source string, rules []CatalogRule, cartItemFilters []CartItemFilterTemplate, created time.Time, createdBy int64) *Blueprint {
+	this := Blueprint{}
 	this.Id = id
 	this.AccountId = accountId
 	this.ApplicationId = applicationId
@@ -71,16 +71,16 @@ func BuildCollectionsCatalog(id int64, accountId int64, applicationId int64, tit
 	return &this
 }
 
-// NewCollectionsCatalogWithDefaults instantiates a new CollectionsCatalog object
+// NewBlueprintWithDefaults instantiates a new Blueprint object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewCollectionsCatalogWithDefaults() *CollectionsCatalog {
-	this := CollectionsCatalog{}
+func NewBlueprintWithDefaults() *Blueprint {
+	this := Blueprint{}
 	return &this
 }
 
 // GetId returns the Id field value
-func (o *CollectionsCatalog) GetId() int64 {
+func (o *Blueprint) GetId() int64 {
 	if o == nil {
 		var ret int64
 		return ret
@@ -91,7 +91,7 @@ func (o *CollectionsCatalog) GetId() int64 {
 
 // GetIdOk returns a tuple with the Id field value
 // and a boolean to check if the value has been set.
-func (o *CollectionsCatalog) GetIdOk() (*int64, bool) {
+func (o *Blueprint) GetIdOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -99,12 +99,12 @@ func (o *CollectionsCatalog) GetIdOk() (*int64, bool) {
 }
 
 // SetId sets field value
-func (o *CollectionsCatalog) SetId(v int64) {
+func (o *Blueprint) SetId(v int64) {
 	o.Id = v
 }
 
 // GetAccountId returns the AccountId field value
-func (o *CollectionsCatalog) GetAccountId() int64 {
+func (o *Blueprint) GetAccountId() int64 {
 	if o == nil {
 		var ret int64
 		return ret
@@ -115,7 +115,7 @@ func (o *CollectionsCatalog) GetAccountId() int64 {
 
 // GetAccountIdOk returns a tuple with the AccountId field value
 // and a boolean to check if the value has been set.
-func (o *CollectionsCatalog) GetAccountIdOk() (*int64, bool) {
+func (o *Blueprint) GetAccountIdOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -123,12 +123,12 @@ func (o *CollectionsCatalog) GetAccountIdOk() (*int64, bool) {
 }
 
 // SetAccountId sets field value
-func (o *CollectionsCatalog) SetAccountId(v int64) {
+func (o *Blueprint) SetAccountId(v int64) {
 	o.AccountId = v
 }
 
 // GetApplicationId returns the ApplicationId field value
-func (o *CollectionsCatalog) GetApplicationId() int64 {
+func (o *Blueprint) GetApplicationId() int64 {
 	if o == nil {
 		var ret int64
 		return ret
@@ -139,7 +139,7 @@ func (o *CollectionsCatalog) GetApplicationId() int64 {
 
 // GetApplicationIdOk returns a tuple with the ApplicationId field value
 // and a boolean to check if the value has been set.
-func (o *CollectionsCatalog) GetApplicationIdOk() (*int64, bool) {
+func (o *Blueprint) GetApplicationIdOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -147,12 +147,12 @@ func (o *CollectionsCatalog) GetApplicationIdOk() (*int64, bool) {
 }
 
 // SetApplicationId sets field value
-func (o *CollectionsCatalog) SetApplicationId(v int64) {
+func (o *Blueprint) SetApplicationId(v int64) {
 	o.ApplicationId = v
 }
 
 // GetTitle returns the Title field value
-func (o *CollectionsCatalog) GetTitle() string {
+func (o *Blueprint) GetTitle() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -163,7 +163,7 @@ func (o *CollectionsCatalog) GetTitle() string {
 
 // GetTitleOk returns a tuple with the Title field value
 // and a boolean to check if the value has been set.
-func (o *CollectionsCatalog) GetTitleOk() (*string, bool) {
+func (o *Blueprint) GetTitleOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -171,12 +171,12 @@ func (o *CollectionsCatalog) GetTitleOk() (*string, bool) {
 }
 
 // SetTitle sets field value
-func (o *CollectionsCatalog) SetTitle(v string) {
+func (o *Blueprint) SetTitle(v string) {
 	o.Title = v
 }
 
 // GetDescription returns the Description field value if set, zero value otherwise.
-func (o *CollectionsCatalog) GetDescription() string {
+func (o *Blueprint) GetDescription() string {
 	if o == nil || IsNil(o.Description) {
 		var ret string
 		return ret
@@ -186,7 +186,7 @@ func (o *CollectionsCatalog) GetDescription() string {
 
 // GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *CollectionsCatalog) GetDescriptionOk() (*string, bool) {
+func (o *Blueprint) GetDescriptionOk() (*string, bool) {
 	if o == nil || IsNil(o.Description) {
 		return nil, false
 	}
@@ -194,7 +194,7 @@ func (o *CollectionsCatalog) GetDescriptionOk() (*string, bool) {
 }
 
 // HasDescription returns a boolean if a field has been set.
-func (o *CollectionsCatalog) HasDescription() bool {
+func (o *Blueprint) HasDescription() bool {
 	if o != nil && !IsNil(o.Description) {
 		return true
 	}
@@ -203,12 +203,12 @@ func (o *CollectionsCatalog) HasDescription() bool {
 }
 
 // SetDescription gets a reference to the given string and assigns it to the Description field.
-func (o *CollectionsCatalog) SetDescription(v string) {
+func (o *Blueprint) SetDescription(v string) {
 	o.Description = &v
 }
 
 // GetCategory returns the Category field value
-func (o *CollectionsCatalog) GetCategory() string {
+func (o *Blueprint) GetCategory() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -219,7 +219,7 @@ func (o *CollectionsCatalog) GetCategory() string {
 
 // GetCategoryOk returns a tuple with the Category field value
 // and a boolean to check if the value has been set.
-func (o *CollectionsCatalog) GetCategoryOk() (*string, bool) {
+func (o *Blueprint) GetCategoryOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -227,12 +227,12 @@ func (o *CollectionsCatalog) GetCategoryOk() (*string, bool) {
 }
 
 // SetCategory sets field value
-func (o *CollectionsCatalog) SetCategory(v string) {
+func (o *Blueprint) SetCategory(v string) {
 	o.Category = v
 }
 
 // GetSource returns the Source field value
-func (o *CollectionsCatalog) GetSource() string {
+func (o *Blueprint) GetSource() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -243,7 +243,7 @@ func (o *CollectionsCatalog) GetSource() string {
 
 // GetSourceOk returns a tuple with the Source field value
 // and a boolean to check if the value has been set.
-func (o *CollectionsCatalog) GetSourceOk() (*string, bool) {
+func (o *Blueprint) GetSourceOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -251,12 +251,12 @@ func (o *CollectionsCatalog) GetSourceOk() (*string, bool) {
 }
 
 // SetSource sets field value
-func (o *CollectionsCatalog) SetSource(v string) {
+func (o *Blueprint) SetSource(v string) {
 	o.Source = v
 }
 
 // GetRules returns the Rules field value
-func (o *CollectionsCatalog) GetRules() []CatalogRule {
+func (o *Blueprint) GetRules() []CatalogRule {
 	if o == nil {
 		var ret []CatalogRule
 		return ret
@@ -267,7 +267,7 @@ func (o *CollectionsCatalog) GetRules() []CatalogRule {
 
 // GetRulesOk returns a tuple with the Rules field value
 // and a boolean to check if the value has been set.
-func (o *CollectionsCatalog) GetRulesOk() ([]CatalogRule, bool) {
+func (o *Blueprint) GetRulesOk() ([]CatalogRule, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -275,12 +275,12 @@ func (o *CollectionsCatalog) GetRulesOk() ([]CatalogRule, bool) {
 }
 
 // SetRules sets field value
-func (o *CollectionsCatalog) SetRules(v []CatalogRule) {
+func (o *Blueprint) SetRules(v []CatalogRule) {
 	o.Rules = v
 }
 
 // GetCartItemFilters returns the CartItemFilters field value
-func (o *CollectionsCatalog) GetCartItemFilters() []CartItemFilterTemplate {
+func (o *Blueprint) GetCartItemFilters() []CartItemFilterTemplate {
 	if o == nil {
 		var ret []CartItemFilterTemplate
 		return ret
@@ -291,7 +291,7 @@ func (o *CollectionsCatalog) GetCartItemFilters() []CartItemFilterTemplate {
 
 // GetCartItemFiltersOk returns a tuple with the CartItemFilters field value
 // and a boolean to check if the value has been set.
-func (o *CollectionsCatalog) GetCartItemFiltersOk() ([]CartItemFilterTemplate, bool) {
+func (o *Blueprint) GetCartItemFiltersOk() ([]CartItemFilterTemplate, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -299,12 +299,12 @@ func (o *CollectionsCatalog) GetCartItemFiltersOk() ([]CartItemFilterTemplate, b
 }
 
 // SetCartItemFilters sets field value
-func (o *CollectionsCatalog) SetCartItemFilters(v []CartItemFilterTemplate) {
+func (o *Blueprint) SetCartItemFilters(v []CartItemFilterTemplate) {
 	o.CartItemFilters = v
 }
 
 // GetCreated returns the Created field value
-func (o *CollectionsCatalog) GetCreated() time.Time {
+func (o *Blueprint) GetCreated() time.Time {
 	if o == nil {
 		var ret time.Time
 		return ret
@@ -315,7 +315,7 @@ func (o *CollectionsCatalog) GetCreated() time.Time {
 
 // GetCreatedOk returns a tuple with the Created field value
 // and a boolean to check if the value has been set.
-func (o *CollectionsCatalog) GetCreatedOk() (*time.Time, bool) {
+func (o *Blueprint) GetCreatedOk() (*time.Time, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -323,12 +323,12 @@ func (o *CollectionsCatalog) GetCreatedOk() (*time.Time, bool) {
 }
 
 // SetCreated sets field value
-func (o *CollectionsCatalog) SetCreated(v time.Time) {
+func (o *Blueprint) SetCreated(v time.Time) {
 	o.Created = v
 }
 
 // GetCreatedBy returns the CreatedBy field value
-func (o *CollectionsCatalog) GetCreatedBy() int64 {
+func (o *Blueprint) GetCreatedBy() int64 {
 	if o == nil {
 		var ret int64
 		return ret
@@ -339,7 +339,7 @@ func (o *CollectionsCatalog) GetCreatedBy() int64 {
 
 // GetCreatedByOk returns a tuple with the CreatedBy field value
 // and a boolean to check if the value has been set.
-func (o *CollectionsCatalog) GetCreatedByOk() (*int64, bool) {
+func (o *Blueprint) GetCreatedByOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -347,12 +347,12 @@ func (o *CollectionsCatalog) GetCreatedByOk() (*int64, bool) {
 }
 
 // SetCreatedBy sets field value
-func (o *CollectionsCatalog) SetCreatedBy(v int64) {
+func (o *Blueprint) SetCreatedBy(v int64) {
 	o.CreatedBy = v
 }
 
 // GetModified returns the Modified field value if set, zero value otherwise.
-func (o *CollectionsCatalog) GetModified() time.Time {
+func (o *Blueprint) GetModified() time.Time {
 	if o == nil || IsNil(o.Modified) {
 		var ret time.Time
 		return ret
@@ -362,7 +362,7 @@ func (o *CollectionsCatalog) GetModified() time.Time {
 
 // GetModifiedOk returns a tuple with the Modified field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *CollectionsCatalog) GetModifiedOk() (*time.Time, bool) {
+func (o *Blueprint) GetModifiedOk() (*time.Time, bool) {
 	if o == nil || IsNil(o.Modified) {
 		return nil, false
 	}
@@ -370,7 +370,7 @@ func (o *CollectionsCatalog) GetModifiedOk() (*time.Time, bool) {
 }
 
 // HasModified returns a boolean if a field has been set.
-func (o *CollectionsCatalog) HasModified() bool {
+func (o *Blueprint) HasModified() bool {
 	if o != nil && !IsNil(o.Modified) {
 		return true
 	}
@@ -379,12 +379,12 @@ func (o *CollectionsCatalog) HasModified() bool {
 }
 
 // SetModified gets a reference to the given time.Time and assigns it to the Modified field.
-func (o *CollectionsCatalog) SetModified(v time.Time) {
+func (o *Blueprint) SetModified(v time.Time) {
 	o.Modified = &v
 }
 
 // GetModifiedBy returns the ModifiedBy field value if set, zero value otherwise.
-func (o *CollectionsCatalog) GetModifiedBy() int64 {
+func (o *Blueprint) GetModifiedBy() int64 {
 	if o == nil || IsNil(o.ModifiedBy) {
 		var ret int64
 		return ret
@@ -394,7 +394,7 @@ func (o *CollectionsCatalog) GetModifiedBy() int64 {
 
 // GetModifiedByOk returns a tuple with the ModifiedBy field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *CollectionsCatalog) GetModifiedByOk() (*int64, bool) {
+func (o *Blueprint) GetModifiedByOk() (*int64, bool) {
 	if o == nil || IsNil(o.ModifiedBy) {
 		return nil, false
 	}
@@ -402,7 +402,7 @@ func (o *CollectionsCatalog) GetModifiedByOk() (*int64, bool) {
 }
 
 // HasModifiedBy returns a boolean if a field has been set.
-func (o *CollectionsCatalog) HasModifiedBy() bool {
+func (o *Blueprint) HasModifiedBy() bool {
 	if o != nil && !IsNil(o.ModifiedBy) {
 		return true
 	}
@@ -411,11 +411,11 @@ func (o *CollectionsCatalog) HasModifiedBy() bool {
 }
 
 // SetModifiedBy gets a reference to the given int64 and assigns it to the ModifiedBy field.
-func (o *CollectionsCatalog) SetModifiedBy(v int64) {
+func (o *Blueprint) SetModifiedBy(v int64) {
 	o.ModifiedBy = &v
 }
 
-func (o CollectionsCatalog) MarshalJSON() ([]byte, error) {
+func (o Blueprint) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -423,7 +423,7 @@ func (o CollectionsCatalog) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-func (o CollectionsCatalog) ToMap() (map[string]interface{}, error) {
+func (o Blueprint) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["id"] = o.Id
 	toSerialize["accountId"] = o.AccountId
@@ -447,7 +447,7 @@ func (o CollectionsCatalog) ToMap() (map[string]interface{}, error) {
 	return toSerialize, nil
 }
 
-func (o *CollectionsCatalog) UnmarshalJSON(data []byte) (err error) {
+func (o *Blueprint) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
@@ -478,53 +478,53 @@ func (o *CollectionsCatalog) UnmarshalJSON(data []byte) (err error) {
 		}
 	}
 
-	varCollectionsCatalog := _CollectionsCatalog{}
+	varBlueprint := _Blueprint{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCollectionsCatalog)
+	err = decoder.Decode(&varBlueprint)
 
 	if err != nil {
 		return err
 	}
 
-	*o = CollectionsCatalog(varCollectionsCatalog)
+	*o = Blueprint(varBlueprint)
 
 	return err
 }
 
-type NullableCollectionsCatalog struct {
-	value *CollectionsCatalog
+type NullableBlueprint struct {
+	value *Blueprint
 	isSet bool
 }
 
-func (v NullableCollectionsCatalog) Get() *CollectionsCatalog {
+func (v NullableBlueprint) Get() *Blueprint {
 	return v.value
 }
 
-func (v *NullableCollectionsCatalog) Set(val *CollectionsCatalog) {
+func (v *NullableBlueprint) Set(val *Blueprint) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableCollectionsCatalog) IsSet() bool {
+func (v NullableBlueprint) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableCollectionsCatalog) Unset() {
+func (v *NullableBlueprint) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func BuildNullableCollectionsCatalog(val *CollectionsCatalog) *NullableCollectionsCatalog {
-	return &NullableCollectionsCatalog{value: val, isSet: true}
+func BuildNullableBlueprint(val *Blueprint) *NullableBlueprint {
+	return &NullableBlueprint{value: val, isSet: true}
 }
 
-func (v NullableCollectionsCatalog) MarshalJSON() ([]byte, error) {
+func (v NullableBlueprint) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableCollectionsCatalog) UnmarshalJSON(src []byte) error {
+func (v *NullableBlueprint) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }

@@ -17,11 +17,11 @@ import (
 	"time"
 )
 
-// checks if the PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction{}
+// checks if the PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction{}
 
-// PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction struct for PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction
-type PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction struct {
+// PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction struct for PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction
+type PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction struct {
 	Amount     float32    `json:"Amount"`
 	Reason     *string    `json:"Reason,omitempty"`
 	Operation  string     `json:"Operation"`
@@ -29,29 +29,29 @@ type PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction struct {
 	ExpiryDate *time.Time `json:"ExpiryDate,omitempty"`
 }
 
-type _PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction
+type _PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction
 
-// NewPrismaticEventPayloadLoyaltyProfileBasedNotificationsAction instantiates a new PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction object
+// NewPrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction instantiates a new PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildPrismaticEventPayloadLoyaltyProfileBasedNotificationsAction(amount float32, operation string) *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction {
-	this := PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction{}
+func BuildPrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction(amount float32, operation string) *PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction {
+	this := PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction{}
 	this.Amount = amount
 	this.Operation = operation
 	return &this
 }
 
-// NewPrismaticEventPayloadLoyaltyProfileBasedNotificationsActionWithDefaults instantiates a new PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction object
+// NewPrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationActionWithDefaults instantiates a new PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewPrismaticEventPayloadLoyaltyProfileBasedNotificationsActionWithDefaults() *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction {
-	this := PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction{}
+func NewPrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationActionWithDefaults() *PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction {
+	this := PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction{}
 	return &this
 }
 
 // GetAmount returns the Amount field value
-func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) GetAmount() float32 {
+func (o *PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) GetAmount() float32 {
 	if o == nil {
 		var ret float32
 		return ret
@@ -62,7 +62,7 @@ func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) GetAmount(
 
 // GetAmountOk returns a tuple with the Amount field value
 // and a boolean to check if the value has been set.
-func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) GetAmountOk() (*float32, bool) {
+func (o *PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) GetAmountOk() (*float32, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -70,12 +70,12 @@ func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) GetAmountO
 }
 
 // SetAmount sets field value
-func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) SetAmount(v float32) {
+func (o *PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) SetAmount(v float32) {
 	o.Amount = v
 }
 
 // GetReason returns the Reason field value if set, zero value otherwise.
-func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) GetReason() string {
+func (o *PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) GetReason() string {
 	if o == nil || IsNil(o.Reason) {
 		var ret string
 		return ret
@@ -85,7 +85,7 @@ func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) GetReason(
 
 // GetReasonOk returns a tuple with the Reason field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) GetReasonOk() (*string, bool) {
+func (o *PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) GetReasonOk() (*string, bool) {
 	if o == nil || IsNil(o.Reason) {
 		return nil, false
 	}
@@ -93,7 +93,7 @@ func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) GetReasonO
 }
 
 // HasReason returns a boolean if a field has been set.
-func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) HasReason() bool {
+func (o *PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) HasReason() bool {
 	if o != nil && !IsNil(o.Reason) {
 		return true
 	}
@@ -102,12 +102,12 @@ func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) HasReason(
 }
 
 // SetReason gets a reference to the given string and assigns it to the Reason field.
-func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) SetReason(v string) {
+func (o *PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) SetReason(v string) {
 	o.Reason = &v
 }
 
 // GetOperation returns the Operation field value
-func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) GetOperation() string {
+func (o *PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) GetOperation() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -118,7 +118,7 @@ func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) GetOperati
 
 // GetOperationOk returns a tuple with the Operation field value
 // and a boolean to check if the value has been set.
-func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) GetOperationOk() (*string, bool) {
+func (o *PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) GetOperationOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -126,12 +126,12 @@ func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) GetOperati
 }
 
 // SetOperation sets field value
-func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) SetOperation(v string) {
+func (o *PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) SetOperation(v string) {
 	o.Operation = v
 }
 
 // GetStartDate returns the StartDate field value if set, zero value otherwise.
-func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) GetStartDate() time.Time {
+func (o *PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) GetStartDate() time.Time {
 	if o == nil || IsNil(o.StartDate) {
 		var ret time.Time
 		return ret
@@ -141,7 +141,7 @@ func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) GetStartDa
 
 // GetStartDateOk returns a tuple with the StartDate field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) GetStartDateOk() (*time.Time, bool) {
+func (o *PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) GetStartDateOk() (*time.Time, bool) {
 	if o == nil || IsNil(o.StartDate) {
 		return nil, false
 	}
@@ -149,7 +149,7 @@ func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) GetStartDa
 }
 
 // HasStartDate returns a boolean if a field has been set.
-func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) HasStartDate() bool {
+func (o *PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) HasStartDate() bool {
 	if o != nil && !IsNil(o.StartDate) {
 		return true
 	}
@@ -158,12 +158,12 @@ func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) HasStartDa
 }
 
 // SetStartDate gets a reference to the given time.Time and assigns it to the StartDate field.
-func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) SetStartDate(v time.Time) {
+func (o *PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) SetStartDate(v time.Time) {
 	o.StartDate = &v
 }
 
 // GetExpiryDate returns the ExpiryDate field value if set, zero value otherwise.
-func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) GetExpiryDate() time.Time {
+func (o *PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) GetExpiryDate() time.Time {
 	if o == nil || IsNil(o.ExpiryDate) {
 		var ret time.Time
 		return ret
@@ -173,7 +173,7 @@ func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) GetExpiryD
 
 // GetExpiryDateOk returns a tuple with the ExpiryDate field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) GetExpiryDateOk() (*time.Time, bool) {
+func (o *PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) GetExpiryDateOk() (*time.Time, bool) {
 	if o == nil || IsNil(o.ExpiryDate) {
 		return nil, false
 	}
@@ -181,7 +181,7 @@ func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) GetExpiryD
 }
 
 // HasExpiryDate returns a boolean if a field has been set.
-func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) HasExpiryDate() bool {
+func (o *PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) HasExpiryDate() bool {
 	if o != nil && !IsNil(o.ExpiryDate) {
 		return true
 	}
@@ -190,11 +190,11 @@ func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) HasExpiryD
 }
 
 // SetExpiryDate gets a reference to the given time.Time and assigns it to the ExpiryDate field.
-func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) SetExpiryDate(v time.Time) {
+func (o *PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) SetExpiryDate(v time.Time) {
 	o.ExpiryDate = &v
 }
 
-func (o PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) MarshalJSON() ([]byte, error) {
+func (o PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -202,7 +202,7 @@ func (o PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) MarshalJSON
 	return json.Marshal(toSerialize)
 }
 
-func (o PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) ToMap() (map[string]interface{}, error) {
+func (o PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["Amount"] = o.Amount
 	if !IsNil(o.Reason) {
@@ -218,7 +218,7 @@ func (o PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) ToMap() (ma
 	return toSerialize, nil
 }
 
-func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) UnmarshalJSON(data []byte) (err error) {
+func (o *PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
@@ -241,53 +241,53 @@ func (o *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) UnmarshalJ
 		}
 	}
 
-	varPrismaticEventPayloadLoyaltyProfileBasedNotificationsAction := _PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction{}
+	varPrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction := _PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPrismaticEventPayloadLoyaltyProfileBasedNotificationsAction)
+	err = decoder.Decode(&varPrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction)
 
 	if err != nil {
 		return err
 	}
 
-	*o = PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction(varPrismaticEventPayloadLoyaltyProfileBasedNotificationsAction)
+	*o = PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction(varPrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction)
 
 	return err
 }
 
-type NullablePrismaticEventPayloadLoyaltyProfileBasedNotificationsAction struct {
-	value *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction
+type NullablePrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction struct {
+	value *PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction
 	isSet bool
 }
 
-func (v NullablePrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) Get() *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction {
+func (v NullablePrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) Get() *PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction {
 	return v.value
 }
 
-func (v *NullablePrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) Set(val *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) {
+func (v *NullablePrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) Set(val *PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullablePrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) IsSet() bool {
+func (v NullablePrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullablePrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) Unset() {
+func (v *NullablePrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func BuildNullablePrismaticEventPayloadLoyaltyProfileBasedNotificationsAction(val *PrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) *NullablePrismaticEventPayloadLoyaltyProfileBasedNotificationsAction {
-	return &NullablePrismaticEventPayloadLoyaltyProfileBasedNotificationsAction{value: val, isSet: true}
+func BuildNullablePrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction(val *PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) *NullablePrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction {
+	return &NullablePrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction{value: val, isSet: true}
 }
 
-func (v NullablePrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) MarshalJSON() ([]byte, error) {
+func (v NullablePrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullablePrismaticEventPayloadLoyaltyProfileBasedNotificationsAction) UnmarshalJSON(src []byte) error {
+func (v *NullablePrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }

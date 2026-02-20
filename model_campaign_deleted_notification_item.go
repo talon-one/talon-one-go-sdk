@@ -25,7 +25,7 @@ type CampaignDeletedNotificationItem struct {
 	// The type of the event. Can be one of the following: ['campaign_state_changed', 'campaign_ruleset_changed', 'campaign_edited', 'campaign_created', 'campaign_deleted']
 	Event string `json:"Event"`
 	// The campaign whose state changed.
-	Campaign interface{} `json:"campaign"`
+	Campaign Campaign `json:"campaign"`
 	// Time when the campaign was deleted.
 	DeletedAt time.Time `json:"deletedAt"`
 }
@@ -36,7 +36,7 @@ type _CampaignDeletedNotificationItem CampaignDeletedNotificationItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCampaignDeletedNotificationItem(event string, campaign interface{}, deletedAt time.Time) *CampaignDeletedNotificationItem {
+func BuildCampaignDeletedNotificationItem(event string, campaign Campaign, deletedAt time.Time) *CampaignDeletedNotificationItem {
 	this := CampaignDeletedNotificationItem{}
 	this.Event = event
 	this.Campaign = campaign
@@ -77,10 +77,9 @@ func (o *CampaignDeletedNotificationItem) SetEvent(v string) {
 }
 
 // GetCampaign returns the Campaign field value
-// If the value is explicit nil, the zero value for interface{} will be returned
-func (o *CampaignDeletedNotificationItem) GetCampaign() interface{} {
+func (o *CampaignDeletedNotificationItem) GetCampaign() Campaign {
 	if o == nil {
-		var ret interface{}
+		var ret Campaign
 		return ret
 	}
 
@@ -89,16 +88,15 @@ func (o *CampaignDeletedNotificationItem) GetCampaign() interface{} {
 
 // GetCampaignOk returns a tuple with the Campaign field value
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *CampaignDeletedNotificationItem) GetCampaignOk() (*interface{}, bool) {
-	if o == nil || IsNil(o.Campaign) {
+func (o *CampaignDeletedNotificationItem) GetCampaignOk() (*Campaign, bool) {
+	if o == nil {
 		return nil, false
 	}
 	return &o.Campaign, true
 }
 
 // SetCampaign sets field value
-func (o *CampaignDeletedNotificationItem) SetCampaign(v interface{}) {
+func (o *CampaignDeletedNotificationItem) SetCampaign(v Campaign) {
 	o.Campaign = v
 }
 
@@ -137,9 +135,7 @@ func (o CampaignDeletedNotificationItem) MarshalJSON() ([]byte, error) {
 func (o CampaignDeletedNotificationItem) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["Event"] = o.Event
-	if o.Campaign != nil {
-		toSerialize["campaign"] = o.Campaign
-	}
+	toSerialize["campaign"] = o.Campaign
 	toSerialize["deletedAt"] = o.DeletedAt
 	return toSerialize, nil
 }

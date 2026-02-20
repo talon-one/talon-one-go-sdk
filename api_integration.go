@@ -1760,13 +1760,22 @@ func (r ApiGenerateLoyaltyCardRequest) Execute() (*LoyaltyCard, *http.Response, 
 /*
 GenerateLoyaltyCard Generate loyalty card
 
-Generate a loyalty card in a specified [card-based loyalty program](https://docs.talon.one/docs/product/loyalty-programs/card-based/card-based-overview).
+Generate a loyalty card in a specified [card-based loyalty
+program](https://docs.talon.one/docs/product/loyalty-programs/card-based/card-based-overview).
 
-To link the card to one or more customer profiles, use the `customerProfileIds` parameter in the request body.
+To link the card to one or more customer profiles, use the
+`customerProfileIds` parameter in the request body.
 
 **Note:**
-- The number of customer profiles linked to the loyalty card cannot exceed the loyalty program's `usersPerCardLimit`. To find the program's limit, use the [Get loyalty program](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyProgram) endpoint.
-- If the loyalty program has a defined code format, it will be used for the loyalty card identifier.
+
+- The number of customer profiles linked to the loyalty card cannot exceed
+the loyalty program's `usersPerCardLimit`. To find the program's limit, use
+the [Get loyalty
+program](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyProgram)
+endpoint.
+
+- If the loyalty program has a defined code format, it will be used for the
+loyalty card identifier.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param loyaltyProgramId Identifier of the card-based loyalty program containing the loyalty card. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
@@ -5262,7 +5271,7 @@ func (r ApiTrackEventV2Request) ForceCompleteEvaluation(forceCompleteEvaluation 
 	return r
 }
 
-func (r ApiTrackEventV2Request) Execute() (*TrackEventV2Response, *http.Response, error) {
+func (r ApiTrackEventV2Request) Execute() (*IntegrationEventV2Response, *http.Response, error) {
 	return r.ApiService.TrackEventV2Execute(r)
 }
 
@@ -5305,13 +5314,13 @@ func (a *IntegrationAPIService) TrackEventV2(ctx context.Context) ApiTrackEventV
 
 // Execute executes the request
 //
-//	@return TrackEventV2Response
-func (a *IntegrationAPIService) TrackEventV2Execute(r ApiTrackEventV2Request) (*TrackEventV2Response, *http.Response, error) {
+//	@return IntegrationEventV2Response
+func (a *IntegrationAPIService) TrackEventV2Execute(r ApiTrackEventV2Request) (*IntegrationEventV2Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *TrackEventV2Response
+		localVarReturnValue *IntegrationEventV2Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IntegrationAPIService.TrackEventV2")

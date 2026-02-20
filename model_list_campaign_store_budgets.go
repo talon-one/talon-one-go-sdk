@@ -61,11 +61,11 @@ func (o *ListCampaignStoreBudgets) GetStore() ListCampaignStoreBudgetsStore {
 
 // GetStoreOk returns a tuple with the Store field value
 // and a boolean to check if the value has been set.
-func (o *ListCampaignStoreBudgets) GetStoreOk() (ListCampaignStoreBudgetsStore, bool) {
+func (o *ListCampaignStoreBudgets) GetStoreOk() (*ListCampaignStoreBudgetsStore, bool) {
 	if o == nil {
-		return ListCampaignStoreBudgetsStore{}, false
+		return nil, false
 	}
-	return o.Store, true
+	return &o.Store, true
 }
 
 // SetStore sets field value

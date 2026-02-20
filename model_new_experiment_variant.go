@@ -22,8 +22,9 @@ var _ MappedNullable = &NewExperimentVariant{}
 // NewExperimentVariant struct for NewExperimentVariant
 type NewExperimentVariant struct {
 	// The name of this variant.
-	Name      string     `json:"name" validate:"regexp=^[A-Za-z](\\\\w|\\\\s)*$"`
-	Weight    *int64     `json:"weight,omitempty"`
+	Name string `json:"name" validate:"regexp=^[A-Za-z](\\\\w|\\\\s)*$"`
+	// The percentage split of this variant. The sum of all variant percentages must be 100.
+	Weight    int64      `json:"weight"`
 	Ruleset   NewRuleset `json:"ruleset"`
 	IsPrimary bool       `json:"isPrimary"`
 }
@@ -34,9 +35,10 @@ type _NewExperimentVariant NewExperimentVariant
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildNewExperimentVariant(name string, ruleset NewRuleset, isPrimary bool) *NewExperimentVariant {
+func BuildNewExperimentVariant(name string, weight int64, ruleset NewRuleset, isPrimary bool) *NewExperimentVariant {
 	this := NewExperimentVariant{}
 	this.Name = name
+	this.Weight = weight
 	this.Ruleset = ruleset
 	this.IsPrimary = isPrimary
 	return &this
@@ -74,36 +76,28 @@ func (o *NewExperimentVariant) SetName(v string) {
 	o.Name = v
 }
 
-// GetWeight returns the Weight field value if set, zero value otherwise.
+// GetWeight returns the Weight field value
 func (o *NewExperimentVariant) GetWeight() int64 {
-	if o == nil || IsNil(o.Weight) {
+	if o == nil {
 		var ret int64
 		return ret
 	}
-	return *o.Weight
+
+	return o.Weight
 }
 
-// GetWeightOk returns a tuple with the Weight field value if set, nil otherwise
+// GetWeightOk returns a tuple with the Weight field value
 // and a boolean to check if the value has been set.
 func (o *NewExperimentVariant) GetWeightOk() (*int64, bool) {
-	if o == nil || IsNil(o.Weight) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Weight, true
+	return &o.Weight, true
 }
 
-// HasWeight returns a boolean if a field has been set.
-func (o *NewExperimentVariant) HasWeight() bool {
-	if o != nil && !IsNil(o.Weight) {
-		return true
-	}
-
-	return false
-}
-
-// SetWeight gets a reference to the given int64 and assigns it to the Weight field.
+// SetWeight sets field value
 func (o *NewExperimentVariant) SetWeight(v int64) {
-	o.Weight = &v
+	o.Weight = v
 }
 
 // GetRuleset returns the Ruleset field value
@@ -165,9 +159,7 @@ func (o NewExperimentVariant) MarshalJSON() ([]byte, error) {
 func (o NewExperimentVariant) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["name"] = o.Name
-	if !IsNil(o.Weight) {
-		toSerialize["weight"] = o.Weight
-	}
+	toSerialize["weight"] = o.Weight
 	toSerialize["ruleset"] = o.Ruleset
 	toSerialize["isPrimary"] = o.IsPrimary
 	return toSerialize, nil
@@ -179,6 +171,7 @@ func (o *NewExperimentVariant) UnmarshalJSON(data []byte) (err error) {
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
 		"name",
+		"weight",
 		"ruleset",
 		"isPrimary",
 	}
