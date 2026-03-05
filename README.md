@@ -238,6 +238,7 @@ Class | Method | HTTP request | Description
 *IntegrationAPI* | [**GetLoyaltyProgramProfileTransactions**](docs/IntegrationAPI.md#getloyaltyprogramprofiletransactions) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/transactions | List customer&#39;s loyalty transactions
 *IntegrationAPI* | [**GetReservedCustomers**](docs/IntegrationAPI.md#getreservedcustomers) | **Get** /v1/coupon_reservations/customerprofiles/{couponValue} | List customers that have this coupon reserved
 *IntegrationAPI* | [**LinkLoyaltyCardToProfile**](docs/IntegrationAPI.md#linkloyaltycardtoprofile) | **Post** /v2/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/link_profile | Link customer profile to card
+*IntegrationAPI* | [**PriceHistory**](docs/IntegrationAPI.md#pricehistory) | **Post** /v1/best_prior_price_history | Get summary of price history
 *IntegrationAPI* | [**ReopenCustomerSession**](docs/IntegrationAPI.md#reopencustomersession) | **Put** /v2/customer_sessions/{customerSessionId}/reopen | Reopen customer session
 *IntegrationAPI* | [**ReturnCartItems**](docs/IntegrationAPI.md#returncartitems) | **Post** /v2/customer_sessions/{customerSessionId}/returns | Return cart items
 *IntegrationAPI* | [**SyncCatalog**](docs/IntegrationAPI.md#synccatalog) | **Put** /v1/catalogs/{catalogId}/sync | Sync cart item catalog
@@ -288,6 +289,7 @@ Class | Method | HTTP request | Description
 *ManagementAPI* | [**DisconnectCampaignStores**](docs/ManagementAPI.md#disconnectcampaignstores) | **Delete** /v1/applications/{applicationId}/campaigns/{campaignId}/stores | Disconnect stores
 *ManagementAPI* | [**ExportAccountCollectionItems**](docs/ManagementAPI.md#exportaccountcollectionitems) | **Get** /v1/collections/{collectionId}/export | Export account-level collection&#39;s items
 *ManagementAPI* | [**ExportAchievements**](docs/ManagementAPI.md#exportachievements) | **Get** /v1/applications/{applicationId}/campaigns/{campaignId}/achievements/{achievementId}/export | Export achievement customer data
+*ManagementAPI* | [**ExportApplicationCampaignAnalytics**](docs/ManagementAPI.md#exportapplicationcampaignanalytics) | **Get** /v1/applications/{applicationId}/campaign_analytics/export | Export Application analytics aggregated by campaign
 *ManagementAPI* | [**ExportAudiencesMemberships**](docs/ManagementAPI.md#exportaudiencesmemberships) | **Get** /v1/audiences/{audienceId}/memberships/export | Export audience members
 *ManagementAPI* | [**ExportCampaignStoreBudgets**](docs/ManagementAPI.md#exportcampaignstorebudgets) | **Get** /v1/applications/{applicationId}/campaigns/{campaignId}/stores/budgets/export | Export campaign store budgets
 *ManagementAPI* | [**ExportCampaignStores**](docs/ManagementAPI.md#exportcampaignstores) | **Get** /v1/applications/{applicationId}/campaigns/{campaignId}/stores/export | Export stores
@@ -301,6 +303,7 @@ Class | Method | HTTP request | Description
 *ManagementAPI* | [**ExportLoyaltyCardBalances**](docs/ManagementAPI.md#exportloyaltycardbalances) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/export_card_balances | Export all card transaction logs
 *ManagementAPI* | [**ExportLoyaltyCardLedger**](docs/ManagementAPI.md#exportloyaltycardledger) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/export_log | Export card&#39;s ledger log
 *ManagementAPI* | [**ExportLoyaltyCards**](docs/ManagementAPI.md#exportloyaltycards) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/cards/export | Export loyalty cards
+*ManagementAPI* | [**ExportLoyaltyJoinDates**](docs/ManagementAPI.md#exportloyaltyjoindates) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/export_join_dates | Export customers&#39; loyalty program join dates
 *ManagementAPI* | [**ExportLoyaltyLedger**](docs/ManagementAPI.md#exportloyaltyledger) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/export_log | Export customer&#39;s transaction logs
 *ManagementAPI* | [**ExportPoolGiveaways**](docs/ManagementAPI.md#exportpoolgiveaways) | **Get** /v1/giveaways/pools/{poolId}/export | Export giveaway codes of a giveaway pool
 *ManagementAPI* | [**ExportReferrals**](docs/ManagementAPI.md#exportreferrals) | **Get** /v1/applications/{applicationId}/export_referrals | Export referrals
@@ -348,6 +351,7 @@ Class | Method | HTTP request | Description
 *ManagementAPI* | [**GetCustomersByAttributes**](docs/ManagementAPI.md#getcustomersbyattributes) | **Post** /v1/customer_search/no_total | List customer profiles matching the given attributes
 *ManagementAPI* | [**GetDashboardStatistics**](docs/ManagementAPI.md#getdashboardstatistics) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/dashboard | Get statistics for loyalty dashboard
 *ManagementAPI* | [**GetEventTypes**](docs/ManagementAPI.md#geteventtypes) | **Get** /v1/event_types | List event types
+*ManagementAPI* | [**GetExperiment**](docs/ManagementAPI.md#getexperiment) | **Get** /v1/applications/{applicationId}/experiments/{experimentId} | Get experiment in Application
 *ManagementAPI* | [**GetExports**](docs/ManagementAPI.md#getexports) | **Get** /v1/exports | Get exports
 *ManagementAPI* | [**GetLoyaltyCard**](docs/ManagementAPI.md#getloyaltycard) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId} | Get loyalty card
 *ManagementAPI* | [**GetLoyaltyCardTransactionLogs**](docs/ManagementAPI.md#getloyaltycardtransactionlogs) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/logs | List card&#39;s transactions
@@ -389,6 +393,7 @@ Class | Method | HTTP request | Description
 *ManagementAPI* | [**ListCatalogItems**](docs/ManagementAPI.md#listcatalogitems) | **Get** /v1/catalogs/{catalogId}/items | List items in a catalog
 *ManagementAPI* | [**ListCollections**](docs/ManagementAPI.md#listcollections) | **Get** /v1/applications/{applicationId}/campaigns/{campaignId}/collections | List collections in campaign
 *ManagementAPI* | [**ListCollectionsInApplication**](docs/ManagementAPI.md#listcollectionsinapplication) | **Get** /v1/applications/{applicationId}/collections | List collections in Application
+*ManagementAPI* | [**ListExperiments**](docs/ManagementAPI.md#listexperiments) | **Get** /v1/applications/{applicationId}/experiments | List experiments
 *ManagementAPI* | [**ListStores**](docs/ManagementAPI.md#liststores) | **Get** /v1/applications/{applicationId}/stores | List stores
 *ManagementAPI* | [**OktaEventHandlerChallenge**](docs/ManagementAPI.md#oktaeventhandlerchallenge) | **Get** /v1/provisioning/okta | Validate Okta API ownership
 *ManagementAPI* | [**RemoveLoyaltyPoints**](docs/ManagementAPI.md#removeloyaltypoints) | **Put** /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/deduct_points | Deduct points from customer profile
@@ -590,7 +595,9 @@ Class | Method | HTTP request | Description
 - [Coupon](docs/Coupon.md)
 - [CouponConstraints](docs/CouponConstraints.md)
 - [CouponCreatedEffectProps](docs/CouponCreatedEffectProps.md)
+- [CouponCreatedEventRequest](docs/CouponCreatedEventRequest.md)
 - [CouponCreationJob](docs/CouponCreationJob.md)
+- [CouponDeletedEventRequest](docs/CouponDeletedEventRequest.md)
 - [CouponDeletionFilters](docs/CouponDeletionFilters.md)
 - [CouponDeletionJob](docs/CouponDeletionJob.md)
 - [CouponEntity](docs/CouponEntity.md)
@@ -599,6 +606,7 @@ Class | Method | HTTP request | Description
 - [CouponRejectionReason](docs/CouponRejectionReason.md)
 - [CouponReservations](docs/CouponReservations.md)
 - [CouponSearch](docs/CouponSearch.md)
+- [CouponUpdatedEventRequest](docs/CouponUpdatedEventRequest.md)
 - [CouponValue](docs/CouponValue.md)
 - [CouponWithApplication](docs/CouponWithApplication.md)
 - [CouponsNotificationData](docs/CouponsNotificationData.md)
@@ -650,6 +658,9 @@ Class | Method | HTTP request | Description
 - [EventV2](docs/EventV2.md)
 - [EventV3](docs/EventV3.md)
 - [Experiment](docs/Experiment.md)
+- [ExperimentCampaignCopy](docs/ExperimentCampaignCopy.md)
+- [ExperimentCopy](docs/ExperimentCopy.md)
+- [ExperimentCopyExperiment](docs/ExperimentCopyExperiment.md)
 - [ExperimentResults](docs/ExperimentResults.md)
 - [ExperimentVariant](docs/ExperimentVariant.md)
 - [ExperimentVariantAllocation](docs/ExperimentVariantAllocation.md)
@@ -730,6 +741,7 @@ Class | Method | HTTP request | Description
 - [Giveaway](docs/Giveaway.md)
 - [GiveawaysPool](docs/GiveawaysPool.md)
 - [HiddenConditionsEffects](docs/HiddenConditionsEffects.md)
+- [History](docs/History.md)
 - [IdentifiableEntity](docs/IdentifiableEntity.md)
 - [Import](docs/Import.md)
 - [ImportEntity](docs/ImportEntity.md)
@@ -745,6 +757,21 @@ Class | Method | HTTP request | Description
 - [IntegrationEventV2Response](docs/IntegrationEventV2Response.md)
 - [IntegrationEventV3Request](docs/IntegrationEventV3Request.md)
 - [IntegrationEventV3Response](docs/IntegrationEventV3Response.md)
+- [IntegrationHubConfig](docs/IntegrationHubConfig.md)
+- [IntegrationHubEventPayloadCouponBasedNotifications](docs/IntegrationHubEventPayloadCouponBasedNotifications.md)
+- [IntegrationHubEventPayloadCouponBasedNotificationsLimits](docs/IntegrationHubEventPayloadCouponBasedNotificationsLimits.md)
+- [IntegrationHubEventPayloadLoyaltyProfileBasedNotification](docs/IntegrationHubEventPayloadLoyaltyProfileBasedNotification.md)
+- [IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification](docs/IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification.md)
+- [IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction](docs/IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction.md)
+- [IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification](docs/IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification.md)
+- [IntegrationHubEventPayloadLoyaltyProfileBasedTierUpgradeNotification](docs/IntegrationHubEventPayloadLoyaltyProfileBasedTierUpgradeNotification.md)
+- [IntegrationHubEventRecord](docs/IntegrationHubEventRecord.md)
+- [IntegrationHubFlow](docs/IntegrationHubFlow.md)
+- [IntegrationHubFlowConfig](docs/IntegrationHubFlowConfig.md)
+- [IntegrationHubFlowConfigResponse](docs/IntegrationHubFlowConfigResponse.md)
+- [IntegrationHubFlowResponse](docs/IntegrationHubFlowResponse.md)
+- [IntegrationHubFlowWithConfig](docs/IntegrationHubFlowWithConfig.md)
+- [IntegrationHubPaginatedEventPayload](docs/IntegrationHubPaginatedEventPayload.md)
 - [IntegrationProfileEntity](docs/IntegrationProfileEntity.md)
 - [IntegrationProfileEntityV3](docs/IntegrationProfileEntityV3.md)
 - [IntegrationRequest](docs/IntegrationRequest.md)
@@ -771,6 +798,7 @@ Class | Method | HTTP request | Description
 - [ListCampaignStoreBudgets](docs/ListCampaignStoreBudgets.md)
 - [ListCampaignStoreBudgetsStore](docs/ListCampaignStoreBudgetsStore.md)
 - [ListCatalogItems200Response](docs/ListCatalogItems200Response.md)
+- [ListExperiments200Response](docs/ListExperiments200Response.md)
 - [ListStores200Response](docs/ListStores200Response.md)
 - [LoginParams](docs/LoginParams.md)
 - [Loyalty](docs/Loyalty.md)
@@ -792,6 +820,7 @@ Class | Method | HTTP request | Description
 - [LoyaltyLedgerEntryFlags](docs/LoyaltyLedgerEntryFlags.md)
 - [LoyaltyLedgerTransactions](docs/LoyaltyLedgerTransactions.md)
 - [LoyaltyMembership](docs/LoyaltyMembership.md)
+- [LoyaltyPointsChangedEventRequest](docs/LoyaltyPointsChangedEventRequest.md)
 - [LoyaltyProgram](docs/LoyaltyProgram.md)
 - [LoyaltyProgramBalance](docs/LoyaltyProgramBalance.md)
 - [LoyaltyProgramEntity](docs/LoyaltyProgramEntity.md)
@@ -799,6 +828,8 @@ Class | Method | HTTP request | Description
 - [LoyaltyProgramTransaction](docs/LoyaltyProgramTransaction.md)
 - [LoyaltySubLedger](docs/LoyaltySubLedger.md)
 - [LoyaltyTier](docs/LoyaltyTier.md)
+- [LoyaltyTierDowngradeEventRequest](docs/LoyaltyTierDowngradeEventRequest.md)
+- [LoyaltyTierUpgradeEventRequest](docs/LoyaltyTierUpgradeEventRequest.md)
 - [ManagementKey](docs/ManagementKey.md)
 - [ManagerConfig](docs/ManagerConfig.md)
 - [MessageLogEntries](docs/MessageLogEntries.md)
@@ -908,24 +939,11 @@ Class | Method | HTTP request | Description
 - [Picklist](docs/Picklist.md)
 - [PlaceholderDetails](docs/PlaceholderDetails.md)
 - [PriceDetail](docs/PriceDetail.md)
+- [PriceHistoryRequest](docs/PriceHistoryRequest.md)
+- [PriceHistoryResponse](docs/PriceHistoryResponse.md)
 - [PriceType](docs/PriceType.md)
 - [PriceTypeReferenceDetail](docs/PriceTypeReferenceDetail.md)
 - [PriceTypeReferences](docs/PriceTypeReferences.md)
-- [PrismaticConfig](docs/PrismaticConfig.md)
-- [PrismaticEventPayloadCouponBasedNotifications](docs/PrismaticEventPayloadCouponBasedNotifications.md)
-- [PrismaticEventPayloadCouponBasedNotificationsLimits](docs/PrismaticEventPayloadCouponBasedNotificationsLimits.md)
-- [PrismaticEventPayloadLoyaltyProfileBasedNotification](docs/PrismaticEventPayloadLoyaltyProfileBasedNotification.md)
-- [PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotification](docs/PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotification.md)
-- [PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction](docs/PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction.md)
-- [PrismaticEventPayloadLoyaltyProfileBasedTierDowngradeNotification](docs/PrismaticEventPayloadLoyaltyProfileBasedTierDowngradeNotification.md)
-- [PrismaticEventPayloadLoyaltyProfileBasedTierUpgradeNotification](docs/PrismaticEventPayloadLoyaltyProfileBasedTierUpgradeNotification.md)
-- [PrismaticEventRecord](docs/PrismaticEventRecord.md)
-- [PrismaticFlow](docs/PrismaticFlow.md)
-- [PrismaticFlowConfig](docs/PrismaticFlowConfig.md)
-- [PrismaticFlowConfigResponse](docs/PrismaticFlowConfigResponse.md)
-- [PrismaticFlowResponse](docs/PrismaticFlowResponse.md)
-- [PrismaticFlowWithConfig](docs/PrismaticFlowWithConfig.md)
-- [PrismaticPaginatedEventPayload](docs/PrismaticPaginatedEventPayload.md)
 - [Product](docs/Product.md)
 - [ProductSearchMatch](docs/ProductSearchMatch.md)
 - [ProductUnitAnalytics](docs/ProductUnitAnalytics.md)
@@ -933,6 +951,7 @@ Class | Method | HTTP request | Description
 - [ProductUnitAnalyticsTotals](docs/ProductUnitAnalyticsTotals.md)
 - [ProfileAudiencesChanges](docs/ProfileAudiencesChanges.md)
 - [ProjectedTier](docs/ProjectedTier.md)
+- [PromoteExperiment](docs/PromoteExperiment.md)
 - [RedeemReferralEffectProps](docs/RedeemReferralEffectProps.md)
 - [Referral](docs/Referral.md)
 - [ReferralConstraints](docs/ReferralConstraints.md)

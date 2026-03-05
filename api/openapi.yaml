@@ -88,6 +88,9 @@ tags:
     See the [docs](https://docs.talon.one/docs/product/campaigns/managing-collections).
   name: Collections
 - description: |
+    IntegrationHub coupon events.
+  name: Coupon events
+- description: |
     Coupons are unique codes belonging to a particular campaign. They don't define any behavior on their own.
     Instead the campaign ruleset can include rules that validate coupons and carry out particular effects.
 
@@ -115,6 +118,9 @@ tags:
     - **Custom events:** They are triggered by the [Track event](https://docs.talon.one/integration-api#tag/Events/operation/trackEventV2) endpoint.
   name: Events
 - description: |
+    Represents an A/B testing configuration within a campaign that splits customer sessions across multiple variants to compare rule effects against each other.
+  name: Experiments
+- description: |
     Represents a program that rewards customers with giveaways, such as free gift cards.
 
     See the [docs](https://docs.talon.one/docs/product/giveaways/overview).
@@ -135,6 +141,9 @@ tags:
 
     [Loyalty cards](https://docs.talon.one/docs/product/loyalty-programs/card-based/card-based-overview) allow your customers to collect and spend loyalty points within a card-based loyalty program.
   name: Loyalty cards
+- description: |
+    IntegrationHub loyalty events.
+  name: Loyalty events
 - description: |
     A referral is a code shared between a customer and a prospect.
 
@@ -4324,6 +4333,99 @@ paths:
       summary: List campaign templates
       tags:
       - management
+  /v1/applications/{applicationId}/experiments:
+    get:
+      description: List all experiments of the specified Application that match your
+        filter criteria.
+      operationId: listExperiments
+      parameters:
+      - description: The ID of the Application. It is displayed in your Talon.One
+          deployment URL.
+        explode: false
+        in: path
+        name: applicationId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      - description: The number of items in the response.
+        explode: true
+        in: query
+        name: pageSize
+        required: false
+        schema:
+          default: 1000
+          format: int64
+          maximum: 1000
+          minimum: 1
+          type: integer
+        style: form
+      - description: The number of items to skip when paging through large result
+          sets.
+        explode: true
+        in: query
+        name: skip
+        required: false
+        schema:
+          format: int64
+          type: integer
+        style: form
+      - description: |
+          The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with `-`.
+
+          **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.
+        explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listExperiments_200_response"
+          description: OK
+      summary: List experiments
+      tags:
+      - management
+  /v1/applications/{applicationId}/experiments/{experimentId}:
+    get:
+      description: Retrieve the given experiment associated with the Application.
+      operationId: getExperiment
+      parameters:
+      - description: The ID of the Application. It is displayed in your Talon.One
+          deployment URL.
+        explode: false
+        in: path
+        name: applicationId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      - description: The ID of the experiment.
+        explode: false
+        in: path
+        name: experimentId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Experiment"
+          description: OK
+      summary: Get experiment in Application
+      tags:
+      - management
   /v1/applications/{applicationId}/create_campaign_from_template:
     post:
       description: |
@@ -4945,6 +5047,57 @@ paths:
       summary: Export customer's transaction logs
       tags:
       - management
+  /v1/loyalty_programs/{loyaltyProgramId}/export_join_dates:
+    get:
+      description: |
+        Download a CSV file containing the join dates of all customers in the loyalty program.
+
+        **Tip:** If the exported CSV file is too large to view, you can [split it into multiple files](https://www.makeuseof.com/tag/how-to-split-a-huge-csv-excel-workbook-into-seperate-files/).
+
+        The generated file can contain the following columns:
+
+        - `loyaltyProgramID`: The ID of the loyalty program.
+        - `profileIntegrationID`: The integration ID of the customer profile.
+        - `joinDate`: The customer's loyalty program join date in RFC3339 format.
+      operationId: exportLoyaltyJoinDates
+      parameters:
+      - description: The identifier of the loyalty program.
+        explode: false
+        in: path
+        name: loyaltyProgramId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/csv:
+              examples:
+                response:
+                  value: |
+                    loyaltyProgramID,profileIntegrationID,joinDate
+                    40,8786NTHSAO8,2024-05-29T15:04:05Z
+                    40,2735HATHOH8,2023-11-13T07:12:34Z
+              schema:
+                format: csv
+                type: string
+          description: OK
+        "400":
+          content:
+            application/csv:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Bad request
+        "401":
+          content:
+            application/csv:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Unauthorized
+      summary: Export customers' loyalty program join dates
+      tags:
+      - management
   /v1/loyalty_programs/{loyaltyProgramId}/export_customers_tiers:
     get:
       description: |
@@ -5338,14 +5491,15 @@ paths:
         - `identifier` (required): The alphanumeric identifier of the loyalty card.
         - `state` (required): The state of the loyalty card. It can be `active` or `inactive`.
         - `customerprofileids` (optional): An array of strings representing the identifiers of the customer profiles linked to the loyalty card. The identifiers should be separated with a semicolon (;).
+        - `attributes` (optional): A JSON object that contains the loyalty card's custom attributes and their values. These attributes must be created and connected to this loyalty program before  they can be assigned to the cards through this endpoint.
 
         **Note:** We recommend limiting your file size to 500MB.
 
         **Example:**
 
         ```csv
-        identifier,state,customerprofileids
-        123-456-789AT,active,Alexa001;UserA
+        identifier,state,customerprofileids,attributes
+        123-456-789AT,active,Alexa001;UserA,"{""my_attribute"": ""10_off""}"
         ```
       operationId: importLoyaltyCards
       parameters:
@@ -8182,6 +8336,23 @@ paths:
       summary: Fetch best prior price
       tags:
       - integration
+  /v1/best_prior_price_history:
+    post:
+      description: |
+        Fetch the historical price data for a given SKU within a defined timeframe.
+      operationId: priceHistory
+      requestBody:
+        $ref: "#/components/requestBodies/PriceHistory"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PriceHistoryResponse"
+          description: Ok
+      summary: Get summary of price history
+      tags:
+      - integration
   /v1/attributes:
     get:
       description: |
@@ -9165,7 +9336,11 @@ paths:
 
         The CSV file contains the following columns:
 
-        - `value` (required): The coupon code.
+        - `value` (required): The coupon code. Must be at least 3 characters long. We recommend using alphanumeric characters.
+          There is no maximum length but limiting the code to 30 characters
+          ensures it is fully readable in the Campaign Manager.
+          The code should be unique unless you set `skipDuplicates` to `true`.
+
         - `expirydate`: The end date in RFC3339 of the code redemption period.
         - `startdate`: The start date in RFC3339 of the code redemption period.
         - `recipientintegrationid`: The integration ID of the recipient of the coupon.
@@ -11597,6 +11772,88 @@ paths:
       summary: Export achievement customer data
       tags:
       - management
+  /v1/applications/{applicationId}/campaign_analytics/export:
+    get:
+      description: |
+        Download a CSV file containing analytics data aggregated by campaign for the campaigns of an Application.
+
+        **Tip:** If the exported CSV file is too large to view, you can [split it into multiple files](https://www.makeuseof.com/tag/how-to-split-a-huge-csv-excel-workbook-into-seperate-files/).
+
+        The CSV file contains the following columns:
+        - `campaign_id`: The ID of the campaign. This column also contains labels for the [total and influenced values](https://docs.talon.one/docs/product/campaigns/analytics/application-dashboard#understanding-the-analytics-data).
+        - `start_date`: The start of the aggregation time frame in UTC.
+        - `end_date`: The end of the aggregation time frame in UTC.
+        - `revenue`: The total, pre-discount value of all items purchased in a customer session.
+        - `sessions`: The number of all closed sessions.
+        - `average_session_value`: The average customer session value, calculated by dividing the revenue value by the number of sessions.
+        - `average_items_per_session`: The number of items from sessions divided by the number of sessions.
+        - `coupons`: The number of times a coupon was successfully redeemed in sessions.
+        - `discounts`: The total value of discounts given for cart items in sessions.
+      operationId: exportApplicationCampaignAnalytics
+      parameters:
+      - $ref: "#/components/parameters/applicationId"
+      - description: |
+          Filter by one or more Campaign IDs, separated by a comma.
+
+          **Note:** If no campaigns are specified, data for all the campaigns in the Application is returned.
+        explode: false
+        in: query
+        name: campaignIds
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |
+          Only return results from after this timestamp.
+
+          **Note:**
+          - This must be an RFC3339 timestamp string.
+          - You can include a time component in your string, for example, `T23:59:59` to specify the end of the day. The time zone setting considered is `UTC`. If you do not include a time component, a default time value of `T00:00:00` (midnight) in `UTC` is considered.
+        explode: true
+        in: query
+        name: rangeStart
+        required: true
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: |
+          Only return results from before this timestamp.
+
+          **Note:**
+          - This must be an RFC3339 timestamp string.
+          - You can include a time component in your string, for example, `T23:59:59` to specify the end of the day. The time zone setting considered is `UTC`. If you do not include a time component, a default time value of `T00:00:00` (midnight) in `UTC` is considered.
+        explode: true
+        in: query
+        name: rangeEnd
+        required: true
+        schema:
+          format: date-time
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/csv:
+              examples:
+                response:
+                  value: |
+                    campaign_id,start_date,end_date,revenue,sessions,average_session_value,average_items_per_session,coupons,discounts
+                    Total,2025-02-01T00:00:00+00:00,2025-02-07T00:00:00+00:00,751916.88,5919,127.03,3.96,N/A,N/A
+                    Influenced,2025-02-01T00:00:00+00:00,2025-02-07T00:00:00+00:00,525816.00,5246,100.23,4.46,374,47675.73
+                    41,2025-02-01T00:00:00+00:00,2025-02-07T00:00:00+00:00,284089.80,3105,91.49,4.62,247,8435.65
+                    75,2025-02-01T00:00:00+00:00,2025-02-07T00:00:00+00:00,416001.81,4771,87.19,4.52,0,16768.71
+                    178,2025-02-01T00:00:00+00:00,2025-02-07T00:00:00+00:00,313390.53,1098,285.42,4.81,65,16097.05
+                    195,2025-02-01T00:00:00+00:00,2025-02-07T00:00:00+00:00,34345.86,595,57.72,4.58,62,6374.32
+              schema:
+                format: csv
+                type: string
+          description: OK
+      summary: Export Application analytics aggregated by campaign
+      tags:
+      - management
   /v1/applications/{applicationId}/achievement_progress/{integrationId}:
     get:
       description: |
@@ -11961,6 +12218,13 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/BestPriorPriceRequest"
+      description: body
+      required: true
+    PriceHistory:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PriceHistoryRequest"
       description: body
       required: true
     NewAttribute:
@@ -12497,7 +12761,7 @@ components:
           type: array
     UpdateRoleV2:
       $ref: "#/components/schemas/RoleV2Base"
-    PrismaticPaginatedEventPayload:
+    IntegrationHubPaginatedEventPayload:
       properties:
         TotalResultSize:
           format: int64
@@ -12515,17 +12779,17 @@ components:
           - CouponUpdated
           - CouponDeleted
           type: string
-          x-generate-enum-go: PrismaticEventType
+          x-generate-enum-go: IntegrationHubEventType
         Data:
           items:
             discriminator:
               mapping:
-                LoyaltyPointsChanged: "#/components/schemas/PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotification"
-                LoyaltyTierDowngrade: "#/components/schemas/PrismaticEventPayloadLoyaltyProfileBasedTierDowngradeNotification"
-                LoyaltyTierUpgrade: "#/components/schemas/PrismaticEventPayloadLoyaltyProfileBasedTierUpgradeNotification"
-                CouponCreated: "#/components/schemas/PrismaticEventPayloadCouponBasedNotifications"
-                CouponUpdated: "#/components/schemas/PrismaticEventPayloadCouponBasedNotifications"
-                CouponDeleted: "#/components/schemas/PrismaticEventPayloadCouponBasedNotifications"
+                LoyaltyPointsChanged: "#/components/schemas/IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification"
+                LoyaltyTierDowngrade: "#/components/schemas/IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification"
+                LoyaltyTierUpgrade: "#/components/schemas/IntegrationHubEventPayloadLoyaltyProfileBasedTierUpgradeNotification"
+                CouponCreated: "#/components/schemas/IntegrationHubEventPayloadCouponBasedNotifications"
+                CouponUpdated: "#/components/schemas/IntegrationHubEventPayloadCouponBasedNotifications"
+                CouponDeleted: "#/components/schemas/IntegrationHubEventPayloadCouponBasedNotifications"
               propertyName: EventType
           type: array
       required:
@@ -25303,6 +25567,185 @@ components:
         required:
         - isPrimary
         - name
+      example:
+        created: 2020-06-10T09:05:27.993483Z
+        isPrimary: true
+        name: Variant A
+        ruleset:
+          rbVersion: v2
+          created: 2020-06-10T09:05:27.993483Z
+          campaignId: 320
+          bindings: []
+          activatedAt: 2000-01-23T04:56:07.000+00:00
+          activate: true
+          rules:
+          - condition:
+            - and
+            - - couponValid
+            effects:
+            - catch
+            - - noop
+            - - setDiscount
+              - 10% off
+              - - '*'
+                - - "."
+                  - Session
+                  - Total
+                - - /
+                  - 10
+                  - 100
+            bindings:
+            - attributeId: 100
+              minValue: 0
+              expression:
+              - string1
+              - string2
+              maxValue: 19.9
+              valueType: string
+              name: my property
+              description: This is a template parameter of type `number`.
+              type: templateParameter
+            - attributeId: 100
+              minValue: 0
+              expression:
+              - string1
+              - string2
+              maxValue: 19.9
+              valueType: string
+              name: my property
+              description: This is a template parameter of type `number`.
+              type: templateParameter
+            description: Creates a discount when a coupon is valid
+            id: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+            title: Give discount via coupon
+            parentId: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+          - condition:
+            - and
+            - - couponValid
+            effects:
+            - catch
+            - - noop
+            - - setDiscount
+              - 10% off
+              - - '*'
+                - - "."
+                  - Session
+                  - Total
+                - - /
+                  - 10
+                  - 100
+            bindings:
+            - attributeId: 100
+              minValue: 0
+              expression:
+              - string1
+              - string2
+              maxValue: 19.9
+              valueType: string
+              name: my property
+              description: This is a template parameter of type `number`.
+              type: templateParameter
+            - attributeId: 100
+              minValue: 0
+              expression:
+              - string1
+              - string2
+              maxValue: 19.9
+              valueType: string
+              name: my property
+              description: This is a template parameter of type `number`.
+              type: templateParameter
+            description: Creates a discount when a coupon is valid
+            id: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+            title: Give discount via coupon
+            parentId: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+          id: 6
+          strikethroughRules:
+          - condition:
+            - and
+            - - couponValid
+            effects:
+            - catch
+            - - noop
+            - - setDiscount
+              - 10% off
+              - - '*'
+                - - "."
+                  - Session
+                  - Total
+                - - /
+                  - 10
+                  - 100
+            bindings:
+            - attributeId: 100
+              minValue: 0
+              expression:
+              - string1
+              - string2
+              maxValue: 19.9
+              valueType: string
+              name: my property
+              description: This is a template parameter of type `number`.
+              type: templateParameter
+            - attributeId: 100
+              minValue: 0
+              expression:
+              - string1
+              - string2
+              maxValue: 19.9
+              valueType: string
+              name: my property
+              description: This is a template parameter of type `number`.
+              type: templateParameter
+            description: Creates a discount when a coupon is valid
+            id: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+            title: Give discount via coupon
+            parentId: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+          - condition:
+            - and
+            - - couponValid
+            effects:
+            - catch
+            - - noop
+            - - setDiscount
+              - 10% off
+              - - '*'
+                - - "."
+                  - Session
+                  - Total
+                - - /
+                  - 10
+                  - 100
+            bindings:
+            - attributeId: 100
+              minValue: 0
+              expression:
+              - string1
+              - string2
+              maxValue: 19.9
+              valueType: string
+              name: my property
+              description: This is a template parameter of type `number`.
+              type: templateParameter
+            - attributeId: 100
+              minValue: 0
+              expression:
+              - string1
+              - string2
+              maxValue: 19.9
+              valueType: string
+              name: my property
+              description: This is a template parameter of type `number`.
+              type: templateParameter
+            description: Creates a discount when a coupon is valid
+            id: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+            title: Give discount via coupon
+            parentId: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+          templateId: 3
+          userId: 388
+        weight: 12
+        experimentId: 10
+        id: 6
     Experiment:
       allOf:
       - $ref: "#/components/schemas/Entity"
@@ -25310,7 +25753,7 @@ components:
       - properties:
           isVariantAssignmentExternal:
             description: |
-              The source of the assignment. - false - The assignment to the variant is handled internally by the Talon.Oneandled internally by the Talon.One. - true - The assignment to the variant handled externally.
+              The source of the assignment. - false - The variant assignment is handled internally by Talon.One. - true - The variant assignment is handled externally.
             type: boolean
           campaign:
             $ref: "#/components/schemas/Campaign"
@@ -25326,6 +25769,7 @@ components:
             enum:
             - enabled
             - disabled
+            - archived
             example: enabled
             type: string
           variants:
@@ -25337,26 +25781,534 @@ components:
               The date and time the experiment was deleted.
             format: date-time
             type: string
+        required:
+        - state
+      example:
+        deletedat: 2000-01-23T04:56:07.000+00:00
+        created: 2020-06-10T09:05:27.993483Z
+        campaign:
+          type: advanced
+          templateId: 3
+          customEffectCount: 0
+          activeRevisionId: 6
+          features:
+          - coupons
+          - referrals
+          createdLoyaltyPointsCount: 9
+          storesImported: true
+          couponSettings:
+            couponPattern: SUMMER-####-####
+            validCharacters:
+            - A
+            - B
+            - C
+            - D
+            - E
+            - F
+            - G
+            - H
+            - I
+            - J
+            - K
+            - L
+            - M
+            - "N"
+            - O
+            - P
+            - Q
+            - R
+            - S
+            - T
+            - U
+            - V
+            - W
+            - X
+            - "Y"
+            - Z
+            - "0"
+            - "1"
+            - "2"
+            - "3"
+            - "4"
+            - "5"
+            - "6"
+            - "7"
+            - "8"
+            - "9"
+          experimentId: 1
+          id: 4
+          state: enabled
+          reservecouponEffectCount: 9
+          updatedBy: Jane Doe
+          frontendState: running
+          created: 2020-06-10T09:05:27.993483Z
+          referralCreationCount: 8
+          stageRevision: false
+          couponRedemptionCount: 163
+          couponCreationCount: 16
+          version: 6
+          campaignGroups:
+          - 1
+          - 3
+          tags:
+          - summer
+          discountEffectCount: 343
+          budgets:
+          - limit: 1000
+            action: createCoupon
+            counter: 42
+          - limit: 1000
+            action: createCoupon
+            counter: 42
+          redeemedLoyaltyPointsCount: 8
+          name: Summer promotions
+          valueMapsIds:
+          - 100
+          - 215
+          applicationId: 322
+          updated: 2022-10-97T35:00:00Z
+          callApiEffectCount: 0
+          createdLoyaltyPointsEffectCount: 2
+          discountCount: 288
+          revisionFrontendState: revised
+          description: Campaign for all summer 2021 promotions
+          activeRevisionVersionId: 6
+          currentRevisionVersionId: 6
+          startTime: 2021-07-20T22:00:00Z
+          currentRevisionId: 6
+          limits:
+          - period: yearly
+            entities:
+            - Coupon
+            limit: 1000
+            action: createCoupon
+          - period: yearly
+            entities:
+            - Coupon
+            limit: 1000
+            action: createCoupon
+          activeRulesetId: 6
+          reevaluateOnReturn: true
+          userId: 388
+          awardedGiveawaysCount: 9
+          redeemedLoyaltyPointsEffectCount: 9
+          linkedStoreIds:
+          - 1
+          - 2
+          - 3
+          createdBy: John Doe
+          addFreeItemEffectCount: 0
+          referralSettings:
+            couponPattern: SUMMER-####-####
+            validCharacters:
+            - A
+            - B
+            - C
+            - D
+            - E
+            - F
+            - G
+            - H
+            - I
+            - J
+            - K
+            - L
+            - M
+            - "N"
+            - O
+            - P
+            - Q
+            - R
+            - S
+            - T
+            - U
+            - V
+            - W
+            - X
+            - "Y"
+            - Z
+            - "0"
+            - "1"
+            - "2"
+            - "3"
+            - "4"
+            - "5"
+            - "6"
+            - "7"
+            - "8"
+            - "9"
+          attributes: "{}"
+          lastActivity: 2022-11-10T23:00:00Z
+          endTime: 2021-09-22T22:00:00Z
+          referralRedemptionCount: 3
+        id: 6
+        state: enabled
+        variants:
+        - created: 2020-06-10T09:05:27.993483Z
+          isPrimary: true
+          name: Variant A
+          ruleset:
+            rbVersion: v2
+            created: 2020-06-10T09:05:27.993483Z
+            campaignId: 320
+            bindings: []
+            activatedAt: 2000-01-23T04:56:07.000+00:00
+            activate: true
+            rules:
+            - condition:
+              - and
+              - - couponValid
+              effects:
+              - catch
+              - - noop
+              - - setDiscount
+                - 10% off
+                - - '*'
+                  - - "."
+                    - Session
+                    - Total
+                  - - /
+                    - 10
+                    - 100
+              bindings:
+              - attributeId: 100
+                minValue: 0
+                expression:
+                - string1
+                - string2
+                maxValue: 19.9
+                valueType: string
+                name: my property
+                description: This is a template parameter of type `number`.
+                type: templateParameter
+              - attributeId: 100
+                minValue: 0
+                expression:
+                - string1
+                - string2
+                maxValue: 19.9
+                valueType: string
+                name: my property
+                description: This is a template parameter of type `number`.
+                type: templateParameter
+              description: Creates a discount when a coupon is valid
+              id: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+              title: Give discount via coupon
+              parentId: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+            - condition:
+              - and
+              - - couponValid
+              effects:
+              - catch
+              - - noop
+              - - setDiscount
+                - 10% off
+                - - '*'
+                  - - "."
+                    - Session
+                    - Total
+                  - - /
+                    - 10
+                    - 100
+              bindings:
+              - attributeId: 100
+                minValue: 0
+                expression:
+                - string1
+                - string2
+                maxValue: 19.9
+                valueType: string
+                name: my property
+                description: This is a template parameter of type `number`.
+                type: templateParameter
+              - attributeId: 100
+                minValue: 0
+                expression:
+                - string1
+                - string2
+                maxValue: 19.9
+                valueType: string
+                name: my property
+                description: This is a template parameter of type `number`.
+                type: templateParameter
+              description: Creates a discount when a coupon is valid
+              id: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+              title: Give discount via coupon
+              parentId: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+            id: 6
+            strikethroughRules:
+            - condition:
+              - and
+              - - couponValid
+              effects:
+              - catch
+              - - noop
+              - - setDiscount
+                - 10% off
+                - - '*'
+                  - - "."
+                    - Session
+                    - Total
+                  - - /
+                    - 10
+                    - 100
+              bindings:
+              - attributeId: 100
+                minValue: 0
+                expression:
+                - string1
+                - string2
+                maxValue: 19.9
+                valueType: string
+                name: my property
+                description: This is a template parameter of type `number`.
+                type: templateParameter
+              - attributeId: 100
+                minValue: 0
+                expression:
+                - string1
+                - string2
+                maxValue: 19.9
+                valueType: string
+                name: my property
+                description: This is a template parameter of type `number`.
+                type: templateParameter
+              description: Creates a discount when a coupon is valid
+              id: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+              title: Give discount via coupon
+              parentId: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+            - condition:
+              - and
+              - - couponValid
+              effects:
+              - catch
+              - - noop
+              - - setDiscount
+                - 10% off
+                - - '*'
+                  - - "."
+                    - Session
+                    - Total
+                  - - /
+                    - 10
+                    - 100
+              bindings:
+              - attributeId: 100
+                minValue: 0
+                expression:
+                - string1
+                - string2
+                maxValue: 19.9
+                valueType: string
+                name: my property
+                description: This is a template parameter of type `number`.
+                type: templateParameter
+              - attributeId: 100
+                minValue: 0
+                expression:
+                - string1
+                - string2
+                maxValue: 19.9
+                valueType: string
+                name: my property
+                description: This is a template parameter of type `number`.
+                type: templateParameter
+              description: Creates a discount when a coupon is valid
+              id: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+              title: Give discount via coupon
+              parentId: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+            templateId: 3
+            userId: 388
+          weight: 12
+          experimentId: 10
+          id: 6
+        - created: 2020-06-10T09:05:27.993483Z
+          isPrimary: true
+          name: Variant A
+          ruleset:
+            rbVersion: v2
+            created: 2020-06-10T09:05:27.993483Z
+            campaignId: 320
+            bindings: []
+            activatedAt: 2000-01-23T04:56:07.000+00:00
+            activate: true
+            rules:
+            - condition:
+              - and
+              - - couponValid
+              effects:
+              - catch
+              - - noop
+              - - setDiscount
+                - 10% off
+                - - '*'
+                  - - "."
+                    - Session
+                    - Total
+                  - - /
+                    - 10
+                    - 100
+              bindings:
+              - attributeId: 100
+                minValue: 0
+                expression:
+                - string1
+                - string2
+                maxValue: 19.9
+                valueType: string
+                name: my property
+                description: This is a template parameter of type `number`.
+                type: templateParameter
+              - attributeId: 100
+                minValue: 0
+                expression:
+                - string1
+                - string2
+                maxValue: 19.9
+                valueType: string
+                name: my property
+                description: This is a template parameter of type `number`.
+                type: templateParameter
+              description: Creates a discount when a coupon is valid
+              id: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+              title: Give discount via coupon
+              parentId: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+            - condition:
+              - and
+              - - couponValid
+              effects:
+              - catch
+              - - noop
+              - - setDiscount
+                - 10% off
+                - - '*'
+                  - - "."
+                    - Session
+                    - Total
+                  - - /
+                    - 10
+                    - 100
+              bindings:
+              - attributeId: 100
+                minValue: 0
+                expression:
+                - string1
+                - string2
+                maxValue: 19.9
+                valueType: string
+                name: my property
+                description: This is a template parameter of type `number`.
+                type: templateParameter
+              - attributeId: 100
+                minValue: 0
+                expression:
+                - string1
+                - string2
+                maxValue: 19.9
+                valueType: string
+                name: my property
+                description: This is a template parameter of type `number`.
+                type: templateParameter
+              description: Creates a discount when a coupon is valid
+              id: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+              title: Give discount via coupon
+              parentId: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+            id: 6
+            strikethroughRules:
+            - condition:
+              - and
+              - - couponValid
+              effects:
+              - catch
+              - - noop
+              - - setDiscount
+                - 10% off
+                - - '*'
+                  - - "."
+                    - Session
+                    - Total
+                  - - /
+                    - 10
+                    - 100
+              bindings:
+              - attributeId: 100
+                minValue: 0
+                expression:
+                - string1
+                - string2
+                maxValue: 19.9
+                valueType: string
+                name: my property
+                description: This is a template parameter of type `number`.
+                type: templateParameter
+              - attributeId: 100
+                minValue: 0
+                expression:
+                - string1
+                - string2
+                maxValue: 19.9
+                valueType: string
+                name: my property
+                description: This is a template parameter of type `number`.
+                type: templateParameter
+              description: Creates a discount when a coupon is valid
+              id: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+              title: Give discount via coupon
+              parentId: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+            - condition:
+              - and
+              - - couponValid
+              effects:
+              - catch
+              - - noop
+              - - setDiscount
+                - 10% off
+                - - '*'
+                  - - "."
+                    - Session
+                    - Total
+                  - - /
+                    - 10
+                    - 100
+              bindings:
+              - attributeId: 100
+                minValue: 0
+                expression:
+                - string1
+                - string2
+                maxValue: 19.9
+                valueType: string
+                name: my property
+                description: This is a template parameter of type `number`.
+                type: templateParameter
+              - attributeId: 100
+                minValue: 0
+                expression:
+                - string1
+                - string2
+                maxValue: 19.9
+                valueType: string
+                name: my property
+                description: This is a template parameter of type `number`.
+                type: templateParameter
+              description: Creates a discount when a coupon is valid
+              id: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+              title: Give discount via coupon
+              parentId: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+            templateId: 3
+            userId: 388
+          weight: 12
+          experimentId: 10
+          id: 6
+        applicationId: 322
+        isVariantAssignmentExternal: true
+        activated: 2000-01-23T04:56:07.000+00:00
     NewExperiment:
       properties:
         isVariantAssignmentExternal:
           description: |
-            The source of the assignment. - false - The assignment to the variant is handled internally by the Talon.Oneandled internally by the Talon.One. - true - The assignment to the variant handled externally.
+            The source of the assignment. - false - The variant assignment is handled internally by Talon.One. - true - The variant assignment is handled externally.
           type: boolean
-        activated:
-          description: |
-            The date and time the experiment was activated.
-          format: date-time
-          type: string
-        state:
-          default: disabled
-          description: |
-            A disabled experiment is not evaluated for rules or coupons.
-          enum:
-          - enabled
-          - disabled
-          example: enabled
-          type: string
         campaign:
           $ref: "#/components/schemas/NewCampaign"
       required:
@@ -25366,10 +26318,8 @@ components:
       allOf:
       - properties:
           isVariantAssignmentExternal:
-            description: "The source of the assignment. - false - The assignment to\
-              \ the variant is handled internally by the Talon.Oneandled internally\
-              \ by the Talon.One. - true - The assignment to the variant handled externally.\
-              \      \n"
+            description: |
+              The source of the assignment. - false - The variant assignment is handled internally by Talon.One. - true - The variant assignment is handled externally.
             type: boolean
           campaign:
             $ref: "#/components/schemas/UpdateCampaign"
@@ -25384,7 +26334,10 @@ components:
             format: int64
             type: integer
           name:
+            description: The name of this variant.
             example: Variant A
+            maxLength: 255
+            minLength: 1
             type: string
           ruleset:
             $ref: "#/components/schemas/NewRuleset"
@@ -25414,8 +26367,9 @@ components:
       properties:
         name:
           description: The name of this variant.
+          example: Variant A
+          maxLength: 255
           minLength: 1
-          pattern: "^[A-Za-z](\\w|\\s)*$"
           type: string
         weight:
           description: The percentage split of this variant. The sum of all variant
@@ -25535,6 +26489,79 @@ components:
       required:
       - confidence
       - properties
+    ExperimentCampaignCopy:
+      properties:
+        name:
+          description: Name of the copied campaign (Defaults to "Copy of original
+            campaign name").
+          example: Copy of Summer promotions
+          type: string
+        description:
+          description: A detailed description of the campaign.
+          example: Campaign for all summer 2021 promotions
+          title: Campaign Description
+          type: string
+        startTime:
+          description: Timestamp when the campaign will become active.
+          example: 2021-06-01T09:00:27.993483Z
+          format: date-time
+          type: string
+        endTime:
+          description: Timestamp when the campaign will become inactive.
+          example: 2021-09-10T01:00:00.993483Z
+          format: date-time
+          type: string
+        tags:
+          description: A list of tags for the campaign.
+          example:
+          - Summer
+          - Shoes
+          items:
+            maxLength: 50
+            minLength: 1
+            type: string
+          maxItems: 50
+          type: array
+        evaluationGroupId:
+          description: The ID of the campaign evaluation group the campaign belongs
+            to.
+          example: 2
+          format: int64
+          type: integer
+    ExperimentCopy:
+      properties:
+        targetApplicationId:
+          description: |
+            The ID of the Application to copy the experiment. It is displayed in your Talon.One deployment URL.
+          format: int64
+          type: integer
+        experiment:
+          $ref: "#/components/schemas/ExperimentCopy_experiment"
+      required:
+      - experiment
+      - targetApplicationId
+    PromoteExperiment:
+      properties:
+        targetApplicationId:
+          description: |
+            The ID of the Application to copy the experiment. It is displayed in your Talon.One deployment URL.
+          format: int64
+          type: integer
+        variantId:
+          description: |
+            The ID of the Experiment Variant to build the new campaign.
+          format: int64
+          type: integer
+        disableExperiment:
+          description: |
+            Force disable the experiment.
+          type: boolean
+        campaign:
+          $ref: "#/components/schemas/ExperimentCampaignCopy"
+      required:
+      - campaign
+      - targetApplicationId
+      - variantId
     CreateTemplateCampaign:
       example:
         campaignAttributesOverrides: "{}"
@@ -28882,6 +29909,7 @@ components:
         - comma
         - period
         strictEndDate: true
+        timeframeEndDateType: sale
         target:
           targetType: AUDIENCE
           audienceID: 4
@@ -28908,12 +29936,27 @@ components:
           example: "30"
           type: string
         strictEndDate:
+          deprecated: true
           description: |
+            This property is **deprecated**. Use `timeframeEndDateType` instead.
+
             Indicates whether the timeframe includes the start of the current sale.
             - When `false`, the timeframe includes the start date of the current sale.
-            - When `true`, the timeframe striclty uses the number of days specified in `timeframe`.
+            - When `true`, the timeframe strictly uses the number of days specified in `timeframe`.
           example: true
           type: boolean
+        timeframeEndDateType:
+          description: |
+            Sets the timeframe for retrieving historical pricing data. Can be one of the following values:
+            - `strict`: The timeframe ends at the `timeframeEndDate` value.
+            - `price`: The timeframe ends at the start of the current `contextId` with the current price value. Identical price records are merged. If there is no `contextId` for the most recent price, the most recent timestamp for the price is used.
+             - `sale`:  The timeframe ends at the start of current `contextId` and takes the prices prior to the start of the `contextId` into account.
+          enum:
+          - strict
+          - price
+          - sale
+          example: sale
+          type: string
         target:
           $ref: "#/components/schemas/BestPriorTarget"
       required:
@@ -28988,23 +30031,29 @@ components:
             discountValue: 6.027456183070403
         observedAt: 2020-11-10T23:00:00Z
         price: 99.99
-        contextId: Summer Sale 2007
+        contextId: Summer Sale 2025
+        id: 1
         sku: NVR-GN-GV-UUP
         target: "{}"
       properties:
+        id:
+          description: The ID of the historical price.
+          example: 1
+          format: int64
+          type: integer
         sku:
           description: sku
           example: NVR-GN-GV-UUP
           type: string
         observedAt:
-          description: The date and time when the best price was observed.
+          description: The date and time when the price was observed.
           example: 2020-11-10T23:00:00Z
           format: date-time
           type: string
         contextId:
           description: |
             The context ID of the context active at the time of observation.
-          example: Summer Sale 2007
+          example: Summer Sale 2025
           type: string
         price:
           description: Price of the item.
@@ -29016,6 +30065,7 @@ components:
           type: object
       required:
       - contextId
+      - id
       - metadata
       - observedAt
       - price
@@ -29025,6 +30075,122 @@ components:
       items:
         $ref: "#/components/schemas/BestPriorPrice"
       type: array
+    PriceHistoryRequest:
+      example:
+        endDate: 2020-12-10T23:00:00Z
+        sku:
+        - sku-124
+        startDate: 2020-11-10T23:00:00Z
+      properties:
+        sku:
+          description: The SKU of the item for which the historical prices are being
+            retrieved.
+          example:
+          - sku-124
+          type: string
+        startDate:
+          description: The start date of the period for which historical prices should
+            be retrieved.
+          example: 2020-11-10T23:00:00Z
+          format: date-time
+          type: string
+        endDate:
+          description: The end date of the period for which historical prices should
+            be retrieved.
+          example: 2020-12-10T23:00:00Z
+          format: date-time
+          type: string
+      required:
+      - endDate
+      - sku
+      - startDate
+    History:
+      example:
+        metadata:
+          adjustmentDetails: ""
+          influencingCampaignDetails:
+          - campaignId: 0
+            discountValue: 6.027456183070403
+          - campaignId: 0
+            discountValue: 6.027456183070403
+        observedAt: 2020-11-10T23:00:00Z
+        price: 99.99
+        contextId: Summer Sale 2025
+        id: 1
+        target: "{}"
+      properties:
+        id:
+          description: The ID of the historical price.
+          example: 1
+          format: int64
+          type: integer
+        observedAt:
+          description: The date and time when the price was observed.
+          example: 2020-11-10T23:00:00Z
+          format: date-time
+          type: string
+        contextId:
+          description: |
+            Identifier of the relevant context at the time the price was observed (e.g. summer sale).
+          example: Summer Sale 2025
+          type: string
+        price:
+          description: Price of the item.
+          example: 99.99
+          type: number
+        metadata:
+          $ref: "#/components/schemas/BestPriorPriceMetadata"
+        target:
+          type: object
+      required:
+      - contextId
+      - id
+      - metadata
+      - observedAt
+      - price
+      - target
+    PriceHistoryResponse:
+      example:
+        history:
+        - metadata:
+            adjustmentDetails: ""
+            influencingCampaignDetails:
+            - campaignId: 0
+              discountValue: 6.027456183070403
+            - campaignId: 0
+              discountValue: 6.027456183070403
+          observedAt: 2020-11-10T23:00:00Z
+          price: 99.99
+          contextId: Summer Sale 2025
+          id: 1
+          target: "{}"
+        - metadata:
+            adjustmentDetails: ""
+            influencingCampaignDetails:
+            - campaignId: 0
+              discountValue: 6.027456183070403
+            - campaignId: 0
+              discountValue: 6.027456183070403
+          observedAt: 2020-11-10T23:00:00Z
+          price: 99.99
+          contextId: Summer Sale 2025
+          id: 1
+          target: "{}"
+        sku:
+        - SKU1241028
+      properties:
+        sku:
+          description: The SKU of the item for which historical prices should be retrieved.
+          example:
+          - SKU1241028
+          type: string
+        history:
+          items:
+            $ref: "#/components/schemas/History"
+          type: array
+      required:
+      - history
+      - sku
     TalangAttribute:
       allOf:
       - properties:
@@ -32660,30 +33826,30 @@ components:
       - email
       - name
       - summary
-    PrismaticFlowConfigResponse:
+    IntegrationHubFlowConfigResponse:
       properties:
         WorkerCount:
-          description: Number of Prismatic workers to run in parallel for this flow
-            (maximum 500).
+          description: Number of IntegrationHub workers to run in parallel for this
+            flow (maximum 500).
           format: int64
           maximum: 500
           minimum: 1
           type: integer
         MaxEventsPerMessage:
-          description: Maximum number of events to send in a single message to Prismatic.
+          description: Maximum number of events to send in a single message to IntegrationHub.
           format: int64
           minimum: 1
           type: integer
         MaxRetries:
-          description: Maximum number of retries for a Prismatic event before it is
-            ignored.
+          description: Maximum number of retries for a IntegrationHub event before
+            it is ignored.
           format: int64
           minimum: 0
           type: integer
-    PrismaticFlowResponse:
+    IntegrationHubFlowResponse:
       properties:
         Id:
-          description: ID of the prismatic flow.
+          description: ID of the integration hub flow.
           format: int64
           type: integer
         ApplicationID:
@@ -32694,46 +33860,46 @@ components:
         EventType:
           description: The event type we want to register a flow for.
           type: string
-          x-fieldType: PrismaticEventType
-        PrismaticFlowUrl:
-          description: The URL of the prismatic flow that we want to trigger for the
-            event.
+          x-fieldType: IntegrationHubEventType
+        IntegrationHubFlowUrl:
+          description: The URL of the integration hub flow that we want to trigger
+            for the event.
           type: string
         Config:
-          $ref: "#/components/schemas/PrismaticFlowConfigResponse"
+          $ref: "#/components/schemas/IntegrationHubFlowConfigResponse"
       required:
       - Config
       - EventType
       - Id
-      - PrismaticFlowUrl
-    PrismaticFlowConfig:
+      - IntegrationHubFlowUrl
+    IntegrationHubFlowConfig:
       properties:
         ApiKey:
           type: string
         WorkerCount:
           default: 10
-          description: Number of Prismatic workers to run in parallel for this flow
-            (maximum 500).
+          description: Number of IntegrationHub workers to run in parallel for this
+            flow (maximum 500).
           format: int64
           maximum: 500
           minimum: 1
           type: integer
         MaxEventsPerMessage:
           default: 1000
-          description: Maximum number of events to send in a single message to Prismatic.
+          description: Maximum number of events to send in a single message to IntegrationHub.
           format: int64
           minimum: 1
           type: integer
         MaxRetries:
           default: 10
-          description: Maximum number of retries for a Prismatic event before it is
-            ignored.
+          description: Maximum number of retries for a IntegrationHub event before
+            it is ignored.
           format: int64
           minimum: 0
           type: integer
       required:
       - ApiKey
-    PrismaticFlowWithConfig:
+    IntegrationHubFlowWithConfig:
       properties:
         ApplicationID:
           description: ID of application the flow is registered for.
@@ -32743,18 +33909,18 @@ components:
         EventType:
           description: The event type we want to register a flow for.
           type: string
-          x-fieldType: PrismaticEventType
-        PrismaticFlowUrl:
-          description: The URL of the prismatic flow that we want to trigger for the
-            event.
+          x-fieldType: IntegrationHubEventType
+        IntegrationHubFlowUrl:
+          description: The URL of the integration hub flow that we want to trigger
+            for the event.
           type: string
         Config:
-          $ref: "#/components/schemas/PrismaticFlowConfig"
+          $ref: "#/components/schemas/IntegrationHubFlowConfig"
       required:
       - Config
       - EventType
-      - PrismaticFlowUrl
-    PrismaticFlow:
+      - IntegrationHubFlowUrl
+    IntegrationHubFlow:
       properties:
         ApplicationID:
           description: ID of application the flow is registered for.
@@ -32764,15 +33930,15 @@ components:
         EventType:
           description: The event type we want to register a flow for.
           type: string
-          x-fieldType: PrismaticEventType
-        PrismaticFlowUrl:
-          description: The URL of the prismatic flow that we want to trigger for the
-            event.
+          x-fieldType: IntegrationHubEventType
+        IntegrationHubFlowUrl:
+          description: The URL of the integration hub flow that we want to trigger
+            for the event.
           type: string
       required:
       - EventType
-      - PrismaticFlowUrl
-    PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction:
+      - IntegrationHubFlowUrl
+    IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction:
       allOf:
       - properties:
           Amount:
@@ -32794,7 +33960,7 @@ components:
         required:
         - Amount
         - Operation
-    PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotification:
+    IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification:
       allOf:
       - properties:
           ProfileIntegrationID:
@@ -32816,7 +33982,7 @@ components:
             type: number
           Actions:
             items:
-              $ref: "#/components/schemas/PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction"
+              $ref: "#/components/schemas/IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction"
             type: array
           PublishedAt:
             description: Timestamp when the event was published.
@@ -32829,7 +33995,7 @@ components:
         - PublishedAt
         - SourceOfEvent
         - SubledgerID
-    PrismaticEventPayloadLoyaltyProfileBasedTierDowngradeNotification:
+    IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification:
       allOf:
       - properties:
           ProfileIntegrationID:
@@ -32865,7 +34031,7 @@ components:
         - PublishedAt
         - SourceOfEvent
         - SubledgerID
-    PrismaticEventPayloadLoyaltyProfileBasedTierUpgradeNotification:
+    IntegrationHubEventPayloadLoyaltyProfileBasedTierUpgradeNotification:
       allOf:
       - properties:
           ProfileIntegrationID:
@@ -32906,12 +34072,12 @@ components:
         - PublishedAt
         - SourceOfEvent
         - SubledgerID
-    PrismaticEventPayloadLoyaltyProfileBasedNotification:
+    IntegrationHubEventPayloadLoyaltyProfileBasedNotification:
       allOf:
-      - $ref: "#/components/schemas/PrismaticEventPayloadLoyaltyProfileBasedPointsChangedNotification"
-      - $ref: "#/components/schemas/PrismaticEventPayloadLoyaltyProfileBasedTierDowngradeNotification"
-      - $ref: "#/components/schemas/PrismaticEventPayloadLoyaltyProfileBasedTierUpgradeNotification"
-    PrismaticEventPayloadCouponBasedNotificationsLimits:
+      - $ref: "#/components/schemas/IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification"
+      - $ref: "#/components/schemas/IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification"
+      - $ref: "#/components/schemas/IntegrationHubEventPayloadLoyaltyProfileBasedTierUpgradeNotification"
+    IntegrationHubEventPayloadCouponBasedNotificationsLimits:
       properties:
         Action:
           type: string
@@ -32928,7 +34094,7 @@ components:
       - Action
       - Entities
       - Limit
-    PrismaticEventPayloadCouponBasedNotifications:
+    IntegrationHubEventPayloadCouponBasedNotifications:
       allOf:
       - properties:
           Id:
@@ -32977,10 +34143,10 @@ components:
           BatchId:
             type: string
           Attributes:
-            $ref: "#/components/schemas/PrismaticEventPayloadCouponBasedNotifications_allOf_Attributes"
+            $ref: "#/components/schemas/IntegrationHubEventPayloadCouponBasedNotifications_allOf_Attributes"
           Limits:
             items:
-              $ref: "#/components/schemas/PrismaticEventPayloadCouponBasedNotificationsLimits"
+              $ref: "#/components/schemas/IntegrationHubEventPayloadCouponBasedNotificationsLimits"
             type: array
           PublishedAt:
             description: Timestamp when the event was published.
@@ -33000,7 +34166,7 @@ components:
         - UsageCounter
         - UsageLimit
         - Value
-    PrismaticEventRecord:
+    IntegrationHubEventRecord:
       properties:
         Id:
           format: int64
@@ -33010,7 +34176,7 @@ components:
           type: integer
         EventType:
           type: string
-          x-fieldType: PrismaticEventType
+          x-fieldType: IntegrationHubEventType
         EventData: {}
         PublishedAt:
           format: date-time
@@ -33032,12 +34198,12 @@ components:
       - ProcessAfter
       - PublishedAt
       - Retry
-    PrismaticConfig:
-      description: Config used for accessing integrations in Prismatic
+    IntegrationHubConfig:
+      description: Config used for accessing integrations in IntegrationHub
       properties:
-        prismaticUrl:
-          description: The url used to integrate the Prismatic Marketplace.
-          example: https://app.eu-west-1.prismatic.io/
+        integrationHubUrl:
+          description: The url used to integrate the IntegrationHub Marketplace.
+          example: https://hub.talon.farm/
           type: string
         accessToken:
           description: Access token used to authenticate a user in Talon.One.
@@ -33045,7 +34211,7 @@ components:
           type: string
       required:
       - accessToken
-      - prismaticUrl
+      - integrationHubUrl
     CouponWithApplication:
       allOf:
       - $ref: "#/components/schemas/Coupon"
@@ -36631,6 +37797,1060 @@ components:
       required:
       - data
       - hasMore
+    listExperiments_200_response:
+      example:
+        data:
+        - deletedat: 2000-01-23T04:56:07.000+00:00
+          created: 2020-06-10T09:05:27.993483Z
+          campaign:
+            type: advanced
+            templateId: 3
+            customEffectCount: 0
+            activeRevisionId: 6
+            features:
+            - coupons
+            - referrals
+            createdLoyaltyPointsCount: 9
+            storesImported: true
+            couponSettings:
+              couponPattern: SUMMER-####-####
+              validCharacters:
+              - A
+              - B
+              - C
+              - D
+              - E
+              - F
+              - G
+              - H
+              - I
+              - J
+              - K
+              - L
+              - M
+              - "N"
+              - O
+              - P
+              - Q
+              - R
+              - S
+              - T
+              - U
+              - V
+              - W
+              - X
+              - "Y"
+              - Z
+              - "0"
+              - "1"
+              - "2"
+              - "3"
+              - "4"
+              - "5"
+              - "6"
+              - "7"
+              - "8"
+              - "9"
+            experimentId: 1
+            id: 4
+            state: enabled
+            reservecouponEffectCount: 9
+            updatedBy: Jane Doe
+            frontendState: running
+            created: 2020-06-10T09:05:27.993483Z
+            referralCreationCount: 8
+            stageRevision: false
+            couponRedemptionCount: 163
+            couponCreationCount: 16
+            version: 6
+            campaignGroups:
+            - 1
+            - 3
+            tags:
+            - summer
+            discountEffectCount: 343
+            budgets:
+            - limit: 1000
+              action: createCoupon
+              counter: 42
+            - limit: 1000
+              action: createCoupon
+              counter: 42
+            redeemedLoyaltyPointsCount: 8
+            name: Summer promotions
+            valueMapsIds:
+            - 100
+            - 215
+            applicationId: 322
+            updated: 2022-10-97T35:00:00Z
+            callApiEffectCount: 0
+            createdLoyaltyPointsEffectCount: 2
+            discountCount: 288
+            revisionFrontendState: revised
+            description: Campaign for all summer 2021 promotions
+            activeRevisionVersionId: 6
+            currentRevisionVersionId: 6
+            startTime: 2021-07-20T22:00:00Z
+            currentRevisionId: 6
+            limits:
+            - period: yearly
+              entities:
+              - Coupon
+              limit: 1000
+              action: createCoupon
+            - period: yearly
+              entities:
+              - Coupon
+              limit: 1000
+              action: createCoupon
+            activeRulesetId: 6
+            reevaluateOnReturn: true
+            userId: 388
+            awardedGiveawaysCount: 9
+            redeemedLoyaltyPointsEffectCount: 9
+            linkedStoreIds:
+            - 1
+            - 2
+            - 3
+            createdBy: John Doe
+            addFreeItemEffectCount: 0
+            referralSettings:
+              couponPattern: SUMMER-####-####
+              validCharacters:
+              - A
+              - B
+              - C
+              - D
+              - E
+              - F
+              - G
+              - H
+              - I
+              - J
+              - K
+              - L
+              - M
+              - "N"
+              - O
+              - P
+              - Q
+              - R
+              - S
+              - T
+              - U
+              - V
+              - W
+              - X
+              - "Y"
+              - Z
+              - "0"
+              - "1"
+              - "2"
+              - "3"
+              - "4"
+              - "5"
+              - "6"
+              - "7"
+              - "8"
+              - "9"
+            attributes: "{}"
+            lastActivity: 2022-11-10T23:00:00Z
+            endTime: 2021-09-22T22:00:00Z
+            referralRedemptionCount: 3
+          id: 6
+          state: enabled
+          variants:
+          - created: 2020-06-10T09:05:27.993483Z
+            isPrimary: true
+            name: Variant A
+            ruleset:
+              rbVersion: v2
+              created: 2020-06-10T09:05:27.993483Z
+              campaignId: 320
+              bindings: []
+              activatedAt: 2000-01-23T04:56:07.000+00:00
+              activate: true
+              rules:
+              - condition:
+                - and
+                - - couponValid
+                effects:
+                - catch
+                - - noop
+                - - setDiscount
+                  - 10% off
+                  - - '*'
+                    - - "."
+                      - Session
+                      - Total
+                    - - /
+                      - 10
+                      - 100
+                bindings:
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                description: Creates a discount when a coupon is valid
+                id: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+                title: Give discount via coupon
+                parentId: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+              - condition:
+                - and
+                - - couponValid
+                effects:
+                - catch
+                - - noop
+                - - setDiscount
+                  - 10% off
+                  - - '*'
+                    - - "."
+                      - Session
+                      - Total
+                    - - /
+                      - 10
+                      - 100
+                bindings:
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                description: Creates a discount when a coupon is valid
+                id: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+                title: Give discount via coupon
+                parentId: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+              id: 6
+              strikethroughRules:
+              - condition:
+                - and
+                - - couponValid
+                effects:
+                - catch
+                - - noop
+                - - setDiscount
+                  - 10% off
+                  - - '*'
+                    - - "."
+                      - Session
+                      - Total
+                    - - /
+                      - 10
+                      - 100
+                bindings:
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                description: Creates a discount when a coupon is valid
+                id: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+                title: Give discount via coupon
+                parentId: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+              - condition:
+                - and
+                - - couponValid
+                effects:
+                - catch
+                - - noop
+                - - setDiscount
+                  - 10% off
+                  - - '*'
+                    - - "."
+                      - Session
+                      - Total
+                    - - /
+                      - 10
+                      - 100
+                bindings:
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                description: Creates a discount when a coupon is valid
+                id: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+                title: Give discount via coupon
+                parentId: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+              templateId: 3
+              userId: 388
+            weight: 12
+            experimentId: 10
+            id: 6
+          - created: 2020-06-10T09:05:27.993483Z
+            isPrimary: true
+            name: Variant A
+            ruleset:
+              rbVersion: v2
+              created: 2020-06-10T09:05:27.993483Z
+              campaignId: 320
+              bindings: []
+              activatedAt: 2000-01-23T04:56:07.000+00:00
+              activate: true
+              rules:
+              - condition:
+                - and
+                - - couponValid
+                effects:
+                - catch
+                - - noop
+                - - setDiscount
+                  - 10% off
+                  - - '*'
+                    - - "."
+                      - Session
+                      - Total
+                    - - /
+                      - 10
+                      - 100
+                bindings:
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                description: Creates a discount when a coupon is valid
+                id: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+                title: Give discount via coupon
+                parentId: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+              - condition:
+                - and
+                - - couponValid
+                effects:
+                - catch
+                - - noop
+                - - setDiscount
+                  - 10% off
+                  - - '*'
+                    - - "."
+                      - Session
+                      - Total
+                    - - /
+                      - 10
+                      - 100
+                bindings:
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                description: Creates a discount when a coupon is valid
+                id: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+                title: Give discount via coupon
+                parentId: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+              id: 6
+              strikethroughRules:
+              - condition:
+                - and
+                - - couponValid
+                effects:
+                - catch
+                - - noop
+                - - setDiscount
+                  - 10% off
+                  - - '*'
+                    - - "."
+                      - Session
+                      - Total
+                    - - /
+                      - 10
+                      - 100
+                bindings:
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                description: Creates a discount when a coupon is valid
+                id: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+                title: Give discount via coupon
+                parentId: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+              - condition:
+                - and
+                - - couponValid
+                effects:
+                - catch
+                - - noop
+                - - setDiscount
+                  - 10% off
+                  - - '*'
+                    - - "."
+                      - Session
+                      - Total
+                    - - /
+                      - 10
+                      - 100
+                bindings:
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                description: Creates a discount when a coupon is valid
+                id: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+                title: Give discount via coupon
+                parentId: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+              templateId: 3
+              userId: 388
+            weight: 12
+            experimentId: 10
+            id: 6
+          applicationId: 322
+          isVariantAssignmentExternal: true
+          activated: 2000-01-23T04:56:07.000+00:00
+        - deletedat: 2000-01-23T04:56:07.000+00:00
+          created: 2020-06-10T09:05:27.993483Z
+          campaign:
+            type: advanced
+            templateId: 3
+            customEffectCount: 0
+            activeRevisionId: 6
+            features:
+            - coupons
+            - referrals
+            createdLoyaltyPointsCount: 9
+            storesImported: true
+            couponSettings:
+              couponPattern: SUMMER-####-####
+              validCharacters:
+              - A
+              - B
+              - C
+              - D
+              - E
+              - F
+              - G
+              - H
+              - I
+              - J
+              - K
+              - L
+              - M
+              - "N"
+              - O
+              - P
+              - Q
+              - R
+              - S
+              - T
+              - U
+              - V
+              - W
+              - X
+              - "Y"
+              - Z
+              - "0"
+              - "1"
+              - "2"
+              - "3"
+              - "4"
+              - "5"
+              - "6"
+              - "7"
+              - "8"
+              - "9"
+            experimentId: 1
+            id: 4
+            state: enabled
+            reservecouponEffectCount: 9
+            updatedBy: Jane Doe
+            frontendState: running
+            created: 2020-06-10T09:05:27.993483Z
+            referralCreationCount: 8
+            stageRevision: false
+            couponRedemptionCount: 163
+            couponCreationCount: 16
+            version: 6
+            campaignGroups:
+            - 1
+            - 3
+            tags:
+            - summer
+            discountEffectCount: 343
+            budgets:
+            - limit: 1000
+              action: createCoupon
+              counter: 42
+            - limit: 1000
+              action: createCoupon
+              counter: 42
+            redeemedLoyaltyPointsCount: 8
+            name: Summer promotions
+            valueMapsIds:
+            - 100
+            - 215
+            applicationId: 322
+            updated: 2022-10-97T35:00:00Z
+            callApiEffectCount: 0
+            createdLoyaltyPointsEffectCount: 2
+            discountCount: 288
+            revisionFrontendState: revised
+            description: Campaign for all summer 2021 promotions
+            activeRevisionVersionId: 6
+            currentRevisionVersionId: 6
+            startTime: 2021-07-20T22:00:00Z
+            currentRevisionId: 6
+            limits:
+            - period: yearly
+              entities:
+              - Coupon
+              limit: 1000
+              action: createCoupon
+            - period: yearly
+              entities:
+              - Coupon
+              limit: 1000
+              action: createCoupon
+            activeRulesetId: 6
+            reevaluateOnReturn: true
+            userId: 388
+            awardedGiveawaysCount: 9
+            redeemedLoyaltyPointsEffectCount: 9
+            linkedStoreIds:
+            - 1
+            - 2
+            - 3
+            createdBy: John Doe
+            addFreeItemEffectCount: 0
+            referralSettings:
+              couponPattern: SUMMER-####-####
+              validCharacters:
+              - A
+              - B
+              - C
+              - D
+              - E
+              - F
+              - G
+              - H
+              - I
+              - J
+              - K
+              - L
+              - M
+              - "N"
+              - O
+              - P
+              - Q
+              - R
+              - S
+              - T
+              - U
+              - V
+              - W
+              - X
+              - "Y"
+              - Z
+              - "0"
+              - "1"
+              - "2"
+              - "3"
+              - "4"
+              - "5"
+              - "6"
+              - "7"
+              - "8"
+              - "9"
+            attributes: "{}"
+            lastActivity: 2022-11-10T23:00:00Z
+            endTime: 2021-09-22T22:00:00Z
+            referralRedemptionCount: 3
+          id: 6
+          state: enabled
+          variants:
+          - created: 2020-06-10T09:05:27.993483Z
+            isPrimary: true
+            name: Variant A
+            ruleset:
+              rbVersion: v2
+              created: 2020-06-10T09:05:27.993483Z
+              campaignId: 320
+              bindings: []
+              activatedAt: 2000-01-23T04:56:07.000+00:00
+              activate: true
+              rules:
+              - condition:
+                - and
+                - - couponValid
+                effects:
+                - catch
+                - - noop
+                - - setDiscount
+                  - 10% off
+                  - - '*'
+                    - - "."
+                      - Session
+                      - Total
+                    - - /
+                      - 10
+                      - 100
+                bindings:
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                description: Creates a discount when a coupon is valid
+                id: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+                title: Give discount via coupon
+                parentId: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+              - condition:
+                - and
+                - - couponValid
+                effects:
+                - catch
+                - - noop
+                - - setDiscount
+                  - 10% off
+                  - - '*'
+                    - - "."
+                      - Session
+                      - Total
+                    - - /
+                      - 10
+                      - 100
+                bindings:
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                description: Creates a discount when a coupon is valid
+                id: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+                title: Give discount via coupon
+                parentId: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+              id: 6
+              strikethroughRules:
+              - condition:
+                - and
+                - - couponValid
+                effects:
+                - catch
+                - - noop
+                - - setDiscount
+                  - 10% off
+                  - - '*'
+                    - - "."
+                      - Session
+                      - Total
+                    - - /
+                      - 10
+                      - 100
+                bindings:
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                description: Creates a discount when a coupon is valid
+                id: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+                title: Give discount via coupon
+                parentId: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+              - condition:
+                - and
+                - - couponValid
+                effects:
+                - catch
+                - - noop
+                - - setDiscount
+                  - 10% off
+                  - - '*'
+                    - - "."
+                      - Session
+                      - Total
+                    - - /
+                      - 10
+                      - 100
+                bindings:
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                description: Creates a discount when a coupon is valid
+                id: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+                title: Give discount via coupon
+                parentId: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+              templateId: 3
+              userId: 388
+            weight: 12
+            experimentId: 10
+            id: 6
+          - created: 2020-06-10T09:05:27.993483Z
+            isPrimary: true
+            name: Variant A
+            ruleset:
+              rbVersion: v2
+              created: 2020-06-10T09:05:27.993483Z
+              campaignId: 320
+              bindings: []
+              activatedAt: 2000-01-23T04:56:07.000+00:00
+              activate: true
+              rules:
+              - condition:
+                - and
+                - - couponValid
+                effects:
+                - catch
+                - - noop
+                - - setDiscount
+                  - 10% off
+                  - - '*'
+                    - - "."
+                      - Session
+                      - Total
+                    - - /
+                      - 10
+                      - 100
+                bindings:
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                description: Creates a discount when a coupon is valid
+                id: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+                title: Give discount via coupon
+                parentId: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+              - condition:
+                - and
+                - - couponValid
+                effects:
+                - catch
+                - - noop
+                - - setDiscount
+                  - 10% off
+                  - - '*'
+                    - - "."
+                      - Session
+                      - Total
+                    - - /
+                      - 10
+                      - 100
+                bindings:
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                description: Creates a discount when a coupon is valid
+                id: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+                title: Give discount via coupon
+                parentId: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+              id: 6
+              strikethroughRules:
+              - condition:
+                - and
+                - - couponValid
+                effects:
+                - catch
+                - - noop
+                - - setDiscount
+                  - 10% off
+                  - - '*'
+                    - - "."
+                      - Session
+                      - Total
+                    - - /
+                      - 10
+                      - 100
+                bindings:
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                description: Creates a discount when a coupon is valid
+                id: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+                title: Give discount via coupon
+                parentId: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+              - condition:
+                - and
+                - - couponValid
+                effects:
+                - catch
+                - - noop
+                - - setDiscount
+                  - 10% off
+                  - - '*'
+                    - - "."
+                      - Session
+                      - Total
+                    - - /
+                      - 10
+                      - 100
+                bindings:
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                - attributeId: 100
+                  minValue: 0
+                  expression:
+                  - string1
+                  - string2
+                  maxValue: 19.9
+                  valueType: string
+                  name: my property
+                  description: This is a template parameter of type `number`.
+                  type: templateParameter
+                description: Creates a discount when a coupon is valid
+                id: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+                title: Give discount via coupon
+                parentId: 7fa800a8-ac8d-4792-85dc-c4650dcc8f23
+              templateId: 3
+              userId: 388
+            weight: 12
+            experimentId: 10
+            id: 6
+          applicationId: 322
+          isVariantAssignmentExternal: true
+          activated: 2000-01-23T04:56:07.000+00:00
+        totalResultSize: 1
+      properties:
+        totalResultSize:
+          example: 1
+          format: int64
+          type: integer
+        data:
+          items:
+            $ref: "#/components/schemas/Experiment"
+          type: array
+      required:
+      - data
+      - totalResultSize
     getLoyaltyPrograms_200_response:
       example:
         data:
@@ -38577,6 +40797,60 @@ components:
           type: array
       required:
       - data
+    CouponCreatedEvent_request:
+      allOf:
+      - properties:
+          EventType:
+            enum:
+            - CouponCreated
+        required:
+        - EventType
+      - $ref: "#/components/schemas/IntegrationHubPaginatedEventPayload"
+    CouponUpdatedEvent_request:
+      allOf:
+      - properties:
+          EventType:
+            enum:
+            - CouponUpdated
+        required:
+        - EventType
+      - $ref: "#/components/schemas/IntegrationHubPaginatedEventPayload"
+    CouponDeletedEvent_request:
+      allOf:
+      - properties:
+          EventType:
+            enum:
+            - CouponDeleted
+        required:
+        - EventType
+      - $ref: "#/components/schemas/IntegrationHubPaginatedEventPayload"
+    LoyaltyPointsChangedEvent_request:
+      allOf:
+      - properties:
+          EventType:
+            enum:
+            - LoyaltyPointsChanged
+        required:
+        - EventType
+      - $ref: "#/components/schemas/IntegrationHubPaginatedEventPayload"
+    LoyaltyTierDowngradeEvent_request:
+      allOf:
+      - properties:
+          EventType:
+            enum:
+            - LoyaltyTierDowngrade
+        required:
+        - EventType
+      - $ref: "#/components/schemas/IntegrationHubPaginatedEventPayload"
+    LoyaltyTierUpgradeEvent_request:
+      allOf:
+      - properties:
+          EventType:
+            enum:
+            - LoyaltyTierUpgrade
+        required:
+        - EventType
+      - $ref: "#/components/schemas/IntegrationHubPaginatedEventPayload"
     GenerateRuleTitle_rule:
       properties:
         effects:
@@ -38671,6 +40945,17 @@ components:
       example: "{\"Role\":127,\"Applications\":null}"
       format: aclRole
       type: object
+    ExperimentCopy_experiment:
+      properties:
+        isVariantAssignmentExternal:
+          description: |
+            The source of the assignment. - false - The variant assignment is handled internally by Talon.One. - true - The variant assignment is handled externally.
+          type: boolean
+        campaign:
+          $ref: "#/components/schemas/ExperimentCampaignCopy"
+      required:
+      - campaign
+      - isVariantAssignmentExternal
     ApplicationEvent_allOf_attributes:
       description: Additional JSON serialized data associated with the event.
       type: object
@@ -38773,7 +41058,7 @@ components:
           allOf:
           - $ref: "#/components/schemas/AnalyticsDataPointWithTrend"
           description: The number of times the product or SKU was purchased.
-    PrismaticEventPayloadCouponBasedNotifications_allOf_Attributes:
+    IntegrationHubEventPayloadCouponBasedNotifications_allOf_Attributes:
       type: object
   securitySchemes:
     api_key_v1:
@@ -38850,3 +41135,5 @@ components:
       in: header
       name: Authorization
       type: apiKey
+x-integrationhub-desc: |
+  IntegrationHub event schemas
