@@ -14,7 +14,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"time"
 )
 
 // checks if the NewExperiment type satisfies the MappedNullable interface at compile time
@@ -22,13 +21,9 @@ var _ MappedNullable = &NewExperiment{}
 
 // NewExperiment struct for NewExperiment
 type NewExperiment struct {
-	// The source of the assignment. - false - The assignment to the variant is handled internally by the Talon.Oneandled internally by the Talon.One. - true - The assignment to the variant handled externally.
-	IsVariantAssignmentExternal bool `json:"isVariantAssignmentExternal"`
-	// The date and time the experiment was activated.
-	Activated *time.Time `json:"activated,omitempty"`
-	// A disabled experiment is not evaluated for rules or coupons.
-	State    *string     `json:"state,omitempty"`
-	Campaign NewCampaign `json:"campaign"`
+	// The source of the assignment. - false - The variant assignment is handled internally by Talon.One. - true - The variant assignment is handled externally.
+	IsVariantAssignmentExternal bool        `json:"isVariantAssignmentExternal"`
+	Campaign                    NewCampaign `json:"campaign"`
 }
 
 type _NewExperiment NewExperiment
@@ -40,8 +35,6 @@ type _NewExperiment NewExperiment
 func BuildNewExperiment(isVariantAssignmentExternal bool, campaign NewCampaign) *NewExperiment {
 	this := NewExperiment{}
 	this.IsVariantAssignmentExternal = isVariantAssignmentExternal
-	var state string = "disabled"
-	this.State = &state
 	this.Campaign = campaign
 	return &this
 }
@@ -51,8 +44,6 @@ func BuildNewExperiment(isVariantAssignmentExternal bool, campaign NewCampaign) 
 // but it doesn't guarantee that properties required by API are set
 func NewNewExperimentWithDefaults() *NewExperiment {
 	this := NewExperiment{}
-	var state string = "disabled"
-	this.State = &state
 	return &this
 }
 
@@ -78,70 +69,6 @@ func (o *NewExperiment) GetIsVariantAssignmentExternalOk() (*bool, bool) {
 // SetIsVariantAssignmentExternal sets field value
 func (o *NewExperiment) SetIsVariantAssignmentExternal(v bool) {
 	o.IsVariantAssignmentExternal = v
-}
-
-// GetActivated returns the Activated field value if set, zero value otherwise.
-func (o *NewExperiment) GetActivated() time.Time {
-	if o == nil || IsNil(o.Activated) {
-		var ret time.Time
-		return ret
-	}
-	return *o.Activated
-}
-
-// GetActivatedOk returns a tuple with the Activated field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *NewExperiment) GetActivatedOk() (*time.Time, bool) {
-	if o == nil || IsNil(o.Activated) {
-		return nil, false
-	}
-	return o.Activated, true
-}
-
-// HasActivated returns a boolean if a field has been set.
-func (o *NewExperiment) HasActivated() bool {
-	if o != nil && !IsNil(o.Activated) {
-		return true
-	}
-
-	return false
-}
-
-// SetActivated gets a reference to the given time.Time and assigns it to the Activated field.
-func (o *NewExperiment) SetActivated(v time.Time) {
-	o.Activated = &v
-}
-
-// GetState returns the State field value if set, zero value otherwise.
-func (o *NewExperiment) GetState() string {
-	if o == nil || IsNil(o.State) {
-		var ret string
-		return ret
-	}
-	return *o.State
-}
-
-// GetStateOk returns a tuple with the State field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *NewExperiment) GetStateOk() (*string, bool) {
-	if o == nil || IsNil(o.State) {
-		return nil, false
-	}
-	return o.State, true
-}
-
-// HasState returns a boolean if a field has been set.
-func (o *NewExperiment) HasState() bool {
-	if o != nil && !IsNil(o.State) {
-		return true
-	}
-
-	return false
-}
-
-// SetState gets a reference to the given string and assigns it to the State field.
-func (o *NewExperiment) SetState(v string) {
-	o.State = &v
 }
 
 // GetCampaign returns the Campaign field value
@@ -179,12 +106,6 @@ func (o NewExperiment) MarshalJSON() ([]byte, error) {
 func (o NewExperiment) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["isVariantAssignmentExternal"] = o.IsVariantAssignmentExternal
-	if !IsNil(o.Activated) {
-		toSerialize["activated"] = o.Activated
-	}
-	if !IsNil(o.State) {
-		toSerialize["state"] = o.State
-	}
 	toSerialize["campaign"] = o.Campaign
 	return toSerialize, nil
 }

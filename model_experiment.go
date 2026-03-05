@@ -28,13 +28,13 @@ type Experiment struct {
 	Created time.Time `json:"created"`
 	// The ID of the Application that owns this entity.
 	ApplicationId int64 `json:"applicationId"`
-	// The source of the assignment. - false - The assignment to the variant is handled internally by the Talon.Oneandled internally by the Talon.One. - true - The assignment to the variant handled externally.
+	// The source of the assignment. - false - The variant assignment is handled internally by Talon.One. - true - The variant assignment is handled externally.
 	IsVariantAssignmentExternal *bool     `json:"isVariantAssignmentExternal,omitempty"`
 	Campaign                    *Campaign `json:"campaign,omitempty"`
 	// The date and time the experiment was activated.
 	Activated *time.Time `json:"activated,omitempty"`
 	// A disabled experiment is not evaluated for rules or coupons.
-	State    *string             `json:"state,omitempty"`
+	State    string              `json:"state"`
 	Variants []ExperimentVariant `json:"variants,omitempty"`
 	// The date and time the experiment was deleted.
 	Deletedat *time.Time `json:"deletedat,omitempty"`
@@ -46,13 +46,12 @@ type _Experiment Experiment
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildExperiment(id int64, created time.Time, applicationId int64) *Experiment {
+func BuildExperiment(id int64, created time.Time, applicationId int64, state string) *Experiment {
 	this := Experiment{}
 	this.Id = id
 	this.Created = created
 	this.ApplicationId = applicationId
-	var state string = "disabled"
-	this.State = &state
+	this.State = state
 	return &this
 }
 
@@ -62,7 +61,7 @@ func BuildExperiment(id int64, created time.Time, applicationId int64) *Experime
 func NewExperimentWithDefaults() *Experiment {
 	this := Experiment{}
 	var state string = "disabled"
-	this.State = &state
+	this.State = state
 	return &this
 }
 
@@ -234,36 +233,28 @@ func (o *Experiment) SetActivated(v time.Time) {
 	o.Activated = &v
 }
 
-// GetState returns the State field value if set, zero value otherwise.
+// GetState returns the State field value
 func (o *Experiment) GetState() string {
-	if o == nil || IsNil(o.State) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.State
+
+	return o.State
 }
 
-// GetStateOk returns a tuple with the State field value if set, nil otherwise
+// GetStateOk returns a tuple with the State field value
 // and a boolean to check if the value has been set.
 func (o *Experiment) GetStateOk() (*string, bool) {
-	if o == nil || IsNil(o.State) {
+	if o == nil {
 		return nil, false
 	}
-	return o.State, true
+	return &o.State, true
 }
 
-// HasState returns a boolean if a field has been set.
-func (o *Experiment) HasState() bool {
-	if o != nil && !IsNil(o.State) {
-		return true
-	}
-
-	return false
-}
-
-// SetState gets a reference to the given string and assigns it to the State field.
+// SetState sets field value
 func (o *Experiment) SetState(v string) {
-	o.State = &v
+	o.State = v
 }
 
 // GetVariants returns the Variants field value if set, zero value otherwise.
@@ -352,9 +343,7 @@ func (o Experiment) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Activated) {
 		toSerialize["activated"] = o.Activated
 	}
-	if !IsNil(o.State) {
-		toSerialize["state"] = o.State
-	}
+	toSerialize["state"] = o.State
 	if !IsNil(o.Variants) {
 		toSerialize["variants"] = o.Variants
 	}
@@ -372,6 +361,7 @@ func (o *Experiment) UnmarshalJSON(data []byte) (err error) {
 		"id",
 		"created",
 		"applicationId",
+		"state",
 	}
 
 	allProperties := make(map[string]interface{})

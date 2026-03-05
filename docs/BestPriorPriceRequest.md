@@ -7,7 +7,8 @@ Name | Type | Description | Notes
 **Skus** | **[]string** | List of product SKUs to check when determining the best prior price. | 
 **TimeframeEndDate** | **time.Time** | The end date and time that defines the latest time for retrieving historical SKU prices. | 
 **Timeframe** | **string** | The number of days prior to the timeframeEndDate. Only prices within this look back period are considered for the best prior price evaluation. | 
-**StrictEndDate** | **bool** | Indicates whether the timeframe includes the start of the current sale. - When &#x60;false&#x60;, the timeframe includes the start date of the current sale. - When &#x60;true&#x60;, the timeframe striclty uses the number of days specified in &#x60;timeframe&#x60;.  | 
+**StrictEndDate** | **bool** | This property is **deprecated**. Use &#x60;timeframeEndDateType&#x60; instead.  Indicates whether the timeframe includes the start of the current sale. - When &#x60;false&#x60;, the timeframe includes the start date of the current sale. - When &#x60;true&#x60;, the timeframe strictly uses the number of days specified in &#x60;timeframe&#x60;.  | 
+**TimeframeEndDateType** | Pointer to **string** | Sets the timeframe for retrieving historical pricing data. Can be one of the following values: - &#x60;strict&#x60;: The timeframe ends at the &#x60;timeframeEndDate&#x60; value. - &#x60;price&#x60;: The timeframe ends at the start of the current &#x60;contextId&#x60; with the current price value. Identical price records are merged. If there is no &#x60;contextId&#x60; for the most recent price, the most recent timestamp for the price is used.  - &#x60;sale&#x60;:  The timeframe ends at the start of current &#x60;contextId&#x60; and takes the prices prior to the start of the &#x60;contextId&#x60; into account.  | [optional] 
 **Target** | Pointer to [**BestPriorTarget**](BestPriorTarget.md) |  | [optional] 
 
 ## Methods
@@ -108,6 +109,31 @@ and a boolean to check if the value has been set.
 
 SetStrictEndDate sets StrictEndDate field to given value.
 
+
+### GetTimeframeEndDateType
+
+`func (o *BestPriorPriceRequest) GetTimeframeEndDateType() string`
+
+GetTimeframeEndDateType returns the TimeframeEndDateType field if non-nil, zero value otherwise.
+
+### GetTimeframeEndDateTypeOk
+
+`func (o *BestPriorPriceRequest) GetTimeframeEndDateTypeOk() (*string, bool)`
+
+GetTimeframeEndDateTypeOk returns a tuple with the TimeframeEndDateType field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTimeframeEndDateType
+
+`func (o *BestPriorPriceRequest) SetTimeframeEndDateType(v string)`
+
+SetTimeframeEndDateType sets TimeframeEndDateType field to given value.
+
+### HasTimeframeEndDateType
+
+`func (o *BestPriorPriceRequest) HasTimeframeEndDateType() bool`
+
+HasTimeframeEndDateType returns a boolean if a field has been set.
 
 ### GetTarget
 

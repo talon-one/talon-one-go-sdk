@@ -21,7 +21,8 @@ var _ MappedNullable = &UpdateExperimentVariant{}
 
 // UpdateExperimentVariant struct for UpdateExperimentVariant
 type UpdateExperimentVariant struct {
-	Id      int64      `json:"id"`
+	Id int64 `json:"id"`
+	// The name of this variant.
 	Name    string     `json:"name"`
 	Ruleset NewRuleset `json:"ruleset"`
 	// The percentage split of this variant. The sum of all variant percentages must be 100.

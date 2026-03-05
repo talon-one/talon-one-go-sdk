@@ -22,9 +22,11 @@ var _ MappedNullable = &BestPriorPrice{}
 
 // BestPriorPrice struct for BestPriorPrice
 type BestPriorPrice struct {
+	// The ID of the historical price.
+	Id int64 `json:"id"`
 	// sku
 	Sku string `json:"sku"`
-	// The date and time when the best price was observed.
+	// The date and time when the price was observed.
 	ObservedAt time.Time `json:"observedAt"`
 	// The context ID of the context active at the time of observation.
 	ContextId string `json:"contextId"`
@@ -40,8 +42,9 @@ type _BestPriorPrice BestPriorPrice
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildBestPriorPrice(sku string, observedAt time.Time, contextId string, price float32, metadata BestPriorPriceMetadata, target map[string]interface{}) *BestPriorPrice {
+func BuildBestPriorPrice(id int64, sku string, observedAt time.Time, contextId string, price float32, metadata BestPriorPriceMetadata, target map[string]interface{}) *BestPriorPrice {
 	this := BestPriorPrice{}
+	this.Id = id
 	this.Sku = sku
 	this.ObservedAt = observedAt
 	this.ContextId = contextId
@@ -57,6 +60,30 @@ func BuildBestPriorPrice(sku string, observedAt time.Time, contextId string, pri
 func NewBestPriorPriceWithDefaults() *BestPriorPrice {
 	this := BestPriorPrice{}
 	return &this
+}
+
+// GetId returns the Id field value
+func (o *BestPriorPrice) GetId() int64 {
+	if o == nil {
+		var ret int64
+		return ret
+	}
+
+	return o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value
+// and a boolean to check if the value has been set.
+func (o *BestPriorPrice) GetIdOk() (*int64, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Id, true
+}
+
+// SetId sets field value
+func (o *BestPriorPrice) SetId(v int64) {
+	o.Id = v
 }
 
 // GetSku returns the Sku field value
@@ -213,6 +240,7 @@ func (o BestPriorPrice) MarshalJSON() ([]byte, error) {
 
 func (o BestPriorPrice) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
 	toSerialize["sku"] = o.Sku
 	toSerialize["observedAt"] = o.ObservedAt
 	toSerialize["contextId"] = o.ContextId
@@ -227,6 +255,7 @@ func (o *BestPriorPrice) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
+		"id",
 		"sku",
 		"observedAt",
 		"contextId",
