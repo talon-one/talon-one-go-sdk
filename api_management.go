@@ -6482,6 +6482,197 @@ func (a *ManagementAPIService) ExportAchievementsExecute(r ApiExportAchievements
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiExportApplicationCampaignAnalyticsRequest struct {
+	ctx           context.Context
+	ApiService    *ManagementAPIService
+	applicationId int64
+	rangeStart    *time.Time
+	rangeEnd      *time.Time
+	campaignIds   *[]string
+}
+
+// Only return results from after this timestamp.  **Note:** - This must be an RFC3339 timestamp string. - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.
+func (r ApiExportApplicationCampaignAnalyticsRequest) RangeStart(rangeStart time.Time) ApiExportApplicationCampaignAnalyticsRequest {
+	r.rangeStart = &rangeStart
+	return r
+}
+
+// Only return results from before this timestamp.  **Note:** - This must be an RFC3339 timestamp string. - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.
+func (r ApiExportApplicationCampaignAnalyticsRequest) RangeEnd(rangeEnd time.Time) ApiExportApplicationCampaignAnalyticsRequest {
+	r.rangeEnd = &rangeEnd
+	return r
+}
+
+// Filter by one or more Campaign IDs, separated by a comma.  **Note:** If no campaigns are specified, data for all the campaigns in the Application is returned.
+func (r ApiExportApplicationCampaignAnalyticsRequest) CampaignIds(campaignIds []string) ApiExportApplicationCampaignAnalyticsRequest {
+	r.campaignIds = &campaignIds
+	return r
+}
+
+func (r ApiExportApplicationCampaignAnalyticsRequest) Execute() (string, *http.Response, error) {
+	return r.ApiService.ExportApplicationCampaignAnalyticsExecute(r)
+}
+
+/*
+ExportApplicationCampaignAnalytics Export Application analytics aggregated by campaign
+
+Download a CSV file containing analytics data aggregated by campaign for the campaigns of an Application.
+
+**Tip:** If the exported CSV file is too large to view, you can [split it into multiple files](https://www.makeuseof.com/tag/how-to-split-a-huge-csv-excel-workbook-into-seperate-files/).
+
+The CSV file contains the following columns:
+- `campaign_id`: The ID of the campaign. This column also contains labels for the [total and influenced values](https://docs.talon.one/docs/product/campaigns/analytics/application-dashboard#understanding-the-analytics-data).
+- `start_date`: The start of the aggregation time frame in UTC.
+- `end_date`: The end of the aggregation time frame in UTC.
+- `revenue`: The total, pre-discount value of all items purchased in a customer session.
+- `sessions`: The number of all closed sessions.
+- `average_session_value`: The average customer session value, calculated by dividing the revenue value by the number of sessions.
+- `average_items_per_session`: The number of items from sessions divided by the number of sessions.
+- `coupons`: The number of times a coupon was successfully redeemed in sessions.
+- `discounts`: The total value of discounts given for cart items in sessions.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param applicationId The ID of the Application. It is displayed in your Talon.One deployment URL.
+	@return ApiExportApplicationCampaignAnalyticsRequest
+*/
+func (a *ManagementAPIService) ExportApplicationCampaignAnalytics(ctx context.Context, applicationId int64) ApiExportApplicationCampaignAnalyticsRequest {
+	return ApiExportApplicationCampaignAnalyticsRequest{
+		ApiService:    a,
+		ctx:           ctx,
+		applicationId: applicationId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return string
+func (a *ManagementAPIService) ExportApplicationCampaignAnalyticsExecute(r ApiExportApplicationCampaignAnalyticsRequest) (string, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue string
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagementAPIService.ExportApplicationCampaignAnalytics")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v1/applications/{applicationId}/campaign_analytics/export"
+	localVarPath = strings.Replace(localVarPath, "{"+"applicationId"+"}", url.PathEscape(parameterValueToString(r.applicationId, "applicationId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.rangeStart == nil {
+		return localVarReturnValue, nil, reportError("rangeStart is required and must be specified")
+	}
+	if r.rangeEnd == nil {
+		return localVarReturnValue, nil, reportError("rangeEnd is required and must be specified")
+	}
+
+	if r.campaignIds != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "campaignIds", r.campaignIds, "form", "csv")
+	}
+	parameterAddToHeaderOrQuery(localVarQueryParams, "rangeStart", r.rangeStart, "form", "")
+	parameterAddToHeaderOrQuery(localVarQueryParams, "rangeEnd", r.rangeEnd, "form", "")
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/csv"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["management_key"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["manager_auth"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiExportAudiencesMembershipsRequest struct {
 	ctx        context.Context
 	ApiService *ManagementAPIService
@@ -9072,6 +9263,181 @@ func (a *ManagementAPIService) ExportLoyaltyCardsExecute(r ApiExportLoyaltyCards
 	if r.dateFormat != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "dateFormat", r.dateFormat, "form", "")
 	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/csv"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["management_key"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["manager_auth"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiExportLoyaltyJoinDatesRequest struct {
+	ctx              context.Context
+	ApiService       *ManagementAPIService
+	loyaltyProgramId string
+}
+
+func (r ApiExportLoyaltyJoinDatesRequest) Execute() (string, *http.Response, error) {
+	return r.ApiService.ExportLoyaltyJoinDatesExecute(r)
+}
+
+/*
+ExportLoyaltyJoinDates Export customers' loyalty program join dates
+
+Download a CSV file containing the join dates of all customers in the loyalty program.
+
+**Tip:** If the exported CSV file is too large to view, you can [split it into multiple files](https://www.makeuseof.com/tag/how-to-split-a-huge-csv-excel-workbook-into-seperate-files/).
+
+The generated file can contain the following columns:
+
+- `loyaltyProgramID`: The ID of the loyalty program.
+- `profileIntegrationID`: The integration ID of the customer profile.
+- `joinDate`: The customer's loyalty program join date in RFC3339 format.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param loyaltyProgramId The identifier of the loyalty program.
+	@return ApiExportLoyaltyJoinDatesRequest
+*/
+func (a *ManagementAPIService) ExportLoyaltyJoinDates(ctx context.Context, loyaltyProgramId string) ApiExportLoyaltyJoinDatesRequest {
+	return ApiExportLoyaltyJoinDatesRequest{
+		ApiService:       a,
+		ctx:              ctx,
+		loyaltyProgramId: loyaltyProgramId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return string
+func (a *ManagementAPIService) ExportLoyaltyJoinDatesExecute(r ApiExportLoyaltyJoinDatesRequest) (string, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue string
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagementAPIService.ExportLoyaltyJoinDates")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v1/loyalty_programs/{loyaltyProgramId}/export_join_dates"
+	localVarPath = strings.Replace(localVarPath, "{"+"loyaltyProgramId"+"}", url.PathEscape(parameterValueToString(r.loyaltyProgramId, "loyaltyProgramId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -18266,6 +18632,156 @@ func (a *ManagementAPIService) GetEventTypesExecute(r ApiGetEventTypesRequest) (
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiGetExperimentRequest struct {
+	ctx           context.Context
+	ApiService    *ManagementAPIService
+	applicationId int64
+	experimentId  int64
+}
+
+func (r ApiGetExperimentRequest) Execute() (*Experiment, *http.Response, error) {
+	return r.ApiService.GetExperimentExecute(r)
+}
+
+/*
+GetExperiment Get experiment in Application
+
+Retrieve the given experiment associated with the Application.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param applicationId The ID of the Application. It is displayed in your Talon.One deployment URL.
+	@param experimentId The ID of the experiment.
+	@return ApiGetExperimentRequest
+*/
+func (a *ManagementAPIService) GetExperiment(ctx context.Context, applicationId int64, experimentId int64) ApiGetExperimentRequest {
+	return ApiGetExperimentRequest{
+		ApiService:    a,
+		ctx:           ctx,
+		applicationId: applicationId,
+		experimentId:  experimentId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return Experiment
+func (a *ManagementAPIService) GetExperimentExecute(r ApiGetExperimentRequest) (*Experiment, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *Experiment
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagementAPIService.GetExperiment")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v1/applications/{applicationId}/experiments/{experimentId}"
+	localVarPath = strings.Replace(localVarPath, "{"+"applicationId"+"}", url.PathEscape(parameterValueToString(r.applicationId, "applicationId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"experimentId"+"}", url.PathEscape(parameterValueToString(r.experimentId, "experimentId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["management_key"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["manager_auth"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiGetExportsRequest struct {
 	ctx           context.Context
 	ApiService    *ManagementAPIService
@@ -23682,7 +24198,10 @@ Upload a CSV file containing the coupons that should be created. The file should
 
 The CSV file contains the following columns:
 
-  - `value` (required): The coupon code.
+  - `value` (required): The coupon code. Must be at least 3 characters long. We recommend using alphanumeric characters.
+    There is no maximum length but limiting the code to 30 characters
+    ensures it is fully readable in the Campaign Manager.
+    The code should be unique unless you set `skipDuplicates` to `true`.
 
   - `expirydate`: The end date in RFC3339 of the code redemption period.
 
@@ -23882,14 +24401,15 @@ It contains the following columns for each card:
 - `identifier` (required): The alphanumeric identifier of the loyalty card.
 - `state` (required): The state of the loyalty card. It can be `active` or `inactive`.
 - `customerprofileids` (optional): An array of strings representing the identifiers of the customer profiles linked to the loyalty card. The identifiers should be separated with a semicolon (;).
+- `attributes` (optional): A JSON object that contains the loyalty card's custom attributes and their values. These attributes must be created and connected to this loyalty program before  they can be assigned to the cards through this endpoint.
 
 **Note:** We recommend limiting your file size to 500MB.
 
 **Example:**
 
 ```csv
-identifier,state,customerprofileids
-123-456-789AT,active,Alexa001;UserA
+identifier,state,customerprofileids,attributes
+123-456-789AT,active,Alexa001;UserA,"{""my_attribute"": ""10_off""}"
 ```
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
@@ -26408,6 +26928,186 @@ func (a *ManagementAPIService) ListCollectionsInApplicationExecute(r ApiListColl
 			}
 			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiListExperimentsRequest struct {
+	ctx           context.Context
+	ApiService    *ManagementAPIService
+	applicationId int64
+	pageSize      *int64
+	skip          *int64
+	sort          *string
+}
+
+// The number of items in the response.
+func (r ApiListExperimentsRequest) PageSize(pageSize int64) ApiListExperimentsRequest {
+	r.pageSize = &pageSize
+	return r
+}
+
+// The number of items to skip when paging through large result sets.
+func (r ApiListExperimentsRequest) Skip(skip int64) ApiListExperimentsRequest {
+	r.skip = &skip
+	return r
+}
+
+// The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with &#x60;-&#x60;.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.
+func (r ApiListExperimentsRequest) Sort(sort string) ApiListExperimentsRequest {
+	r.sort = &sort
+	return r
+}
+
+func (r ApiListExperimentsRequest) Execute() (*ListExperiments200Response, *http.Response, error) {
+	return r.ApiService.ListExperimentsExecute(r)
+}
+
+/*
+ListExperiments List experiments
+
+List all experiments of the specified Application that match your filter criteria.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param applicationId The ID of the Application. It is displayed in your Talon.One deployment URL.
+	@return ApiListExperimentsRequest
+*/
+func (a *ManagementAPIService) ListExperiments(ctx context.Context, applicationId int64) ApiListExperimentsRequest {
+	return ApiListExperimentsRequest{
+		ApiService:    a,
+		ctx:           ctx,
+		applicationId: applicationId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ListExperiments200Response
+func (a *ManagementAPIService) ListExperimentsExecute(r ApiListExperimentsRequest) (*ListExperiments200Response, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ListExperiments200Response
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagementAPIService.ListExperiments")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v1/applications/{applicationId}/experiments"
+	localVarPath = strings.Replace(localVarPath, "{"+"applicationId"+"}", url.PathEscape(parameterValueToString(r.applicationId, "applicationId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.pageSize != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
+	} else {
+		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
+		r.pageSize = &defaultValue
+	}
+	if r.skip != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "skip", r.skip, "form", "")
+	}
+	if r.sort != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "sort", r.sort, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["management_key"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["manager_auth"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

@@ -7,10 +7,10 @@ Name | Type | Description | Notes
 **Id** | **int64** | The internal ID of this entity. | 
 **Created** | **time.Time** | The time this entity was created. | 
 **ApplicationId** | **int64** | The ID of the Application that owns this entity. | 
-**IsVariantAssignmentExternal** | Pointer to **bool** | The source of the assignment. - false - The assignment to the variant is handled internally by the Talon.Oneandled internally by the Talon.One. - true - The assignment to the variant handled externally.  | [optional] 
+**IsVariantAssignmentExternal** | Pointer to **bool** | The source of the assignment. - false - The variant assignment is handled internally by Talon.One. - true - The variant assignment is handled externally.  | [optional] 
 **Campaign** | Pointer to [**Campaign**](Campaign.md) |  | [optional] 
 **Activated** | Pointer to **time.Time** | The date and time the experiment was activated.  | [optional] 
-**State** | Pointer to **string** | A disabled experiment is not evaluated for rules or coupons.  | [optional] [default to "disabled"]
+**State** | **string** | A disabled experiment is not evaluated for rules or coupons.  | [default to "disabled"]
 **Variants** | Pointer to [**[]ExperimentVariant**](ExperimentVariant.md) |  | [optional] 
 **Deletedat** | Pointer to **time.Time** | The date and time the experiment was deleted.  | [optional] 
 
@@ -18,7 +18,7 @@ Name | Type | Description | Notes
 
 ### NewExperiment
 
-`func NewExperiment(id int64, created time.Time, applicationId int64, ) *Experiment`
+`func NewExperiment(id int64, created time.Time, applicationId int64, state string, ) *Experiment`
 
 NewExperiment instantiates a new Experiment object
 This constructor will assign default values to properties that have it defined,
@@ -187,11 +187,6 @@ and a boolean to check if the value has been set.
 
 SetState sets State field to given value.
 
-### HasState
-
-`func (o *Experiment) HasState() bool`
-
-HasState returns a boolean if a field has been set.
 
 ### GetVariants
 

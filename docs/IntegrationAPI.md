@@ -28,6 +28,7 @@ Method | HTTP request | Description
 [**GetLoyaltyProgramProfileTransactions**](IntegrationAPI.md#GetLoyaltyProgramProfileTransactions) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/transactions | List customer&#39;s loyalty transactions
 [**GetReservedCustomers**](IntegrationAPI.md#GetReservedCustomers) | **Get** /v1/coupon_reservations/customerprofiles/{couponValue} | List customers that have this coupon reserved
 [**LinkLoyaltyCardToProfile**](IntegrationAPI.md#LinkLoyaltyCardToProfile) | **Post** /v2/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/link_profile | Link customer profile to card
+[**PriceHistory**](IntegrationAPI.md#PriceHistory) | **Post** /v1/best_prior_price_history | Get summary of price history
 [**ReopenCustomerSession**](IntegrationAPI.md#ReopenCustomerSession) | **Put** /v2/customer_sessions/{customerSessionId}/reopen | Reopen customer session
 [**ReturnCartItems**](IntegrationAPI.md#ReturnCartItems) | **Post** /v2/customer_sessions/{customerSessionId}/returns | Return cart items
 [**SyncCatalog**](IntegrationAPI.md#SyncCatalog) | **Put** /v1/catalogs/{catalogId}/sync | Sync cart item catalog
@@ -1842,6 +1843,73 @@ Name | Type | Description  | Notes
 ### Authorization
 
 [api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## PriceHistory
+
+> PriceHistoryResponse PriceHistory(ctx).PriceHistoryRequest(priceHistoryRequest).Execute()
+
+Get summary of price history
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+    "time"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	priceHistoryRequest := *openapiclient.NewPriceHistoryRequest("[sku-124]", time.Now(), time.Now()) // PriceHistoryRequest | body
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.IntegrationAPI.PriceHistory(context.Background()).PriceHistoryRequest(priceHistoryRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `IntegrationAPI.PriceHistory``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `PriceHistory`: PriceHistoryResponse
+	fmt.Fprintf(os.Stdout, "Response from `IntegrationAPI.PriceHistory`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiPriceHistoryRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **priceHistoryRequest** | [**PriceHistoryRequest**](PriceHistoryRequest.md) | body | 
+
+### Return type
+
+[**PriceHistoryResponse**](PriceHistoryResponse.md)
+
+### Authorization
+
+[management_key](../README.md#management_key), [manager_auth](../README.md#manager_auth), [api_key_v1](../README.md#api_key_v1)
 
 ### HTTP request headers
 

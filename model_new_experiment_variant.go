@@ -22,7 +22,7 @@ var _ MappedNullable = &NewExperimentVariant{}
 // NewExperimentVariant struct for NewExperimentVariant
 type NewExperimentVariant struct {
 	// The name of this variant.
-	Name string `json:"name" validate:"regexp=^[A-Za-z](\\\\w|\\\\s)*$"`
+	Name string `json:"name"`
 	// The percentage split of this variant. The sum of all variant percentages must be 100.
 	Weight    int64      `json:"weight"`
 	Ruleset   NewRuleset `json:"ruleset"`

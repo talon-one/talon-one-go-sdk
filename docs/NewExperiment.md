@@ -4,9 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**IsVariantAssignmentExternal** | **bool** | The source of the assignment. - false - The assignment to the variant is handled internally by the Talon.Oneandled internally by the Talon.One. - true - The assignment to the variant handled externally.  | 
-**Activated** | Pointer to **time.Time** | The date and time the experiment was activated.  | [optional] 
-**State** | Pointer to **string** | A disabled experiment is not evaluated for rules or coupons.  | [optional] [default to "disabled"]
+**IsVariantAssignmentExternal** | **bool** | The source of the assignment. - false - The variant assignment is handled internally by Talon.One. - true - The variant assignment is handled externally.  | 
 **Campaign** | [**NewCampaign**](NewCampaign.md) |  | 
 
 ## Methods
@@ -47,56 +45,6 @@ and a boolean to check if the value has been set.
 
 SetIsVariantAssignmentExternal sets IsVariantAssignmentExternal field to given value.
 
-
-### GetActivated
-
-`func (o *NewExperiment) GetActivated() time.Time`
-
-GetActivated returns the Activated field if non-nil, zero value otherwise.
-
-### GetActivatedOk
-
-`func (o *NewExperiment) GetActivatedOk() (*time.Time, bool)`
-
-GetActivatedOk returns a tuple with the Activated field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetActivated
-
-`func (o *NewExperiment) SetActivated(v time.Time)`
-
-SetActivated sets Activated field to given value.
-
-### HasActivated
-
-`func (o *NewExperiment) HasActivated() bool`
-
-HasActivated returns a boolean if a field has been set.
-
-### GetState
-
-`func (o *NewExperiment) GetState() string`
-
-GetState returns the State field if non-nil, zero value otherwise.
-
-### GetStateOk
-
-`func (o *NewExperiment) GetStateOk() (*string, bool)`
-
-GetStateOk returns a tuple with the State field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetState
-
-`func (o *NewExperiment) SetState(v string)`
-
-SetState sets State field to given value.
-
-### HasState
-
-`func (o *NewExperiment) HasState() bool`
-
-HasState returns a boolean if a field has been set.
 
 ### GetCampaign
 

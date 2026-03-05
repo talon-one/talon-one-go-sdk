@@ -43,6 +43,7 @@ Method | HTTP request | Description
 [**DisconnectCampaignStores**](ManagementAPI.md#DisconnectCampaignStores) | **Delete** /v1/applications/{applicationId}/campaigns/{campaignId}/stores | Disconnect stores
 [**ExportAccountCollectionItems**](ManagementAPI.md#ExportAccountCollectionItems) | **Get** /v1/collections/{collectionId}/export | Export account-level collection&#39;s items
 [**ExportAchievements**](ManagementAPI.md#ExportAchievements) | **Get** /v1/applications/{applicationId}/campaigns/{campaignId}/achievements/{achievementId}/export | Export achievement customer data
+[**ExportApplicationCampaignAnalytics**](ManagementAPI.md#ExportApplicationCampaignAnalytics) | **Get** /v1/applications/{applicationId}/campaign_analytics/export | Export Application analytics aggregated by campaign
 [**ExportAudiencesMemberships**](ManagementAPI.md#ExportAudiencesMemberships) | **Get** /v1/audiences/{audienceId}/memberships/export | Export audience members
 [**ExportCampaignStoreBudgets**](ManagementAPI.md#ExportCampaignStoreBudgets) | **Get** /v1/applications/{applicationId}/campaigns/{campaignId}/stores/budgets/export | Export campaign store budgets
 [**ExportCampaignStores**](ManagementAPI.md#ExportCampaignStores) | **Get** /v1/applications/{applicationId}/campaigns/{campaignId}/stores/export | Export stores
@@ -56,6 +57,7 @@ Method | HTTP request | Description
 [**ExportLoyaltyCardBalances**](ManagementAPI.md#ExportLoyaltyCardBalances) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/export_card_balances | Export all card transaction logs
 [**ExportLoyaltyCardLedger**](ManagementAPI.md#ExportLoyaltyCardLedger) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/export_log | Export card&#39;s ledger log
 [**ExportLoyaltyCards**](ManagementAPI.md#ExportLoyaltyCards) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/cards/export | Export loyalty cards
+[**ExportLoyaltyJoinDates**](ManagementAPI.md#ExportLoyaltyJoinDates) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/export_join_dates | Export customers&#39; loyalty program join dates
 [**ExportLoyaltyLedger**](ManagementAPI.md#ExportLoyaltyLedger) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/export_log | Export customer&#39;s transaction logs
 [**ExportPoolGiveaways**](ManagementAPI.md#ExportPoolGiveaways) | **Get** /v1/giveaways/pools/{poolId}/export | Export giveaway codes of a giveaway pool
 [**ExportReferrals**](ManagementAPI.md#ExportReferrals) | **Get** /v1/applications/{applicationId}/export_referrals | Export referrals
@@ -103,6 +105,7 @@ Method | HTTP request | Description
 [**GetCustomersByAttributes**](ManagementAPI.md#GetCustomersByAttributes) | **Post** /v1/customer_search/no_total | List customer profiles matching the given attributes
 [**GetDashboardStatistics**](ManagementAPI.md#GetDashboardStatistics) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/dashboard | Get statistics for loyalty dashboard
 [**GetEventTypes**](ManagementAPI.md#GetEventTypes) | **Get** /v1/event_types | List event types
+[**GetExperiment**](ManagementAPI.md#GetExperiment) | **Get** /v1/applications/{applicationId}/experiments/{experimentId} | Get experiment in Application
 [**GetExports**](ManagementAPI.md#GetExports) | **Get** /v1/exports | Get exports
 [**GetLoyaltyCard**](ManagementAPI.md#GetLoyaltyCard) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId} | Get loyalty card
 [**GetLoyaltyCardTransactionLogs**](ManagementAPI.md#GetLoyaltyCardTransactionLogs) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/logs | List card&#39;s transactions
@@ -144,6 +147,7 @@ Method | HTTP request | Description
 [**ListCatalogItems**](ManagementAPI.md#ListCatalogItems) | **Get** /v1/catalogs/{catalogId}/items | List items in a catalog
 [**ListCollections**](ManagementAPI.md#ListCollections) | **Get** /v1/applications/{applicationId}/campaigns/{campaignId}/collections | List collections in campaign
 [**ListCollectionsInApplication**](ManagementAPI.md#ListCollectionsInApplication) | **Get** /v1/applications/{applicationId}/collections | List collections in Application
+[**ListExperiments**](ManagementAPI.md#ListExperiments) | **Get** /v1/applications/{applicationId}/experiments | List experiments
 [**ListStores**](ManagementAPI.md#ListStores) | **Get** /v1/applications/{applicationId}/stores | List stores
 [**OktaEventHandlerChallenge**](ManagementAPI.md#OktaEventHandlerChallenge) | **Get** /v1/provisioning/okta | Validate Okta API ownership
 [**RemoveLoyaltyPoints**](ManagementAPI.md#RemoveLoyaltyPoints) | **Put** /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/deduct_points | Deduct points from customer profile
@@ -2968,6 +2972,83 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## ExportApplicationCampaignAnalytics
+
+> string ExportApplicationCampaignAnalytics(ctx, applicationId).RangeStart(rangeStart).RangeEnd(rangeEnd).CampaignIds(campaignIds).Execute()
+
+Export Application analytics aggregated by campaign
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+    "time"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	applicationId := int64(789) // int64 | The ID of the Application. It is displayed in your Talon.One deployment URL.
+	rangeStart := time.Now() // time.Time | Only return results from after this timestamp.  **Note:** - This must be an RFC3339 timestamp string. - You can include a time component in your string, for example, `T23:59:59` to specify the end of the day. The time zone setting considered is `UTC`. If you do not include a time component, a default time value of `T00:00:00` (midnight) in `UTC` is considered. 
+	rangeEnd := time.Now() // time.Time | Only return results from before this timestamp.  **Note:** - This must be an RFC3339 timestamp string. - You can include a time component in your string, for example, `T23:59:59` to specify the end of the day. The time zone setting considered is `UTC`. If you do not include a time component, a default time value of `T00:00:00` (midnight) in `UTC` is considered. 
+	campaignIds := []string{"Inner_example"} // []string | Filter by one or more Campaign IDs, separated by a comma.  **Note:** If no campaigns are specified, data for all the campaigns in the Application is returned.  (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ManagementAPI.ExportApplicationCampaignAnalytics(context.Background(), applicationId).RangeStart(rangeStart).RangeEnd(rangeEnd).CampaignIds(campaignIds).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.ExportApplicationCampaignAnalytics``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ExportApplicationCampaignAnalytics`: string
+	fmt.Fprintf(os.Stdout, "Response from `ManagementAPI.ExportApplicationCampaignAnalytics`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**applicationId** | **int64** | The ID of the Application. It is displayed in your Talon.One deployment URL. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiExportApplicationCampaignAnalyticsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **rangeStart** | **time.Time** | Only return results from after this timestamp.  **Note:** - This must be an RFC3339 timestamp string. - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.  | 
+ **rangeEnd** | **time.Time** | Only return results from before this timestamp.  **Note:** - This must be an RFC3339 timestamp string. - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.  | 
+ **campaignIds** | **[]string** | Filter by one or more Campaign IDs, separated by a comma.  **Note:** If no campaigns are specified, data for all the campaigns in the Application is returned.  | 
+
+### Return type
+
+**string**
+
+### Authorization
+
+[management_key](../README.md#management_key), [manager_auth](../README.md#manager_auth), [api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/csv
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## ExportAudiencesMemberships
 
 > string ExportAudiencesMemberships(ctx, audienceId).Execute()
@@ -3956,6 +4037,76 @@ Name | Type | Description  | Notes
  **createdBefore** | **time.Time** | Only return loyalty cards created before this timestamp.  **Note:** - This must be an RFC3339 timestamp string.  | 
  **createdAfter** | **time.Time** | Only return loyalty cards created after this timestamp.  **Note:** - This must be an RFC3339 timestamp string.  | 
  **dateFormat** | **string** | Determines the format of dates in the export document. | 
+
+### Return type
+
+**string**
+
+### Authorization
+
+[management_key](../README.md#management_key), [manager_auth](../README.md#manager_auth), [api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/csv
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ExportLoyaltyJoinDates
+
+> string ExportLoyaltyJoinDates(ctx, loyaltyProgramId).Execute()
+
+Export customers' loyalty program join dates
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	loyaltyProgramId := "loyaltyProgramId_example" // string | The identifier of the loyalty program.
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ManagementAPI.ExportLoyaltyJoinDates(context.Background(), loyaltyProgramId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.ExportLoyaltyJoinDates``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ExportLoyaltyJoinDates`: string
+	fmt.Fprintf(os.Stdout, "Response from `ManagementAPI.ExportLoyaltyJoinDates`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**loyaltyProgramId** | **string** | The identifier of the loyalty program. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiExportLoyaltyJoinDatesRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
@@ -7624,6 +7775,79 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## GetExperiment
+
+> Experiment GetExperiment(ctx, applicationId, experimentId).Execute()
+
+Get experiment in Application
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	applicationId := int64(789) // int64 | The ID of the Application. It is displayed in your Talon.One deployment URL.
+	experimentId := int64(789) // int64 | The ID of the experiment.
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ManagementAPI.GetExperiment(context.Background(), applicationId, experimentId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.GetExperiment``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetExperiment`: Experiment
+	fmt.Fprintf(os.Stdout, "Response from `ManagementAPI.GetExperiment`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**applicationId** | **int64** | The ID of the Application. It is displayed in your Talon.One deployment URL. | 
+**experimentId** | **int64** | The ID of the experiment. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetExperimentRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+### Return type
+
+[**Experiment**](Experiment.md)
+
+### Authorization
+
+[management_key](../README.md#management_key), [manager_auth](../README.md#manager_auth), [api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## GetExports
 
 > GetExports200Response GetExports(ctx).PageSize(pageSize).Skip(skip).ApplicationId(applicationId).CampaignId(campaignId).Entity(entity).Execute()
@@ -10724,6 +10948,82 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**ListAccountCollections200Response**](ListAccountCollections200Response.md)
+
+### Authorization
+
+[management_key](../README.md#management_key), [manager_auth](../README.md#manager_auth), [api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ListExperiments
+
+> ListExperiments200Response ListExperiments(ctx, applicationId).PageSize(pageSize).Skip(skip).Sort(sort).Execute()
+
+List experiments
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	applicationId := int64(789) // int64 | The ID of the Application. It is displayed in your Talon.One deployment URL.
+	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 1000)
+	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
+	sort := "sort_example" // string | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with `-`.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ManagementAPI.ListExperiments(context.Background(), applicationId).PageSize(pageSize).Skip(skip).Sort(sort).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.ListExperiments``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ListExperiments`: ListExperiments200Response
+	fmt.Fprintf(os.Stdout, "Response from `ManagementAPI.ListExperiments`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**applicationId** | **int64** | The ID of the Application. It is displayed in your Talon.One deployment URL. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiListExperimentsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **pageSize** | **int64** | The number of items in the response. | [default to 1000]
+ **skip** | **int64** | The number of items to skip when paging through large result sets. | 
+ **sort** | **string** | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with &#x60;-&#x60;.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  | 
+
+### Return type
+
+[**ListExperiments200Response**](ListExperiments200Response.md)
 
 ### Authorization
 

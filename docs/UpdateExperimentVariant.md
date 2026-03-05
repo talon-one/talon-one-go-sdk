@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **int64** |  | 
-**Name** | **string** |  | 
+**Name** | **string** | The name of this variant. | 
 **Ruleset** | [**NewRuleset**](NewRuleset.md) |  | 
 **Weight** | **int64** | The percentage split of this variant. The sum of all variant percentages must be 100. | 
 

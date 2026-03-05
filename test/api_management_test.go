@@ -553,6 +553,20 @@ func Test_talon_ManagementAPIService(t *testing.T) {
 
 	})
 
+	t.Run("Test ManagementAPIService ExportApplicationCampaignAnalytics", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var applicationId int64
+
+		resp, httpRes, err := apiClient.ManagementAPI.ExportApplicationCampaignAnalytics(context.Background(), applicationId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test ManagementAPIService ExportAudiencesMemberships", func(t *testing.T) {
 
 		t.Skip("skip test")  // remove to run test
@@ -733,6 +747,20 @@ func Test_talon_ManagementAPIService(t *testing.T) {
 		var loyaltyProgramId int64
 
 		resp, httpRes, err := apiClient.ManagementAPI.ExportLoyaltyCards(context.Background(), loyaltyProgramId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test ManagementAPIService ExportLoyaltyJoinDates", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var loyaltyProgramId string
+
+		resp, httpRes, err := apiClient.ManagementAPI.ExportLoyaltyJoinDates(context.Background(), loyaltyProgramId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -1388,6 +1416,21 @@ func Test_talon_ManagementAPIService(t *testing.T) {
 
 	})
 
+	t.Run("Test ManagementAPIService GetExperiment", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var applicationId int64
+		var experimentId int64
+
+		resp, httpRes, err := apiClient.ManagementAPI.GetExperiment(context.Background(), applicationId, experimentId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test ManagementAPIService GetExports", func(t *testing.T) {
 
 		t.Skip("skip test")  // remove to run test
@@ -1957,6 +2000,20 @@ func Test_talon_ManagementAPIService(t *testing.T) {
 		var applicationId int64
 
 		resp, httpRes, err := apiClient.ManagementAPI.ListCollectionsInApplication(context.Background(), applicationId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test ManagementAPIService ListExperiments", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var applicationId int64
+
+		resp, httpRes, err := apiClient.ManagementAPI.ListExperiments(context.Background(), applicationId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
