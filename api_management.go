@@ -13202,6 +13202,7 @@ type ApiGetApplicationSessionsRequest struct {
 	pageSize           *int64
 	skip               *int64
 	sort               *string
+	partialMatch       *bool
 	profile            *string
 	state              *string
 	createdBefore      *time.Time
@@ -13230,7 +13231,13 @@ func (r ApiGetApplicationSessionsRequest) Sort(sort string) ApiGetApplicationSes
 	return r
 }
 
-// Profile integration ID filter for sessions. Must be exact match.
+// Enables partial matching for a single text search field. When enabled, the search term matches anywhere within the field value (case-insensitive). Minimum 3 characters required for partial matches; shorter inputs automatically fall back to exact match.  **Note:** Use with one of: &#x60;integrationId&#x60;, &#x60;profile&#x60;, &#x60;coupon&#x60;, &#x60;referral&#x60;, or &#x60;storeIntegrationId&#x60;.
+func (r ApiGetApplicationSessionsRequest) PartialMatch(partialMatch bool) ApiGetApplicationSessionsRequest {
+	r.partialMatch = &partialMatch
+	return r
+}
+
+// Filter by sessions with this profile integration ID. By default, requires exact match. Use &#x60;partialMatch&#x3D;true&#x60; to search for partial matches (minimum 3 characters).
 func (r ApiGetApplicationSessionsRequest) Profile(profile string) ApiGetApplicationSessionsRequest {
 	r.profile = &profile
 	return r
@@ -13254,25 +13261,25 @@ func (r ApiGetApplicationSessionsRequest) CreatedAfter(createdAfter time.Time) A
 	return r
 }
 
-// Filter by sessions with this coupon. Must be exact match.
+// Filter by sessions with this coupon. By default, requires exact match. Use &#x60;partialMatch&#x3D;true&#x60; to search for partial matches (minimum 3 characters).
 func (r ApiGetApplicationSessionsRequest) Coupon(coupon string) ApiGetApplicationSessionsRequest {
 	r.coupon = &coupon
 	return r
 }
 
-// Filter by sessions with this referral. Must be exact match.
+// Filter by sessions with this referral. By default, requires exact match. Use &#x60;partialMatch&#x3D;true&#x60; to search for partial matches (minimum 3 characters).
 func (r ApiGetApplicationSessionsRequest) Referral(referral string) ApiGetApplicationSessionsRequest {
 	r.referral = &referral
 	return r
 }
 
-// Filter by sessions with this integration ID. Must be exact match.
+// Filter by sessions with this integration ID. By default, requires exact match. Use &#x60;partialMatch&#x3D;true&#x60; to search for partial matches (minimum 3 characters).
 func (r ApiGetApplicationSessionsRequest) IntegrationId(integrationId string) ApiGetApplicationSessionsRequest {
 	r.integrationId = &integrationId
 	return r
 }
 
-// The integration ID of the store. You choose this ID when you create a store.
+// The integration ID of the store. You choose this ID when you create a store. By default, requires exact match. Use &#x60;partialMatch&#x3D;true&#x60; to search for partial matches (minimum 3 characters).
 func (r ApiGetApplicationSessionsRequest) StoreIntegrationId(storeIntegrationId string) ApiGetApplicationSessionsRequest {
 	r.storeIntegrationId = &storeIntegrationId
 	return r
@@ -13334,6 +13341,13 @@ func (a *ManagementAPIService) GetApplicationSessionsExecute(r ApiGetApplication
 	}
 	if r.sort != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "sort", r.sort, "form", "")
+	}
+	if r.partialMatch != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "partialMatch", r.partialMatch, "form", "")
+	} else {
+		var defaultValue bool = false
+		parameterAddToHeaderOrQuery(localVarQueryParams, "partialMatch", defaultValue, "form", "")
+		r.partialMatch = &defaultValue
 	}
 	if r.profile != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "profile", r.profile, "form", "")
@@ -24401,15 +24415,14 @@ It contains the following columns for each card:
 - `identifier` (required): The alphanumeric identifier of the loyalty card.
 - `state` (required): The state of the loyalty card. It can be `active` or `inactive`.
 - `customerprofileids` (optional): An array of strings representing the identifiers of the customer profiles linked to the loyalty card. The identifiers should be separated with a semicolon (;).
-- `attributes` (optional): A JSON object that contains the loyalty card's custom attributes and their values. These attributes must be created and connected to this loyalty program before  they can be assigned to the cards through this endpoint.
 
 **Note:** We recommend limiting your file size to 500MB.
 
 **Example:**
 
 ```csv
-identifier,state,customerprofileids,attributes
-123-456-789AT,active,Alexa001;UserA,"{""my_attribute"": ""10_off""}"
+identifier,state,customerprofileids
+123-456-789AT,active,Alexa001;UserA
 ```
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().

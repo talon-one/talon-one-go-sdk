@@ -52,6 +52,8 @@ type CardAddedDeductedPointsNotification struct {
 	Reason string `json:"Reason"`
 	// The start date for loyalty points.
 	StartDate *time.Time `json:"StartDate,omitempty"`
+	// The identifier of the transaction in the loyalty ledger.
+	TransactionUUID string `json:"TransactionUUID"`
 }
 
 type _CardAddedDeductedPointsNotification CardAddedDeductedPointsNotification
@@ -60,7 +62,7 @@ type _CardAddedDeductedPointsNotification CardAddedDeductedPointsNotification
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCardAddedDeductedPointsNotification(cardIdentifier string, employeeName string, loyaltyProgramID int64, notificationType string, profileIntegrationIDs []string, sessionIntegrationID string, subledgerID string, typeOfChange string, userID int64, usersPerCardLimit int64, amount float32, operation string, reason string) *CardAddedDeductedPointsNotification {
+func BuildCardAddedDeductedPointsNotification(cardIdentifier string, employeeName string, loyaltyProgramID int64, notificationType string, profileIntegrationIDs []string, sessionIntegrationID string, subledgerID string, typeOfChange string, userID int64, usersPerCardLimit int64, amount float32, operation string, reason string, transactionUUID string) *CardAddedDeductedPointsNotification {
 	this := CardAddedDeductedPointsNotification{}
 	this.CardIdentifier = cardIdentifier
 	this.EmployeeName = employeeName
@@ -75,6 +77,7 @@ func BuildCardAddedDeductedPointsNotification(cardIdentifier string, employeeNam
 	this.Amount = amount
 	this.Operation = operation
 	this.Reason = reason
+	this.TransactionUUID = transactionUUID
 	return &this
 }
 
@@ -462,6 +465,30 @@ func (o *CardAddedDeductedPointsNotification) SetStartDate(v time.Time) {
 	o.StartDate = &v
 }
 
+// GetTransactionUUID returns the TransactionUUID field value
+func (o *CardAddedDeductedPointsNotification) GetTransactionUUID() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.TransactionUUID
+}
+
+// GetTransactionUUIDOk returns a tuple with the TransactionUUID field value
+// and a boolean to check if the value has been set.
+func (o *CardAddedDeductedPointsNotification) GetTransactionUUIDOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.TransactionUUID, true
+}
+
+// SetTransactionUUID sets field value
+func (o *CardAddedDeductedPointsNotification) SetTransactionUUID(v string) {
+	o.TransactionUUID = v
+}
+
 func (o CardAddedDeductedPointsNotification) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -491,6 +518,7 @@ func (o CardAddedDeductedPointsNotification) ToMap() (map[string]interface{}, er
 	if !IsNil(o.StartDate) {
 		toSerialize["StartDate"] = o.StartDate
 	}
+	toSerialize["TransactionUUID"] = o.TransactionUUID
 	return toSerialize, nil
 }
 
@@ -512,6 +540,7 @@ func (o *CardAddedDeductedPointsNotification) UnmarshalJSON(data []byte) (err er
 		"Amount",
 		"Operation",
 		"Reason",
+		"TransactionUUID",
 	}
 
 	allProperties := make(map[string]interface{})

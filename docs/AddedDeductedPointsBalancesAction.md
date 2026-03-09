@@ -9,12 +9,13 @@ Name | Type | Description | Notes
 **Operation** | **string** | The action (addition or deduction) made with loyalty points. | 
 **StartDate** | Pointer to **time.Time** | The start date for loyalty points. | [optional] 
 **ExpiryDate** | Pointer to **time.Time** | The expiration date for loyalty points. | [optional] 
+**TransactionUUID** | **string** | The identifier of the transaction in the loyalty ledger. | 
 
 ## Methods
 
 ### NewAddedDeductedPointsBalancesAction
 
-`func NewAddedDeductedPointsBalancesAction(amount float32, reason string, operation string, ) *AddedDeductedPointsBalancesAction`
+`func NewAddedDeductedPointsBalancesAction(amount float32, reason string, operation string, transactionUUID string, ) *AddedDeductedPointsBalancesAction`
 
 NewAddedDeductedPointsBalancesAction instantiates a new AddedDeductedPointsBalancesAction object
 This constructor will assign default values to properties that have it defined,
@@ -138,6 +139,26 @@ SetExpiryDate sets ExpiryDate field to given value.
 `func (o *AddedDeductedPointsBalancesAction) HasExpiryDate() bool`
 
 HasExpiryDate returns a boolean if a field has been set.
+
+### GetTransactionUUID
+
+`func (o *AddedDeductedPointsBalancesAction) GetTransactionUUID() string`
+
+GetTransactionUUID returns the TransactionUUID field if non-nil, zero value otherwise.
+
+### GetTransactionUUIDOk
+
+`func (o *AddedDeductedPointsBalancesAction) GetTransactionUUIDOk() (*string, bool)`
+
+GetTransactionUUIDOk returns a tuple with the TransactionUUID field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTransactionUUID
+
+`func (o *AddedDeductedPointsBalancesAction) SetTransactionUUID(v string)`
+
+SetTransactionUUID sets TransactionUUID field to given value.
+
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

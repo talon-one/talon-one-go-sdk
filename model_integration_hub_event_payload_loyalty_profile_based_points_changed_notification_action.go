@@ -27,6 +27,8 @@ type IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationActio
 	Operation  string     `json:"Operation"`
 	StartDate  *time.Time `json:"StartDate,omitempty"`
 	ExpiryDate *time.Time `json:"ExpiryDate,omitempty"`
+	// The identifier of the transaction in the loyalty ledger.
+	TransactionUUID string `json:"TransactionUUID"`
 }
 
 type _IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction
@@ -35,10 +37,11 @@ type _IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationActi
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildIntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction(amount float32, operation string) *IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction {
+func BuildIntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction(amount float32, operation string, transactionUUID string) *IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction {
 	this := IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction{}
 	this.Amount = amount
 	this.Operation = operation
+	this.TransactionUUID = transactionUUID
 	return &this
 }
 
@@ -194,6 +197,30 @@ func (o *IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationA
 	o.ExpiryDate = &v
 }
 
+// GetTransactionUUID returns the TransactionUUID field value
+func (o *IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) GetTransactionUUID() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.TransactionUUID
+}
+
+// GetTransactionUUIDOk returns a tuple with the TransactionUUID field value
+// and a boolean to check if the value has been set.
+func (o *IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) GetTransactionUUIDOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.TransactionUUID, true
+}
+
+// SetTransactionUUID sets field value
+func (o *IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) SetTransactionUUID(v string) {
+	o.TransactionUUID = v
+}
+
 func (o IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -215,6 +242,7 @@ func (o IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAc
 	if !IsNil(o.ExpiryDate) {
 		toSerialize["ExpiryDate"] = o.ExpiryDate
 	}
+	toSerialize["TransactionUUID"] = o.TransactionUUID
 	return toSerialize, nil
 }
 
@@ -225,6 +253,7 @@ func (o *IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationA
 	requiredProperties := []string{
 		"Amount",
 		"Operation",
+		"TransactionUUID",
 	}
 
 	allProperties := make(map[string]interface{})

@@ -5485,15 +5485,14 @@ paths:
         - `identifier` (required): The alphanumeric identifier of the loyalty card.
         - `state` (required): The state of the loyalty card. It can be `active` or `inactive`.
         - `customerprofileids` (optional): An array of strings representing the identifiers of the customer profiles linked to the loyalty card. The identifiers should be separated with a semicolon (;).
-        - `attributes` (optional): A JSON object that contains the loyalty card's custom attributes and their values. These attributes must be created and connected to this loyalty program before  they can be assigned to the cards through this endpoint.
 
         **Note:** We recommend limiting your file size to 500MB.
 
         **Example:**
 
         ```csv
-        identifier,state,customerprofileids,attributes
-        123-456-789AT,active,Alexa001;UserA,"{""my_attribute"": ""10_off""}"
+        identifier,state,customerprofileids
+        123-456-789AT,active,Alexa001;UserA
         ```
       operationId: importLoyaltyCards
       parameters:
@@ -7794,7 +7793,21 @@ paths:
       - $ref: "#/components/parameters/pageSize"
       - $ref: "#/components/parameters/skip"
       - $ref: "#/components/parameters/sort"
-      - description: Profile integration ID filter for sessions. Must be exact match.
+      - description: |-
+          Enables partial matching for a single text search field. When enabled, the search term matches anywhere within the field value (case-insensitive). Minimum 3 characters required for partial matches; shorter inputs automatically fall back to exact match.
+
+          **Note:** Use with one of: `integrationId`, `profile`, `coupon`, `referral`, or `storeIntegrationId`.
+        explode: true
+        in: query
+        name: partialMatch
+        required: false
+        schema:
+          default: false
+          type: boolean
+        style: form
+      - description: "Filter by sessions with this profile integration ID. By default,\
+          \ requires exact match. Use `partialMatch=true` to search for partial matches\
+          \ (minimum 3 characters)."
         explode: true
         in: query
         name: profile
@@ -7835,7 +7848,9 @@ paths:
           format: date-time
           type: string
         style: form
-      - description: Filter by sessions with this coupon. Must be exact match.
+      - description: "Filter by sessions with this coupon. By default, requires exact\
+          \ match. Use `partialMatch=true` to search for partial matches (minimum\
+          \ 3 characters)."
         explode: true
         in: query
         name: coupon
@@ -7843,7 +7858,9 @@ paths:
         schema:
           type: string
         style: form
-      - description: Filter by sessions with this referral. Must be exact match.
+      - description: "Filter by sessions with this referral. By default, requires\
+          \ exact match. Use `partialMatch=true` to search for partial matches (minimum\
+          \ 3 characters)."
         explode: true
         in: query
         name: referral
@@ -7851,7 +7868,9 @@ paths:
         schema:
           type: string
         style: form
-      - description: Filter by sessions with this integration ID. Must be exact match.
+      - description: "Filter by sessions with this integration ID. By default, requires\
+          \ exact match. Use `partialMatch=true` to search for partial matches (minimum\
+          \ 3 characters)."
         explode: true
         in: query
         name: integrationId
@@ -7859,8 +7878,9 @@ paths:
         schema:
           type: string
         style: form
-      - description: The integration ID of the store. You choose this ID when you
-          create a store.
+      - description: "The integration ID of the store. You choose this ID when you\
+          \ create a store. By default, requires exact match. Use `partialMatch=true`\
+          \ to search for partial matches (minimum 3 characters)."
         explode: true
         in: query
         name: storeIntegrationId
@@ -33951,9 +33971,14 @@ components:
           ExpiryDate:
             format: date-time
             type: string
+          TransactionUUID:
+            description: The identifier of the transaction in the loyalty ledger.
+            format: uuid
+            type: string
         required:
         - Amount
         - Operation
+        - TransactionUUID
     IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification:
       allOf:
       - properties:
@@ -35076,6 +35101,10 @@ components:
           example: 2023-01-24T14:15:22Z
           format: date-time
           type: string
+        TransactionUUID:
+          description: The identifier of the transaction in the loyalty ledger.
+          format: uuid
+          type: string
       required:
       - Amount
       - EmployeeName
@@ -35086,6 +35115,7 @@ components:
       - Reason
       - SessionIntegrationID
       - SubledgerID
+      - TransactionUUID
       - TypeOfChange
       - UserID
     AddedDeductedPointsBalancesAction:
@@ -35114,10 +35144,15 @@ components:
           example: 2024-01-24T14:15:22Z
           format: date-time
           type: string
+        TransactionUUID:
+          description: The identifier of the transaction in the loyalty ledger.
+          format: uuid
+          type: string
       required:
       - Amount
       - Operation
       - Reason
+      - TransactionUUID
     AddedDeductedPointsBalancesNotification:
       properties:
         EmployeeName:
@@ -35639,6 +35674,10 @@ components:
           example: 2023-01-24T14:15:22Z
           format: date-time
           type: string
+        TransactionUUID:
+          description: The identifier of the transaction in the loyalty ledger.
+          format: uuid
+          type: string
       required:
       - Amount
       - CardIdentifier
@@ -35650,6 +35689,7 @@ components:
       - Reason
       - SessionIntegrationID
       - SubledgerID
+      - TransactionUUID
       - TypeOfChange
       - UserID
       - UsersPerCardLimit
