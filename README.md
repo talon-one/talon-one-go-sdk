@@ -208,6 +208,28 @@ func main() {
 }
 ```
 
+## FAQ
+
+> Are there any breaking changes in the next-generation Go SDK compared to the legacy SDK?
+
+Most changes are related to naming. Functions and model names have been updated to be clearer and to better follow standard Go naming conventions.
+
+> Are there any behavioral or model differences in session evaluation, event tracking, or coupon handling between the legacy SDK and the next-generation SDK?
+
+No. There are no behavioral changes in the API.
+
+> Do you have recommended migration strategies or best practices for production systems with high transaction volumes?
+
+The migration is straightforward. In our example project, we replaced the SDK and resolved all compiler errors caused by the renames. No logic changes were required.
+
+> Are there any known limitations or common issues reported by Go users during the migration?
+
+None known at this time.
+
+> How long will the legacy SDK be supported?
+
+The legacy SDK is supported until March 31, 2027, after which it will be deprecated and no longer updated. It may continue to function, but will receive no further maintenance.
+
 ## Documentation for API endpoints
 
 All URLs are relative to `https://yourbaseurl.talon.one`.
