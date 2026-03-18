@@ -28,8 +28,8 @@ type CardLedgerTransactionLogEntry struct {
 	Created time.Time `json:"created"`
 	// ID of the loyalty program.
 	ProgramId int64 `json:"programId"`
-	// The alphanumeric identifier of the loyalty card.
-	CardIdentifier string `json:"cardIdentifier" validate:"regexp=^[A-Za-z0-9_-]*$"`
+	// The identifier of the loyalty card, which must match the regular expression `^[A-Za-z0-9._%+@-]+$`.
+	CardIdentifier string `json:"cardIdentifier" validate:"regexp=^[A-Za-z0-9._%+@-]+$"`
 	// The ID of the Application that owns this entity.
 	ApplicationId *int64 `json:"applicationId,omitempty"`
 	// The **internal** ID of the session.

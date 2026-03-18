@@ -36,8 +36,8 @@ type LoyaltyCard struct {
 	Status string `json:"status"`
 	// Reason for transferring and blocking the loyalty card.
 	BlockReason *string `json:"blockReason,omitempty"`
-	// The alphanumeric identifier of the loyalty card.
-	Identifier string `json:"identifier" validate:"regexp=^[A-Za-z0-9_-]*$"`
+	// The identifier of the loyalty card, which must match the regular expression `^[A-Za-z0-9._%+@-]+$`.
+	Identifier string `json:"identifier" validate:"regexp=^[A-Za-z0-9._%+@-]+$"`
 	// The max amount of customer profiles that can be linked to the card. 0 means unlimited.
 	UsersPerCardLimit int64 `json:"usersPerCardLimit"`
 	// Integration IDs of the customers profiles linked to the card.
@@ -49,9 +49,9 @@ type LoyaltyCard struct {
 	// Timestamp of the most recent update of the loyalty card.
 	Modified *time.Time `json:"modified,omitempty"`
 	// The identifier of the card from which the points were transferred.
-	OldCardIdentifier *string `json:"oldCardIdentifier,omitempty" validate:"regexp=^[A-Za-z0-9_-]*$"`
+	OldCardIdentifier *string `json:"oldCardIdentifier,omitempty" validate:"regexp=^[A-Za-z0-9._%+@-]+$"`
 	// The identifier of the card to which the points were transferred.
-	NewCardIdentifier *string `json:"newCardIdentifier,omitempty" validate:"regexp=^[A-Za-z0-9_-]*$"`
+	NewCardIdentifier *string `json:"newCardIdentifier,omitempty" validate:"regexp=^[A-Za-z0-9._%+@-]+$"`
 	// The ID of the batch in which the loyalty card was created.
 	BatchId *string `json:"batchId,omitempty"`
 }

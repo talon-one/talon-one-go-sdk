@@ -45,7 +45,7 @@ type AddLoyaltyPointsEffectProps struct {
 	// For cart items with `quantity` > 1, the sub position indicates to which item the loyalty points addition is applied.
 	CartItemSubPosition *float32 `json:"cartItemSubPosition,omitempty"`
 	// The card on which these points were added.
-	CardIdentifier *string `json:"cardIdentifier,omitempty" validate:"regexp=^[A-Za-z0-9_-]*$"`
+	CardIdentifier *string `json:"cardIdentifier,omitempty" validate:"regexp=^[A-Za-z0-9._%+@-]+$"`
 	// The position of the bundle in a list of item bundles created from the same bundle definition.
 	BundleIndex *int64 `json:"bundleIndex,omitempty"`
 	// The name of the bundle definition.

@@ -2918,7 +2918,7 @@ If no filtering options are applied, all loyalty balances for the given loyalty 
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param loyaltyProgramId Identifier of the card-based loyalty program containing the loyalty card. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
-	@param loyaltyCardId Identifier of the loyalty card. You can get the identifier with the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.
+	@param loyaltyCardId Identifier of the loyalty card. You can get the identifier with the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.  **Important**: The loyalty card ID requires [URL encoding](https://www.w3schools.com/tags//ref_urlencode.asp) if it contains special characters. For example, you must encode `NewCard2026%` as `NewCard2026%25`.
 	@return ApiGetLoyaltyCardBalancesRequest
 */
 func (a *IntegrationAPIService) GetLoyaltyCardBalances(ctx context.Context, loyaltyProgramId int64, loyaltyCardId string) ApiGetLoyaltyCardBalancesRequest {
@@ -3100,13 +3100,13 @@ func (r ApiGetLoyaltyCardPointsRequest) SubledgerId(subledgerId []string) ApiGet
 	return r
 }
 
-// Filter the results by a list of customer session IDs.   To include multiple IDs, repeat the parameter for each one, for example,  &#x60;?customerSessionIDs&#x3D;id1&amp;customerSessionIDs&#x3D;id2&#x60;.  The response contains only data associated with the specified sessions.
+// Filter the results by a list of customer session IDs.  To include multiple IDs, repeat the parameter for each one, for example, &#x60;?customerSessionIDs&#x3D;id1&amp;customerSessionIDs&#x3D;id2&#x60;.  The response contains only data associated with the specified sessions.
 func (r ApiGetLoyaltyCardPointsRequest) CustomerSessionIDs(customerSessionIDs []string) ApiGetLoyaltyCardPointsRequest {
 	r.customerSessionIDs = &customerSessionIDs
 	return r
 }
 
-// Filter the results by a list of transaction UUIDs.  To include multiple IDs, repeat the parameter for each one, for example,  &#x60;?transactionUUIDs&#x3D;uuid1&amp;transactionUUIDs&#x3D;uuid2&#x60;.  The response contains only data associated with the specified transactions.
+// Filter the results by a list of transaction UUIDs.  To include multiple IDs, repeat the parameter for each one, for example, &#x60;?transactionUUIDs&#x3D;uuid1&amp;transactionUUIDs&#x3D;uuid2&#x60;.  The response contains only data associated with the specified transactions.
 func (r ApiGetLoyaltyCardPointsRequest) TransactionUUIDs(transactionUUIDs []string) ApiGetLoyaltyCardPointsRequest {
 	r.transactionUUIDs = &transactionUUIDs
 	return r
@@ -3124,7 +3124,7 @@ func (r ApiGetLoyaltyCardPointsRequest) Skip(skip int64) ApiGetLoyaltyCardPoints
 	return r
 }
 
-// The field by which results should be sorted. You can enter one of the following values:  - &#x60;startDate&#x60;: Sorts the results by the start date of the points. - &#x60;expiryDate&#x60;: Sorts the results by the expiry date of the points.  By default, results are sorted in ascending order.  To sort them in descending order, prefix the field name with &#x60;-&#x60;.  **Note:** You can only sort by one field at a time.
+// The field by which results should be sorted. You can enter one of the following values:  - &#x60;startDate&#x60;: Sorts the results by the start date of the points. - &#x60;expiryDate&#x60;: Sorts the results by the expiry date of the points.  By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with &#x60;-&#x60;.  **Note:** You can only sort by one field at a time.
 func (r ApiGetLoyaltyCardPointsRequest) Sort(sort string) ApiGetLoyaltyCardPointsRequest {
 	r.sort = &sort
 	return r
@@ -3146,7 +3146,7 @@ You can filter points by status:
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param loyaltyProgramId Identifier of the card-based loyalty program containing the loyalty card. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
-	@param loyaltyCardId Identifier of the loyalty card. You can get the identifier with the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.
+	@param loyaltyCardId Identifier of the loyalty card. You can get the identifier with the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.  **Important**: The loyalty card ID requires [URL encoding](https://www.w3schools.com/tags//ref_urlencode.asp) if it contains special characters. For example, you must encode `NewCard2026%` as `NewCard2026%25`.
 	@return ApiGetLoyaltyCardPointsRequest
 */
 func (a *IntegrationAPIService) GetLoyaltyCardPoints(ctx context.Context, loyaltyProgramId int64, loyaltyCardId string) ApiGetLoyaltyCardPointsRequest {
@@ -3381,13 +3381,13 @@ func (r ApiGetLoyaltyCardTransactionsRequest) EndDate(endDate time.Time) ApiGetL
 	return r
 }
 
-// Filter the results by a list of customer session IDs.   To include multiple IDs, repeat the parameter for each one, for example,  &#x60;?customerSessionIDs&#x3D;id1&amp;customerSessionIDs&#x3D;id2&#x60;.  The response contains only data associated with the specified sessions.
+// Filter the results by a list of customer session IDs.  To include multiple IDs, repeat the parameter for each one, for example, &#x60;?customerSessionIDs&#x3D;id1&amp;customerSessionIDs&#x3D;id2&#x60;.  The response contains only data associated with the specified sessions.
 func (r ApiGetLoyaltyCardTransactionsRequest) CustomerSessionIDs(customerSessionIDs []string) ApiGetLoyaltyCardTransactionsRequest {
 	r.customerSessionIDs = &customerSessionIDs
 	return r
 }
 
-// Filter the results by a list of transaction UUIDs.  To include multiple IDs, repeat the parameter for each one, for example,  &#x60;?transactionUUIDs&#x3D;uuid1&amp;transactionUUIDs&#x3D;uuid2&#x60;.  The response contains only data associated with the specified transactions.
+// Filter the results by a list of transaction UUIDs.  To include multiple IDs, repeat the parameter for each one, for example, &#x60;?transactionUUIDs&#x3D;uuid1&amp;transactionUUIDs&#x3D;uuid2&#x60;.  The response contains only data associated with the specified transactions.
 func (r ApiGetLoyaltyCardTransactionsRequest) TransactionUUIDs(transactionUUIDs []string) ApiGetLoyaltyCardTransactionsRequest {
 	r.transactionUUIDs = &transactionUUIDs
 	return r
@@ -3423,7 +3423,7 @@ If no filtering options are applied, the last 50 loyalty transactions for the gi
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param loyaltyProgramId Identifier of the card-based loyalty program containing the loyalty card. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
-	@param loyaltyCardId Identifier of the loyalty card. You can get the identifier with the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.
+	@param loyaltyCardId Identifier of the loyalty card. You can get the identifier with the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.  **Important**: The loyalty card ID requires [URL encoding](https://www.w3schools.com/tags//ref_urlencode.asp) if it contains special characters. For example, you must encode `NewCard2026%` as `NewCard2026%25`.
 	@return ApiGetLoyaltyCardTransactionsRequest
 */
 func (a *IntegrationAPIService) GetLoyaltyCardTransactions(ctx context.Context, loyaltyProgramId int64, loyaltyCardId string) ApiGetLoyaltyCardTransactionsRequest {
@@ -4324,7 +4324,7 @@ This affects how it can be used. See the [docs](https://docs.talon.one/docs/prod
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param loyaltyProgramId Identifier of the card-based loyalty program containing the loyalty card. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
-	@param loyaltyCardId Identifier of the loyalty card. You can get the identifier with the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.
+	@param loyaltyCardId Identifier of the loyalty card. You can get the identifier with the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.  **Important**: The loyalty card ID requires [URL encoding](https://www.w3schools.com/tags//ref_urlencode.asp) if it contains special characters. For example, you must encode `NewCard2026%` as `NewCard2026%25`.
 	@return ApiLinkLoyaltyCardToProfileRequest
 */
 func (a *IntegrationAPIService) LinkLoyaltyCardToProfile(ctx context.Context, loyaltyProgramId int64, loyaltyCardId string) ApiLinkLoyaltyCardToProfileRequest {
@@ -5639,7 +5639,7 @@ endpoint.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param loyaltyProgramId The identifier of the card-based loyalty program containing the loyalty card. You can get this ID using the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
-	@param loyaltyCardId The identifier of the loyalty card. You can get this ID using the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.
+	@param loyaltyCardId The identifier of the loyalty card. You can get this ID using the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.  **Important**: The loyalty card ID requires [URL encoding](https://www.w3schools.com/tags//ref_urlencode.asp) if it contains special characters. For example, you must encode `NewCard2026%` as `NewCard2026%25`.
 	@return ApiUnlinkLoyaltyCardFromProfileRequest
 */
 func (a *IntegrationAPIService) UnlinkLoyaltyCardFromProfile(ctx context.Context, loyaltyProgramId int64, loyaltyCardId string) ApiUnlinkLoyaltyCardFromProfileRequest {

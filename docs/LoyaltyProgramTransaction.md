@@ -15,7 +15,7 @@ Name | Type | Description | Notes
 **StartDate** | **string** | When points become active. Possible values:   - &#x60;immediate&#x60;: Points are immediately active.   - &#x60;on_action&#x60;: Points become active based on the customer&#39;s action.   - a timestamp value: Points become active at a given date and time.  | 
 **ExpiryDate** | **string** | When points expire. Possible values:   - &#x60;unlimited&#x60;: Points have no expiration date.   - a timestamp value: Points expire at a given date and time.  | 
 **CustomerProfileId** | Pointer to **string** | Customer profile integration ID used in the loyalty program. | [optional] 
-**CardIdentifier** | Pointer to **string** | The alphanumeric identifier of the loyalty card.  | [optional] 
+**CardIdentifier** | Pointer to **string** | The identifier of the loyalty card, which must match the regular expression &#x60;^[A-Za-z0-9._%+@-]+$&#x60;.  | [optional] 
 **SubledgerId** | **string** | ID of the subledger. | 
 **CustomerSessionId** | Pointer to **string** | ID of the customer session where the transaction occurred. | [optional] 
 **ImportId** | Pointer to **int64** | ID of the import where the transaction occurred. | [optional] 

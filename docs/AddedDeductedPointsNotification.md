@@ -14,15 +14,16 @@ Name | Type | Description | Notes
 **UserID** | **int64** | The ID of the employee who added or deducted points. | 
 **Amount** | **float32** | The amount of added or deducted loyalty points. | 
 **ExpiryDate** | Pointer to **time.Time** | The expiration date for loyalty points. | [optional] 
-**Operation** | **string** | The action (addition or deduction) made with loyalty points. | 
+**Operation** | **string** | The action (addition or subtraction) made with loyalty points. | 
 **Reason** | **string** | The reason for the points addition or deduction. | 
 **StartDate** | Pointer to **time.Time** | The start date for loyalty points. | [optional] 
+**TransactionUUID** | **string** | The identifier of the transaction in the loyalty ledger. | 
 
 ## Methods
 
 ### NewAddedDeductedPointsNotification
 
-`func NewAddedDeductedPointsNotification(employeeName string, loyaltyProgramID int64, notificationType string, profileIntegrationID string, sessionIntegrationID string, subledgerID string, typeOfChange string, userID int64, amount float32, operation string, reason string, ) *AddedDeductedPointsNotification`
+`func NewAddedDeductedPointsNotification(employeeName string, loyaltyProgramID int64, notificationType string, profileIntegrationID string, sessionIntegrationID string, subledgerID string, typeOfChange string, userID int64, amount float32, operation string, reason string, transactionUUID string, ) *AddedDeductedPointsNotification`
 
 NewAddedDeductedPointsNotification instantiates a new AddedDeductedPointsNotification object
 This constructor will assign default values to properties that have it defined,
@@ -306,6 +307,26 @@ SetStartDate sets StartDate field to given value.
 `func (o *AddedDeductedPointsNotification) HasStartDate() bool`
 
 HasStartDate returns a boolean if a field has been set.
+
+### GetTransactionUUID
+
+`func (o *AddedDeductedPointsNotification) GetTransactionUUID() string`
+
+GetTransactionUUID returns the TransactionUUID field if non-nil, zero value otherwise.
+
+### GetTransactionUUIDOk
+
+`func (o *AddedDeductedPointsNotification) GetTransactionUUIDOk() (*string, bool)`
+
+GetTransactionUUIDOk returns a tuple with the TransactionUUID field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTransactionUUID
+
+`func (o *AddedDeductedPointsNotification) SetTransactionUUID(v string)`
+
+SetTransactionUUID sets TransactionUUID field to given value.
+
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

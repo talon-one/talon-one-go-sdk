@@ -28,8 +28,8 @@ type CardLedgerTransactionLogEntryIntegrationAPI struct {
 	Created time.Time `json:"created"`
 	// ID of the loyalty program.
 	ProgramId int64 `json:"programId"`
-	// The alphanumeric identifier of the loyalty card.
-	CardIdentifier string `json:"cardIdentifier" validate:"regexp=^[A-Za-z0-9_-]*$"`
+	// The identifier of the loyalty card, which must match the regular expression `^[A-Za-z0-9._%+@-]+$`.
+	CardIdentifier string `json:"cardIdentifier" validate:"regexp=^[A-Za-z0-9._%+@-]+$"`
 	// ID of the customer session where the transaction occurred.
 	CustomerSessionId *string `json:"customerSessionId,omitempty"`
 	// Type of transaction. Possible values:   - `addition`: Signifies added points.   - `subtraction`: Signifies deducted points.

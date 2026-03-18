@@ -29,7 +29,7 @@ type ExpiringCardPointsData struct {
 	AmountOfExpiringPoints float32 `json:"AmountOfExpiringPoints"`
 	// The ID of the subledger within the loyalty program where these points were added.
 	SubledgerID string `json:"SubledgerID"`
-	// The alphanumeric identifier of the loyalty card.
+	// The identifier of the loyalty card, `which must match the regular expression `^[A-Za-z0-9._%+@-]+$`.
 	CardIdentifier string `json:"CardIdentifier"`
 	// The maximum number of customer profiles with which a card can be shared. This can be set to `0` for no limit.
 	UsersPerCardLimit int64 `json:"UsersPerCardLimit"`
