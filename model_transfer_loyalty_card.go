@@ -21,8 +21,8 @@ var _ MappedNullable = &TransferLoyaltyCard{}
 
 // TransferLoyaltyCard struct for TransferLoyaltyCard
 type TransferLoyaltyCard struct {
-	// The alphanumeric identifier of the loyalty card.
-	NewCardIdentifier string `json:"newCardIdentifier" validate:"regexp=^[A-Za-z0-9_-]*$"`
+	// The identifier of the loyalty card, which must match the regular expression `^[A-Za-z0-9._%+@-]+$`.
+	NewCardIdentifier string `json:"newCardIdentifier" validate:"regexp=^[A-Za-z0-9._%+@-]+$"`
 	// Reason for transferring and blocking the loyalty card.
 	BlockReason *string `json:"blockReason,omitempty"`
 }

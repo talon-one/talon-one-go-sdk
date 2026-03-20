@@ -44,8 +44,8 @@ type LoyaltyProgramTransaction struct {
 	ExpiryDate string `json:"expiryDate"`
 	// Customer profile integration ID used in the loyalty program.
 	CustomerProfileId *string `json:"customerProfileId,omitempty"`
-	// The alphanumeric identifier of the loyalty card.
-	CardIdentifier *string `json:"cardIdentifier,omitempty" validate:"regexp=^[A-Za-z0-9_-]*$"`
+	// The identifier of the loyalty card, which must match the regular expression `^[A-Za-z0-9._%+@-]+$`.
+	CardIdentifier *string `json:"cardIdentifier,omitempty" validate:"regexp=^[A-Za-z0-9._%+@-]+$"`
 	// ID of the subledger.
 	SubledgerId string `json:"subledgerId"`
 	// ID of the customer session where the transaction occurred.

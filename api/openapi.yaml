@@ -903,7 +903,14 @@ paths:
         style: simple
       - description: |
           Identifier of the loyalty card. You can get the identifier with
-          the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.
+          the [List loyalty
+          cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards)
+          endpoint.
+
+          **Important**: The loyalty card ID requires [URL
+          encoding](https://www.w3schools.com/tags//ref_urlencode.asp) if it
+          contains special characters. For example, you must encode `NewCard2026%`
+          as `NewCard2026%25`.
         explode: false
         in: path
         name: loyaltyCardId
@@ -971,7 +978,14 @@ paths:
           type: integer
         style: simple
       - description: |
-          The identifier of the loyalty card. You can get this ID using the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.
+          The identifier of the loyalty card. You can get this ID using the [List loyalty
+          cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards)
+          endpoint.
+
+          **Important**: The loyalty card ID requires [URL
+          encoding](https://www.w3schools.com/tags//ref_urlencode.asp) if it
+          contains special characters. For example, you must encode `NewCard2026%`
+          as `NewCard2026%25`.
         explode: false
         in: path
         name: loyaltyCardId
@@ -1738,7 +1752,14 @@ paths:
         style: simple
       - description: |
           Identifier of the loyalty card. You can get the identifier with
-          the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.
+          the [List loyalty
+          cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards)
+          endpoint.
+
+          **Important**: The loyalty card ID requires [URL
+          encoding](https://www.w3schools.com/tags//ref_urlencode.asp) if it
+          contains special characters. For example, you must encode `NewCard2026%`
+          as `NewCard2026%25`.
         explode: false
         in: path
         name: loyaltyCardId
@@ -2058,7 +2079,14 @@ paths:
         style: simple
       - description: |
           Identifier of the loyalty card. You can get the identifier with
-          the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.
+          the [List loyalty
+          cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards)
+          endpoint.
+
+          **Important**: The loyalty card ID requires [URL
+          encoding](https://www.w3schools.com/tags//ref_urlencode.asp) if it
+          contains special characters. For example, you must encode `NewCard2026%`
+          as `NewCard2026%25`.
         explode: false
         in: path
         name: loyaltyCardId
@@ -2124,10 +2152,13 @@ paths:
           format: date-time
           type: string
         style: form
-      - description: "Filter the results by a list of customer session IDs. \n\nTo\
-          \ include multiple IDs, repeat the parameter for each one, for example,\
-          \ \n`?customerSessionIDs=id1&customerSessionIDs=id2`.\n\nThe response contains\
-          \ only data associated with the specified sessions.\n"
+      - description: |
+          Filter the results by a list of customer session IDs.
+
+          To include multiple IDs, repeat the parameter for each one, for example,
+          `?customerSessionIDs=id1&customerSessionIDs=id2`.
+
+          The response contains only data associated with the specified sessions.
         explode: true
         in: query
         name: customerSessionIDs
@@ -2137,9 +2168,13 @@ paths:
             type: string
           type: array
         style: form
-      - description: "Filter the results by a list of transaction UUIDs.\n\nTo include\
-          \ multiple IDs, repeat the parameter for each one, for example, \n`?transactionUUIDs=uuid1&transactionUUIDs=uuid2`.\n\
-          \nThe response contains only data associated with the specified transactions.\n"
+      - description: |
+          Filter the results by a list of transaction UUIDs.
+
+          To include multiple IDs, repeat the parameter for each one, for example,
+          `?transactionUUIDs=uuid1&transactionUUIDs=uuid2`.
+
+          The response contains only data associated with the specified transactions.
         explode: true
         in: query
         name: transactionUUIDs
@@ -2626,7 +2661,14 @@ paths:
         style: simple
       - description: |
           Identifier of the loyalty card. You can get the identifier with
-          the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.
+          the [List loyalty
+          cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards)
+          endpoint.
+
+          **Important**: The loyalty card ID requires [URL
+          encoding](https://www.w3schools.com/tags//ref_urlencode.asp) if it
+          contains special characters. For example, you must encode `NewCard2026%`
+          as `NewCard2026%25`.
         explode: false
         in: path
         name: loyaltyCardId
@@ -2659,10 +2701,13 @@ paths:
             type: string
           type: array
         style: form
-      - description: "Filter the results by a list of customer session IDs. \n\nTo\
-          \ include multiple IDs, repeat the parameter for each one, for example,\
-          \ \n`?customerSessionIDs=id1&customerSessionIDs=id2`.\n\nThe response contains\
-          \ only data associated with the specified sessions.\n"
+      - description: |
+          Filter the results by a list of customer session IDs.
+
+          To include multiple IDs, repeat the parameter for each one, for example,
+          `?customerSessionIDs=id1&customerSessionIDs=id2`.
+
+          The response contains only data associated with the specified sessions.
         explode: true
         in: query
         name: customerSessionIDs
@@ -2672,9 +2717,13 @@ paths:
             type: string
           type: array
         style: form
-      - description: "Filter the results by a list of transaction UUIDs.\n\nTo include\
-          \ multiple IDs, repeat the parameter for each one, for example, \n`?transactionUUIDs=uuid1&transactionUUIDs=uuid2`.\n\
-          \nThe response contains only data associated with the specified transactions.\n"
+      - description: |
+          Filter the results by a list of transaction UUIDs.
+
+          To include multiple IDs, repeat the parameter for each one, for example,
+          `?transactionUUIDs=uuid1&transactionUUIDs=uuid2`.
+
+          The response contains only data associated with the specified transactions.
         explode: true
         in: query
         name: transactionUUIDs
@@ -2697,12 +2746,16 @@ paths:
           type: integer
         style: form
       - $ref: "#/components/parameters/skip"
-      - description: "The field by which results should be sorted. You can enter one\
-          \ of the following values:\n\n- `startDate`: Sorts the results by the start\
-          \ date of the points.\n- `expiryDate`: Sorts the results by the expiry date\
-          \ of the points.\n\nBy default, results are sorted in ascending order. \n\
-          To sort them in descending order, prefix the field name with `-`.\n\n**Note:**\
-          \ You can only sort by one field at a time.\n"
+      - description: |
+          The field by which results should be sorted. You can enter one of the following values:
+
+          - `startDate`: Sorts the results by the start date of the points.
+          - `expiryDate`: Sorts the results by the expiry date of the points.
+
+          By default, results are sorted in ascending order.
+          To sort them in descending order, prefix the field name with `-`.
+
+          **Note:** You can only sort by one field at a time.
         explode: true
         in: query
         name: sort
@@ -5482,18 +5535,17 @@ paths:
 
         It contains the following columns for each card:
 
-        - `identifier` (required): The alphanumeric identifier of the loyalty card.
+        - `identifier` (required): The identifier of the loyalty card,  which must match the regular expression `^[A-Za-z0-9._%+@-]+$`.
         - `state` (required): The state of the loyalty card. It can be `active` or `inactive`.
         - `customerprofileids` (optional): An array of strings representing the identifiers of the customer profiles linked to the loyalty card. The identifiers should be separated with a semicolon (;).
-        - `attributes` (optional): A JSON object that contains the loyalty card's custom attributes and their values. These attributes must be created and connected to this loyalty program before  they can be assigned to the cards through this endpoint.
 
         **Note:** We recommend limiting your file size to 500MB.
 
         **Example:**
 
         ```csv
-        identifier,state,customerprofileids,attributes
-        123-456-789AT,active,Alexa001;UserA,"{""my_attribute"": ""10_off""}"
+        identifier,state,customerprofileids
+        123-456-789AT,active,Alexa001;UserA
         ```
       operationId: importLoyaltyCards
       parameters:
@@ -5605,7 +5657,7 @@ paths:
         The CSV file contains the following columns:
         - `loyaltyProgramID`: The ID of the loyalty program.
         - `loyaltySubledger`: The name of the subdleger, when applicatble.
-        - `cardIdentifier`: The alphanumeric identifier of the loyalty card.
+        - `cardIdentifier`: The identifier of the loyalty card, which must match the regular expression `^[A-Za-z0-9._%+@-]+$`.
         - `cardState`:The state of the loyalty card. It can be `active` or `inactive`.
         - `currentBalance`: The current point balance.
         - `pendingBalance`: The number of pending points.
@@ -5687,7 +5739,13 @@ paths:
           format: int64
           type: integer
         style: simple
-      - description: The card code by which to filter loyalty cards in the response.
+      - description: |
+          The card code by which to filter loyalty cards in the response.
+
+          **Important**: The loyalty card ID requires [URL
+          encoding](https://www.w3schools.com/tags//ref_urlencode.asp) if it
+          contains special characters. For example, you must encode `NewCard2026%`
+          as `NewCard2026%25`.
         explode: true
         in: query
         name: identifier
@@ -5918,7 +5976,14 @@ paths:
         style: simple
       - description: |
           Identifier of the loyalty card. You can get the identifier with
-          the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.
+          the [List loyalty
+          cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards)
+          endpoint.
+
+          **Important**: The loyalty card ID requires [URL
+          encoding](https://www.w3schools.com/tags//ref_urlencode.asp) if it
+          contains special characters. For example, you must encode `NewCard2026%`
+          as `NewCard2026%25`.
         explode: false
         in: path
         name: loyaltyCardId
@@ -5963,7 +6028,14 @@ paths:
         style: simple
       - description: |
           Identifier of the loyalty card. You can get the identifier with
-          the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.
+          the [List loyalty
+          cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards)
+          endpoint.
+
+          **Important**: The loyalty card ID requires [URL
+          encoding](https://www.w3schools.com/tags//ref_urlencode.asp) if it
+          contains special characters. For example, you must encode `NewCard2026%`
+          as `NewCard2026%25`.
         explode: false
         in: path
         name: loyaltyCardId
@@ -6002,9 +6074,9 @@ paths:
       tags:
       - management
     put:
-      description: 'Update the details of a specific loyalty card. You can set the
-        card''s status to `active` or `inactive` through this endpoint. At least one
-        of `status` or `attributes` must be provided. '
+      description: Update the details of a specific loyalty card. You can set the
+        card's status to `active` or `inactive` through this endpoint. At least one
+        of `status` or `attributes` must be provided.
       operationId: updateLoyaltyCard
       parameters:
       - description: |
@@ -6020,7 +6092,14 @@ paths:
         style: simple
       - description: |
           Identifier of the loyalty card. You can get the identifier with
-          the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.
+          the [List loyalty
+          cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards)
+          endpoint.
+
+          **Important**: The loyalty card ID requires [URL
+          encoding](https://www.w3schools.com/tags//ref_urlencode.asp) if it
+          contains special characters. For example, you must encode `NewCard2026%`
+          as `NewCard2026%25`.
         explode: false
         in: path
         name: loyaltyCardId
@@ -6072,8 +6151,15 @@ paths:
       operationId: addLoyaltyCardPoints
       parameters:
       - description: |
-          Identifier of the card-based loyalty program containing the loyalty card. You can get the ID with
-          the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
+          Identifier of the card-based loyalty program containing the loyalty
+          card. You can get the ID with the [List loyalty
+          programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms)
+          endpoint.
+
+          **Important**: The loyalty card ID requires [URL
+          encoding](https://www.w3schools.com/tags//ref_urlencode.asp) if it
+          contains special characters. For example, you must encode `NewCard2026%`
+          as `NewCard2026%25`.
         explode: false
         in: path
         name: loyaltyProgramId
@@ -6083,8 +6169,7 @@ paths:
           type: integer
         style: simple
       - description: |
-          Identifier of the loyalty card. You can get the identifier with
-          the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.
+          Identifier of the loyalty card. You can get the identifier with the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.
         explode: false
         in: path
         name: loyaltyCardId
@@ -6139,7 +6224,14 @@ paths:
         style: simple
       - description: |
           Identifier of the loyalty card. You can get the identifier with
-          the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.
+          the [List loyalty
+          cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards)
+          endpoint.
+
+          **Important**: The loyalty card ID requires [URL
+          encoding](https://www.w3schools.com/tags//ref_urlencode.asp) if it
+          contains special characters. For example, you must encode `NewCard2026%`
+          as `NewCard2026%25`.
         explode: false
         in: path
         name: loyaltyCardId
@@ -6196,7 +6288,14 @@ paths:
         style: simple
       - description: |
           Identifier of the loyalty card. You can get the identifier with
-          the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.
+          the [List loyalty
+          cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards)
+          endpoint.
+
+          **Important**: The loyalty card ID requires [URL
+          encoding](https://www.w3schools.com/tags//ref_urlencode.asp) if it
+          contains special characters. For example, you must encode `NewCard2026%`
+          as `NewCard2026%25`.
         explode: false
         in: path
         name: loyaltyCardId
@@ -6289,7 +6388,14 @@ paths:
         style: simple
       - description: |
           Identifier of the loyalty card. You can get the identifier with
-          the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.
+          the [List loyalty
+          cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards)
+          endpoint.
+
+          **Important**: The loyalty card ID requires [URL
+          encoding](https://www.w3schools.com/tags//ref_urlencode.asp) if it
+          contains special characters. For example, you must encode `NewCard2026%`
+          as `NewCard2026%25`.
         explode: false
         in: path
         name: loyaltyCardId
@@ -6339,10 +6445,13 @@ paths:
         schema:
           type: string
         style: form
-      - description: "Filter the results by a list of customer session IDs. \n\nTo\
-          \ include multiple IDs, repeat the parameter for each one, for example,\
-          \ \n`?customerSessionIDs=id1&customerSessionIDs=id2`.\n\nThe response contains\
-          \ only data associated with the specified sessions.\n"
+      - description: |
+          Filter the results by a list of customer session IDs.
+
+          To include multiple IDs, repeat the parameter for each one, for example,
+          `?customerSessionIDs=id1&customerSessionIDs=id2`.
+
+          The response contains only data associated with the specified sessions.
         explode: true
         in: query
         name: customerSessionIDs
@@ -6352,9 +6461,13 @@ paths:
             type: string
           type: array
         style: form
-      - description: "Filter the results by a list of transaction UUIDs.\n\nTo include\
-          \ multiple IDs, repeat the parameter for each one, for example, \n`?transactionUUIDs=uuid1&transactionUUIDs=uuid2`.\n\
-          \nThe response contains only data associated with the specified transactions.\n"
+      - description: |
+          Filter the results by a list of transaction UUIDs.
+
+          To include multiple IDs, repeat the parameter for each one, for example,
+          `?transactionUUIDs=uuid1&transactionUUIDs=uuid2`.
+
+          The response contains only data associated with the specified transactions.
         explode: true
         in: query
         name: transactionUUIDs
@@ -6410,7 +6523,14 @@ paths:
         style: simple
       - description: |
           Identifier of the loyalty card. You can get the identifier with
-          the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.
+          the [List loyalty
+          cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards)
+          endpoint.
+
+          **Important**: The loyalty card ID requires [URL
+          encoding](https://www.w3schools.com/tags//ref_urlencode.asp) if it
+          contains special characters. For example, you must encode `NewCard2026%`
+          as `NewCard2026%25`.
         explode: false
         in: path
         name: loyaltyCardId
@@ -7794,7 +7914,21 @@ paths:
       - $ref: "#/components/parameters/pageSize"
       - $ref: "#/components/parameters/skip"
       - $ref: "#/components/parameters/sort"
-      - description: Profile integration ID filter for sessions. Must be exact match.
+      - description: |-
+          Enables partial matching for a single text search field. When enabled, the search term matches anywhere within the field value (case-insensitive). Minimum 3 characters required for partial matches; shorter inputs automatically fall back to exact match.
+
+          **Note:** Use with one of: `integrationId`, `profile`, `coupon`, `referral`, or `storeIntegrationId`.
+        explode: true
+        in: query
+        name: partialMatch
+        required: false
+        schema:
+          default: false
+          type: boolean
+        style: form
+      - description: "Filter by sessions with this profile integration ID. By default,\
+          \ requires exact match. Use `partialMatch=true` to search for partial matches\
+          \ (minimum 3 characters)."
         explode: true
         in: query
         name: profile
@@ -7835,7 +7969,9 @@ paths:
           format: date-time
           type: string
         style: form
-      - description: Filter by sessions with this coupon. Must be exact match.
+      - description: "Filter by sessions with this coupon. By default, requires exact\
+          \ match. Use `partialMatch=true` to search for partial matches (minimum\
+          \ 3 characters)."
         explode: true
         in: query
         name: coupon
@@ -7843,7 +7979,9 @@ paths:
         schema:
           type: string
         style: form
-      - description: Filter by sessions with this referral. Must be exact match.
+      - description: "Filter by sessions with this referral. By default, requires\
+          \ exact match. Use `partialMatch=true` to search for partial matches (minimum\
+          \ 3 characters)."
         explode: true
         in: query
         name: referral
@@ -7851,7 +7989,9 @@ paths:
         schema:
           type: string
         style: form
-      - description: Filter by sessions with this integration ID. Must be exact match.
+      - description: "Filter by sessions with this integration ID. By default, requires\
+          \ exact match. Use `partialMatch=true` to search for partial matches (minimum\
+          \ 3 characters)."
         explode: true
         in: query
         name: integrationId
@@ -7859,8 +7999,9 @@ paths:
         schema:
           type: string
         style: form
-      - description: The integration ID of the store. You choose this ID when you
-          create a store.
+      - description: "The integration ID of the store. You choose this ID when you\
+          \ create a store. By default, requires exact match. Use `partialMatch=true`\
+          \ to search for partial matches (minimum 3 characters)."
         explode: true
         in: query
         name: storeIntegrationId
@@ -11774,7 +11915,7 @@ paths:
         **Tip:** If the exported CSV file is too large to view, you can [split it into multiple files](https://www.makeuseof.com/tag/how-to-split-a-huge-csv-excel-workbook-into-seperate-files/).
 
         The CSV file contains the following columns:
-        - `campaign_id`: The ID of the campaign. This column also contains labels for the [total and influenced values](https://docs.talon.one/docs/product/campaigns/analytics/application-dashboard#understanding-the-analytics-data).
+        - `campaign_id`: The ID of the campaign. This column also contains labels for the [total and influenced values](https://docs.talon.one/docs/product/campaigns/analytics/application-dashboard#display-the-analytics-data).
         - `start_date`: The start of the aggregation time frame in UTC.
         - `end_date`: The end of the aggregation time frame in UTC.
         - `revenue`: The total, pre-discount value of all items purchased in a customer session.
@@ -11974,6 +12115,16 @@ paths:
       - management
 components:
   parameters:
+    skip:
+      description: The number of items to skip when paging through large result sets.
+      explode: true
+      in: query
+      name: skip
+      required: false
+      schema:
+        format: int64
+        type: integer
+      style: form
     applicationId:
       description: The ID of the Application. It is displayed in your Talon.One deployment
         URL.
@@ -12007,16 +12158,6 @@ components:
         format: int64
         maximum: 1000
         minimum: 1
-        type: integer
-      style: form
-    skip:
-      description: The number of items to skip when paging through large result sets.
-      explode: true
-      in: query
-      name: skip
-      required: false
-      schema:
-        format: int64
         type: integer
       style: form
     sort:
@@ -13710,11 +13851,11 @@ components:
       - webhookName
     LoyaltyCardIdentifier:
       description: |
-        The alphanumeric identifier of the loyalty card.
+        The identifier of the loyalty card, which must match the regular expression `^[A-Za-z0-9._%+@-]+$`.
       example: summer-loyalty-card-0543
       maxLength: 108
       minLength: 4
-      pattern: "^[A-Za-z0-9_-]*$"
+      pattern: "^[A-Za-z0-9._%+@-]+$"
       type: string
     AddLoyaltyPointsEffectProps:
       description: |
@@ -15413,7 +15554,7 @@ components:
           example: SUMMER-####-####
           maxLength: 100
           minLength: 3
-          pattern: "^[A-Za-z0-9_#-]*$"
+          pattern: "^[A-Za-z0-9._%+@#-]+$"
           type: string
       required:
       - couponPattern
@@ -18745,6 +18886,79 @@ components:
           items:
             $ref: "#/components/schemas/IntegrationCustomerProfileAudienceRequestItem"
           type: array
+    IntegrationCampaign:
+      allOf:
+      - properties:
+          id:
+            description: Unique ID of Campaign.
+            example: 4
+            format: int64
+            type: integer
+        required:
+        - id
+      - $ref: "#/components/schemas/ApplicationEntity"
+      - properties:
+          name:
+            description: A user-facing name for this campaign.
+            example: Summer promotions
+            minLength: 1
+            title: Campaign Name
+            type: string
+          description:
+            description: A detailed description of the campaign.
+            example: Campaign for all summer 2021 promotions
+            title: Campaign Description
+            type: string
+          startTime:
+            description: Timestamp when the campaign will become active.
+            example: 2021-07-20T22:00:00Z
+            format: date-time
+            type: string
+          endTime:
+            description: Timestamp when the campaign will become inactive.
+            example: 2021-09-22T22:00:00Z
+            format: date-time
+            type: string
+          attributes:
+            $ref: "#/components/schemas/IntegrationCampaign_allOf_attributes"
+          state:
+            default: enabled
+            description: |
+              The state of the campaign.
+            enum:
+            - enabled
+            example: enabled
+            type: string
+          tags:
+            description: A list of tags for the campaign.
+            example:
+            - summer
+            items:
+              maxLength: 50
+              minLength: 1
+              type: string
+            maxItems: 50
+            type: array
+          features:
+            description: The features enabled in this campaign.
+            example:
+            - coupons
+            - referrals
+            items:
+              enum:
+              - coupons
+              - referrals
+              - loyalty
+              - giveaways
+              - strikethrough
+              - achievements
+              type: string
+            type: array
+        required:
+        - features
+        - name
+        - state
+        - tags
     NewAttribute:
       allOf:
       - properties:
@@ -21499,11 +21713,11 @@ components:
           type: integer
         cardIdentifier:
           description: |
-            The alphanumeric identifier of the loyalty card.
+            The identifier of the loyalty card, which must match the regular expression `^[A-Za-z0-9._%+@-]+$`.
           example: summer-loyalty-card-0543
           maxLength: 108
           minLength: 4
-          pattern: "^[A-Za-z0-9_-]*$"
+          pattern: "^[A-Za-z0-9._%+@-]+$"
           type: string
         customerSessionId:
           description: ID of the customer session where the transaction occurred.
@@ -23606,6 +23820,8 @@ components:
           example: 1EuroOff
           type: string
         value: {}
+        excludeFromBestPriorPriceHistory:
+          type: boolean
       required:
       - name
       - value
@@ -27746,11 +27962,11 @@ components:
           type: string
         cardIdentifier:
           description: |
-            The alphanumeric identifier of the loyalty card.
+            The identifier of the loyalty card, which must match the regular expression `^[A-Za-z0-9._%+@-]+$`.
           example: summer-loyalty-card-0543
           maxLength: 108
           minLength: 4
-          pattern: "^[A-Za-z0-9_-]*$"
+          pattern: "^[A-Za-z0-9._%+@-]+$"
           type: string
         subledgerId:
           description: ID of the subledger.
@@ -27929,11 +28145,11 @@ components:
           type: array
         cardIdentifier:
           description: |
-            The alphanumeric identifier of the loyalty card.
+            The identifier of the loyalty card, which must match the regular expression `^[A-Za-z0-9._%+@-]+$`.
           example: summer-loyalty-card-0543
           maxLength: 108
           minLength: 4
-          pattern: "^[A-Za-z0-9_-]*$"
+          pattern: "^[A-Za-z0-9._%+@-]+$"
           type: string
     CardLedgerTransactionLogEntry:
       description: Log entry for a given loyalty card transaction.
@@ -27969,11 +28185,11 @@ components:
           type: integer
         cardIdentifier:
           description: |
-            The alphanumeric identifier of the loyalty card.
+            The identifier of the loyalty card, which must match the regular expression `^[A-Za-z0-9._%+@-]+$`.
           example: summer-loyalty-card-0543
           maxLength: 108
           minLength: 4
-          pattern: "^[A-Za-z0-9_-]*$"
+          pattern: "^[A-Za-z0-9._%+@-]+$"
           type: string
         applicationId:
           description: The ID of the Application that owns this entity.
@@ -28055,11 +28271,11 @@ components:
       properties:
         newCardIdentifier:
           description: |
-            The alphanumeric identifier of the loyalty card.
+            The identifier of the loyalty card, which must match the regular expression `^[A-Za-z0-9._%+@-]+$`.
           example: summer-loyalty-card-0543
           maxLength: 108
           minLength: 4
-          pattern: "^[A-Za-z0-9_-]*$"
+          pattern: "^[A-Za-z0-9._%+@-]+$"
           type: string
         blockReason:
           description: |
@@ -28648,7 +28864,7 @@ components:
           description: |
             One-word summary of the health of the API connection of an application. Possible values are:
             - `OK`: The Application has received only successful API requests in the last 5 minutes.
-            - `WARNING`: The Application received at least one failed request in the last 50 minutes.
+            - `WARNING`: The Application received at least one failed request in the last 5 minutes.
             - `ERROR`: More than 50% of received requests failed.
             - `CRITICAL`: All received requests failed.
             - `NONE`: During the last 5 minutes, the Application hasn't recorded any integration API requests.
@@ -31845,7 +32061,7 @@ components:
             format: int64
             type: integer
           attributes:
-            $ref: "#/components/schemas/Account_allOf_attributes"
+            $ref: "#/components/schemas/IntegrationCampaign_allOf_attributes"
         required:
         - applicationCount
         - billingEmail
@@ -33254,6 +33470,207 @@ components:
         allowRollbackAfterCompletion: false
         target: 50
         recurrencePolicy: no_recurrence
+    AchievementBaseV2:
+      properties:
+        name:
+          description: |
+            The internal name of the achievement used in API requests.
+
+            **Note**: The name should start with a letter. This cannot be changed after the achievement has been created.
+          example: Order50Discount
+          maxLength: 1000
+          minLength: 1
+          pattern: "^[a-zA-Z]\\w+$"
+          type: string
+        title:
+          description: The display name for the achievement in the Campaign Manager.
+          example: 50% off on 50th purchase.
+          type: string
+        description:
+          description: A description of the achievement.
+          example: 50% off for every 50th purchase in a year.
+          format: string
+          type: string
+        target:
+          description: The required number of actions or the transactional milestone
+            to complete the achievement.
+          example: 50
+          type: number
+        period:
+          description: |
+            The relative duration after which the achievement ends and resets for a particular customer profile.
+
+            **Note**: The `period` does not start when the achievement is created.
+
+            The period is a **positive real number** followed by one letter indicating the time unit.
+
+            Examples: `30s`, `40m`, `1h`, `5D`, `7W`, `10M`, `15Y`.
+
+            Available units:
+
+            - `s`: seconds
+            - `m`: minutes
+            - `h`: hours
+            - `D`: days
+            - `W`: weeks
+            - `M`: months
+            - `Y`: years
+
+            You can also round certain units down to the beginning of period and up to the end of period.:
+            - `_D` for rounding down days only. Signifies the start of the day.
+            Example: `30D_D`
+            - `_U` for rounding up days, weeks, months and years. Signifies the end of the day, week, month or year.
+            Example: `23W_U`
+
+            **Note**: You can either use the round down and round up option or set an absolute period.
+          example: 1Y
+          type: string
+        recurrencePolicy:
+          description: |
+            The policy that determines if and how the achievement recurs.
+            - `no_recurrence`: The achievement can be completed only once.
+            - `on_expiration`: The achievement resets after it expires and becomes available again.
+            - `on_completion`: When the customer progress status reaches `completed`, the achievement resets and becomes available again.
+          enum:
+          - no_recurrence
+          - on_expiration
+          - on_completion
+          example: no_recurrence
+          type: string
+        activationPolicy:
+          description: |
+            The policy that determines how the achievement starts, ends, or resets.
+            - `user_action`: The achievement ends or resets relative to when the customer started the achievement.
+            - `fixed_schedule`: The achievement starts, ends, or resets for all customers following a fixed schedule.
+          enum:
+          - user_action
+          - fixed_schedule
+          example: fixed_schedule
+          type: string
+        fixedStartDate:
+          description: |
+            The achievement's start date when `activationPolicy` is set to `fixed_schedule`.
+
+            **Note:** It must be an RFC3339 timestamp string.
+          example: 2024-01-15T15:04:05+07:00
+          format: date-time
+          type: string
+        endDate:
+          description: |
+            The achievement's end date. If defined, customers cannot participate in the achievement after this date.
+
+            **Note:** It must be an RFC3339 timestamp string.
+          example: 2024-01-15T15:04:05+07:00
+          format: date-time
+          type: string
+        allowRollbackAfterCompletion:
+          description: "When `true`, customer progress can be rolled back in completed\
+            \ achievements."
+          example: false
+          type: boolean
+        sandbox:
+          description: Indicates if this achievement is a live or sandbox achievement.
+            Achievements of a given type can only be connected to Applications of
+            the same type.
+          example: true
+          title: Sandbox
+          type: boolean
+        subscribedApplications:
+          description: A list containing the IDs of all applications that are subscribed
+            to A list containing the IDs of all Applications that are connected to
+            this achievement.
+          example:
+          - 132
+          - 97
+          items:
+            format: int64
+            type: integer
+          minItems: 0
+          type: array
+        timezone:
+          description: A string containing an IANA timezone descriptor.
+          example: Europe/Berlin
+          minLength: 1
+          type: string
+    AchievementAdditionalPropertiesV2:
+      properties:
+        userId:
+          description: The ID of the user that created this achievement.
+          example: 1234
+          format: int64
+          type: integer
+        createdBy:
+          description: |
+            Name of the user that created the achievement.
+
+            **Note**: This is not available if the user has been deleted.
+          example: John Doe
+          type: string
+        hasProgress:
+          description: Indicates if a customer has made progress in the achievement.
+          type: boolean
+        status:
+          description: The status of the achievement.
+          enum:
+          - inprogress
+          - expired
+          - not_started
+          - completed
+          example: inprogress
+          type: string
+      required:
+      - userId
+    AchievementV2:
+      allOf:
+      - $ref: "#/components/schemas/Entity"
+      - $ref: "#/components/schemas/AchievementBaseV2"
+      - $ref: "#/components/schemas/AchievementAdditionalPropertiesV2"
+      - type: object
+    CreateAchievementV2:
+      allOf:
+      - $ref: "#/components/schemas/AchievementBaseV2"
+      - required:
+        - description
+        - name
+        - sandbox
+        - subscribedApplications
+        - target
+        - timezone
+        - title
+        type: object
+    UpdateAchievementV2:
+      allOf:
+      - $ref: "#/components/schemas/AchievementBaseV2"
+    AchievementReference:
+      properties:
+        achievementId:
+          description: "The ID of the achievement. You can get this ID with the [List\
+            \ achievement](https://docs.talon.one/management-api#tag/Achievements/operation/listAchievementsV2)\
+            \ endpoint."
+          example: 12
+          format: int64
+          type: integer
+        applicationId:
+          description: The ID of the Application associated with the campaign that
+            references this achievement.
+          example: 101
+          format: int64
+          type: integer
+        applicationName:
+          description: The name of the Application associated with the campaign that
+            references this achievement.
+          example: North America Storefront
+          type: string
+        campaignId:
+          description: The ID of the campaign that references this achievement.
+          example: 4501
+          format: int64
+          type: integer
+      required:
+      - achievementId
+      - applicationId
+      - applicationName
+      - campaignId
     AnalyticsDataPoint:
       properties:
         total:
@@ -33943,7 +34360,7 @@ components:
           Operation:
             enum:
             - addition
-            - deduction
+            - subtraction
             type: string
           StartDate:
             format: date-time
@@ -33951,9 +34368,14 @@ components:
           ExpiryDate:
             format: date-time
             type: string
+          TransactionUUID:
+            description: The identifier of the transaction in the loyalty ledger.
+            format: uuid
+            type: string
         required:
         - Amount
         - Operation
+        - TransactionUUID
     IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification:
       allOf:
       - properties:
@@ -34954,7 +35376,8 @@ components:
           example: sub-123
           type: string
         CardIdentifier:
-          description: The alphanumeric identifier of the loyalty card.
+          description: |
+            The identifier of the loyalty card, `which must match the regular expression `^[A-Za-z0-9._%+@-]+$`.
           example: summer-loyalty-card-0543
           type: string
         UsersPerCardLimit:
@@ -35062,10 +35485,10 @@ components:
           format: date-time
           type: string
         Operation:
-          description: The action (addition or deduction) made with loyalty points.
+          description: The action (addition or subtraction) made with loyalty points.
           enum:
           - addition
-          - deduction
+          - subtraction
           type: string
         Reason:
           description: The reason for the points addition or deduction.
@@ -35075,6 +35498,10 @@ components:
           description: The start date for loyalty points.
           example: 2023-01-24T14:15:22Z
           format: date-time
+          type: string
+        TransactionUUID:
+          description: The identifier of the transaction in the loyalty ledger.
+          format: uuid
           type: string
       required:
       - Amount
@@ -35086,6 +35513,7 @@ components:
       - Reason
       - SessionIntegrationID
       - SubledgerID
+      - TransactionUUID
       - TypeOfChange
       - UserID
     AddedDeductedPointsBalancesAction:
@@ -35099,10 +35527,10 @@ components:
           example: Compensation
           type: string
         Operation:
-          description: The action (addition or deduction) made with loyalty points.
+          description: The action (addition or subtraction) made with loyalty points.
           enum:
           - addition
-          - deduction
+          - subtraction
           type: string
         StartDate:
           description: The start date for loyalty points.
@@ -35114,10 +35542,15 @@ components:
           example: 2024-01-24T14:15:22Z
           format: date-time
           type: string
+        TransactionUUID:
+          description: The identifier of the transaction in the loyalty ledger.
+          format: uuid
+          type: string
       required:
       - Amount
       - Operation
       - Reason
+      - TransactionUUID
     AddedDeductedPointsBalancesNotification:
       properties:
         EmployeeName:
@@ -35625,10 +36058,10 @@ components:
           format: date-time
           type: string
         Operation:
-          description: The action (addition or deduction) made with loyalty points.
+          description: The action (addition or subtraction) made with loyalty points.
           enum:
           - addition
-          - deduction
+          - subtraction
           type: string
         Reason:
           description: The reason for the points addition or deduction.
@@ -35638,6 +36071,10 @@ components:
           description: The start date for loyalty points.
           example: 2023-01-24T14:15:22Z
           format: date-time
+          type: string
+        TransactionUUID:
+          description: The identifier of the transaction in the loyalty ledger.
+          format: uuid
           type: string
       required:
       - Amount
@@ -35650,6 +36087,7 @@ components:
       - Reason
       - SessionIntegrationID
       - SubledgerID
+      - TransactionUUID
       - TypeOfChange
       - UserID
       - UsersPerCardLimit
@@ -40849,6 +41287,9 @@ components:
         \ property. See [creating custom attributes](https://docs.talon.one/docs/product/account/dev-tools/managing-attributes#creating-a-custom-attribute)."
       example: "{myAttribute=myValue}"
       type: object
+    IntegrationCampaign_allOf_attributes:
+      description: Arbitrary properties associated with this campaign.
+      type: object
     NewCustomerSession_allOf_attributes:
       description: |
         A key-value map of the sessions attributes. The potentially valid attributes are configured in your accounts developer settings.
@@ -40985,9 +41426,6 @@ components:
       example: "{applicationId\"=359, attributes\"={}, campaignGroups\"=[], created\"\
         =2022-07-08T13:04:02.972762328Z, description\"=, features\"=[referrals, loyalty],\
         \ id=6727}"
-      type: object
-    Account_allOf_attributes:
-      description: Arbitrary properties associated with this campaign.
       type: object
     Export_allOf_filter:
       description: Map of keys and values that were used to filter the exported rows.

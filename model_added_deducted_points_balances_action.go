@@ -26,12 +26,14 @@ type AddedDeductedPointsBalancesAction struct {
 	Amount float32 `json:"Amount"`
 	// The reason for the points addition or deduction.
 	Reason string `json:"Reason"`
-	// The action (addition or deduction) made with loyalty points.
+	// The action (addition or subtraction) made with loyalty points.
 	Operation string `json:"Operation"`
 	// The start date for loyalty points.
 	StartDate *time.Time `json:"StartDate,omitempty"`
 	// The expiration date for loyalty points.
 	ExpiryDate *time.Time `json:"ExpiryDate,omitempty"`
+	// The identifier of the transaction in the loyalty ledger.
+	TransactionUUID string `json:"TransactionUUID"`
 }
 
 type _AddedDeductedPointsBalancesAction AddedDeductedPointsBalancesAction
@@ -40,11 +42,12 @@ type _AddedDeductedPointsBalancesAction AddedDeductedPointsBalancesAction
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildAddedDeductedPointsBalancesAction(amount float32, reason string, operation string) *AddedDeductedPointsBalancesAction {
+func BuildAddedDeductedPointsBalancesAction(amount float32, reason string, operation string, transactionUUID string) *AddedDeductedPointsBalancesAction {
 	this := AddedDeductedPointsBalancesAction{}
 	this.Amount = amount
 	this.Reason = reason
 	this.Operation = operation
+	this.TransactionUUID = transactionUUID
 	return &this
 }
 
@@ -192,6 +195,30 @@ func (o *AddedDeductedPointsBalancesAction) SetExpiryDate(v time.Time) {
 	o.ExpiryDate = &v
 }
 
+// GetTransactionUUID returns the TransactionUUID field value
+func (o *AddedDeductedPointsBalancesAction) GetTransactionUUID() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.TransactionUUID
+}
+
+// GetTransactionUUIDOk returns a tuple with the TransactionUUID field value
+// and a boolean to check if the value has been set.
+func (o *AddedDeductedPointsBalancesAction) GetTransactionUUIDOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.TransactionUUID, true
+}
+
+// SetTransactionUUID sets field value
+func (o *AddedDeductedPointsBalancesAction) SetTransactionUUID(v string) {
+	o.TransactionUUID = v
+}
+
 func (o AddedDeductedPointsBalancesAction) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -211,6 +238,7 @@ func (o AddedDeductedPointsBalancesAction) ToMap() (map[string]interface{}, erro
 	if !IsNil(o.ExpiryDate) {
 		toSerialize["ExpiryDate"] = o.ExpiryDate
 	}
+	toSerialize["TransactionUUID"] = o.TransactionUUID
 	return toSerialize, nil
 }
 
@@ -222,6 +250,7 @@ func (o *AddedDeductedPointsBalancesAction) UnmarshalJSON(data []byte) (err erro
 		"Amount",
 		"Reason",
 		"Operation",
+		"TransactionUUID",
 	}
 
 	allProperties := make(map[string]interface{})

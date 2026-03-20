@@ -9,12 +9,13 @@ Name | Type | Description | Notes
 **Operation** | **string** |  | 
 **StartDate** | Pointer to **time.Time** |  | [optional] 
 **ExpiryDate** | Pointer to **time.Time** |  | [optional] 
+**TransactionUUID** | **string** | The identifier of the transaction in the loyalty ledger. | 
 
 ## Methods
 
 ### NewIntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction
 
-`func NewIntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction(amount float32, operation string, ) *IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction`
+`func NewIntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction(amount float32, operation string, transactionUUID string, ) *IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction`
 
 NewIntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction instantiates a new IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction object
 This constructor will assign default values to properties that have it defined,
@@ -143,6 +144,26 @@ SetExpiryDate sets ExpiryDate field to given value.
 `func (o *IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) HasExpiryDate() bool`
 
 HasExpiryDate returns a boolean if a field has been set.
+
+### GetTransactionUUID
+
+`func (o *IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) GetTransactionUUID() string`
+
+GetTransactionUUID returns the TransactionUUID field if non-nil, zero value otherwise.
+
+### GetTransactionUUIDOk
+
+`func (o *IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) GetTransactionUUIDOk() (*string, bool)`
+
+GetTransactionUUIDOk returns a tuple with the TransactionUUID field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTransactionUUID
+
+`func (o *IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction) SetTransactionUUID(v string)`
+
+SetTransactionUUID sets TransactionUUID field to given value.
+
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

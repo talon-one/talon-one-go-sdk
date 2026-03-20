@@ -208,28 +208,6 @@ func main() {
 }
 ```
 
-## FAQ
-
-> Are there any breaking changes in the next-generation Go SDK compared to the legacy SDK?
-
-Most changes are related to naming. Functions and model names have been updated to be clearer and to better follow standard Go naming conventions.
-
-> Are there any behavioral or model differences in session evaluation, event tracking, or coupon handling between the legacy SDK and the next-generation SDK?
-
-No. There are no behavioral changes in the API.
-
-> Do you have recommended migration strategies or best practices for production systems with high transaction volumes?
-
-The migration is straightforward. In our example project, we replaced the SDK and resolved all compiler errors caused by the renames. No logic changes were required.
-
-> Are there any known limitations or common issues reported by Go users during the migration?
-
-None known at this time.
-
-> How long will the legacy SDK be supported?
-
-The legacy SDK is supported until March 31, 2027, after which it will be deprecated and no longer updated. It may continue to function, but will receive no further maintenance.
-
 ## Documentation for API endpoints
 
 All URLs are relative to `https://yourbaseurl.talon.one`.
@@ -472,10 +450,14 @@ Class | Method | HTTP request | Description
 - [AccountLimits](docs/AccountLimits.md)
 - [Achievement](docs/Achievement.md)
 - [AchievementAdditionalProperties](docs/AchievementAdditionalProperties.md)
+- [AchievementAdditionalPropertiesV2](docs/AchievementAdditionalPropertiesV2.md)
 - [AchievementBase](docs/AchievementBase.md)
+- [AchievementBaseV2](docs/AchievementBaseV2.md)
 - [AchievementProgress](docs/AchievementProgress.md)
 - [AchievementProgressWithDefinition](docs/AchievementProgressWithDefinition.md)
+- [AchievementReference](docs/AchievementReference.md)
 - [AchievementStatusEntry](docs/AchievementStatusEntry.md)
+- [AchievementV2](docs/AchievementV2.md)
 - [ActivateLoyaltyPoints](docs/ActivateLoyaltyPoints.md)
 - [ActivateLoyaltyPointsResponse](docs/ActivateLoyaltyPointsResponse.md)
 - [ActivateUserRequest](docs/ActivateUserRequest.md)
@@ -631,6 +613,7 @@ Class | Method | HTTP request | Description
 - [CouponsNotificationData](docs/CouponsNotificationData.md)
 - [CouponsNotificationPolicy](docs/CouponsNotificationPolicy.md)
 - [CreateAchievement](docs/CreateAchievement.md)
+- [CreateAchievementV2](docs/CreateAchievementV2.md)
 - [CreateApplicationAPIKey](docs/CreateApplicationAPIKey.md)
 - [CreateCouponData](docs/CreateCouponData.md)
 - [CreateCoupons200Response](docs/CreateCoupons200Response.md)
@@ -766,6 +749,7 @@ Class | Method | HTTP request | Description
 - [ImportEntity](docs/ImportEntity.md)
 - [IncreaseAchievementProgressEffectProps](docs/IncreaseAchievementProgressEffectProps.md)
 - [InfluencingCampaignDetails](docs/InfluencingCampaignDetails.md)
+- [IntegrationCampaign](docs/IntegrationCampaign.md)
 - [IntegrationCoupon](docs/IntegrationCoupon.md)
 - [IntegrationCustomerProfileAudienceRequest](docs/IntegrationCustomerProfileAudienceRequest.md)
 - [IntegrationCustomerProfileAudienceRequestItem](docs/IntegrationCustomerProfileAudienceRequestItem.md)
@@ -1078,6 +1062,7 @@ Class | Method | HTTP request | Description
 - [TwoFAConfig](docs/TwoFAConfig.md)
 - [UpdateAccount](docs/UpdateAccount.md)
 - [UpdateAchievement](docs/UpdateAchievement.md)
+- [UpdateAchievementV2](docs/UpdateAchievementV2.md)
 - [UpdateApplication](docs/UpdateApplication.md)
 - [UpdateApplicationAPIKey](docs/UpdateApplicationAPIKey.md)
 - [UpdateApplicationCIF](docs/UpdateApplicationCIF.md)

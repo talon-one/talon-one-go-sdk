@@ -34,10 +34,14 @@ docs/AccountEntity.md
 docs/AccountLimits.md
 docs/Achievement.md
 docs/AchievementAdditionalProperties.md
+docs/AchievementAdditionalPropertiesV2.md
 docs/AchievementBase.md
+docs/AchievementBaseV2.md
 docs/AchievementProgress.md
 docs/AchievementProgressWithDefinition.md
+docs/AchievementReference.md
 docs/AchievementStatusEntry.md
+docs/AchievementV2.md
 docs/ActivateLoyaltyPoints.md
 docs/ActivateLoyaltyPointsResponse.md
 docs/ActivateUserRequest.md
@@ -193,6 +197,7 @@ docs/CouponWithApplication.md
 docs/CouponsNotificationData.md
 docs/CouponsNotificationPolicy.md
 docs/CreateAchievement.md
+docs/CreateAchievementV2.md
 docs/CreateApplicationAPIKey.md
 docs/CreateCouponData.md
 docs/CreateCoupons200Response.md
@@ -329,6 +334,7 @@ docs/ImportEntity.md
 docs/IncreaseAchievementProgressEffectProps.md
 docs/InfluencingCampaignDetails.md
 docs/IntegrationAPI.md
+docs/IntegrationCampaign.md
 docs/IntegrationCoupon.md
 docs/IntegrationCustomerProfileAudienceRequest.md
 docs/IntegrationCustomerProfileAudienceRequestItem.md
@@ -642,6 +648,7 @@ docs/TriggerWebhookEffectProps.md
 docs/TwoFAConfig.md
 docs/UpdateAccount.md
 docs/UpdateAchievement.md
+docs/UpdateAchievementV2.md
 docs/UpdateApplication.md
 docs/UpdateApplicationAPIKey.md
 docs/UpdateApplicationCIF.md
@@ -705,10 +712,14 @@ model_account_entity.go
 model_account_limits.go
 model_achievement.go
 model_achievement_additional_properties.go
+model_achievement_additional_properties_v2.go
 model_achievement_base.go
+model_achievement_base_v2.go
 model_achievement_progress.go
 model_achievement_progress_with_definition.go
+model_achievement_reference.go
 model_achievement_status_entry.go
+model_achievement_v2.go
 model_activate_loyalty_points.go
 model_activate_loyalty_points_response.go
 model_activate_user_request.go
@@ -865,6 +876,7 @@ model_coupon_with_application.go
 model_coupons_notification_data.go
 model_coupons_notification_policy.go
 model_create_achievement.go
+model_create_achievement_v2.go
 model_create_application_api_key.go
 model_create_coupon_data.go
 model_create_coupons_200_response.go
@@ -1000,6 +1012,7 @@ model_import.go
 model_import_entity.go
 model_increase_achievement_progress_effect_props.go
 model_influencing_campaign_details.go
+model_integration_campaign.go
 model_integration_coupon.go
 model_integration_customer_profile_audience_request.go
 model_integration_customer_profile_audience_request_item.go
@@ -1312,6 +1325,7 @@ model_trigger_webhook_effect_props.go
 model_two_fa_config.go
 model_update_account.go
 model_update_achievement.go
+model_update_achievement_v2.go
 model_update_application.go
 model_update_application_api_key.go
 model_update_application_cif.go
