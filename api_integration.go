@@ -1,7 +1,7 @@
 /*
 Talon.One API
 
-Use the Talon.One API to integrate with your application and to manage applications and campaigns:  - Use the operations in the [Integration API section](#integration-api) are used to integrate with our platform - Use the operation in the [Management API section](#management-api) to manage applications and campaigns.  ## Determining the base URL of the endpoints  The API is available at the same hostname as your Campaign Manager deployment. For example, if you access the Campaign Manager at `https://yourbaseurl.talon.one/`, the URL for the [updateCustomerSessionV2](https://docs.talon.one/integration-api#operation/updateCustomerSessionV2) endpoint is `https://yourbaseurl.talon.one/v2/customer_sessions/{Id}`
+Use the Talon.One API to integrate with your application and to manage applications and campaigns:  - Use the operations in the [Integration API section](#integration-api) to integrate with our platform. - Use the operation in the [Management API section](#management-api) to manage applications and campaigns.  ## Determining the base URL of the endpoints  The API is available at the same hostname as your Campaign Manager deployment.  For example, if you access the Campaign Manager at `https://yourbaseurl.talon.one/`, the URL for the [updateCustomerSessionV2](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2) endpoint is `https://yourbaseurl.talon.one/v2/customer_sessions/{Id}`.
 
 API version:
 */
@@ -269,34 +269,6 @@ func (a *IntegrationAPIService) BestPriorPriceExecute(r ApiBestPriorPriceRequest
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["management_key"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["manager_auth"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
 			if apiKey, ok := auth["api_key_v1"]; ok {
 				var key string
 				if apiKey.Prefix != "" {
@@ -364,22 +336,28 @@ func (r ApiCreateAudienceV2Request) Execute() (*Audience, *http.Response, error)
 /*
 CreateAudienceV2 Create audience
 
-Create an audience. The audience can be created directly from scratch or can come from third party platforms.
+Create an audience. The audience can be created directly from scratch or can
+come from third party platforms.
 
-**Note:** Audiences can also be created from scratch via the Campaign Manager. See the [docs](https://docs.talon.one/docs/product/audiences/creating-audiences).
+> [!note] Audiences can also be created from scratch via the Campaign
+Manager. See the [docs](https://docs.talon.one/docs/product/audiences/creating-audiences).
 
-To create an audience from an existing audience from a [technology partner](https://docs.talon.one/docs/dev/technology-partners/overview):
-1. Set the `integration` property to `mparticle`, `segment` etc., depending on a third-party platform.
+To create an audience from an existing audience from a [technology
+partner](https://docs.talon.one/docs/dev/technology-partners/overview):
+
+1. Set the `integration` property to `mparticle`, `segment` etc., depending
+on a third-party platform.
 1. Set `integrationId` to the ID of this audience in a third-party platform.
 
 To create an audience from an existing audience in another platform:
+
 1. Do not use the `integration` property.
 1. Set `integrationId` to the ID of this audience in the 3rd-party platform.
 
-To create an audience from scratch:
-1. Only set the `name` property.
+To create an audience from scratch, only set the `name` property.
 
-Once you create your first audience, audience-specific rule conditions are enabled in the Rule Builder.
+Once you create your first audience, audience-specific rule conditions are
+enabled in the Rule Builder.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiCreateAudienceV2Request
@@ -546,25 +524,24 @@ You can also create a reservation via the Campaign Manager using the
 reservation](https://docs.talon.one/docs/product/rules/effects/using-effects#reserving-a-coupon-code)
 effect.
 
-**Note:**
-
-  - If the **Reservation mandatory** option was selected when creating the
-    specified coupon, the endpoint creates a **hard** reservation, meaning only users who have
-    this coupon code reserved can redeem it.
-    Otherwise, the endpoint creates a **soft** reservation, meaning the coupon
-    is associated with the specified customer profiles (they show up when using
-    the [List customer data](https://docs.talon.one/integration-api#operation/getCustomerInventory)
-    endpoint), but any user can redeem it.
-    This can be useful, for example, to display a _coupon wallet_ for customers
-    when they visit your store.
-
-  - If the **Coupon visibility** option was selected when creating the
-    specified coupon, the coupon code is implicitly soft-reserved for all customers, and the code
-    will be returned for all customer profiles in the [List customer
-    data](https://docs.talon.one/integration-api#operation/getCustomerInventory) endpoint.
-
-  - This endpoint overrides the coupon reservation limit set when
-    [the coupon is created](https://docs.talon.one/docs/product/campaigns/coupons/creating-coupons).
+> [!note] **Note**
+> - If the **Reservation mandatory** option was selected when creating the
+>   specified coupon, the endpoint creates a **hard** reservation, meaning only users who have
+>   this coupon code reserved can redeem it.
+>
+>   Otherwise, the endpoint creates a **soft** reservation, meaning the coupon
+>   is associated with the specified customer profiles (they show up when using
+>   the [List customer data](https://docs.talon.one/integration-api#tag/Customer-profiles/operation/getCustomerInventory)
+>   endpoint), but any user can redeem it.
+>
+>   This can be useful, for example, to display a _coupon wallet_ for customers
+>   when they visit your store.
+> - If the **Coupon visibility** option was selected when creating the
+>   specified coupon, the coupon code is implicitly soft-reserved for all customers, and the code
+>   will be returned for all customer profiles in the [List customer
+>   data](https://docs.talon.one/integration-api#tag/Customer-profiles/operation/getCustomerInventory) endpoint.
+> - This endpoint overrides the coupon reservation limit set when
+>   [the coupon is created](https://docs.talon.one/docs/product/campaigns/coupons/creating-coupons).
 
 To ensure that coupons cannot be reserved after the reservation limit is
 reached, use the [Create coupon code
@@ -576,7 +553,7 @@ To delete a reservation, use the
 [Delete reservation](https://docs.talon.one/integration-api#tag/Coupons/operation/deleteCouponReservation) endpoint.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param couponValue The code of the coupon.  **Important:** The coupon code requires [URL encoding](https://www.w3schools.com/tags//ref_urlencode.asp)  if it contains special characters. For example, you must encode `SUMMER25%OFF` as `SUMMER25%25OFF`.
+	@param couponValue The code of the coupon.  **Important:** The coupon code requires [URL encoding](https://www.w3schools.com/tags//ref_urlencode.asp) if it contains special characters. For example, you must encode `SUMMER25%OFF` as `SUMMER25%25OFF`.
 	@return ApiCreateCouponReservationRequest
 */
 func (a *IntegrationAPIService) CreateCouponReservation(ctx context.Context, couponValue string) ApiCreateCouponReservationRequest {
@@ -734,9 +711,13 @@ func (r ApiCreateReferralRequest) Execute() (*Referral, *http.Response, error) {
 /*
 CreateReferral Create referral code for an advocate
 
-Creates a referral code for an advocate. The code will be valid for the referral campaign for which is created, indicated in the `campaignId` parameter, and will be associated with the profile specified in the `advocateProfileIntegrationId` parameter as the advocate's profile.
+Creates a referral code for an advocate. The code will be valid for the
+referral campaign for which is created, indicated in the `campaignId`
+parameter, and will be associated with the profile specified in the
+`advocateProfileIntegrationId` parameter as the advocate's profile.
 
-**Note:** Any [referral limits](https://docs.talon.one/docs/product/campaigns/settings/managing-campaign-budgets#referral-limits) set are ignored when you use this endpoint.
+> [!note] Any [referral limits](https://docs.talon.one/docs/product/campaigns/settings/managing-campaign-budgets#referral-limits)
+> set are ignored when you use this endpoint.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiCreateReferralRequest
@@ -890,9 +871,14 @@ func (r ApiCreateReferralsForMultipleAdvocatesRequest) Execute() (*CreateReferra
 /*
 CreateReferralsForMultipleAdvocates Create referral codes for multiple advocates
 
-Creates unique referral codes for multiple advocates. The code will be valid for the referral campaign for which it is created, indicated in the `campaignId` parameter, and one referral code will be associated with one advocate using the profile specified in the `advocateProfileIntegrationId` parameter as the advocate's profile.
+Creates unique referral codes for multiple advocates. The code will be valid
+for the referral campaign for which it is created, indicated in the
+`campaignId` parameter, and one referral code will be associated with one
+advocate using the profile specified in the `advocateProfileIntegrationId`
+parameter as the advocate's profile.
 
-**Note:** Any [referral limits](https://docs.talon.one/docs/product/campaigns/settings/managing-campaign-budgets#referral-limits) set are ignored when you use this endpoint.
+> [!note] Any [referral limits](https://docs.talon.one/docs/product/campaigns/settings/managing-campaign-budgets#referral-limits)
+> set are ignored when you use this endpoint.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiCreateReferralsForMultipleAdvocatesRequest
@@ -1169,9 +1155,11 @@ DeleteAudienceV2 Delete audience
 
 Delete an audience created by a third-party integration.
 
-**Warning:** This endpoint also removes any associations recorded between a customer profile and this audience.
+> [!warning] This endpoint also removes any associations recorded between a
+customer profile and this audience.
 
-**Note:** Audiences can also be deleted via the Campaign Manager. See the [docs](https://docs.talon.one/docs/product/audiences/managing-audiences#deleting-an-audience).
+> [!note] Audiences can also be deleted via the Campaign Manager. See the
+[docs](https://docs.talon.one/docs/product/audiences/managing-audiences#deleting-an-audience).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param audienceId The ID of the audience.
@@ -1320,7 +1308,7 @@ Remove all the coupon reservations from the provided customer profile integratio
 coupon code.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param couponValue The code of the coupon.  **Important:** The coupon code requires [URL encoding](https://www.w3schools.com/tags//ref_urlencode.asp)  if it contains special characters. For example, you must encode `SUMMER25%OFF` as `SUMMER25%25OFF`.
+	@param couponValue The code of the coupon.  **Important:** The coupon code requires [URL encoding](https://www.w3schools.com/tags//ref_urlencode.asp) if it contains special characters. For example, you must encode `SUMMER25%OFF` as `SUMMER25%25OFF`.
 	@return ApiDeleteCouponReservationRequest
 */
 func (a *IntegrationAPIService) DeleteCouponReservation(ctx context.Context, couponValue string) ApiDeleteCouponReservationRequest {
@@ -1460,20 +1448,21 @@ func (r ApiDeleteCustomerDataRequest) Execute() (*http.Response, error) {
 /*
 DeleteCustomerData Delete customer's personal data
 
-Delete all attributes on the customer profile and on entities that reference this customer profile.
+Delete all attributes on the customer profile and on entities that reference
+this customer profile.
 
-**Important:**
+> [!warning] **Warning**
+> - Customer data is deleted from all Applications in the
+>   [environment](https://docs.talon.one/docs/product/applications/overview#application-environments)
+>   that the API key belongs to. For example, if you use this endpoint with an API key that belongs
+>   to a sandbox Application, customer data will be deleted from all sandbox Applications.
+>   This is because customer data is shared between Applications from the same environment.
+> - To preserve performance, we recommend avoiding deleting customer data
+>   during peak-traffic hours.
 
-  - Customer data is deleted from all Applications in the [environment](https://docs.talon.one/docs/product/applications/overview#application-environments)
-    that the API key belongs to. For example, if you use this endpoint with an API key that belongs to a sandbox Application,
-    customer data will be deleted from all sandbox Applications. This is because customer data is shared
-    between Applications from the same environment.
-
-  - To preserve performance, we recommend avoiding deleting customer data during peak-traffic hours.
-
-    @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-    @param integrationId The integration ID of the customer profile. You can get the `integrationId` of a profile using: - A customer session integration ID with the [Update customer session](https://docs.talon.one/integration-api#operation/updateCustomerSessionV2) endpoint. - The Management API with the [List application's customers](https://docs.talon.one/management-api#operation/getApplicationCustomers) endpoint.
-    @return ApiDeleteCustomerDataRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param integrationId The integration ID of the customer profile. You can get the `integrationId` of a profile using: - A customer session integration ID with the [Update customer session](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2) endpoint. - The Management API with the [List application's customers](https://docs.talon.one/management-api#tag/Customer-data/operation/getApplicationCustomers) endpoint.
+	@return ApiDeleteCustomerDataRequest
 */
 func (a *IntegrationAPIService) DeleteCustomerData(ctx context.Context, integrationId string) ApiDeleteCustomerDataRequest {
 	return ApiDeleteCustomerDataRequest{
@@ -1605,13 +1594,13 @@ DeleteLoyaltyTransactionsFromLedgers Delete customer's transactions from loyalty
 
 Delete a customer's transactions in all loyalty ledgers or a specified ledger.
 
-**Note:** To retrieve loyalty transaction logs for a specific customer in a given
-loyalty program, use the [List customer's loyalty transactions](https://docs.talon.one/integration-api#tag/Loyalty/operation/getLoyaltyProgramProfileTransactions)
-endpoint.
+> [!note] To retrieve loyalty transaction logs for a specific customer in a given loyalty program,
+> use the [List customer's loyalty transactions](https://docs.talon.one/integration-api#tag/Loyalty/operation/getLoyaltyProgramProfileTransactions)
+> endpoint.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param loyaltyProgramId Identifier of the profile-based loyalty program. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
-	@param integrationId The integration ID of the customer profile. You can get the `integrationId` of a profile using: - A customer session integration ID with the [Update customer session](https://docs.talon.one/integration-api#operation/updateCustomerSessionV2) endpoint. - The Management API with the [List application's customers](https://docs.talon.one/management-api#operation/getApplicationCustomers) endpoint.
+	@param integrationId The integration ID of the customer profile. You can get the `integrationId` of a profile using: - A customer session integration ID with the [Update customer session](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2) endpoint. - The Management API with the [List application's customers](https://docs.talon.one/management-api#tag/Customer-data/operation/getApplicationCustomers) endpoint.
 	@return ApiDeleteLoyaltyTransactionsFromLedgersRequest
 */
 func (a *IntegrationAPIService) DeleteLoyaltyTransactionsFromLedgers(ctx context.Context, loyaltyProgramId int64, integrationId string) ApiDeleteLoyaltyTransactionsFromLedgersRequest {
@@ -1766,16 +1755,13 @@ program](https://docs.talon.one/docs/product/loyalty-programs/card-based/card-ba
 To link the card to one or more customer profiles, use the
 `customerProfileIds` parameter in the request body.
 
-**Note:**
-
-- The number of customer profiles linked to the loyalty card cannot exceed
-the loyalty program's `usersPerCardLimit`. To find the program's limit, use
-the [Get loyalty
-program](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyProgram)
-endpoint.
-
-- If the loyalty program has a defined code format, it will be used for the
-loyalty card identifier.
+> [!note] **Note**
+> - The number of customer profiles linked to the loyalty card cannot exceed
+>   the loyalty program's `usersPerCardLimit`. To find the program's limit, use
+>   the [Get loyalty program](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyProgram)
+>   endpoint.
+> - If the loyalty program has a defined code format, it will be used for the
+>   loyalty card identifier.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param loyaltyProgramId Identifier of the card-based loyalty program containing the loyalty card. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
@@ -2389,7 +2375,7 @@ Typical entities returned are: customer profile information, referral codes, loy
 Reserved coupons also include redeemed coupons.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param integrationId The integration ID of the customer profile. You can get the `integrationId` of a profile using: - A customer session integration ID with the [Update customer session](https://docs.talon.one/integration-api#operation/updateCustomerSessionV2) endpoint. - The Management API with the [List application's customers](https://docs.talon.one/management-api#operation/getApplicationCustomers) endpoint.
+	@param integrationId The integration ID of the customer profile. You can get the `integrationId` of a profile using: - A customer session integration ID with the [Update customer session](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2) endpoint. - The Management API with the [List application's customers](https://docs.talon.one/management-api#tag/Customer-data/operation/getApplicationCustomers) endpoint.
 	@return ApiGetCustomerInventoryRequest
 */
 func (a *IntegrationAPIService) GetCustomerInventory(ctx context.Context, integrationId string) ApiGetCustomerInventoryRequest {
@@ -2551,7 +2537,7 @@ You can get the same data via other endpoints that also apply changes, which can
 - [Update customer profile](#tag/Customer-profiles/operation/updateCustomerProfileV2)
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param customerSessionId The `integration ID` of the customer session. You set this ID when you create a customer session.  You can see existing customer session integration IDs in the Campaign Manager's **Sessions** menu, or via the [List Application session](https://docs.talon.one/management-api#operation/getApplicationSessions) endpoint.
+	@param customerSessionId The `integration ID` of the customer session. You set this ID when you create a customer session.  You can see existing customer session integration IDs in the Campaign Manager's **Sessions** menu, or via the [List Application session](https://docs.talon.one/management-api#tag/Customer-data/operation/getApplicationSessions) endpoint.
 	@return ApiGetCustomerSessionRequest
 */
 func (a *IntegrationAPIService) GetCustomerSession(ctx context.Context, customerSessionId string) ApiGetCustomerSessionRequest {
@@ -2685,7 +2671,7 @@ type ApiGetLoyaltyBalancesRequest struct {
 	includeProjectedTier *bool
 }
 
-// Used to return expired, active, and pending loyalty balances before this timestamp. You can enter any past, present, or future timestamp value.  **Note:**  - It must be an RFC3339 timestamp string. - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.
+// Used to return expired, active, and pending loyalty balances before this timestamp. You can enter any past, present, or future timestamp value.  &gt; [!note] **Note** &gt; - This must be an RFC3339 timestamp string. &gt; - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting &gt;   considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.
 func (r ApiGetLoyaltyBalancesRequest) EndDate(endDate time.Time) ApiGetLoyaltyBalancesRequest {
 	r.endDate = &endDate
 	return r
@@ -2716,12 +2702,18 @@ func (r ApiGetLoyaltyBalancesRequest) Execute() (*LoyaltyBalancesWithTiers, *htt
 /*
 GetLoyaltyBalances Get customer's loyalty balances
 
-Retrieve loyalty ledger balances for the given Integration ID in the specified loyalty program.
-You can filter balances by date and subledger ID, and include tier-related information in the response.
+Retrieve loyalty ledger balances for the given Integration ID in the
+specified loyalty program.
 
-**Note**: If no filtering options are applied, you retrieve all loyalty balances on the current date for the given integration ID.
+You can filter balances by date and subledger ID, and include tier-related
+information in the response.
 
-Loyalty balances are calculated when Talon.One receives your request using the points stored in our database, so retrieving a large number of balances at once can impact performance.
+> [!note] If no filtering options are applied, you retrieve all loyalty
+> balances on the current date for the given integration ID.
+
+Loyalty balances are calculated when Talon.One receives your request using
+the points stored in our database, so retrieving a large number of balances
+at once can impact performance.
 
 For more information, see:
 - [Managing card-based loyalty program data](https://docs.talon.one/docs/product/loyalty-programs/card-based/managing-loyalty-cards)
@@ -2894,7 +2886,7 @@ type ApiGetLoyaltyCardBalancesRequest struct {
 	subledgerId      *[]string
 }
 
-// Used to return expired, active, and pending loyalty balances before this timestamp. You can enter any past, present, or future timestamp value.  **Note:**  - It must be an RFC3339 timestamp string. - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.
+// Used to return expired, active, and pending loyalty balances before this timestamp. You can enter any past, present, or future timestamp value.  &gt; [!note] **Note** &gt; - This must be an RFC3339 timestamp string. &gt; - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting &gt;   considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.
 func (r ApiGetLoyaltyCardBalancesRequest) EndDate(endDate time.Time) ApiGetLoyaltyCardBalancesRequest {
 	r.endDate = &endDate
 	return r
@@ -3369,13 +3361,13 @@ func (r ApiGetLoyaltyCardTransactionsRequest) LoyaltyTransactionType(loyaltyTran
 	return r
 }
 
-// Date and time from which results are returned. Results are filtered by transaction creation date.  **Note:**  - It must be an RFC3339 timestamp string. - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.
+// Date and time from which results are returned. Results are filtered by transaction creation date.  &gt; [!note] **Note** &gt; - This must be an RFC3339 timestamp string. &gt; - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting &gt;   considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.
 func (r ApiGetLoyaltyCardTransactionsRequest) StartDate(startDate time.Time) ApiGetLoyaltyCardTransactionsRequest {
 	r.startDate = &startDate
 	return r
 }
 
-// Date and time by which results are returned. Results are filtered by transaction creation date.  **Note:**  - It must be an RFC3339 timestamp string. - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.
+// Date and time by which results are returned. Results are filtered by transaction creation date.  &gt; [!note] **Note** &gt; - This must be an RFC3339 timestamp string. &gt; - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting &gt;   considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.
 func (r ApiGetLoyaltyCardTransactionsRequest) EndDate(endDate time.Time) ApiGetLoyaltyCardTransactionsRequest {
 	r.endDate = &endDate
 	return r
@@ -3889,13 +3881,13 @@ type ApiGetLoyaltyProgramProfileTransactionsRequest struct {
 	awaitsActivation       *bool
 }
 
-// Filter the results by a list of customer session IDs.   To include multiple IDs, repeat the parameter for each one, for example,  &#x60;?customerSessionIDs&#x3D;id1&amp;customerSessionIDs&#x3D;id2&#x60;.  The response contains only data associated with the specified sessions.
+// Filter the results by a list of customer session IDs.  To include multiple IDs, repeat the parameter for each one, for example, &#x60;?customerSessionIDs&#x3D;id1&amp;customerSessionIDs&#x3D;id2&#x60;.  The response contains only data associated with the specified sessions.
 func (r ApiGetLoyaltyProgramProfileTransactionsRequest) CustomerSessionIDs(customerSessionIDs []string) ApiGetLoyaltyProgramProfileTransactionsRequest {
 	r.customerSessionIDs = &customerSessionIDs
 	return r
 }
 
-// Filter the results by a list of transaction UUIDs.  To include multiple IDs, repeat the parameter for each one, for example,  &#x60;?transactionUUIDs&#x3D;uuid1&amp;transactionUUIDs&#x3D;uuid2&#x60;.  The response contains only data associated with the specified transactions.
+// Filter the results by a list of transaction UUIDs.  To include multiple IDs, repeat the parameter for each one, for example, &#x60;?transactionUUIDs&#x3D;uuid1&amp;transactionUUIDs&#x3D;uuid2&#x60;.  The response contains only data associated with the specified transactions.
 func (r ApiGetLoyaltyProgramProfileTransactionsRequest) TransactionUUIDs(transactionUUIDs []string) ApiGetLoyaltyProgramProfileTransactionsRequest {
 	r.transactionUUIDs = &transactionUUIDs
 	return r
@@ -3913,13 +3905,13 @@ func (r ApiGetLoyaltyProgramProfileTransactionsRequest) LoyaltyTransactionType(l
 	return r
 }
 
-// Date and time from which results are returned. Results are filtered by transaction creation date.  **Note:**  - It must be an RFC3339 timestamp string. - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.
+// Date and time from which results are returned. Results are filtered by transaction creation date.  &gt; [!note] **Note** &gt; - This must be an RFC3339 timestamp string. &gt; - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting &gt;   considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.
 func (r ApiGetLoyaltyProgramProfileTransactionsRequest) StartDate(startDate time.Time) ApiGetLoyaltyProgramProfileTransactionsRequest {
 	r.startDate = &startDate
 	return r
 }
 
-// Date and time by which results are returned. Results are filtered by transaction creation date.  **Note:**  - It must be an RFC3339 timestamp string. - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.
+// Date and time by which results are returned. Results are filtered by transaction creation date.  &gt; [!note] **Note** &gt; - This must be an RFC3339 timestamp string. &gt; - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting &gt;   considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.
 func (r ApiGetLoyaltyProgramProfileTransactionsRequest) EndDate(endDate time.Time) ApiGetLoyaltyProgramProfileTransactionsRequest {
 	r.endDate = &endDate
 	return r
@@ -3950,12 +3942,15 @@ func (r ApiGetLoyaltyProgramProfileTransactionsRequest) Execute() (*GetLoyaltyPr
 /*
 GetLoyaltyProgramProfileTransactions List customer's loyalty transactions
 
-Retrieve paginated results of loyalty transaction logs for the given Integration ID in the specified loyalty program.
+Retrieve paginated results of loyalty transaction logs for the given
+Integration ID in the specified loyalty program.
 
-You can filter transactions by date. If no filters are applied, the last 50 loyalty transactions for the given integration ID are returned.
+You can filter transactions by date. If no filters are applied, the last 50
+loyalty transactions for the given integration ID are returned.
 
-**Note:** To retrieve all loyalty program transaction logs in a given loyalty program,
-use the [List loyalty program transactions](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyProgramTransactions) endpoint.
+> [!note] To retrieve all loyalty program transaction logs in a given
+> loyalty program, use the [List loyalty program transactions](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyProgramTransactions)
+> endpoint.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param loyaltyProgramId Identifier of the profile-based loyalty program. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
@@ -4313,14 +4308,22 @@ func (r ApiLinkLoyaltyCardToProfileRequest) Execute() (*LoyaltyCard, *http.Respo
 /*
 LinkLoyaltyCardToProfile Link customer profile to card
 
-[Loyalty cards](https://docs.talon.one/docs/product/loyalty-programs/card-based/card-based-overview) allow customers to collect
-and spend loyalty points within a [card-based loyalty program](https://docs.talon.one/docs/product/loyalty-programs/overview#loyalty-program-types).
-They are useful to gamify loyalty programs and can be used with or without customer profiles linked to them.
+[Loyalty cards](https://docs.talon.one/docs/product/loyalty-programs/card-based/card-based-overview)
+allow customers to collect and spend loyalty points within a [card-based loyalty
+program](https://docs.talon.one/docs/product/loyalty-programs/overview#loyalty-program-types).
 
-Link a customer profile to a given loyalty card for the card to be set as **Registered**.
-This affects how it can be used. See the [docs](https://docs.talon.one/docs/product/loyalty-programs/card-based/managing-loyalty-cards#linking-customer-profiles-to-a-loyalty-card).
+They are useful to gamify loyalty programs and can be used with or without
+customer profiles linked to them.
 
-**Note:** You can link as many customer profiles to a given loyalty card as the [**card user limit**](https://docs.talon.one/docs/product/loyalty-programs/card-based/creating-cb-programs) allows.
+Link a customer profile to a given loyalty card for the card to be set as
+**Registered**.
+
+This affects how it can be used. See the
+[docs](https://docs.talon.one/docs/product/loyalty-programs/card-based/managing-loyalty-cards#linking-customer-profiles-to-a-loyalty-card).
+
+> [!note] You can link as many customer profiles to a given loyalty card as the
+> [**card user limit**](https://docs.talon.one/docs/product/loyalty-programs/card-based/creating-cb-programs)
+> allows.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param loyaltyProgramId Identifier of the card-based loyalty program containing the loyalty card. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
@@ -4471,160 +4474,6 @@ func (a *IntegrationAPIService) LinkLoyaltyCardToProfileExecute(r ApiLinkLoyalty
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiPriceHistoryRequest struct {
-	ctx                 context.Context
-	ApiService          *IntegrationAPIService
-	priceHistoryRequest *PriceHistoryRequest
-}
-
-// body
-func (r ApiPriceHistoryRequest) PriceHistoryRequest(priceHistoryRequest PriceHistoryRequest) ApiPriceHistoryRequest {
-	r.priceHistoryRequest = &priceHistoryRequest
-	return r
-}
-
-func (r ApiPriceHistoryRequest) Execute() (*PriceHistoryResponse, *http.Response, error) {
-	return r.ApiService.PriceHistoryExecute(r)
-}
-
-/*
-PriceHistory Get summary of price history
-
-Fetch the historical price data for a given SKU within a defined timeframe.
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiPriceHistoryRequest
-*/
-func (a *IntegrationAPIService) PriceHistory(ctx context.Context) ApiPriceHistoryRequest {
-	return ApiPriceHistoryRequest{
-		ApiService: a,
-		ctx:        ctx,
-	}
-}
-
-// Execute executes the request
-//
-//	@return PriceHistoryResponse
-func (a *IntegrationAPIService) PriceHistoryExecute(r ApiPriceHistoryRequest) (*PriceHistoryResponse, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodPost
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *PriceHistoryResponse
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IntegrationAPIService.PriceHistory")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/v1/best_prior_price_history"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-	if r.priceHistoryRequest == nil {
-		return localVarReturnValue, nil, reportError("priceHistoryRequest is required and must be specified")
-	}
-
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{"application/json"}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	// body params
-	localVarPostBody = r.priceHistoryRequest
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["management_key"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["manager_auth"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
-			}
-		}
-	}
-	if r.ctx != nil {
-		// API Key Authentication
-		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
-			if apiKey, ok := auth["api_key_v1"]; ok {
-				var key string
-				if apiKey.Prefix != "" {
-					key = apiKey.Prefix + " " + apiKey.Key
-				} else {
-					key = apiKey.Key
-				}
-				localVarHeaderParams["Authorization"] = key
-			}
-		}
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
 type ApiReopenCustomerSessionRequest struct {
 	ctx               context.Context
 	ApiService        *IntegrationAPIService
@@ -4638,11 +4487,16 @@ func (r ApiReopenCustomerSessionRequest) Execute() (*ReopenSessionResponse, *htt
 /*
 ReopenCustomerSession Reopen customer session
 
-Reopen a closed [customer session](https://docs.talon.one/docs/dev/concepts/entities/customer-sessions).
-For example, if a session has been completed but still needs to be edited, you can reopen it with this endpoint.
+Reopen a closed [customer
+session](https://docs.talon.one/docs/dev/concepts/entities/customer-sessions).
+
+For example, if a session has been completed but still needs to be edited,
+you can reopen it with this endpoint.
+
 A reopen session is treated like a standard open session.
 
 When reopening a session:
+
   - The `talon_session_reopened` event is triggered. You can see it in the **Events** view in the Campaign Manager.
   - The session state is updated to `open`.
   - Any modified budgets and triggered effects are rolled back when the session closes.
@@ -4670,12 +4524,17 @@ When reopening a session:
 	</div>
 
 </details>
-<p>To see an example of a rollback, see the <a href="https://docs.talon.one/docs/dev/tutorials/rolling-back-effects">Cancelling a session with campaign budgets</a> tutorial.</p>
 
-**Note:** If your order workflow requires you to create a new session instead of reopening a session, use the [Update customer session](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2) endpoint to cancel a closed session and create a new one.
+To see an example of a rollback, see the
+[Cancelling a session with campaign budgets](https://docs.talon.one/docs/dev/tutorials/rolling-back-effects) tutorial.
+
+> [!note] If your order workflow requires you to create a new session
+> instead of reopening a session, use the
+> [Update customer session](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2)
+> endpoint to cancel a closed session and create a new one.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param customerSessionId The `integration ID` of the customer session. You set this ID when you create a customer session.  You can see existing customer session integration IDs in the Campaign Manager's **Sessions** menu, or via the [List Application session](https://docs.talon.one/management-api#operation/getApplicationSessions) endpoint.
+	@param customerSessionId The `integration ID` of the customer session. You set this ID when you create a customer session.  You can see existing customer session integration IDs in the Campaign Manager's **Sessions** menu, or via the [List Application session](https://docs.talon.one/management-api#tag/Customer-data/operation/getApplicationSessions) endpoint.
 	@return ApiReopenCustomerSessionRequest
 */
 func (a *IntegrationAPIService) ReopenCustomerSession(ctx context.Context, customerSessionId string) ApiReopenCustomerSessionRequest {
@@ -4827,14 +4686,21 @@ ReturnCartItems Return cart items
 
 Create a new return request for the specified cart items.
 
-This endpoint automatically changes the session state from `closed` to `partially_returned`.
+This endpoint automatically changes the session state from `closed` to
+`partially_returned`.
 
-**Note:** This will roll back any effects associated with these cart items. For more information, see
-[our documentation on session states](https://docs.talon.one/docs/dev/concepts/entities/customer-sessions#customer-session-states)
-and [this tutorial](https://docs.talon.one/docs/dev/tutorials/partially-returning-a-session).
+> [!note] This will roll back any effects associated with these cart items.
+> For more information, see [our documentation on session
+> states](https://docs.talon.one/docs/dev/concepts/entities/customer-sessions#customer-session-states)
+> and [this tutorial](https://docs.talon.one/docs/dev/tutorials/partially-returning-a-session).
+
+> [!note] To make request processing idempotent for this endpoint, include the `Idempotency-Key` header with an idempotency key in requests. Also:
+> - Requests with the `Idempotency-Key` header are logged in the Talon.One access logs.
+> - Responses for idempotent requests are stored in the database and expire 24 hours after the request is sent.
+> - Idempotency keys are typically UUID keys and should not exceed 255 characters in length.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param customerSessionId The `integration ID` of the customer session. You set this ID when you create a customer session.  You can see existing customer session integration IDs in the Campaign Manager's **Sessions** menu, or via the [List Application session](https://docs.talon.one/management-api#operation/getApplicationSessions) endpoint.
+	@param customerSessionId The `integration ID` of the customer session. You set this ID when you create a customer session.  You can see existing customer session integration IDs in the Campaign Manager's **Sessions** menu, or via the [List Application session](https://docs.talon.one/management-api#tag/Customer-data/operation/getApplicationSessions) endpoint.
 	@return ApiReturnCartItemsRequest
 */
 func (a *IntegrationAPIService) ReturnCartItems(ctx context.Context, customerSessionId string) ApiReturnCartItemsRequest {
@@ -4994,25 +4860,29 @@ Perform the following actions for a given cart item catalog:
 - Remove an item from the catalog.
 - Remove multiple items from the catalog.
 
-You can either add, update, or delete up to 1000 cart items in a single request. Each item synced to a catalog must have a unique `SKU`.
+You can either add, update, or delete up to 1000 cart items in a single
+request. Each item synced to a catalog must have a unique `SKU`.
 
-**Important**: You can perform only one type of action in a single sync request. Syncing items with duplicate `SKU` values in a single request returns an error message with a `400` status code.
+> [!important] You can perform only one type of action in a single sync
+request. Syncing items with duplicate `SKU` values in a single request
+returns an error message with a `400` status code.
 
-For more information, read [managing cart item catalogs](https://docs.talon.one/docs/product/account/dev-tools/managing-cart-item-catalogs).
+For more information, read [managing cart item
+catalogs](https://docs.talon.one/docs/product/account/dev-tools/managing-cart-item-catalogs).
 
 ### Filtering cart items
 
 Use [cart item attributes](https://docs.talon.one/docs/product/account/dev-tools/managing-attributes)
-to filter items and select the ones you want to edit or delete when editing or deleting more than one item
-at a time.
+to filter items and select the ones you want to edit or delete when editing
+or deleting more than one item at a time.
 
 The `filters` array contains an object with the following properties:
 
   - `attr`: A [cart item attribute](https://docs.talon.one/docs/product/account/dev-tools/managing-attributes)
     connected to the catalog. It is applied to all items in the catalog.
 
-  - `op`: The filtering operator indicating the relationship between the value of each
-    cart item in the catalog and the value of the `value` property for the attribute selected
+  - `op`: The filtering operator indicating the relationship between the value
+    of each cart item in the catalog and the value of the `value` property for the attribute selected
     in `attr`.
 
     The value of `op` can be one of the following:
@@ -5035,7 +4905,8 @@ The `filters` array contains an object with the following properties:
 
 ### Payload examples
 
-Synchronization actions are sent as `PUT` requests. See the structure for each action:
+Synchronization actions are sent as `PUT` requests. See the structure for
+each action:
 
 <details>
 
@@ -5435,26 +5306,28 @@ TrackEventV2 Track event
 Triggers a custom event.
 
 To use this endpoint:
-1. Define a [custom event](https://docs.talon.one/docs/dev/concepts/entities/events#creating-a-custom-event) in the Campaign Manager.
+
+1. Define a [custom event](https://docs.talon.one/docs/dev/concepts/entities/events#creating-a-custom-event)
+in the Campaign Manager.
 1. Update or create a rule to check for this event.
-1. Trigger the event with this endpoint. After you have successfully sent an event to Talon.One, you can list the received events in the **Events** view in the Campaign Manager.
+1. Trigger the event with this endpoint. After you have successfully sent an
+event to Talon.One, you can list the received events in the **Events** view
+in the Campaign Manager.
 
-Talon.One also offers a set of [built-in events](https://docs.talon.one/docs/dev/concepts/entities/events). Ensure you do not create
-a custom event when you can use a built-in event.
+Talon.One also offers a set of [built-in
+events](https://docs.talon.one/docs/dev/concepts/entities/events). Ensure
+you do not create a custom event when you can use a built-in event.
 
-For example, use this endpoint to trigger an event when a customer shares a link to a product.
+For example, use this endpoint to trigger an event when a customer shares a
+link to a product.
+
 See the [tutorial](https://docs.talon.one/docs/product/tutorials/referrals/incentivizing-product-link-sharing).
 
-<div class="redoc-section">
-
-	<p class="title">Important</p>
-
-	1. `profileId` is required even though the schema does not specify it.
-	1. If the customer profile ID is new, a new profile is automatically created but the `customer_profile_created` [built-in event ](https://docs.talon.one/docs/dev/concepts/entities/events) is **not** triggered.
-	1. We recommend sending requests sequentially. See [Managing parallel requests](https://docs.talon.one/docs/dev/getting-started/integration-tutorial#managing-parallel-requests).
-	1. [Archived campaigns](https://docs.talon.one/docs/product/campaigns/managing-campaigns#archiving-a-campaign) are not considered in rule evaluation.
-
-</div>
+> [!note] **Note**
+> - `profileId` is required even though the schema does not specify it.
+> - If the customer profile ID is new, a new profile is automatically created but the `customer_profile_created` [built-in event ](https://docs.talon.one/docs/dev/concepts/entities/events) is **not** triggered.
+> - We recommend sending requests sequentially. See [Managing parallel requests](https://docs.talon.one/docs/dev/getting-started/integration-tutorial#managing-parallel-requests).
+> - [Archived campaigns](https://docs.talon.one/docs/product/campaigns/managing-campaigns#archiving-a-campaign) are not considered in rule evaluation.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiTrackEventV2Request
@@ -5634,7 +5507,7 @@ UnlinkLoyaltyCardFromProfile Unlink customer profile from a loyalty card
 Unlink a customer profile from a [registered](https://docs.talon.one/docs/product/loyalty-programs/card-based/managing-loyalty-cards#linking-customer-profiles-to-a-loyalty-card) loyalty card.
 
 To get the `integrationId` of a customer profile, you can use the
-[Update customer session](https://docs.talon.one/integration-api#operation/updateCustomerSessionV2)
+[Update customer session](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2)
 endpoint.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
@@ -6101,7 +5974,9 @@ Add customer profiles to or remove them from an audience.
 
 The endpoint supports 1000 audience actions (`add` or `remove`) per request.
 
-**Note:** You can also do this using the [Update audience](https://docs.talon.one/docs/product/rules/effects/using-effects#updating-an-audience) effect.
+> [!note] You can also do this using the
+> [Update audience](https://docs.talon.one/docs/product/rules/effects/using-effects#updating-an-audience)
+> effect.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiUpdateCustomerProfileAudiencesRequest
@@ -6262,23 +6137,21 @@ func (r ApiUpdateCustomerProfileV2Request) Execute() (*CustomerProfileIntegratio
 /*
 UpdateCustomerProfileV2 Update customer profile
 
-Update or create a [Customer Profile](https://docs.talon.one/docs/dev/concepts/entities/customer-profiles). This endpoint triggers the Rule Builder.
+Update or create a [Customer
+Profile](https://docs.talon.one/docs/dev/concepts/entities/customer-profiles).
+This endpoint triggers the Rule Builder.
 
 You can use this endpoint to:
 - Set attributes on the given customer profile. Ensure you create the attributes in the Campaign Manager, first.
 - Modify the audience the customer profile is a member of.
-**Note:** [Archived campaigns](https://docs.talon.one/docs/product/campaigns/managing-campaigns#archiving-a-campaign) are not considered in rule evaluation when `runRuleEngine` is `true`.
-<div class="redoc-section">
 
-	<p class="title">Performance tips</p>
-
-	- Updating a customer profile returns a response with the requested integration state.
-	- You can use the `responseContent` property to save yourself extra API calls. For example, you can get
-	  the customer profile details directly without extra requests.
-	- We recommend sending requests sequentially.
-	  See [Managing parallel requests](https://docs.talon.one/docs/dev/getting-started/integration-tutorial#managing-parallel-requests).
-
-</div>
+> [!note] **Note**
+> - Updating a customer profile returns a response with the requested integration state.
+> - You can use the `responseContent` property to save yourself extra API calls. For example, you can get
+>   the customer profile details directly without extra requests.
+> - We recommend sending requests sequentially.
+>   See [Managing parallel requests](https://docs.talon.one/docs/dev/getting-started/integration-tutorial#managing-parallel-requests).
+> - [Archived campaigns](https://docs.talon.one/docs/product/campaigns/managing-campaigns#archiving-a-campaign) are not considered in rule evaluation when `runRuleEngine` is `true`.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param integrationId The integration identifier for this customer profile. Must be: - Unique within the deployment. - Stable for the customer. Do not use an ID that the customer can update themselves. For example, you can use a database ID.  Once set, you cannot update this identifier.
@@ -6456,16 +6329,20 @@ func (r ApiUpdateCustomerProfilesV2Request) Execute() (*MultipleCustomerProfileI
 /*
 UpdateCustomerProfilesV2 Update multiple customer profiles
 
-Update (or create) up to 1000 [customer profiles](https://docs.talon.one/docs/dev/concepts/entities/customer-profiles) in 1 request.
+Update (or create) up to 1000 [customer
+profiles](https://docs.talon.one/docs/dev/concepts/entities/customer-profiles)
+in 1 request.
 
 The `integrationId` must be any identifier that remains stable for
 the customer. Do not use an ID that the customer can update
 themselves. For example, you can use a database ID.
 
-A customer profile [can be linked to one or more sessions](https://docs.talon.one/integration-api#tag/Customer-sessions).
+A customer profile [can be linked to one or more
+sessions](https://docs.talon.one/integration-api#tag/Customer-sessions).
 
-**Note:** This endpoint does not trigger the Rule Engine. To trigger the Rule Engine for customer profile updates,
-use the [Update customer profile](#tag/Customer-profiles/operation/updateCustomerProfileV2) endpoint.
+> [!note] This endpoint does not trigger the Rule Engine.
+> To trigger the Rule Engine for customer profile updates,
+> use the [Update customer profile](#tag/Customer-profiles/operation/updateCustomerProfileV2) endpoint.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiUpdateCustomerProfilesV2Request
@@ -6621,7 +6498,7 @@ func (r ApiUpdateCustomerSessionV2Request) Dry(dry bool) ApiUpdateCustomerSessio
 	return r
 }
 
-// A timestamp value of a future date that acts as a current date when included in the query.  Use this parameter, for example, to test campaigns that would be evaluated for this customer session in the future (say, [scheduled campaigns](https://docs.talon.one/docs/product/campaigns/settings/managing-campaign-schedule)).  **Note:**  - It must be an RFC3339 timestamp string. - It can **only** be a date in the future. - It can **only** be used if the &#x60;dry&#x60; parameter in the query is set to &#x60;true&#x60;.
+// A timestamp value of a future date that acts as a current date when included in the query.  Use this parameter, for example, to test campaigns that would be evaluated for this customer session in the future (say, [scheduled campaigns](https://docs.talon.one/docs/product/campaigns/settings/managing-campaign-schedule)).  &gt; [!note] **Note** &gt; - It must be an RFC3339 timestamp string. &gt; - It can **only** be a date in the future. &gt; - It can **only** be used if the &#x60;dry&#x60; parameter in the query is set to &#x60;true&#x60;.
 func (r ApiUpdateCustomerSessionV2Request) Now(now time.Time) ApiUpdateCustomerSessionV2Request {
 	r.now = &now
 	return r
@@ -6634,46 +6511,54 @@ func (r ApiUpdateCustomerSessionV2Request) Execute() (*IntegrationStateV2, *http
 /*
 UpdateCustomerSessionV2 Update customer session
 
-Update or create a [customer session](https://docs.talon.one/docs/dev/concepts/entities/customer-sessions).
-The endpoint responds with the potential promotion rule [effects](https://docs.talon.one/docs/dev/integration-api/api-effects) that match the current cart.
-For example, use this endpoint to share the contents of a customer's cart with Talon.One.
+Update or create a [customer
+session](https://docs.talon.one/docs/dev/concepts/entities/customer-sessions).
 
-**Note:**
-- The currency for the session and the cart items in it is the currency set for the Application linked to this session. - [Archived campaigns](https://docs.talon.one/docs/product/campaigns/managing-campaigns#archiving-a-campaign) are not considered for rule evaluation.
+The endpoint responds with the potential promotion rule
+[effects](https://docs.talon.one/docs/dev/integration-api/api-effects) that
+match the current cart.
+
+For example, use this endpoint to share the contents of a customer's cart
+with Talon.One.
+
+> [!note] **Note**
+> - The currency for the session and the cart items in it is the currency set for the Application linked to this session.
+> - [Archived campaigns](https://docs.talon.one/docs/product/campaigns/managing-campaigns#archiving-a-campaign) are not considered for rule evaluation.
 
 ### Session management
 
-To use this endpoint, start by learning about [customer sessions](https://docs.talon.one/docs/dev/concepts/entities/customer-sessions)
-and their states and refer to the `state` parameter documentation the request body schema docs below.
+To use this endpoint, start by learning about [customer
+sessions](https://docs.talon.one/docs/dev/concepts/entities/customer-sessions)
+and their states and refer to the `state` parameter documentation the
+request body schema docs below.
 
 ### Sessions and customer profiles
 
-- To link a session to a customer profile, set the `profileId` parameter in the request body to a customer profile's `integrationId`.
-- While you can create an anonymous session with `profileId=""`, we recommend you use a guest ID instead.
-- A profile can be linked to simultaneous sessions in different Applications. Either:
+- To link a session to a customer profile, set the `profileId` parameter in
+the request body to a customer profile's `integrationId`.
+
+- While you can create an anonymous session with `profileId=""`, we
+recommend you use a guest ID instead.
+
+- A profile can be linked to simultaneous sessions in different
+Applications. Either:
   - Use unique session integration IDs or,
   - Use the same session integration ID across all of the Applications.
 
-**Note:** If the specified profile does not exist, an empty profile is **created automatically**.
-
-	You can update it with [Update customer profile](https://docs.talon.one/integration-api#tag/Customer-profiles/operation/updateCustomerProfileV2).
-
-<div class="redoc-section">
-
-	<p class="title">Performance tips</p>
-
-	- Updating a customer session returns a response with the new integration state. Use the `responseContent` property to save yourself extra API calls.
-	  For example, you can get the customer profile details directly without extra requests.
-	- We recommend sending requests sequentially. See [Managing parallel requests](https://docs.talon.one/docs/dev/getting-started/integration-tutorial#managing-parallel-requests).
-
-</div>
+> [!note] **Note**
+> - If the specified profile does not exist, an empty profile is **created automatically**.
+>   You can update it with [Update customer profile](https://docs.talon.one/integration-api#tag/Customer-profiles/operation/updateCustomerProfileV2).
+> - Updating a customer session returns a response with the new integration state. Use the `responseContent` property to save yourself extra API calls.
+>   For example, you can get the customer profile details directly without extra requests.
+> - We recommend sending requests sequentially. See [Managing parallel requests](https://docs.talon.one/docs/dev/getting-started/integration-tutorial#managing-parallel-requests).
 
 For more information, see:
+
 - The introductory video in [Getting started](https://docs.talon.one/docs/dev/getting-started/overview).
 - The [integration tutorial](https://docs.talon.one/docs/dev/tutorials/integrating-talon-one).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param customerSessionId The `integration ID` of the customer session. You set this ID when you create a customer session.  You can see existing customer session integration IDs in the Campaign Manager's **Sessions** menu, or via the [List Application session](https://docs.talon.one/management-api#operation/getApplicationSessions) endpoint.
+	@param customerSessionId The `integration ID` of the customer session. You set this ID when you create a customer session.  You can see existing customer session integration IDs in the Campaign Manager's **Sessions** menu, or via the [List Application session](https://docs.talon.one/management-api#tag/Customer-data/operation/getApplicationSessions) endpoint.
 	@return ApiUpdateCustomerSessionV2Request
 */
 func (a *IntegrationAPIService) UpdateCustomerSessionV2(ctx context.Context, customerSessionId string) ApiUpdateCustomerSessionV2Request {

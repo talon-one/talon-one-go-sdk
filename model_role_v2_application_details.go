@@ -1,7 +1,7 @@
 /*
 Talon.One API
 
-Use the Talon.One API to integrate with your application and to manage applications and campaigns:  - Use the operations in the [Integration API section](#integration-api) are used to integrate with our platform - Use the operation in the [Management API section](#management-api) to manage applications and campaigns.  ## Determining the base URL of the endpoints  The API is available at the same hostname as your Campaign Manager deployment. For example, if you access the Campaign Manager at `https://yourbaseurl.talon.one/`, the URL for the [updateCustomerSessionV2](https://docs.talon.one/integration-api#operation/updateCustomerSessionV2) endpoint is `https://yourbaseurl.talon.one/v2/customer_sessions/{Id}`
+Use the Talon.One API to integrate with your application and to manage applications and campaigns:  - Use the operations in the [Integration API section](#integration-api) to integrate with our platform. - Use the operation in the [Management API section](#management-api) to manage applications and campaigns.  ## Determining the base URL of the endpoints  The API is available at the same hostname as your Campaign Manager deployment.  For example, if you access the Campaign Manager at `https://yourbaseurl.talon.one/`, the URL for the [updateCustomerSessionV2](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2) endpoint is `https://yourbaseurl.talon.one/v2/customer_sessions/{Id}`.
 
 API version:
 */
@@ -27,6 +27,8 @@ type RoleV2ApplicationDetails struct {
 	DraftCampaign *string `json:"draftCampaign,omitempty"`
 	// Name of the tools-related permission set.
 	Tools *string `json:"tools,omitempty"`
+	// Support user limits for actions that require admin approval within the given application.
+	Thresholds *RolesV2Thresholds `json:"thresholds,omitempty"`
 }
 
 // NewRoleV2ApplicationDetails instantiates a new RoleV2ApplicationDetails object
@@ -174,6 +176,38 @@ func (o *RoleV2ApplicationDetails) SetTools(v string) {
 	o.Tools = &v
 }
 
+// GetThresholds returns the Thresholds field value if set, zero value otherwise.
+func (o *RoleV2ApplicationDetails) GetThresholds() RolesV2Thresholds {
+	if o == nil || IsNil(o.Thresholds) {
+		var ret RolesV2Thresholds
+		return ret
+	}
+	return *o.Thresholds
+}
+
+// GetThresholdsOk returns a tuple with the Thresholds field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *RoleV2ApplicationDetails) GetThresholdsOk() (*RolesV2Thresholds, bool) {
+	if o == nil || IsNil(o.Thresholds) {
+		return nil, false
+	}
+	return o.Thresholds, true
+}
+
+// HasThresholds returns a boolean if a field has been set.
+func (o *RoleV2ApplicationDetails) HasThresholds() bool {
+	if o != nil && !IsNil(o.Thresholds) {
+		return true
+	}
+
+	return false
+}
+
+// SetThresholds gets a reference to the given RolesV2Thresholds and assigns it to the Thresholds field.
+func (o *RoleV2ApplicationDetails) SetThresholds(v RolesV2Thresholds) {
+	o.Thresholds = &v
+}
+
 func (o RoleV2ApplicationDetails) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -195,6 +229,9 @@ func (o RoleV2ApplicationDetails) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Tools) {
 		toSerialize["tools"] = o.Tools
+	}
+	if !IsNil(o.Thresholds) {
+		toSerialize["thresholds"] = o.Thresholds
 	}
 	return toSerialize, nil
 }

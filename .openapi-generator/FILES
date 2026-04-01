@@ -229,6 +229,9 @@ docs/DeleteUserRequest.md
 docs/Effect.md
 docs/EffectEntity.md
 docs/EmailEntity.md
+docs/EmbeddedAnalyticsConfiguration.md
+docs/EmbeddedAnalyticsConfigurationDashboards.md
+docs/EmbeddedDashboardConfiguration.md
 docs/Endpoint.md
 docs/Entity.md
 docs/EntityWithTalangVisibleID.md
@@ -247,6 +250,9 @@ docs/Experiment.md
 docs/ExperimentCampaignCopy.md
 docs/ExperimentCopy.md
 docs/ExperimentCopyExperiment.md
+docs/ExperimentListResults.md
+docs/ExperimentListResultsRequest.md
+docs/ExperimentResult.md
 docs/ExperimentResults.md
 docs/ExperimentVariant.md
 docs/ExperimentVariantAllocation.md
@@ -325,6 +331,8 @@ docs/GetRulesets200Response.md
 docs/GetUsers200Response.md
 docs/GetWebhooks200Response.md
 docs/Giveaway.md
+docs/GiveawayPoolNotification.md
+docs/GiveawayPoolNotificationData.md
 docs/GiveawaysPool.md
 docs/HiddenConditionsEffects.md
 docs/History.md
@@ -568,6 +576,7 @@ docs/RoleV2PermissionSet.md
 docs/RoleV2Permissions.md
 docs/RoleV2Readonly.md
 docs/RoleV2RolesGroup.md
+docs/RolesV2Thresholds.md
 docs/RollbackAddedLoyaltyPointsEffectProps.md
 docs/RollbackCouponEffectProps.md
 docs/RollbackDeductedLoyaltyPointsEffectProps.md
@@ -576,6 +585,7 @@ docs/RollbackIncreasedAchievementProgressEffectProps.md
 docs/RollbackReferralEffectProps.md
 docs/Rule.md
 docs/RuleFailureReason.md
+docs/RuleMetadata.md
 docs/Ruleset.md
 docs/SSOConfig.md
 docs/SamlConnection.md
@@ -908,6 +918,9 @@ model_delete_user_request.go
 model_effect.go
 model_effect_entity.go
 model_email_entity.go
+model_embedded_analytics_configuration.go
+model_embedded_analytics_configuration_dashboards.go
+model_embedded_dashboard_configuration.go
 model_endpoint.go
 model_entity.go
 model_entity_with_talang_visible_id.go
@@ -926,6 +939,9 @@ model_experiment.go
 model_experiment_campaign_copy.go
 model_experiment_copy.go
 model_experiment_copy_experiment.go
+model_experiment_list_results.go
+model_experiment_list_results_request.go
+model_experiment_result.go
 model_experiment_results.go
 model_experiment_variant.go
 model_experiment_variant_allocation.go
@@ -1004,6 +1020,8 @@ model_get_rulesets_200_response.go
 model_get_users_200_response.go
 model_get_webhooks_200_response.go
 model_giveaway.go
+model_giveaway_pool_notification.go
+model_giveaway_pool_notification_data.go
 model_giveaways_pool.go
 model_hidden_conditions_effects.go
 model_history.go
@@ -1245,6 +1263,7 @@ model_role_v2_permission_set.go
 model_role_v2_permissions.go
 model_role_v2_readonly.go
 model_role_v2_roles_group.go
+model_roles_v2_thresholds.go
 model_rollback_added_loyalty_points_effect_props.go
 model_rollback_coupon_effect_props.go
 model_rollback_deducted_loyalty_points_effect_props.go
@@ -1253,6 +1272,7 @@ model_rollback_increased_achievement_progress_effect_props.go
 model_rollback_referral_effect_props.go
 model_rule.go
 model_rule_failure_reason.go
+model_rule_metadata.go
 model_ruleset.go
 model_saml_connection.go
 model_saml_connection_internal.go

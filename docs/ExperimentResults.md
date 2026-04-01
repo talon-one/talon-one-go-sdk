@@ -4,14 +4,14 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Variants** | Pointer to [**[]ExperimentVariantResult**](ExperimentVariantResult.md) |  | [optional] 
+**Variants** | [**[]ExperimentVariantResult**](ExperimentVariantResult.md) |  | 
 **Confidence** | [**ExperimentVariantResultConfidence**](ExperimentVariantResultConfidence.md) |  | 
 
 ## Methods
 
 ### NewExperimentResults
 
-`func NewExperimentResults(confidence ExperimentVariantResultConfidence, ) *ExperimentResults`
+`func NewExperimentResults(variants []ExperimentVariantResult, confidence ExperimentVariantResultConfidence, ) *ExperimentResults`
 
 NewExperimentResults instantiates a new ExperimentResults object
 This constructor will assign default values to properties that have it defined,
@@ -45,11 +45,6 @@ and a boolean to check if the value has been set.
 
 SetVariants sets Variants field to given value.
 
-### HasVariants
-
-`func (o *ExperimentResults) HasVariants() bool`
-
-HasVariants returns a boolean if a field has been set.
 
 ### GetConfidence
 
