@@ -1,7 +1,7 @@
 /*
 Talon.One API
 
-Use the Talon.One API to integrate with your application and to manage applications and campaigns:  - Use the operations in the [Integration API section](#integration-api) are used to integrate with our platform - Use the operation in the [Management API section](#management-api) to manage applications and campaigns.  ## Determining the base URL of the endpoints  The API is available at the same hostname as your Campaign Manager deployment. For example, if you access the Campaign Manager at `https://yourbaseurl.talon.one/`, the URL for the [updateCustomerSessionV2](https://docs.talon.one/integration-api#operation/updateCustomerSessionV2) endpoint is `https://yourbaseurl.talon.one/v2/customer_sessions/{Id}`
+Use the Talon.One API to integrate with your application and to manage applications and campaigns:  - Use the operations in the [Integration API section](#integration-api) to integrate with our platform. - Use the operation in the [Management API section](#management-api) to manage applications and campaigns.  ## Determining the base URL of the endpoints  The API is available at the same hostname as your Campaign Manager deployment.  For example, if you access the Campaign Manager at `https://yourbaseurl.talon.one/`, the URL for the [updateCustomerSessionV2](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2) endpoint is `https://yourbaseurl.talon.one/v2/customer_sessions/{Id}`.
 
 API version:
 */
@@ -34,7 +34,7 @@ type BaseCampaign struct {
 	Attributes map[string]interface{} `json:"attributes,omitempty"`
 	// A disabled or archived campaign is not evaluated for rules or coupons.
 	State string `json:"state"`
-	// [ID of Ruleset](https://docs.talon.one/management-api#operation/getRulesets) this campaign applies on customer session evaluation.
+	// [ID of Ruleset](https://docs.talon.one/management-api#tag/Campaigns/operation/getRulesets) this campaign applies on customer session evaluation.
 	ActiveRulesetId *int64 `json:"activeRulesetId,omitempty"`
 	// A list of tags for the campaign.
 	Tags []string `json:"tags"`
@@ -52,6 +52,8 @@ type BaseCampaign struct {
 	Type *string `json:"type,omitempty"`
 	// A list of store IDs that you want to link to the campaign.  **Note:** Campaigns with linked store IDs will only be evaluated when there is a [customer session update](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2) that references a linked store.
 	LinkedStoreIds []int64 `json:"linkedStoreIds,omitempty"`
+	// Arbitrary properties associated with coupons in this campaign.
+	CouponAttributes map[string]interface{} `json:"couponAttributes,omitempty"`
 }
 
 type _BaseCampaign BaseCampaign
@@ -556,6 +558,38 @@ func (o *BaseCampaign) SetLinkedStoreIds(v []int64) {
 	o.LinkedStoreIds = v
 }
 
+// GetCouponAttributes returns the CouponAttributes field value if set, zero value otherwise.
+func (o *BaseCampaign) GetCouponAttributes() map[string]interface{} {
+	if o == nil || IsNil(o.CouponAttributes) {
+		var ret map[string]interface{}
+		return ret
+	}
+	return o.CouponAttributes
+}
+
+// GetCouponAttributesOk returns a tuple with the CouponAttributes field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BaseCampaign) GetCouponAttributesOk() (map[string]interface{}, bool) {
+	if o == nil || IsNil(o.CouponAttributes) {
+		return map[string]interface{}{}, false
+	}
+	return o.CouponAttributes, true
+}
+
+// HasCouponAttributes returns a boolean if a field has been set.
+func (o *BaseCampaign) HasCouponAttributes() bool {
+	if o != nil && !IsNil(o.CouponAttributes) {
+		return true
+	}
+
+	return false
+}
+
+// SetCouponAttributes gets a reference to the given map[string]interface{} and assigns it to the CouponAttributes field.
+func (o *BaseCampaign) SetCouponAttributes(v map[string]interface{}) {
+	o.CouponAttributes = v
+}
+
 func (o BaseCampaign) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -603,6 +637,9 @@ func (o BaseCampaign) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.LinkedStoreIds) {
 		toSerialize["linkedStoreIds"] = o.LinkedStoreIds
+	}
+	if !IsNil(o.CouponAttributes) {
+		toSerialize["couponAttributes"] = o.CouponAttributes
 	}
 	return toSerialize, nil
 }

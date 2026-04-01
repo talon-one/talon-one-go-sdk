@@ -14,7 +14,7 @@ Name | Type | Description | Notes
 **EndTime** | Pointer to **time.Time** | Timestamp when the campaign will become inactive. | [optional] 
 **Attributes** | Pointer to **map[string]interface{}** | Arbitrary properties associated with this campaign. | [optional] 
 **State** | **string** | A disabled or archived campaign is not evaluated for rules or coupons.  | [default to "enabled"]
-**ActiveRulesetId** | Pointer to **int64** | [ID of Ruleset](https://docs.talon.one/management-api#operation/getRulesets) this campaign applies on customer session evaluation.  | [optional] 
+**ActiveRulesetId** | Pointer to **int64** | [ID of Ruleset](https://docs.talon.one/management-api#tag/Campaigns/operation/getRulesets) this campaign applies on customer session evaluation.  | [optional] 
 **Tags** | **[]string** | A list of tags for the campaign. | 
 **ReevaluateOnReturn** | **bool** | Indicates whether this campaign should be reevaluated when a customer returns an item. | 
 **Features** | **[]string** | The features enabled in this campaign. | 
@@ -24,6 +24,7 @@ Name | Type | Description | Notes
 **CampaignGroups** | Pointer to **[]int64** | The IDs of the [campaign groups](https://docs.talon.one/docs/product/account/managing-campaign-groups) this campaign belongs to.  | [optional] 
 **Type** | Pointer to **string** | The campaign type. Possible type values:   - &#x60;cartItem&#x60;: Type of campaign that can apply effects only to cart items.   - &#x60;advanced&#x60;: Type of campaign that can apply effects to customer sessions and cart items.  | [optional] [default to "advanced"]
 **LinkedStoreIds** | Pointer to **[]int64** | A list of store IDs that you want to link to the campaign.  **Note:** Campaigns with linked store IDs will only be evaluated when there is a [customer session update](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2) that references a linked store.  | [optional] 
+**CouponAttributes** | Pointer to **map[string]interface{}** | Arbitrary properties associated with coupons in this campaign. | [optional] 
 **Budgets** | Pointer to [**[]CampaignBudget**](CampaignBudget.md) | A list of all the budgets that are defined by this campaign and their usage.  **Note:** Budgets that are not defined do not appear in this list and their usage is not counted until they are defined.  | [optional] 
 **CouponRedemptionCount** | Pointer to **int64** | This property is **deprecated**. The count should be available under *budgets* property. Number of coupons redeemed in the campaign.  | [optional] 
 **ReferralRedemptionCount** | Pointer to **int64** | This property is **deprecated**. The count should be available under *budgets* property. Number of referral codes redeemed in the campaign.  | [optional] 
@@ -525,6 +526,31 @@ SetLinkedStoreIds sets LinkedStoreIds field to given value.
 `func (o *Campaign) HasLinkedStoreIds() bool`
 
 HasLinkedStoreIds returns a boolean if a field has been set.
+
+### GetCouponAttributes
+
+`func (o *Campaign) GetCouponAttributes() map[string]interface{}`
+
+GetCouponAttributes returns the CouponAttributes field if non-nil, zero value otherwise.
+
+### GetCouponAttributesOk
+
+`func (o *Campaign) GetCouponAttributesOk() (*map[string]interface{}, bool)`
+
+GetCouponAttributesOk returns a tuple with the CouponAttributes field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCouponAttributes
+
+`func (o *Campaign) SetCouponAttributes(v map[string]interface{})`
+
+SetCouponAttributes sets CouponAttributes field to given value.
+
+### HasCouponAttributes
+
+`func (o *Campaign) HasCouponAttributes() bool`
+
+HasCouponAttributes returns a boolean if a field has been set.
 
 ### GetBudgets
 

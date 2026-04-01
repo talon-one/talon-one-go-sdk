@@ -1,7 +1,7 @@
 /*
 Talon.One API
 
-Use the Talon.One API to integrate with your application and to manage applications and campaigns:  - Use the operations in the [Integration API section](#integration-api) are used to integrate with our platform - Use the operation in the [Management API section](#management-api) to manage applications and campaigns.  ## Determining the base URL of the endpoints  The API is available at the same hostname as your Campaign Manager deployment. For example, if you access the Campaign Manager at `https://yourbaseurl.talon.one/`, the URL for the [updateCustomerSessionV2](https://docs.talon.one/integration-api#operation/updateCustomerSessionV2) endpoint is `https://yourbaseurl.talon.one/v2/customer_sessions/{Id}`
+Use the Talon.One API to integrate with your application and to manage applications and campaigns:  - Use the operations in the [Integration API section](#integration-api) to integrate with our platform. - Use the operation in the [Management API section](#management-api) to manage applications and campaigns.  ## Determining the base URL of the endpoints  The API is available at the same hostname as your Campaign Manager deployment.  For example, if you access the Campaign Manager at `https://yourbaseurl.talon.one/`, the URL for the [updateCustomerSessionV2](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2) endpoint is `https://yourbaseurl.talon.one/v2/customer_sessions/{Id}`.
 
 API version:
 */
@@ -21,7 +21,7 @@ var _ MappedNullable = &ExperimentResults{}
 
 // ExperimentResults struct for ExperimentResults
 type ExperimentResults struct {
-	Variants   []ExperimentVariantResult         `json:"variants,omitempty"`
+	Variants   []ExperimentVariantResult         `json:"variants"`
 	Confidence ExperimentVariantResultConfidence `json:"confidence"`
 }
 
@@ -31,8 +31,9 @@ type _ExperimentResults ExperimentResults
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildExperimentResults(confidence ExperimentVariantResultConfidence) *ExperimentResults {
+func BuildExperimentResults(variants []ExperimentVariantResult, confidence ExperimentVariantResultConfidence) *ExperimentResults {
 	this := ExperimentResults{}
+	this.Variants = variants
 	this.Confidence = confidence
 	return &this
 }
@@ -45,34 +46,26 @@ func NewExperimentResultsWithDefaults() *ExperimentResults {
 	return &this
 }
 
-// GetVariants returns the Variants field value if set, zero value otherwise.
+// GetVariants returns the Variants field value
 func (o *ExperimentResults) GetVariants() []ExperimentVariantResult {
-	if o == nil || IsNil(o.Variants) {
+	if o == nil {
 		var ret []ExperimentVariantResult
 		return ret
 	}
+
 	return o.Variants
 }
 
-// GetVariantsOk returns a tuple with the Variants field value if set, nil otherwise
+// GetVariantsOk returns a tuple with the Variants field value
 // and a boolean to check if the value has been set.
 func (o *ExperimentResults) GetVariantsOk() ([]ExperimentVariantResult, bool) {
-	if o == nil || IsNil(o.Variants) {
+	if o == nil {
 		return nil, false
 	}
 	return o.Variants, true
 }
 
-// HasVariants returns a boolean if a field has been set.
-func (o *ExperimentResults) HasVariants() bool {
-	if o != nil && !IsNil(o.Variants) {
-		return true
-	}
-
-	return false
-}
-
-// SetVariants gets a reference to the given []ExperimentVariantResult and assigns it to the Variants field.
+// SetVariants sets field value
 func (o *ExperimentResults) SetVariants(v []ExperimentVariantResult) {
 	o.Variants = v
 }
@@ -111,9 +104,7 @@ func (o ExperimentResults) MarshalJSON() ([]byte, error) {
 
 func (o ExperimentResults) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.Variants) {
-		toSerialize["variants"] = o.Variants
-	}
+	toSerialize["variants"] = o.Variants
 	toSerialize["confidence"] = o.Confidence
 	return toSerialize, nil
 }
@@ -123,6 +114,7 @@ func (o *ExperimentResults) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
+		"variants",
 		"confidence",
 	}
 

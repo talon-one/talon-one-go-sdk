@@ -208,6 +208,28 @@ func main() {
 }
 ```
 
+## FAQ
+
+> Are there any breaking changes in the next-generation Go SDK compared to the legacy SDK?
+
+Most changes are related to naming. Functions and model names have been updated to be clearer and to better follow standard Go naming conventions.
+
+> Are there any behavioral or model differences in session evaluation, event tracking, or coupon handling between the legacy SDK and the next-generation SDK?
+
+No. There are no behavioral changes in the API.
+
+> Do you have recommended migration strategies or best practices for production systems with high transaction volumes?
+
+The migration is straightforward. In our example project, we replaced the SDK and resolved all compiler errors caused by the renames. No logic changes were required.
+
+> Are there any known limitations or common issues reported by Go users during the migration?
+
+None known at this time.
+
+> How long will the legacy SDK be supported?
+
+The legacy SDK is supported until March 31, 2027, after which it will be deprecated and no longer updated. It may continue to function, but will receive no further maintenance.
+
 ## Documentation for API endpoints
 
 All URLs are relative to `https://yourbaseurl.talon.one`.
@@ -238,7 +260,6 @@ Class | Method | HTTP request | Description
 *IntegrationAPI* | [**GetLoyaltyProgramProfileTransactions**](docs/IntegrationAPI.md#getloyaltyprogramprofiletransactions) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/transactions | List customer&#39;s loyalty transactions
 *IntegrationAPI* | [**GetReservedCustomers**](docs/IntegrationAPI.md#getreservedcustomers) | **Get** /v1/coupon_reservations/customerprofiles/{couponValue} | List customers that have this coupon reserved
 *IntegrationAPI* | [**LinkLoyaltyCardToProfile**](docs/IntegrationAPI.md#linkloyaltycardtoprofile) | **Post** /v2/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/link_profile | Link customer profile to card
-*IntegrationAPI* | [**PriceHistory**](docs/IntegrationAPI.md#pricehistory) | **Post** /v1/best_prior_price_history | Get summary of price history
 *IntegrationAPI* | [**ReopenCustomerSession**](docs/IntegrationAPI.md#reopencustomersession) | **Put** /v2/customer_sessions/{customerSessionId}/reopen | Reopen customer session
 *IntegrationAPI* | [**ReturnCartItems**](docs/IntegrationAPI.md#returncartitems) | **Post** /v2/customer_sessions/{customerSessionId}/returns | Return cart items
 *IntegrationAPI* | [**SyncCatalog**](docs/IntegrationAPI.md#synccatalog) | **Put** /v1/catalogs/{catalogId}/sync | Sync cart item catalog
@@ -396,6 +417,7 @@ Class | Method | HTTP request | Description
 *ManagementAPI* | [**ListExperiments**](docs/ManagementAPI.md#listexperiments) | **Get** /v1/applications/{applicationId}/experiments | List experiments
 *ManagementAPI* | [**ListStores**](docs/ManagementAPI.md#liststores) | **Get** /v1/applications/{applicationId}/stores | List stores
 *ManagementAPI* | [**OktaEventHandlerChallenge**](docs/ManagementAPI.md#oktaeventhandlerchallenge) | **Get** /v1/provisioning/okta | Validate Okta API ownership
+*ManagementAPI* | [**PriceHistory**](docs/ManagementAPI.md#pricehistory) | **Post** /v1/applications/{applicationId}/price_history | Get summary of price history
 *ManagementAPI* | [**RemoveLoyaltyPoints**](docs/ManagementAPI.md#removeloyaltypoints) | **Put** /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/deduct_points | Deduct points from customer profile
 *ManagementAPI* | [**ResetPassword**](docs/ManagementAPI.md#resetpassword) | **Post** /v1/reset_password | Reset password
 *ManagementAPI* | [**ScimCreateGroup**](docs/ManagementAPI.md#scimcreategroup) | **Post** /v1/provisioning/scim/Groups | Create SCIM group
@@ -645,6 +667,9 @@ Class | Method | HTTP request | Description
 - [Effect](docs/Effect.md)
 - [EffectEntity](docs/EffectEntity.md)
 - [EmailEntity](docs/EmailEntity.md)
+- [EmbeddedAnalyticsConfiguration](docs/EmbeddedAnalyticsConfiguration.md)
+- [EmbeddedAnalyticsConfigurationDashboards](docs/EmbeddedAnalyticsConfigurationDashboards.md)
+- [EmbeddedDashboardConfiguration](docs/EmbeddedDashboardConfiguration.md)
 - [Endpoint](docs/Endpoint.md)
 - [Entity](docs/Entity.md)
 - [EntityWithTalangVisibleID](docs/EntityWithTalangVisibleID.md)
@@ -663,6 +688,9 @@ Class | Method | HTTP request | Description
 - [ExperimentCampaignCopy](docs/ExperimentCampaignCopy.md)
 - [ExperimentCopy](docs/ExperimentCopy.md)
 - [ExperimentCopyExperiment](docs/ExperimentCopyExperiment.md)
+- [ExperimentListResults](docs/ExperimentListResults.md)
+- [ExperimentListResultsRequest](docs/ExperimentListResultsRequest.md)
+- [ExperimentResult](docs/ExperimentResult.md)
 - [ExperimentResults](docs/ExperimentResults.md)
 - [ExperimentVariant](docs/ExperimentVariant.md)
 - [ExperimentVariantAllocation](docs/ExperimentVariantAllocation.md)
@@ -741,6 +769,8 @@ Class | Method | HTTP request | Description
 - [GetUsers200Response](docs/GetUsers200Response.md)
 - [GetWebhooks200Response](docs/GetWebhooks200Response.md)
 - [Giveaway](docs/Giveaway.md)
+- [GiveawayPoolNotification](docs/GiveawayPoolNotification.md)
+- [GiveawayPoolNotificationData](docs/GiveawayPoolNotificationData.md)
 - [GiveawaysPool](docs/GiveawaysPool.md)
 - [HiddenConditionsEffects](docs/HiddenConditionsEffects.md)
 - [History](docs/History.md)
@@ -982,6 +1012,7 @@ Class | Method | HTTP request | Description
 - [RoleV2Permissions](docs/RoleV2Permissions.md)
 - [RoleV2Readonly](docs/RoleV2Readonly.md)
 - [RoleV2RolesGroup](docs/RoleV2RolesGroup.md)
+- [RolesV2Thresholds](docs/RolesV2Thresholds.md)
 - [RollbackAddedLoyaltyPointsEffectProps](docs/RollbackAddedLoyaltyPointsEffectProps.md)
 - [RollbackCouponEffectProps](docs/RollbackCouponEffectProps.md)
 - [RollbackDeductedLoyaltyPointsEffectProps](docs/RollbackDeductedLoyaltyPointsEffectProps.md)
@@ -990,6 +1021,7 @@ Class | Method | HTTP request | Description
 - [RollbackReferralEffectProps](docs/RollbackReferralEffectProps.md)
 - [Rule](docs/Rule.md)
 - [RuleFailureReason](docs/RuleFailureReason.md)
+- [RuleMetadata](docs/RuleMetadata.md)
 - [Ruleset](docs/Ruleset.md)
 - [SSOConfig](docs/SSOConfig.md)
 - [SamlConnection](docs/SamlConnection.md)

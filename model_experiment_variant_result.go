@@ -1,7 +1,7 @@
 /*
 Talon.One API
 
-Use the Talon.One API to integrate with your application and to manage applications and campaigns:  - Use the operations in the [Integration API section](#integration-api) are used to integrate with our platform - Use the operation in the [Management API section](#management-api) to manage applications and campaigns.  ## Determining the base URL of the endpoints  The API is available at the same hostname as your Campaign Manager deployment. For example, if you access the Campaign Manager at `https://yourbaseurl.talon.one/`, the URL for the [updateCustomerSessionV2](https://docs.talon.one/integration-api#operation/updateCustomerSessionV2) endpoint is `https://yourbaseurl.talon.one/v2/customer_sessions/{Id}`
+Use the Talon.One API to integrate with your application and to manage applications and campaigns:  - Use the operations in the [Integration API section](#integration-api) to integrate with our platform. - Use the operation in the [Management API section](#management-api) to manage applications and campaigns.  ## Determining the base URL of the endpoints  The API is available at the same hostname as your Campaign Manager deployment.  For example, if you access the Campaign Manager at `https://yourbaseurl.talon.one/`, the URL for the [updateCustomerSessionV2](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2) endpoint is `https://yourbaseurl.talon.one/v2/customer_sessions/{Id}`.
 
 API version:
 */
@@ -25,6 +25,8 @@ type ExperimentVariantResult struct {
 	VariantName *string `json:"variantName,omitempty"`
 	// The weight of the variant.
 	VariantWeight *int64 `json:"variantWeight,omitempty"`
+	// Calculated flag if the variant is the winner.
+	IsWinner *bool `json:"isWinner,omitempty"`
 	// The total, pre-discount value of all items purchased in a customer session.
 	TotalRevenue *float32 `json:"totalRevenue,omitempty"`
 	// The number of all closed sessions.
@@ -152,6 +154,38 @@ func (o *ExperimentVariantResult) HasVariantWeight() bool {
 // SetVariantWeight gets a reference to the given int64 and assigns it to the VariantWeight field.
 func (o *ExperimentVariantResult) SetVariantWeight(v int64) {
 	o.VariantWeight = &v
+}
+
+// GetIsWinner returns the IsWinner field value if set, zero value otherwise.
+func (o *ExperimentVariantResult) GetIsWinner() bool {
+	if o == nil || IsNil(o.IsWinner) {
+		var ret bool
+		return ret
+	}
+	return *o.IsWinner
+}
+
+// GetIsWinnerOk returns a tuple with the IsWinner field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ExperimentVariantResult) GetIsWinnerOk() (*bool, bool) {
+	if o == nil || IsNil(o.IsWinner) {
+		return nil, false
+	}
+	return o.IsWinner, true
+}
+
+// HasIsWinner returns a boolean if a field has been set.
+func (o *ExperimentVariantResult) HasIsWinner() bool {
+	if o != nil && !IsNil(o.IsWinner) {
+		return true
+	}
+
+	return false
+}
+
+// SetIsWinner gets a reference to the given bool and assigns it to the IsWinner field.
+func (o *ExperimentVariantResult) SetIsWinner(v bool) {
+	o.IsWinner = &v
 }
 
 // GetTotalRevenue returns the TotalRevenue field value if set, zero value otherwise.
@@ -396,6 +430,9 @@ func (o ExperimentVariantResult) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.VariantWeight) {
 		toSerialize["variantWeight"] = o.VariantWeight
+	}
+	if !IsNil(o.IsWinner) {
+		toSerialize["isWinner"] = o.IsWinner
 	}
 	if !IsNil(o.TotalRevenue) {
 		toSerialize["totalRevenue"] = o.TotalRevenue

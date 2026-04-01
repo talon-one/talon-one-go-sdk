@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 **VariantId** | Pointer to **int64** | The ID of the variant. | [optional] 
 **VariantName** | Pointer to **string** | The name of the variant. | [optional] 
 **VariantWeight** | Pointer to **int64** | The weight of the variant. | [optional] 
+**IsWinner** | Pointer to **bool** | Calculated flag if the variant is the winner. | [optional] 
 **TotalRevenue** | Pointer to **float32** | The total, pre-discount value of all items purchased in a customer session. | [optional] 
 **SessionsCount** | Pointer to **float32** | The number of all closed sessions. | [optional] 
 **AvgItemsPerSession** | Pointer to **float32** | The number of items from sessions divided by the number of sessions. | [optional] 
@@ -108,6 +109,31 @@ SetVariantWeight sets VariantWeight field to given value.
 `func (o *ExperimentVariantResult) HasVariantWeight() bool`
 
 HasVariantWeight returns a boolean if a field has been set.
+
+### GetIsWinner
+
+`func (o *ExperimentVariantResult) GetIsWinner() bool`
+
+GetIsWinner returns the IsWinner field if non-nil, zero value otherwise.
+
+### GetIsWinnerOk
+
+`func (o *ExperimentVariantResult) GetIsWinnerOk() (*bool, bool)`
+
+GetIsWinnerOk returns a tuple with the IsWinner field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetIsWinner
+
+`func (o *ExperimentVariantResult) SetIsWinner(v bool)`
+
+SetIsWinner sets IsWinner field to given value.
+
+### HasIsWinner
+
+`func (o *ExperimentVariantResult) HasIsWinner() bool`
+
+HasIsWinner returns a boolean if a field has been set.
 
 ### GetTotalRevenue
 
