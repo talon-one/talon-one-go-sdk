@@ -41,6 +41,8 @@ type LedgerInfo struct {
 	CurrentTier *Tier `json:"currentTier,omitempty"`
 	// Points required to move up a tier.
 	PointsToNextTier *float32 `json:"pointsToNextTier,omitempty"`
+	// The name of the next higher tier level in the loyalty program.  **Note**: - Returns `null` if the customer has reached the highest available tier. - Returns the lowest level tier name if the customer is not currently assigned to any tier.
+	NextTierName *string `json:"nextTierName,omitempty"`
 }
 
 type _LedgerInfo LedgerInfo
@@ -347,6 +349,38 @@ func (o *LedgerInfo) SetPointsToNextTier(v float32) {
 	o.PointsToNextTier = &v
 }
 
+// GetNextTierName returns the NextTierName field value if set, zero value otherwise.
+func (o *LedgerInfo) GetNextTierName() string {
+	if o == nil || IsNil(o.NextTierName) {
+		var ret string
+		return ret
+	}
+	return *o.NextTierName
+}
+
+// GetNextTierNameOk returns a tuple with the NextTierName field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *LedgerInfo) GetNextTierNameOk() (*string, bool) {
+	if o == nil || IsNil(o.NextTierName) {
+		return nil, false
+	}
+	return o.NextTierName, true
+}
+
+// HasNextTierName returns a boolean if a field has been set.
+func (o *LedgerInfo) HasNextTierName() bool {
+	if o != nil && !IsNil(o.NextTierName) {
+		return true
+	}
+
+	return false
+}
+
+// SetNextTierName gets a reference to the given string and assigns it to the NextTierName field.
+func (o *LedgerInfo) SetNextTierName(v string) {
+	o.NextTierName = &v
+}
+
 func (o LedgerInfo) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -376,6 +410,9 @@ func (o LedgerInfo) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.PointsToNextTier) {
 		toSerialize["pointsToNextTier"] = o.PointsToNextTier
+	}
+	if !IsNil(o.NextTierName) {
+		toSerialize["nextTierName"] = o.NextTierName
 	}
 	return toSerialize, nil
 }

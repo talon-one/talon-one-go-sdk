@@ -1898,7 +1898,7 @@ func (a *ManagementAPIService) CreateCouponsExecute(r ApiCreateCouponsRequest) (
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiCreateCouponsAsyncRequest struct {
+type ApiCreateCouponsAsynchronouslyRequest struct {
 	ctx                  context.Context
 	ApiService           *ManagementAPIService
 	applicationId        int64
@@ -1907,17 +1907,17 @@ type ApiCreateCouponsAsyncRequest struct {
 }
 
 // body
-func (r ApiCreateCouponsAsyncRequest) NewCouponCreationJob(newCouponCreationJob NewCouponCreationJob) ApiCreateCouponsAsyncRequest {
+func (r ApiCreateCouponsAsynchronouslyRequest) NewCouponCreationJob(newCouponCreationJob NewCouponCreationJob) ApiCreateCouponsAsynchronouslyRequest {
 	r.newCouponCreationJob = &newCouponCreationJob
 	return r
 }
 
-func (r ApiCreateCouponsAsyncRequest) Execute() (*AsyncCouponCreationResponse, *http.Response, error) {
-	return r.ApiService.CreateCouponsAsyncExecute(r)
+func (r ApiCreateCouponsAsynchronouslyRequest) Execute() (*AsyncCouponCreationResponse, *http.Response, error) {
+	return r.ApiService.CreateCouponsAsynchronouslyExecute(r)
 }
 
 /*
-CreateCouponsAsync Create coupons asynchronously
+CreateCouponsAsynchronously Create coupons asynchronously
 
 Create up to 5,000,000 coupons asynchronously. You should typically use this enpdoint when you create at least 20,001 coupons. You receive an email when the creation is complete.
 
@@ -1926,10 +1926,10 @@ If you want to create less than 20,001 coupons, you can use the [Create coupons]
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param applicationId The ID of the Application. It is displayed in your Talon.One deployment URL.
 	@param campaignId The ID of the campaign. It is displayed in your Talon.One deployment URL.
-	@return ApiCreateCouponsAsyncRequest
+	@return ApiCreateCouponsAsynchronouslyRequest
 */
-func (a *ManagementAPIService) CreateCouponsAsync(ctx context.Context, applicationId int64, campaignId int64) ApiCreateCouponsAsyncRequest {
-	return ApiCreateCouponsAsyncRequest{
+func (a *ManagementAPIService) CreateCouponsAsynchronously(ctx context.Context, applicationId int64, campaignId int64) ApiCreateCouponsAsynchronouslyRequest {
+	return ApiCreateCouponsAsynchronouslyRequest{
 		ApiService:    a,
 		ctx:           ctx,
 		applicationId: applicationId,
@@ -1940,7 +1940,7 @@ func (a *ManagementAPIService) CreateCouponsAsync(ctx context.Context, applicati
 // Execute executes the request
 //
 //	@return AsyncCouponCreationResponse
-func (a *ManagementAPIService) CreateCouponsAsyncExecute(r ApiCreateCouponsAsyncRequest) (*AsyncCouponCreationResponse, *http.Response, error) {
+func (a *ManagementAPIService) CreateCouponsAsynchronouslyExecute(r ApiCreateCouponsAsynchronouslyRequest) (*AsyncCouponCreationResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -1948,7 +1948,7 @@ func (a *ManagementAPIService) CreateCouponsAsyncExecute(r ApiCreateCouponsAsync
 		localVarReturnValue *AsyncCouponCreationResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagementAPIService.CreateCouponsAsync")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagementAPIService.CreateCouponsAsynchronously")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -6073,6 +6073,174 @@ func (a *ManagementAPIService) ExportCampaignStoresExecute(r ApiExportCampaignSt
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiExportCampaignValueMapRequest struct {
+	ctx           context.Context
+	ApiService    *ManagementAPIService
+	applicationId int64
+	campaignId    int64
+	valueMapId    int64
+}
+
+func (r ApiExportCampaignValueMapRequest) Execute() (string, *http.Response, error) {
+	return r.ApiService.ExportCampaignValueMapExecute(r)
+}
+
+/*
+ExportCampaignValueMap Export campaign value map
+
+Download a CSV file containing all the value map items in a campaign. If
+there are multiple versions of the value map, only the items of the current
+version are exported.
+
+> [!tip] If the exported CSV file is too large to view, you can
+> [split it into multiple files](https://www.google.com/search?q=split+CSV+into+multiple+files).
+
+The generated file can contain the following columns:
+
+- `identifier`: The value of the attribute in the targeted item, for example, an item's SKU.
+- `value`: The value that is associated with the identifier, for example, the item's price.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param applicationId The ID of the Application. It is displayed in your Talon.One deployment URL.
+	@param campaignId The ID of the campaign. It is displayed in your Talon.One deployment URL.
+	@param valueMapId The ID of the value map.
+	@return ApiExportCampaignValueMapRequest
+*/
+func (a *ManagementAPIService) ExportCampaignValueMap(ctx context.Context, applicationId int64, campaignId int64, valueMapId int64) ApiExportCampaignValueMapRequest {
+	return ApiExportCampaignValueMapRequest{
+		ApiService:    a,
+		ctx:           ctx,
+		applicationId: applicationId,
+		campaignId:    campaignId,
+		valueMapId:    valueMapId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return string
+func (a *ManagementAPIService) ExportCampaignValueMapExecute(r ApiExportCampaignValueMapRequest) (string, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue string
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagementAPIService.ExportCampaignValueMap")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v1/applications/{applicationId}/campaigns/{campaignId}/value_maps/{valueMapId}/export"
+	localVarPath = strings.Replace(localVarPath, "{"+"applicationId"+"}", url.PathEscape(parameterValueToString(r.applicationId, "applicationId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"campaignId"+"}", url.PathEscape(parameterValueToString(r.campaignId, "campaignId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"valueMapId"+"}", url.PathEscape(parameterValueToString(r.valueMapId, "valueMapId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/csv", "application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiExportCollectionItemsRequest struct {
 	ctx           context.Context
 	ApiService    *ManagementAPIService
@@ -9817,7 +9985,7 @@ func (r ApiGetApplicationRequest) Execute() (*Application, *http.Response, error
 /*
 GetApplication Get Application
 
-Get the application specified by the ID.
+Get the Application specified by the ID.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param applicationId The ID of the Application. It is displayed in your Talon.One deployment URL.
@@ -10044,6 +10212,132 @@ func (a *ManagementAPIService) GetApplicationApiHealthExecute(r ApiGetApplicatio
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiGetApplicationCartItemFilterExpressionRequest struct {
+	ctx              context.Context
+	ApiService       *ManagementAPIService
+	applicationId    int64
+	cartItemFilterId int64
+	expressionId     int64
+}
+
+func (r ApiGetApplicationCartItemFilterExpressionRequest) Execute() (*ApplicationCIFExpression, *http.Response, error) {
+	return r.ApiService.GetApplicationCartItemFilterExpressionExecute(r)
+}
+
+/*
+GetApplicationCartItemFilterExpression Get Application cart item filter expression
+
+Get an Application cart item filter expression for a specific Application.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param applicationId The ID of the Application. It is displayed in your Talon.One deployment URL.
+	@param cartItemFilterId The ID of the Application cart item filter. You can get this ID with the [List Application cart item filters](https://docs.talon.one/management-api#tag/Applications/operation/listApplicationCartItemFilters) endpoint.
+	@param expressionId The ID of the Application cart item filter expression.
+	@return ApiGetApplicationCartItemFilterExpressionRequest
+*/
+func (a *ManagementAPIService) GetApplicationCartItemFilterExpression(ctx context.Context, applicationId int64, cartItemFilterId int64, expressionId int64) ApiGetApplicationCartItemFilterExpressionRequest {
+	return ApiGetApplicationCartItemFilterExpressionRequest{
+		ApiService:       a,
+		ctx:              ctx,
+		applicationId:    applicationId,
+		cartItemFilterId: cartItemFilterId,
+		expressionId:     expressionId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ApplicationCIFExpression
+func (a *ManagementAPIService) GetApplicationCartItemFilterExpressionExecute(r ApiGetApplicationCartItemFilterExpressionRequest) (*ApplicationCIFExpression, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ApplicationCIFExpression
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagementAPIService.GetApplicationCartItemFilterExpression")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v1/applications/{applicationId}/cart_item_filters/{cartItemFilterId}/expressions/{expressionId}"
+	localVarPath = strings.Replace(localVarPath, "{"+"applicationId"+"}", url.PathEscape(parameterValueToString(r.applicationId, "applicationId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"cartItemFilterId"+"}", url.PathEscape(parameterValueToString(r.cartItemFilterId, "cartItemFilterId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"expressionId"+"}", url.PathEscape(parameterValueToString(r.expressionId, "expressionId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiGetApplicationCustomerRequest struct {
 	ctx           context.Context
 	ApiService    *ManagementAPIService
@@ -10195,7 +10489,7 @@ func (r ApiGetApplicationCustomerFriendsRequest) Sort(sort string) ApiGetApplica
 	return r
 }
 
-// When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;hasMore&#x60; is true when there is a next page. &#x60;totalResultSize&#x60; is always zero. - When &#x60;false&#x60;: &#x60;hasMore&#x60; is always false. &#x60;totalResultSize&#x60; contains the total number of results for this query.
+// When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query. - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.
 func (r ApiGetApplicationCustomerFriendsRequest) WithTotalResultSize(withTotalResultSize bool) ApiGetApplicationCustomerFriendsRequest {
 	r.withTotalResultSize = &withTotalResultSize
 	return r
@@ -10360,7 +10654,7 @@ func (r ApiGetApplicationCustomersRequest) Skip(skip int64) ApiGetApplicationCus
 	return r
 }
 
-// When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;hasMore&#x60; is true when there is a next page. &#x60;totalResultSize&#x60; is always zero. - When &#x60;false&#x60;: &#x60;hasMore&#x60; is always false. &#x60;totalResultSize&#x60; contains the total number of results for this query.
+// When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query. - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.
 func (r ApiGetApplicationCustomersRequest) WithTotalResultSize(withTotalResultSize bool) ApiGetApplicationCustomersRequest {
 	r.withTotalResultSize = &withTotalResultSize
 	return r
@@ -10522,7 +10816,7 @@ func (r ApiGetApplicationCustomersByAttributesRequest) Skip(skip int64) ApiGetAp
 	return r
 }
 
-// When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;hasMore&#x60; is true when there is a next page. &#x60;totalResultSize&#x60; is always zero. - When &#x60;false&#x60;: &#x60;hasMore&#x60; is always false. &#x60;totalResultSize&#x60; contains the total number of results for this query.
+// When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query. - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.
 func (r ApiGetApplicationCustomersByAttributesRequest) WithTotalResultSize(withTotalResultSize bool) ApiGetApplicationCustomersByAttributesRequest {
 	r.withTotalResultSize = &withTotalResultSize
 	return r
@@ -11488,7 +11782,7 @@ func (r ApiGetApplicationsRequest) Execute() (*GetApplications200Response, *http
 /*
 GetApplications List Applications
 
-List all applications in the current account.
+List all the Applications in the current account.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiGetApplicationsRequest
@@ -12120,7 +12414,7 @@ func (r ApiGetAudiencesRequest) Sort(sort string) ApiGetAudiencesRequest {
 	return r
 }
 
-// When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;hasMore&#x60; is true when there is a next page. &#x60;totalResultSize&#x60; is always zero. - When &#x60;false&#x60;: &#x60;hasMore&#x60; is always false. &#x60;totalResultSize&#x60; contains the total number of results for this query.
+// When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query. - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.
 func (r ApiGetAudiencesRequest) WithTotalResultSize(withTotalResultSize bool) ApiGetAudiencesRequest {
 	r.withTotalResultSize = &withTotalResultSize
 	return r
@@ -13636,7 +13930,7 @@ func (r ApiGetChangesRequest) CreatedAfter(createdAfter time.Time) ApiGetChanges
 	return r
 }
 
-// When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;hasMore&#x60; is true when there is a next page. &#x60;totalResultSize&#x60; is always zero. - When &#x60;false&#x60;: &#x60;hasMore&#x60; is always false. &#x60;totalResultSize&#x60; contains the total number of results for this query.
+// When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query. - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.
 func (r ApiGetChangesRequest) WithTotalResultSize(withTotalResultSize bool) ApiGetChangesRequest {
 	r.withTotalResultSize = &withTotalResultSize
 	return r
@@ -21926,7 +22220,7 @@ func (r ApiListAccountCollectionsRequest) Sort(sort string) ApiListAccountCollec
 	return r
 }
 
-// When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;hasMore&#x60; is true when there is a next page. &#x60;totalResultSize&#x60; is always zero. - When &#x60;false&#x60;: &#x60;hasMore&#x60; is always false. &#x60;totalResultSize&#x60; contains the total number of results for this query.
+// When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query. - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.
 func (r ApiListAccountCollectionsRequest) WithTotalResultSize(withTotalResultSize bool) ApiListAccountCollectionsRequest {
 	r.withTotalResultSize = &withTotalResultSize
 	return r
@@ -22368,6 +22662,158 @@ func (a *ManagementAPIService) ListAllRolesV2Execute(r ApiListAllRolesV2Request)
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiListApplicationCartItemFiltersRequest struct {
+	ctx           context.Context
+	ApiService    *ManagementAPIService
+	applicationId int64
+	pageSize      *int64
+	skip          *int64
+	title         *string
+}
+
+// The number of items in the response.
+func (r ApiListApplicationCartItemFiltersRequest) PageSize(pageSize int64) ApiListApplicationCartItemFiltersRequest {
+	r.pageSize = &pageSize
+	return r
+}
+
+// The number of items to skip when paging through large result sets.
+func (r ApiListApplicationCartItemFiltersRequest) Skip(skip int64) ApiListApplicationCartItemFiltersRequest {
+	r.skip = &skip
+	return r
+}
+
+// Filter by the display name of the Application cart item filter in the Application.  **Note**: If no &#x60;title&#x60; is provided, all the Application cart item filters in the Application are returned.
+func (r ApiListApplicationCartItemFiltersRequest) Title(title string) ApiListApplicationCartItemFiltersRequest {
+	r.title = &title
+	return r
+}
+
+func (r ApiListApplicationCartItemFiltersRequest) Execute() (*ListApplicationCartItemFilters200Response, *http.Response, error) {
+	return r.ApiService.ListApplicationCartItemFiltersExecute(r)
+}
+
+/*
+ListApplicationCartItemFilters List Application cart item filters
+
+Return all the Application cart item filters for a specific Application.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param applicationId The ID of the Application. It is displayed in your Talon.One deployment URL.
+	@return ApiListApplicationCartItemFiltersRequest
+*/
+func (a *ManagementAPIService) ListApplicationCartItemFilters(ctx context.Context, applicationId int64) ApiListApplicationCartItemFiltersRequest {
+	return ApiListApplicationCartItemFiltersRequest{
+		ApiService:    a,
+		ctx:           ctx,
+		applicationId: applicationId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ListApplicationCartItemFilters200Response
+func (a *ManagementAPIService) ListApplicationCartItemFiltersExecute(r ApiListApplicationCartItemFiltersRequest) (*ListApplicationCartItemFilters200Response, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ListApplicationCartItemFilters200Response
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagementAPIService.ListApplicationCartItemFilters")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v1/applications/{applicationId}/cart_item_filters"
+	localVarPath = strings.Replace(localVarPath, "{"+"applicationId"+"}", url.PathEscape(parameterValueToString(r.applicationId, "applicationId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.pageSize != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
+	} else {
+		var defaultValue int64 = 50
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
+		r.pageSize = &defaultValue
+	}
+	if r.skip != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "skip", r.skip, "form", "")
+	}
+	if r.title != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "title", r.title, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiListCampaignStoreBudgetLimitsRequest struct {
 	ctx           context.Context
 	ApiService    *ManagementAPIService
@@ -22565,7 +23011,7 @@ func (r ApiListCatalogItemsRequest) Skip(skip int64) ApiListCatalogItemsRequest 
 	return r
 }
 
-// When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;hasMore&#x60; is true when there is a next page. &#x60;totalResultSize&#x60; is always zero. - When &#x60;false&#x60;: &#x60;hasMore&#x60; is always false. &#x60;totalResultSize&#x60; contains the total number of results for this query.
+// When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query. - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.
 func (r ApiListCatalogItemsRequest) WithTotalResultSize(withTotalResultSize bool) ApiListCatalogItemsRequest {
 	r.withTotalResultSize = &withTotalResultSize
 	return r
@@ -22760,7 +23206,7 @@ func (r ApiListCollectionsRequest) Sort(sort string) ApiListCollectionsRequest {
 	return r
 }
 
-// When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;hasMore&#x60; is true when there is a next page. &#x60;totalResultSize&#x60; is always zero. - When &#x60;false&#x60;: &#x60;hasMore&#x60; is always false. &#x60;totalResultSize&#x60; contains the total number of results for this query.
+// When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query. - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.
 func (r ApiListCollectionsRequest) WithTotalResultSize(withTotalResultSize bool) ApiListCollectionsRequest {
 	r.withTotalResultSize = &withTotalResultSize
 	return r
@@ -22945,7 +23391,7 @@ func (r ApiListCollectionsInApplicationRequest) Sort(sort string) ApiListCollect
 	return r
 }
 
-// When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;hasMore&#x60; is true when there is a next page. &#x60;totalResultSize&#x60; is always zero. - When &#x60;false&#x60;: &#x60;hasMore&#x60; is always false. &#x60;totalResultSize&#x60; contains the total number of results for this query.
+// When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query. - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.
 func (r ApiListCollectionsInApplicationRequest) WithTotalResultSize(withTotalResultSize bool) ApiListCollectionsInApplicationRequest {
 	r.withTotalResultSize = &withTotalResultSize
 	return r
@@ -23282,7 +23728,7 @@ func (r ApiListStoresRequest) Sort(sort string) ApiListStoresRequest {
 	return r
 }
 
-// When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;hasMore&#x60; is true when there is a next page. &#x60;totalResultSize&#x60; is always zero. - When &#x60;false&#x60;: &#x60;hasMore&#x60; is always false. &#x60;totalResultSize&#x60; contains the total number of results for this query.
+// When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query. - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.
 func (r ApiListStoresRequest) WithTotalResultSize(withTotalResultSize bool) ApiListStoresRequest {
 	r.withTotalResultSize = &withTotalResultSize
 	return r

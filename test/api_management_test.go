@@ -199,14 +199,14 @@ func Test_talon_ManagementAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test ManagementAPIService CreateCouponsAsync", func(t *testing.T) {
+	t.Run("Test ManagementAPIService CreateCouponsAsynchronously", func(t *testing.T) {
 
 		t.Skip("skip test")  // remove to run test
 
 		var applicationId int64
 		var campaignId int64
 
-		resp, httpRes, err := apiClient.ManagementAPI.CreateCouponsAsync(context.Background(), applicationId, campaignId).Execute()
+		resp, httpRes, err := apiClient.ManagementAPI.CreateCouponsAsynchronously(context.Background(), applicationId, campaignId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -611,6 +611,22 @@ func Test_talon_ManagementAPIService(t *testing.T) {
 
 	})
 
+	t.Run("Test ManagementAPIService ExportCampaignValueMap", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var applicationId int64
+		var campaignId int64
+		var valueMapId int64
+
+		resp, httpRes, err := apiClient.ManagementAPI.ExportCampaignValueMap(context.Background(), applicationId, campaignId, valueMapId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test ManagementAPIService ExportCollectionItems", func(t *testing.T) {
 
 		t.Skip("skip test")  // remove to run test
@@ -942,6 +958,22 @@ func Test_talon_ManagementAPIService(t *testing.T) {
 		var applicationId int64
 
 		resp, httpRes, err := apiClient.ManagementAPI.GetApplicationApiHealth(context.Background(), applicationId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test ManagementAPIService GetApplicationCartItemFilterExpression", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var applicationId int64
+		var cartItemFilterId int64
+		var expressionId int64
+
+		resp, httpRes, err := apiClient.ManagementAPI.GetApplicationCartItemFilterExpression(context.Background(), applicationId, cartItemFilterId, expressionId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -1942,6 +1974,20 @@ func Test_talon_ManagementAPIService(t *testing.T) {
 		t.Skip("skip test")  // remove to run test
 
 		resp, httpRes, err := apiClient.ManagementAPI.ListAllRolesV2(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test ManagementAPIService ListApplicationCartItemFilters", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var applicationId int64
+
+		resp, httpRes, err := apiClient.ManagementAPI.ListApplicationCartItemFilters(context.Background(), applicationId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

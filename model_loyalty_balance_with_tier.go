@@ -34,7 +34,7 @@ type LoyaltyBalanceWithTier struct {
 	ProjectedTier *ProjectedTier `json:"projectedTier,omitempty"`
 	// The number of points required to move up a tier.
 	PointsToNextTier *float32 `json:"pointsToNextTier,omitempty"`
-	// The name of the tier consecutive to the current tier.
+	// The name of the next higher tier level in the loyalty program.  **Note**: - Returns `null` if the customer has reached the highest available tier. - Returns the lowest level tier name if the customer is not currently assigned to any tier.
 	NextTierName *string `json:"nextTierName,omitempty"`
 }
 
