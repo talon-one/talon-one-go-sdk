@@ -162,6 +162,9 @@ tags:
 - description: |
     Represents physical or digital stores, branches, and franchises.
   name: Stores
+- description: Represents the value maps that the user can create within a campaign
+    ruleset.
+  name: Value maps
 - description: |
     A way to send information from Talon.One to the URI of your choice.
 
@@ -488,6 +491,15 @@ paths:
         schema:
           type: string
         style: simple
+      - description: |
+          When set to `true`, reevaluates the updated session after items are returned. Only reevaluates campaigns where `reevaluateOnReturn` is set to `true` and which produced an effect when the session was closed.
+        explode: true
+        in: query
+        name: runRuleEngine
+        required: false
+        schema:
+          type: boolean
+        style: form
       requestBody:
         $ref: "#/components/requestBodies/ReturnIntegrationRequest"
       responses:
@@ -1288,6 +1300,126 @@ paths:
       security:
       - api_key_v1: []
       summary: Unlink customer profile from a loyalty card
+      tags:
+      - integration
+  /v1/integration/campaigns:
+    get:
+      description: "Retrieve all running campaigns for the specified Application.\
+        \ You\ncan filter the results by providing specific campaign IDs or a range\
+        \ of \nstart and end dates.\n"
+      operationId: integrationGetAllCampaigns
+      parameters:
+      - description: The number of items in the response.
+        explode: true
+        in: query
+        name: pageSize
+        required: false
+        schema:
+          default: 50
+          format: int64
+          maximum: 1000
+          minimum: 1
+          type: integer
+        style: form
+      - $ref: "#/components/parameters/skip"
+      - description: |
+          Filter by one or more campaign IDs, separated by a comma.
+
+          **Note:** If no campaigns are specified, data for all the campaigns in
+          the Application is returned.
+        explode: false
+        in: query
+        name: campaignIds
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: "Filter results to only include campaigns that start on or after\
+          \ \nthe specified timestamp.\n\n**Note:**\n\n- It must be an RFC3339 timestamp\
+          \ string.\n\n- You can include a time component in your string, for example,\n\
+          `T23:59:59` to specify the end of the day. The time zone setting\nconsidered\
+          \ is `UTC`. If you do not include a time component, a default\ntime value\
+          \ of `T00:00:00` (midnight) in `UTC` is considered.\n"
+        explode: true
+        in: query
+        name: startAfter
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: "Filter results to only include campaigns that start on or before\
+          \ \nthe specified timestamp.\n\n**Note:**\n\n- It must be an RFC3339 timestamp\
+          \ string.\n\n- You can include a time component in your string, for example,\n\
+          `T23:59:59` to specify the end of the day. The time zone setting\nconsidered\
+          \ is `UTC`. If you do not include a time component, a default\ntime value\
+          \ of `T00:00:00` (midnight) in `UTC` is considered.\n"
+        explode: true
+        in: query
+        name: startBefore
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: "Filter results to only include campaigns that end on or after\
+          \ \nthe specified timestamp.\n\n**Note:**\n\n- It must be an RFC3339 timestamp\
+          \ string.\n\n- You can include a time component in your string, for example,\n\
+          `T23:59:59` to specify the end of the day. The time zone setting\nconsidered\
+          \ is `UTC`. If you do not include a time component, a default\ntime value\
+          \ of `T00:00:00` (midnight) in `UTC` is considered.\n"
+        explode: true
+        in: query
+        name: endAfter
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: "Filter results to only include campaigns that end on or before\
+          \ \nthe specified timestamp.\n\n**Note:**\n\n- It must be an RFC3339 timestamp\
+          \ string.\n\n- You can include a time component in your string, for example,\n\
+          `T23:59:59` to specify the end of the day. The time zone setting\nconsidered\
+          \ is `UTC`. If you do not include a time component, a default\ntime value\
+          \ of `T00:00:00` (midnight) in `UTC` is considered.\n"
+        explode: true
+        in: query
+        name: endBefore
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/integrationGetAllCampaigns_200_response"
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Not found
+      security:
+      - api_key_v1: []
+      summary: List all running campaigns
       tags:
       - integration
   /v2/events:
@@ -3258,7 +3390,7 @@ paths:
       - integration
   /v1/applications:
     get:
-      description: List all applications in the current account.
+      description: List all the Applications in the current account.
       operationId: getApplications
       parameters:
       - $ref: "#/components/parameters/pageSize"
@@ -3276,7 +3408,7 @@ paths:
       - management
   /v1/applications/{applicationId}:
     get:
-      description: Get the application specified by the ID.
+      description: Get the Application specified by the ID.
       operationId: getApplication
       parameters:
       - $ref: "#/components/parameters/applicationId"
@@ -3898,7 +4030,7 @@ paths:
         Create up to 5,000,000 coupons asynchronously. You should typically use this enpdoint when you create at least 20,001 coupons. You receive an email when the creation is complete.
 
         If you want to create less than 20,001 coupons, you can use the [Create coupons](https://docs.talon.one/management-api#tag/Coupons/operation/createCoupons) endpoint.
-      operationId: createCouponsAsync
+      operationId: createCouponsAsynchronously
       parameters:
       - $ref: "#/components/parameters/applicationId"
       - $ref: "#/components/parameters/campaignId"
@@ -7138,10 +7270,10 @@ paths:
       - $ref: "#/components/parameters/skip"
       - $ref: "#/components/parameters/sort"
       - description: |
-          When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.
+          When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.
 
-          - When `true`: `hasMore` is true when there is a next page. `totalResultSize` is always zero.
-          - When `false`: `hasMore` is always false. `totalResultSize` contains the total number of results for this query.
+          - When `true`: `totalResultSize` contains the total number of results for this query.
+          - When `false`: Only `hasMore` is returned, and it is set to `true` when there are more results than shown on the page.
         explode: true
         in: query
         name: withTotalResultSize
@@ -7376,10 +7508,10 @@ paths:
       - $ref: "#/components/parameters/skip"
       - $ref: "#/components/parameters/sort"
       - description: |
-          When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.
+          When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.
 
-          - When `true`: `hasMore` is true when there is a next page. `totalResultSize` is always zero.
-          - When `false`: `hasMore` is always false. `totalResultSize` contains the total number of results for this query.
+          - When `true`: `totalResultSize` contains the total number of results for this query.
+          - When `false`: Only `hasMore` is returned, and it is set to `true` when there are more results than shown on the page.
         explode: true
         in: query
         name: withTotalResultSize
@@ -7422,10 +7554,10 @@ paths:
       - $ref: "#/components/parameters/skip"
       - $ref: "#/components/parameters/sort"
       - description: |
-          When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.
+          When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.
 
-          - When `true`: `hasMore` is true when there is a next page. `totalResultSize` is always zero.
-          - When `false`: `hasMore` is always false. `totalResultSize` contains the total number of results for this query.
+          - When `true`: `totalResultSize` contains the total number of results for this query.
+          - When `false`: Only `hasMore` is returned, and it is set to `true` when there are more results than shown on the page.
         explode: true
         in: query
         name: withTotalResultSize
@@ -8000,10 +8132,10 @@ paths:
       - $ref: "#/components/parameters/pageSize"
       - $ref: "#/components/parameters/skip"
       - description: |
-          When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.
+          When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.
 
-          - When `true`: `hasMore` is true when there is a next page. `totalResultSize` is always zero.
-          - When `false`: `hasMore` is always false. `totalResultSize` contains the total number of results for this query.
+          - When `true`: `totalResultSize` contains the total number of results for this query.
+          - When `false`: Only `hasMore` is returned, and it is set to `true` when there are more results than shown on the page.
         explode: true
         in: query
         name: withTotalResultSize
@@ -8033,10 +8165,10 @@ paths:
       - $ref: "#/components/parameters/pageSize"
       - $ref: "#/components/parameters/skip"
       - description: |
-          When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.
+          When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.
 
-          - When `true`: `hasMore` is true when there is a next page. `totalResultSize` is always zero.
-          - When `false`: `hasMore` is always false. `totalResultSize` contains the total number of results for this query.
+          - When `true`: `totalResultSize` contains the total number of results for this query.
+          - When `false`: Only `hasMore` is returned, and it is set to `true` when there are more results than shown on the page.
         explode: true
         in: query
         name: withTotalResultSize
@@ -8647,10 +8779,10 @@ paths:
       - $ref: "#/components/parameters/skip"
       - $ref: "#/components/parameters/sort"
       - description: |
-          When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.
+          When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.
 
-          - When `true`: `hasMore` is true when there is a next page. `totalResultSize` is always zero.
-          - When `false`: `hasMore` is always false. `totalResultSize` contains the total number of results for this query.
+          - When `true`: `totalResultSize` contains the total number of results for this query.
+          - When `false`: Only `hasMore` is returned, and it is set to `true` when there are more results than shown on the page.
         explode: true
         in: query
         name: withTotalResultSize
@@ -8874,10 +9006,10 @@ paths:
       - $ref: "#/components/parameters/sort"
       - $ref: "#/components/parameters/applicationId"
       - description: |
-          When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.
+          When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.
 
-          - When `true`: `hasMore` is true when there is a next page. `totalResultSize` is always zero.
-          - When `false`: `hasMore` is always false. `totalResultSize` contains the total number of results for this query.
+          - When `true`: `totalResultSize` contains the total number of results for this query.
+          - When `false`: Only `hasMore` is returned, and it is set to `true` when there are more results than shown on the page.
         explode: true
         in: query
         name: withTotalResultSize
@@ -8920,6 +9052,7 @@ paths:
       summary: Fetch best prior price
       tags:
       - integration
+      x-scalar-stability: experimental
   /v1/applications/{applicationId}/price_history:
     post:
       description: |
@@ -9184,10 +9317,10 @@ paths:
       - $ref: "#/components/parameters/pageSize"
       - $ref: "#/components/parameters/skip"
       - description: |
-          When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.
+          When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.
 
-          - When `true`: `hasMore` is true when there is a next page. `totalResultSize` is always zero.
-          - When `false`: `hasMore` is always false. `totalResultSize` contains the total number of results for this query.
+          - When `true`: `totalResultSize` contains the total number of results for this query.
+          - When `false`: Only `hasMore` is returned, and it is set to `true` when there are more results than shown on the page.
         explode: true
         in: query
         name: withTotalResultSize
@@ -11118,10 +11251,10 @@ paths:
           type: string
         style: form
       - description: |
-          When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.
+          When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.
 
-          - When `true`: `hasMore` is true when there is a next page. `totalResultSize` is always zero.
-          - When `false`: `hasMore` is always false. `totalResultSize` contains the total number of results for this query.
+          - When `true`: `totalResultSize` contains the total number of results for this query.
+          - When `false`: Only `hasMore` is returned, and it is set to `true` when there are more results than shown on the page.
         explode: true
         in: query
         name: withTotalResultSize
@@ -11479,6 +11612,69 @@ paths:
       summary: Update role
       tags:
       - management
+  /v1/applications/{applicationId}/campaigns/{campaignId}/value_maps/{valueMapId}/export:
+    get:
+      description: |
+        Download a CSV file containing all the value map items in a campaign. If
+        there are multiple versions of the value map, only the items of the current
+        version are exported.
+
+        > [!tip] If the exported CSV file is too large to view, you can
+        > [split it into multiple files](https://www.google.com/search?q=split+CSV+into+multiple+files).
+
+        The generated file can contain the following columns:
+
+        - `identifier`: The value of the attribute in the targeted item, for example, an item's SKU.
+        - `value`: The value that is associated with the identifier, for example, the item's price.
+      operationId: exportCampaignValueMap
+      parameters:
+      - $ref: "#/components/parameters/applicationId"
+      - $ref: "#/components/parameters/campaignId"
+      - description: |
+          The ID of the value map.
+        explode: false
+        in: path
+        name: valueMapId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/csv:
+              examples:
+                response:
+                  value: |
+                    identifier,value
+                    sku-123,10.11
+                    sku-234,595
+              schema:
+                format: csv
+                type: string
+          description: OK
+        "400":
+          content:
+            application/csv:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Bad request
+        "401":
+          content:
+            application/csv:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Not found
+      summary: Export campaign value map
+      tags:
+      - management
   /v1/applications/{applicationId}/stores:
     get:
       description: List all stores for a specific Application.
@@ -11489,10 +11685,10 @@ paths:
       - $ref: "#/components/parameters/skip"
       - $ref: "#/components/parameters/sort"
       - description: |
-          When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.
+          When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.
 
-          - When `true`: `hasMore` is true when there is a next page. `totalResultSize` is always zero.
-          - When `false`: `hasMore` is always false. `totalResultSize` contains the total number of results for this query.
+          - When `true`: `totalResultSize` contains the total number of results for this query.
+          - When `false`: Only `hasMore` is returned, and it is set to `true` when there are more results than shown on the page.
         explode: true
         in: query
         name: withTotalResultSize
@@ -11719,6 +11915,82 @@ paths:
                 $ref: "#/components/schemas/ErrorResponseWithStatus"
           description: Not found
       summary: Export stores
+      tags:
+      - management
+  /v1/applications/{applicationId}/cart_item_filters:
+    get:
+      description: Return all the Application cart item filters for a specific Application.
+      operationId: listApplicationCartItemFilters
+      parameters:
+      - $ref: "#/components/parameters/applicationId"
+      - description: The number of items in the response.
+        explode: true
+        in: query
+        name: pageSize
+        required: false
+        schema:
+          default: 50
+          format: int64
+          maximum: 50
+          minimum: 1
+          type: integer
+        style: form
+      - $ref: "#/components/parameters/skip"
+      - description: |
+          Filter by the display name of the Application cart item filter in the Application.
+
+          **Note**: If no `title` is provided, all the Application cart item filters in the Application are returned.
+        explode: true
+        in: query
+        name: title
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listApplicationCartItemFilters_200_response"
+          description: OK
+      summary: List Application cart item filters
+      tags:
+      - management
+  /v1/applications/{applicationId}/cart_item_filters/{cartItemFilterId}/expressions/{expressionId}:
+    get:
+      description: Get an Application cart item filter expression for a specific Application.
+      operationId: getApplicationCartItemFilterExpression
+      parameters:
+      - $ref: "#/components/parameters/applicationId"
+      - description: "The ID of the Application cart item filter. You can get this\
+          \ ID with the [List Application cart item filters](https://docs.talon.one/management-api#tag/Applications/operation/listApplicationCartItemFilters)\
+          \ endpoint."
+        explode: false
+        in: path
+        name: cartItemFilterId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      - description: The ID of the Application cart item filter expression.
+        explode: false
+        in: path
+        name: expressionId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApplicationCIFExpression"
+          description: Ok
+      summary: Get Application cart item filter expression
       tags:
       - management
   /v1/applications/{applicationId}/campaigns/{campaignId}/stores:
@@ -12989,6 +13261,13 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/NewStore"
+      description: body
+      required: true
+    NewReward:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/NewReward"
       description: body
       required: true
     IntegrationEventV3Request:
@@ -14366,6 +14645,10 @@ components:
           description: |
             The sub-position of the targeted bundle item on which the applied discount is based.
           type: number
+        excludedFromPriceHistory:
+          description: "When set to `true`, the applied discount is excluded from\
+            \ the item's price history."
+          type: boolean
       required:
       - name
       - position
@@ -15754,8 +16037,18 @@ components:
             description: Points required to move up a tier.
             example: 20
             type: number
+          nextTierName:
+            description: |
+              The name of the next higher tier level in the loyalty program.
+
+              **Note**:
+              - Returns `null` if the customer has reached the highest available tier.
+              - Returns the lowest level tier name if the customer is not currently assigned to any tier.
+            example: Silver
+            type: string
       example:
         pendingBalance: 10
+        nextTierName: Silver
         negativeBalance: 10
         currentBalance: 100
         spentBalance: 0
@@ -15831,6 +16124,7 @@ components:
         subledgers:
           key:
             pendingBalance: 10
+            nextTierName: Silver
             negativeBalance: 10
             currentBalance: 100
             spentBalance: 0
@@ -15857,6 +16151,7 @@ components:
         subLedgers:
           key:
             pendingBalance: 10
+            nextTierName: Silver
             negativeBalance: 10
             currentBalance: 100
             spentBalance: 0
@@ -15922,6 +16217,7 @@ components:
           subledgers:
             key:
               pendingBalance: 10
+              nextTierName: Silver
               negativeBalance: 10
               currentBalance: 100
               spentBalance: 0
@@ -15953,6 +16249,7 @@ components:
           subledgers:
             key:
               pendingBalance: 10
+              nextTierName: Silver
               negativeBalance: 10
               currentBalance: 100
               spentBalance: 0
@@ -15978,6 +16275,7 @@ components:
             subLedgers:
               key:
                 pendingBalance: 10
+                nextTierName: Silver
                 negativeBalance: 10
                 currentBalance: 100
                 spentBalance: 0
@@ -18859,6 +19157,7 @@ components:
             subledgers:
               key:
                 pendingBalance: 10
+                nextTierName: Silver
                 negativeBalance: 10
                 currentBalance: 100
                 spentBalance: 0
@@ -18890,6 +19189,7 @@ components:
             subledgers:
               key:
                 pendingBalance: 10
+                nextTierName: Silver
                 negativeBalance: 10
                 currentBalance: 100
                 spentBalance: 0
@@ -18915,6 +19215,7 @@ components:
               subLedgers:
                 key:
                   pendingBalance: 10
+                  nextTierName: Silver
                   negativeBalance: 10
                   currentBalance: 100
                   spentBalance: 0
@@ -19466,20 +19767,19 @@ components:
           example: Give discount via coupon
           type: string
         displayName:
-          description: A customer-facing name used to identify the reward defined
-            within the rule.
+          description: A customer-facing name for the rule.
           example: 20% off all shoes!
           type: string
         displayDescription:
-          description: "A customer-facing description of the reward defined in the\
-            \ rule. \n\nFor example, this property can contain details about eligibility\
+          description: "A customer-facing description that explains the details of\
+            \ the rule. \n\nFor example, this property can contain details about eligibility\
             \ requirements, reward timelines, or terms and conditions.\n"
           example: Get a 20% discount on all shoes during Thanksgiving! Offer valid
             till Dec 5 only.
           type: string
         relatedData:
           description: |
-            Data related to the reward, such as a vendor name, an image URL, or a content management system (CMS) ID.
+            Any additional data associated with the rule, such as an image URL, vendor name, or a content management system (CMS) ID.
           example: https://example.com/discounts/20-off-shoes.png
           type: string
       required:
@@ -19557,6 +19857,20 @@ components:
         - name
         - state
         - tags
+      example:
+        features:
+        - coupons
+        - referrals
+        name: Summer promotions
+        description: Campaign for all summer 2021 promotions
+        startTime: 2021-07-20T22:00:00Z
+        attributes: null
+        id: 4
+        endTime: 2021-09-22T22:00:00Z
+        state: enabled
+        applicationId: 322
+        tags:
+        - summer
     NewAttribute:
       allOf:
       - properties:
@@ -21800,6 +22114,7 @@ components:
             subledgers:
               key:
                 pendingBalance: 10
+                nextTierName: Silver
                 negativeBalance: 10
                 currentBalance: 100
                 spentBalance: 0
@@ -21831,6 +22146,7 @@ components:
             subledgers:
               key:
                 pendingBalance: 10
+                nextTierName: Silver
                 negativeBalance: 10
                 currentBalance: 100
                 spentBalance: 0
@@ -21856,6 +22172,7 @@ components:
               subLedgers:
                 key:
                   pendingBalance: 10
+                  nextTierName: Silver
                   negativeBalance: 10
                   currentBalance: 100
                   spentBalance: 0
@@ -22248,8 +22565,13 @@ components:
             example: 20
             type: number
           nextTierName:
-            description: The name of the tier consecutive to the current tier.
-            example: silver
+            description: |
+              The name of the next higher tier level in the loyalty program.
+
+              **Note**:
+              - Returns `null` if the customer has reached the highest available tier.
+              - Returns the lowest level tier name if the customer is not currently assigned to any tier.
+            example: Silver
             type: string
     LoyaltyBalancesWithTiers:
       description: List of loyalty balances for a ledger and its subledgers.
@@ -24429,7 +24751,7 @@ components:
           example: 1EuroOff
           type: string
         value: {}
-        excludeFromBestPriorPriceHistory:
+        excludedFromPriceHistory:
           type: boolean
       required:
       - name
@@ -27411,6 +27733,168 @@ components:
       - campaign
       - targetApplicationId
       - variantId
+    ExperimentVerdict:
+      properties:
+        winnerVariantName:
+          description: "The name of the winning variant. If no variant shows a statistically\
+            \ significant advantage on key business metrics, return 'Inconclusive'."
+          type: string
+        verdictSummary:
+          description: "A one-sentence summary of the outcome, including the key metric\
+            \ and confidence level that led to the decision."
+          type: string
+        keyFindings:
+          description: "A bullet point stating the most important finding, including\
+            \ the metric, the percentage change, and the confidence."
+          items:
+            type: string
+          type: array
+        aiConfidenceLevel:
+          description: "Your confidence in this overall verdict, from 0 to 100."
+          type: string
+        recommendation:
+          description: "A short, actionable recommendation based on the findings.\
+            \ If inconclusive, suggest running the test longer. If there is a clear\
+            \ winner, recommend promoting it."
+          type: string
+      required:
+      - aiConfidenceLevel
+      - keyFindings
+      - recommendation
+      - verdictSummary
+      - winnerVariantName
+    ExperimentVerdictResponse:
+      properties:
+        verdict:
+          $ref: "#/components/schemas/ExperimentVerdict"
+        generated:
+          description: Timestamp of the moment when the verdict was generated.
+          format: date-time
+          type: string
+      required:
+      - generated
+      - verdict
+    ExperimentSegmentInsightVariant:
+      properties:
+        variantId:
+          description: The ID of the experiment variant.
+          example: 41
+          format: int64
+          type: integer
+        variantName:
+          description: The name of the experiment variant.
+          example: Control
+          type: string
+        sessionsCount:
+          description: The number of sessions in this segment for this variant.
+          example: 161
+          format: int64
+          type: integer
+        value:
+          description: The metric value for this variant in the segment.
+          example: 13.13
+          format: double
+          type: number
+      required:
+      - sessionsCount
+      - value
+      - variantId
+      - variantName
+    ExperimentSegmentInsight:
+      properties:
+        dimension:
+          description: The segmentation dimension used to group customers or purchases
+            for analysis.
+          enum:
+          - cart_value
+          - item_count
+          - customer_type
+          example: cart_value
+          type: string
+        bucket:
+          description: The specific group within the segmentation dimension.
+          enum:
+          - low
+          - medium
+          - high
+          - new
+          - returning
+          - loyal
+          example: high
+          type: string
+        confidence:
+          description: |
+            The raw (unadjusted) confidence score expressed as a percentage. Only segments with a confidence score greater than or equal to 95% are returned.
+          example: 99.2
+          format: double
+          maximum: 100
+          minimum: 95
+          type: number
+        winnerVariantId:
+          description: The ID of the variant that performed better in this segment.
+          example: 42
+          format: int64
+          type: integer
+        variants:
+          description: Per-variant metric values for this segment.
+          items:
+            $ref: "#/components/schemas/ExperimentSegmentInsightVariant"
+          type: array
+      required:
+      - bucket
+      - confidence
+      - dimension
+      - variants
+      - winnerVariantId
+    ExperimentSegmentInsightMetric:
+      properties:
+        metric:
+          description: The metric being measured.
+          enum:
+          - avg_session_value
+          - avg_discounted_session_value
+          - avg_items_per_session
+          example: avg_session_value
+          type: string
+        segments:
+          description: |
+            Segments with statistically significant results for this metric. An empty array means no significant segments were found. Segments are sorted by confidence score from highest to lowest.
+          items:
+            $ref: "#/components/schemas/ExperimentSegmentInsight"
+          type: array
+      required:
+      - metric
+      - segments
+    ExperimentSegmentInsights:
+      properties:
+        metrics:
+          description: |
+            Segment insights grouped by metric. This array always contains exactly three metric objects. Each metric includes a segments array, which is empty if no significant results were found. The metrics array itself is empty if the `reason` property is populated.
+          items:
+            $ref: "#/components/schemas/ExperimentSegmentInsightMetric"
+          type: array
+        totalSegmentsTested:
+          description: |
+            Total number of segment-metric combinations that were tested for statistical significance.
+          example: 24
+          format: int64
+          type: integer
+        dimensionsTested:
+          description: |
+            Number of segmentation dimensions that had sufficient data variance to test. Dimensions where all sessions fall into a single bucket are excluded.
+          example: 3
+          format: int64
+          type: integer
+        reason:
+          description: |
+            Empty string when segment insights are available. Contains a reason code when insights could not be computed (e.g., "insufficient_data" when the experiment has fewer than 100 sessions per variant).
+          example: ""
+          type: string
+      required:
+      - dimensionsTested
+      - metrics
+      - reason
+      - totalSegmentsTested
     CreateTemplateCampaign:
       example:
         campaignAttributesOverrides: "{}"
@@ -30593,6 +31077,16 @@ components:
             type: integer
         required:
         - applicationId
+      example:
+        createdBy: 216
+        created: 2020-06-10T09:05:27.993483Z
+        name: Filter items by product
+        description: This filter allows filtering by shoes
+        modified: 2000-01-23T04:56:07.000+00:00
+        modifiedBy: 334
+        id: 6
+        applicationId: 322
+        activeExpressionId: 1
     Environment:
       allOf:
       - $ref: "#/components/schemas/Entity"
@@ -30758,7 +31252,6 @@ components:
         skus:
         - comma
         - period
-        strictEndDate: true
         timeframeEndDateType: sale
         target:
           targetType: AUDIENCE
@@ -30785,22 +31278,12 @@ components:
             within this look back period are considered for the best prior price evaluation.
           example: "30"
           type: string
-        strictEndDate:
-          deprecated: true
-          description: |
-            This property is **deprecated**. Use `timeframeEndDateType` instead.
-
-            Indicates whether the timeframe includes the start of the current sale.
-            - When `false`, the timeframe includes the start date of the current sale.
-            - When `true`, the timeframe strictly uses the number of days specified in `timeframe`.
-          example: true
-          type: boolean
         timeframeEndDateType:
           description: |
             Sets the timeframe for retrieving historical pricing data. Can be one of the following values:
             - `strict`: The timeframe ends at the `timeframeEndDate` value.
-            - `price`: The timeframe ends at the start of the current `contextId` with the current price value. Identical price records are merged. If there is no `contextId` for the most recent price, the most recent timestamp for the price is used.
-             - `sale`:  The timeframe ends at the start of current `contextId` and takes the prices prior to the start of the `contextId` into account.
+            - `price`: The timeframe ends at the start of current price value and takes the prices prior to the start of the current price value into account.
+            - `sale`:  The timeframe ends at the start of current `contextId` and takes the prices prior to the start of the `contextId` into account.
           enum:
           - strict
           - price
@@ -30811,9 +31294,9 @@ components:
           $ref: "#/components/schemas/BestPriorTarget"
       required:
       - skus
-      - strictEndDate
       - timeframe
       - timeframeEndDate
+      - timeframeEndDateType
     InfluencingCampaignDetails:
       description: Details about a campaign that influenced the final price.
       example:
@@ -33556,6 +34039,69 @@ components:
             type: string
         required:
         - key
+    CreateMCPKey:
+      properties:
+        name:
+          description: Name for the MCP key.
+          example: My MCP key
+          type: string
+        expiryDate:
+          description: The date the MCP key expires.
+          example: 2026-08-24T14:00:00Z
+          format: date-time
+          type: string
+      required:
+      - expiryDate
+      - name
+    MCPKey:
+      allOf:
+      - $ref: "#/components/schemas/CreateMCPKey"
+      - properties:
+          id:
+            description: ID of the MCP key.
+            example: 34
+            format: int64
+            type: integer
+          createdBy:
+            description: ID of the user who created it.
+            example: 280
+            format: int64
+            type: integer
+          accountID:
+            description: ID of account the key is used for.
+            example: 13
+            format: int64
+            type: integer
+          created:
+            description: The date the MCP key was created.
+            example: 2026-03-02T16:46:17.758585Z
+            format: date-time
+            type: string
+          disabled:
+            description: The MCP key is disabled (this property is set to `true`)
+              when the user who created the key is disabled or deleted.
+            example: true
+            type: boolean
+          lastUsed:
+            description: The last time the MCP key was used.
+            example: 2026-03-02T16:46:17.758585Z
+            format: date-time
+            type: string
+        required:
+        - accountID
+        - created
+        - createdBy
+        - id
+    NewMCPKey:
+      allOf:
+      - $ref: "#/components/schemas/MCPKey"
+      - properties:
+          key:
+            description: The generated MCP key. Only returned once on creation.
+            example: f45f90d21dcd9bac965c45e547e9754a3196891d09948e35adbcbedc4e9e4b01
+            type: string
+        required:
+        - key
     NewValueMap:
       type: object
     ValueMap:
@@ -33764,6 +34310,26 @@ components:
             type: integer
         required:
         - applicationId
+      example:
+        expression:
+          expr:
+          - filter
+          - - "."
+            - Session
+            - CartItems
+          - - - Item
+            - - catch
+              - false
+              - - =
+                - - "."
+                  - Item
+                  - Category
+                - Kitchen
+        cartItemFilterId: 216
+        createdBy: 216
+        created: 2020-06-10T09:05:27.993483Z
+        id: 6
+        applicationId: 322
     CatalogRule:
       description: "A rule template stored in a catalog entry. Rules in catalog entries\
         \ only contain title (no description, as description is at the catalog entry\
@@ -34280,7 +34846,17 @@ components:
       - $ref: "#/components/schemas/Entity"
       - $ref: "#/components/schemas/AchievementBaseV2"
       - $ref: "#/components/schemas/AchievementAdditionalPropertiesV2"
-      - type: object
+      - required:
+        - activationPolicy
+        - description
+        - name
+        - recurrencePolicy
+        - sandbox
+        - subscribedApplications
+        - target
+        - timezone
+        - title
+        type: object
     CreateAchievementV2:
       allOf:
       - $ref: "#/components/schemas/AchievementBaseV2"
@@ -34288,7 +34864,6 @@ components:
         - description
         - name
         - sandbox
-        - subscribedApplications
         - target
         - timezone
         - title
@@ -35299,6 +35874,59 @@ components:
         required:
         - applicationId
         - applicationName
+    NewReward:
+      properties:
+        name:
+          description: The name of the reward.
+          example: Free Coffee
+          minLength: 1
+          type: string
+        apiName:
+          description: A unique identifier used to reference the reward in API integrations.
+          example: free-coffee
+          minLength: 1
+          type: string
+        description:
+          description: A description of the reward.
+          example: This reward gets you one free coffee.
+          type: string
+        applicationIds:
+          description: "The IDs of the Applications this reward is connected to. \n\
+            \n**Note**: Currently, a reward can only be connected to one Application.\n"
+          example:
+          - 1
+          - 2
+          - 3
+          items:
+            format: int64
+            type: integer
+          type: array
+        sandbox:
+          description: Indicates if this is a live or sandbox reward. Rewards of a
+            given type can only be connected to Applications of the same type.
+          example: true
+          title: Sandbox
+          type: boolean
+      required:
+      - apiName
+      - applicationIds
+      - name
+      - sandbox
+    Reward:
+      allOf:
+      - $ref: "#/components/schemas/Entity"
+      - $ref: "#/components/schemas/AccountEntity"
+      - $ref: "#/components/schemas/NewReward"
+      - properties:
+          status:
+            description: The status of the reward.
+            enum:
+            - active
+            - inactive
+            example: active
+            type: string
+        required:
+        - status
     IntegrationEventV3Request:
       allOf:
       - $ref: "#/components/schemas/EventV3"
@@ -36998,6 +37626,46 @@ components:
           example: 409
           format: int64
           type: integer
+    integrationGetAllCampaigns_200_response:
+      example:
+        data:
+        - features:
+          - coupons
+          - referrals
+          name: Summer promotions
+          description: Campaign for all summer 2021 promotions
+          startTime: 2021-07-20T22:00:00Z
+          attributes: null
+          id: 4
+          endTime: 2021-09-22T22:00:00Z
+          state: enabled
+          applicationId: 322
+          tags:
+          - summer
+        - features:
+          - coupons
+          - referrals
+          name: Summer promotions
+          description: Campaign for all summer 2021 promotions
+          startTime: 2021-07-20T22:00:00Z
+          attributes: null
+          id: 4
+          endTime: 2021-09-22T22:00:00Z
+          state: enabled
+          applicationId: 322
+          tags:
+          - summer
+        hasMore: true
+      properties:
+        hasMore:
+          type: boolean
+        data:
+          items:
+            $ref: "#/components/schemas/IntegrationCampaign"
+          type: array
+      required:
+      - data
+      - hasMore
     createReferralsForMultipleAdvocates_201_response:
       example:
         data:
@@ -40338,6 +41006,7 @@ components:
           subledgers:
             key:
               pendingBalance: 10
+              nextTierName: Silver
               negativeBalance: 10
               currentBalance: 100
               spentBalance: 0
@@ -40369,6 +41038,7 @@ components:
           subledgers:
             key:
               pendingBalance: 10
+              nextTierName: Silver
               negativeBalance: 10
               currentBalance: 100
               spentBalance: 0
@@ -41824,6 +42494,37 @@ components:
         data:
           items:
             $ref: "#/components/schemas/Store"
+          type: array
+      required:
+      - data
+    listApplicationCartItemFilters_200_response:
+      example:
+        data:
+        - createdBy: 216
+          created: 2020-06-10T09:05:27.993483Z
+          name: Filter items by product
+          description: This filter allows filtering by shoes
+          modified: 2000-01-23T04:56:07.000+00:00
+          modifiedBy: 334
+          id: 6
+          applicationId: 322
+          activeExpressionId: 1
+        - createdBy: 216
+          created: 2020-06-10T09:05:27.993483Z
+          name: Filter items by product
+          description: This filter allows filtering by shoes
+          modified: 2000-01-23T04:56:07.000+00:00
+          modifiedBy: 334
+          id: 6
+          applicationId: 322
+          activeExpressionId: 1
+        hasMore: true
+      properties:
+        hasMore:
+          type: boolean
+        data:
+          items:
+            $ref: "#/components/schemas/ApplicationCIF"
           type: array
       required:
       - data

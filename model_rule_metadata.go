@@ -23,11 +23,11 @@ var _ MappedNullable = &RuleMetadata{}
 type RuleMetadata struct {
 	// A short description of the rule.
 	Title string `json:"title"`
-	// A customer-facing name used to identify the reward defined within the rule.
+	// A customer-facing name for the rule.
 	DisplayName *string `json:"displayName,omitempty"`
-	// A customer-facing description of the reward defined in the rule.   For example, this property can contain details about eligibility requirements, reward timelines, or terms and conditions.
+	// A customer-facing description that explains the details of the rule.   For example, this property can contain details about eligibility requirements, reward timelines, or terms and conditions.
 	DisplayDescription *string `json:"displayDescription,omitempty"`
-	// Data related to the reward, such as a vendor name, an image URL, or a content management system (CMS) ID.
+	// Any additional data associated with the rule, such as an image URL, vendor name, or a content management system (CMS) ID.
 	RelatedData *string `json:"relatedData,omitempty"`
 }
 

@@ -17,7 +17,7 @@ Method | HTTP request | Description
 [**CreateCampaignStoreBudget**](ManagementAPI.md#CreateCampaignStoreBudget) | **Post** /v1/applications/{applicationId}/campaigns/{campaignId}/stores/budgets | Create campaign store budget
 [**CreateCollection**](ManagementAPI.md#CreateCollection) | **Post** /v1/applications/{applicationId}/campaigns/{campaignId}/collections | Create campaign-level collection
 [**CreateCoupons**](ManagementAPI.md#CreateCoupons) | **Post** /v1/applications/{applicationId}/campaigns/{campaignId}/coupons | Create coupons
-[**CreateCouponsAsync**](ManagementAPI.md#CreateCouponsAsync) | **Post** /v1/applications/{applicationId}/campaigns/{campaignId}/coupons_async | Create coupons asynchronously
+[**CreateCouponsAsynchronously**](ManagementAPI.md#CreateCouponsAsynchronously) | **Post** /v1/applications/{applicationId}/campaigns/{campaignId}/coupons_async | Create coupons asynchronously
 [**CreateCouponsDeletionJob**](ManagementAPI.md#CreateCouponsDeletionJob) | **Post** /v1/applications/{applicationId}/campaigns/{campaignId}/coupons_deletion_jobs | Creates a coupon deletion job
 [**CreateCouponsForMultipleRecipients**](ManagementAPI.md#CreateCouponsForMultipleRecipients) | **Post** /v1/applications/{applicationId}/campaigns/{campaignId}/coupons_with_recipients | Create coupons for multiple recipients
 [**CreateInviteEmail**](ManagementAPI.md#CreateInviteEmail) | **Post** /v1/invite_emails | Resend invitation email
@@ -47,6 +47,7 @@ Method | HTTP request | Description
 [**ExportAudiencesMemberships**](ManagementAPI.md#ExportAudiencesMemberships) | **Get** /v1/audiences/{audienceId}/memberships/export | Export audience members
 [**ExportCampaignStoreBudgets**](ManagementAPI.md#ExportCampaignStoreBudgets) | **Get** /v1/applications/{applicationId}/campaigns/{campaignId}/stores/budgets/export | Export campaign store budgets
 [**ExportCampaignStores**](ManagementAPI.md#ExportCampaignStores) | **Get** /v1/applications/{applicationId}/campaigns/{campaignId}/stores/export | Export stores
+[**ExportCampaignValueMap**](ManagementAPI.md#ExportCampaignValueMap) | **Get** /v1/applications/{applicationId}/campaigns/{campaignId}/value_maps/{valueMapId}/export | Export campaign value map
 [**ExportCollectionItems**](ManagementAPI.md#ExportCollectionItems) | **Get** /v1/applications/{applicationId}/campaigns/{campaignId}/collections/{collectionId}/export | Export campaign-level collection&#39;s items
 [**ExportCoupons**](ManagementAPI.md#ExportCoupons) | **Get** /v1/applications/{applicationId}/export_coupons | Export coupons
 [**ExportCustomerSessions**](ManagementAPI.md#ExportCustomerSessions) | **Get** /v1/applications/{applicationId}/export_customer_sessions | Export customer sessions
@@ -71,6 +72,7 @@ Method | HTTP request | Description
 [**GetAdditionalCosts**](ManagementAPI.md#GetAdditionalCosts) | **Get** /v1/additional_costs | List additional costs
 [**GetApplication**](ManagementAPI.md#GetApplication) | **Get** /v1/applications/{applicationId} | Get Application
 [**GetApplicationApiHealth**](ManagementAPI.md#GetApplicationApiHealth) | **Get** /v1/applications/{applicationId}/health_report | Get Application health
+[**GetApplicationCartItemFilterExpression**](ManagementAPI.md#GetApplicationCartItemFilterExpression) | **Get** /v1/applications/{applicationId}/cart_item_filters/{cartItemFilterId}/expressions/{expressionId} | Get Application cart item filter expression
 [**GetApplicationCustomer**](ManagementAPI.md#GetApplicationCustomer) | **Get** /v1/applications/{applicationId}/customers/{customerId} | Get application&#39;s customer
 [**GetApplicationCustomerFriends**](ManagementAPI.md#GetApplicationCustomerFriends) | **Get** /v1/applications/{applicationId}/profile/{integrationId}/friends | List friends referred by customer profile
 [**GetApplicationCustomers**](ManagementAPI.md#GetApplicationCustomers) | **Get** /v1/applications/{applicationId}/customers | List application&#39;s customers
@@ -143,6 +145,7 @@ Method | HTTP request | Description
 [**ListAccountCollections**](ManagementAPI.md#ListAccountCollections) | **Get** /v1/collections | List collections in account
 [**ListAchievements**](ManagementAPI.md#ListAchievements) | **Get** /v1/applications/{applicationId}/campaigns/{campaignId}/achievements | List achievements
 [**ListAllRolesV2**](ManagementAPI.md#ListAllRolesV2) | **Get** /v2/roles | List roles
+[**ListApplicationCartItemFilters**](ManagementAPI.md#ListApplicationCartItemFilters) | **Get** /v1/applications/{applicationId}/cart_item_filters | List Application cart item filters
 [**ListCampaignStoreBudgetLimits**](ManagementAPI.md#ListCampaignStoreBudgetLimits) | **Get** /v1/applications/{applicationId}/campaigns/{campaignId}/stores/budgets | List campaign store budget limits
 [**ListCatalogItems**](ManagementAPI.md#ListCatalogItems) | **Get** /v1/catalogs/{catalogId}/items | List items in a catalog
 [**ListCollections**](ManagementAPI.md#ListCollections) | **Get** /v1/applications/{applicationId}/campaigns/{campaignId}/collections | List collections in campaign
@@ -1115,9 +1118,9 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## CreateCouponsAsync
+## CreateCouponsAsynchronously
 
-> AsyncCouponCreationResponse CreateCouponsAsync(ctx, applicationId, campaignId).NewCouponCreationJob(newCouponCreationJob).Execute()
+> AsyncCouponCreationResponse CreateCouponsAsynchronously(ctx, applicationId, campaignId).NewCouponCreationJob(newCouponCreationJob).Execute()
 
 Create coupons asynchronously
 
@@ -1142,13 +1145,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ManagementAPI.CreateCouponsAsync(context.Background(), applicationId, campaignId).NewCouponCreationJob(newCouponCreationJob).Execute()
+	resp, r, err := apiClient.ManagementAPI.CreateCouponsAsynchronously(context.Background(), applicationId, campaignId).NewCouponCreationJob(newCouponCreationJob).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.CreateCouponsAsync``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.CreateCouponsAsynchronously``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `CreateCouponsAsync`: AsyncCouponCreationResponse
-	fmt.Fprintf(os.Stdout, "Response from `ManagementAPI.CreateCouponsAsync`: %v\n", resp)
+	// response from `CreateCouponsAsynchronously`: AsyncCouponCreationResponse
+	fmt.Fprintf(os.Stdout, "Response from `ManagementAPI.CreateCouponsAsynchronously`: %v\n", resp)
 }
 ```
 
@@ -1163,7 +1166,7 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiCreateCouponsAsyncRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiCreateCouponsAsynchronouslyRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -3270,6 +3273,82 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## ExportCampaignValueMap
+
+> string ExportCampaignValueMap(ctx, applicationId, campaignId, valueMapId).Execute()
+
+Export campaign value map
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	applicationId := int64(789) // int64 | The ID of the Application. It is displayed in your Talon.One deployment URL.
+	campaignId := int64(789) // int64 | The ID of the campaign. It is displayed in your Talon.One deployment URL.
+	valueMapId := int64(789) // int64 | The ID of the value map. 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ManagementAPI.ExportCampaignValueMap(context.Background(), applicationId, campaignId, valueMapId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.ExportCampaignValueMap``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ExportCampaignValueMap`: string
+	fmt.Fprintf(os.Stdout, "Response from `ManagementAPI.ExportCampaignValueMap`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**applicationId** | **int64** | The ID of the Application. It is displayed in your Talon.One deployment URL. | 
+**campaignId** | **int64** | The ID of the campaign. It is displayed in your Talon.One deployment URL. | 
+**valueMapId** | **int64** | The ID of the value map.  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiExportCampaignValueMapRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+
+### Return type
+
+**string**
+
+### Authorization
+
+[api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/csv, application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## ExportCollectionItems
 
 > string ExportCollectionItems(ctx, applicationId, campaignId, collectionId).Execute()
@@ -5092,6 +5171,82 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## GetApplicationCartItemFilterExpression
+
+> ApplicationCIFExpression GetApplicationCartItemFilterExpression(ctx, applicationId, cartItemFilterId, expressionId).Execute()
+
+Get Application cart item filter expression
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	applicationId := int64(789) // int64 | The ID of the Application. It is displayed in your Talon.One deployment URL.
+	cartItemFilterId := int64(789) // int64 | The ID of the Application cart item filter. You can get this ID with the [List Application cart item filters](https://docs.talon.one/management-api#tag/Applications/operation/listApplicationCartItemFilters) endpoint.
+	expressionId := int64(789) // int64 | The ID of the Application cart item filter expression.
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ManagementAPI.GetApplicationCartItemFilterExpression(context.Background(), applicationId, cartItemFilterId, expressionId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.GetApplicationCartItemFilterExpression``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetApplicationCartItemFilterExpression`: ApplicationCIFExpression
+	fmt.Fprintf(os.Stdout, "Response from `ManagementAPI.GetApplicationCartItemFilterExpression`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**applicationId** | **int64** | The ID of the Application. It is displayed in your Talon.One deployment URL. | 
+**cartItemFilterId** | **int64** | The ID of the Application cart item filter. You can get this ID with the [List Application cart item filters](https://docs.talon.one/management-api#tag/Applications/operation/listApplicationCartItemFilters) endpoint. | 
+**expressionId** | **int64** | The ID of the Application cart item filter expression. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetApplicationCartItemFilterExpressionRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+
+### Return type
+
+[**ApplicationCIFExpression**](ApplicationCIFExpression.md)
+
+### Authorization
+
+[api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## GetApplicationCustomer
 
 > ApplicationCustomer GetApplicationCustomer(ctx, applicationId, customerId).Execute()
@@ -5191,7 +5346,7 @@ func main() {
 	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 1000)
 	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
 	sort := "sort_example" // string | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with `-`.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  (optional)
-	withTotalResultSize := true // bool | When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When `true`: `hasMore` is true when there is a next page. `totalResultSize` is always zero. - When `false`: `hasMore` is always false. `totalResultSize` contains the total number of results for this query.  (optional)
+	withTotalResultSize := true // bool | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When `true`: `totalResultSize` contains the total number of results for this query. - When `false`: Only `hasMore` is returned, and it is set to `true` when there are more results than shown on the page.  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -5226,7 +5381,7 @@ Name | Type | Description  | Notes
  **pageSize** | **int64** | The number of items in the response. | [default to 1000]
  **skip** | **int64** | The number of items to skip when paging through large result sets. | 
  **sort** | **string** | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with &#x60;-&#x60;.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  | 
- **withTotalResultSize** | **bool** | When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;hasMore&#x60; is true when there is a next page. &#x60;totalResultSize&#x60; is always zero. - When &#x60;false&#x60;: &#x60;hasMore&#x60; is always false. &#x60;totalResultSize&#x60; contains the total number of results for this query.  | 
+ **withTotalResultSize** | **bool** | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query. - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.  | 
 
 ### Return type
 
@@ -5271,7 +5426,7 @@ func main() {
 	integrationId := "integrationId_example" // string | Filter results performing an exact matching against the profile integration identifier. (optional)
 	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 1000)
 	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
-	withTotalResultSize := true // bool | When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When `true`: `hasMore` is true when there is a next page. `totalResultSize` is always zero. - When `false`: `hasMore` is always false. `totalResultSize` contains the total number of results for this query.  (optional)
+	withTotalResultSize := true // bool | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When `true`: `totalResultSize` contains the total number of results for this query. - When `false`: Only `hasMore` is returned, and it is set to `true` when there are more results than shown on the page.  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -5304,7 +5459,7 @@ Name | Type | Description  | Notes
  **integrationId** | **string** | Filter results performing an exact matching against the profile integration identifier. | 
  **pageSize** | **int64** | The number of items in the response. | [default to 1000]
  **skip** | **int64** | The number of items to skip when paging through large result sets. | 
- **withTotalResultSize** | **bool** | When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;hasMore&#x60; is true when there is a next page. &#x60;totalResultSize&#x60; is always zero. - When &#x60;false&#x60;: &#x60;hasMore&#x60; is always false. &#x60;totalResultSize&#x60; contains the total number of results for this query.  | 
+ **withTotalResultSize** | **bool** | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query. - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.  | 
 
 ### Return type
 
@@ -5349,7 +5504,7 @@ func main() {
 	customerProfileSearchQuery := *openapiclient.NewCustomerProfileSearchQuery() // CustomerProfileSearchQuery | body
 	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 1000)
 	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
-	withTotalResultSize := true // bool | When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When `true`: `hasMore` is true when there is a next page. `totalResultSize` is always zero. - When `false`: `hasMore` is always false. `totalResultSize` contains the total number of results for this query.  (optional)
+	withTotalResultSize := true // bool | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When `true`: `totalResultSize` contains the total number of results for this query. - When `false`: Only `hasMore` is returned, and it is set to `true` when there are more results than shown on the page.  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -5382,7 +5537,7 @@ Name | Type | Description  | Notes
  **customerProfileSearchQuery** | [**CustomerProfileSearchQuery**](CustomerProfileSearchQuery.md) | body | 
  **pageSize** | **int64** | The number of items in the response. | [default to 1000]
  **skip** | **int64** | The number of items to skip when paging through large result sets. | 
- **withTotalResultSize** | **bool** | When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;hasMore&#x60; is true when there is a next page. &#x60;totalResultSize&#x60; is always zero. - When &#x60;false&#x60;: &#x60;hasMore&#x60; is always false. &#x60;totalResultSize&#x60; contains the total number of results for this query.  | 
+ **withTotalResultSize** | **bool** | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query. - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.  | 
 
 ### Return type
 
@@ -6069,7 +6224,7 @@ func main() {
 	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 1000)
 	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
 	sort := "sort_example" // string | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with `-`.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  (optional)
-	withTotalResultSize := true // bool | When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When `true`: `hasMore` is true when there is a next page. `totalResultSize` is always zero. - When `false`: `hasMore` is always false. `totalResultSize` contains the total number of results for this query.  (optional)
+	withTotalResultSize := true // bool | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When `true`: `totalResultSize` contains the total number of results for this query. - When `false`: Only `hasMore` is returned, and it is set to `true` when there are more results than shown on the page.  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -6097,7 +6252,7 @@ Name | Type | Description  | Notes
  **pageSize** | **int64** | The number of items in the response. | [default to 1000]
  **skip** | **int64** | The number of items to skip when paging through large result sets. | 
  **sort** | **string** | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with &#x60;-&#x60;.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  | 
- **withTotalResultSize** | **bool** | When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;hasMore&#x60; is true when there is a next page. &#x60;totalResultSize&#x60; is always zero. - When &#x60;false&#x60;: &#x60;hasMore&#x60; is always false. &#x60;totalResultSize&#x60; contains the total number of results for this query.  | 
+ **withTotalResultSize** | **bool** | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query. - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.  | 
 
 ### Return type
 
@@ -6767,7 +6922,7 @@ func main() {
 	userId := int64(789) // int64 | Filter results by user ID. (optional)
 	createdBefore := time.Now() // time.Time | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the change creation timestamp. You can use any time zone setting. Talon.One will convert to UTC internally. (optional)
 	createdAfter := time.Now() // time.Time | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the change creation timestamp. You can use any time zone setting. Talon.One will convert to UTC internally. (optional)
-	withTotalResultSize := true // bool | When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When `true`: `hasMore` is true when there is a next page. `totalResultSize` is always zero. - When `false`: `hasMore` is always false. `totalResultSize` contains the total number of results for this query.  (optional)
+	withTotalResultSize := true // bool | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When `true`: `totalResultSize` contains the total number of results for this query. - When `false`: Only `hasMore` is returned, and it is set to `true` when there are more results than shown on the page.  (optional)
 	managementKeyId := int64(789) // int64 | Filter results that match the given management key ID. (optional)
 	includeOld := true // bool | When this flag is set to false, the state without the change will not be returned. The default value is true. (optional)
 
@@ -6802,7 +6957,7 @@ Name | Type | Description  | Notes
  **userId** | **int64** | Filter results by user ID. | 
  **createdBefore** | **time.Time** | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the change creation timestamp. You can use any time zone setting. Talon.One will convert to UTC internally. | 
  **createdAfter** | **time.Time** | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the change creation timestamp. You can use any time zone setting. Talon.One will convert to UTC internally. | 
- **withTotalResultSize** | **bool** | When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;hasMore&#x60; is true when there is a next page. &#x60;totalResultSize&#x60; is always zero. - When &#x60;false&#x60;: &#x60;hasMore&#x60; is always false. &#x60;totalResultSize&#x60; contains the total number of results for this query.  | 
+ **withTotalResultSize** | **bool** | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query. - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.  | 
  **managementKeyId** | **int64** | Filter results that match the given management key ID. | 
  **includeOld** | **bool** | When this flag is set to false, the state without the change will not be returned. The default value is true. | 
 
@@ -10456,7 +10611,7 @@ func main() {
 	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 1000)
 	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
 	sort := "sort_example" // string | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with `-`.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  (optional)
-	withTotalResultSize := true // bool | When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When `true`: `hasMore` is true when there is a next page. `totalResultSize` is always zero. - When `false`: `hasMore` is always false. `totalResultSize` contains the total number of results for this query.  (optional)
+	withTotalResultSize := true // bool | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When `true`: `totalResultSize` contains the total number of results for this query. - When `false`: Only `hasMore` is returned, and it is set to `true` when there are more results than shown on the page.  (optional)
 	name := "name_example" // string | Filter by collection name. (optional)
 
 	configuration := openapiclient.NewConfiguration()
@@ -10485,7 +10640,7 @@ Name | Type | Description  | Notes
  **pageSize** | **int64** | The number of items in the response. | [default to 1000]
  **skip** | **int64** | The number of items to skip when paging through large result sets. | 
  **sort** | **string** | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with &#x60;-&#x60;.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  | 
- **withTotalResultSize** | **bool** | When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;hasMore&#x60; is true when there is a next page. &#x60;totalResultSize&#x60; is always zero. - When &#x60;false&#x60;: &#x60;hasMore&#x60; is always false. &#x60;totalResultSize&#x60; contains the total number of results for this query.  | 
+ **withTotalResultSize** | **bool** | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query. - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.  | 
  **name** | **string** | Filter by collection name. | 
 
 ### Return type
@@ -10646,6 +10801,82 @@ Other parameters are passed through a pointer to a apiListAllRolesV2Request stru
 [[Back to README]](../README.md)
 
 
+## ListApplicationCartItemFilters
+
+> ListApplicationCartItemFilters200Response ListApplicationCartItemFilters(ctx, applicationId).PageSize(pageSize).Skip(skip).Title(title).Execute()
+
+List Application cart item filters
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	applicationId := int64(789) // int64 | The ID of the Application. It is displayed in your Talon.One deployment URL.
+	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 50)
+	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
+	title := "title_example" // string | Filter by the display name of the Application cart item filter in the Application.  **Note**: If no `title` is provided, all the Application cart item filters in the Application are returned.  (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ManagementAPI.ListApplicationCartItemFilters(context.Background(), applicationId).PageSize(pageSize).Skip(skip).Title(title).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.ListApplicationCartItemFilters``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ListApplicationCartItemFilters`: ListApplicationCartItemFilters200Response
+	fmt.Fprintf(os.Stdout, "Response from `ManagementAPI.ListApplicationCartItemFilters`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**applicationId** | **int64** | The ID of the Application. It is displayed in your Talon.One deployment URL. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiListApplicationCartItemFiltersRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **pageSize** | **int64** | The number of items in the response. | [default to 50]
+ **skip** | **int64** | The number of items to skip when paging through large result sets. | 
+ **title** | **string** | Filter by the display name of the Application cart item filter in the Application.  **Note**: If no &#x60;title&#x60; is provided, all the Application cart item filters in the Application are returned.  | 
+
+### Return type
+
+[**ListApplicationCartItemFilters200Response**](ListApplicationCartItemFilters200Response.md)
+
+### Authorization
+
+[api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## ListCampaignStoreBudgetLimits
 
 > ListCampaignStoreBudgetLimits200Response ListCampaignStoreBudgetLimits(ctx, applicationId, campaignId).Action(action).Period(period).Execute()
@@ -10747,7 +10978,7 @@ func main() {
 	catalogId := int64(789) // int64 | The ID of the catalog. You can find the ID in the Campaign Manager in **Account** > **Tools** > **Cart item catalogs**.
 	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 1000)
 	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
-	withTotalResultSize := true // bool | When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When `true`: `hasMore` is true when there is a next page. `totalResultSize` is always zero. - When `false`: `hasMore` is always false. `totalResultSize` contains the total number of results for this query.  (optional)
+	withTotalResultSize := true // bool | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When `true`: `totalResultSize` contains the total number of results for this query. - When `false`: Only `hasMore` is returned, and it is set to `true` when there are more results than shown on the page.  (optional)
 	sku := []string{"Inner_example"} // []string | Filter results by one or more SKUs. Must be exact match. (optional)
 	productNames := []string{"Inner_example"} // []string | Filter results by one or more product names. Must be exact match. (optional)
 
@@ -10781,7 +11012,7 @@ Name | Type | Description  | Notes
 
  **pageSize** | **int64** | The number of items in the response. | [default to 1000]
  **skip** | **int64** | The number of items to skip when paging through large result sets. | 
- **withTotalResultSize** | **bool** | When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;hasMore&#x60; is true when there is a next page. &#x60;totalResultSize&#x60; is always zero. - When &#x60;false&#x60;: &#x60;hasMore&#x60; is always false. &#x60;totalResultSize&#x60; contains the total number of results for this query.  | 
+ **withTotalResultSize** | **bool** | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query. - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.  | 
  **sku** | **[]string** | Filter results by one or more SKUs. Must be exact match. | 
  **productNames** | **[]string** | Filter results by one or more product names. Must be exact match. | 
 
@@ -10829,7 +11060,7 @@ func main() {
 	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 1000)
 	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
 	sort := "sort_example" // string | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with `-`.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  (optional)
-	withTotalResultSize := true // bool | When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When `true`: `hasMore` is true when there is a next page. `totalResultSize` is always zero. - When `false`: `hasMore` is always false. `totalResultSize` contains the total number of results for this query.  (optional)
+	withTotalResultSize := true // bool | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When `true`: `totalResultSize` contains the total number of results for this query. - When `false`: Only `hasMore` is returned, and it is set to `true` when there are more results than shown on the page.  (optional)
 	name := "name_example" // string | Filter by collection name. (optional)
 
 	configuration := openapiclient.NewConfiguration()
@@ -10865,7 +11096,7 @@ Name | Type | Description  | Notes
  **pageSize** | **int64** | The number of items in the response. | [default to 1000]
  **skip** | **int64** | The number of items to skip when paging through large result sets. | 
  **sort** | **string** | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with &#x60;-&#x60;.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  | 
- **withTotalResultSize** | **bool** | When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;hasMore&#x60; is true when there is a next page. &#x60;totalResultSize&#x60; is always zero. - When &#x60;false&#x60;: &#x60;hasMore&#x60; is always false. &#x60;totalResultSize&#x60; contains the total number of results for this query.  | 
+ **withTotalResultSize** | **bool** | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query. - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.  | 
  **name** | **string** | Filter by collection name. | 
 
 ### Return type
@@ -10911,7 +11142,7 @@ func main() {
 	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 1000)
 	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
 	sort := "sort_example" // string | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with `-`.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  (optional)
-	withTotalResultSize := true // bool | When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When `true`: `hasMore` is true when there is a next page. `totalResultSize` is always zero. - When `false`: `hasMore` is always false. `totalResultSize` contains the total number of results for this query.  (optional)
+	withTotalResultSize := true // bool | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When `true`: `totalResultSize` contains the total number of results for this query. - When `false`: Only `hasMore` is returned, and it is set to `true` when there are more results than shown on the page.  (optional)
 	name := "name_example" // string | Filter by collection name. (optional)
 
 	configuration := openapiclient.NewConfiguration()
@@ -10945,7 +11176,7 @@ Name | Type | Description  | Notes
  **pageSize** | **int64** | The number of items in the response. | [default to 1000]
  **skip** | **int64** | The number of items to skip when paging through large result sets. | 
  **sort** | **string** | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with &#x60;-&#x60;.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  | 
- **withTotalResultSize** | **bool** | When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;hasMore&#x60; is true when there is a next page. &#x60;totalResultSize&#x60; is always zero. - When &#x60;false&#x60;: &#x60;hasMore&#x60; is always false. &#x60;totalResultSize&#x60; contains the total number of results for this query.  | 
+ **withTotalResultSize** | **bool** | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query. - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.  | 
  **name** | **string** | Filter by collection name. | 
 
 ### Return type
@@ -11067,7 +11298,7 @@ func main() {
 	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 1000)
 	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
 	sort := "sort_example" // string | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with `-`.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  (optional)
-	withTotalResultSize := true // bool | When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When `true`: `hasMore` is true when there is a next page. `totalResultSize` is always zero. - When `false`: `hasMore` is always false. `totalResultSize` contains the total number of results for this query.  (optional)
+	withTotalResultSize := true // bool | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When `true`: `totalResultSize` contains the total number of results for this query. - When `false`: Only `hasMore` is returned, and it is set to `true` when there are more results than shown on the page.  (optional)
 	campaignId := float32(8.14) // float32 | Filter results by campaign ID. (optional)
 	name := "name_example" // string | The name of the store. (optional)
 	integrationId := "integrationId_example" // string | The integration ID of the store. (optional)
@@ -11104,7 +11335,7 @@ Name | Type | Description  | Notes
  **pageSize** | **int64** | The number of items in the response. | [default to 1000]
  **skip** | **int64** | The number of items to skip when paging through large result sets. | 
  **sort** | **string** | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with &#x60;-&#x60;.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  | 
- **withTotalResultSize** | **bool** | When this flag is set, the result includes the total size of the result, across all pages. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;hasMore&#x60; is true when there is a next page. &#x60;totalResultSize&#x60; is always zero. - When &#x60;false&#x60;: &#x60;hasMore&#x60; is always false. &#x60;totalResultSize&#x60; contains the total number of results for this query.  | 
+ **withTotalResultSize** | **bool** | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query. - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.  | 
  **campaignId** | **float32** | Filter results by campaign ID. | 
  **name** | **string** | The name of the store. | 
  **integrationId** | **string** | The integration ID of the store. | 

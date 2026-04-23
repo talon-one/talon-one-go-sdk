@@ -45,7 +45,7 @@ type CreateAchievementV2 struct {
 	// Indicates if this achievement is a live or sandbox achievement. Achievements of a given type can only be connected to Applications of the same type.
 	Sandbox bool `json:"sandbox"`
 	// A list containing the IDs of all applications that are subscribed to A list containing the IDs of all Applications that are connected to this achievement.
-	SubscribedApplications []int64 `json:"subscribedApplications"`
+	SubscribedApplications []int64 `json:"subscribedApplications,omitempty"`
 	// A string containing an IANA timezone descriptor.
 	Timezone string `json:"timezone"`
 }
@@ -56,14 +56,13 @@ type _CreateAchievementV2 CreateAchievementV2
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCreateAchievementV2(name string, title string, description string, target float32, sandbox bool, subscribedApplications []int64, timezone string) *CreateAchievementV2 {
+func BuildCreateAchievementV2(name string, title string, description string, target float32, sandbox bool, timezone string) *CreateAchievementV2 {
 	this := CreateAchievementV2{}
 	this.Name = name
 	this.Title = title
 	this.Description = description
 	this.Target = target
 	this.Sandbox = sandbox
-	this.SubscribedApplications = subscribedApplications
 	this.Timezone = timezone
 	return &this
 }
@@ -388,26 +387,34 @@ func (o *CreateAchievementV2) SetSandbox(v bool) {
 	o.Sandbox = v
 }
 
-// GetSubscribedApplications returns the SubscribedApplications field value
+// GetSubscribedApplications returns the SubscribedApplications field value if set, zero value otherwise.
 func (o *CreateAchievementV2) GetSubscribedApplications() []int64 {
-	if o == nil {
+	if o == nil || IsNil(o.SubscribedApplications) {
 		var ret []int64
 		return ret
 	}
-
 	return o.SubscribedApplications
 }
 
-// GetSubscribedApplicationsOk returns a tuple with the SubscribedApplications field value
+// GetSubscribedApplicationsOk returns a tuple with the SubscribedApplications field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateAchievementV2) GetSubscribedApplicationsOk() ([]int64, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.SubscribedApplications) {
 		return nil, false
 	}
 	return o.SubscribedApplications, true
 }
 
-// SetSubscribedApplications sets field value
+// HasSubscribedApplications returns a boolean if a field has been set.
+func (o *CreateAchievementV2) HasSubscribedApplications() bool {
+	if o != nil && !IsNil(o.SubscribedApplications) {
+		return true
+	}
+
+	return false
+}
+
+// SetSubscribedApplications gets a reference to the given []int64 and assigns it to the SubscribedApplications field.
 func (o *CreateAchievementV2) SetSubscribedApplications(v []int64) {
 	o.SubscribedApplications = v
 }
@@ -469,7 +476,9 @@ func (o CreateAchievementV2) ToMap() (map[string]interface{}, error) {
 		toSerialize["allowRollbackAfterCompletion"] = o.AllowRollbackAfterCompletion
 	}
 	toSerialize["sandbox"] = o.Sandbox
-	toSerialize["subscribedApplications"] = o.SubscribedApplications
+	if !IsNil(o.SubscribedApplications) {
+		toSerialize["subscribedApplications"] = o.SubscribedApplications
+	}
 	toSerialize["timezone"] = o.Timezone
 	return toSerialize, nil
 }
@@ -484,7 +493,6 @@ func (o *CreateAchievementV2) UnmarshalJSON(data []byte) (err error) {
 		"description",
 		"target",
 		"sandbox",
-		"subscribedApplications",
 		"timezone",
 	}
 

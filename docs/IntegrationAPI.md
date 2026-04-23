@@ -27,6 +27,7 @@ Method | HTTP request | Description
 [**GetLoyaltyProgramProfilePoints**](IntegrationAPI.md#GetLoyaltyProgramProfilePoints) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/points | List customer&#39;s unused loyalty points
 [**GetLoyaltyProgramProfileTransactions**](IntegrationAPI.md#GetLoyaltyProgramProfileTransactions) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/transactions | List customer&#39;s loyalty transactions
 [**GetReservedCustomers**](IntegrationAPI.md#GetReservedCustomers) | **Get** /v1/coupon_reservations/customerprofiles/{couponValue} | List customers that have this coupon reserved
+[**IntegrationGetAllCampaigns**](IntegrationAPI.md#IntegrationGetAllCampaigns) | **Get** /v1/integration/campaigns | List all running campaigns
 [**LinkLoyaltyCardToProfile**](IntegrationAPI.md#LinkLoyaltyCardToProfile) | **Post** /v2/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/link_profile | Link customer profile to card
 [**ReopenCustomerSession**](IntegrationAPI.md#ReopenCustomerSession) | **Put** /v2/customer_sessions/{customerSessionId}/reopen | Reopen customer session
 [**ReturnCartItems**](IntegrationAPI.md#ReturnCartItems) | **Post** /v2/customer_sessions/{customerSessionId}/returns | Return cart items
@@ -136,7 +137,7 @@ import (
 )
 
 func main() {
-	bestPriorPriceRequest := *openapiclient.NewBestPriorPriceRequest([]string{"Skus_example"}, time.Now(), "30", true) // BestPriorPriceRequest | body
+	bestPriorPriceRequest := *openapiclient.NewBestPriorPriceRequest([]string{"Skus_example"}, time.Now(), "30", "sale") // BestPriorPriceRequest | body
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1778,6 +1779,85 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## IntegrationGetAllCampaigns
+
+> IntegrationGetAllCampaigns200Response IntegrationGetAllCampaigns(ctx).PageSize(pageSize).Skip(skip).CampaignIds(campaignIds).StartAfter(startAfter).StartBefore(startBefore).EndAfter(endAfter).EndBefore(endBefore).Execute()
+
+List all running campaigns
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+    "time"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 50)
+	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
+	campaignIds := []string{"Inner_example"} // []string | Filter by one or more campaign IDs, separated by a comma.  **Note:** If no campaigns are specified, data for all the campaigns in the Application is returned.  (optional)
+	startAfter := time.Now() // time.Time | Filter results to only include campaigns that start on or after  the specified timestamp.  **Note:**  - It must be an RFC3339 timestamp string.  - You can include a time component in your string, for example, `T23:59:59` to specify the end of the day. The time zone setting considered is `UTC`. If you do not include a time component, a default time value of `T00:00:00` (midnight) in `UTC` is considered.  (optional)
+	startBefore := time.Now() // time.Time | Filter results to only include campaigns that start on or before  the specified timestamp.  **Note:**  - It must be an RFC3339 timestamp string.  - You can include a time component in your string, for example, `T23:59:59` to specify the end of the day. The time zone setting considered is `UTC`. If you do not include a time component, a default time value of `T00:00:00` (midnight) in `UTC` is considered.  (optional)
+	endAfter := time.Now() // time.Time | Filter results to only include campaigns that end on or after  the specified timestamp.  **Note:**  - It must be an RFC3339 timestamp string.  - You can include a time component in your string, for example, `T23:59:59` to specify the end of the day. The time zone setting considered is `UTC`. If you do not include a time component, a default time value of `T00:00:00` (midnight) in `UTC` is considered.  (optional)
+	endBefore := time.Now() // time.Time | Filter results to only include campaigns that end on or before  the specified timestamp.  **Note:**  - It must be an RFC3339 timestamp string.  - You can include a time component in your string, for example, `T23:59:59` to specify the end of the day. The time zone setting considered is `UTC`. If you do not include a time component, a default time value of `T00:00:00` (midnight) in `UTC` is considered.  (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.IntegrationAPI.IntegrationGetAllCampaigns(context.Background()).PageSize(pageSize).Skip(skip).CampaignIds(campaignIds).StartAfter(startAfter).StartBefore(startBefore).EndAfter(endAfter).EndBefore(endBefore).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `IntegrationAPI.IntegrationGetAllCampaigns``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `IntegrationGetAllCampaigns`: IntegrationGetAllCampaigns200Response
+	fmt.Fprintf(os.Stdout, "Response from `IntegrationAPI.IntegrationGetAllCampaigns`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIntegrationGetAllCampaignsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **pageSize** | **int64** | The number of items in the response. | [default to 50]
+ **skip** | **int64** | The number of items to skip when paging through large result sets. | 
+ **campaignIds** | **[]string** | Filter by one or more campaign IDs, separated by a comma.  **Note:** If no campaigns are specified, data for all the campaigns in the Application is returned.  | 
+ **startAfter** | **time.Time** | Filter results to only include campaigns that start on or after  the specified timestamp.  **Note:**  - It must be an RFC3339 timestamp string.  - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.  | 
+ **startBefore** | **time.Time** | Filter results to only include campaigns that start on or before  the specified timestamp.  **Note:**  - It must be an RFC3339 timestamp string.  - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.  | 
+ **endAfter** | **time.Time** | Filter results to only include campaigns that end on or after  the specified timestamp.  **Note:**  - It must be an RFC3339 timestamp string.  - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.  | 
+ **endBefore** | **time.Time** | Filter results to only include campaigns that end on or before  the specified timestamp.  **Note:**  - It must be an RFC3339 timestamp string.  - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.  | 
+
+### Return type
+
+[**IntegrationGetAllCampaigns200Response**](IntegrationGetAllCampaigns200Response.md)
+
+### Authorization
+
+[api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## LinkLoyaltyCardToProfile
 
 > LoyaltyCard LinkLoyaltyCardToProfile(ctx, loyaltyProgramId, loyaltyCardId).LoyaltyCardRegistration(loyaltyCardRegistration).Execute()
@@ -1925,7 +2005,7 @@ Name | Type | Description  | Notes
 
 ## ReturnCartItems
 
-> IntegrationStateV2 ReturnCartItems(ctx, customerSessionId).ReturnIntegrationRequest(returnIntegrationRequest).Dry(dry).Execute()
+> IntegrationStateV2 ReturnCartItems(ctx, customerSessionId).ReturnIntegrationRequest(returnIntegrationRequest).Dry(dry).RunRuleEngine(runRuleEngine).Execute()
 
 Return cart items
 
@@ -1947,10 +2027,11 @@ func main() {
 	customerSessionId := "customerSessionId_example" // string | The `integration ID` of the customer session. You set this ID when you create a customer session.  You can see existing customer session integration IDs in the Campaign Manager's **Sessions** menu, or via the [List Application session](https://docs.talon.one/management-api#tag/Customer-data/operation/getApplicationSessions) endpoint. 
 	returnIntegrationRequest := *openapiclient.NewReturnIntegrationRequest(*openapiclient.NewNewReturn([]openapiclient.ReturnedCartItem{*openapiclient.NewReturnedCartItem()})) // ReturnIntegrationRequest | body
 	dry := true // bool | Indicates whether to persist the changes. Changes are ignored when `dry=true`.  (optional)
+	runRuleEngine := true // bool | When set to `true`, reevaluates the updated session after items are returned. Only reevaluates campaigns where `reevaluateOnReturn` is set to `true` and which produced an effect when the session was closed.  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.IntegrationAPI.ReturnCartItems(context.Background(), customerSessionId).ReturnIntegrationRequest(returnIntegrationRequest).Dry(dry).Execute()
+	resp, r, err := apiClient.IntegrationAPI.ReturnCartItems(context.Background(), customerSessionId).ReturnIntegrationRequest(returnIntegrationRequest).Dry(dry).RunRuleEngine(runRuleEngine).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `IntegrationAPI.ReturnCartItems``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -1978,6 +2059,7 @@ Name | Type | Description  | Notes
 
  **returnIntegrationRequest** | [**ReturnIntegrationRequest**](ReturnIntegrationRequest.md) | body | 
  **dry** | **bool** | Indicates whether to persist the changes. Changes are ignored when &#x60;dry&#x3D;true&#x60;.  | 
+ **runRuleEngine** | **bool** | When set to &#x60;true&#x60;, reevaluates the updated session after items are returned. Only reevaluates campaigns where &#x60;reevaluateOnReturn&#x60; is set to &#x60;true&#x60; and which produced an effect when the session was closed.  | 
 
 ### Return type
 

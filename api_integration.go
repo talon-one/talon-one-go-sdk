@@ -4287,6 +4287,228 @@ func (a *IntegrationAPIService) GetReservedCustomersExecute(r ApiGetReservedCust
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiIntegrationGetAllCampaignsRequest struct {
+	ctx         context.Context
+	ApiService  *IntegrationAPIService
+	pageSize    *int64
+	skip        *int64
+	campaignIds *[]string
+	startAfter  *time.Time
+	startBefore *time.Time
+	endAfter    *time.Time
+	endBefore   *time.Time
+}
+
+// The number of items in the response.
+func (r ApiIntegrationGetAllCampaignsRequest) PageSize(pageSize int64) ApiIntegrationGetAllCampaignsRequest {
+	r.pageSize = &pageSize
+	return r
+}
+
+// The number of items to skip when paging through large result sets.
+func (r ApiIntegrationGetAllCampaignsRequest) Skip(skip int64) ApiIntegrationGetAllCampaignsRequest {
+	r.skip = &skip
+	return r
+}
+
+// Filter by one or more campaign IDs, separated by a comma.  **Note:** If no campaigns are specified, data for all the campaigns in the Application is returned.
+func (r ApiIntegrationGetAllCampaignsRequest) CampaignIds(campaignIds []string) ApiIntegrationGetAllCampaignsRequest {
+	r.campaignIds = &campaignIds
+	return r
+}
+
+// Filter results to only include campaigns that start on or after  the specified timestamp.  **Note:**  - It must be an RFC3339 timestamp string.  - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.
+func (r ApiIntegrationGetAllCampaignsRequest) StartAfter(startAfter time.Time) ApiIntegrationGetAllCampaignsRequest {
+	r.startAfter = &startAfter
+	return r
+}
+
+// Filter results to only include campaigns that start on or before  the specified timestamp.  **Note:**  - It must be an RFC3339 timestamp string.  - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.
+func (r ApiIntegrationGetAllCampaignsRequest) StartBefore(startBefore time.Time) ApiIntegrationGetAllCampaignsRequest {
+	r.startBefore = &startBefore
+	return r
+}
+
+// Filter results to only include campaigns that end on or after  the specified timestamp.  **Note:**  - It must be an RFC3339 timestamp string.  - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.
+func (r ApiIntegrationGetAllCampaignsRequest) EndAfter(endAfter time.Time) ApiIntegrationGetAllCampaignsRequest {
+	r.endAfter = &endAfter
+	return r
+}
+
+// Filter results to only include campaigns that end on or before  the specified timestamp.  **Note:**  - It must be an RFC3339 timestamp string.  - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.
+func (r ApiIntegrationGetAllCampaignsRequest) EndBefore(endBefore time.Time) ApiIntegrationGetAllCampaignsRequest {
+	r.endBefore = &endBefore
+	return r
+}
+
+func (r ApiIntegrationGetAllCampaignsRequest) Execute() (*IntegrationGetAllCampaigns200Response, *http.Response, error) {
+	return r.ApiService.IntegrationGetAllCampaignsExecute(r)
+}
+
+/*
+IntegrationGetAllCampaigns List all running campaigns
+
+Retrieve all running campaigns for the specified Application. You
+can filter the results by providing specific campaign IDs or a range of
+start and end dates.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiIntegrationGetAllCampaignsRequest
+*/
+func (a *IntegrationAPIService) IntegrationGetAllCampaigns(ctx context.Context) ApiIntegrationGetAllCampaignsRequest {
+	return ApiIntegrationGetAllCampaignsRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return IntegrationGetAllCampaigns200Response
+func (a *IntegrationAPIService) IntegrationGetAllCampaignsExecute(r ApiIntegrationGetAllCampaignsRequest) (*IntegrationGetAllCampaigns200Response, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *IntegrationGetAllCampaigns200Response
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IntegrationAPIService.IntegrationGetAllCampaigns")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v1/integration/campaigns"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.pageSize != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
+	} else {
+		var defaultValue int64 = 50
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
+		r.pageSize = &defaultValue
+	}
+	if r.skip != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "skip", r.skip, "form", "")
+	}
+	if r.campaignIds != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "campaignIds", r.campaignIds, "form", "csv")
+	}
+	if r.startAfter != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "startAfter", r.startAfter, "form", "")
+	}
+	if r.startBefore != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "startBefore", r.startBefore, "form", "")
+	}
+	if r.endAfter != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "endAfter", r.endAfter, "form", "")
+	}
+	if r.endBefore != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "endBefore", r.endBefore, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiLinkLoyaltyCardToProfileRequest struct {
 	ctx                     context.Context
 	ApiService              *IntegrationAPIService
@@ -4663,6 +4885,7 @@ type ApiReturnCartItemsRequest struct {
 	customerSessionId        string
 	returnIntegrationRequest *ReturnIntegrationRequest
 	dry                      *bool
+	runRuleEngine            *bool
 }
 
 // body
@@ -4674,6 +4897,12 @@ func (r ApiReturnCartItemsRequest) ReturnIntegrationRequest(returnIntegrationReq
 // Indicates whether to persist the changes. Changes are ignored when &#x60;dry&#x3D;true&#x60;.
 func (r ApiReturnCartItemsRequest) Dry(dry bool) ApiReturnCartItemsRequest {
 	r.dry = &dry
+	return r
+}
+
+// When set to &#x60;true&#x60;, reevaluates the updated session after items are returned. Only reevaluates campaigns where &#x60;reevaluateOnReturn&#x60; is set to &#x60;true&#x60; and which produced an effect when the session was closed.
+func (r ApiReturnCartItemsRequest) RunRuleEngine(runRuleEngine bool) ApiReturnCartItemsRequest {
+	r.runRuleEngine = &runRuleEngine
 	return r
 }
 
@@ -4739,6 +4968,9 @@ func (a *IntegrationAPIService) ReturnCartItemsExecute(r ApiReturnCartItemsReque
 
 	if r.dry != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "dry", r.dry, "form", "")
+	}
+	if r.runRuleEngine != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "runRuleEngine", r.runRuleEngine, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}

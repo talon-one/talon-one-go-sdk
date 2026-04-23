@@ -27,19 +27,19 @@ type AchievementV2 struct {
 	// The time this entity was created.
 	Created time.Time `json:"created"`
 	// The internal name of the achievement used in API requests.  **Note**: The name should start with a letter. This cannot be changed after the achievement has been created.
-	Name *string `json:"name,omitempty" validate:"regexp=^[a-zA-Z]\\\\w+$"`
+	Name string `json:"name" validate:"regexp=^[a-zA-Z]\\\\w+$"`
 	// The display name for the achievement in the Campaign Manager.
-	Title *string `json:"title,omitempty"`
+	Title string `json:"title"`
 	// A description of the achievement.
-	Description *string `json:"description,omitempty"`
+	Description string `json:"description"`
 	// The required number of actions or the transactional milestone to complete the achievement.
-	Target *float32 `json:"target,omitempty"`
+	Target float32 `json:"target"`
 	// The relative duration after which the achievement ends and resets for a particular customer profile.  **Note**: The `period` does not start when the achievement is created.  The period is a **positive real number** followed by one letter indicating the time unit.  Examples: `30s`, `40m`, `1h`, `5D`, `7W`, `10M`, `15Y`.  Available units:  - `s`: seconds - `m`: minutes - `h`: hours - `D`: days - `W`: weeks - `M`: months - `Y`: years  You can also round certain units down to the beginning of period and up to the end of period.: - `_D` for rounding down days only. Signifies the start of the day. Example: `30D_D` - `_U` for rounding up days, weeks, months and years. Signifies the end of the day, week, month or year. Example: `23W_U`  **Note**: You can either use the round down and round up option or set an absolute period.
 	Period *string `json:"period,omitempty"`
 	// The policy that determines if and how the achievement recurs. - `no_recurrence`: The achievement can be completed only once. - `on_expiration`: The achievement resets after it expires and becomes available again. - `on_completion`: When the customer progress status reaches `completed`, the achievement resets and becomes available again.
-	RecurrencePolicy *string `json:"recurrencePolicy,omitempty"`
+	RecurrencePolicy string `json:"recurrencePolicy"`
 	// The policy that determines how the achievement starts, ends, or resets. - `user_action`: The achievement ends or resets relative to when the customer started the achievement. - `fixed_schedule`: The achievement starts, ends, or resets for all customers following a fixed schedule.
-	ActivationPolicy *string `json:"activationPolicy,omitempty"`
+	ActivationPolicy string `json:"activationPolicy"`
 	// The achievement's start date when `activationPolicy` is set to `fixed_schedule`.  **Note:** It must be an RFC3339 timestamp string.
 	FixedStartDate *time.Time `json:"fixedStartDate,omitempty"`
 	// The achievement's end date. If defined, customers cannot participate in the achievement after this date.  **Note:** It must be an RFC3339 timestamp string.
@@ -47,11 +47,11 @@ type AchievementV2 struct {
 	// When `true`, customer progress can be rolled back in completed achievements.
 	AllowRollbackAfterCompletion *bool `json:"allowRollbackAfterCompletion,omitempty"`
 	// Indicates if this achievement is a live or sandbox achievement. Achievements of a given type can only be connected to Applications of the same type.
-	Sandbox *bool `json:"sandbox,omitempty"`
+	Sandbox bool `json:"sandbox"`
 	// A list containing the IDs of all applications that are subscribed to A list containing the IDs of all Applications that are connected to this achievement.
-	SubscribedApplications []int64 `json:"subscribedApplications,omitempty"`
+	SubscribedApplications []int64 `json:"subscribedApplications"`
 	// A string containing an IANA timezone descriptor.
-	Timezone *string `json:"timezone,omitempty"`
+	Timezone string `json:"timezone"`
 	// The ID of the user that created this achievement.
 	UserId int64 `json:"userId"`
 	// Name of the user that created the achievement.  **Note**: This is not available if the user has been deleted.
@@ -68,10 +68,19 @@ type _AchievementV2 AchievementV2
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildAchievementV2(id int64, created time.Time, userId int64) *AchievementV2 {
+func BuildAchievementV2(id int64, created time.Time, name string, title string, description string, target float32, recurrencePolicy string, activationPolicy string, sandbox bool, subscribedApplications []int64, timezone string, userId int64) *AchievementV2 {
 	this := AchievementV2{}
 	this.Id = id
 	this.Created = created
+	this.Name = name
+	this.Title = title
+	this.Description = description
+	this.Target = target
+	this.RecurrencePolicy = recurrencePolicy
+	this.ActivationPolicy = activationPolicy
+	this.Sandbox = sandbox
+	this.SubscribedApplications = subscribedApplications
+	this.Timezone = timezone
 	this.UserId = userId
 	return &this
 }
@@ -132,132 +141,100 @@ func (o *AchievementV2) SetCreated(v time.Time) {
 	o.Created = v
 }
 
-// GetName returns the Name field value if set, zero value otherwise.
+// GetName returns the Name field value
 func (o *AchievementV2) GetName() string {
-	if o == nil || IsNil(o.Name) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.Name
+
+	return o.Name
 }
 
-// GetNameOk returns a tuple with the Name field value if set, nil otherwise
+// GetNameOk returns a tuple with the Name field value
 // and a boolean to check if the value has been set.
 func (o *AchievementV2) GetNameOk() (*string, bool) {
-	if o == nil || IsNil(o.Name) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Name, true
+	return &o.Name, true
 }
 
-// HasName returns a boolean if a field has been set.
-func (o *AchievementV2) HasName() bool {
-	if o != nil && !IsNil(o.Name) {
-		return true
-	}
-
-	return false
-}
-
-// SetName gets a reference to the given string and assigns it to the Name field.
+// SetName sets field value
 func (o *AchievementV2) SetName(v string) {
-	o.Name = &v
+	o.Name = v
 }
 
-// GetTitle returns the Title field value if set, zero value otherwise.
+// GetTitle returns the Title field value
 func (o *AchievementV2) GetTitle() string {
-	if o == nil || IsNil(o.Title) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.Title
+
+	return o.Title
 }
 
-// GetTitleOk returns a tuple with the Title field value if set, nil otherwise
+// GetTitleOk returns a tuple with the Title field value
 // and a boolean to check if the value has been set.
 func (o *AchievementV2) GetTitleOk() (*string, bool) {
-	if o == nil || IsNil(o.Title) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Title, true
+	return &o.Title, true
 }
 
-// HasTitle returns a boolean if a field has been set.
-func (o *AchievementV2) HasTitle() bool {
-	if o != nil && !IsNil(o.Title) {
-		return true
-	}
-
-	return false
-}
-
-// SetTitle gets a reference to the given string and assigns it to the Title field.
+// SetTitle sets field value
 func (o *AchievementV2) SetTitle(v string) {
-	o.Title = &v
+	o.Title = v
 }
 
-// GetDescription returns the Description field value if set, zero value otherwise.
+// GetDescription returns the Description field value
 func (o *AchievementV2) GetDescription() string {
-	if o == nil || IsNil(o.Description) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.Description
+
+	return o.Description
 }
 
-// GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
+// GetDescriptionOk returns a tuple with the Description field value
 // and a boolean to check if the value has been set.
 func (o *AchievementV2) GetDescriptionOk() (*string, bool) {
-	if o == nil || IsNil(o.Description) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Description, true
+	return &o.Description, true
 }
 
-// HasDescription returns a boolean if a field has been set.
-func (o *AchievementV2) HasDescription() bool {
-	if o != nil && !IsNil(o.Description) {
-		return true
-	}
-
-	return false
-}
-
-// SetDescription gets a reference to the given string and assigns it to the Description field.
+// SetDescription sets field value
 func (o *AchievementV2) SetDescription(v string) {
-	o.Description = &v
+	o.Description = v
 }
 
-// GetTarget returns the Target field value if set, zero value otherwise.
+// GetTarget returns the Target field value
 func (o *AchievementV2) GetTarget() float32 {
-	if o == nil || IsNil(o.Target) {
+	if o == nil {
 		var ret float32
 		return ret
 	}
-	return *o.Target
+
+	return o.Target
 }
 
-// GetTargetOk returns a tuple with the Target field value if set, nil otherwise
+// GetTargetOk returns a tuple with the Target field value
 // and a boolean to check if the value has been set.
 func (o *AchievementV2) GetTargetOk() (*float32, bool) {
-	if o == nil || IsNil(o.Target) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Target, true
+	return &o.Target, true
 }
 
-// HasTarget returns a boolean if a field has been set.
-func (o *AchievementV2) HasTarget() bool {
-	if o != nil && !IsNil(o.Target) {
-		return true
-	}
-
-	return false
-}
-
-// SetTarget gets a reference to the given float32 and assigns it to the Target field.
+// SetTarget sets field value
 func (o *AchievementV2) SetTarget(v float32) {
-	o.Target = &v
+	o.Target = v
 }
 
 // GetPeriod returns the Period field value if set, zero value otherwise.
@@ -292,68 +269,52 @@ func (o *AchievementV2) SetPeriod(v string) {
 	o.Period = &v
 }
 
-// GetRecurrencePolicy returns the RecurrencePolicy field value if set, zero value otherwise.
+// GetRecurrencePolicy returns the RecurrencePolicy field value
 func (o *AchievementV2) GetRecurrencePolicy() string {
-	if o == nil || IsNil(o.RecurrencePolicy) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.RecurrencePolicy
+
+	return o.RecurrencePolicy
 }
 
-// GetRecurrencePolicyOk returns a tuple with the RecurrencePolicy field value if set, nil otherwise
+// GetRecurrencePolicyOk returns a tuple with the RecurrencePolicy field value
 // and a boolean to check if the value has been set.
 func (o *AchievementV2) GetRecurrencePolicyOk() (*string, bool) {
-	if o == nil || IsNil(o.RecurrencePolicy) {
+	if o == nil {
 		return nil, false
 	}
-	return o.RecurrencePolicy, true
+	return &o.RecurrencePolicy, true
 }
 
-// HasRecurrencePolicy returns a boolean if a field has been set.
-func (o *AchievementV2) HasRecurrencePolicy() bool {
-	if o != nil && !IsNil(o.RecurrencePolicy) {
-		return true
-	}
-
-	return false
-}
-
-// SetRecurrencePolicy gets a reference to the given string and assigns it to the RecurrencePolicy field.
+// SetRecurrencePolicy sets field value
 func (o *AchievementV2) SetRecurrencePolicy(v string) {
-	o.RecurrencePolicy = &v
+	o.RecurrencePolicy = v
 }
 
-// GetActivationPolicy returns the ActivationPolicy field value if set, zero value otherwise.
+// GetActivationPolicy returns the ActivationPolicy field value
 func (o *AchievementV2) GetActivationPolicy() string {
-	if o == nil || IsNil(o.ActivationPolicy) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.ActivationPolicy
+
+	return o.ActivationPolicy
 }
 
-// GetActivationPolicyOk returns a tuple with the ActivationPolicy field value if set, nil otherwise
+// GetActivationPolicyOk returns a tuple with the ActivationPolicy field value
 // and a boolean to check if the value has been set.
 func (o *AchievementV2) GetActivationPolicyOk() (*string, bool) {
-	if o == nil || IsNil(o.ActivationPolicy) {
+	if o == nil {
 		return nil, false
 	}
-	return o.ActivationPolicy, true
+	return &o.ActivationPolicy, true
 }
 
-// HasActivationPolicy returns a boolean if a field has been set.
-func (o *AchievementV2) HasActivationPolicy() bool {
-	if o != nil && !IsNil(o.ActivationPolicy) {
-		return true
-	}
-
-	return false
-}
-
-// SetActivationPolicy gets a reference to the given string and assigns it to the ActivationPolicy field.
+// SetActivationPolicy sets field value
 func (o *AchievementV2) SetActivationPolicy(v string) {
-	o.ActivationPolicy = &v
+	o.ActivationPolicy = v
 }
 
 // GetFixedStartDate returns the FixedStartDate field value if set, zero value otherwise.
@@ -452,100 +413,76 @@ func (o *AchievementV2) SetAllowRollbackAfterCompletion(v bool) {
 	o.AllowRollbackAfterCompletion = &v
 }
 
-// GetSandbox returns the Sandbox field value if set, zero value otherwise.
+// GetSandbox returns the Sandbox field value
 func (o *AchievementV2) GetSandbox() bool {
-	if o == nil || IsNil(o.Sandbox) {
+	if o == nil {
 		var ret bool
 		return ret
 	}
-	return *o.Sandbox
+
+	return o.Sandbox
 }
 
-// GetSandboxOk returns a tuple with the Sandbox field value if set, nil otherwise
+// GetSandboxOk returns a tuple with the Sandbox field value
 // and a boolean to check if the value has been set.
 func (o *AchievementV2) GetSandboxOk() (*bool, bool) {
-	if o == nil || IsNil(o.Sandbox) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Sandbox, true
+	return &o.Sandbox, true
 }
 
-// HasSandbox returns a boolean if a field has been set.
-func (o *AchievementV2) HasSandbox() bool {
-	if o != nil && !IsNil(o.Sandbox) {
-		return true
-	}
-
-	return false
-}
-
-// SetSandbox gets a reference to the given bool and assigns it to the Sandbox field.
+// SetSandbox sets field value
 func (o *AchievementV2) SetSandbox(v bool) {
-	o.Sandbox = &v
+	o.Sandbox = v
 }
 
-// GetSubscribedApplications returns the SubscribedApplications field value if set, zero value otherwise.
+// GetSubscribedApplications returns the SubscribedApplications field value
 func (o *AchievementV2) GetSubscribedApplications() []int64 {
-	if o == nil || IsNil(o.SubscribedApplications) {
+	if o == nil {
 		var ret []int64
 		return ret
 	}
+
 	return o.SubscribedApplications
 }
 
-// GetSubscribedApplicationsOk returns a tuple with the SubscribedApplications field value if set, nil otherwise
+// GetSubscribedApplicationsOk returns a tuple with the SubscribedApplications field value
 // and a boolean to check if the value has been set.
 func (o *AchievementV2) GetSubscribedApplicationsOk() ([]int64, bool) {
-	if o == nil || IsNil(o.SubscribedApplications) {
+	if o == nil {
 		return nil, false
 	}
 	return o.SubscribedApplications, true
 }
 
-// HasSubscribedApplications returns a boolean if a field has been set.
-func (o *AchievementV2) HasSubscribedApplications() bool {
-	if o != nil && !IsNil(o.SubscribedApplications) {
-		return true
-	}
-
-	return false
-}
-
-// SetSubscribedApplications gets a reference to the given []int64 and assigns it to the SubscribedApplications field.
+// SetSubscribedApplications sets field value
 func (o *AchievementV2) SetSubscribedApplications(v []int64) {
 	o.SubscribedApplications = v
 }
 
-// GetTimezone returns the Timezone field value if set, zero value otherwise.
+// GetTimezone returns the Timezone field value
 func (o *AchievementV2) GetTimezone() string {
-	if o == nil || IsNil(o.Timezone) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.Timezone
+
+	return o.Timezone
 }
 
-// GetTimezoneOk returns a tuple with the Timezone field value if set, nil otherwise
+// GetTimezoneOk returns a tuple with the Timezone field value
 // and a boolean to check if the value has been set.
 func (o *AchievementV2) GetTimezoneOk() (*string, bool) {
-	if o == nil || IsNil(o.Timezone) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Timezone, true
+	return &o.Timezone, true
 }
 
-// HasTimezone returns a boolean if a field has been set.
-func (o *AchievementV2) HasTimezone() bool {
-	if o != nil && !IsNil(o.Timezone) {
-		return true
-	}
-
-	return false
-}
-
-// SetTimezone gets a reference to the given string and assigns it to the Timezone field.
+// SetTimezone sets field value
 func (o *AchievementV2) SetTimezone(v string) {
-	o.Timezone = &v
+	o.Timezone = v
 }
 
 // GetUserId returns the UserId field value
@@ -680,27 +617,15 @@ func (o AchievementV2) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["id"] = o.Id
 	toSerialize["created"] = o.Created
-	if !IsNil(o.Name) {
-		toSerialize["name"] = o.Name
-	}
-	if !IsNil(o.Title) {
-		toSerialize["title"] = o.Title
-	}
-	if !IsNil(o.Description) {
-		toSerialize["description"] = o.Description
-	}
-	if !IsNil(o.Target) {
-		toSerialize["target"] = o.Target
-	}
+	toSerialize["name"] = o.Name
+	toSerialize["title"] = o.Title
+	toSerialize["description"] = o.Description
+	toSerialize["target"] = o.Target
 	if !IsNil(o.Period) {
 		toSerialize["period"] = o.Period
 	}
-	if !IsNil(o.RecurrencePolicy) {
-		toSerialize["recurrencePolicy"] = o.RecurrencePolicy
-	}
-	if !IsNil(o.ActivationPolicy) {
-		toSerialize["activationPolicy"] = o.ActivationPolicy
-	}
+	toSerialize["recurrencePolicy"] = o.RecurrencePolicy
+	toSerialize["activationPolicy"] = o.ActivationPolicy
 	if !IsNil(o.FixedStartDate) {
 		toSerialize["fixedStartDate"] = o.FixedStartDate
 	}
@@ -710,15 +635,9 @@ func (o AchievementV2) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.AllowRollbackAfterCompletion) {
 		toSerialize["allowRollbackAfterCompletion"] = o.AllowRollbackAfterCompletion
 	}
-	if !IsNil(o.Sandbox) {
-		toSerialize["sandbox"] = o.Sandbox
-	}
-	if !IsNil(o.SubscribedApplications) {
-		toSerialize["subscribedApplications"] = o.SubscribedApplications
-	}
-	if !IsNil(o.Timezone) {
-		toSerialize["timezone"] = o.Timezone
-	}
+	toSerialize["sandbox"] = o.Sandbox
+	toSerialize["subscribedApplications"] = o.SubscribedApplications
+	toSerialize["timezone"] = o.Timezone
 	toSerialize["userId"] = o.UserId
 	if !IsNil(o.CreatedBy) {
 		toSerialize["createdBy"] = o.CreatedBy
@@ -739,6 +658,15 @@ func (o *AchievementV2) UnmarshalJSON(data []byte) (err error) {
 	requiredProperties := []string{
 		"id",
 		"created",
+		"name",
+		"title",
+		"description",
+		"target",
+		"recurrencePolicy",
+		"activationPolicy",
+		"sandbox",
+		"subscribedApplications",
+		"timezone",
 		"userId",
 	}
 

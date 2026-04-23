@@ -22,9 +22,9 @@ var _ MappedNullable = &StrikethroughSetDiscountPerItemEffectProps{}
 // StrikethroughSetDiscountPerItemEffectProps setDiscountPerItem effect in strikethrough pricing payload.
 type StrikethroughSetDiscountPerItemEffectProps struct {
 	// effect name.
-	Name                             string      `json:"name"`
-	Value                            interface{} `json:"value"`
-	ExcludeFromBestPriorPriceHistory *bool       `json:"excludeFromBestPriorPriceHistory,omitempty"`
+	Name                     string      `json:"name"`
+	Value                    interface{} `json:"value"`
+	ExcludedFromPriceHistory *bool       `json:"excludedFromPriceHistory,omitempty"`
 }
 
 type _StrikethroughSetDiscountPerItemEffectProps StrikethroughSetDiscountPerItemEffectProps
@@ -98,36 +98,36 @@ func (o *StrikethroughSetDiscountPerItemEffectProps) SetValue(v interface{}) {
 	o.Value = v
 }
 
-// GetExcludeFromBestPriorPriceHistory returns the ExcludeFromBestPriorPriceHistory field value if set, zero value otherwise.
-func (o *StrikethroughSetDiscountPerItemEffectProps) GetExcludeFromBestPriorPriceHistory() bool {
-	if o == nil || IsNil(o.ExcludeFromBestPriorPriceHistory) {
+// GetExcludedFromPriceHistory returns the ExcludedFromPriceHistory field value if set, zero value otherwise.
+func (o *StrikethroughSetDiscountPerItemEffectProps) GetExcludedFromPriceHistory() bool {
+	if o == nil || IsNil(o.ExcludedFromPriceHistory) {
 		var ret bool
 		return ret
 	}
-	return *o.ExcludeFromBestPriorPriceHistory
+	return *o.ExcludedFromPriceHistory
 }
 
-// GetExcludeFromBestPriorPriceHistoryOk returns a tuple with the ExcludeFromBestPriorPriceHistory field value if set, nil otherwise
+// GetExcludedFromPriceHistoryOk returns a tuple with the ExcludedFromPriceHistory field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *StrikethroughSetDiscountPerItemEffectProps) GetExcludeFromBestPriorPriceHistoryOk() (*bool, bool) {
-	if o == nil || IsNil(o.ExcludeFromBestPriorPriceHistory) {
+func (o *StrikethroughSetDiscountPerItemEffectProps) GetExcludedFromPriceHistoryOk() (*bool, bool) {
+	if o == nil || IsNil(o.ExcludedFromPriceHistory) {
 		return nil, false
 	}
-	return o.ExcludeFromBestPriorPriceHistory, true
+	return o.ExcludedFromPriceHistory, true
 }
 
-// HasExcludeFromBestPriorPriceHistory returns a boolean if a field has been set.
-func (o *StrikethroughSetDiscountPerItemEffectProps) HasExcludeFromBestPriorPriceHistory() bool {
-	if o != nil && !IsNil(o.ExcludeFromBestPriorPriceHistory) {
+// HasExcludedFromPriceHistory returns a boolean if a field has been set.
+func (o *StrikethroughSetDiscountPerItemEffectProps) HasExcludedFromPriceHistory() bool {
+	if o != nil && !IsNil(o.ExcludedFromPriceHistory) {
 		return true
 	}
 
 	return false
 }
 
-// SetExcludeFromBestPriorPriceHistory gets a reference to the given bool and assigns it to the ExcludeFromBestPriorPriceHistory field.
-func (o *StrikethroughSetDiscountPerItemEffectProps) SetExcludeFromBestPriorPriceHistory(v bool) {
-	o.ExcludeFromBestPriorPriceHistory = &v
+// SetExcludedFromPriceHistory gets a reference to the given bool and assigns it to the ExcludedFromPriceHistory field.
+func (o *StrikethroughSetDiscountPerItemEffectProps) SetExcludedFromPriceHistory(v bool) {
+	o.ExcludedFromPriceHistory = &v
 }
 
 func (o StrikethroughSetDiscountPerItemEffectProps) MarshalJSON() ([]byte, error) {
@@ -144,8 +144,8 @@ func (o StrikethroughSetDiscountPerItemEffectProps) ToMap() (map[string]interfac
 	if o.Value != nil {
 		toSerialize["value"] = o.Value
 	}
-	if !IsNil(o.ExcludeFromBestPriorPriceHistory) {
-		toSerialize["excludeFromBestPriorPriceHistory"] = o.ExcludeFromBestPriorPriceHistory
+	if !IsNil(o.ExcludedFromPriceHistory) {
+		toSerialize["excludedFromPriceHistory"] = o.ExcludedFromPriceHistory
 	}
 	return toSerialize, nil
 }

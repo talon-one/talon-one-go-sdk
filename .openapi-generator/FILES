@@ -201,6 +201,7 @@ docs/CreateAchievementV2.md
 docs/CreateApplicationAPIKey.md
 docs/CreateCouponData.md
 docs/CreateCoupons200Response.md
+docs/CreateMCPKey.md
 docs/CreateManagementKey.md
 docs/CreateReferralsForMultipleAdvocates201Response.md
 docs/CreateTemplateCampaign.md
@@ -254,10 +255,16 @@ docs/ExperimentListResults.md
 docs/ExperimentListResultsRequest.md
 docs/ExperimentResult.md
 docs/ExperimentResults.md
+docs/ExperimentSegmentInsight.md
+docs/ExperimentSegmentInsightMetric.md
+docs/ExperimentSegmentInsightVariant.md
+docs/ExperimentSegmentInsights.md
 docs/ExperimentVariant.md
 docs/ExperimentVariantAllocation.md
 docs/ExperimentVariantResult.md
 docs/ExperimentVariantResultConfidence.md
+docs/ExperimentVerdict.md
+docs/ExperimentVerdictResponse.md
 docs/ExpiringCardPointsData.md
 docs/ExpiringCardPointsNotification.md
 docs/ExpiringCouponsData.md
@@ -353,6 +360,7 @@ docs/IntegrationEventV2Request.md
 docs/IntegrationEventV2Response.md
 docs/IntegrationEventV3Request.md
 docs/IntegrationEventV3Response.md
+docs/IntegrationGetAllCampaigns200Response.md
 docs/IntegrationHubConfig.md
 docs/IntegrationHubEventPayloadCouponBasedNotifications.md
 docs/IntegrationHubEventPayloadCouponBasedNotificationsLimits.md
@@ -390,6 +398,7 @@ docs/LimitCounter.md
 docs/ListAccountCollections200Response.md
 docs/ListAchievements200Response.md
 docs/ListAllRolesV2200Response.md
+docs/ListApplicationCartItemFilters200Response.md
 docs/ListCampaignStoreBudgetLimits200Response.md
 docs/ListCampaignStoreBudgets.md
 docs/ListCampaignStoreBudgetsStore.md
@@ -423,6 +432,7 @@ docs/LoyaltyProgramLedgers.md
 docs/LoyaltyProgramTransaction.md
 docs/LoyaltySubLedger.md
 docs/LoyaltyTier.md
+docs/MCPKey.md
 docs/ManagementAPI.md
 docs/ManagementKey.md
 docs/ManagerConfig.md
@@ -484,6 +494,7 @@ docs/NewInvitation.md
 docs/NewInviteEmail.md
 docs/NewLoyaltyProgram.md
 docs/NewLoyaltyTier.md
+docs/NewMCPKey.md
 docs/NewManagementKey.md
 docs/NewMessageTest.md
 docs/NewMultipleAudiencesItem.md
@@ -498,6 +509,7 @@ docs/NewReferral.md
 docs/NewReferralsForMultipleAdvocates.md
 docs/NewReturn.md
 docs/NewRevisionVersion.md
+docs/NewReward.md
 docs/NewRole.md
 docs/NewRoleV2.md
 docs/NewRuleset.md
@@ -566,6 +578,7 @@ docs/Revision.md
 docs/RevisionActivation.md
 docs/RevisionActivationRequest.md
 docs/RevisionVersion.md
+docs/Reward.md
 docs/Role.md
 docs/RoleAssign.md
 docs/RoleMembership.md
@@ -891,6 +904,7 @@ model_create_application_api_key.go
 model_create_coupon_data.go
 model_create_coupons_200_response.go
 model_create_management_key.go
+model_create_mcp_key.go
 model_create_referrals_for_multiple_advocates_201_response.go
 model_create_template_campaign.go
 model_create_template_campaign_response.go
@@ -943,10 +957,16 @@ model_experiment_list_results.go
 model_experiment_list_results_request.go
 model_experiment_result.go
 model_experiment_results.go
+model_experiment_segment_insight.go
+model_experiment_segment_insight_metric.go
+model_experiment_segment_insight_variant.go
+model_experiment_segment_insights.go
 model_experiment_variant.go
 model_experiment_variant_allocation.go
 model_experiment_variant_result.go
 model_experiment_variant_result_confidence.go
+model_experiment_verdict.go
+model_experiment_verdict_response.go
 model_expiring_card_points_data.go
 model_expiring_card_points_notification.go
 model_expiring_coupons_data.go
@@ -1041,6 +1061,7 @@ model_integration_event_v2_request.go
 model_integration_event_v2_response.go
 model_integration_event_v3_request.go
 model_integration_event_v3_response.go
+model_integration_get_all_campaigns_200_response.go
 model_integration_hub_config.go
 model_integration_hub_event_payload_coupon_based_notifications.go
 model_integration_hub_event_payload_coupon_based_notifications_limits.go
@@ -1078,6 +1099,7 @@ model_limit_counter.go
 model_list_account_collections_200_response.go
 model_list_achievements_200_response.go
 model_list_all_roles_v2_200_response.go
+model_list_application_cart_item_filters_200_response.go
 model_list_campaign_store_budget_limits_200_response.go
 model_list_campaign_store_budgets.go
 model_list_campaign_store_budgets_store.go
@@ -1113,6 +1135,7 @@ model_loyalty_sub_ledger.go
 model_loyalty_tier.go
 model_management_key.go
 model_manager_config.go
+model_mcp_key.go
 model_message_log_entries.go
 model_message_log_entry.go
 model_message_log_request.go
@@ -1172,6 +1195,7 @@ model_new_invite_email.go
 model_new_loyalty_program.go
 model_new_loyalty_tier.go
 model_new_management_key.go
+model_new_mcp_key.go
 model_new_message_test_.go
 model_new_multiple_audiences_item.go
 model_new_notification_webhook.go
@@ -1185,6 +1209,7 @@ model_new_referral.go
 model_new_referrals_for_multiple_advocates.go
 model_new_return.go
 model_new_revision_version.go
+model_new_reward.go
 model_new_role.go
 model_new_role_v2.go
 model_new_ruleset.go
@@ -1253,6 +1278,7 @@ model_revision.go
 model_revision_activation.go
 model_revision_activation_request.go
 model_revision_version.go
+model_reward.go
 model_role.go
 model_role_assign.go
 model_role_membership.go

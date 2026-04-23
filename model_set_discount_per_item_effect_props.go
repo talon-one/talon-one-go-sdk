@@ -45,6 +45,8 @@ type SetDiscountPerItemEffectProps struct {
 	TargetedItemPosition *float32 `json:"targetedItemPosition,omitempty"`
 	// The sub-position of the targeted bundle item on which the applied discount is based.
 	TargetedItemSubPosition *float32 `json:"targetedItemSubPosition,omitempty"`
+	// When set to `true`, the applied discount is excluded from the item's price history.
+	ExcludedFromPriceHistory *bool `json:"excludedFromPriceHistory,omitempty"`
 }
 
 type _SetDiscountPerItemEffectProps SetDiscountPerItemEffectProps
@@ -429,6 +431,38 @@ func (o *SetDiscountPerItemEffectProps) SetTargetedItemSubPosition(v float32) {
 	o.TargetedItemSubPosition = &v
 }
 
+// GetExcludedFromPriceHistory returns the ExcludedFromPriceHistory field value if set, zero value otherwise.
+func (o *SetDiscountPerItemEffectProps) GetExcludedFromPriceHistory() bool {
+	if o == nil || IsNil(o.ExcludedFromPriceHistory) {
+		var ret bool
+		return ret
+	}
+	return *o.ExcludedFromPriceHistory
+}
+
+// GetExcludedFromPriceHistoryOk returns a tuple with the ExcludedFromPriceHistory field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SetDiscountPerItemEffectProps) GetExcludedFromPriceHistoryOk() (*bool, bool) {
+	if o == nil || IsNil(o.ExcludedFromPriceHistory) {
+		return nil, false
+	}
+	return o.ExcludedFromPriceHistory, true
+}
+
+// HasExcludedFromPriceHistory returns a boolean if a field has been set.
+func (o *SetDiscountPerItemEffectProps) HasExcludedFromPriceHistory() bool {
+	if o != nil && !IsNil(o.ExcludedFromPriceHistory) {
+		return true
+	}
+
+	return false
+}
+
+// SetExcludedFromPriceHistory gets a reference to the given bool and assigns it to the ExcludedFromPriceHistory field.
+func (o *SetDiscountPerItemEffectProps) SetExcludedFromPriceHistory(v bool) {
+	o.ExcludedFromPriceHistory = &v
+}
+
 func (o SetDiscountPerItemEffectProps) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -468,6 +502,9 @@ func (o SetDiscountPerItemEffectProps) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.TargetedItemSubPosition) {
 		toSerialize["targetedItemSubPosition"] = o.TargetedItemSubPosition
+	}
+	if !IsNil(o.ExcludedFromPriceHistory) {
+		toSerialize["excludedFromPriceHistory"] = o.ExcludedFromPriceHistory
 	}
 	return toSerialize, nil
 }
