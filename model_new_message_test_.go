@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -34,7 +33,8 @@ type NewMessageTest struct {
 	// The IDs of the Applications in which this webhook is available. An empty array means the webhook is available in `All Applications`.
 	ApplicationIds []int64 `json:"applicationIds,omitempty"`
 	// The ID of the credential that this webhook is using.
-	AuthenticationId *int64 `json:"authenticationId,omitempty"`
+	AuthenticationId     *int64 `json:"authenticationId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewMessageTest NewMessageTest
@@ -293,6 +293,11 @@ func (o NewMessageTest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.AuthenticationId) {
 		toSerialize["authenticationId"] = o.AuthenticationId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -321,15 +326,26 @@ func (o *NewMessageTest) UnmarshalJSON(data []byte) (err error) {
 
 	varNewMessageTest := _NewMessageTest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewMessageTest)
+	err = json.Unmarshal(data, &varNewMessageTest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewMessageTest(varNewMessageTest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "headers")
+		delete(additionalProperties, "verb")
+		delete(additionalProperties, "url")
+		delete(additionalProperties, "payload")
+		delete(additionalProperties, "params")
+		delete(additionalProperties, "applicationIds")
+		delete(additionalProperties, "authenticationId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

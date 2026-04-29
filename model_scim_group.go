@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type ScimGroup struct {
 	// List of members to assign to the new Talon.One role.
 	Members []ScimGroupMember `json:"members,omitempty"`
 	// ID of the group.
-	Id string `json:"id"`
+	Id                   string `json:"id"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ScimGroup ScimGroup
@@ -154,6 +154,11 @@ func (o ScimGroup) ToMap() (map[string]interface{}, error) {
 		toSerialize["members"] = o.Members
 	}
 	toSerialize["id"] = o.Id
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -181,15 +186,22 @@ func (o *ScimGroup) UnmarshalJSON(data []byte) (err error) {
 
 	varScimGroup := _ScimGroup{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varScimGroup)
+	err = json.Unmarshal(data, &varScimGroup)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ScimGroup(varScimGroup)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "displayName")
+		delete(additionalProperties, "members")
+		delete(additionalProperties, "id")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -24,8 +24,11 @@ type ScimServiceProviderConfigResponseBulk struct {
 	// The maximum size, in bytes, of the entire payload for a bulk operation request.
 	MaxPayloadSize *int64 `json:"maxPayloadSize,omitempty"`
 	// Indicates whether the SCIM service provider supports bulk operations.
-	Supported *bool `json:"supported,omitempty"`
+	Supported            *bool `json:"supported,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ScimServiceProviderConfigResponseBulk ScimServiceProviderConfigResponseBulk
 
 // NewScimServiceProviderConfigResponseBulk instantiates a new ScimServiceProviderConfigResponseBulk object
 // This constructor will assign default values to properties that have it defined,
@@ -159,7 +162,35 @@ func (o ScimServiceProviderConfigResponseBulk) ToMap() (map[string]interface{}, 
 	if !IsNil(o.Supported) {
 		toSerialize["supported"] = o.Supported
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ScimServiceProviderConfigResponseBulk) UnmarshalJSON(data []byte) (err error) {
+	varScimServiceProviderConfigResponseBulk := _ScimServiceProviderConfigResponseBulk{}
+
+	err = json.Unmarshal(data, &varScimServiceProviderConfigResponseBulk)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ScimServiceProviderConfigResponseBulk(varScimServiceProviderConfigResponseBulk)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "maxOperations")
+		delete(additionalProperties, "maxPayloadSize")
+		delete(additionalProperties, "supported")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableScimServiceProviderConfigResponseBulk struct {

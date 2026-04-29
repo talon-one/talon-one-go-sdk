@@ -20,10 +20,13 @@ var _ MappedNullable = &CustomerProfileSearchQuery{}
 // CustomerProfileSearchQuery struct for CustomerProfileSearchQuery
 type CustomerProfileSearchQuery struct {
 	// Properties to match against a customer profile. All provided attributes will be exactly matched against profile attributes.
-	Attributes     map[string]interface{} `json:"attributes,omitempty"`
-	IntegrationIDs []string               `json:"integrationIDs,omitempty"`
-	ProfileIDs     []int64                `json:"profileIDs,omitempty"`
+	Attributes           map[string]interface{} `json:"attributes,omitempty"`
+	IntegrationIDs       []string               `json:"integrationIDs,omitempty"`
+	ProfileIDs           []int64                `json:"profileIDs,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _CustomerProfileSearchQuery CustomerProfileSearchQuery
 
 // NewCustomerProfileSearchQuery instantiates a new CustomerProfileSearchQuery object
 // This constructor will assign default values to properties that have it defined,
@@ -157,7 +160,35 @@ func (o CustomerProfileSearchQuery) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ProfileIDs) {
 		toSerialize["profileIDs"] = o.ProfileIDs
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *CustomerProfileSearchQuery) UnmarshalJSON(data []byte) (err error) {
+	varCustomerProfileSearchQuery := _CustomerProfileSearchQuery{}
+
+	err = json.Unmarshal(data, &varCustomerProfileSearchQuery)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CustomerProfileSearchQuery(varCustomerProfileSearchQuery)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "integrationIDs")
+		delete(additionalProperties, "profileIDs")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableCustomerProfileSearchQuery struct {

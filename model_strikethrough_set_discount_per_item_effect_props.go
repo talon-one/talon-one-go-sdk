@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -25,6 +24,7 @@ type StrikethroughSetDiscountPerItemEffectProps struct {
 	Name                     string      `json:"name"`
 	Value                    interface{} `json:"value"`
 	ExcludedFromPriceHistory *bool       `json:"excludedFromPriceHistory,omitempty"`
+	AdditionalProperties     map[string]interface{}
 }
 
 type _StrikethroughSetDiscountPerItemEffectProps StrikethroughSetDiscountPerItemEffectProps
@@ -147,6 +147,11 @@ func (o StrikethroughSetDiscountPerItemEffectProps) ToMap() (map[string]interfac
 	if !IsNil(o.ExcludedFromPriceHistory) {
 		toSerialize["excludedFromPriceHistory"] = o.ExcludedFromPriceHistory
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -175,15 +180,22 @@ func (o *StrikethroughSetDiscountPerItemEffectProps) UnmarshalJSON(data []byte) 
 
 	varStrikethroughSetDiscountPerItemEffectProps := _StrikethroughSetDiscountPerItemEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varStrikethroughSetDiscountPerItemEffectProps)
+	err = json.Unmarshal(data, &varStrikethroughSetDiscountPerItemEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = StrikethroughSetDiscountPerItemEffectProps(varStrikethroughSetDiscountPerItemEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "value")
+		delete(additionalProperties, "excludedFromPriceHistory")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

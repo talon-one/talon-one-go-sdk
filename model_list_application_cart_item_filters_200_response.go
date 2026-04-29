@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &ListApplicationCartItemFilters200Response{}
 
 // ListApplicationCartItemFilters200Response struct for ListApplicationCartItemFilters200Response
 type ListApplicationCartItemFilters200Response struct {
-	HasMore *bool            `json:"hasMore,omitempty"`
-	Data    []ApplicationCIF `json:"data"`
+	HasMore              *bool            `json:"hasMore,omitempty"`
+	Data                 []ApplicationCIF `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ListApplicationCartItemFilters200Response ListApplicationCartItemFilters200Response
@@ -115,6 +115,11 @@ func (o ListApplicationCartItemFilters200Response) ToMap() (map[string]interface
 		toSerialize["hasMore"] = o.HasMore
 	}
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -142,15 +147,21 @@ func (o *ListApplicationCartItemFilters200Response) UnmarshalJSON(data []byte) (
 
 	varListApplicationCartItemFilters200Response := _ListApplicationCartItemFilters200Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varListApplicationCartItemFilters200Response)
+	err = json.Unmarshal(data, &varListApplicationCartItemFilters200Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ListApplicationCartItemFilters200Response(varListApplicationCartItemFilters200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "hasMore")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

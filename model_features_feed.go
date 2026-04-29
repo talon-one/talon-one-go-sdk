@@ -19,9 +19,12 @@ var _ MappedNullable = &FeaturesFeed{}
 
 // FeaturesFeed struct for FeaturesFeed
 type FeaturesFeed struct {
-	Title   *string `json:"title,omitempty"`
-	PubDate *string `json:"pubDate,omitempty"`
+	Title                *string `json:"title,omitempty"`
+	PubDate              *string `json:"pubDate,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _FeaturesFeed FeaturesFeed
 
 // NewFeaturesFeed instantiates a new FeaturesFeed object
 // This constructor will assign default values to properties that have it defined,
@@ -120,7 +123,34 @@ func (o FeaturesFeed) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.PubDate) {
 		toSerialize["pubDate"] = o.PubDate
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *FeaturesFeed) UnmarshalJSON(data []byte) (err error) {
+	varFeaturesFeed := _FeaturesFeed{}
+
+	err = json.Unmarshal(data, &varFeaturesFeed)
+
+	if err != nil {
+		return err
+	}
+
+	*o = FeaturesFeed(varFeaturesFeed)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "pubDate")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableFeaturesFeed struct {

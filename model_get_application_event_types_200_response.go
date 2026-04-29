@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &GetApplicationEventTypes200Response{}
 
 // GetApplicationEventTypes200Response struct for GetApplicationEventTypes200Response
 type GetApplicationEventTypes200Response struct {
-	TotalResultSize int64    `json:"totalResultSize"`
-	Data            []string `json:"data"`
+	TotalResultSize      int64    `json:"totalResultSize"`
+	Data                 []string `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GetApplicationEventTypes200Response GetApplicationEventTypes200Response
@@ -106,6 +106,11 @@ func (o GetApplicationEventTypes200Response) ToMap() (map[string]interface{}, er
 	toSerialize := map[string]interface{}{}
 	toSerialize["totalResultSize"] = o.TotalResultSize
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -134,15 +139,21 @@ func (o *GetApplicationEventTypes200Response) UnmarshalJSON(data []byte) (err er
 
 	varGetApplicationEventTypes200Response := _GetApplicationEventTypes200Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGetApplicationEventTypes200Response)
+	err = json.Unmarshal(data, &varGetApplicationEventTypes200Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GetApplicationEventTypes200Response(varGetApplicationEventTypes200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "totalResultSize")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

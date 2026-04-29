@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -43,7 +42,8 @@ type LedgerPointsEntryIntegrationAPI struct {
 	// Amount of loyalty points added in the transaction.
 	Amount float32 `json:"amount"`
 	// The duration for which the points remain active, relative to the  activation date.  **Note**: This only applies to points for which `awaitsActivation` is `true` and `expiryDate` is not set.
-	ValidityDuration *string `json:"validityDuration,omitempty"`
+	ValidityDuration     *string `json:"validityDuration,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _LedgerPointsEntryIntegrationAPI LedgerPointsEntryIntegrationAPI
@@ -379,6 +379,11 @@ func (o LedgerPointsEntryIntegrationAPI) ToMap() (map[string]interface{}, error)
 	if !IsNil(o.ValidityDuration) {
 		toSerialize["validityDuration"] = o.ValidityDuration
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -414,15 +419,30 @@ func (o *LedgerPointsEntryIntegrationAPI) UnmarshalJSON(data []byte) (err error)
 
 	varLedgerPointsEntryIntegrationAPI := _LedgerPointsEntryIntegrationAPI{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varLedgerPointsEntryIntegrationAPI)
+	err = json.Unmarshal(data, &varLedgerPointsEntryIntegrationAPI)
 
 	if err != nil {
 		return err
 	}
 
 	*o = LedgerPointsEntryIntegrationAPI(varLedgerPointsEntryIntegrationAPI)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "transactionUUID")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "programId")
+		delete(additionalProperties, "customerSessionId")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "subledgerId")
+		delete(additionalProperties, "amount")
+		delete(additionalProperties, "validityDuration")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

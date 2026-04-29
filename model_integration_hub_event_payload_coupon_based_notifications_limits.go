@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,10 +20,11 @@ var _ MappedNullable = &IntegrationHubEventPayloadCouponBasedNotificationsLimits
 
 // IntegrationHubEventPayloadCouponBasedNotificationsLimits struct for IntegrationHubEventPayloadCouponBasedNotificationsLimits
 type IntegrationHubEventPayloadCouponBasedNotificationsLimits struct {
-	Action   string   `json:"Action"`
-	Limit    float32  `json:"Limit"`
-	Period   *string  `json:"Period,omitempty"`
-	Entities []string `json:"Entities"`
+	Action               string   `json:"Action"`
+	Limit                float32  `json:"Limit"`
+	Period               *string  `json:"Period,omitempty"`
+	Entities             []string `json:"Entities"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _IntegrationHubEventPayloadCouponBasedNotificationsLimits IntegrationHubEventPayloadCouponBasedNotificationsLimits
@@ -169,6 +169,11 @@ func (o IntegrationHubEventPayloadCouponBasedNotificationsLimits) ToMap() (map[s
 		toSerialize["Period"] = o.Period
 	}
 	toSerialize["Entities"] = o.Entities
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -198,15 +203,23 @@ func (o *IntegrationHubEventPayloadCouponBasedNotificationsLimits) UnmarshalJSON
 
 	varIntegrationHubEventPayloadCouponBasedNotificationsLimits := _IntegrationHubEventPayloadCouponBasedNotificationsLimits{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varIntegrationHubEventPayloadCouponBasedNotificationsLimits)
+	err = json.Unmarshal(data, &varIntegrationHubEventPayloadCouponBasedNotificationsLimits)
 
 	if err != nil {
 		return err
 	}
 
 	*o = IntegrationHubEventPayloadCouponBasedNotificationsLimits(varIntegrationHubEventPayloadCouponBasedNotificationsLimits)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "Action")
+		delete(additionalProperties, "Limit")
+		delete(additionalProperties, "Period")
+		delete(additionalProperties, "Entities")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

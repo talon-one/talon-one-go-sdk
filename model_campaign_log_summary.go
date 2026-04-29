@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -31,7 +30,8 @@ type CampaignLogSummary struct {
 	// Action performed by the user.
 	Action string `json:"action"`
 	// AI-generated summary of the action performed.
-	Summary string `json:"summary"`
+	Summary              string `json:"summary"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CampaignLogSummary CampaignLogSummary
@@ -193,6 +193,11 @@ func (o CampaignLogSummary) ToMap() (map[string]interface{}, error) {
 	toSerialize["created"] = o.Created
 	toSerialize["action"] = o.Action
 	toSerialize["summary"] = o.Summary
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -224,15 +229,24 @@ func (o *CampaignLogSummary) UnmarshalJSON(data []byte) (err error) {
 
 	varCampaignLogSummary := _CampaignLogSummary{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCampaignLogSummary)
+	err = json.Unmarshal(data, &varCampaignLogSummary)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CampaignLogSummary(varCampaignLogSummary)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "email")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "action")
+		delete(additionalProperties, "summary")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

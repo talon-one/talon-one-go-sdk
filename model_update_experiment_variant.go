@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type UpdateExperimentVariant struct {
 	Name    string     `json:"name"`
 	Ruleset NewRuleset `json:"ruleset"`
 	// The percentage split of this variant. The sum of all variant percentages must be 100.
-	Weight int64 `json:"weight"`
+	Weight               int64 `json:"weight"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _UpdateExperimentVariant UpdateExperimentVariant
@@ -162,6 +162,11 @@ func (o UpdateExperimentVariant) ToMap() (map[string]interface{}, error) {
 	toSerialize["name"] = o.Name
 	toSerialize["ruleset"] = o.Ruleset
 	toSerialize["weight"] = o.Weight
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -192,15 +197,23 @@ func (o *UpdateExperimentVariant) UnmarshalJSON(data []byte) (err error) {
 
 	varUpdateExperimentVariant := _UpdateExperimentVariant{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varUpdateExperimentVariant)
+	err = json.Unmarshal(data, &varUpdateExperimentVariant)
 
 	if err != nil {
 		return err
 	}
 
 	*o = UpdateExperimentVariant(varUpdateExperimentVariant)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "ruleset")
+		delete(additionalProperties, "weight")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

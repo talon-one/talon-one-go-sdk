@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type TransferLoyaltyCard struct {
 	// The identifier of the loyalty card, which must match the regular expression `^[A-Za-z0-9._%+@-]+$`.
 	NewCardIdentifier string `json:"newCardIdentifier" validate:"regexp=^[A-Za-z0-9._%+@-]+$"`
 	// Reason for transferring and blocking the loyalty card.
-	BlockReason *string `json:"blockReason,omitempty"`
+	BlockReason          *string `json:"blockReason,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _TransferLoyaltyCard TransferLoyaltyCard
@@ -117,6 +117,11 @@ func (o TransferLoyaltyCard) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.BlockReason) {
 		toSerialize["blockReason"] = o.BlockReason
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -144,15 +149,21 @@ func (o *TransferLoyaltyCard) UnmarshalJSON(data []byte) (err error) {
 
 	varTransferLoyaltyCard := _TransferLoyaltyCard{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varTransferLoyaltyCard)
+	err = json.Unmarshal(data, &varTransferLoyaltyCard)
 
 	if err != nil {
 		return err
 	}
 
 	*o = TransferLoyaltyCard(varTransferLoyaltyCard)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "newCardIdentifier")
+		delete(additionalProperties, "blockReason")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type BestPriorTarget struct {
 	// The type of price target.
 	TargetType string `json:"targetType"`
 	// The AudienceID of an audience. Must be used with \"AUDIENCE\" target type.
-	AudienceID *int64 `json:"audienceID,omitempty"`
+	AudienceID           *int64 `json:"audienceID,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _BestPriorTarget BestPriorTarget
@@ -117,6 +117,11 @@ func (o BestPriorTarget) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.AudienceID) {
 		toSerialize["audienceID"] = o.AudienceID
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -144,15 +149,21 @@ func (o *BestPriorTarget) UnmarshalJSON(data []byte) (err error) {
 
 	varBestPriorTarget := _BestPriorTarget{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varBestPriorTarget)
+	err = json.Unmarshal(data, &varBestPriorTarget)
 
 	if err != nil {
 		return err
 	}
 
 	*o = BestPriorTarget(varBestPriorTarget)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "targetType")
+		delete(additionalProperties, "audienceID")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

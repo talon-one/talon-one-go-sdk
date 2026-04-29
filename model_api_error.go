@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,8 +23,9 @@ type APIError struct {
 	// Short description of the problem.
 	Title string `json:"title"`
 	// Longer description of this specific instance of the problem.
-	Details *string     `json:"details,omitempty"`
-	Source  ErrorSource `json:"source"`
+	Details              *string     `json:"details,omitempty"`
+	Source               ErrorSource `json:"source"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _APIError APIError
@@ -144,6 +144,11 @@ func (o APIError) ToMap() (map[string]interface{}, error) {
 		toSerialize["details"] = o.Details
 	}
 	toSerialize["source"] = o.Source
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -172,15 +177,22 @@ func (o *APIError) UnmarshalJSON(data []byte) (err error) {
 
 	varAPIError := _APIError{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAPIError)
+	err = json.Unmarshal(data, &varAPIError)
 
 	if err != nil {
 		return err
 	}
 
 	*o = APIError(varAPIError)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "details")
+		delete(additionalProperties, "source")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -54,6 +53,7 @@ type AchievementProgressWithDefinition struct {
 	AchievementEndDate *time.Time `json:"achievementEndDate,omitempty"`
 	// When `true`, customer progress can be rolled back in completed achievements.
 	AchievementAllowRollbackAfterCompletion *bool `json:"achievementAllowRollbackAfterCompletion,omitempty"`
+	AdditionalProperties                    map[string]interface{}
 }
 
 type _AchievementProgressWithDefinition AchievementProgressWithDefinition
@@ -564,6 +564,11 @@ func (o AchievementProgressWithDefinition) ToMap() (map[string]interface{}, erro
 	if !IsNil(o.AchievementAllowRollbackAfterCompletion) {
 		toSerialize["achievementAllowRollbackAfterCompletion"] = o.AchievementAllowRollbackAfterCompletion
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -599,15 +604,35 @@ func (o *AchievementProgressWithDefinition) UnmarshalJSON(data []byte) (err erro
 
 	varAchievementProgressWithDefinition := _AchievementProgressWithDefinition{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAchievementProgressWithDefinition)
+	err = json.Unmarshal(data, &varAchievementProgressWithDefinition)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AchievementProgressWithDefinition(varAchievementProgressWithDefinition)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "progress")
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "completionDate")
+		delete(additionalProperties, "endDate")
+		delete(additionalProperties, "achievementId")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "campaignId")
+		delete(additionalProperties, "target")
+		delete(additionalProperties, "achievementRecurrencePolicy")
+		delete(additionalProperties, "achievementActivationPolicy")
+		delete(additionalProperties, "achievementFixedStartDate")
+		delete(additionalProperties, "achievementEndDate")
+		delete(additionalProperties, "achievementAllowRollbackAfterCompletion")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -27,7 +26,8 @@ type AccountDashboardStatisticRevenue struct {
 	// The revenue that was created by a purchase that triggered an effect (excluding web hooks, notifications).
 	Influenced float32 `json:"influenced"`
 	// Values aggregated for the specified date.
-	Datetime time.Time `json:"datetime"`
+	Datetime             time.Time `json:"datetime"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AccountDashboardStatisticRevenue AccountDashboardStatisticRevenue
@@ -137,6 +137,11 @@ func (o AccountDashboardStatisticRevenue) ToMap() (map[string]interface{}, error
 	toSerialize["total"] = o.Total
 	toSerialize["influenced"] = o.Influenced
 	toSerialize["datetime"] = o.Datetime
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -166,15 +171,22 @@ func (o *AccountDashboardStatisticRevenue) UnmarshalJSON(data []byte) (err error
 
 	varAccountDashboardStatisticRevenue := _AccountDashboardStatisticRevenue{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAccountDashboardStatisticRevenue)
+	err = json.Unmarshal(data, &varAccountDashboardStatisticRevenue)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AccountDashboardStatisticRevenue(varAccountDashboardStatisticRevenue)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "total")
+		delete(additionalProperties, "influenced")
+		delete(additionalProperties, "datetime")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -40,8 +40,11 @@ type ExperimentVariantResult struct {
 	// The total value of discounts given for cart items in sessions.
 	TotalDiscounts *float32 `json:"totalDiscounts,omitempty"`
 	// The number of times a coupon was successfully redeemed in sessions.
-	CouponsCount *float32 `json:"couponsCount,omitempty"`
+	CouponsCount         *float32 `json:"couponsCount,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ExperimentVariantResult ExperimentVariantResult
 
 // NewExperimentVariantResult instantiates a new ExperimentVariantResult object
 // This constructor will assign default values to properties that have it defined,
@@ -455,7 +458,43 @@ func (o ExperimentVariantResult) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CouponsCount) {
 		toSerialize["couponsCount"] = o.CouponsCount
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ExperimentVariantResult) UnmarshalJSON(data []byte) (err error) {
+	varExperimentVariantResult := _ExperimentVariantResult{}
+
+	err = json.Unmarshal(data, &varExperimentVariantResult)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ExperimentVariantResult(varExperimentVariantResult)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "variantId")
+		delete(additionalProperties, "variantName")
+		delete(additionalProperties, "variantWeight")
+		delete(additionalProperties, "isWinner")
+		delete(additionalProperties, "totalRevenue")
+		delete(additionalProperties, "sessionsCount")
+		delete(additionalProperties, "avgItemsPerSession")
+		delete(additionalProperties, "avgSessionValue")
+		delete(additionalProperties, "avgDiscountedSessionValue")
+		delete(additionalProperties, "totalDiscounts")
+		delete(additionalProperties, "couponsCount")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableExperimentVariantResult struct {

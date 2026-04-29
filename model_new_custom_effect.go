@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -36,7 +35,8 @@ type NewCustomEffect struct {
 	// Determines if this effect is active.
 	Enabled bool `json:"enabled"`
 	// Array of template argument definitions.
-	Params []TemplateArgDef `json:"params,omitempty"`
+	Params               []TemplateArgDef `json:"params,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewCustomEffect NewCustomEffect
@@ -303,6 +303,11 @@ func (o NewCustomEffect) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Params) {
 		toSerialize["params"] = o.Params
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -334,15 +339,27 @@ func (o *NewCustomEffect) UnmarshalJSON(data []byte) (err error) {
 
 	varNewCustomEffect := _NewCustomEffect{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewCustomEffect)
+	err = json.Unmarshal(data, &varNewCustomEffect)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewCustomEffect(varNewCustomEffect)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "applicationIds")
+		delete(additionalProperties, "isPerItem")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "payload")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "enabled")
+		delete(additionalProperties, "params")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

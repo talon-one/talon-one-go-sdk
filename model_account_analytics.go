@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -61,7 +60,8 @@ type AccountAnalytics struct {
 	// Total number of live loyalty programs in the account.
 	LiveLoyaltyPrograms int64 `json:"liveLoyaltyPrograms"`
 	// The point in time when the analytics numbers were updated last.
-	LastUpdatedAt time.Time `json:"lastUpdatedAt"`
+	LastUpdatedAt        time.Time `json:"lastUpdatedAt"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AccountAnalytics AccountAnalytics
@@ -613,6 +613,11 @@ func (o AccountAnalytics) ToMap() (map[string]interface{}, error) {
 	toSerialize["loyaltyPrograms"] = o.LoyaltyPrograms
 	toSerialize["liveLoyaltyPrograms"] = o.LiveLoyaltyPrograms
 	toSerialize["lastUpdatedAt"] = o.LastUpdatedAt
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -659,15 +664,39 @@ func (o *AccountAnalytics) UnmarshalJSON(data []byte) (err error) {
 
 	varAccountAnalytics := _AccountAnalytics{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAccountAnalytics)
+	err = json.Unmarshal(data, &varAccountAnalytics)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AccountAnalytics(varAccountAnalytics)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "applications")
+		delete(additionalProperties, "liveApplications")
+		delete(additionalProperties, "sandboxApplications")
+		delete(additionalProperties, "campaigns")
+		delete(additionalProperties, "activeCampaigns")
+		delete(additionalProperties, "liveActiveCampaigns")
+		delete(additionalProperties, "coupons")
+		delete(additionalProperties, "activeCoupons")
+		delete(additionalProperties, "expiredCoupons")
+		delete(additionalProperties, "referralCodes")
+		delete(additionalProperties, "activeReferralCodes")
+		delete(additionalProperties, "expiredReferralCodes")
+		delete(additionalProperties, "activeRules")
+		delete(additionalProperties, "users")
+		delete(additionalProperties, "roles")
+		delete(additionalProperties, "customAttributes")
+		delete(additionalProperties, "webhooks")
+		delete(additionalProperties, "loyaltyPrograms")
+		delete(additionalProperties, "liveLoyaltyPrograms")
+		delete(additionalProperties, "lastUpdatedAt")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

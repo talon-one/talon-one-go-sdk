@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,9 +20,10 @@ var _ MappedNullable = &GetApplicationCustomersByAttributes200Response{}
 
 // GetApplicationCustomersByAttributes200Response struct for GetApplicationCustomersByAttributes200Response
 type GetApplicationCustomersByAttributes200Response struct {
-	HasMore         *bool                 `json:"hasMore,omitempty"`
-	TotalResultSize *int64                `json:"totalResultSize,omitempty"`
-	Data            []ApplicationCustomer `json:"data"`
+	HasMore              *bool                 `json:"hasMore,omitempty"`
+	TotalResultSize      *int64                `json:"totalResultSize,omitempty"`
+	Data                 []ApplicationCustomer `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GetApplicationCustomersByAttributes200Response GetApplicationCustomersByAttributes200Response
@@ -151,6 +151,11 @@ func (o GetApplicationCustomersByAttributes200Response) ToMap() (map[string]inte
 		toSerialize["totalResultSize"] = o.TotalResultSize
 	}
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -178,15 +183,22 @@ func (o *GetApplicationCustomersByAttributes200Response) UnmarshalJSON(data []by
 
 	varGetApplicationCustomersByAttributes200Response := _GetApplicationCustomersByAttributes200Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGetApplicationCustomersByAttributes200Response)
+	err = json.Unmarshal(data, &varGetApplicationCustomersByAttributes200Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GetApplicationCustomersByAttributes200Response(varGetApplicationCustomersByAttributes200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "hasMore")
+		delete(additionalProperties, "totalResultSize")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

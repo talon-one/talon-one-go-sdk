@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type GetIntegrationCouponRequest struct {
 	// A list of IDs of the campaigns to get coupons from.
 	CampaignIds []int64 `json:"campaignIds"`
 	// The maximum number of coupons included in the response.
-	Limit int64 `json:"limit"`
+	Limit                int64 `json:"limit"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GetIntegrationCouponRequest GetIntegrationCouponRequest
@@ -110,6 +110,11 @@ func (o GetIntegrationCouponRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["campaignIds"] = o.CampaignIds
 	toSerialize["limit"] = o.Limit
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -138,15 +143,21 @@ func (o *GetIntegrationCouponRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varGetIntegrationCouponRequest := _GetIntegrationCouponRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGetIntegrationCouponRequest)
+	err = json.Unmarshal(data, &varGetIntegrationCouponRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GetIntegrationCouponRequest(varGetIntegrationCouponRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "campaignIds")
+		delete(additionalProperties, "limit")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

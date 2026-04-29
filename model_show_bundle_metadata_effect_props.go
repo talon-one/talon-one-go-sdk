@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type ShowBundleMetadataEffectProps struct {
 	// The cart item attributes that determined which items are being bundled together.
 	BundleAttributes []string `json:"bundleAttributes"`
 	// The indices in the cart items array of the bundled items.
-	ItemsIndices []float32 `json:"itemsIndices"`
+	ItemsIndices         []float32 `json:"itemsIndices"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ShowBundleMetadataEffectProps ShowBundleMetadataEffectProps
@@ -136,6 +136,11 @@ func (o ShowBundleMetadataEffectProps) ToMap() (map[string]interface{}, error) {
 	toSerialize["description"] = o.Description
 	toSerialize["bundleAttributes"] = o.BundleAttributes
 	toSerialize["itemsIndices"] = o.ItemsIndices
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -165,15 +170,22 @@ func (o *ShowBundleMetadataEffectProps) UnmarshalJSON(data []byte) (err error) {
 
 	varShowBundleMetadataEffectProps := _ShowBundleMetadataEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varShowBundleMetadataEffectProps)
+	err = json.Unmarshal(data, &varShowBundleMetadataEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ShowBundleMetadataEffectProps(varShowBundleMetadataEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "bundleAttributes")
+		delete(additionalProperties, "itemsIndices")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

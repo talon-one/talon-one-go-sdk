@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type ProjectedTier struct {
 	// The number of points the customer needs to stay in the current tier.  **Note**: This is included in the response when the customer is projected to be downgraded.
 	StayInTierPoints *float32 `json:"stayInTierPoints,omitempty"`
 	// The name of the tier the user will enter once their current tier expires.
-	ProjectedTierName *string `json:"projectedTierName,omitempty"`
+	ProjectedTierName    *string `json:"projectedTierName,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ProjectedTier ProjectedTier
@@ -154,6 +154,11 @@ func (o ProjectedTier) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ProjectedTierName) {
 		toSerialize["projectedTierName"] = o.ProjectedTierName
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -181,15 +186,22 @@ func (o *ProjectedTier) UnmarshalJSON(data []byte) (err error) {
 
 	varProjectedTier := _ProjectedTier{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varProjectedTier)
+	err = json.Unmarshal(data, &varProjectedTier)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ProjectedTier(varProjectedTier)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "projectedActivePoints")
+		delete(additionalProperties, "stayInTierPoints")
+		delete(additionalProperties, "projectedTierName")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

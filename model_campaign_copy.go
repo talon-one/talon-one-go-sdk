@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -35,7 +34,8 @@ type CampaignCopy struct {
 	// A list of tags for the campaign.
 	Tags []string `json:"tags,omitempty"`
 	// The ID of the campaign evaluation group the campaign belongs to.
-	EvaluationGroupId *int64 `json:"evaluationGroupId,omitempty"`
+	EvaluationGroupId    *int64 `json:"evaluationGroupId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CampaignCopy CampaignCopy
@@ -303,6 +303,11 @@ func (o CampaignCopy) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.EvaluationGroupId) {
 		toSerialize["evaluationGroupId"] = o.EvaluationGroupId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -330,15 +335,26 @@ func (o *CampaignCopy) UnmarshalJSON(data []byte) (err error) {
 
 	varCampaignCopy := _CampaignCopy{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCampaignCopy)
+	err = json.Unmarshal(data, &varCampaignCopy)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CampaignCopy(varCampaignCopy)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "applicationIds")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "startTime")
+		delete(additionalProperties, "endTime")
+		delete(additionalProperties, "tags")
+		delete(additionalProperties, "evaluationGroupId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -42,7 +41,8 @@ type LedgerInfo struct {
 	// Points required to move up a tier.
 	PointsToNextTier *float32 `json:"pointsToNextTier,omitempty"`
 	// The name of the next higher tier level in the loyalty program.  **Note**: - Returns `null` if the customer has reached the highest available tier. - Returns the lowest level tier name if the customer is not currently assigned to any tier.
-	NextTierName *string `json:"nextTierName,omitempty"`
+	NextTierName         *string `json:"nextTierName,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _LedgerInfo LedgerInfo
@@ -414,6 +414,11 @@ func (o LedgerInfo) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.NextTierName) {
 		toSerialize["nextTierName"] = o.NextTierName
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -445,15 +450,30 @@ func (o *LedgerInfo) UnmarshalJSON(data []byte) (err error) {
 
 	varLedgerInfo := _LedgerInfo{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varLedgerInfo)
+	err = json.Unmarshal(data, &varLedgerInfo)
 
 	if err != nil {
 		return err
 	}
 
 	*o = LedgerInfo(varLedgerInfo)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "currentBalance")
+		delete(additionalProperties, "pendingBalance")
+		delete(additionalProperties, "negativeBalance")
+		delete(additionalProperties, "expiredBalance")
+		delete(additionalProperties, "spentBalance")
+		delete(additionalProperties, "tentativeCurrentBalance")
+		delete(additionalProperties, "tentativePendingBalance")
+		delete(additionalProperties, "tentativeNegativeBalance")
+		delete(additionalProperties, "currentTier")
+		delete(additionalProperties, "pointsToNextTier")
+		delete(additionalProperties, "nextTierName")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

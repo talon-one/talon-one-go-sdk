@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -41,7 +40,8 @@ type CouponFailureSummary struct {
 	// Timestamp when the request was made.
 	CreatedAt time.Time `json:"createdAt"`
 	// Timestamp when the request was last updated.
-	UpdatedAt time.Time `json:"updatedAt"`
+	UpdatedAt            time.Time `json:"updatedAt"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CouponFailureSummary CouponFailureSummary
@@ -351,6 +351,11 @@ func (o CouponFailureSummary) ToMap() (map[string]interface{}, error) {
 	toSerialize["summary"] = o.Summary
 	toSerialize["createdAt"] = o.CreatedAt
 	toSerialize["updatedAt"] = o.UpdatedAt
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -385,15 +390,29 @@ func (o *CouponFailureSummary) UnmarshalJSON(data []byte) (err error) {
 
 	varCouponFailureSummary := _CouponFailureSummary{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCouponFailureSummary)
+	err = json.Unmarshal(data, &varCouponFailureSummary)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CouponFailureSummary(varCouponFailureSummary)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "eventID")
+		delete(additionalProperties, "sessionID")
+		delete(additionalProperties, "profileID")
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "couponCode")
+		delete(additionalProperties, "language")
+		delete(additionalProperties, "summary")
+		delete(additionalProperties, "createdAt")
+		delete(additionalProperties, "updatedAt")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

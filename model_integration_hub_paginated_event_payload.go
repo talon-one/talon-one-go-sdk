@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -24,9 +23,10 @@ var _ MappedNullable = &IntegrationHubPaginatedEventPayload{}
 type IntegrationHubPaginatedEventPayload struct {
 	TotalResultSize int64 `json:"TotalResultSize"`
 	// Timestamp when the batch was created.
-	BatchedAt *time.Time    `json:"BatchedAt,omitempty"`
-	EventType string        `json:"EventType"`
-	Data      []interface{} `json:"Data"`
+	BatchedAt            *time.Time    `json:"BatchedAt,omitempty"`
+	EventType            string        `json:"EventType"`
+	Data                 []interface{} `json:"Data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _IntegrationHubPaginatedEventPayload IntegrationHubPaginatedEventPayload
@@ -171,6 +171,11 @@ func (o IntegrationHubPaginatedEventPayload) ToMap() (map[string]interface{}, er
 	}
 	toSerialize["EventType"] = o.EventType
 	toSerialize["Data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -200,15 +205,23 @@ func (o *IntegrationHubPaginatedEventPayload) UnmarshalJSON(data []byte) (err er
 
 	varIntegrationHubPaginatedEventPayload := _IntegrationHubPaginatedEventPayload{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varIntegrationHubPaginatedEventPayload)
+	err = json.Unmarshal(data, &varIntegrationHubPaginatedEventPayload)
 
 	if err != nil {
 		return err
 	}
 
 	*o = IntegrationHubPaginatedEventPayload(varIntegrationHubPaginatedEventPayload)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "TotalResultSize")
+		delete(additionalProperties, "BatchedAt")
+		delete(additionalProperties, "EventType")
+		delete(additionalProperties, "Data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

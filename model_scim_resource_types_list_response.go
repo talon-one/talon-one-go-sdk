@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,7 +20,8 @@ var _ MappedNullable = &ScimResourceTypesListResponse{}
 
 // ScimResourceTypesListResponse List of resource types supported by the SCIM provisioning protocol.
 type ScimResourceTypesListResponse struct {
-	Resources []ScimResource `json:"Resources"`
+	Resources            []ScimResource `json:"Resources"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ScimResourceTypesListResponse ScimResourceTypesListResponse
@@ -79,6 +79,11 @@ func (o ScimResourceTypesListResponse) MarshalJSON() ([]byte, error) {
 func (o ScimResourceTypesListResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["Resources"] = o.Resources
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -106,15 +111,20 @@ func (o *ScimResourceTypesListResponse) UnmarshalJSON(data []byte) (err error) {
 
 	varScimResourceTypesListResponse := _ScimResourceTypesListResponse{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varScimResourceTypesListResponse)
+	err = json.Unmarshal(data, &varScimResourceTypesListResponse)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ScimResourceTypesListResponse(varScimResourceTypesListResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "Resources")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -35,8 +34,9 @@ type StrikethroughChangedItem struct {
 	// A map of keys and values representing the price types and related price adjustment details for this cart item.       The keys correspond to the `priceType` names.
 	Prices map[string]PriceDetail `json:"prices,omitempty"`
 	// The evaluation time of the changed item.
-	EvaluatedAt time.Time             `json:"evaluatedAt"`
-	Effects     []StrikethroughEffect `json:"effects,omitempty"`
+	EvaluatedAt          time.Time             `json:"evaluatedAt"`
+	Effects              []StrikethroughEffect `json:"effects,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _StrikethroughChangedItem StrikethroughChangedItem
@@ -294,6 +294,11 @@ func (o StrikethroughChangedItem) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Effects) {
 		toSerialize["effects"] = o.Effects
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -326,15 +331,27 @@ func (o *StrikethroughChangedItem) UnmarshalJSON(data []byte) (err error) {
 
 	varStrikethroughChangedItem := _StrikethroughChangedItem{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varStrikethroughChangedItem)
+	err = json.Unmarshal(data, &varStrikethroughChangedItem)
 
 	if err != nil {
 		return err
 	}
 
 	*o = StrikethroughChangedItem(varStrikethroughChangedItem)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "catalogId")
+		delete(additionalProperties, "sku")
+		delete(additionalProperties, "version")
+		delete(additionalProperties, "price")
+		delete(additionalProperties, "prices")
+		delete(additionalProperties, "evaluatedAt")
+		delete(additionalProperties, "effects")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

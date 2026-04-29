@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type ProductSearchMatch struct {
 	// The string matching the given value. Either a product name or SKU.
 	Value string `json:"value"`
 	// The ID of the SKU linked to a product. If empty, this is an product.
-	ProductSkuId *int64 `json:"productSkuId,omitempty"`
+	ProductSkuId         *int64 `json:"productSkuId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ProductSearchMatch ProductSearchMatch
@@ -154,6 +154,11 @@ func (o ProductSearchMatch) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ProductSkuId) {
 		toSerialize["productSkuId"] = o.ProductSkuId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -181,15 +186,22 @@ func (o *ProductSearchMatch) UnmarshalJSON(data []byte) (err error) {
 
 	varProductSearchMatch := _ProductSearchMatch{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varProductSearchMatch)
+	err = json.Unmarshal(data, &varProductSearchMatch)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ProductSearchMatch(varProductSearchMatch)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "productId")
+		delete(additionalProperties, "value")
+		delete(additionalProperties, "productSkuId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

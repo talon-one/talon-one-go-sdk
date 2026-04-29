@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type AddPriceAdjustmentCatalogAction struct {
 	// The SKU of the item for which the price is being adjusted.
 	Sku string `json:"sku"`
 	// A list of adjustments to apply to a given item.
-	Adjustments []NewPriceAdjustment `json:"adjustments"`
+	Adjustments          []NewPriceAdjustment `json:"adjustments"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AddPriceAdjustmentCatalogAction AddPriceAdjustmentCatalogAction
@@ -108,6 +108,11 @@ func (o AddPriceAdjustmentCatalogAction) ToMap() (map[string]interface{}, error)
 	toSerialize := map[string]interface{}{}
 	toSerialize["sku"] = o.Sku
 	toSerialize["adjustments"] = o.Adjustments
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *AddPriceAdjustmentCatalogAction) UnmarshalJSON(data []byte) (err error)
 
 	varAddPriceAdjustmentCatalogAction := _AddPriceAdjustmentCatalogAction{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAddPriceAdjustmentCatalogAction)
+	err = json.Unmarshal(data, &varAddPriceAdjustmentCatalogAction)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AddPriceAdjustmentCatalogAction(varAddPriceAdjustmentCatalogAction)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "sku")
+		delete(additionalProperties, "adjustments")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &GetAdditionalCosts200Response{}
 
 // GetAdditionalCosts200Response struct for GetAdditionalCosts200Response
 type GetAdditionalCosts200Response struct {
-	TotalResultSize int64                   `json:"totalResultSize"`
-	Data            []AccountAdditionalCost `json:"data"`
+	TotalResultSize      int64                   `json:"totalResultSize"`
+	Data                 []AccountAdditionalCost `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GetAdditionalCosts200Response GetAdditionalCosts200Response
@@ -106,6 +106,11 @@ func (o GetAdditionalCosts200Response) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["totalResultSize"] = o.TotalResultSize
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -134,15 +139,21 @@ func (o *GetAdditionalCosts200Response) UnmarshalJSON(data []byte) (err error) {
 
 	varGetAdditionalCosts200Response := _GetAdditionalCosts200Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGetAdditionalCosts200Response)
+	err = json.Unmarshal(data, &varGetAdditionalCosts200Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GetAdditionalCosts200Response(varGetAdditionalCosts200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "totalResultSize")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

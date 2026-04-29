@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,8 +21,9 @@ var _ MappedNullable = &PriceHistoryResponse{}
 // PriceHistoryResponse struct for PriceHistoryResponse
 type PriceHistoryResponse struct {
 	// The SKU of the item for which historical prices should be retrieved.
-	Sku     string    `json:"sku"`
-	History []History `json:"history"`
+	Sku                  string    `json:"sku"`
+	History              []History `json:"history"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PriceHistoryResponse PriceHistoryResponse
@@ -107,6 +107,11 @@ func (o PriceHistoryResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["sku"] = o.Sku
 	toSerialize["history"] = o.History
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -135,15 +140,21 @@ func (o *PriceHistoryResponse) UnmarshalJSON(data []byte) (err error) {
 
 	varPriceHistoryResponse := _PriceHistoryResponse{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPriceHistoryResponse)
+	err = json.Unmarshal(data, &varPriceHistoryResponse)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PriceHistoryResponse(varPriceHistoryResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "sku")
+		delete(additionalProperties, "history")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

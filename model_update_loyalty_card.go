@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type UpdateLoyaltyCard struct {
 	// Status of the loyalty card. Can be `active` or `inactive`.
 	Status string `json:"status"`
 	// Reason for transferring and blocking the loyalty card.
-	BlockReason *string `json:"blockReason,omitempty"`
+	BlockReason          *string `json:"blockReason,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _UpdateLoyaltyCard UpdateLoyaltyCard
@@ -117,6 +117,11 @@ func (o UpdateLoyaltyCard) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.BlockReason) {
 		toSerialize["blockReason"] = o.BlockReason
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -144,15 +149,21 @@ func (o *UpdateLoyaltyCard) UnmarshalJSON(data []byte) (err error) {
 
 	varUpdateLoyaltyCard := _UpdateLoyaltyCard{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varUpdateLoyaltyCard)
+	err = json.Unmarshal(data, &varUpdateLoyaltyCard)
 
 	if err != nil {
 		return err
 	}
 
 	*o = UpdateLoyaltyCard(varUpdateLoyaltyCard)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "blockReason")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

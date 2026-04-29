@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type Loyalty struct {
 	// Displays information about the balances of the loyalty cards.
 	Cards []LoyaltyCard `json:"cards,omitempty"`
 	// Displays information about point balances in profile-based programs.
-	Programs map[string]LoyaltyProgramLedgers `json:"programs"`
+	Programs             map[string]LoyaltyProgramLedgers `json:"programs"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Loyalty Loyalty
@@ -117,6 +117,11 @@ func (o Loyalty) ToMap() (map[string]interface{}, error) {
 		toSerialize["cards"] = o.Cards
 	}
 	toSerialize["programs"] = o.Programs
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -144,15 +149,21 @@ func (o *Loyalty) UnmarshalJSON(data []byte) (err error) {
 
 	varLoyalty := _Loyalty{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varLoyalty)
+	err = json.Unmarshal(data, &varLoyalty)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Loyalty(varLoyalty)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "cards")
+		delete(additionalProperties, "programs")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

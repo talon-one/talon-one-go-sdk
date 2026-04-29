@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -29,6 +28,7 @@ type ExtendLoyaltyPointsExpiryDateEffectProps struct {
 	ExtensionDuration string `json:"extensionDuration"`
 	// List of transactions affected by the expiry date update.
 	AffectedTransactions []LoyaltyLedgerEntryExpiryDateChange `json:"affectedTransactions,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ExtendLoyaltyPointsExpiryDateEffectProps ExtendLoyaltyPointsExpiryDateEffectProps
@@ -173,6 +173,11 @@ func (o ExtendLoyaltyPointsExpiryDateEffectProps) ToMap() (map[string]interface{
 	if !IsNil(o.AffectedTransactions) {
 		toSerialize["affectedTransactions"] = o.AffectedTransactions
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -202,15 +207,23 @@ func (o *ExtendLoyaltyPointsExpiryDateEffectProps) UnmarshalJSON(data []byte) (e
 
 	varExtendLoyaltyPointsExpiryDateEffectProps := _ExtendLoyaltyPointsExpiryDateEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varExtendLoyaltyPointsExpiryDateEffectProps)
+	err = json.Unmarshal(data, &varExtendLoyaltyPointsExpiryDateEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ExtendLoyaltyPointsExpiryDateEffectProps(varExtendLoyaltyPointsExpiryDateEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "programId")
+		delete(additionalProperties, "subLedgerId")
+		delete(additionalProperties, "extensionDuration")
+		delete(additionalProperties, "affectedTransactions")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -32,8 +32,11 @@ type CampaignVersions struct {
 	// ID of the latest version applied on the current revision.
 	CurrentRevisionVersionId *int64 `json:"currentRevisionVersionId,omitempty"`
 	// Flag for determining whether we use current revision when sending requests with staging API key.
-	StageRevision *bool `json:"stageRevision,omitempty"`
+	StageRevision        *bool `json:"stageRevision,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _CampaignVersions CampaignVersions
 
 // NewCampaignVersions instantiates a new CampaignVersions object
 // This constructor will assign default values to properties that have it defined,
@@ -311,7 +314,39 @@ func (o CampaignVersions) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.StageRevision) {
 		toSerialize["stageRevision"] = o.StageRevision
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *CampaignVersions) UnmarshalJSON(data []byte) (err error) {
+	varCampaignVersions := _CampaignVersions{}
+
+	err = json.Unmarshal(data, &varCampaignVersions)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CampaignVersions(varCampaignVersions)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "revisionFrontendState")
+		delete(additionalProperties, "activeRevisionId")
+		delete(additionalProperties, "activeRevisionVersionId")
+		delete(additionalProperties, "version")
+		delete(additionalProperties, "currentRevisionId")
+		delete(additionalProperties, "currentRevisionVersionId")
+		delete(additionalProperties, "stageRevision")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableCampaignVersions struct {

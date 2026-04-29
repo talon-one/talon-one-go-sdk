@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &IdentifiableEntity{}
 // IdentifiableEntity struct for IdentifiableEntity
 type IdentifiableEntity struct {
 	// Unique ID for this entity. Not to be confused with the Integration ID, which is set by your integration layer and used in most endpoints.
-	Id int64 `json:"id"`
+	Id                   int64 `json:"id"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _IdentifiableEntity IdentifiableEntity
@@ -80,6 +80,11 @@ func (o IdentifiableEntity) MarshalJSON() ([]byte, error) {
 func (o IdentifiableEntity) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["id"] = o.Id
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *IdentifiableEntity) UnmarshalJSON(data []byte) (err error) {
 
 	varIdentifiableEntity := _IdentifiableEntity{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varIdentifiableEntity)
+	err = json.Unmarshal(data, &varIdentifiableEntity)
 
 	if err != nil {
 		return err
 	}
 
 	*o = IdentifiableEntity(varIdentifiableEntity)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

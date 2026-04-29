@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -28,6 +27,7 @@ type IntegrationHubFlowWithConfig struct {
 	// The URL of the integration hub flow that we want to trigger for the event.
 	IntegrationHubFlowUrl string                   `json:"IntegrationHubFlowUrl"`
 	Config                IntegrationHubFlowConfig `json:"Config"`
+	AdditionalProperties  map[string]interface{}
 }
 
 type _IntegrationHubFlowWithConfig IntegrationHubFlowWithConfig
@@ -172,6 +172,11 @@ func (o IntegrationHubFlowWithConfig) ToMap() (map[string]interface{}, error) {
 	toSerialize["EventType"] = o.EventType
 	toSerialize["IntegrationHubFlowUrl"] = o.IntegrationHubFlowUrl
 	toSerialize["Config"] = o.Config
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -201,15 +206,23 @@ func (o *IntegrationHubFlowWithConfig) UnmarshalJSON(data []byte) (err error) {
 
 	varIntegrationHubFlowWithConfig := _IntegrationHubFlowWithConfig{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varIntegrationHubFlowWithConfig)
+	err = json.Unmarshal(data, &varIntegrationHubFlowWithConfig)
 
 	if err != nil {
 		return err
 	}
 
 	*o = IntegrationHubFlowWithConfig(varIntegrationHubFlowWithConfig)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "ApplicationID")
+		delete(additionalProperties, "EventType")
+		delete(additionalProperties, "IntegrationHubFlowUrl")
+		delete(additionalProperties, "Config")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &GenerateAuditLogSummary{}
 // GenerateAuditLogSummary struct for GenerateAuditLogSummary
 type GenerateAuditLogSummary struct {
 	// The ID of the audit log.
-	LogID int64 `json:"logID"`
+	LogID                int64 `json:"logID"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GenerateAuditLogSummary GenerateAuditLogSummary
@@ -80,6 +80,11 @@ func (o GenerateAuditLogSummary) MarshalJSON() ([]byte, error) {
 func (o GenerateAuditLogSummary) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["logID"] = o.LogID
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *GenerateAuditLogSummary) UnmarshalJSON(data []byte) (err error) {
 
 	varGenerateAuditLogSummary := _GenerateAuditLogSummary{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGenerateAuditLogSummary)
+	err = json.Unmarshal(data, &varGenerateAuditLogSummary)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GenerateAuditLogSummary(varGenerateAuditLogSummary)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "logID")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

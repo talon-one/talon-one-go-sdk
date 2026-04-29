@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -29,7 +28,8 @@ type PatchItemCatalogAction struct {
 	Attributes map[string]interface{} `json:"attributes,omitempty"`
 	Product    *Product               `json:"product,omitempty"`
 	// Indicates whether to create an item if the SKU does not exist.
-	CreateIfNotExists *bool `json:"createIfNotExists,omitempty"`
+	CreateIfNotExists    *bool `json:"createIfNotExists,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PatchItemCatalogAction PatchItemCatalogAction
@@ -231,6 +231,11 @@ func (o PatchItemCatalogAction) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CreateIfNotExists) {
 		toSerialize["createIfNotExists"] = o.CreateIfNotExists
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -258,15 +263,24 @@ func (o *PatchItemCatalogAction) UnmarshalJSON(data []byte) (err error) {
 
 	varPatchItemCatalogAction := _PatchItemCatalogAction{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPatchItemCatalogAction)
+	err = json.Unmarshal(data, &varPatchItemCatalogAction)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PatchItemCatalogAction(varPatchItemCatalogAction)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "sku")
+		delete(additionalProperties, "price")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "product")
+		delete(additionalProperties, "createIfNotExists")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

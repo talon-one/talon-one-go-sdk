@@ -20,8 +20,11 @@ var _ MappedNullable = &IntegrationProfileEntity{}
 // IntegrationProfileEntity struct for IntegrationProfileEntity
 type IntegrationProfileEntity struct {
 	// ID of the customer profile set by your integration layer.  **Note:** If the customer does not yet have a known `profileId`, we recommend you use a guest `profileId`.
-	ProfileId *string `json:"profileId,omitempty"`
+	ProfileId            *string `json:"profileId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _IntegrationProfileEntity IntegrationProfileEntity
 
 // NewIntegrationProfileEntity instantiates a new IntegrationProfileEntity object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o IntegrationProfileEntity) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ProfileId) {
 		toSerialize["profileId"] = o.ProfileId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *IntegrationProfileEntity) UnmarshalJSON(data []byte) (err error) {
+	varIntegrationProfileEntity := _IntegrationProfileEntity{}
+
+	err = json.Unmarshal(data, &varIntegrationProfileEntity)
+
+	if err != nil {
+		return err
+	}
+
+	*o = IntegrationProfileEntity(varIntegrationProfileEntity)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "profileId")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableIntegrationProfileEntity struct {

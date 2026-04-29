@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,7 +20,8 @@ var _ MappedNullable = &LabelTargetNone{}
 
 // LabelTargetNone Represents the target type when no entity is selected.
 type LabelTargetNone struct {
-	Type string `json:"type"`
+	Type                 string `json:"type"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _LabelTargetNone LabelTargetNone
@@ -79,6 +79,11 @@ func (o LabelTargetNone) MarshalJSON() ([]byte, error) {
 func (o LabelTargetNone) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["type"] = o.Type
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -106,15 +111,20 @@ func (o *LabelTargetNone) UnmarshalJSON(data []byte) (err error) {
 
 	varLabelTargetNone := _LabelTargetNone{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varLabelTargetNone)
+	err = json.Unmarshal(data, &varLabelTargetNone)
 
 	if err != nil {
 		return err
 	}
 
 	*o = LabelTargetNone(varLabelTargetNone)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "type")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

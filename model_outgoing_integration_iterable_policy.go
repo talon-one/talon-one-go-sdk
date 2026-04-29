@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type OutgoingIntegrationIterablePolicy struct {
 	// The base URL that is based on the region key of your Iterable account.
 	BaseUrl string `json:"baseUrl"`
 	// The API key generated from your Iterable account. See [Iterable API Key Guide](https://support.iterable.com/hc/en-us/articles/360043464871-API-Keys-)
-	ApiKey string `json:"apiKey"`
+	ApiKey               string `json:"apiKey"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _OutgoingIntegrationIterablePolicy OutgoingIntegrationIterablePolicy
@@ -108,6 +108,11 @@ func (o OutgoingIntegrationIterablePolicy) ToMap() (map[string]interface{}, erro
 	toSerialize := map[string]interface{}{}
 	toSerialize["baseUrl"] = o.BaseUrl
 	toSerialize["apiKey"] = o.ApiKey
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *OutgoingIntegrationIterablePolicy) UnmarshalJSON(data []byte) (err erro
 
 	varOutgoingIntegrationIterablePolicy := _OutgoingIntegrationIterablePolicy{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varOutgoingIntegrationIterablePolicy)
+	err = json.Unmarshal(data, &varOutgoingIntegrationIterablePolicy)
 
 	if err != nil {
 		return err
 	}
 
 	*o = OutgoingIntegrationIterablePolicy(varOutgoingIntegrationIterablePolicy)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "baseUrl")
+		delete(additionalProperties, "apiKey")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

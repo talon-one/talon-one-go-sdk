@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -73,7 +72,8 @@ type CampaignTemplate struct {
 	// The IDs of the Applications that are related to this entity.
 	ValidApplicationIds []int64 `json:"validApplicationIds"`
 	// A flag indicating whether the user marked the template as a favorite.
-	IsUserFavorite *bool `json:"isUserFavorite,omitempty"`
+	IsUserFavorite       *bool `json:"isUserFavorite,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CampaignTemplate CampaignTemplate
@@ -994,6 +994,11 @@ func (o CampaignTemplate) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.IsUserFavorite) {
 		toSerialize["isUserFavorite"] = o.IsUserFavorite
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -1031,15 +1036,47 @@ func (o *CampaignTemplate) UnmarshalJSON(data []byte) (err error) {
 
 	varCampaignTemplate := _CampaignTemplate{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCampaignTemplate)
+	err = json.Unmarshal(data, &varCampaignTemplate)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CampaignTemplate(varCampaignTemplate)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "userId")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "instructions")
+		delete(additionalProperties, "campaignAttributes")
+		delete(additionalProperties, "couponAttributes")
+		delete(additionalProperties, "state")
+		delete(additionalProperties, "activeRulesetId")
+		delete(additionalProperties, "tags")
+		delete(additionalProperties, "reevaluateOnReturn")
+		delete(additionalProperties, "features")
+		delete(additionalProperties, "couponSettings")
+		delete(additionalProperties, "couponReservationSettings")
+		delete(additionalProperties, "referralSettings")
+		delete(additionalProperties, "limits")
+		delete(additionalProperties, "templateParams")
+		delete(additionalProperties, "applicationsIds")
+		delete(additionalProperties, "campaignCollections")
+		delete(additionalProperties, "defaultCampaignGroupId")
+		delete(additionalProperties, "campaignType")
+		delete(additionalProperties, "campaignsCount")
+		delete(additionalProperties, "updated")
+		delete(additionalProperties, "updatedBy")
+		delete(additionalProperties, "validApplicationIds")
+		delete(additionalProperties, "isUserFavorite")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

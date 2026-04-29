@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type GenerateCampaignDescription struct {
 	// ID of a ruleset.
 	RulesetID int64 `json:"rulesetID"`
 	// Currency for the campaign.
-	Currency string `json:"currency"`
+	Currency             string `json:"currency"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GenerateCampaignDescription GenerateCampaignDescription
@@ -136,6 +136,11 @@ func (o GenerateCampaignDescription) ToMap() (map[string]interface{}, error) {
 	toSerialize["campaignID"] = o.CampaignID
 	toSerialize["rulesetID"] = o.RulesetID
 	toSerialize["currency"] = o.Currency
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -165,15 +170,22 @@ func (o *GenerateCampaignDescription) UnmarshalJSON(data []byte) (err error) {
 
 	varGenerateCampaignDescription := _GenerateCampaignDescription{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGenerateCampaignDescription)
+	err = json.Unmarshal(data, &varGenerateCampaignDescription)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GenerateCampaignDescription(varGenerateCampaignDescription)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "campaignID")
+		delete(additionalProperties, "rulesetID")
+		delete(additionalProperties, "currency")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

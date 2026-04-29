@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type CampaignBudget struct {
 	// The value to set for the limit.
 	Limit float32 `json:"limit"`
 	// The number of occurrences of the limited action in the context of the campaign.
-	Counter float32 `json:"counter"`
+	Counter              float32 `json:"counter"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CampaignBudget CampaignBudget
@@ -136,6 +136,11 @@ func (o CampaignBudget) ToMap() (map[string]interface{}, error) {
 	toSerialize["action"] = o.Action
 	toSerialize["limit"] = o.Limit
 	toSerialize["counter"] = o.Counter
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -165,15 +170,22 @@ func (o *CampaignBudget) UnmarshalJSON(data []byte) (err error) {
 
 	varCampaignBudget := _CampaignBudget{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCampaignBudget)
+	err = json.Unmarshal(data, &varCampaignBudget)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CampaignBudget(varCampaignBudget)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "action")
+		delete(additionalProperties, "limit")
+		delete(additionalProperties, "counter")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

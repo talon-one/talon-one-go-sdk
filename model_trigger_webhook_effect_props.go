@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type TriggerWebhookEffectProps struct {
 	// The ID of the webhook that was triggered.
 	WebhookId float32 `json:"webhookId"`
 	// The name of the webhook that was triggered.
-	WebhookName string `json:"webhookName"`
+	WebhookName          string `json:"webhookName"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _TriggerWebhookEffectProps TriggerWebhookEffectProps
@@ -108,6 +108,11 @@ func (o TriggerWebhookEffectProps) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["webhookId"] = o.WebhookId
 	toSerialize["webhookName"] = o.WebhookName
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *TriggerWebhookEffectProps) UnmarshalJSON(data []byte) (err error) {
 
 	varTriggerWebhookEffectProps := _TriggerWebhookEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varTriggerWebhookEffectProps)
+	err = json.Unmarshal(data, &varTriggerWebhookEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = TriggerWebhookEffectProps(varTriggerWebhookEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "webhookId")
+		delete(additionalProperties, "webhookName")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

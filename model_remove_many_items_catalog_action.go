@@ -20,8 +20,11 @@ var _ MappedNullable = &RemoveManyItemsCatalogAction{}
 // RemoveManyItemsCatalogAction The specific properties of the \"REMOVE_MANY\" catalog sync action.
 type RemoveManyItemsCatalogAction struct {
 	// The list of filters used to select the items to patch, joined by `AND`.  **Note:** Every item in the catalog will be removed if there are no filters.
-	Filters []CatalogActionFilter `json:"filters,omitempty"`
+	Filters              []CatalogActionFilter `json:"filters,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _RemoveManyItemsCatalogAction RemoveManyItemsCatalogAction
 
 // NewRemoveManyItemsCatalogAction instantiates a new RemoveManyItemsCatalogAction object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o RemoveManyItemsCatalogAction) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Filters) {
 		toSerialize["filters"] = o.Filters
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *RemoveManyItemsCatalogAction) UnmarshalJSON(data []byte) (err error) {
+	varRemoveManyItemsCatalogAction := _RemoveManyItemsCatalogAction{}
+
+	err = json.Unmarshal(data, &varRemoveManyItemsCatalogAction)
+
+	if err != nil {
+		return err
+	}
+
+	*o = RemoveManyItemsCatalogAction(varRemoveManyItemsCatalogAction)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "filters")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableRemoveManyItemsCatalogAction struct {

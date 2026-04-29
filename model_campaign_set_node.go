@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,7 +20,8 @@ var _ MappedNullable = &CampaignSetNode{}
 
 // CampaignSetNode struct for CampaignSetNode
 type CampaignSetNode struct {
-	Type string `json:"type"`
+	Type                 string `json:"type"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CampaignSetNode CampaignSetNode
@@ -79,6 +79,11 @@ func (o CampaignSetNode) MarshalJSON() ([]byte, error) {
 func (o CampaignSetNode) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["type"] = o.Type
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -106,15 +111,20 @@ func (o *CampaignSetNode) UnmarshalJSON(data []byte) (err error) {
 
 	varCampaignSetNode := _CampaignSetNode{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCampaignSetNode)
+	err = json.Unmarshal(data, &varCampaignSetNode)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CampaignSetNode(varCampaignSetNode)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "type")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

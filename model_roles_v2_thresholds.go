@@ -20,8 +20,11 @@ var _ MappedNullable = &RolesV2Thresholds{}
 // RolesV2Thresholds struct for RolesV2Thresholds
 type RolesV2Thresholds struct {
 	// Maximum number of loyalty points a support user can award without approval.
-	LoyaltyPointsLimit *int64 `json:"loyaltyPointsLimit,omitempty"`
+	LoyaltyPointsLimit   *int64 `json:"loyaltyPointsLimit,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _RolesV2Thresholds RolesV2Thresholds
 
 // NewRolesV2Thresholds instantiates a new RolesV2Thresholds object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o RolesV2Thresholds) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.LoyaltyPointsLimit) {
 		toSerialize["loyaltyPointsLimit"] = o.LoyaltyPointsLimit
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *RolesV2Thresholds) UnmarshalJSON(data []byte) (err error) {
+	varRolesV2Thresholds := _RolesV2Thresholds{}
+
+	err = json.Unmarshal(data, &varRolesV2Thresholds)
+
+	if err != nil {
+		return err
+	}
+
+	*o = RolesV2Thresholds(varRolesV2Thresholds)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "loyaltyPointsLimit")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableRolesV2Thresholds struct {

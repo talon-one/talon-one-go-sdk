@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -46,6 +45,7 @@ type NewAttribute struct {
 	SubscribedCatalogsIds []int64 `json:"subscribedCatalogsIds,omitempty"`
 	// A list of allowed subscription types for this attribute.  **Note:** This only applies to attributes associated with the `CartItem` entity.
 	AllowedSubscriptions []string `json:"allowedSubscriptions,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewAttribute NewAttribute
@@ -477,6 +477,11 @@ func (o NewAttribute) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.AllowedSubscriptions) {
 		toSerialize["allowedSubscriptions"] = o.AllowedSubscriptions
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -510,15 +515,32 @@ func (o *NewAttribute) UnmarshalJSON(data []byte) (err error) {
 
 	varNewAttribute := _NewAttribute{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewAttribute)
+	err = json.Unmarshal(data, &varNewAttribute)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewAttribute(varNewAttribute)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "entity")
+		delete(additionalProperties, "eventType")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "suggestions")
+		delete(additionalProperties, "hasAllowedList")
+		delete(additionalProperties, "restrictedBySuggestions")
+		delete(additionalProperties, "editable")
+		delete(additionalProperties, "subscribedApplicationsIds")
+		delete(additionalProperties, "subscribedCatalogsIds")
+		delete(additionalProperties, "allowedSubscriptions")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

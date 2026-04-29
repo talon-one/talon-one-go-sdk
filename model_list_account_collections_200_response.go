@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,9 +20,10 @@ var _ MappedNullable = &ListAccountCollections200Response{}
 
 // ListAccountCollections200Response struct for ListAccountCollections200Response
 type ListAccountCollections200Response struct {
-	HasMore         *bool                      `json:"hasMore,omitempty"`
-	TotalResultSize *int64                     `json:"totalResultSize,omitempty"`
-	Data            []CollectionWithoutPayload `json:"data"`
+	HasMore              *bool                      `json:"hasMore,omitempty"`
+	TotalResultSize      *int64                     `json:"totalResultSize,omitempty"`
+	Data                 []CollectionWithoutPayload `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ListAccountCollections200Response ListAccountCollections200Response
@@ -151,6 +151,11 @@ func (o ListAccountCollections200Response) ToMap() (map[string]interface{}, erro
 		toSerialize["totalResultSize"] = o.TotalResultSize
 	}
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -178,15 +183,22 @@ func (o *ListAccountCollections200Response) UnmarshalJSON(data []byte) (err erro
 
 	varListAccountCollections200Response := _ListAccountCollections200Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varListAccountCollections200Response)
+	err = json.Unmarshal(data, &varListAccountCollections200Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ListAccountCollections200Response(varListAccountCollections200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "hasMore")
+		delete(additionalProperties, "totalResultSize")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

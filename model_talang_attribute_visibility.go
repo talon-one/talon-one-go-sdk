@@ -22,8 +22,11 @@ type TalangAttributeVisibility struct {
 	// List of attribute names to hide in the UI.
 	Invisible []string `json:"invisible,omitempty"`
 	// List of attribute names to show in the UI.
-	Visible []string `json:"visible,omitempty"`
+	Visible              []string `json:"visible,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _TalangAttributeVisibility TalangAttributeVisibility
 
 // NewTalangAttributeVisibility instantiates a new TalangAttributeVisibility object
 // This constructor will assign default values to properties that have it defined,
@@ -122,7 +125,34 @@ func (o TalangAttributeVisibility) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Visible) {
 		toSerialize["visible"] = o.Visible
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *TalangAttributeVisibility) UnmarshalJSON(data []byte) (err error) {
+	varTalangAttributeVisibility := _TalangAttributeVisibility{}
+
+	err = json.Unmarshal(data, &varTalangAttributeVisibility)
+
+	if err != nil {
+		return err
+	}
+
+	*o = TalangAttributeVisibility(varTalangAttributeVisibility)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "invisible")
+		delete(additionalProperties, "visible")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableTalangAttributeVisibility struct {

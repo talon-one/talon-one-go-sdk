@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -36,6 +35,7 @@ type PendingActivePointsData struct {
 	ExpireOn *time.Time `json:"ExpireOn,omitempty"`
 	// The integration ID of the session through which the points were earned.
 	SessionIntegrationID *string `json:"SessionIntegrationID,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PendingActivePointsData PendingActivePointsData
@@ -278,6 +278,11 @@ func (o PendingActivePointsData) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.SessionIntegrationID) {
 		toSerialize["SessionIntegrationID"] = o.SessionIntegrationID
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -308,15 +313,26 @@ func (o *PendingActivePointsData) UnmarshalJSON(data []byte) (err error) {
 
 	varPendingActivePointsData := _PendingActivePointsData{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPendingActivePointsData)
+	err = json.Unmarshal(data, &varPendingActivePointsData)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PendingActivePointsData(varPendingActivePointsData)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "LoyaltyProgramID")
+		delete(additionalProperties, "SubledgerID")
+		delete(additionalProperties, "CustomerProfileID")
+		delete(additionalProperties, "Points")
+		delete(additionalProperties, "ActiveOn")
+		delete(additionalProperties, "ExpireOn")
+		delete(additionalProperties, "SessionIntegrationID")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

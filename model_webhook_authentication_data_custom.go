@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,7 +20,8 @@ var _ MappedNullable = &WebhookAuthenticationDataCustom{}
 
 // WebhookAuthenticationDataCustom struct for WebhookAuthenticationDataCustom
 type WebhookAuthenticationDataCustom struct {
-	Headers map[string]string `json:"headers"`
+	Headers              map[string]string `json:"headers"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _WebhookAuthenticationDataCustom WebhookAuthenticationDataCustom
@@ -79,6 +79,11 @@ func (o WebhookAuthenticationDataCustom) MarshalJSON() ([]byte, error) {
 func (o WebhookAuthenticationDataCustom) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["headers"] = o.Headers
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -106,15 +111,20 @@ func (o *WebhookAuthenticationDataCustom) UnmarshalJSON(data []byte) (err error)
 
 	varWebhookAuthenticationDataCustom := _WebhookAuthenticationDataCustom{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varWebhookAuthenticationDataCustom)
+	err = json.Unmarshal(data, &varWebhookAuthenticationDataCustom)
 
 	if err != nil {
 		return err
 	}
 
 	*o = WebhookAuthenticationDataCustom(varWebhookAuthenticationDataCustom)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "headers")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

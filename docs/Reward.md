@@ -12,6 +12,8 @@ Name | Type | Description | Notes
 **Description** | Pointer to **string** | A description of the reward. | [optional] 
 **ApplicationIds** | **[]int64** | The IDs of the Applications this reward is connected to.   **Note**: Currently, a reward can only be connected to one Application.  | 
 **Sandbox** | **bool** | Indicates if this is a live or sandbox reward. Rewards of a given type can only be connected to Applications of the same type. | 
+**Rule** | Pointer to [**[]Rule**](Rule.md) | Rule to apply. | [optional] 
+**Bindings** | Pointer to [**[]Binding**](Binding.md) | A list of named variables created before the reward&#39;s rules are evaluated.  Each binding pairs a name with a talang expression. The expression is evaluated once  and its result is available by name in any rule condition or effect. Bindings must be defined outside of individual rules. | [optional] 
 **Status** | **string** | The status of the reward. | 
 
 ## Methods
@@ -197,6 +199,56 @@ and a boolean to check if the value has been set.
 
 SetSandbox sets Sandbox field to given value.
 
+
+### GetRule
+
+`func (o *Reward) GetRule() []Rule`
+
+GetRule returns the Rule field if non-nil, zero value otherwise.
+
+### GetRuleOk
+
+`func (o *Reward) GetRuleOk() (*[]Rule, bool)`
+
+GetRuleOk returns a tuple with the Rule field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRule
+
+`func (o *Reward) SetRule(v []Rule)`
+
+SetRule sets Rule field to given value.
+
+### HasRule
+
+`func (o *Reward) HasRule() bool`
+
+HasRule returns a boolean if a field has been set.
+
+### GetBindings
+
+`func (o *Reward) GetBindings() []Binding`
+
+GetBindings returns the Bindings field if non-nil, zero value otherwise.
+
+### GetBindingsOk
+
+`func (o *Reward) GetBindingsOk() (*[]Binding, bool)`
+
+GetBindingsOk returns a tuple with the Bindings field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetBindings
+
+`func (o *Reward) SetBindings(v []Binding)`
+
+SetBindings sets Bindings field to given value.
+
+### HasBindings
+
+`func (o *Reward) HasBindings() bool`
+
+HasBindings returns a boolean if a field has been set.
 
 ### GetStatus
 

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -51,7 +50,8 @@ type NewCampaignTemplate struct {
 	// The default campaign group ID.
 	DefaultCampaignGroupId *int64 `json:"defaultCampaignGroupId,omitempty"`
 	// The campaign type. Possible type values:   - `cartItem`: Type of campaign that can apply effects only to cart items.   - `advanced`: Type of campaign that can apply effects to customer sessions and cart items.
-	CampaignType string `json:"campaignType"`
+	CampaignType         string `json:"campaignType"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewCampaignTemplate NewCampaignTemplate
@@ -635,6 +635,11 @@ func (o NewCampaignTemplate) ToMap() (map[string]interface{}, error) {
 		toSerialize["defaultCampaignGroupId"] = o.DefaultCampaignGroupId
 	}
 	toSerialize["campaignType"] = o.CampaignType
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -666,15 +671,36 @@ func (o *NewCampaignTemplate) UnmarshalJSON(data []byte) (err error) {
 
 	varNewCampaignTemplate := _NewCampaignTemplate{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewCampaignTemplate)
+	err = json.Unmarshal(data, &varNewCampaignTemplate)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewCampaignTemplate(varNewCampaignTemplate)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "instructions")
+		delete(additionalProperties, "campaignAttributes")
+		delete(additionalProperties, "couponAttributes")
+		delete(additionalProperties, "state")
+		delete(additionalProperties, "tags")
+		delete(additionalProperties, "reevaluateOnReturn")
+		delete(additionalProperties, "features")
+		delete(additionalProperties, "couponSettings")
+		delete(additionalProperties, "couponReservationSettings")
+		delete(additionalProperties, "referralSettings")
+		delete(additionalProperties, "limits")
+		delete(additionalProperties, "templateParams")
+		delete(additionalProperties, "campaignCollections")
+		delete(additionalProperties, "defaultCampaignGroupId")
+		delete(additionalProperties, "campaignType")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

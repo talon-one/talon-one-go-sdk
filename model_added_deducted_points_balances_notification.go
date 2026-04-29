@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -40,7 +39,8 @@ type AddedDeductedPointsBalancesNotification struct {
 	// The list of actions that have been triggered in the loyalty program.
 	Actions []AddedDeductedPointsBalancesAction `json:"Actions"`
 	// The current points balance.
-	CurrentPoints float32 `json:"CurrentPoints"`
+	CurrentPoints        float32 `json:"CurrentPoints"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AddedDeductedPointsBalancesNotification AddedDeductedPointsBalancesNotification
@@ -332,6 +332,11 @@ func (o AddedDeductedPointsBalancesNotification) ToMap() (map[string]interface{}
 	toSerialize["UserID"] = o.UserID
 	toSerialize["Actions"] = o.Actions
 	toSerialize["CurrentPoints"] = o.CurrentPoints
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -368,15 +373,29 @@ func (o *AddedDeductedPointsBalancesNotification) UnmarshalJSON(data []byte) (er
 
 	varAddedDeductedPointsBalancesNotification := _AddedDeductedPointsBalancesNotification{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAddedDeductedPointsBalancesNotification)
+	err = json.Unmarshal(data, &varAddedDeductedPointsBalancesNotification)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AddedDeductedPointsBalancesNotification(varAddedDeductedPointsBalancesNotification)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "EmployeeName")
+		delete(additionalProperties, "LoyaltyProgramID")
+		delete(additionalProperties, "NotificationType")
+		delete(additionalProperties, "ProfileIntegrationID")
+		delete(additionalProperties, "SessionIntegrationID")
+		delete(additionalProperties, "SubledgerID")
+		delete(additionalProperties, "TypeOfChange")
+		delete(additionalProperties, "UserID")
+		delete(additionalProperties, "Actions")
+		delete(additionalProperties, "CurrentPoints")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

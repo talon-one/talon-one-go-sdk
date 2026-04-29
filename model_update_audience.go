@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -23,6 +22,9 @@ var _ MappedNullable = &UpdateAudience{}
 type UpdateAudience struct {
 	// The human-friendly display name for this audience.
 	Name string `json:"name"`
+	// A list of the IDs of the Applications that are connected to this audience.
+	SubscribedApplicationsIds []int64 `json:"subscribedApplicationsIds,omitempty"`
+	AdditionalProperties      map[string]interface{}
 }
 
 type _UpdateAudience UpdateAudience
@@ -69,6 +71,38 @@ func (o *UpdateAudience) SetName(v string) {
 	o.Name = v
 }
 
+// GetSubscribedApplicationsIds returns the SubscribedApplicationsIds field value if set, zero value otherwise.
+func (o *UpdateAudience) GetSubscribedApplicationsIds() []int64 {
+	if o == nil || IsNil(o.SubscribedApplicationsIds) {
+		var ret []int64
+		return ret
+	}
+	return o.SubscribedApplicationsIds
+}
+
+// GetSubscribedApplicationsIdsOk returns a tuple with the SubscribedApplicationsIds field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *UpdateAudience) GetSubscribedApplicationsIdsOk() ([]int64, bool) {
+	if o == nil || IsNil(o.SubscribedApplicationsIds) {
+		return nil, false
+	}
+	return o.SubscribedApplicationsIds, true
+}
+
+// HasSubscribedApplicationsIds returns a boolean if a field has been set.
+func (o *UpdateAudience) HasSubscribedApplicationsIds() bool {
+	if o != nil && !IsNil(o.SubscribedApplicationsIds) {
+		return true
+	}
+
+	return false
+}
+
+// SetSubscribedApplicationsIds gets a reference to the given []int64 and assigns it to the SubscribedApplicationsIds field.
+func (o *UpdateAudience) SetSubscribedApplicationsIds(v []int64) {
+	o.SubscribedApplicationsIds = v
+}
+
 func (o UpdateAudience) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -80,6 +114,14 @@ func (o UpdateAudience) MarshalJSON() ([]byte, error) {
 func (o UpdateAudience) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["name"] = o.Name
+	if !IsNil(o.SubscribedApplicationsIds) {
+		toSerialize["subscribedApplicationsIds"] = o.SubscribedApplicationsIds
+	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +149,21 @@ func (o *UpdateAudience) UnmarshalJSON(data []byte) (err error) {
 
 	varUpdateAudience := _UpdateAudience{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varUpdateAudience)
+	err = json.Unmarshal(data, &varUpdateAudience)
 
 	if err != nil {
 		return err
 	}
 
 	*o = UpdateAudience(varUpdateAudience)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "subscribedApplicationsIds")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

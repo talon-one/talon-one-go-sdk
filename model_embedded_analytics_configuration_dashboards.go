@@ -20,8 +20,11 @@ var _ MappedNullable = &EmbeddedAnalyticsConfigurationDashboards{}
 // EmbeddedAnalyticsConfigurationDashboards struct for EmbeddedAnalyticsConfigurationDashboards
 type EmbeddedAnalyticsConfigurationDashboards struct {
 	// The configuration of the embedded Insights dashboard for campaigns.
-	CampaignInsights *EmbeddedDashboardConfiguration `json:"campaignInsights,omitempty"`
+	CampaignInsights     *EmbeddedDashboardConfiguration `json:"campaignInsights,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _EmbeddedAnalyticsConfigurationDashboards EmbeddedAnalyticsConfigurationDashboards
 
 // NewEmbeddedAnalyticsConfigurationDashboards instantiates a new EmbeddedAnalyticsConfigurationDashboards object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o EmbeddedAnalyticsConfigurationDashboards) ToMap() (map[string]interface{
 	if !IsNil(o.CampaignInsights) {
 		toSerialize["campaignInsights"] = o.CampaignInsights
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *EmbeddedAnalyticsConfigurationDashboards) UnmarshalJSON(data []byte) (err error) {
+	varEmbeddedAnalyticsConfigurationDashboards := _EmbeddedAnalyticsConfigurationDashboards{}
+
+	err = json.Unmarshal(data, &varEmbeddedAnalyticsConfigurationDashboards)
+
+	if err != nil {
+		return err
+	}
+
+	*o = EmbeddedAnalyticsConfigurationDashboards(varEmbeddedAnalyticsConfigurationDashboards)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "campaignInsights")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableEmbeddedAnalyticsConfigurationDashboards struct {

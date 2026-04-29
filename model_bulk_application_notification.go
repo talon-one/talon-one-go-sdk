@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &BulkApplicationNotification{}
 
 // BulkApplicationNotification struct for BulkApplicationNotification
 type BulkApplicationNotification struct {
-	TotalResultSize int64                     `json:"totalResultSize"`
-	Data            []ApplicationNotification `json:"data"`
+	TotalResultSize      int64                     `json:"totalResultSize"`
+	Data                 []ApplicationNotification `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _BulkApplicationNotification BulkApplicationNotification
@@ -106,6 +106,11 @@ func (o BulkApplicationNotification) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["totalResultSize"] = o.TotalResultSize
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -134,15 +139,21 @@ func (o *BulkApplicationNotification) UnmarshalJSON(data []byte) (err error) {
 
 	varBulkApplicationNotification := _BulkApplicationNotification{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varBulkApplicationNotification)
+	err = json.Unmarshal(data, &varBulkApplicationNotification)
 
 	if err != nil {
 		return err
 	}
 
 	*o = BulkApplicationNotification(varBulkApplicationNotification)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "totalResultSize")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

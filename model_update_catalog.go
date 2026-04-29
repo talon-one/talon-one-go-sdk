@@ -25,7 +25,10 @@ type UpdateCatalog struct {
 	Name *string `json:"name,omitempty"`
 	// A list of the IDs of the applications that are subscribed to this catalog.
 	SubscribedApplicationsIds []int64 `json:"subscribedApplicationsIds,omitempty"`
+	AdditionalProperties      map[string]interface{}
 }
+
+type _UpdateCatalog UpdateCatalog
 
 // NewUpdateCatalog instantiates a new UpdateCatalog object
 // This constructor will assign default values to properties that have it defined,
@@ -159,7 +162,35 @@ func (o UpdateCatalog) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.SubscribedApplicationsIds) {
 		toSerialize["subscribedApplicationsIds"] = o.SubscribedApplicationsIds
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *UpdateCatalog) UnmarshalJSON(data []byte) (err error) {
+	varUpdateCatalog := _UpdateCatalog{}
+
+	err = json.Unmarshal(data, &varUpdateCatalog)
+
+	if err != nil {
+		return err
+	}
+
+	*o = UpdateCatalog(varUpdateCatalog)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "subscribedApplicationsIds")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableUpdateCatalog struct {

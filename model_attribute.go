@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -54,6 +53,7 @@ type Attribute struct {
 	// A list of allowed subscription types for this attribute.  **Note:** This only applies to attributes associated with the `CartItem` entity.
 	AllowedSubscriptions []string `json:"allowedSubscriptions,omitempty"`
 	EventTypeId          *int64   `json:"eventTypeId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Attribute Attribute
@@ -598,6 +598,11 @@ func (o Attribute) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.EventTypeId) {
 		toSerialize["eventTypeId"] = o.EventTypeId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -634,15 +639,36 @@ func (o *Attribute) UnmarshalJSON(data []byte) (err error) {
 
 	varAttribute := _Attribute{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAttribute)
+	err = json.Unmarshal(data, &varAttribute)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Attribute(varAttribute)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "entity")
+		delete(additionalProperties, "eventType")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "suggestions")
+		delete(additionalProperties, "hasAllowedList")
+		delete(additionalProperties, "restrictedBySuggestions")
+		delete(additionalProperties, "editable")
+		delete(additionalProperties, "subscribedApplicationsIds")
+		delete(additionalProperties, "subscribedCatalogsIds")
+		delete(additionalProperties, "allowedSubscriptions")
+		delete(additionalProperties, "eventTypeId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

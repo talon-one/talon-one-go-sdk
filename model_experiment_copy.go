@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,8 +21,9 @@ var _ MappedNullable = &ExperimentCopy{}
 // ExperimentCopy struct for ExperimentCopy
 type ExperimentCopy struct {
 	// The ID of the Application to copy the experiment. It is displayed in your Talon.One deployment URL.
-	TargetApplicationId int64                    `json:"targetApplicationId"`
-	Experiment          ExperimentCopyExperiment `json:"experiment"`
+	TargetApplicationId  int64                    `json:"targetApplicationId"`
+	Experiment           ExperimentCopyExperiment `json:"experiment"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ExperimentCopy ExperimentCopy
@@ -107,6 +107,11 @@ func (o ExperimentCopy) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["targetApplicationId"] = o.TargetApplicationId
 	toSerialize["experiment"] = o.Experiment
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -135,15 +140,21 @@ func (o *ExperimentCopy) UnmarshalJSON(data []byte) (err error) {
 
 	varExperimentCopy := _ExperimentCopy{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varExperimentCopy)
+	err = json.Unmarshal(data, &varExperimentCopy)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ExperimentCopy(varExperimentCopy)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "targetApplicationId")
+		delete(additionalProperties, "experiment")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

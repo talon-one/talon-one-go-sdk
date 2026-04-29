@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -49,7 +48,8 @@ type NewCoupons struct {
 	// An indication of whether the code can be redeemed only if it has been reserved first.
 	IsReservationMandatory *bool `json:"isReservationMandatory,omitempty"`
 	// An indication of whether the coupon is implicitly reserved for all customers.
-	ImplicitlyReserved *bool `json:"implicitlyReserved,omitempty"`
+	ImplicitlyReserved   *bool `json:"implicitlyReserved,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewCoupons NewCoupons
@@ -566,6 +566,11 @@ func (o NewCoupons) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ImplicitlyReserved) {
 		toSerialize["implicitlyReserved"] = o.ImplicitlyReserved
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -593,15 +598,33 @@ func (o *NewCoupons) UnmarshalJSON(data []byte) (err error) {
 
 	varNewCoupons := _NewCoupons{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewCoupons)
+	err = json.Unmarshal(data, &varNewCoupons)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewCoupons(varNewCoupons)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "usageLimit")
+		delete(additionalProperties, "discountLimit")
+		delete(additionalProperties, "reservationLimit")
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "limits")
+		delete(additionalProperties, "numberOfCoupons")
+		delete(additionalProperties, "uniquePrefix")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "recipientIntegrationId")
+		delete(additionalProperties, "validCharacters")
+		delete(additionalProperties, "couponPattern")
+		delete(additionalProperties, "isReservationMandatory")
+		delete(additionalProperties, "implicitlyReserved")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

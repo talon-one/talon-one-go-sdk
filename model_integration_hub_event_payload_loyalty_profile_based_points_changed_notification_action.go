@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -28,7 +27,8 @@ type IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationActio
 	StartDate  *time.Time `json:"StartDate,omitempty"`
 	ExpiryDate *time.Time `json:"ExpiryDate,omitempty"`
 	// The identifier of the transaction in the loyalty ledger.
-	TransactionUUID string `json:"TransactionUUID"`
+	TransactionUUID      string `json:"TransactionUUID"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction
@@ -243,6 +243,11 @@ func (o IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAc
 		toSerialize["ExpiryDate"] = o.ExpiryDate
 	}
 	toSerialize["TransactionUUID"] = o.TransactionUUID
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -272,15 +277,25 @@ func (o *IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationA
 
 	varIntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction := _IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varIntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction)
+	err = json.Unmarshal(data, &varIntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction)
 
 	if err != nil {
 		return err
 	}
 
 	*o = IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction(varIntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "Amount")
+		delete(additionalProperties, "Reason")
+		delete(additionalProperties, "Operation")
+		delete(additionalProperties, "StartDate")
+		delete(additionalProperties, "ExpiryDate")
+		delete(additionalProperties, "TransactionUUID")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -35,8 +35,11 @@ type LoyaltyBalanceWithTier struct {
 	// The number of points required to move up a tier.
 	PointsToNextTier *float32 `json:"pointsToNextTier,omitempty"`
 	// The name of the next higher tier level in the loyalty program.  **Note**: - Returns `null` if the customer has reached the highest available tier. - Returns the lowest level tier name if the customer is not currently assigned to any tier.
-	NextTierName *string `json:"nextTierName,omitempty"`
+	NextTierName         *string `json:"nextTierName,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _LoyaltyBalanceWithTier LoyaltyBalanceWithTier
 
 // NewLoyaltyBalanceWithTier instantiates a new LoyaltyBalanceWithTier object
 // This constructor will assign default values to properties that have it defined,
@@ -380,7 +383,41 @@ func (o LoyaltyBalanceWithTier) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.NextTierName) {
 		toSerialize["nextTierName"] = o.NextTierName
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *LoyaltyBalanceWithTier) UnmarshalJSON(data []byte) (err error) {
+	varLoyaltyBalanceWithTier := _LoyaltyBalanceWithTier{}
+
+	err = json.Unmarshal(data, &varLoyaltyBalanceWithTier)
+
+	if err != nil {
+		return err
+	}
+
+	*o = LoyaltyBalanceWithTier(varLoyaltyBalanceWithTier)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "activePoints")
+		delete(additionalProperties, "pendingPoints")
+		delete(additionalProperties, "spentPoints")
+		delete(additionalProperties, "expiredPoints")
+		delete(additionalProperties, "negativePoints")
+		delete(additionalProperties, "currentTier")
+		delete(additionalProperties, "projectedTier")
+		delete(additionalProperties, "pointsToNextTier")
+		delete(additionalProperties, "nextTierName")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableLoyaltyBalanceWithTier struct {

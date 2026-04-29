@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -30,7 +29,8 @@ type NewBlueprint struct {
 	// Array of rules to store in this blueprint. Rules should only contain title (no description, as description is at the blueprint level). At least one rule or cart item filter is required.
 	Rules []CatalogRule `json:"rules,omitempty"`
 	// Array of cart item filters to store in this blueprint. If not provided, will be extracted from the rules. Cart item filters should only contain name (no description, as description is at the blueprint level).
-	CartItemFilters []CartItemFilterTemplate `json:"cartItemFilters,omitempty"`
+	CartItemFilters      []CartItemFilterTemplate `json:"cartItemFilters,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewBlueprint NewBlueprint
@@ -232,6 +232,11 @@ func (o NewBlueprint) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CartItemFilters) {
 		toSerialize["cartItemFilters"] = o.CartItemFilters
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -259,15 +264,24 @@ func (o *NewBlueprint) UnmarshalJSON(data []byte) (err error) {
 
 	varNewBlueprint := _NewBlueprint{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewBlueprint)
+	err = json.Unmarshal(data, &varNewBlueprint)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewBlueprint(varNewBlueprint)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "category")
+		delete(additionalProperties, "rules")
+		delete(additionalProperties, "cartItemFilters")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

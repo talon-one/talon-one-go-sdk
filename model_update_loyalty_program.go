@@ -50,8 +50,11 @@ type UpdateLoyaltyProgram struct {
 	// The policy that defines the rollback of points in case of a partially returned, cancelled, or reopened [customer session](https://docs.talon.one/docs/dev/concepts/entities/customer-sessions). - `only_pending`: Only pending points can be rolled back. - `within_balance`: Available active points can be rolled back if there aren't enough pending points. The active balance of the customer cannot be negative. - `unlimited`: Allows negative balance without any limit.
 	ReturnPolicy *string `json:"returnPolicy,omitempty"`
 	// The tiers in this loyalty program.
-	Tiers []NewLoyaltyTier `json:"tiers,omitempty"`
+	Tiers                []NewLoyaltyTier `json:"tiers,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _UpdateLoyaltyProgram UpdateLoyaltyProgram
 
 // NewUpdateLoyaltyProgram instantiates a new UpdateLoyaltyProgram object
 // This constructor will assign default values to properties that have it defined,
@@ -640,7 +643,48 @@ func (o UpdateLoyaltyProgram) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Tiers) {
 		toSerialize["tiers"] = o.Tiers
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *UpdateLoyaltyProgram) UnmarshalJSON(data []byte) (err error) {
+	varUpdateLoyaltyProgram := _UpdateLoyaltyProgram{}
+
+	err = json.Unmarshal(data, &varUpdateLoyaltyProgram)
+
+	if err != nil {
+		return err
+	}
+
+	*o = UpdateLoyaltyProgram(varUpdateLoyaltyProgram)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "subscribedApplications")
+		delete(additionalProperties, "defaultValidity")
+		delete(additionalProperties, "defaultPending")
+		delete(additionalProperties, "allowSubledger")
+		delete(additionalProperties, "usersPerCardLimit")
+		delete(additionalProperties, "sandbox")
+		delete(additionalProperties, "programJoinPolicy")
+		delete(additionalProperties, "tiersExpirationPolicy")
+		delete(additionalProperties, "tierCycleStartDate")
+		delete(additionalProperties, "tiersExpireIn")
+		delete(additionalProperties, "tiersDowngradePolicy")
+		delete(additionalProperties, "cardCodeSettings")
+		delete(additionalProperties, "returnPolicy")
+		delete(additionalProperties, "tiers")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableUpdateLoyaltyProgram struct {

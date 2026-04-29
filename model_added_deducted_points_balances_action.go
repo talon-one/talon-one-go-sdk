@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -33,7 +32,8 @@ type AddedDeductedPointsBalancesAction struct {
 	// The expiration date for loyalty points.
 	ExpiryDate *time.Time `json:"ExpiryDate,omitempty"`
 	// The identifier of the transaction in the loyalty ledger.
-	TransactionUUID string `json:"TransactionUUID"`
+	TransactionUUID      string `json:"TransactionUUID"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AddedDeductedPointsBalancesAction AddedDeductedPointsBalancesAction
@@ -239,6 +239,11 @@ func (o AddedDeductedPointsBalancesAction) ToMap() (map[string]interface{}, erro
 		toSerialize["ExpiryDate"] = o.ExpiryDate
 	}
 	toSerialize["TransactionUUID"] = o.TransactionUUID
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -269,15 +274,25 @@ func (o *AddedDeductedPointsBalancesAction) UnmarshalJSON(data []byte) (err erro
 
 	varAddedDeductedPointsBalancesAction := _AddedDeductedPointsBalancesAction{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAddedDeductedPointsBalancesAction)
+	err = json.Unmarshal(data, &varAddedDeductedPointsBalancesAction)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AddedDeductedPointsBalancesAction(varAddedDeductedPointsBalancesAction)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "Amount")
+		delete(additionalProperties, "Reason")
+		delete(additionalProperties, "Operation")
+		delete(additionalProperties, "StartDate")
+		delete(additionalProperties, "ExpiryDate")
+		delete(additionalProperties, "TransactionUUID")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

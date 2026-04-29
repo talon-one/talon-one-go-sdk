@@ -19,8 +19,11 @@ var _ MappedNullable = &CustomerProfileAudienceRequest{}
 
 // CustomerProfileAudienceRequest struct for CustomerProfileAudienceRequest
 type CustomerProfileAudienceRequest struct {
-	Data []CustomerProfileAudienceRequestItem `json:"data,omitempty"`
+	Data                 []CustomerProfileAudienceRequestItem `json:"data,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _CustomerProfileAudienceRequest CustomerProfileAudienceRequest
 
 // NewCustomerProfileAudienceRequest instantiates a new CustomerProfileAudienceRequest object
 // This constructor will assign default values to properties that have it defined,
@@ -84,7 +87,33 @@ func (o CustomerProfileAudienceRequest) ToMap() (map[string]interface{}, error) 
 	if !IsNil(o.Data) {
 		toSerialize["data"] = o.Data
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *CustomerProfileAudienceRequest) UnmarshalJSON(data []byte) (err error) {
+	varCustomerProfileAudienceRequest := _CustomerProfileAudienceRequest{}
+
+	err = json.Unmarshal(data, &varCustomerProfileAudienceRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CustomerProfileAudienceRequest(varCustomerProfileAudienceRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableCustomerProfileAudienceRequest struct {

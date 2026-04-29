@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -31,7 +30,8 @@ type CampaignStoreBudget struct {
 	// The ID of the store.
 	StoreId int64 `json:"storeId"`
 	// The set of budget limits for stores linked to the campaign.
-	Limits []CampaignStoreBudgetLimitConfig `json:"limits"`
+	Limits               []CampaignStoreBudgetLimitConfig `json:"limits"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CampaignStoreBudget CampaignStoreBudget
@@ -193,6 +193,11 @@ func (o CampaignStoreBudget) ToMap() (map[string]interface{}, error) {
 	toSerialize["campaignId"] = o.CampaignId
 	toSerialize["storeId"] = o.StoreId
 	toSerialize["limits"] = o.Limits
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -224,15 +229,24 @@ func (o *CampaignStoreBudget) UnmarshalJSON(data []byte) (err error) {
 
 	varCampaignStoreBudget := _CampaignStoreBudget{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCampaignStoreBudget)
+	err = json.Unmarshal(data, &varCampaignStoreBudget)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CampaignStoreBudget(varCampaignStoreBudget)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "campaignId")
+		delete(additionalProperties, "storeId")
+		delete(additionalProperties, "limits")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

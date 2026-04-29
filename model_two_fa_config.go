@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type TwoFAConfig struct {
 	// An indication of whether two-factor authentication is enabled for the account.
 	Enabled bool `json:"enabled"`
 	// Can be `true` or `false`. - `true`: Two-factor authentication is required each time a user signs in to their Talon.One account. - `false`: Two-factor authentication is only required when a user signs in to their Talon.One account on a new device, and every 30 days after that.
-	RequireEverySignIn *bool `json:"requireEverySignIn,omitempty"`
+	RequireEverySignIn   *bool `json:"requireEverySignIn,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _TwoFAConfig TwoFAConfig
@@ -117,6 +117,11 @@ func (o TwoFAConfig) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.RequireEverySignIn) {
 		toSerialize["requireEverySignIn"] = o.RequireEverySignIn
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -144,15 +149,21 @@ func (o *TwoFAConfig) UnmarshalJSON(data []byte) (err error) {
 
 	varTwoFAConfig := _TwoFAConfig{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varTwoFAConfig)
+	err = json.Unmarshal(data, &varTwoFAConfig)
 
 	if err != nil {
 		return err
 	}
 
 	*o = TwoFAConfig(varTwoFAConfig)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "enabled")
+		delete(additionalProperties, "requireEverySignIn")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

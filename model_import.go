@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -33,7 +32,8 @@ type Import struct {
 	// The name of the entity that was imported.
 	Entity string `json:"entity"`
 	// The number of values that were imported.
-	Amount int64 `json:"amount"`
+	Amount               int64 `json:"amount"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Import Import
@@ -221,6 +221,11 @@ func (o Import) ToMap() (map[string]interface{}, error) {
 	toSerialize["userId"] = o.UserId
 	toSerialize["entity"] = o.Entity
 	toSerialize["amount"] = o.Amount
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -253,15 +258,25 @@ func (o *Import) UnmarshalJSON(data []byte) (err error) {
 
 	varImport := _Import{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varImport)
+	err = json.Unmarshal(data, &varImport)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Import(varImport)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "userId")
+		delete(additionalProperties, "entity")
+		delete(additionalProperties, "amount")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

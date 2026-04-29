@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -25,7 +24,8 @@ type TierUpgradeNotification struct {
 	// The array of tier upgrade notifications.
 	Data []TierUpgradeData `json:"Data"`
 	// The type of notification.
-	NotificationType string `json:"NotificationType"`
+	NotificationType     string `json:"NotificationType"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _TierUpgradeNotification TierUpgradeNotification
@@ -135,6 +135,11 @@ func (o TierUpgradeNotification) ToMap() (map[string]interface{}, error) {
 	toSerialize["TotalResultSize"] = o.TotalResultSize
 	toSerialize["Data"] = o.Data
 	toSerialize["NotificationType"] = o.NotificationType
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -164,15 +169,22 @@ func (o *TierUpgradeNotification) UnmarshalJSON(data []byte) (err error) {
 
 	varTierUpgradeNotification := _TierUpgradeNotification{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varTierUpgradeNotification)
+	err = json.Unmarshal(data, &varTierUpgradeNotification)
 
 	if err != nil {
 		return err
 	}
 
 	*o = TierUpgradeNotification(varTierUpgradeNotification)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "TotalResultSize")
+		delete(additionalProperties, "Data")
+		delete(additionalProperties, "NotificationType")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

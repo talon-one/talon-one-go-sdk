@@ -22,8 +22,11 @@ type AttributesMandatory struct {
 	// List of mandatory attributes for campaigns.
 	Campaigns []string `json:"campaigns,omitempty"`
 	// List of mandatory attributes for campaigns.
-	Coupons []string `json:"coupons,omitempty"`
+	Coupons              []string `json:"coupons,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _AttributesMandatory AttributesMandatory
 
 // NewAttributesMandatory instantiates a new AttributesMandatory object
 // This constructor will assign default values to properties that have it defined,
@@ -122,7 +125,34 @@ func (o AttributesMandatory) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Coupons) {
 		toSerialize["coupons"] = o.Coupons
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *AttributesMandatory) UnmarshalJSON(data []byte) (err error) {
+	varAttributesMandatory := _AttributesMandatory{}
+
+	err = json.Unmarshal(data, &varAttributesMandatory)
+
+	if err != nil {
+		return err
+	}
+
+	*o = AttributesMandatory(varAttributesMandatory)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "campaigns")
+		delete(additionalProperties, "coupons")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableAttributesMandatory struct {

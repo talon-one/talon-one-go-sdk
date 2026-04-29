@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -69,7 +68,8 @@ type InventoryCoupon struct {
 	// The number of times the coupon was redeemed by the profile.
 	ProfileRedemptionCount int64 `json:"profileRedemptionCount"`
 	// Can be:  - `active`: The coupon can be used. It is a reserved coupon that is not pending, used, or expired, and it has a non-exhausted limit counter.    **Note:** This coupon state is returned for [scheduled campaigns](https://docs.talon.one/docs/product/campaigns/settings/managing-campaign-schedule), but the coupon cannot be used until the campaign is **running**. - `used`: The coupon has been redeemed and cannot be used again. It is not pending and has reached its redemption limit or was redeemed by the profile before expiration. - `expired`: The coupon was never redeemed, and it is now expired. It is non-pending, non-active, and non-used by the profile. - `pending`: The coupon will be usable in the future. - `disabled`: The coupon is part of a non-active campaign.
-	State string `json:"state"`
+	State                string `json:"state"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _InventoryCoupon InventoryCoupon
@@ -895,6 +895,11 @@ func (o InventoryCoupon) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["profileRedemptionCount"] = o.ProfileRedemptionCount
 	toSerialize["state"] = o.State
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -927,15 +932,43 @@ func (o *InventoryCoupon) UnmarshalJSON(data []byte) (err error) {
 
 	varInventoryCoupon := _InventoryCoupon{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varInventoryCoupon)
+	err = json.Unmarshal(data, &varInventoryCoupon)
 
 	if err != nil {
 		return err
 	}
 
 	*o = InventoryCoupon(varInventoryCoupon)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "campaignId")
+		delete(additionalProperties, "value")
+		delete(additionalProperties, "usageLimit")
+		delete(additionalProperties, "discountLimit")
+		delete(additionalProperties, "reservationLimit")
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "limits")
+		delete(additionalProperties, "usageCounter")
+		delete(additionalProperties, "discountCounter")
+		delete(additionalProperties, "discountRemainder")
+		delete(additionalProperties, "reservationCounter")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "referralId")
+		delete(additionalProperties, "recipientIntegrationId")
+		delete(additionalProperties, "importId")
+		delete(additionalProperties, "reservation")
+		delete(additionalProperties, "batchId")
+		delete(additionalProperties, "isReservationMandatory")
+		delete(additionalProperties, "implicitlyReserved")
+		delete(additionalProperties, "profileRedemptionCount")
+		delete(additionalProperties, "state")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

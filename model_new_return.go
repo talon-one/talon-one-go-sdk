@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &NewReturn{}
 // NewReturn struct for NewReturn
 type NewReturn struct {
 	// List of cart items to be returned.
-	ReturnedCartItems []ReturnedCartItem `json:"returnedCartItems"`
+	ReturnedCartItems    []ReturnedCartItem `json:"returnedCartItems"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewReturn NewReturn
@@ -80,6 +80,11 @@ func (o NewReturn) MarshalJSON() ([]byte, error) {
 func (o NewReturn) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["returnedCartItems"] = o.ReturnedCartItems
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *NewReturn) UnmarshalJSON(data []byte) (err error) {
 
 	varNewReturn := _NewReturn{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewReturn)
+	err = json.Unmarshal(data, &varNewReturn)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewReturn(varNewReturn)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "returnedCartItems")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

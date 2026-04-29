@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -72,7 +71,8 @@ type LoyaltyProgram struct {
 	// `True` if the program can be upgraded to use the `tiersExpireIn` and `tiersDowngradePolicy` properties.
 	CanUpgradeToAdvancedTiers *bool `json:"canUpgradeToAdvancedTiers,omitempty"`
 	// `True` if the `allowSubledger` property can be updated in the loyalty program.
-	CanUpdateSubledgers *bool `json:"canUpdateSubledgers,omitempty"`
+	CanUpdateSubledgers  *bool `json:"canUpdateSubledgers,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _LoyaltyProgram LoyaltyProgram
@@ -974,6 +974,11 @@ func (o LoyaltyProgram) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CanUpdateSubledgers) {
 		toSerialize["canUpdateSubledgers"] = o.CanUpdateSubledgers
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -1006,15 +1011,45 @@ func (o *LoyaltyProgram) UnmarshalJSON(data []byte) (err error) {
 
 	varLoyaltyProgram := _LoyaltyProgram{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varLoyaltyProgram)
+	err = json.Unmarshal(data, &varLoyaltyProgram)
 
 	if err != nil {
 		return err
 	}
 
 	*o = LoyaltyProgram(varLoyaltyProgram)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "subscribedApplications")
+		delete(additionalProperties, "defaultValidity")
+		delete(additionalProperties, "defaultPending")
+		delete(additionalProperties, "allowSubledger")
+		delete(additionalProperties, "usersPerCardLimit")
+		delete(additionalProperties, "sandbox")
+		delete(additionalProperties, "programJoinPolicy")
+		delete(additionalProperties, "tiersExpirationPolicy")
+		delete(additionalProperties, "tierCycleStartDate")
+		delete(additionalProperties, "tiersExpireIn")
+		delete(additionalProperties, "tiersDowngradePolicy")
+		delete(additionalProperties, "cardCodeSettings")
+		delete(additionalProperties, "returnPolicy")
+		delete(additionalProperties, "accountID")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "tiers")
+		delete(additionalProperties, "timezone")
+		delete(additionalProperties, "cardBased")
+		delete(additionalProperties, "canUpdateTiers")
+		delete(additionalProperties, "canUpdateTierExpirationPolicy")
+		delete(additionalProperties, "canUpgradeToAdvancedTiers")
+		delete(additionalProperties, "canUpdateSubledgers")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

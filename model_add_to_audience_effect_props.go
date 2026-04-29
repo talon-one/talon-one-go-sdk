@@ -26,8 +26,11 @@ type AddToAudienceEffectProps struct {
 	// The ID of the customer profile in the third-party integration platform.
 	ProfileIntegrationId *string `json:"profileIntegrationId,omitempty"`
 	// The internal ID of the customer profile.
-	ProfileId *int64 `json:"profileId,omitempty"`
+	ProfileId            *int64 `json:"profileId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _AddToAudienceEffectProps AddToAudienceEffectProps
 
 // NewAddToAudienceEffectProps instantiates a new AddToAudienceEffectProps object
 // This constructor will assign default values to properties that have it defined,
@@ -196,7 +199,36 @@ func (o AddToAudienceEffectProps) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ProfileId) {
 		toSerialize["profileId"] = o.ProfileId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *AddToAudienceEffectProps) UnmarshalJSON(data []byte) (err error) {
+	varAddToAudienceEffectProps := _AddToAudienceEffectProps{}
+
+	err = json.Unmarshal(data, &varAddToAudienceEffectProps)
+
+	if err != nil {
+		return err
+	}
+
+	*o = AddToAudienceEffectProps(varAddToAudienceEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "audienceId")
+		delete(additionalProperties, "audienceName")
+		delete(additionalProperties, "profileIntegrationId")
+		delete(additionalProperties, "profileId")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableAddToAudienceEffectProps struct {

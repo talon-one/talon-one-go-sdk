@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -37,7 +36,8 @@ type AddLoyaltyPoints struct {
 	// ID of the subledger the points are added to. If there is no existing subledger with this ID, the subledger is created automatically.
 	SubledgerId *string `json:"subledgerId,omitempty"`
 	// ID of the Application that is connected to the loyalty program. It is displayed in your Talon.One deployment URL.
-	ApplicationId *int64 `json:"applicationId,omitempty"`
+	ApplicationId        *int64 `json:"applicationId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AddLoyaltyPoints AddLoyaltyPoints
@@ -340,6 +340,11 @@ func (o AddLoyaltyPoints) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ApplicationId) {
 		toSerialize["applicationId"] = o.ApplicationId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -367,15 +372,27 @@ func (o *AddLoyaltyPoints) UnmarshalJSON(data []byte) (err error) {
 
 	varAddLoyaltyPoints := _AddLoyaltyPoints{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAddLoyaltyPoints)
+	err = json.Unmarshal(data, &varAddLoyaltyPoints)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AddLoyaltyPoints(varAddLoyaltyPoints)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "points")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "validityDuration")
+		delete(additionalProperties, "validUntil")
+		delete(additionalProperties, "pendingDuration")
+		delete(additionalProperties, "pendingUntil")
+		delete(additionalProperties, "subledgerId")
+		delete(additionalProperties, "applicationId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

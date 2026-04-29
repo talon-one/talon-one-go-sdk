@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type ExperimentVariantAllocation struct {
 	// The ID of the experiment.
 	ExperimentID int64 `json:"experimentID"`
 	// The ID of the variant to be allocated.
-	VariantID int64 `json:"variantID"`
+	VariantID            int64 `json:"variantID"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ExperimentVariantAllocation ExperimentVariantAllocation
@@ -108,6 +108,11 @@ func (o ExperimentVariantAllocation) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["experimentID"] = o.ExperimentID
 	toSerialize["variantID"] = o.VariantID
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *ExperimentVariantAllocation) UnmarshalJSON(data []byte) (err error) {
 
 	varExperimentVariantAllocation := _ExperimentVariantAllocation{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varExperimentVariantAllocation)
+	err = json.Unmarshal(data, &varExperimentVariantAllocation)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ExperimentVariantAllocation(varExperimentVariantAllocation)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "experimentID")
+		delete(additionalProperties, "variantID")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

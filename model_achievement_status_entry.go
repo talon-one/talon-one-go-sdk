@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -51,8 +50,9 @@ type AchievementStatusEntry struct {
 	// The ID of the campaign the achievement belongs to.
 	CampaignId *int64 `json:"campaignId,omitempty"`
 	// The status of the achievement.
-	Status          *string              `json:"status,omitempty"`
-	CurrentProgress *AchievementProgress `json:"currentProgress,omitempty"`
+	Status               *string              `json:"status,omitempty"`
+	CurrentProgress      *AchievementProgress `json:"currentProgress,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AchievementStatusEntry AchievementStatusEntry
@@ -593,6 +593,11 @@ func (o AchievementStatusEntry) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CurrentProgress) {
 		toSerialize["currentProgress"] = o.CurrentProgress
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -625,15 +630,35 @@ func (o *AchievementStatusEntry) UnmarshalJSON(data []byte) (err error) {
 
 	varAchievementStatusEntry := _AchievementStatusEntry{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAchievementStatusEntry)
+	err = json.Unmarshal(data, &varAchievementStatusEntry)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AchievementStatusEntry(varAchievementStatusEntry)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "target")
+		delete(additionalProperties, "period")
+		delete(additionalProperties, "periodEndOverride")
+		delete(additionalProperties, "recurrencePolicy")
+		delete(additionalProperties, "activationPolicy")
+		delete(additionalProperties, "fixedStartDate")
+		delete(additionalProperties, "endDate")
+		delete(additionalProperties, "allowRollbackAfterCompletion")
+		delete(additionalProperties, "campaignId")
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "currentProgress")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

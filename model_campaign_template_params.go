@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -28,7 +27,8 @@ type CampaignTemplateParams struct {
 	// Explains the meaning of this template parameter and the placeholder value that will define it. It is used on campaign creation from this template.
 	Description string `json:"description"`
 	// ID of the corresponding attribute.
-	AttributeId *int64 `json:"attributeId,omitempty"`
+	AttributeId          *int64 `json:"attributeId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CampaignTemplateParams CampaignTemplateParams
@@ -173,6 +173,11 @@ func (o CampaignTemplateParams) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.AttributeId) {
 		toSerialize["attributeId"] = o.AttributeId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -202,15 +207,23 @@ func (o *CampaignTemplateParams) UnmarshalJSON(data []byte) (err error) {
 
 	varCampaignTemplateParams := _CampaignTemplateParams{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCampaignTemplateParams)
+	err = json.Unmarshal(data, &varCampaignTemplateParams)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CampaignTemplateParams(varCampaignTemplateParams)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "attributeId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

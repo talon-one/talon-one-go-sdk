@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -50,7 +49,8 @@ type CustomerSession struct {
 	// A map of labelled discount values, values will be in the same currency as the application associated with the session.
 	Discounts map[string]float32 `json:"discounts"`
 	// Timestamp of the most recent event received on this session.
-	Updated time.Time `json:"updated"`
+	Updated              time.Time `json:"updated"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CustomerSession CustomerSession
@@ -548,6 +548,11 @@ func (o CustomerSession) ToMap() (map[string]interface{}, error) {
 	toSerialize["updateCount"] = o.UpdateCount
 	toSerialize["discounts"] = o.Discounts
 	toSerialize["updated"] = o.Updated
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -581,15 +586,34 @@ func (o *CustomerSession) UnmarshalJSON(data []byte) (err error) {
 
 	varCustomerSession := _CustomerSession{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCustomerSession)
+	err = json.Unmarshal(data, &varCustomerSession)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CustomerSession(varCustomerSession)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "integrationId")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "profileId")
+		delete(additionalProperties, "coupon")
+		delete(additionalProperties, "referral")
+		delete(additionalProperties, "state")
+		delete(additionalProperties, "cartItems")
+		delete(additionalProperties, "identifiers")
+		delete(additionalProperties, "total")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "firstSession")
+		delete(additionalProperties, "updateCount")
+		delete(additionalProperties, "discounts")
+		delete(additionalProperties, "updated")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

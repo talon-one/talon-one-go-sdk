@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,7 +20,8 @@ var _ MappedNullable = &EmbeddedAnalyticsConfiguration{}
 
 // EmbeddedAnalyticsConfiguration struct for EmbeddedAnalyticsConfiguration
 type EmbeddedAnalyticsConfiguration struct {
-	Dashboards EmbeddedAnalyticsConfigurationDashboards `json:"dashboards"`
+	Dashboards           EmbeddedAnalyticsConfigurationDashboards `json:"dashboards"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _EmbeddedAnalyticsConfiguration EmbeddedAnalyticsConfiguration
@@ -79,6 +79,11 @@ func (o EmbeddedAnalyticsConfiguration) MarshalJSON() ([]byte, error) {
 func (o EmbeddedAnalyticsConfiguration) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["dashboards"] = o.Dashboards
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -106,15 +111,20 @@ func (o *EmbeddedAnalyticsConfiguration) UnmarshalJSON(data []byte) (err error) 
 
 	varEmbeddedAnalyticsConfiguration := _EmbeddedAnalyticsConfiguration{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varEmbeddedAnalyticsConfiguration)
+	err = json.Unmarshal(data, &varEmbeddedAnalyticsConfiguration)
 
 	if err != nil {
 		return err
 	}
 
 	*o = EmbeddedAnalyticsConfiguration(varEmbeddedAnalyticsConfiguration)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "dashboards")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

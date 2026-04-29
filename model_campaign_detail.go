@@ -22,8 +22,11 @@ type CampaignDetail struct {
 	// The ID of the campaign that references the application cart item filter.
 	CampaignId *int64 `json:"campaignId,omitempty"`
 	// A user-facing name for this campaign.
-	CampaignName *string `json:"campaignName,omitempty"`
+	CampaignName         *string `json:"campaignName,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _CampaignDetail CampaignDetail
 
 // NewCampaignDetail instantiates a new CampaignDetail object
 // This constructor will assign default values to properties that have it defined,
@@ -122,7 +125,34 @@ func (o CampaignDetail) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CampaignName) {
 		toSerialize["campaignName"] = o.CampaignName
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *CampaignDetail) UnmarshalJSON(data []byte) (err error) {
+	varCampaignDetail := _CampaignDetail{}
+
+	err = json.Unmarshal(data, &varCampaignDetail)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CampaignDetail(varCampaignDetail)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "campaignId")
+		delete(additionalProperties, "campaignName")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableCampaignDetail struct {

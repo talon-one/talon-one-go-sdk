@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,8 +23,9 @@ type NewCampaignSet struct {
 	// The ID of the Application that owns this entity.
 	ApplicationId int64 `json:"applicationId"`
 	// Version of the campaign set.
-	Version int64                 `json:"version"`
-	Set     CampaignSetBranchNode `json:"set"`
+	Version              int64                 `json:"version"`
+	Set                  CampaignSetBranchNode `json:"set"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewCampaignSet NewCampaignSet
@@ -135,6 +135,11 @@ func (o NewCampaignSet) ToMap() (map[string]interface{}, error) {
 	toSerialize["applicationId"] = o.ApplicationId
 	toSerialize["version"] = o.Version
 	toSerialize["set"] = o.Set
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -164,15 +169,22 @@ func (o *NewCampaignSet) UnmarshalJSON(data []byte) (err error) {
 
 	varNewCampaignSet := _NewCampaignSet{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewCampaignSet)
+	err = json.Unmarshal(data, &varNewCampaignSet)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewCampaignSet(varNewCampaignSet)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "version")
+		delete(additionalProperties, "set")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

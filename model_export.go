@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -33,7 +32,8 @@ type Export struct {
 	// The name of the entity that was exported.
 	Entity string `json:"entity"`
 	// Map of keys and values that were used to filter the exported rows.
-	Filter map[string]interface{} `json:"filter"`
+	Filter               map[string]interface{} `json:"filter"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Export Export
@@ -221,6 +221,11 @@ func (o Export) ToMap() (map[string]interface{}, error) {
 	toSerialize["userId"] = o.UserId
 	toSerialize["entity"] = o.Entity
 	toSerialize["filter"] = o.Filter
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -253,15 +258,25 @@ func (o *Export) UnmarshalJSON(data []byte) (err error) {
 
 	varExport := _Export{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varExport)
+	err = json.Unmarshal(data, &varExport)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Export(varExport)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "userId")
+		delete(additionalProperties, "entity")
+		delete(additionalProperties, "filter")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

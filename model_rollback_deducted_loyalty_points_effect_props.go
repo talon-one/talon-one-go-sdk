@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -37,7 +36,8 @@ type RollbackDeductedLoyaltyPointsEffectProps struct {
 	// The identifier of 'addition' entries added to the ledger as the `deductLoyaltyPoints` effect is rolled back.
 	TransactionUUID string `json:"transactionUUID"`
 	// The card on which these points were added.
-	CardIdentifier *string `json:"cardIdentifier,omitempty" validate:"regexp=^[A-Za-z0-9._%+@-]+$"`
+	CardIdentifier       *string `json:"cardIdentifier,omitempty" validate:"regexp=^[A-Za-z0-9._%+@-]+$"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _RollbackDeductedLoyaltyPointsEffectProps RollbackDeductedLoyaltyPointsEffectProps
@@ -304,6 +304,11 @@ func (o RollbackDeductedLoyaltyPointsEffectProps) ToMap() (map[string]interface{
 	if !IsNil(o.CardIdentifier) {
 		toSerialize["cardIdentifier"] = o.CardIdentifier
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -335,15 +340,27 @@ func (o *RollbackDeductedLoyaltyPointsEffectProps) UnmarshalJSON(data []byte) (e
 
 	varRollbackDeductedLoyaltyPointsEffectProps := _RollbackDeductedLoyaltyPointsEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varRollbackDeductedLoyaltyPointsEffectProps)
+	err = json.Unmarshal(data, &varRollbackDeductedLoyaltyPointsEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = RollbackDeductedLoyaltyPointsEffectProps(varRollbackDeductedLoyaltyPointsEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "programId")
+		delete(additionalProperties, "subLedgerId")
+		delete(additionalProperties, "value")
+		delete(additionalProperties, "recipientIntegrationId")
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "transactionUUID")
+		delete(additionalProperties, "cardIdentifier")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

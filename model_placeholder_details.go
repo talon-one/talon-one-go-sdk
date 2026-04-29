@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type PlaceholderDetails struct {
 	// The type of the value assigned to the placeholder.
 	Type string `json:"type"`
 	// The current value of the placeholder.
-	Value []interface{} `json:"value"`
+	Value                []interface{} `json:"value"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PlaceholderDetails PlaceholderDetails
@@ -136,6 +136,11 @@ func (o PlaceholderDetails) ToMap() (map[string]interface{}, error) {
 	toSerialize["name"] = o.Name
 	toSerialize["type"] = o.Type
 	toSerialize["value"] = o.Value
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -165,15 +170,22 @@ func (o *PlaceholderDetails) UnmarshalJSON(data []byte) (err error) {
 
 	varPlaceholderDetails := _PlaceholderDetails{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPlaceholderDetails)
+	err = json.Unmarshal(data, &varPlaceholderDetails)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PlaceholderDetails(varPlaceholderDetails)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "value")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

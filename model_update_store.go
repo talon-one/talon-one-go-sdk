@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type UpdateStore struct {
 	// The description of the store.
 	Description string `json:"description"`
 	// The attributes of the store.
-	Attributes map[string]interface{} `json:"attributes,omitempty"`
+	Attributes           map[string]interface{} `json:"attributes,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _UpdateStore UpdateStore
@@ -145,6 +145,11 @@ func (o UpdateStore) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Attributes) {
 		toSerialize["attributes"] = o.Attributes
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -173,15 +178,22 @@ func (o *UpdateStore) UnmarshalJSON(data []byte) (err error) {
 
 	varUpdateStore := _UpdateStore{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varUpdateStore)
+	err = json.Unmarshal(data, &varUpdateStore)
 
 	if err != nil {
 		return err
 	}
 
 	*o = UpdateStore(varUpdateStore)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "attributes")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

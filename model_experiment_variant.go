@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -25,12 +24,13 @@ type ExperimentVariant struct {
 	// The internal ID of this entity.
 	Id int64 `json:"id"`
 	// The time this entity was created.
-	Created      time.Time `json:"created"`
-	Name         string    `json:"name"`
-	ExperimentId *int64    `json:"experimentId,omitempty"`
-	Ruleset      *Ruleset  `json:"ruleset,omitempty"`
-	Weight       *int64    `json:"weight,omitempty"`
-	IsPrimary    bool      `json:"isPrimary"`
+	Created              time.Time `json:"created"`
+	Name                 string    `json:"name"`
+	ExperimentId         *int64    `json:"experimentId,omitempty"`
+	Ruleset              *Ruleset  `json:"ruleset,omitempty"`
+	Weight               *int64    `json:"weight,omitempty"`
+	IsPrimary            bool      `json:"isPrimary"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ExperimentVariant ExperimentVariant
@@ -271,6 +271,11 @@ func (o ExperimentVariant) ToMap() (map[string]interface{}, error) {
 		toSerialize["weight"] = o.Weight
 	}
 	toSerialize["isPrimary"] = o.IsPrimary
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -301,15 +306,26 @@ func (o *ExperimentVariant) UnmarshalJSON(data []byte) (err error) {
 
 	varExperimentVariant := _ExperimentVariant{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varExperimentVariant)
+	err = json.Unmarshal(data, &varExperimentVariant)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ExperimentVariant(varExperimentVariant)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "experimentId")
+		delete(additionalProperties, "ruleset")
+		delete(additionalProperties, "weight")
+		delete(additionalProperties, "isPrimary")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

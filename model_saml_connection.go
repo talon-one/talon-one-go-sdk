@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -44,6 +43,7 @@ type SamlConnection struct {
 	Created time.Time `json:"created"`
 	// The location where the SAML assertion is sent with a HTTP POST.
 	AssertionConsumerServiceURL string `json:"assertionConsumerServiceURL"`
+	AdditionalProperties        map[string]interface{}
 }
 
 type _SamlConnection SamlConnection
@@ -379,6 +379,11 @@ func (o SamlConnection) ToMap() (map[string]interface{}, error) {
 	toSerialize["id"] = o.Id
 	toSerialize["created"] = o.Created
 	toSerialize["assertionConsumerServiceURL"] = o.AssertionConsumerServiceURL
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -414,15 +419,30 @@ func (o *SamlConnection) UnmarshalJSON(data []byte) (err error) {
 
 	varSamlConnection := _SamlConnection{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varSamlConnection)
+	err = json.Unmarshal(data, &varSamlConnection)
 
 	if err != nil {
 		return err
 	}
 
 	*o = SamlConnection(varSamlConnection)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "enabled")
+		delete(additionalProperties, "issuer")
+		delete(additionalProperties, "signOnURL")
+		delete(additionalProperties, "signOutURL")
+		delete(additionalProperties, "metadataURL")
+		delete(additionalProperties, "audienceURI")
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "assertionConsumerServiceURL")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

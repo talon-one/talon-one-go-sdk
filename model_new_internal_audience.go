@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -27,6 +26,9 @@ type NewInternalAudience struct {
 	Sandbox *bool `json:"sandbox,omitempty"`
 	// A description of the audience.
 	Description *string `json:"description,omitempty"`
+	// A list of the IDs of the Applications that are connected to this audience.
+	SubscribedApplicationsIds []int64 `json:"subscribedApplicationsIds,omitempty"`
+	AdditionalProperties      map[string]interface{}
 }
 
 type _NewInternalAudience NewInternalAudience
@@ -137,6 +139,38 @@ func (o *NewInternalAudience) SetDescription(v string) {
 	o.Description = &v
 }
 
+// GetSubscribedApplicationsIds returns the SubscribedApplicationsIds field value if set, zero value otherwise.
+func (o *NewInternalAudience) GetSubscribedApplicationsIds() []int64 {
+	if o == nil || IsNil(o.SubscribedApplicationsIds) {
+		var ret []int64
+		return ret
+	}
+	return o.SubscribedApplicationsIds
+}
+
+// GetSubscribedApplicationsIdsOk returns a tuple with the SubscribedApplicationsIds field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *NewInternalAudience) GetSubscribedApplicationsIdsOk() ([]int64, bool) {
+	if o == nil || IsNil(o.SubscribedApplicationsIds) {
+		return nil, false
+	}
+	return o.SubscribedApplicationsIds, true
+}
+
+// HasSubscribedApplicationsIds returns a boolean if a field has been set.
+func (o *NewInternalAudience) HasSubscribedApplicationsIds() bool {
+	if o != nil && !IsNil(o.SubscribedApplicationsIds) {
+		return true
+	}
+
+	return false
+}
+
+// SetSubscribedApplicationsIds gets a reference to the given []int64 and assigns it to the SubscribedApplicationsIds field.
+func (o *NewInternalAudience) SetSubscribedApplicationsIds(v []int64) {
+	o.SubscribedApplicationsIds = v
+}
+
 func (o NewInternalAudience) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -154,6 +188,14 @@ func (o NewInternalAudience) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Description) {
 		toSerialize["description"] = o.Description
 	}
+	if !IsNil(o.SubscribedApplicationsIds) {
+		toSerialize["subscribedApplicationsIds"] = o.SubscribedApplicationsIds
+	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -181,15 +223,23 @@ func (o *NewInternalAudience) UnmarshalJSON(data []byte) (err error) {
 
 	varNewInternalAudience := _NewInternalAudience{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewInternalAudience)
+	err = json.Unmarshal(data, &varNewInternalAudience)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewInternalAudience(varNewInternalAudience)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "sandbox")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "subscribedApplicationsIds")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

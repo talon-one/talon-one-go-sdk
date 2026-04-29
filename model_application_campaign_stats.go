@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -32,7 +31,8 @@ type ApplicationCampaignStats struct {
 	// Number of expired campaigns.
 	Expired int64 `json:"expired"`
 	// Number of archived campaigns.
-	Archived int64 `json:"archived"`
+	Archived             int64 `json:"archived"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ApplicationCampaignStats ApplicationCampaignStats
@@ -220,6 +220,11 @@ func (o ApplicationCampaignStats) ToMap() (map[string]interface{}, error) {
 	toSerialize["running"] = o.Running
 	toSerialize["expired"] = o.Expired
 	toSerialize["archived"] = o.Archived
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -252,15 +257,25 @@ func (o *ApplicationCampaignStats) UnmarshalJSON(data []byte) (err error) {
 
 	varApplicationCampaignStats := _ApplicationCampaignStats{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varApplicationCampaignStats)
+	err = json.Unmarshal(data, &varApplicationCampaignStats)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ApplicationCampaignStats(varApplicationCampaignStats)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "disabled")
+		delete(additionalProperties, "staged")
+		delete(additionalProperties, "scheduled")
+		delete(additionalProperties, "running")
+		delete(additionalProperties, "expired")
+		delete(additionalProperties, "archived")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

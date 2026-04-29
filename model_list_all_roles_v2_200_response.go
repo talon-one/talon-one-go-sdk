@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &ListAllRolesV2200Response{}
 
 // ListAllRolesV2200Response struct for ListAllRolesV2200Response
 type ListAllRolesV2200Response struct {
-	TotalResultSize int64    `json:"totalResultSize"`
-	Data            []RoleV2 `json:"data"`
+	TotalResultSize      int64    `json:"totalResultSize"`
+	Data                 []RoleV2 `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ListAllRolesV2200Response ListAllRolesV2200Response
@@ -106,6 +106,11 @@ func (o ListAllRolesV2200Response) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["totalResultSize"] = o.TotalResultSize
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -134,15 +139,21 @@ func (o *ListAllRolesV2200Response) UnmarshalJSON(data []byte) (err error) {
 
 	varListAllRolesV2200Response := _ListAllRolesV2200Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varListAllRolesV2200Response)
+	err = json.Unmarshal(data, &varListAllRolesV2200Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ListAllRolesV2200Response(varListAllRolesV2200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "totalResultSize")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &RollbackReferralEffectProps{}
 // RollbackReferralEffectProps The properties specific to the \"rollbackReferral\" effect. This gets triggered whenever previously closed session is now cancelled and a referral redemption was cancelled on our internal usage limit counters.
 type RollbackReferralEffectProps struct {
 	// The referral code whose usage has been rolled back.
-	Value string `json:"value"`
+	Value                string `json:"value"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _RollbackReferralEffectProps RollbackReferralEffectProps
@@ -80,6 +80,11 @@ func (o RollbackReferralEffectProps) MarshalJSON() ([]byte, error) {
 func (o RollbackReferralEffectProps) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["value"] = o.Value
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *RollbackReferralEffectProps) UnmarshalJSON(data []byte) (err error) {
 
 	varRollbackReferralEffectProps := _RollbackReferralEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varRollbackReferralEffectProps)
+	err = json.Unmarshal(data, &varRollbackReferralEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = RollbackReferralEffectProps(varRollbackReferralEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "value")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

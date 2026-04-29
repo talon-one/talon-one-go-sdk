@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -27,7 +26,8 @@ type IntegrationHubFlowConfig struct {
 	// Maximum number of events to send in a single message to IntegrationHub.
 	MaxEventsPerMessage *int64 `json:"MaxEventsPerMessage,omitempty"`
 	// Maximum number of retries for a IntegrationHub event before it is ignored.
-	MaxRetries *int64 `json:"MaxRetries,omitempty"`
+	MaxRetries           *int64 `json:"MaxRetries,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _IntegrationHubFlowConfig IntegrationHubFlowConfig
@@ -202,6 +202,11 @@ func (o IntegrationHubFlowConfig) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.MaxRetries) {
 		toSerialize["MaxRetries"] = o.MaxRetries
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -229,15 +234,23 @@ func (o *IntegrationHubFlowConfig) UnmarshalJSON(data []byte) (err error) {
 
 	varIntegrationHubFlowConfig := _IntegrationHubFlowConfig{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varIntegrationHubFlowConfig)
+	err = json.Unmarshal(data, &varIntegrationHubFlowConfig)
 
 	if err != nil {
 		return err
 	}
 
 	*o = IntegrationHubFlowConfig(varIntegrationHubFlowConfig)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "ApiKey")
+		delete(additionalProperties, "WorkerCount")
+		delete(additionalProperties, "MaxEventsPerMessage")
+		delete(additionalProperties, "MaxRetries")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

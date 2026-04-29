@@ -22,8 +22,11 @@ type ActivateLoyaltyPoints struct {
 	// An array of transaction UUIDs used to activate specific pending point transactions.  If provided, do not include the `sessionId` parameter.
 	TransactionUUIDs []string `json:"transactionUUIDs,omitempty"`
 	// The ID of the session containing the pending point transactions to activate.  If provided, do not include the `transactionUUIDs` parameter.
-	SessionId *string `json:"sessionId,omitempty"`
+	SessionId            *string `json:"sessionId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ActivateLoyaltyPoints ActivateLoyaltyPoints
 
 // NewActivateLoyaltyPoints instantiates a new ActivateLoyaltyPoints object
 // This constructor will assign default values to properties that have it defined,
@@ -122,7 +125,34 @@ func (o ActivateLoyaltyPoints) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.SessionId) {
 		toSerialize["sessionId"] = o.SessionId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ActivateLoyaltyPoints) UnmarshalJSON(data []byte) (err error) {
+	varActivateLoyaltyPoints := _ActivateLoyaltyPoints{}
+
+	err = json.Unmarshal(data, &varActivateLoyaltyPoints)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ActivateLoyaltyPoints(varActivateLoyaltyPoints)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "transactionUUIDs")
+		delete(additionalProperties, "sessionId")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableActivateLoyaltyPoints struct {

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,9 +20,10 @@ var _ MappedNullable = &GetChanges200Response{}
 
 // GetChanges200Response struct for GetChanges200Response
 type GetChanges200Response struct {
-	TotalResultSize *int64   `json:"totalResultSize,omitempty"`
-	HasMore         *bool    `json:"hasMore,omitempty"`
-	Data            []Change `json:"data"`
+	TotalResultSize      *int64   `json:"totalResultSize,omitempty"`
+	HasMore              *bool    `json:"hasMore,omitempty"`
+	Data                 []Change `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GetChanges200Response GetChanges200Response
@@ -151,6 +151,11 @@ func (o GetChanges200Response) ToMap() (map[string]interface{}, error) {
 		toSerialize["hasMore"] = o.HasMore
 	}
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -178,15 +183,22 @@ func (o *GetChanges200Response) UnmarshalJSON(data []byte) (err error) {
 
 	varGetChanges200Response := _GetChanges200Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGetChanges200Response)
+	err = json.Unmarshal(data, &varGetChanges200Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GetChanges200Response(varGetChanges200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "totalResultSize")
+		delete(additionalProperties, "hasMore")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

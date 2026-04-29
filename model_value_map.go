@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -26,8 +25,9 @@ type ValueMap struct {
 	Id      int64      `json:"id"`
 	Created *time.Time `json:"created,omitempty"`
 	// The ID of the user who created the value map.
-	CreatedBy  *int64 `json:"createdBy,omitempty"`
-	CampaignId int64  `json:"campaignId"`
+	CreatedBy            *int64 `json:"createdBy,omitempty"`
+	CampaignId           int64  `json:"campaignId"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ValueMap ValueMap
@@ -181,6 +181,11 @@ func (o ValueMap) ToMap() (map[string]interface{}, error) {
 		toSerialize["createdBy"] = o.CreatedBy
 	}
 	toSerialize["campaignId"] = o.CampaignId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -209,15 +214,23 @@ func (o *ValueMap) UnmarshalJSON(data []byte) (err error) {
 
 	varValueMap := _ValueMap{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varValueMap)
+	err = json.Unmarshal(data, &varValueMap)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ValueMap(varValueMap)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "createdBy")
+		delete(additionalProperties, "campaignId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

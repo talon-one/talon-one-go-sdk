@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &CouponReservations{}
 // CouponReservations struct for CouponReservations
 type CouponReservations struct {
 	// List of customer integration IDs.
-	IntegrationIDs []string `json:"integrationIDs"`
+	IntegrationIDs       []string `json:"integrationIDs"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CouponReservations CouponReservations
@@ -80,6 +80,11 @@ func (o CouponReservations) MarshalJSON() ([]byte, error) {
 func (o CouponReservations) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["integrationIDs"] = o.IntegrationIDs
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *CouponReservations) UnmarshalJSON(data []byte) (err error) {
 
 	varCouponReservations := _CouponReservations{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCouponReservations)
+	err = json.Unmarshal(data, &varCouponReservations)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CouponReservations(varCouponReservations)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "integrationIDs")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

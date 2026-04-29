@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &UpdateApplicationAPIKey{}
 // UpdateApplicationAPIKey struct for UpdateApplicationAPIKey
 type UpdateApplicationAPIKey struct {
 	// A time offset in nanoseconds associated with the API key. When making a request using the API key, rule evaluation is based on a date that is calculated by adding the offset to the current date.
-	TimeOffset int64 `json:"timeOffset"`
+	TimeOffset           int64 `json:"timeOffset"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _UpdateApplicationAPIKey UpdateApplicationAPIKey
@@ -80,6 +80,11 @@ func (o UpdateApplicationAPIKey) MarshalJSON() ([]byte, error) {
 func (o UpdateApplicationAPIKey) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["timeOffset"] = o.TimeOffset
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *UpdateApplicationAPIKey) UnmarshalJSON(data []byte) (err error) {
 
 	varUpdateApplicationAPIKey := _UpdateApplicationAPIKey{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varUpdateApplicationAPIKey)
+	err = json.Unmarshal(data, &varUpdateApplicationAPIKey)
 
 	if err != nil {
 		return err
 	}
 
 	*o = UpdateApplicationAPIKey(varUpdateApplicationAPIKey)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "timeOffset")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

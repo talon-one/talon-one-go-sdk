@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,7 +20,8 @@ var _ MappedNullable = &NewPasswordEmail{}
 
 // NewPasswordEmail struct for NewPasswordEmail
 type NewPasswordEmail struct {
-	Email string `json:"email"`
+	Email                string `json:"email"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewPasswordEmail NewPasswordEmail
@@ -79,6 +79,11 @@ func (o NewPasswordEmail) MarshalJSON() ([]byte, error) {
 func (o NewPasswordEmail) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["email"] = o.Email
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -106,15 +111,20 @@ func (o *NewPasswordEmail) UnmarshalJSON(data []byte) (err error) {
 
 	varNewPasswordEmail := _NewPasswordEmail{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewPasswordEmail)
+	err = json.Unmarshal(data, &varNewPasswordEmail)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewPasswordEmail(varNewPasswordEmail)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "email")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

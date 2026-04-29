@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -31,7 +30,8 @@ type UpdateAccount struct {
 	// State of the account (active, deactivated).
 	State *string `json:"state,omitempty"`
 	// The point in time at which your current plan expires.
-	PlanExpires *time.Time `json:"planExpires,omitempty"`
+	PlanExpires          *time.Time `json:"planExpires,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _UpdateAccount UpdateAccount
@@ -220,6 +220,11 @@ func (o UpdateAccount) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.PlanExpires) {
 		toSerialize["planExpires"] = o.PlanExpires
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -248,15 +253,24 @@ func (o *UpdateAccount) UnmarshalJSON(data []byte) (err error) {
 
 	varUpdateAccount := _UpdateAccount{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varUpdateAccount)
+	err = json.Unmarshal(data, &varUpdateAccount)
 
 	if err != nil {
 		return err
 	}
 
 	*o = UpdateAccount(varUpdateAccount)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "companyName")
+		delete(additionalProperties, "billingEmail")
+		delete(additionalProperties, "state")
+		delete(additionalProperties, "planExpires")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

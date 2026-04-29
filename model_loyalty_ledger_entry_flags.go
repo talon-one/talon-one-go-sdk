@@ -21,7 +21,10 @@ var _ MappedNullable = &LoyaltyLedgerEntryFlags{}
 type LoyaltyLedgerEntryFlags struct {
 	// Set to true if the entry creates negative balance.
 	CreatesNegativeBalance *bool `json:"createsNegativeBalance,omitempty"`
+	AdditionalProperties   map[string]interface{}
 }
+
+type _LoyaltyLedgerEntryFlags LoyaltyLedgerEntryFlags
 
 // NewLoyaltyLedgerEntryFlags instantiates a new LoyaltyLedgerEntryFlags object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o LoyaltyLedgerEntryFlags) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CreatesNegativeBalance) {
 		toSerialize["createsNegativeBalance"] = o.CreatesNegativeBalance
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *LoyaltyLedgerEntryFlags) UnmarshalJSON(data []byte) (err error) {
+	varLoyaltyLedgerEntryFlags := _LoyaltyLedgerEntryFlags{}
+
+	err = json.Unmarshal(data, &varLoyaltyLedgerEntryFlags)
+
+	if err != nil {
+		return err
+	}
+
+	*o = LoyaltyLedgerEntryFlags(varLoyaltyLedgerEntryFlags)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "createsNegativeBalance")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableLoyaltyLedgerEntryFlags struct {

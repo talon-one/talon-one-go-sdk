@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -28,7 +27,8 @@ type PriceTypeReferenceDetail struct {
 	// The name of the entity that references the price type.
 	ReferencingName string `json:"referencingName"`
 	// The ID of the Application that contains the entity that references the price type.
-	ApplicationId *int64 `json:"applicationId,omitempty"`
+	ApplicationId        *int64 `json:"applicationId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PriceTypeReferenceDetail PriceTypeReferenceDetail
@@ -173,6 +173,11 @@ func (o PriceTypeReferenceDetail) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ApplicationId) {
 		toSerialize["applicationId"] = o.ApplicationId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -202,15 +207,23 @@ func (o *PriceTypeReferenceDetail) UnmarshalJSON(data []byte) (err error) {
 
 	varPriceTypeReferenceDetail := _PriceTypeReferenceDetail{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPriceTypeReferenceDetail)
+	err = json.Unmarshal(data, &varPriceTypeReferenceDetail)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PriceTypeReferenceDetail(varPriceTypeReferenceDetail)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "referencingType")
+		delete(additionalProperties, "referencingId")
+		delete(additionalProperties, "referencingName")
+		delete(additionalProperties, "applicationId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

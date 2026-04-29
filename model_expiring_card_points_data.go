@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -34,7 +33,8 @@ type ExpiringCardPointsData struct {
 	// The maximum number of customer profiles with which a card can be shared. This can be set to `0` for no limit.
 	UsersPerCardLimit int64 `json:"UsersPerCardLimit"`
 	// The integration IDs of the customer profiles linked to the card.
-	Profiles []string `json:"Profiles"`
+	Profiles             []string `json:"Profiles"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ExpiringCardPointsData ExpiringCardPointsData
@@ -248,6 +248,11 @@ func (o ExpiringCardPointsData) ToMap() (map[string]interface{}, error) {
 	toSerialize["CardIdentifier"] = o.CardIdentifier
 	toSerialize["UsersPerCardLimit"] = o.UsersPerCardLimit
 	toSerialize["Profiles"] = o.Profiles
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -281,15 +286,26 @@ func (o *ExpiringCardPointsData) UnmarshalJSON(data []byte) (err error) {
 
 	varExpiringCardPointsData := _ExpiringCardPointsData{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varExpiringCardPointsData)
+	err = json.Unmarshal(data, &varExpiringCardPointsData)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ExpiringCardPointsData(varExpiringCardPointsData)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "ExpiryDate")
+		delete(additionalProperties, "LoyaltyProgramID")
+		delete(additionalProperties, "AmountOfExpiringPoints")
+		delete(additionalProperties, "SubledgerID")
+		delete(additionalProperties, "CardIdentifier")
+		delete(additionalProperties, "UsersPerCardLimit")
+		delete(additionalProperties, "Profiles")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

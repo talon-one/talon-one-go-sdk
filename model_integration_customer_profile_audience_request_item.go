@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type IntegrationCustomerProfileAudienceRequestItem struct {
 	// The ID of this customer profile in the third-party integration.
 	ProfileIntegrationId string `json:"profileIntegrationId"`
 	// The ID of this audience in the third-party integration.
-	IntegrationId string `json:"integrationId"`
+	IntegrationId        string `json:"integrationId"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _IntegrationCustomerProfileAudienceRequestItem IntegrationCustomerProfileAudienceRequestItem
@@ -136,6 +136,11 @@ func (o IntegrationCustomerProfileAudienceRequestItem) ToMap() (map[string]inter
 	toSerialize["action"] = o.Action
 	toSerialize["profileIntegrationId"] = o.ProfileIntegrationId
 	toSerialize["integrationId"] = o.IntegrationId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -165,15 +170,22 @@ func (o *IntegrationCustomerProfileAudienceRequestItem) UnmarshalJSON(data []byt
 
 	varIntegrationCustomerProfileAudienceRequestItem := _IntegrationCustomerProfileAudienceRequestItem{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varIntegrationCustomerProfileAudienceRequestItem)
+	err = json.Unmarshal(data, &varIntegrationCustomerProfileAudienceRequestItem)
 
 	if err != nil {
 		return err
 	}
 
 	*o = IntegrationCustomerProfileAudienceRequestItem(varIntegrationCustomerProfileAudienceRequestItem)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "action")
+		delete(additionalProperties, "profileIntegrationId")
+		delete(additionalProperties, "integrationId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -64,7 +63,8 @@ type Application struct {
 	// Indicates whether the campaign staging and revisions feature is enabled for the Application.  **Important:** After this feature is enabled, it cannot be disabled.
 	EnableCampaignStateManagement *bool `json:"enableCampaignStateManagement,omitempty"`
 	// An array containing all the loyalty programs to which this application is subscribed.
-	LoyaltyPrograms []LoyaltyProgram `json:"loyaltyPrograms"`
+	LoyaltyPrograms      []LoyaltyProgram `json:"loyaltyPrograms"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Application Application
@@ -794,6 +794,11 @@ func (o Application) ToMap() (map[string]interface{}, error) {
 		toSerialize["enableCampaignStateManagement"] = o.EnableCampaignStateManagement
 	}
 	toSerialize["loyaltyPrograms"] = o.LoyaltyPrograms
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -828,15 +833,41 @@ func (o *Application) UnmarshalJSON(data []byte) (err error) {
 
 	varApplication := _Application{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varApplication)
+	err = json.Unmarshal(data, &varApplication)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Application(varApplication)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "modified")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "timezone")
+		delete(additionalProperties, "currency")
+		delete(additionalProperties, "caseSensitivity")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "limits")
+		delete(additionalProperties, "defaultDiscountScope")
+		delete(additionalProperties, "enableCascadingDiscounts")
+		delete(additionalProperties, "enableFlattenedCartItems")
+		delete(additionalProperties, "attributesSettings")
+		delete(additionalProperties, "sandbox")
+		delete(additionalProperties, "enablePartialDiscounts")
+		delete(additionalProperties, "defaultDiscountAdditionalCostPerItemScope")
+		delete(additionalProperties, "defaultEvaluationGroupId")
+		delete(additionalProperties, "defaultCartItemFilterId")
+		delete(additionalProperties, "enableCampaignStateManagement")
+		delete(additionalProperties, "loyaltyPrograms")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

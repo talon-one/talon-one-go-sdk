@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -34,7 +33,8 @@ type CustomEffectProps struct {
 	// The name of the bundle definition.
 	BundleName *string `json:"bundleName,omitempty"`
 	// The JSON payload of the custom effect.
-	Payload map[string]interface{} `json:"payload"`
+	Payload              map[string]interface{} `json:"payload"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CustomEffectProps CustomEffectProps
@@ -284,6 +284,11 @@ func (o CustomEffectProps) ToMap() (map[string]interface{}, error) {
 		toSerialize["bundleName"] = o.BundleName
 	}
 	toSerialize["payload"] = o.Payload
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -313,15 +318,26 @@ func (o *CustomEffectProps) UnmarshalJSON(data []byte) (err error) {
 
 	varCustomEffectProps := _CustomEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCustomEffectProps)
+	err = json.Unmarshal(data, &varCustomEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CustomEffectProps(varCustomEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "effectId")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "cartItemPosition")
+		delete(additionalProperties, "cartItemSubPosition")
+		delete(additionalProperties, "bundleIndex")
+		delete(additionalProperties, "bundleName")
+		delete(additionalProperties, "payload")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

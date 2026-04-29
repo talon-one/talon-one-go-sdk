@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type WebhookAuthenticationDataBasic struct {
 	// The Basic HTTP username.
 	Username string `json:"username"`
 	// The Basic HTTP password.
-	Password string `json:"password"`
+	Password             string `json:"password"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _WebhookAuthenticationDataBasic WebhookAuthenticationDataBasic
@@ -108,6 +108,11 @@ func (o WebhookAuthenticationDataBasic) ToMap() (map[string]interface{}, error) 
 	toSerialize := map[string]interface{}{}
 	toSerialize["username"] = o.Username
 	toSerialize["password"] = o.Password
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *WebhookAuthenticationDataBasic) UnmarshalJSON(data []byte) (err error) 
 
 	varWebhookAuthenticationDataBasic := _WebhookAuthenticationDataBasic{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varWebhookAuthenticationDataBasic)
+	err = json.Unmarshal(data, &varWebhookAuthenticationDataBasic)
 
 	if err != nil {
 		return err
 	}
 
 	*o = WebhookAuthenticationDataBasic(varWebhookAuthenticationDataBasic)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "username")
+		delete(additionalProperties, "password")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

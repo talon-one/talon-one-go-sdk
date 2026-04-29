@@ -19,10 +19,13 @@ var _ MappedNullable = &UpdateCustomerProfileV2409Response{}
 
 // UpdateCustomerProfileV2409Response struct for UpdateCustomerProfileV2409Response
 type UpdateCustomerProfileV2409Response struct {
-	Message    *string       `json:"message,omitempty"`
-	Errors     []interface{} `json:"errors,omitempty"`
-	StatusCode *int64        `json:"StatusCode,omitempty"`
+	Message              *string       `json:"message,omitempty"`
+	Errors               []interface{} `json:"errors,omitempty"`
+	StatusCode           *int64        `json:"StatusCode,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _UpdateCustomerProfileV2409Response UpdateCustomerProfileV2409Response
 
 // NewUpdateCustomerProfileV2409Response instantiates a new UpdateCustomerProfileV2409Response object
 // This constructor will assign default values to properties that have it defined,
@@ -156,7 +159,35 @@ func (o UpdateCustomerProfileV2409Response) ToMap() (map[string]interface{}, err
 	if !IsNil(o.StatusCode) {
 		toSerialize["StatusCode"] = o.StatusCode
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *UpdateCustomerProfileV2409Response) UnmarshalJSON(data []byte) (err error) {
+	varUpdateCustomerProfileV2409Response := _UpdateCustomerProfileV2409Response{}
+
+	err = json.Unmarshal(data, &varUpdateCustomerProfileV2409Response)
+
+	if err != nil {
+		return err
+	}
+
+	*o = UpdateCustomerProfileV2409Response(varUpdateCustomerProfileV2409Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "message")
+		delete(additionalProperties, "errors")
+		delete(additionalProperties, "StatusCode")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableUpdateCustomerProfileV2409Response struct {

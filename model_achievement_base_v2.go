@@ -45,8 +45,11 @@ type AchievementBaseV2 struct {
 	// A list containing the IDs of all applications that are subscribed to A list containing the IDs of all Applications that are connected to this achievement.
 	SubscribedApplications []int64 `json:"subscribedApplications,omitempty"`
 	// A string containing an IANA timezone descriptor.
-	Timezone *string `json:"timezone,omitempty"`
+	Timezone             *string `json:"timezone,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _AchievementBaseV2 AchievementBaseV2
 
 // NewAchievementBaseV2 instantiates a new AchievementBaseV2 object
 // This constructor will assign default values to properties that have it defined,
@@ -530,7 +533,45 @@ func (o AchievementBaseV2) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Timezone) {
 		toSerialize["timezone"] = o.Timezone
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *AchievementBaseV2) UnmarshalJSON(data []byte) (err error) {
+	varAchievementBaseV2 := _AchievementBaseV2{}
+
+	err = json.Unmarshal(data, &varAchievementBaseV2)
+
+	if err != nil {
+		return err
+	}
+
+	*o = AchievementBaseV2(varAchievementBaseV2)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "target")
+		delete(additionalProperties, "period")
+		delete(additionalProperties, "recurrencePolicy")
+		delete(additionalProperties, "activationPolicy")
+		delete(additionalProperties, "fixedStartDate")
+		delete(additionalProperties, "endDate")
+		delete(additionalProperties, "allowRollbackAfterCompletion")
+		delete(additionalProperties, "sandbox")
+		delete(additionalProperties, "subscribedApplications")
+		delete(additionalProperties, "timezone")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableAchievementBaseV2 struct {

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,7 +20,8 @@ var _ MappedNullable = &MultipleNewAudiences{}
 
 // MultipleNewAudiences struct for MultipleNewAudiences
 type MultipleNewAudiences struct {
-	Audiences []NewMultipleAudiencesItem `json:"audiences"`
+	Audiences            []NewMultipleAudiencesItem `json:"audiences"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _MultipleNewAudiences MultipleNewAudiences
@@ -79,6 +79,11 @@ func (o MultipleNewAudiences) MarshalJSON() ([]byte, error) {
 func (o MultipleNewAudiences) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["audiences"] = o.Audiences
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -106,15 +111,20 @@ func (o *MultipleNewAudiences) UnmarshalJSON(data []byte) (err error) {
 
 	varMultipleNewAudiences := _MultipleNewAudiences{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varMultipleNewAudiences)
+	err = json.Unmarshal(data, &varMultipleNewAudiences)
 
 	if err != nil {
 		return err
 	}
 
 	*o = MultipleNewAudiences(varMultipleNewAudiences)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "audiences")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

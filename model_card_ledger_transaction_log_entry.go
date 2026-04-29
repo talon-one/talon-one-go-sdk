@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -49,7 +48,8 @@ type CardLedgerTransactionLogEntry struct {
 	// Amount of loyalty points added or deducted in the transaction.
 	Amount float32 `json:"amount"`
 	// ID of the loyalty ledger entry.
-	Id int64 `json:"id"`
+	Id                   int64 `json:"id"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CardLedgerTransactionLogEntry CardLedgerTransactionLogEntry
@@ -472,6 +472,11 @@ func (o CardLedgerTransactionLogEntry) ToMap() (map[string]interface{}, error) {
 	toSerialize["subledgerId"] = o.SubledgerId
 	toSerialize["amount"] = o.Amount
 	toSerialize["id"] = o.Id
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -509,15 +514,33 @@ func (o *CardLedgerTransactionLogEntry) UnmarshalJSON(data []byte) (err error) {
 
 	varCardLedgerTransactionLogEntry := _CardLedgerTransactionLogEntry{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCardLedgerTransactionLogEntry)
+	err = json.Unmarshal(data, &varCardLedgerTransactionLogEntry)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CardLedgerTransactionLogEntry(varCardLedgerTransactionLogEntry)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "transactionUUID")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "programId")
+		delete(additionalProperties, "cardIdentifier")
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "sessionId")
+		delete(additionalProperties, "customerSessionId")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "subledgerId")
+		delete(additionalProperties, "amount")
+		delete(additionalProperties, "id")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

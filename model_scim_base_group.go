@@ -22,8 +22,11 @@ type ScimBaseGroup struct {
 	// Display name of the group (Talon.One role).
 	DisplayName *string `json:"displayName,omitempty"`
 	// List of members to assign to the new Talon.One role.
-	Members []ScimGroupMember `json:"members,omitempty"`
+	Members              []ScimGroupMember `json:"members,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ScimBaseGroup ScimBaseGroup
 
 // NewScimBaseGroup instantiates a new ScimBaseGroup object
 // This constructor will assign default values to properties that have it defined,
@@ -122,7 +125,34 @@ func (o ScimBaseGroup) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Members) {
 		toSerialize["members"] = o.Members
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ScimBaseGroup) UnmarshalJSON(data []byte) (err error) {
+	varScimBaseGroup := _ScimBaseGroup{}
+
+	err = json.Unmarshal(data, &varScimBaseGroup)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ScimBaseGroup(varScimBaseGroup)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "displayName")
+		delete(additionalProperties, "members")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableScimBaseGroup struct {

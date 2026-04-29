@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -25,7 +24,8 @@ type ExpiringPointsNotification struct {
 	// The array of expiring points.
 	Data []ExpiringPointsData `json:"Data"`
 	// The type of notification.
-	NotificationType string `json:"NotificationType"`
+	NotificationType     string `json:"NotificationType"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ExpiringPointsNotification ExpiringPointsNotification
@@ -135,6 +135,11 @@ func (o ExpiringPointsNotification) ToMap() (map[string]interface{}, error) {
 	toSerialize["TotalResultSize"] = o.TotalResultSize
 	toSerialize["Data"] = o.Data
 	toSerialize["NotificationType"] = o.NotificationType
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -164,15 +169,22 @@ func (o *ExpiringPointsNotification) UnmarshalJSON(data []byte) (err error) {
 
 	varExpiringPointsNotification := _ExpiringPointsNotification{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varExpiringPointsNotification)
+	err = json.Unmarshal(data, &varExpiringPointsNotification)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ExpiringPointsNotification(varExpiringPointsNotification)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "TotalResultSize")
+		delete(additionalProperties, "Data")
+		delete(additionalProperties, "NotificationType")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type AudienceMembership struct {
 	// The ID of the audience belonging to this entity.
 	Id int64 `json:"id"`
 	// The Name of the audience belonging to this entity.
-	Name string `json:"name"`
+	Name                 string `json:"name"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AudienceMembership AudienceMembership
@@ -108,6 +108,11 @@ func (o AudienceMembership) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["id"] = o.Id
 	toSerialize["name"] = o.Name
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *AudienceMembership) UnmarshalJSON(data []byte) (err error) {
 
 	varAudienceMembership := _AudienceMembership{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAudienceMembership)
+	err = json.Unmarshal(data, &varAudienceMembership)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AudienceMembership(varAudienceMembership)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "name")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -25,7 +24,8 @@ type LoyaltyMembership struct {
 	// The moment in which the loyalty program was joined.
 	Joined *time.Time `json:"joined,omitempty"`
 	// The ID of the loyalty program belonging to this entity.
-	LoyaltyProgramId int64 `json:"loyaltyProgramId"`
+	LoyaltyProgramId     int64 `json:"loyaltyProgramId"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _LoyaltyMembership LoyaltyMembership
@@ -118,6 +118,11 @@ func (o LoyaltyMembership) ToMap() (map[string]interface{}, error) {
 		toSerialize["joined"] = o.Joined
 	}
 	toSerialize["loyaltyProgramId"] = o.LoyaltyProgramId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -145,15 +150,21 @@ func (o *LoyaltyMembership) UnmarshalJSON(data []byte) (err error) {
 
 	varLoyaltyMembership := _LoyaltyMembership{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varLoyaltyMembership)
+	err = json.Unmarshal(data, &varLoyaltyMembership)
 
 	if err != nil {
 		return err
 	}
 
 	*o = LoyaltyMembership(varLoyaltyMembership)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "joined")
+		delete(additionalProperties, "loyaltyProgramId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

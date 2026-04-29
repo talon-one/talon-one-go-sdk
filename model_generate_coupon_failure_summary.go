@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type GenerateCouponFailureSummary struct {
 	// The ID of the event.
 	EventID int64 `json:"eventID"`
 	// The language the summary will be generated in.
-	Language *string `json:"language,omitempty"`
+	Language             *string `json:"language,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GenerateCouponFailureSummary GenerateCouponFailureSummary
@@ -117,6 +117,11 @@ func (o GenerateCouponFailureSummary) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Language) {
 		toSerialize["language"] = o.Language
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -144,15 +149,21 @@ func (o *GenerateCouponFailureSummary) UnmarshalJSON(data []byte) (err error) {
 
 	varGenerateCouponFailureSummary := _GenerateCouponFailureSummary{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGenerateCouponFailureSummary)
+	err = json.Unmarshal(data, &varGenerateCouponFailureSummary)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GenerateCouponFailureSummary(varGenerateCouponFailureSummary)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "eventID")
+		delete(additionalProperties, "language")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

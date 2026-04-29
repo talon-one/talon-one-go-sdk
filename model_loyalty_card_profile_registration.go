@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -25,7 +24,8 @@ type LoyaltyCardProfileRegistration struct {
 	// Integration ID of the customer profile linked to the card.
 	IntegrationId string `json:"integrationId"`
 	// Timestamp the customer profile was linked to the card.
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp            time.Time `json:"timestamp"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _LoyaltyCardProfileRegistration LoyaltyCardProfileRegistration
@@ -109,6 +109,11 @@ func (o LoyaltyCardProfileRegistration) ToMap() (map[string]interface{}, error) 
 	toSerialize := map[string]interface{}{}
 	toSerialize["integrationId"] = o.IntegrationId
 	toSerialize["timestamp"] = o.Timestamp
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -137,15 +142,21 @@ func (o *LoyaltyCardProfileRegistration) UnmarshalJSON(data []byte) (err error) 
 
 	varLoyaltyCardProfileRegistration := _LoyaltyCardProfileRegistration{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varLoyaltyCardProfileRegistration)
+	err = json.Unmarshal(data, &varLoyaltyCardProfileRegistration)
 
 	if err != nil {
 		return err
 	}
 
 	*o = LoyaltyCardProfileRegistration(varLoyaltyCardProfileRegistration)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "integrationId")
+		delete(additionalProperties, "timestamp")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

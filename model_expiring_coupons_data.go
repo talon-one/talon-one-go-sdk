@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -41,7 +40,8 @@ type ExpiringCouponsData struct {
 	// The ID of the batch the coupon belongs to.
 	BatchId *string `json:"BatchId,omitempty"`
 	// Custom attributes associated with this coupon.
-	Attributes map[string]interface{} `json:"Attributes"`
+	Attributes           map[string]interface{} `json:"Attributes"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ExpiringCouponsData ExpiringCouponsData
@@ -378,6 +378,11 @@ func (o ExpiringCouponsData) ToMap() (map[string]interface{}, error) {
 		toSerialize["BatchId"] = o.BatchId
 	}
 	toSerialize["Attributes"] = o.Attributes
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -409,15 +414,29 @@ func (o *ExpiringCouponsData) UnmarshalJSON(data []byte) (err error) {
 
 	varExpiringCouponsData := _ExpiringCouponsData{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varExpiringCouponsData)
+	err = json.Unmarshal(data, &varExpiringCouponsData)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ExpiringCouponsData(varExpiringCouponsData)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "CouponValue")
+		delete(additionalProperties, "CreatedDate")
+		delete(additionalProperties, "ValidFrom")
+		delete(additionalProperties, "ValidUntil")
+		delete(additionalProperties, "CampaignId")
+		delete(additionalProperties, "CustomerProfileId")
+		delete(additionalProperties, "UsageLimit")
+		delete(additionalProperties, "UsageCounter")
+		delete(additionalProperties, "BatchId")
+		delete(additionalProperties, "Attributes")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

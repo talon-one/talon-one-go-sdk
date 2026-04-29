@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type MessageLogEntries struct {
 	// The next value in the database.  **Note:** If this value is not present, it means that there are no more values in the database for this combination of request parameters.
 	NextCursor *string `json:"nextCursor,omitempty"`
 	// List of message logs.
-	Data []MessageLogEntry `json:"data"`
+	Data                 []MessageLogEntry `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _MessageLogEntries MessageLogEntries
@@ -117,6 +117,11 @@ func (o MessageLogEntries) ToMap() (map[string]interface{}, error) {
 		toSerialize["nextCursor"] = o.NextCursor
 	}
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -144,15 +149,21 @@ func (o *MessageLogEntries) UnmarshalJSON(data []byte) (err error) {
 
 	varMessageLogEntries := _MessageLogEntries{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varMessageLogEntries)
+	err = json.Unmarshal(data, &varMessageLogEntries)
 
 	if err != nil {
 		return err
 	}
 
 	*o = MessageLogEntries(varMessageLogEntries)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "nextCursor")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

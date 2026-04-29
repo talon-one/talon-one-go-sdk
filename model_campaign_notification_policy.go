@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type CampaignNotificationPolicy struct {
 	// Indicates whether batching is activated.
 	BatchingEnabled *bool `json:"batchingEnabled,omitempty"`
 	// The required size of each batch of data. This value applies only when `batchingEnabled` is `true`.
-	BatchSize *int64 `json:"batchSize,omitempty"`
+	BatchSize            *int64 `json:"batchSize,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CampaignNotificationPolicy CampaignNotificationPolicy
@@ -162,6 +162,11 @@ func (o CampaignNotificationPolicy) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.BatchSize) {
 		toSerialize["batchSize"] = o.BatchSize
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -189,15 +194,22 @@ func (o *CampaignNotificationPolicy) UnmarshalJSON(data []byte) (err error) {
 
 	varCampaignNotificationPolicy := _CampaignNotificationPolicy{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCampaignNotificationPolicy)
+	err = json.Unmarshal(data, &varCampaignNotificationPolicy)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CampaignNotificationPolicy(varCampaignNotificationPolicy)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "batchingEnabled")
+		delete(additionalProperties, "batchSize")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

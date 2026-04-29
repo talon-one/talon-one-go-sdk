@@ -42,8 +42,11 @@ type NewCustomerSessionV2 struct {
 	// Session custom identifiers that you can set limits on or use inside your rules.  For example, you can use IP addresses as identifiers to potentially identify devices and limit discounts abuse in case of customers creating multiple accounts. See the [tutorial](https://docs.talon.one/docs/dev/tutorials/using-identifiers).  **Important**: Ensure the session contains an identifier by the time you close it if: - You [create a unique identifier budget](https://docs.talon.one/docs/product/campaigns/settings/managing-campaign-budgets/#budget-types) for your campaign. - Your campaign has [coupons](https://docs.talon.one/docs/product/campaigns/coupons/coupon-page-overview). - We recommend passing an anonymized (hashed) version of the identifier value.
 	Identifiers []string `json:"identifiers,omitempty"`
 	// Use this property to set a value for the attributes of your choice. Attributes represent any information to attach to your session, like the shipping city.  You can use [built-in attributes](https://docs.talon.one/docs/dev/concepts/attributes#built-in-attributes) or [custom ones](https://docs.talon.one/docs/dev/concepts/attributes#custom-attributes). Custom attributes must be created in the Campaign Manager before you set them with this property.
-	Attributes map[string]interface{} `json:"attributes,omitempty"`
+	Attributes           map[string]interface{} `json:"attributes,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _NewCustomerSessionV2 NewCustomerSessionV2
 
 // NewNewCustomerSessionV2 instantiates a new NewCustomerSessionV2 object
 // This constructor will assign default values to properties that have it defined,
@@ -496,7 +499,44 @@ func (o NewCustomerSessionV2) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Attributes) {
 		toSerialize["attributes"] = o.Attributes
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *NewCustomerSessionV2) UnmarshalJSON(data []byte) (err error) {
+	varNewCustomerSessionV2 := _NewCustomerSessionV2{}
+
+	err = json.Unmarshal(data, &varNewCustomerSessionV2)
+
+	if err != nil {
+		return err
+	}
+
+	*o = NewCustomerSessionV2(varNewCustomerSessionV2)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "profileId")
+		delete(additionalProperties, "storeIntegrationId")
+		delete(additionalProperties, "evaluableCampaignIds")
+		delete(additionalProperties, "couponCodes")
+		delete(additionalProperties, "referralCode")
+		delete(additionalProperties, "loyaltyCards")
+		delete(additionalProperties, "state")
+		delete(additionalProperties, "cartItems")
+		delete(additionalProperties, "experimentVariantAllocations")
+		delete(additionalProperties, "additionalCosts")
+		delete(additionalProperties, "identifiers")
+		delete(additionalProperties, "attributes")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableNewCustomerSessionV2 struct {

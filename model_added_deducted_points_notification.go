@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -49,7 +48,8 @@ type AddedDeductedPointsNotification struct {
 	// The start date for loyalty points.
 	StartDate *time.Time `json:"StartDate,omitempty"`
 	// The identifier of the transaction in the loyalty ledger.
-	TransactionUUID string `json:"TransactionUUID"`
+	TransactionUUID      string `json:"TransactionUUID"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AddedDeductedPointsNotification AddedDeductedPointsNotification
@@ -463,6 +463,11 @@ func (o AddedDeductedPointsNotification) ToMap() (map[string]interface{}, error)
 		toSerialize["StartDate"] = o.StartDate
 	}
 	toSerialize["TransactionUUID"] = o.TransactionUUID
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -501,15 +506,33 @@ func (o *AddedDeductedPointsNotification) UnmarshalJSON(data []byte) (err error)
 
 	varAddedDeductedPointsNotification := _AddedDeductedPointsNotification{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAddedDeductedPointsNotification)
+	err = json.Unmarshal(data, &varAddedDeductedPointsNotification)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AddedDeductedPointsNotification(varAddedDeductedPointsNotification)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "EmployeeName")
+		delete(additionalProperties, "LoyaltyProgramID")
+		delete(additionalProperties, "NotificationType")
+		delete(additionalProperties, "ProfileIntegrationID")
+		delete(additionalProperties, "SessionIntegrationID")
+		delete(additionalProperties, "SubledgerID")
+		delete(additionalProperties, "TypeOfChange")
+		delete(additionalProperties, "UserID")
+		delete(additionalProperties, "Amount")
+		delete(additionalProperties, "ExpiryDate")
+		delete(additionalProperties, "Operation")
+		delete(additionalProperties, "Reason")
+		delete(additionalProperties, "StartDate")
+		delete(additionalProperties, "TransactionUUID")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

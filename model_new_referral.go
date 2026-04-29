@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -35,7 +34,8 @@ type NewReferral struct {
 	// An optional Integration ID of the Friend's Profile.
 	FriendProfileIntegrationId *string `json:"friendProfileIntegrationId,omitempty"`
 	// Arbitrary properties associated with this item.
-	Attributes map[string]interface{} `json:"attributes,omitempty"`
+	Attributes           map[string]interface{} `json:"attributes,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewReferral NewReferral
@@ -294,6 +294,11 @@ func (o NewReferral) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Attributes) {
 		toSerialize["attributes"] = o.Attributes
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -322,15 +327,26 @@ func (o *NewReferral) UnmarshalJSON(data []byte) (err error) {
 
 	varNewReferral := _NewReferral{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewReferral)
+	err = json.Unmarshal(data, &varNewReferral)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewReferral(varNewReferral)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "usageLimit")
+		delete(additionalProperties, "campaignId")
+		delete(additionalProperties, "advocateProfileIntegrationId")
+		delete(additionalProperties, "friendProfileIntegrationId")
+		delete(additionalProperties, "attributes")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

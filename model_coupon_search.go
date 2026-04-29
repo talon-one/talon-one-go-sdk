@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &CouponSearch{}
 // CouponSearch struct for CouponSearch
 type CouponSearch struct {
 	// Properties to match against a coupon. All provided attributes will be exactly matched against attributes.
-	Attributes map[string]interface{} `json:"attributes"`
+	Attributes           map[string]interface{} `json:"attributes"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CouponSearch CouponSearch
@@ -80,6 +80,11 @@ func (o CouponSearch) MarshalJSON() ([]byte, error) {
 func (o CouponSearch) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["attributes"] = o.Attributes
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *CouponSearch) UnmarshalJSON(data []byte) (err error) {
 
 	varCouponSearch := _CouponSearch{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCouponSearch)
+	err = json.Unmarshal(data, &varCouponSearch)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CouponSearch(varCouponSearch)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "attributes")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

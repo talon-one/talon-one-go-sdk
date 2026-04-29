@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -53,7 +52,8 @@ type Environment struct {
 	// The cart item filters belonging to the Application.
 	ApplicationCartItemFilters []ApplicationCIF `json:"applicationCartItemFilters,omitempty"`
 	// The price types that this Application can use.
-	PriceTypes []PriceType `json:"priceTypes,omitempty"`
+	PriceTypes           []PriceType `json:"priceTypes,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Environment Environment
@@ -582,6 +582,11 @@ func (o Environment) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.PriceTypes) {
 		toSerialize["priceTypes"] = o.PriceTypes
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -615,15 +620,35 @@ func (o *Environment) UnmarshalJSON(data []byte) (err error) {
 
 	varEnvironment := _Environment{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varEnvironment)
+	err = json.Unmarshal(data, &varEnvironment)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Environment(varEnvironment)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "slots")
+		delete(additionalProperties, "functions")
+		delete(additionalProperties, "templates")
+		delete(additionalProperties, "variables")
+		delete(additionalProperties, "giveawaysPools")
+		delete(additionalProperties, "loyaltyPrograms")
+		delete(additionalProperties, "achievements")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "additionalCosts")
+		delete(additionalProperties, "audiences")
+		delete(additionalProperties, "collections")
+		delete(additionalProperties, "applicationCartItemFilters")
+		delete(additionalProperties, "priceTypes")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

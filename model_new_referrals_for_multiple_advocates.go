@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -37,7 +36,8 @@ type NewReferralsForMultipleAdvocates struct {
 	// List of characters used to generate the random parts of a code. By default, the list of characters is equivalent to the `[A-Z, 0-9]` regular expression.
 	ValidCharacters []string `json:"validCharacters,omitempty"`
 	// The pattern used to generate referrals. The character `#` is a placeholder and is replaced by a random character from the `validCharacters` set.
-	ReferralPattern *string `json:"referralPattern,omitempty"`
+	ReferralPattern      *string `json:"referralPattern,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewReferralsForMultipleAdvocates NewReferralsForMultipleAdvocates
@@ -331,6 +331,11 @@ func (o NewReferralsForMultipleAdvocates) ToMap() (map[string]interface{}, error
 	if !IsNil(o.ReferralPattern) {
 		toSerialize["referralPattern"] = o.ReferralPattern
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -359,15 +364,27 @@ func (o *NewReferralsForMultipleAdvocates) UnmarshalJSON(data []byte) (err error
 
 	varNewReferralsForMultipleAdvocates := _NewReferralsForMultipleAdvocates{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewReferralsForMultipleAdvocates)
+	err = json.Unmarshal(data, &varNewReferralsForMultipleAdvocates)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewReferralsForMultipleAdvocates(varNewReferralsForMultipleAdvocates)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "usageLimit")
+		delete(additionalProperties, "campaignId")
+		delete(additionalProperties, "advocateProfileIntegrationIds")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "validCharacters")
+		delete(additionalProperties, "referralPattern")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

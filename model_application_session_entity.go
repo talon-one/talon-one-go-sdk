@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &ApplicationSessionEntity{}
 // ApplicationSessionEntity struct for ApplicationSessionEntity
 type ApplicationSessionEntity struct {
 	// The globally unique Talon.One ID of the session where this entity was created.
-	SessionId int64 `json:"sessionId"`
+	SessionId            int64 `json:"sessionId"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ApplicationSessionEntity ApplicationSessionEntity
@@ -80,6 +80,11 @@ func (o ApplicationSessionEntity) MarshalJSON() ([]byte, error) {
 func (o ApplicationSessionEntity) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["sessionId"] = o.SessionId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *ApplicationSessionEntity) UnmarshalJSON(data []byte) (err error) {
 
 	varApplicationSessionEntity := _ApplicationSessionEntity{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varApplicationSessionEntity)
+	err = json.Unmarshal(data, &varApplicationSessionEntity)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ApplicationSessionEntity(varApplicationSessionEntity)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "sessionId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

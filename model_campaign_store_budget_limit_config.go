@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -30,7 +29,8 @@ type CampaignStoreBudgetLimitConfig struct {
 	// The entity that this limit applies to.
 	Entities []string `json:"entities"`
 	// Indicates whether this limit configuration is managed via a CSV file.
-	Imported bool `json:"imported"`
+	Imported             bool `json:"imported"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CampaignStoreBudgetLimitConfig CampaignStoreBudgetLimitConfig
@@ -201,6 +201,11 @@ func (o CampaignStoreBudgetLimitConfig) ToMap() (map[string]interface{}, error) 
 	}
 	toSerialize["entities"] = o.Entities
 	toSerialize["imported"] = o.Imported
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -231,15 +236,24 @@ func (o *CampaignStoreBudgetLimitConfig) UnmarshalJSON(data []byte) (err error) 
 
 	varCampaignStoreBudgetLimitConfig := _CampaignStoreBudgetLimitConfig{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCampaignStoreBudgetLimitConfig)
+	err = json.Unmarshal(data, &varCampaignStoreBudgetLimitConfig)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CampaignStoreBudgetLimitConfig(varCampaignStoreBudgetLimitConfig)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "action")
+		delete(additionalProperties, "limit")
+		delete(additionalProperties, "period")
+		delete(additionalProperties, "entities")
+		delete(additionalProperties, "imported")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

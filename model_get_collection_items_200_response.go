@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &GetCollectionItems200Response{}
 
 // GetCollectionItems200Response struct for GetCollectionItems200Response
 type GetCollectionItems200Response struct {
-	HasMore bool             `json:"hasMore"`
-	Data    []CollectionItem `json:"data"`
+	HasMore              bool             `json:"hasMore"`
+	Data                 []CollectionItem `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GetCollectionItems200Response GetCollectionItems200Response
@@ -106,6 +106,11 @@ func (o GetCollectionItems200Response) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["hasMore"] = o.HasMore
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -134,15 +139,21 @@ func (o *GetCollectionItems200Response) UnmarshalJSON(data []byte) (err error) {
 
 	varGetCollectionItems200Response := _GetCollectionItems200Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGetCollectionItems200Response)
+	err = json.Unmarshal(data, &varGetCollectionItems200Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GetCollectionItems200Response(varGetCollectionItems200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "hasMore")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

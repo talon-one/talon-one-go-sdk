@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -27,6 +26,7 @@ type NewCatalog struct {
 	Description string `json:"description"`
 	// A list of the IDs of the applications that are subscribed to this catalog.
 	SubscribedApplicationsIds []int64 `json:"subscribedApplicationsIds,omitempty"`
+	AdditionalProperties      map[string]interface{}
 }
 
 type _NewCatalog NewCatalog
@@ -145,6 +145,11 @@ func (o NewCatalog) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.SubscribedApplicationsIds) {
 		toSerialize["subscribedApplicationsIds"] = o.SubscribedApplicationsIds
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -173,15 +178,22 @@ func (o *NewCatalog) UnmarshalJSON(data []byte) (err error) {
 
 	varNewCatalog := _NewCatalog{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewCatalog)
+	err = json.Unmarshal(data, &varNewCatalog)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewCatalog(varNewCatalog)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "subscribedApplicationsIds")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -37,7 +36,8 @@ type MCPKey struct {
 	// The MCP key is disabled (this property is set to `true`) when the user who created the key is disabled or deleted.
 	Disabled *bool `json:"disabled,omitempty"`
 	// The last time the MCP key was used.
-	LastUsed *time.Time `json:"lastUsed,omitempty"`
+	LastUsed             *time.Time `json:"lastUsed,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _MCPKey MCPKey
@@ -295,6 +295,11 @@ func (o MCPKey) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.LastUsed) {
 		toSerialize["lastUsed"] = o.LastUsed
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -327,15 +332,27 @@ func (o *MCPKey) UnmarshalJSON(data []byte) (err error) {
 
 	varMCPKey := _MCPKey{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varMCPKey)
+	err = json.Unmarshal(data, &varMCPKey)
 
 	if err != nil {
 		return err
 	}
 
 	*o = MCPKey(varMCPKey)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "createdBy")
+		delete(additionalProperties, "accountID")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "disabled")
+		delete(additionalProperties, "lastUsed")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

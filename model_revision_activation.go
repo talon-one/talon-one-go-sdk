@@ -20,8 +20,11 @@ var _ MappedNullable = &RevisionActivation{}
 
 // RevisionActivation struct for RevisionActivation
 type RevisionActivation struct {
-	ActivateAt *time.Time `json:"activateAt,omitempty"`
+	ActivateAt           *time.Time `json:"activateAt,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _RevisionActivation RevisionActivation
 
 // NewRevisionActivation instantiates a new RevisionActivation object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o RevisionActivation) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ActivateAt) {
 		toSerialize["activateAt"] = o.ActivateAt
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *RevisionActivation) UnmarshalJSON(data []byte) (err error) {
+	varRevisionActivation := _RevisionActivation{}
+
+	err = json.Unmarshal(data, &varRevisionActivation)
+
+	if err != nil {
+		return err
+	}
+
+	*o = RevisionActivation(varRevisionActivation)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "activateAt")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableRevisionActivation struct {

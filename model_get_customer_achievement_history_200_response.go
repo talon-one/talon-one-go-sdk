@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &GetCustomerAchievementHistory200Response{}
 
 // GetCustomerAchievementHistory200Response struct for GetCustomerAchievementHistory200Response
 type GetCustomerAchievementHistory200Response struct {
-	TotalResultSize int64                 `json:"totalResultSize"`
-	Data            []AchievementProgress `json:"data"`
+	TotalResultSize      int64                 `json:"totalResultSize"`
+	Data                 []AchievementProgress `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GetCustomerAchievementHistory200Response GetCustomerAchievementHistory200Response
@@ -106,6 +106,11 @@ func (o GetCustomerAchievementHistory200Response) ToMap() (map[string]interface{
 	toSerialize := map[string]interface{}{}
 	toSerialize["totalResultSize"] = o.TotalResultSize
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -134,15 +139,21 @@ func (o *GetCustomerAchievementHistory200Response) UnmarshalJSON(data []byte) (e
 
 	varGetCustomerAchievementHistory200Response := _GetCustomerAchievementHistory200Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGetCustomerAchievementHistory200Response)
+	err = json.Unmarshal(data, &varGetCustomerAchievementHistory200Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GetCustomerAchievementHistory200Response(varGetCustomerAchievementHistory200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "totalResultSize")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

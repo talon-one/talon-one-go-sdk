@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -43,7 +42,8 @@ type CollectionWithoutPayload struct {
 	// The ID of the Application that owns this entity.
 	ApplicationId *int64 `json:"applicationId,omitempty"`
 	// The ID of the campaign that owns this entity.
-	CampaignId *int64 `json:"campaignId,omitempty"`
+	CampaignId           *int64 `json:"campaignId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CollectionWithoutPayload CollectionWithoutPayload
@@ -406,6 +406,11 @@ func (o CollectionWithoutPayload) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CampaignId) {
 		toSerialize["campaignId"] = o.CampaignId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -438,15 +443,30 @@ func (o *CollectionWithoutPayload) UnmarshalJSON(data []byte) (err error) {
 
 	varCollectionWithoutPayload := _CollectionWithoutPayload{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCollectionWithoutPayload)
+	err = json.Unmarshal(data, &varCollectionWithoutPayload)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CollectionWithoutPayload(varCollectionWithoutPayload)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "modified")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "subscribedApplicationsIds")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "modifiedBy")
+		delete(additionalProperties, "createdBy")
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "campaignId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

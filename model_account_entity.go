@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &AccountEntity{}
 // AccountEntity struct for AccountEntity
 type AccountEntity struct {
 	// The ID of the account that owns this entity.
-	AccountId int64 `json:"accountId"`
+	AccountId            int64 `json:"accountId"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AccountEntity AccountEntity
@@ -80,6 +80,11 @@ func (o AccountEntity) MarshalJSON() ([]byte, error) {
 func (o AccountEntity) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["accountId"] = o.AccountId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *AccountEntity) UnmarshalJSON(data []byte) (err error) {
 
 	varAccountEntity := _AccountEntity{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAccountEntity)
+	err = json.Unmarshal(data, &varAccountEntity)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AccountEntity(varAccountEntity)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "accountId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

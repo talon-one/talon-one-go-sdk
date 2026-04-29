@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -30,7 +29,8 @@ type SetDiscountPerAdditionalCostEffectProps struct {
 	// The total monetary value of the discount.
 	Value float32 `json:"value"`
 	// The original value of the discount.
-	DesiredValue *float32 `json:"desiredValue,omitempty"`
+	DesiredValue         *float32 `json:"desiredValue,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _SetDiscountPerAdditionalCostEffectProps SetDiscountPerAdditionalCostEffectProps
@@ -201,6 +201,11 @@ func (o SetDiscountPerAdditionalCostEffectProps) ToMap() (map[string]interface{}
 	if !IsNil(o.DesiredValue) {
 		toSerialize["desiredValue"] = o.DesiredValue
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -231,15 +236,24 @@ func (o *SetDiscountPerAdditionalCostEffectProps) UnmarshalJSON(data []byte) (er
 
 	varSetDiscountPerAdditionalCostEffectProps := _SetDiscountPerAdditionalCostEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varSetDiscountPerAdditionalCostEffectProps)
+	err = json.Unmarshal(data, &varSetDiscountPerAdditionalCostEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = SetDiscountPerAdditionalCostEffectProps(varSetDiscountPerAdditionalCostEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "additionalCostId")
+		delete(additionalProperties, "additionalCost")
+		delete(additionalProperties, "value")
+		delete(additionalProperties, "desiredValue")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

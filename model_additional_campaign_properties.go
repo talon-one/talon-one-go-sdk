@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -71,7 +70,8 @@ type AdditionalCampaignProperties struct {
 	// A list of value map IDs for the campaign.
 	ValueMapsIds []int64 `json:"valueMapsIds,omitempty"`
 	// The ID of the Experiment this Campaign is part of.
-	ExperimentId *int64 `json:"experimentId,omitempty"`
+	ExperimentId         *int64 `json:"experimentId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AdditionalCampaignProperties AdditionalCampaignProperties
@@ -960,6 +960,11 @@ func (o AdditionalCampaignProperties) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ExperimentId) {
 		toSerialize["experimentId"] = o.ExperimentId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -988,15 +993,44 @@ func (o *AdditionalCampaignProperties) UnmarshalJSON(data []byte) (err error) {
 
 	varAdditionalCampaignProperties := _AdditionalCampaignProperties{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAdditionalCampaignProperties)
+	err = json.Unmarshal(data, &varAdditionalCampaignProperties)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AdditionalCampaignProperties(varAdditionalCampaignProperties)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "budgets")
+		delete(additionalProperties, "couponRedemptionCount")
+		delete(additionalProperties, "referralRedemptionCount")
+		delete(additionalProperties, "discountCount")
+		delete(additionalProperties, "discountEffectCount")
+		delete(additionalProperties, "couponCreationCount")
+		delete(additionalProperties, "customEffectCount")
+		delete(additionalProperties, "referralCreationCount")
+		delete(additionalProperties, "addFreeItemEffectCount")
+		delete(additionalProperties, "awardedGiveawaysCount")
+		delete(additionalProperties, "createdLoyaltyPointsCount")
+		delete(additionalProperties, "createdLoyaltyPointsEffectCount")
+		delete(additionalProperties, "redeemedLoyaltyPointsCount")
+		delete(additionalProperties, "redeemedLoyaltyPointsEffectCount")
+		delete(additionalProperties, "callApiEffectCount")
+		delete(additionalProperties, "reservecouponEffectCount")
+		delete(additionalProperties, "lastActivity")
+		delete(additionalProperties, "updated")
+		delete(additionalProperties, "createdBy")
+		delete(additionalProperties, "updatedBy")
+		delete(additionalProperties, "templateId")
+		delete(additionalProperties, "frontendState")
+		delete(additionalProperties, "storesImported")
+		delete(additionalProperties, "valueMapsIds")
+		delete(additionalProperties, "experimentId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

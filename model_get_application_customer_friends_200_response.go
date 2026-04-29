@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,9 +20,10 @@ var _ MappedNullable = &GetApplicationCustomerFriends200Response{}
 
 // GetApplicationCustomerFriends200Response struct for GetApplicationCustomerFriends200Response
 type GetApplicationCustomerFriends200Response struct {
-	HasMore         *bool                `json:"hasMore,omitempty"`
-	TotalResultSize *int64               `json:"totalResultSize,omitempty"`
-	Data            []ApplicationReferee `json:"data"`
+	HasMore              *bool                `json:"hasMore,omitempty"`
+	TotalResultSize      *int64               `json:"totalResultSize,omitempty"`
+	Data                 []ApplicationReferee `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GetApplicationCustomerFriends200Response GetApplicationCustomerFriends200Response
@@ -151,6 +151,11 @@ func (o GetApplicationCustomerFriends200Response) ToMap() (map[string]interface{
 		toSerialize["totalResultSize"] = o.TotalResultSize
 	}
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -178,15 +183,22 @@ func (o *GetApplicationCustomerFriends200Response) UnmarshalJSON(data []byte) (e
 
 	varGetApplicationCustomerFriends200Response := _GetApplicationCustomerFriends200Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGetApplicationCustomerFriends200Response)
+	err = json.Unmarshal(data, &varGetApplicationCustomerFriends200Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GetApplicationCustomerFriends200Response(varGetApplicationCustomerFriends200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "hasMore")
+		delete(additionalProperties, "totalResultSize")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

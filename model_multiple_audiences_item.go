@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -28,10 +27,13 @@ type MultipleAudiencesItem struct {
 	Created time.Time `json:"created"`
 	// The human-friendly display name for this audience.
 	Name string `json:"name"`
+	// A list of the IDs of the Applications that are connected to this audience.
+	SubscribedApplicationsIds []int64 `json:"subscribedApplicationsIds,omitempty"`
 	// The ID of this audience in the third-party integration.
 	IntegrationId *string `json:"integrationId,omitempty"`
 	// Indicates whether the audience is new, updated or unmodified by the request.
-	Status string `json:"status"`
+	Status               string `json:"status"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _MultipleAudiencesItem MultipleAudiencesItem
@@ -129,6 +131,38 @@ func (o *MultipleAudiencesItem) SetName(v string) {
 	o.Name = v
 }
 
+// GetSubscribedApplicationsIds returns the SubscribedApplicationsIds field value if set, zero value otherwise.
+func (o *MultipleAudiencesItem) GetSubscribedApplicationsIds() []int64 {
+	if o == nil || IsNil(o.SubscribedApplicationsIds) {
+		var ret []int64
+		return ret
+	}
+	return o.SubscribedApplicationsIds
+}
+
+// GetSubscribedApplicationsIdsOk returns a tuple with the SubscribedApplicationsIds field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *MultipleAudiencesItem) GetSubscribedApplicationsIdsOk() ([]int64, bool) {
+	if o == nil || IsNil(o.SubscribedApplicationsIds) {
+		return nil, false
+	}
+	return o.SubscribedApplicationsIds, true
+}
+
+// HasSubscribedApplicationsIds returns a boolean if a field has been set.
+func (o *MultipleAudiencesItem) HasSubscribedApplicationsIds() bool {
+	if o != nil && !IsNil(o.SubscribedApplicationsIds) {
+		return true
+	}
+
+	return false
+}
+
+// SetSubscribedApplicationsIds gets a reference to the given []int64 and assigns it to the SubscribedApplicationsIds field.
+func (o *MultipleAudiencesItem) SetSubscribedApplicationsIds(v []int64) {
+	o.SubscribedApplicationsIds = v
+}
+
 // GetIntegrationId returns the IntegrationId field value if set, zero value otherwise.
 func (o *MultipleAudiencesItem) GetIntegrationId() string {
 	if o == nil || IsNil(o.IntegrationId) {
@@ -198,10 +232,18 @@ func (o MultipleAudiencesItem) ToMap() (map[string]interface{}, error) {
 	toSerialize["id"] = o.Id
 	toSerialize["created"] = o.Created
 	toSerialize["name"] = o.Name
+	if !IsNil(o.SubscribedApplicationsIds) {
+		toSerialize["subscribedApplicationsIds"] = o.SubscribedApplicationsIds
+	}
 	if !IsNil(o.IntegrationId) {
 		toSerialize["integrationId"] = o.IntegrationId
 	}
 	toSerialize["status"] = o.Status
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -232,15 +274,25 @@ func (o *MultipleAudiencesItem) UnmarshalJSON(data []byte) (err error) {
 
 	varMultipleAudiencesItem := _MultipleAudiencesItem{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varMultipleAudiencesItem)
+	err = json.Unmarshal(data, &varMultipleAudiencesItem)
 
 	if err != nil {
 		return err
 	}
 
 	*o = MultipleAudiencesItem(varMultipleAudiencesItem)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "subscribedApplicationsIds")
+		delete(additionalProperties, "integrationId")
+		delete(additionalProperties, "status")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

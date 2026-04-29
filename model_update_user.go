@@ -31,7 +31,10 @@ type UpdateUser struct {
 	Roles []int64 `json:"roles,omitempty"`
 	// Application notifications that the user is subscribed to.
 	ApplicationNotificationSubscriptions map[string]interface{} `json:"applicationNotificationSubscriptions,omitempty"`
+	AdditionalProperties                 map[string]interface{}
 }
+
+type _UpdateUser UpdateUser
 
 // NewUpdateUser instantiates a new UpdateUser object
 // This constructor will assign default values to properties that have it defined,
@@ -270,7 +273,38 @@ func (o UpdateUser) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ApplicationNotificationSubscriptions) {
 		toSerialize["applicationNotificationSubscriptions"] = o.ApplicationNotificationSubscriptions
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *UpdateUser) UnmarshalJSON(data []byte) (err error) {
+	varUpdateUser := _UpdateUser{}
+
+	err = json.Unmarshal(data, &varUpdateUser)
+
+	if err != nil {
+		return err
+	}
+
+	*o = UpdateUser(varUpdateUser)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "state")
+		delete(additionalProperties, "isAdmin")
+		delete(additionalProperties, "policy")
+		delete(additionalProperties, "roles")
+		delete(additionalProperties, "applicationNotificationSubscriptions")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableUpdateUser struct {

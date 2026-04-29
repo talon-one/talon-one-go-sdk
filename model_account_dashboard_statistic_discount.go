@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -27,7 +26,8 @@ type AccountDashboardStatisticDiscount struct {
 	// Average discount percentage.
 	Average float32 `json:"average"`
 	// Values aggregated for the specified date.
-	Datetime time.Time `json:"datetime"`
+	Datetime             time.Time `json:"datetime"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AccountDashboardStatisticDiscount AccountDashboardStatisticDiscount
@@ -137,6 +137,11 @@ func (o AccountDashboardStatisticDiscount) ToMap() (map[string]interface{}, erro
 	toSerialize["total"] = o.Total
 	toSerialize["average"] = o.Average
 	toSerialize["datetime"] = o.Datetime
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -166,15 +171,22 @@ func (o *AccountDashboardStatisticDiscount) UnmarshalJSON(data []byte) (err erro
 
 	varAccountDashboardStatisticDiscount := _AccountDashboardStatisticDiscount{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAccountDashboardStatisticDiscount)
+	err = json.Unmarshal(data, &varAccountDashboardStatisticDiscount)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AccountDashboardStatisticDiscount(varAccountDashboardStatisticDiscount)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "total")
+		delete(additionalProperties, "average")
+		delete(additionalProperties, "datetime")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

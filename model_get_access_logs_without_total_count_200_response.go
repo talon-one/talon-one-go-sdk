@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &GetAccessLogsWithoutTotalCount200Response{}
 
 // GetAccessLogsWithoutTotalCount200Response struct for GetAccessLogsWithoutTotalCount200Response
 type GetAccessLogsWithoutTotalCount200Response struct {
-	HasMore bool             `json:"hasMore"`
-	Data    []AccessLogEntry `json:"data"`
+	HasMore              bool             `json:"hasMore"`
+	Data                 []AccessLogEntry `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GetAccessLogsWithoutTotalCount200Response GetAccessLogsWithoutTotalCount200Response
@@ -106,6 +106,11 @@ func (o GetAccessLogsWithoutTotalCount200Response) ToMap() (map[string]interface
 	toSerialize := map[string]interface{}{}
 	toSerialize["hasMore"] = o.HasMore
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -134,15 +139,21 @@ func (o *GetAccessLogsWithoutTotalCount200Response) UnmarshalJSON(data []byte) (
 
 	varGetAccessLogsWithoutTotalCount200Response := _GetAccessLogsWithoutTotalCount200Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGetAccessLogsWithoutTotalCount200Response)
+	err = json.Unmarshal(data, &varGetAccessLogsWithoutTotalCount200Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GetAccessLogsWithoutTotalCount200Response(varGetAccessLogsWithoutTotalCount200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "hasMore")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

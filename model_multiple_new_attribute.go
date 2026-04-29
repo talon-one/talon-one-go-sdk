@@ -19,8 +19,11 @@ var _ MappedNullable = &MultipleNewAttribute{}
 
 // MultipleNewAttribute struct for MultipleNewAttribute
 type MultipleNewAttribute struct {
-	Attributes []NewAttribute `json:"attributes,omitempty"`
+	Attributes           []NewAttribute `json:"attributes,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _MultipleNewAttribute MultipleNewAttribute
 
 // NewMultipleNewAttribute instantiates a new MultipleNewAttribute object
 // This constructor will assign default values to properties that have it defined,
@@ -84,7 +87,33 @@ func (o MultipleNewAttribute) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Attributes) {
 		toSerialize["attributes"] = o.Attributes
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *MultipleNewAttribute) UnmarshalJSON(data []byte) (err error) {
+	varMultipleNewAttribute := _MultipleNewAttribute{}
+
+	err = json.Unmarshal(data, &varMultipleNewAttribute)
+
+	if err != nil {
+		return err
+	}
+
+	*o = MultipleNewAttribute(varMultipleNewAttribute)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "attributes")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableMultipleNewAttribute struct {

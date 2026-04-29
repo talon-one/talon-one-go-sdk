@@ -20,8 +20,11 @@ var _ MappedNullable = &ActivateLoyaltyPointsResponse{}
 // ActivateLoyaltyPointsResponse struct for ActivateLoyaltyPointsResponse
 type ActivateLoyaltyPointsResponse struct {
 	// Updated ledger entries after activation.
-	LedgerEntries []LoyaltyLedgerEntry `json:"ledgerEntries,omitempty"`
+	LedgerEntries        []LoyaltyLedgerEntry `json:"ledgerEntries,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ActivateLoyaltyPointsResponse ActivateLoyaltyPointsResponse
 
 // NewActivateLoyaltyPointsResponse instantiates a new ActivateLoyaltyPointsResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o ActivateLoyaltyPointsResponse) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.LedgerEntries) {
 		toSerialize["ledgerEntries"] = o.LedgerEntries
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ActivateLoyaltyPointsResponse) UnmarshalJSON(data []byte) (err error) {
+	varActivateLoyaltyPointsResponse := _ActivateLoyaltyPointsResponse{}
+
+	err = json.Unmarshal(data, &varActivateLoyaltyPointsResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ActivateLoyaltyPointsResponse(varActivateLoyaltyPointsResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "ledgerEntries")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableActivateLoyaltyPointsResponse struct {

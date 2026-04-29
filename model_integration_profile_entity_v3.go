@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &IntegrationProfileEntityV3{}
 // IntegrationProfileEntityV3 struct for IntegrationProfileEntityV3
 type IntegrationProfileEntityV3 struct {
 	// ID of the customer profile set by your integration layer.  **Note:** If the customer does not yet have a known `profileId`, we recommend you use a guest `profileId`.
-	ProfileId string `json:"profileId"`
+	ProfileId            string `json:"profileId"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _IntegrationProfileEntityV3 IntegrationProfileEntityV3
@@ -80,6 +80,11 @@ func (o IntegrationProfileEntityV3) MarshalJSON() ([]byte, error) {
 func (o IntegrationProfileEntityV3) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["profileId"] = o.ProfileId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *IntegrationProfileEntityV3) UnmarshalJSON(data []byte) (err error) {
 
 	varIntegrationProfileEntityV3 := _IntegrationProfileEntityV3{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varIntegrationProfileEntityV3)
+	err = json.Unmarshal(data, &varIntegrationProfileEntityV3)
 
 	if err != nil {
 		return err
 	}
 
 	*o = IntegrationProfileEntityV3(varIntegrationProfileEntityV3)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "profileId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

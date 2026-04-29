@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &ListAchievements200Response{}
 
 // ListAchievements200Response struct for ListAchievements200Response
 type ListAchievements200Response struct {
-	HasMore *bool         `json:"hasMore,omitempty"`
-	Data    []Achievement `json:"data"`
+	HasMore              *bool         `json:"hasMore,omitempty"`
+	Data                 []Achievement `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ListAchievements200Response ListAchievements200Response
@@ -115,6 +115,11 @@ func (o ListAchievements200Response) ToMap() (map[string]interface{}, error) {
 		toSerialize["hasMore"] = o.HasMore
 	}
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -142,15 +147,21 @@ func (o *ListAchievements200Response) UnmarshalJSON(data []byte) (err error) {
 
 	varListAchievements200Response := _ListAchievements200Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varListAchievements200Response)
+	err = json.Unmarshal(data, &varListAchievements200Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ListAchievements200Response(varListAchievements200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "hasMore")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

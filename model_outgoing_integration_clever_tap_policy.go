@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type OutgoingIntegrationCleverTapPolicy struct {
 	// The CleverTap Project ID.
 	AccountId string `json:"accountId"`
 	// The CleverTap Project passcode.
-	Passcode string `json:"passcode"`
+	Passcode             string `json:"passcode"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _OutgoingIntegrationCleverTapPolicy OutgoingIntegrationCleverTapPolicy
@@ -136,6 +136,11 @@ func (o OutgoingIntegrationCleverTapPolicy) ToMap() (map[string]interface{}, err
 	toSerialize["baseUrl"] = o.BaseUrl
 	toSerialize["accountId"] = o.AccountId
 	toSerialize["passcode"] = o.Passcode
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -165,15 +170,22 @@ func (o *OutgoingIntegrationCleverTapPolicy) UnmarshalJSON(data []byte) (err err
 
 	varOutgoingIntegrationCleverTapPolicy := _OutgoingIntegrationCleverTapPolicy{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varOutgoingIntegrationCleverTapPolicy)
+	err = json.Unmarshal(data, &varOutgoingIntegrationCleverTapPolicy)
 
 	if err != nil {
 		return err
 	}
 
 	*o = OutgoingIntegrationCleverTapPolicy(varOutgoingIntegrationCleverTapPolicy)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "baseUrl")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "passcode")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

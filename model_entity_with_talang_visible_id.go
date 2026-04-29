@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -25,7 +24,8 @@ type EntityWithTalangVisibleID struct {
 	// Unique ID for this entity.
 	Id int64 `json:"id"`
 	// The exact moment this entity was created.
-	Created time.Time `json:"created"`
+	Created              time.Time `json:"created"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _EntityWithTalangVisibleID EntityWithTalangVisibleID
@@ -109,6 +109,11 @@ func (o EntityWithTalangVisibleID) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["id"] = o.Id
 	toSerialize["created"] = o.Created
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -137,15 +142,21 @@ func (o *EntityWithTalangVisibleID) UnmarshalJSON(data []byte) (err error) {
 
 	varEntityWithTalangVisibleID := _EntityWithTalangVisibleID{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varEntityWithTalangVisibleID)
+	err = json.Unmarshal(data, &varEntityWithTalangVisibleID)
 
 	if err != nil {
 		return err
 	}
 
 	*o = EntityWithTalangVisibleID(varEntityWithTalangVisibleID)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

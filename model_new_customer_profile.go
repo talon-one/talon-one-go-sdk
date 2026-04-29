@@ -20,8 +20,11 @@ var _ MappedNullable = &NewCustomerProfile{}
 // NewCustomerProfile struct for NewCustomerProfile
 type NewCustomerProfile struct {
 	// Arbitrary properties associated with this item.
-	Attributes map[string]interface{} `json:"attributes,omitempty"`
+	Attributes           map[string]interface{} `json:"attributes,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _NewCustomerProfile NewCustomerProfile
 
 // NewNewCustomerProfile instantiates a new NewCustomerProfile object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o NewCustomerProfile) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Attributes) {
 		toSerialize["attributes"] = o.Attributes
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *NewCustomerProfile) UnmarshalJSON(data []byte) (err error) {
+	varNewCustomerProfile := _NewCustomerProfile{}
+
+	err = json.Unmarshal(data, &varNewCustomerProfile)
+
+	if err != nil {
+		return err
+	}
+
+	*o = NewCustomerProfile(varNewCustomerProfile)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "attributes")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableNewCustomerProfile struct {

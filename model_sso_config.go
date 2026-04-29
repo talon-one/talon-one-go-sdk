@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type SSOConfig struct {
 	// An indication of whether single sign-on is enforced for the account. When enforced, users cannot use their email and password to sign in to Talon.One. It is not possible to change this to `false` after it is set to `true`.
 	Enforced bool `json:"enforced"`
 	// Assertion Consumer Service (ACS) URL for setting up a new SAML connection with an identity provider like Okta or Microsoft Entra ID.
-	NewAcsUrl *string `json:"newAcsUrl,omitempty"`
+	NewAcsUrl            *string `json:"newAcsUrl,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _SSOConfig SSOConfig
@@ -117,6 +117,11 @@ func (o SSOConfig) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.NewAcsUrl) {
 		toSerialize["newAcsUrl"] = o.NewAcsUrl
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -144,15 +149,21 @@ func (o *SSOConfig) UnmarshalJSON(data []byte) (err error) {
 
 	varSSOConfig := _SSOConfig{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varSSOConfig)
+	err = json.Unmarshal(data, &varSSOConfig)
 
 	if err != nil {
 		return err
 	}
 
 	*o = SSOConfig(varSSOConfig)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "enforced")
+		delete(additionalProperties, "newAcsUrl")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

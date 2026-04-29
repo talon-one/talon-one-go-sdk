@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -29,7 +28,8 @@ type CouponsNotificationPolicy struct {
 	// Indicates whether to include all generated coupons. If `false`, only the `batchId` of the generated coupons is included.
 	IncludeData *bool `json:"includeData,omitempty"`
 	// The required size of each batch of data. This value applies only when `batchingEnabled` is `true`.
-	BatchSize *int64 `json:"batchSize,omitempty"`
+	BatchSize            *int64 `json:"batchSize,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CouponsNotificationPolicy CouponsNotificationPolicy
@@ -226,6 +226,11 @@ func (o CouponsNotificationPolicy) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.BatchSize) {
 		toSerialize["batchSize"] = o.BatchSize
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -254,15 +259,24 @@ func (o *CouponsNotificationPolicy) UnmarshalJSON(data []byte) (err error) {
 
 	varCouponsNotificationPolicy := _CouponsNotificationPolicy{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCouponsNotificationPolicy)
+	err = json.Unmarshal(data, &varCouponsNotificationPolicy)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CouponsNotificationPolicy(varCouponsNotificationPolicy)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "scopes")
+		delete(additionalProperties, "batchingEnabled")
+		delete(additionalProperties, "includeData")
+		delete(additionalProperties, "batchSize")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

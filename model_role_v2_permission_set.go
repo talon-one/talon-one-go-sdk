@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type RoleV2PermissionSet struct {
 	// Name of the permission set.
 	Name string `json:"name"`
 	// List of logical operations in the permission set. Each logical operation must be shown under the `x-permission` tag on an endpoint level.
-	LogicalOperations []string `json:"logicalOperations"`
+	LogicalOperations    []string `json:"logicalOperations"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _RoleV2PermissionSet RoleV2PermissionSet
@@ -108,6 +108,11 @@ func (o RoleV2PermissionSet) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["name"] = o.Name
 	toSerialize["logicalOperations"] = o.LogicalOperations
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *RoleV2PermissionSet) UnmarshalJSON(data []byte) (err error) {
 
 	varRoleV2PermissionSet := _RoleV2PermissionSet{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varRoleV2PermissionSet)
+	err = json.Unmarshal(data, &varRoleV2PermissionSet)
 
 	if err != nil {
 		return err
 	}
 
 	*o = RoleV2PermissionSet(varRoleV2PermissionSet)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "logicalOperations")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

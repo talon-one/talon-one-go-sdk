@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type CampaignEvaluationTreeChangedMessage struct {
 	// The total size of the result set.
 	TotalResultSize int64 `json:"TotalResultSize"`
 	// The array of changes.
-	Data []ApplicationNotification `json:"Data,omitempty"`
+	Data                 []ApplicationNotification `json:"Data,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CampaignEvaluationTreeChangedMessage CampaignEvaluationTreeChangedMessage
@@ -145,6 +145,11 @@ func (o CampaignEvaluationTreeChangedMessage) ToMap() (map[string]interface{}, e
 	if !IsNil(o.Data) {
 		toSerialize["Data"] = o.Data
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -173,15 +178,22 @@ func (o *CampaignEvaluationTreeChangedMessage) UnmarshalJSON(data []byte) (err e
 
 	varCampaignEvaluationTreeChangedMessage := _CampaignEvaluationTreeChangedMessage{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCampaignEvaluationTreeChangedMessage)
+	err = json.Unmarshal(data, &varCampaignEvaluationTreeChangedMessage)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CampaignEvaluationTreeChangedMessage(varCampaignEvaluationTreeChangedMessage)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "NotificationType")
+		delete(additionalProperties, "TotalResultSize")
+		delete(additionalProperties, "Data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

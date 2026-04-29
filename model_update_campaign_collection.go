@@ -20,8 +20,11 @@ var _ MappedNullable = &UpdateCampaignCollection{}
 // UpdateCampaignCollection struct for UpdateCampaignCollection
 type UpdateCampaignCollection struct {
 	// A short description of the purpose of this collection.
-	Description *string `json:"description,omitempty"`
+	Description          *string `json:"description,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _UpdateCampaignCollection UpdateCampaignCollection
 
 // NewUpdateCampaignCollection instantiates a new UpdateCampaignCollection object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o UpdateCampaignCollection) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Description) {
 		toSerialize["description"] = o.Description
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *UpdateCampaignCollection) UnmarshalJSON(data []byte) (err error) {
+	varUpdateCampaignCollection := _UpdateCampaignCollection{}
+
+	err = json.Unmarshal(data, &varUpdateCampaignCollection)
+
+	if err != nil {
+		return err
+	}
+
+	*o = UpdateCampaignCollection(varUpdateCampaignCollection)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "description")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableUpdateCampaignCollection struct {

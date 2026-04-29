@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -71,6 +70,7 @@ type CampaignAnalytics struct {
 	DeductedLoyaltyPoints float32 `json:"deductedLoyaltyPoints"`
 	// Number of deducted loyalty points in the campaign since it began.
 	TotalDeductedLoyaltyPoints float32 `json:"totalDeductedLoyaltyPoints"`
+	AdditionalProperties       map[string]interface{}
 }
 
 type _CampaignAnalytics CampaignAnalytics
@@ -752,6 +752,11 @@ func (o CampaignAnalytics) ToMap() (map[string]interface{}, error) {
 	toSerialize["totalAddedLoyaltyPoints"] = o.TotalAddedLoyaltyPoints
 	toSerialize["deductedLoyaltyPoints"] = o.DeductedLoyaltyPoints
 	toSerialize["totalDeductedLoyaltyPoints"] = o.TotalDeductedLoyaltyPoints
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -803,15 +808,44 @@ func (o *CampaignAnalytics) UnmarshalJSON(data []byte) (err error) {
 
 	varCampaignAnalytics := _CampaignAnalytics{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCampaignAnalytics)
+	err = json.Unmarshal(data, &varCampaignAnalytics)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CampaignAnalytics(varCampaignAnalytics)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "date")
+		delete(additionalProperties, "campaignRevenue")
+		delete(additionalProperties, "totalCampaignRevenue")
+		delete(additionalProperties, "campaignRefund")
+		delete(additionalProperties, "totalCampaignRefund")
+		delete(additionalProperties, "campaignDiscountCosts")
+		delete(additionalProperties, "totalCampaignDiscountCosts")
+		delete(additionalProperties, "campaignRefundedDiscounts")
+		delete(additionalProperties, "totalCampaignRefundedDiscounts")
+		delete(additionalProperties, "campaignFreeItems")
+		delete(additionalProperties, "totalCampaignFreeItems")
+		delete(additionalProperties, "couponRedemptions")
+		delete(additionalProperties, "totalCouponRedemptions")
+		delete(additionalProperties, "couponRolledbackRedemptions")
+		delete(additionalProperties, "totalCouponRolledbackRedemptions")
+		delete(additionalProperties, "referralRedemptions")
+		delete(additionalProperties, "totalReferralRedemptions")
+		delete(additionalProperties, "couponsCreated")
+		delete(additionalProperties, "totalCouponsCreated")
+		delete(additionalProperties, "referralsCreated")
+		delete(additionalProperties, "totalReferralsCreated")
+		delete(additionalProperties, "addedLoyaltyPoints")
+		delete(additionalProperties, "totalAddedLoyaltyPoints")
+		delete(additionalProperties, "deductedLoyaltyPoints")
+		delete(additionalProperties, "totalDeductedLoyaltyPoints")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

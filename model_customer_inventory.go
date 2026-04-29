@@ -23,10 +23,13 @@ type CustomerInventory struct {
 	Loyalty   *Loyalty            `json:"loyalty,omitempty"`
 	Referrals []InventoryReferral `json:"referrals,omitempty"`
 	// The coupons reserved by this profile. This array includes hard and soft reservations.
-	Coupons      []InventoryCoupon                   `json:"coupons,omitempty"`
-	Giveaways    []Giveaway                          `json:"giveaways,omitempty"`
-	Achievements []AchievementProgressWithDefinition `json:"achievements,omitempty"`
+	Coupons              []InventoryCoupon                   `json:"coupons,omitempty"`
+	Giveaways            []Giveaway                          `json:"giveaways,omitempty"`
+	Achievements         []AchievementProgressWithDefinition `json:"achievements,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _CustomerInventory CustomerInventory
 
 // NewCustomerInventory instantiates a new CustomerInventory object
 // This constructor will assign default values to properties that have it defined,
@@ -265,7 +268,38 @@ func (o CustomerInventory) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Achievements) {
 		toSerialize["achievements"] = o.Achievements
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *CustomerInventory) UnmarshalJSON(data []byte) (err error) {
+	varCustomerInventory := _CustomerInventory{}
+
+	err = json.Unmarshal(data, &varCustomerInventory)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CustomerInventory(varCustomerInventory)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "profile")
+		delete(additionalProperties, "loyalty")
+		delete(additionalProperties, "referrals")
+		delete(additionalProperties, "coupons")
+		delete(additionalProperties, "giveaways")
+		delete(additionalProperties, "achievements")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableCustomerInventory struct {

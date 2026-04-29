@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -28,7 +27,8 @@ type CatalogRule struct {
 	// A Talang expression that will be evaluated in the context of the given event.
 	Condition []interface{} `json:"condition"`
 	// An array of effectful Talang expressions in arrays that will be evaluated when a rule matches.
-	Effects []map[string]interface{} `json:"effects"`
+	Effects              []map[string]interface{} `json:"effects"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CatalogRule CatalogRule
@@ -173,6 +173,11 @@ func (o CatalogRule) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["condition"] = o.Condition
 	toSerialize["effects"] = o.Effects
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -202,15 +207,23 @@ func (o *CatalogRule) UnmarshalJSON(data []byte) (err error) {
 
 	varCatalogRule := _CatalogRule{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCatalogRule)
+	err = json.Unmarshal(data, &varCatalogRule)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CatalogRule(varCatalogRule)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "bindings")
+		delete(additionalProperties, "condition")
+		delete(additionalProperties, "effects")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

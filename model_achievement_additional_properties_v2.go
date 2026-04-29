@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -28,7 +27,8 @@ type AchievementAdditionalPropertiesV2 struct {
 	// Indicates if a customer has made progress in the achievement.
 	HasProgress *bool `json:"hasProgress,omitempty"`
 	// The status of the achievement.
-	Status *string `json:"status,omitempty"`
+	Status               *string `json:"status,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AchievementAdditionalPropertiesV2 AchievementAdditionalPropertiesV2
@@ -191,6 +191,11 @@ func (o AchievementAdditionalPropertiesV2) ToMap() (map[string]interface{}, erro
 	if !IsNil(o.Status) {
 		toSerialize["status"] = o.Status
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -218,15 +223,23 @@ func (o *AchievementAdditionalPropertiesV2) UnmarshalJSON(data []byte) (err erro
 
 	varAchievementAdditionalPropertiesV2 := _AchievementAdditionalPropertiesV2{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAchievementAdditionalPropertiesV2)
+	err = json.Unmarshal(data, &varAchievementAdditionalPropertiesV2)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AchievementAdditionalPropertiesV2(varAchievementAdditionalPropertiesV2)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "userId")
+		delete(additionalProperties, "createdBy")
+		delete(additionalProperties, "hasProgress")
+		delete(additionalProperties, "status")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

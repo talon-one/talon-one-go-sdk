@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &CampaignActivationRequest{}
 // CampaignActivationRequest struct for CampaignActivationRequest
 type CampaignActivationRequest struct {
 	// The list of IDs of the users who will receive the activation request.
-	UserIds []int64 `json:"userIds"`
+	UserIds              []int64 `json:"userIds"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CampaignActivationRequest CampaignActivationRequest
@@ -80,6 +80,11 @@ func (o CampaignActivationRequest) MarshalJSON() ([]byte, error) {
 func (o CampaignActivationRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["userIds"] = o.UserIds
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *CampaignActivationRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varCampaignActivationRequest := _CampaignActivationRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCampaignActivationRequest)
+	err = json.Unmarshal(data, &varCampaignActivationRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CampaignActivationRequest(varCampaignActivationRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "userIds")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

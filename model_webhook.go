@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -49,7 +48,8 @@ type Webhook struct {
 	// Enables or disables webhook from showing in the Rule Builder.
 	Enabled bool `json:"enabled"`
 	// The ID of the credential that this webhook is using.
-	AuthenticationId *int64 `json:"authenticationId,omitempty"`
+	AuthenticationId     *int64 `json:"authenticationId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Webhook Webhook
@@ -472,6 +472,11 @@ func (o Webhook) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.AuthenticationId) {
 		toSerialize["authenticationId"] = o.AuthenticationId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -509,15 +514,33 @@ func (o *Webhook) UnmarshalJSON(data []byte) (err error) {
 
 	varWebhook := _Webhook{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varWebhook)
+	err = json.Unmarshal(data, &varWebhook)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Webhook(varWebhook)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "modified")
+		delete(additionalProperties, "applicationIds")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "draft")
+		delete(additionalProperties, "verb")
+		delete(additionalProperties, "url")
+		delete(additionalProperties, "headers")
+		delete(additionalProperties, "payload")
+		delete(additionalProperties, "params")
+		delete(additionalProperties, "enabled")
+		delete(additionalProperties, "authenticationId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

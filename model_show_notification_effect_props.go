@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type ShowNotificationEffectProps struct {
 	// Title of the notification.
 	Title string `json:"title"`
 	// Body of the notification.
-	Body string `json:"body"`
+	Body                 string `json:"body"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ShowNotificationEffectProps ShowNotificationEffectProps
@@ -136,6 +136,11 @@ func (o ShowNotificationEffectProps) ToMap() (map[string]interface{}, error) {
 	toSerialize["notificationType"] = o.NotificationType
 	toSerialize["title"] = o.Title
 	toSerialize["body"] = o.Body
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -165,15 +170,22 @@ func (o *ShowNotificationEffectProps) UnmarshalJSON(data []byte) (err error) {
 
 	varShowNotificationEffectProps := _ShowNotificationEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varShowNotificationEffectProps)
+	err = json.Unmarshal(data, &varShowNotificationEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ShowNotificationEffectProps(varShowNotificationEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "notificationType")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "body")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

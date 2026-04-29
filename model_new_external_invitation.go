@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type NewExternalInvitation struct {
 	// List of user groups in the external identity provider.  If there are roles in Talon.One whose names match these user groups, those roles will be automatically assigned to the user upon invitation.
 	UserGroups []string `json:"userGroups,omitempty"`
 	// Email address of the user.
-	Email string `json:"email"`
+	Email                string `json:"email"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewExternalInvitation NewExternalInvitation
@@ -154,6 +154,11 @@ func (o NewExternalInvitation) ToMap() (map[string]interface{}, error) {
 		toSerialize["userGroups"] = o.UserGroups
 	}
 	toSerialize["email"] = o.Email
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -181,15 +186,22 @@ func (o *NewExternalInvitation) UnmarshalJSON(data []byte) (err error) {
 
 	varNewExternalInvitation := _NewExternalInvitation{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewExternalInvitation)
+	err = json.Unmarshal(data, &varNewExternalInvitation)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewExternalInvitation(varNewExternalInvitation)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "userGroups")
+		delete(additionalProperties, "email")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

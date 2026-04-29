@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -25,7 +24,8 @@ type MessageLogRequest struct {
 	// Timestamp when the request was made.
 	CreatedAt time.Time `json:"createdAt"`
 	// Raw request data.
-	Request string `json:"request"`
+	Request              string `json:"request"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _MessageLogRequest MessageLogRequest
@@ -109,6 +109,11 @@ func (o MessageLogRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["createdAt"] = o.CreatedAt
 	toSerialize["request"] = o.Request
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -137,15 +142,21 @@ func (o *MessageLogRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varMessageLogRequest := _MessageLogRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varMessageLogRequest)
+	err = json.Unmarshal(data, &varMessageLogRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = MessageLogRequest(varMessageLogRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "createdAt")
+		delete(additionalProperties, "request")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

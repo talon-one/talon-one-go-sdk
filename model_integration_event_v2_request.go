@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -34,7 +33,8 @@ type IntegrationEventV2Request struct {
 	// Extends the response with the chosen data entities. Use this property to get as much data back as needed from one request instead of sending extra requests to other endpoints.
 	ResponseContent []string `json:"responseContent,omitempty"`
 	// Identifiers of the loyalty cards used during this event.
-	LoyaltyCards []string `json:"loyaltyCards,omitempty"`
+	LoyaltyCards         []string `json:"loyaltyCards,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _IntegrationEventV2Request IntegrationEventV2Request
@@ -302,6 +302,11 @@ func (o IntegrationEventV2Request) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.LoyaltyCards) {
 		toSerialize["loyaltyCards"] = o.LoyaltyCards
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -329,15 +334,26 @@ func (o *IntegrationEventV2Request) UnmarshalJSON(data []byte) (err error) {
 
 	varIntegrationEventV2Request := _IntegrationEventV2Request{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varIntegrationEventV2Request)
+	err = json.Unmarshal(data, &varIntegrationEventV2Request)
 
 	if err != nil {
 		return err
 	}
 
 	*o = IntegrationEventV2Request(varIntegrationEventV2Request)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "profileId")
+		delete(additionalProperties, "storeIntegrationId")
+		delete(additionalProperties, "evaluableCampaignIds")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "responseContent")
+		delete(additionalProperties, "loyaltyCards")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

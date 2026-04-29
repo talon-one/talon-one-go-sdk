@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &GetApplicationEventsWithoutTotalCount200Response{}
 
 // GetApplicationEventsWithoutTotalCount200Response struct for GetApplicationEventsWithoutTotalCount200Response
 type GetApplicationEventsWithoutTotalCount200Response struct {
-	HasMore bool               `json:"hasMore"`
-	Data    []ApplicationEvent `json:"data"`
+	HasMore              bool               `json:"hasMore"`
+	Data                 []ApplicationEvent `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GetApplicationEventsWithoutTotalCount200Response GetApplicationEventsWithoutTotalCount200Response
@@ -106,6 +106,11 @@ func (o GetApplicationEventsWithoutTotalCount200Response) ToMap() (map[string]in
 	toSerialize := map[string]interface{}{}
 	toSerialize["hasMore"] = o.HasMore
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -134,15 +139,21 @@ func (o *GetApplicationEventsWithoutTotalCount200Response) UnmarshalJSON(data []
 
 	varGetApplicationEventsWithoutTotalCount200Response := _GetApplicationEventsWithoutTotalCount200Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGetApplicationEventsWithoutTotalCount200Response)
+	err = json.Unmarshal(data, &varGetApplicationEventsWithoutTotalCount200Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GetApplicationEventsWithoutTotalCount200Response(varGetApplicationEventsWithoutTotalCount200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "hasMore")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

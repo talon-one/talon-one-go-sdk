@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -25,7 +24,8 @@ type ApplicationApiHealth struct {
 	// One-word summary of the health of the API connection of an application. Possible values are: - `OK`: The Application has received only successful API requests in the last 5 minutes. - `WARNING`: The Application received at least one failed request in the last 5 minutes. - `ERROR`: More than 50% of received requests failed. - `CRITICAL`: All received requests failed. - `NONE`: During the last 5 minutes, the Application hasn't recorded any integration API requests.
 	Summary string `json:"summary"`
 	// time of last request relevant to the API health test.
-	LastUsed time.Time `json:"lastUsed"`
+	LastUsed             time.Time `json:"lastUsed"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ApplicationApiHealth ApplicationApiHealth
@@ -109,6 +109,11 @@ func (o ApplicationApiHealth) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["summary"] = o.Summary
 	toSerialize["lastUsed"] = o.LastUsed
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -137,15 +142,21 @@ func (o *ApplicationApiHealth) UnmarshalJSON(data []byte) (err error) {
 
 	varApplicationApiHealth := _ApplicationApiHealth{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varApplicationApiHealth)
+	err = json.Unmarshal(data, &varApplicationApiHealth)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ApplicationApiHealth(varApplicationApiHealth)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "summary")
+		delete(additionalProperties, "lastUsed")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

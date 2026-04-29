@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type EmbeddedDashboardConfiguration struct {
 	// The ID of the workspace that contains dashboards.
 	WorkspaceId string `json:"workspaceId"`
 	// The ID of the dashboard that contains metrics.
-	DashboardId string `json:"dashboardId"`
+	DashboardId          string `json:"dashboardId"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _EmbeddedDashboardConfiguration EmbeddedDashboardConfiguration
@@ -108,6 +108,11 @@ func (o EmbeddedDashboardConfiguration) ToMap() (map[string]interface{}, error) 
 	toSerialize := map[string]interface{}{}
 	toSerialize["workspaceId"] = o.WorkspaceId
 	toSerialize["dashboardId"] = o.DashboardId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *EmbeddedDashboardConfiguration) UnmarshalJSON(data []byte) (err error) 
 
 	varEmbeddedDashboardConfiguration := _EmbeddedDashboardConfiguration{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varEmbeddedDashboardConfiguration)
+	err = json.Unmarshal(data, &varEmbeddedDashboardConfiguration)
 
 	if err != nil {
 		return err
 	}
 
 	*o = EmbeddedDashboardConfiguration(varEmbeddedDashboardConfiguration)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "workspaceId")
+		delete(additionalProperties, "dashboardId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

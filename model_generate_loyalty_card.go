@@ -24,8 +24,11 @@ type GenerateLoyaltyCard struct {
 	// Integration IDs of the customer profiles linked to the card.
 	CustomerProfileIds []string `json:"customerProfileIds,omitempty"`
 	// The identifier of the loyalty card, which must match the regular expression `^[A-Za-z0-9._%+@-]+$`.
-	CardIdentifier *string `json:"cardIdentifier,omitempty" validate:"regexp=^[A-Za-z0-9._%+@-]+$"`
+	CardIdentifier       *string `json:"cardIdentifier,omitempty" validate:"regexp=^[A-Za-z0-9._%+@-]+$"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _GenerateLoyaltyCard GenerateLoyaltyCard
 
 // NewGenerateLoyaltyCard instantiates a new GenerateLoyaltyCard object
 // This constructor will assign default values to properties that have it defined,
@@ -163,7 +166,35 @@ func (o GenerateLoyaltyCard) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CardIdentifier) {
 		toSerialize["cardIdentifier"] = o.CardIdentifier
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *GenerateLoyaltyCard) UnmarshalJSON(data []byte) (err error) {
+	varGenerateLoyaltyCard := _GenerateLoyaltyCard{}
+
+	err = json.Unmarshal(data, &varGenerateLoyaltyCard)
+
+	if err != nil {
+		return err
+	}
+
+	*o = GenerateLoyaltyCard(varGenerateLoyaltyCard)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "customerProfileIds")
+		delete(additionalProperties, "cardIdentifier")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableGenerateLoyaltyCard struct {

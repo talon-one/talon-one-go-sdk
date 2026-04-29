@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &CreateReferralsForMultipleAdvocates201Response{}
 
 // CreateReferralsForMultipleAdvocates201Response struct for CreateReferralsForMultipleAdvocates201Response
 type CreateReferralsForMultipleAdvocates201Response struct {
-	TotalResultSize int64      `json:"totalResultSize"`
-	Data            []Referral `json:"data"`
+	TotalResultSize      int64      `json:"totalResultSize"`
+	Data                 []Referral `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CreateReferralsForMultipleAdvocates201Response CreateReferralsForMultipleAdvocates201Response
@@ -106,6 +106,11 @@ func (o CreateReferralsForMultipleAdvocates201Response) ToMap() (map[string]inte
 	toSerialize := map[string]interface{}{}
 	toSerialize["totalResultSize"] = o.TotalResultSize
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -134,15 +139,21 @@ func (o *CreateReferralsForMultipleAdvocates201Response) UnmarshalJSON(data []by
 
 	varCreateReferralsForMultipleAdvocates201Response := _CreateReferralsForMultipleAdvocates201Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCreateReferralsForMultipleAdvocates201Response)
+	err = json.Unmarshal(data, &varCreateReferralsForMultipleAdvocates201Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CreateReferralsForMultipleAdvocates201Response(varCreateReferralsForMultipleAdvocates201Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "totalResultSize")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -30,7 +29,8 @@ type NewEvent struct {
 	// Arbitrary additional JSON data associated with the event.
 	Attributes map[string]interface{} `json:"attributes"`
 	// The ID of the session that this event occurred in.
-	SessionId string `json:"sessionId"`
+	SessionId            string `json:"sessionId"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewEvent NewEvent
@@ -210,6 +210,11 @@ func (o NewEvent) ToMap() (map[string]interface{}, error) {
 	toSerialize["type"] = o.Type
 	toSerialize["attributes"] = o.Attributes
 	toSerialize["sessionId"] = o.SessionId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -239,15 +244,24 @@ func (o *NewEvent) UnmarshalJSON(data []byte) (err error) {
 
 	varNewEvent := _NewEvent{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewEvent)
+	err = json.Unmarshal(data, &varNewEvent)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewEvent(varNewEvent)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "profileId")
+		delete(additionalProperties, "storeIntegrationId")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "sessionId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -30,7 +29,8 @@ type ExperimentVerdict struct {
 	// Your confidence in this overall verdict, from 0 to 100.
 	AiConfidenceLevel string `json:"aiConfidenceLevel"`
 	// A short, actionable recommendation based on the findings. If inconclusive, suggest running the test longer. If there is a clear winner, recommend promoting it.
-	Recommendation string `json:"recommendation"`
+	Recommendation       string `json:"recommendation"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ExperimentVerdict ExperimentVerdict
@@ -192,6 +192,11 @@ func (o ExperimentVerdict) ToMap() (map[string]interface{}, error) {
 	toSerialize["keyFindings"] = o.KeyFindings
 	toSerialize["aiConfidenceLevel"] = o.AiConfidenceLevel
 	toSerialize["recommendation"] = o.Recommendation
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -223,15 +228,24 @@ func (o *ExperimentVerdict) UnmarshalJSON(data []byte) (err error) {
 
 	varExperimentVerdict := _ExperimentVerdict{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varExperimentVerdict)
+	err = json.Unmarshal(data, &varExperimentVerdict)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ExperimentVerdict(varExperimentVerdict)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "winnerVariantName")
+		delete(additionalProperties, "verdictSummary")
+		delete(additionalProperties, "keyFindings")
+		delete(additionalProperties, "aiConfidenceLevel")
+		delete(additionalProperties, "recommendation")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

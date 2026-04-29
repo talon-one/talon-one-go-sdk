@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -28,6 +27,8 @@ type NewAudience struct {
 	Sandbox *bool `json:"sandbox,omitempty"`
 	// A description of the audience.
 	Description *string `json:"description,omitempty"`
+	// A list of the IDs of the Applications that are connected to this audience.
+	SubscribedApplicationsIds []int64 `json:"subscribedApplicationsIds,omitempty"`
 	// The Talon.One-supported [3rd-party platform](https://docs.talon.one/docs/dev/technology-partners/overview) that this audience was created in.  For example, `mParticle`, `Segment`, `Shopify`, `Braze`, or `Iterable`.  **Note:** If you do not integrate with any of these platforms, do not use this property.
 	Integration *string `json:"integration,omitempty"`
 	// The ID of this audience in the third-party integration.  **Note:** To create an audience that doesn't come from a 3rd party platform, do not use this property.
@@ -35,7 +36,8 @@ type NewAudience struct {
 	// Determines if this audience is a 3rd party audience or not.
 	CreatedIn3rdParty *bool `json:"createdIn3rdParty,omitempty"`
 	// The last time that the audience memberships changed.
-	LastUpdate *time.Time `json:"lastUpdate,omitempty"`
+	LastUpdate           *time.Time `json:"lastUpdate,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewAudience NewAudience
@@ -144,6 +146,38 @@ func (o *NewAudience) HasDescription() bool {
 // SetDescription gets a reference to the given string and assigns it to the Description field.
 func (o *NewAudience) SetDescription(v string) {
 	o.Description = &v
+}
+
+// GetSubscribedApplicationsIds returns the SubscribedApplicationsIds field value if set, zero value otherwise.
+func (o *NewAudience) GetSubscribedApplicationsIds() []int64 {
+	if o == nil || IsNil(o.SubscribedApplicationsIds) {
+		var ret []int64
+		return ret
+	}
+	return o.SubscribedApplicationsIds
+}
+
+// GetSubscribedApplicationsIdsOk returns a tuple with the SubscribedApplicationsIds field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *NewAudience) GetSubscribedApplicationsIdsOk() ([]int64, bool) {
+	if o == nil || IsNil(o.SubscribedApplicationsIds) {
+		return nil, false
+	}
+	return o.SubscribedApplicationsIds, true
+}
+
+// HasSubscribedApplicationsIds returns a boolean if a field has been set.
+func (o *NewAudience) HasSubscribedApplicationsIds() bool {
+	if o != nil && !IsNil(o.SubscribedApplicationsIds) {
+		return true
+	}
+
+	return false
+}
+
+// SetSubscribedApplicationsIds gets a reference to the given []int64 and assigns it to the SubscribedApplicationsIds field.
+func (o *NewAudience) SetSubscribedApplicationsIds(v []int64) {
+	o.SubscribedApplicationsIds = v
 }
 
 // GetIntegration returns the Integration field value if set, zero value otherwise.
@@ -291,6 +325,9 @@ func (o NewAudience) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Description) {
 		toSerialize["description"] = o.Description
 	}
+	if !IsNil(o.SubscribedApplicationsIds) {
+		toSerialize["subscribedApplicationsIds"] = o.SubscribedApplicationsIds
+	}
 	if !IsNil(o.Integration) {
 		toSerialize["integration"] = o.Integration
 	}
@@ -303,6 +340,11 @@ func (o NewAudience) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.LastUpdate) {
 		toSerialize["lastUpdate"] = o.LastUpdate
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -330,15 +372,27 @@ func (o *NewAudience) UnmarshalJSON(data []byte) (err error) {
 
 	varNewAudience := _NewAudience{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewAudience)
+	err = json.Unmarshal(data, &varNewAudience)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewAudience(varNewAudience)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "sandbox")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "subscribedApplicationsIds")
+		delete(additionalProperties, "integration")
+		delete(additionalProperties, "integrationId")
+		delete(additionalProperties, "createdIn3rdParty")
+		delete(additionalProperties, "lastUpdate")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -37,7 +36,8 @@ type SecondaryDeployment struct {
 	// Timestamp when the deployment failed.
 	FailedAt *time.Time `json:"failedAt,omitempty"`
 	// Timestamp when the deployment was deleted.
-	DeletedAt *time.Time `json:"deletedAt,omitempty"`
+	DeletedAt            *time.Time `json:"deletedAt,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _SecondaryDeployment SecondaryDeployment
@@ -304,6 +304,11 @@ func (o SecondaryDeployment) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.DeletedAt) {
 		toSerialize["deletedAt"] = o.DeletedAt
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -335,15 +340,27 @@ func (o *SecondaryDeployment) UnmarshalJSON(data []byte) (err error) {
 
 	varSecondaryDeployment := _SecondaryDeployment{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varSecondaryDeployment)
+	err = json.Unmarshal(data, &varSecondaryDeployment)
 
 	if err != nil {
 		return err
 	}
 
 	*o = SecondaryDeployment(varSecondaryDeployment)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "userId")
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "createdAt")
+		delete(additionalProperties, "activeAt")
+		delete(additionalProperties, "failedAt")
+		delete(additionalProperties, "deletedAt")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

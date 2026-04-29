@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,11 +20,12 @@ var _ MappedNullable = &IntegrationState{}
 
 // IntegrationState Contains all state that might interest application integration plugins. This is the response type returned by all of the Integration API operations.
 type IntegrationState struct {
-	Session CustomerSession `json:"session"`
-	Profile CustomerProfile `json:"profile"`
-	Event   Event           `json:"event"`
-	Loyalty *Loyalty        `json:"loyalty,omitempty"`
-	Coupon  *Coupon         `json:"coupon,omitempty"`
+	Session              CustomerSession `json:"session"`
+	Profile              CustomerProfile `json:"profile"`
+	Event                Event           `json:"event"`
+	Loyalty              *Loyalty        `json:"loyalty,omitempty"`
+	Coupon               *Coupon         `json:"coupon,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _IntegrationState IntegrationState
@@ -205,6 +205,11 @@ func (o IntegrationState) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Coupon) {
 		toSerialize["coupon"] = o.Coupon
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -234,15 +239,24 @@ func (o *IntegrationState) UnmarshalJSON(data []byte) (err error) {
 
 	varIntegrationState := _IntegrationState{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varIntegrationState)
+	err = json.Unmarshal(data, &varIntegrationState)
 
 	if err != nil {
 		return err
 	}
 
 	*o = IntegrationState(varIntegrationState)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "session")
+		delete(additionalProperties, "profile")
+		delete(additionalProperties, "event")
+		delete(additionalProperties, "loyalty")
+		delete(additionalProperties, "coupon")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type InfluencingCampaignDetails struct {
 	// Identifier of the campaign that influenced the final price.
 	CampaignId int64 `json:"campaignId"`
 	// Discount value applied by the campaign.
-	DiscountValue float32 `json:"discountValue"`
+	DiscountValue        float32 `json:"discountValue"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _InfluencingCampaignDetails InfluencingCampaignDetails
@@ -108,6 +108,11 @@ func (o InfluencingCampaignDetails) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["campaignId"] = o.CampaignId
 	toSerialize["discountValue"] = o.DiscountValue
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *InfluencingCampaignDetails) UnmarshalJSON(data []byte) (err error) {
 
 	varInfluencingCampaignDetails := _InfluencingCampaignDetails{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varInfluencingCampaignDetails)
+	err = json.Unmarshal(data, &varInfluencingCampaignDetails)
 
 	if err != nil {
 		return err
 	}
 
 	*o = InfluencingCampaignDetails(varInfluencingCampaignDetails)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "campaignId")
+		delete(additionalProperties, "discountValue")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

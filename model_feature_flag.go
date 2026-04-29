@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -29,7 +28,8 @@ type FeatureFlag struct {
 	// The time this entity was last created.
 	Created *time.Time `json:"created,omitempty"`
 	// The time this entity was last modified.
-	Modified *time.Time `json:"modified,omitempty"`
+	Modified             *time.Time `json:"modified,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _FeatureFlag FeatureFlag
@@ -183,6 +183,11 @@ func (o FeatureFlag) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Modified) {
 		toSerialize["modified"] = o.Modified
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -211,15 +216,23 @@ func (o *FeatureFlag) UnmarshalJSON(data []byte) (err error) {
 
 	varFeatureFlag := _FeatureFlag{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varFeatureFlag)
+	err = json.Unmarshal(data, &varFeatureFlag)
 
 	if err != nil {
 		return err
 	}
 
 	*o = FeatureFlag(varFeatureFlag)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "value")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "modified")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

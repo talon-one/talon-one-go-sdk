@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &NewAppWideCouponDeletionJob{}
 
 // NewAppWideCouponDeletionJob struct for NewAppWideCouponDeletionJob
 type NewAppWideCouponDeletionJob struct {
-	Filters     CouponDeletionFilters `json:"filters"`
-	Campaignids []int64               `json:"campaignids"`
+	Filters              CouponDeletionFilters `json:"filters"`
+	Campaignids          []int64               `json:"campaignids"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewAppWideCouponDeletionJob NewAppWideCouponDeletionJob
@@ -106,6 +106,11 @@ func (o NewAppWideCouponDeletionJob) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["filters"] = o.Filters
 	toSerialize["campaignids"] = o.Campaignids
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -134,15 +139,21 @@ func (o *NewAppWideCouponDeletionJob) UnmarshalJSON(data []byte) (err error) {
 
 	varNewAppWideCouponDeletionJob := _NewAppWideCouponDeletionJob{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewAppWideCouponDeletionJob)
+	err = json.Unmarshal(data, &varNewAppWideCouponDeletionJob)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewAppWideCouponDeletionJob(varNewAppWideCouponDeletionJob)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "filters")
+		delete(additionalProperties, "campaignids")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

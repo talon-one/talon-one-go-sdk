@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -50,7 +49,8 @@ type LimitCounter struct {
 	// The highest possible value for this limit counter.
 	Limit float32 `json:"limit"`
 	// The current value for this limit counter.
-	Counter float32 `json:"counter"`
+	Counter              float32 `json:"counter"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _LimitCounter LimitCounter
@@ -544,6 +544,11 @@ func (o LimitCounter) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["limit"] = o.Limit
 	toSerialize["counter"] = o.Counter
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -577,15 +582,34 @@ func (o *LimitCounter) UnmarshalJSON(data []byte) (err error) {
 
 	varLimitCounter := _LimitCounter{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varLimitCounter)
+	err = json.Unmarshal(data, &varLimitCounter)
 
 	if err != nil {
 		return err
 	}
 
 	*o = LimitCounter(varLimitCounter)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "campaignId")
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "action")
+		delete(additionalProperties, "profileId")
+		delete(additionalProperties, "profileIntegrationId")
+		delete(additionalProperties, "couponId")
+		delete(additionalProperties, "couponValue")
+		delete(additionalProperties, "referralId")
+		delete(additionalProperties, "referralValue")
+		delete(additionalProperties, "identifier")
+		delete(additionalProperties, "period")
+		delete(additionalProperties, "limit")
+		delete(additionalProperties, "counter")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

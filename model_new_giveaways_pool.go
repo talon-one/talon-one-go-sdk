@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -28,7 +27,8 @@ type NewGiveawaysPool struct {
 	// A list of the IDs of the applications that this giveaways pool is enabled for.
 	SubscribedApplicationsIds []int64 `json:"subscribedApplicationsIds,omitempty"`
 	// Indicates if this program is a live or sandbox program. Programs of a given type can only be connected to Applications of the same type.
-	Sandbox bool `json:"sandbox"`
+	Sandbox              bool `json:"sandbox"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewGiveawaysPool NewGiveawaysPool
@@ -182,6 +182,11 @@ func (o NewGiveawaysPool) ToMap() (map[string]interface{}, error) {
 		toSerialize["subscribedApplicationsIds"] = o.SubscribedApplicationsIds
 	}
 	toSerialize["sandbox"] = o.Sandbox
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -210,15 +215,23 @@ func (o *NewGiveawaysPool) UnmarshalJSON(data []byte) (err error) {
 
 	varNewGiveawaysPool := _NewGiveawaysPool{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewGiveawaysPool)
+	err = json.Unmarshal(data, &varNewGiveawaysPool)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewGiveawaysPool(varNewGiveawaysPool)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "subscribedApplicationsIds")
+		delete(additionalProperties, "sandbox")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

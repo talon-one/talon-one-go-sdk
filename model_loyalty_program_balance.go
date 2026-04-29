@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -37,6 +36,7 @@ type LoyaltyProgramBalance struct {
 	TentativePendingBalance *float32 `json:"tentativePendingBalance,omitempty"`
 	// The tentative negative balance after all additions and deductions from the current customer session are applied to `negativeBalance`. When the session is closed, the tentative effects are applied and `negativeBalance` is updated to this value.  **Note:** Tentative balances are specific to the current session and do not take into account other open sessions for the given customer.
 	TentativeNegativeBalance *float32 `json:"tentativeNegativeBalance,omitempty"`
+	AdditionalProperties     map[string]interface{}
 }
 
 type _LoyaltyProgramBalance LoyaltyProgramBalance
@@ -303,6 +303,11 @@ func (o LoyaltyProgramBalance) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.TentativeNegativeBalance) {
 		toSerialize["tentativeNegativeBalance"] = o.TentativeNegativeBalance
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -334,15 +339,27 @@ func (o *LoyaltyProgramBalance) UnmarshalJSON(data []byte) (err error) {
 
 	varLoyaltyProgramBalance := _LoyaltyProgramBalance{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varLoyaltyProgramBalance)
+	err = json.Unmarshal(data, &varLoyaltyProgramBalance)
 
 	if err != nil {
 		return err
 	}
 
 	*o = LoyaltyProgramBalance(varLoyaltyProgramBalance)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "currentBalance")
+		delete(additionalProperties, "pendingBalance")
+		delete(additionalProperties, "negativeBalance")
+		delete(additionalProperties, "expiredBalance")
+		delete(additionalProperties, "spentBalance")
+		delete(additionalProperties, "tentativeCurrentBalance")
+		delete(additionalProperties, "tentativePendingBalance")
+		delete(additionalProperties, "tentativeNegativeBalance")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

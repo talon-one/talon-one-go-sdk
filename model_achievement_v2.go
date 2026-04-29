@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -59,7 +58,8 @@ type AchievementV2 struct {
 	// Indicates if a customer has made progress in the achievement.
 	HasProgress *bool `json:"hasProgress,omitempty"`
 	// The status of the achievement.
-	Status *string `json:"status,omitempty"`
+	Status               *string `json:"status,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AchievementV2 AchievementV2
@@ -648,6 +648,11 @@ func (o AchievementV2) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Status) {
 		toSerialize["status"] = o.Status
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -686,15 +691,38 @@ func (o *AchievementV2) UnmarshalJSON(data []byte) (err error) {
 
 	varAchievementV2 := _AchievementV2{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAchievementV2)
+	err = json.Unmarshal(data, &varAchievementV2)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AchievementV2(varAchievementV2)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "target")
+		delete(additionalProperties, "period")
+		delete(additionalProperties, "recurrencePolicy")
+		delete(additionalProperties, "activationPolicy")
+		delete(additionalProperties, "fixedStartDate")
+		delete(additionalProperties, "endDate")
+		delete(additionalProperties, "allowRollbackAfterCompletion")
+		delete(additionalProperties, "sandbox")
+		delete(additionalProperties, "subscribedApplications")
+		delete(additionalProperties, "timezone")
+		delete(additionalProperties, "userId")
+		delete(additionalProperties, "createdBy")
+		delete(additionalProperties, "hasProgress")
+		delete(additionalProperties, "status")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

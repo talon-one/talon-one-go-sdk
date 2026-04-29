@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -25,7 +24,8 @@ type CreateMCPKey struct {
 	// Name for the MCP key.
 	Name string `json:"name"`
 	// The date the MCP key expires.
-	ExpiryDate time.Time `json:"expiryDate"`
+	ExpiryDate           time.Time `json:"expiryDate"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CreateMCPKey CreateMCPKey
@@ -109,6 +109,11 @@ func (o CreateMCPKey) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["name"] = o.Name
 	toSerialize["expiryDate"] = o.ExpiryDate
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -137,15 +142,21 @@ func (o *CreateMCPKey) UnmarshalJSON(data []byte) (err error) {
 
 	varCreateMCPKey := _CreateMCPKey{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCreateMCPKey)
+	err = json.Unmarshal(data, &varCreateMCPKey)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CreateMCPKey(varCreateMCPKey)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "expiryDate")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

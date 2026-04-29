@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -29,7 +28,8 @@ type DeleteCouponsData struct {
 	CampaignID      int64  `json:"CampaignID"`
 	TotalResultSize int64  `json:"TotalResultSize"`
 	// The type of the notification
-	NotificationType string `json:"NotificationType"`
+	NotificationType     string `json:"NotificationType"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _DeleteCouponsData DeleteCouponsData
@@ -269,6 +269,11 @@ func (o DeleteCouponsData) ToMap() (map[string]interface{}, error) {
 	toSerialize["CampaignID"] = o.CampaignID
 	toSerialize["TotalResultSize"] = o.TotalResultSize
 	toSerialize["NotificationType"] = o.NotificationType
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -303,15 +308,27 @@ func (o *DeleteCouponsData) UnmarshalJSON(data []byte) (err error) {
 
 	varDeleteCouponsData := _DeleteCouponsData{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varDeleteCouponsData)
+	err = json.Unmarshal(data, &varDeleteCouponsData)
 
 	if err != nil {
 		return err
 	}
 
 	*o = DeleteCouponsData(varDeleteCouponsData)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "TypeOfChange")
+		delete(additionalProperties, "Operation")
+		delete(additionalProperties, "EmployeeName")
+		delete(additionalProperties, "BatchID")
+		delete(additionalProperties, "ApplicationID")
+		delete(additionalProperties, "CampaignID")
+		delete(additionalProperties, "TotalResultSize")
+		delete(additionalProperties, "NotificationType")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

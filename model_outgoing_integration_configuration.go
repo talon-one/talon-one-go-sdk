@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -28,7 +27,8 @@ type OutgoingIntegrationConfiguration struct {
 	// The outgoing integration type ID.
 	TypeId int64 `json:"typeId"`
 	// The outgoing integration policy specific to each integration type.
-	Policy map[string]interface{} `json:"policy"`
+	Policy               map[string]interface{} `json:"policy"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _OutgoingIntegrationConfiguration OutgoingIntegrationConfiguration
@@ -164,6 +164,11 @@ func (o OutgoingIntegrationConfiguration) ToMap() (map[string]interface{}, error
 	toSerialize["accountId"] = o.AccountId
 	toSerialize["typeId"] = o.TypeId
 	toSerialize["policy"] = o.Policy
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -194,15 +199,23 @@ func (o *OutgoingIntegrationConfiguration) UnmarshalJSON(data []byte) (err error
 
 	varOutgoingIntegrationConfiguration := _OutgoingIntegrationConfiguration{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varOutgoingIntegrationConfiguration)
+	err = json.Unmarshal(data, &varOutgoingIntegrationConfiguration)
 
 	if err != nil {
 		return err
 	}
 
 	*o = OutgoingIntegrationConfiguration(varOutgoingIntegrationConfiguration)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "typeId")
+		delete(additionalProperties, "policy")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

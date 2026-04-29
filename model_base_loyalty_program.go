@@ -48,8 +48,11 @@ type BaseLoyaltyProgram struct {
 	TiersDowngradePolicy *string                `json:"tiersDowngradePolicy,omitempty"`
 	CardCodeSettings     *CodeGeneratorSettings `json:"cardCodeSettings,omitempty"`
 	// The policy that defines the rollback of points in case of a partially returned, cancelled, or reopened [customer session](https://docs.talon.one/docs/dev/concepts/entities/customer-sessions). - `only_pending`: Only pending points can be rolled back. - `within_balance`: Available active points can be rolled back if there aren't enough pending points. The active balance of the customer cannot be negative. - `unlimited`: Allows negative balance without any limit.
-	ReturnPolicy *string `json:"returnPolicy,omitempty"`
+	ReturnPolicy         *string `json:"returnPolicy,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _BaseLoyaltyProgram BaseLoyaltyProgram
 
 // NewBaseLoyaltyProgram instantiates a new BaseLoyaltyProgram object
 // This constructor will assign default values to properties that have it defined,
@@ -603,7 +606,47 @@ func (o BaseLoyaltyProgram) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ReturnPolicy) {
 		toSerialize["returnPolicy"] = o.ReturnPolicy
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *BaseLoyaltyProgram) UnmarshalJSON(data []byte) (err error) {
+	varBaseLoyaltyProgram := _BaseLoyaltyProgram{}
+
+	err = json.Unmarshal(data, &varBaseLoyaltyProgram)
+
+	if err != nil {
+		return err
+	}
+
+	*o = BaseLoyaltyProgram(varBaseLoyaltyProgram)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "subscribedApplications")
+		delete(additionalProperties, "defaultValidity")
+		delete(additionalProperties, "defaultPending")
+		delete(additionalProperties, "allowSubledger")
+		delete(additionalProperties, "usersPerCardLimit")
+		delete(additionalProperties, "sandbox")
+		delete(additionalProperties, "programJoinPolicy")
+		delete(additionalProperties, "tiersExpirationPolicy")
+		delete(additionalProperties, "tierCycleStartDate")
+		delete(additionalProperties, "tiersExpireIn")
+		delete(additionalProperties, "tiersDowngradePolicy")
+		delete(additionalProperties, "cardCodeSettings")
+		delete(additionalProperties, "returnPolicy")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableBaseLoyaltyProgram struct {

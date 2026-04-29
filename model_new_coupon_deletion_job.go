@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,7 +20,8 @@ var _ MappedNullable = &NewCouponDeletionJob{}
 
 // NewCouponDeletionJob struct for NewCouponDeletionJob
 type NewCouponDeletionJob struct {
-	Filters CouponDeletionFilters `json:"filters"`
+	Filters              CouponDeletionFilters `json:"filters"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewCouponDeletionJob NewCouponDeletionJob
@@ -79,6 +79,11 @@ func (o NewCouponDeletionJob) MarshalJSON() ([]byte, error) {
 func (o NewCouponDeletionJob) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["filters"] = o.Filters
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -106,15 +111,20 @@ func (o *NewCouponDeletionJob) UnmarshalJSON(data []byte) (err error) {
 
 	varNewCouponDeletionJob := _NewCouponDeletionJob{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewCouponDeletionJob)
+	err = json.Unmarshal(data, &varNewCouponDeletionJob)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewCouponDeletionJob(varNewCouponDeletionJob)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "filters")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -43,7 +42,8 @@ type CustomerProfile struct {
 	// Timestamp of the most recent event received from this customer. This field is updated on calls that trigger the Rule Engine and that are not [dry requests](https://docs.talon.one/docs/dev/integration-api/dry-requests/#overlay).  For example, [reserving a coupon](https://docs.talon.one/integration-api#tag/Coupons/operation/createCouponReservation) for a customer doesn't impact this field.
 	LastActivity time.Time `json:"lastActivity"`
 	// An indicator of whether the customer is part of a sandbox or live Application. See the [docs](https://docs.talon.one/docs/product/applications/overview#application-environments).
-	Sandbox *bool `json:"sandbox,omitempty"`
+	Sandbox              *bool `json:"sandbox,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CustomerProfile CustomerProfile
@@ -397,6 +397,11 @@ func (o CustomerProfile) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Sandbox) {
 		toSerialize["sandbox"] = o.Sandbox
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -430,15 +435,30 @@ func (o *CustomerProfile) UnmarshalJSON(data []byte) (err error) {
 
 	varCustomerProfile := _CustomerProfile{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCustomerProfile)
+	err = json.Unmarshal(data, &varCustomerProfile)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CustomerProfile(varCustomerProfile)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "integrationId")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "closedSessions")
+		delete(additionalProperties, "totalSales")
+		delete(additionalProperties, "loyaltyMemberships")
+		delete(additionalProperties, "audienceMemberships")
+		delete(additionalProperties, "lastActivity")
+		delete(additionalProperties, "sandbox")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

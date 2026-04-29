@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -66,7 +65,8 @@ type CouponCreationJob struct {
 	// The number of times an attempt to create a chunk of coupons was made during the processing of the job.
 	ChunkExecutionCount int64 `json:"chunkExecutionCount"`
 	// The number of coupons that will be created in a single transactions. Coupons will be created in chunks until arriving at the requested amount.
-	ChunkSize *int64 `json:"chunkSize,omitempty"`
+	ChunkSize            *int64 `json:"chunkSize,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CouponCreationJob CouponCreationJob
@@ -763,6 +763,11 @@ func (o CouponCreationJob) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ChunkSize) {
 		toSerialize["chunkSize"] = o.ChunkSize
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -805,15 +810,42 @@ func (o *CouponCreationJob) UnmarshalJSON(data []byte) (err error) {
 
 	varCouponCreationJob := _CouponCreationJob{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCouponCreationJob)
+	err = json.Unmarshal(data, &varCouponCreationJob)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CouponCreationJob(varCouponCreationJob)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "campaignId")
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "usageLimit")
+		delete(additionalProperties, "discountLimit")
+		delete(additionalProperties, "reservationLimit")
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "numberOfCoupons")
+		delete(additionalProperties, "couponSettings")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "isReservationMandatory")
+		delete(additionalProperties, "batchId")
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "createdAmount")
+		delete(additionalProperties, "failCount")
+		delete(additionalProperties, "errors")
+		delete(additionalProperties, "createdBy")
+		delete(additionalProperties, "communicated")
+		delete(additionalProperties, "chunkExecutionCount")
+		delete(additionalProperties, "chunkSize")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

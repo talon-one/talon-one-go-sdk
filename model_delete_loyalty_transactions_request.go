@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type DeleteLoyaltyTransactionsRequest struct {
 	// `AllSubledgers` deletes all transactions for the specified customer profile from all ledgers in the loyalty program.  `SelectedSubledgers` deletes all transactions for the specified customer profile only from the given ledgers in the loyalty program.
 	Scope string `json:"scope"`
 	// The IDs of the ledgers from which to delete the customer's transactions. This parameter is required if the `scope` is set to `SelectedSubledgers`.  To specify the main ledger, provide an empty string (\"\").
-	SubledgerIds []string `json:"subledgerIds,omitempty"`
+	SubledgerIds         []string `json:"subledgerIds,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _DeleteLoyaltyTransactionsRequest DeleteLoyaltyTransactionsRequest
@@ -118,6 +118,11 @@ func (o DeleteLoyaltyTransactionsRequest) ToMap() (map[string]interface{}, error
 	if o.SubledgerIds != nil {
 		toSerialize["subledgerIds"] = o.SubledgerIds
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -145,15 +150,21 @@ func (o *DeleteLoyaltyTransactionsRequest) UnmarshalJSON(data []byte) (err error
 
 	varDeleteLoyaltyTransactionsRequest := _DeleteLoyaltyTransactionsRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varDeleteLoyaltyTransactionsRequest)
+	err = json.Unmarshal(data, &varDeleteLoyaltyTransactionsRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = DeleteLoyaltyTransactionsRequest(varDeleteLoyaltyTransactionsRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "scope")
+		delete(additionalProperties, "subledgerIds")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

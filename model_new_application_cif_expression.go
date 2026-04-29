@@ -24,8 +24,11 @@ type NewApplicationCIFExpression struct {
 	// The ID of the user who created the Application cart item filter.
 	CreatedBy *int64 `json:"createdBy,omitempty"`
 	// Arbitrary additional JSON data associated with the Application cart item filter.
-	Expression []interface{} `json:"expression,omitempty"`
+	Expression           []interface{} `json:"expression,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _NewApplicationCIFExpression NewApplicationCIFExpression
 
 // NewNewApplicationCIFExpression instantiates a new NewApplicationCIFExpression object
 // This constructor will assign default values to properties that have it defined,
@@ -159,7 +162,35 @@ func (o NewApplicationCIFExpression) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Expression) {
 		toSerialize["expression"] = o.Expression
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *NewApplicationCIFExpression) UnmarshalJSON(data []byte) (err error) {
+	varNewApplicationCIFExpression := _NewApplicationCIFExpression{}
+
+	err = json.Unmarshal(data, &varNewApplicationCIFExpression)
+
+	if err != nil {
+		return err
+	}
+
+	*o = NewApplicationCIFExpression(varNewApplicationCIFExpression)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "cartItemFilterId")
+		delete(additionalProperties, "createdBy")
+		delete(additionalProperties, "expression")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableNewApplicationCIFExpression struct {

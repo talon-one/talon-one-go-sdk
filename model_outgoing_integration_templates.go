@@ -20,8 +20,11 @@ var _ MappedNullable = &OutgoingIntegrationTemplates{}
 // OutgoingIntegrationTemplates struct for OutgoingIntegrationTemplates
 type OutgoingIntegrationTemplates struct {
 	// The list of templates for a given outgoing integration type.
-	Data []OutgoingIntegrationTemplate `json:"data,omitempty"`
+	Data                 []OutgoingIntegrationTemplate `json:"data,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _OutgoingIntegrationTemplates OutgoingIntegrationTemplates
 
 // NewOutgoingIntegrationTemplates instantiates a new OutgoingIntegrationTemplates object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o OutgoingIntegrationTemplates) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Data) {
 		toSerialize["data"] = o.Data
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *OutgoingIntegrationTemplates) UnmarshalJSON(data []byte) (err error) {
+	varOutgoingIntegrationTemplates := _OutgoingIntegrationTemplates{}
+
+	err = json.Unmarshal(data, &varOutgoingIntegrationTemplates)
+
+	if err != nil {
+		return err
+	}
+
+	*o = OutgoingIntegrationTemplates(varOutgoingIntegrationTemplates)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableOutgoingIntegrationTemplates struct {

@@ -30,7 +30,10 @@ type PriceDetail struct {
 	AdjustmentEffectiveFrom *time.Time `json:"adjustmentEffectiveFrom,omitempty"`
 	// The date and time until which the price adjustment is effective.
 	AdjustmentEffectiveUntil *time.Time `json:"adjustmentEffectiveUntil,omitempty"`
+	AdditionalProperties     map[string]interface{}
 }
+
+type _PriceDetail PriceDetail
 
 // NewPriceDetail instantiates a new PriceDetail object
 // This constructor will assign default values to properties that have it defined,
@@ -234,7 +237,37 @@ func (o PriceDetail) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.AdjustmentEffectiveUntil) {
 		toSerialize["adjustmentEffectiveUntil"] = o.AdjustmentEffectiveUntil
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *PriceDetail) UnmarshalJSON(data []byte) (err error) {
+	varPriceDetail := _PriceDetail{}
+
+	err = json.Unmarshal(data, &varPriceDetail)
+
+	if err != nil {
+		return err
+	}
+
+	*o = PriceDetail(varPriceDetail)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "price")
+		delete(additionalProperties, "adjustmentContextId")
+		delete(additionalProperties, "adjustmentReferenceId")
+		delete(additionalProperties, "adjustmentEffectiveFrom")
+		delete(additionalProperties, "adjustmentEffectiveUntil")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullablePriceDetail struct {

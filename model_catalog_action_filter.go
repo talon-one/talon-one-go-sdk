@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,8 +23,9 @@ type CatalogActionFilter struct {
 	// The name of the attribute to filter on.
 	Attr string `json:"attr"`
 	// The filtering operator.
-	Op    string      `json:"op"`
-	Value interface{} `json:"value"`
+	Op                   string      `json:"op"`
+	Value                interface{} `json:"value"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CatalogActionFilter CatalogActionFilter
@@ -139,6 +139,11 @@ func (o CatalogActionFilter) ToMap() (map[string]interface{}, error) {
 	if o.Value != nil {
 		toSerialize["value"] = o.Value
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -168,15 +173,22 @@ func (o *CatalogActionFilter) UnmarshalJSON(data []byte) (err error) {
 
 	varCatalogActionFilter := _CatalogActionFilter{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCatalogActionFilter)
+	err = json.Unmarshal(data, &varCatalogActionFilter)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CatalogActionFilter(varCatalogActionFilter)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "attr")
+		delete(additionalProperties, "op")
+		delete(additionalProperties, "value")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

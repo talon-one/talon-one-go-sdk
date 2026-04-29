@@ -25,8 +25,11 @@ type MessageLogResponse struct {
 	// Raw response data.
 	Response *string `json:"response,omitempty"`
 	// HTTP status code of the response.
-	Status *int64 `json:"status,omitempty"`
+	Status               *int64 `json:"status,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _MessageLogResponse MessageLogResponse
 
 // NewMessageLogResponse instantiates a new MessageLogResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -160,7 +163,35 @@ func (o MessageLogResponse) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Status) {
 		toSerialize["status"] = o.Status
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *MessageLogResponse) UnmarshalJSON(data []byte) (err error) {
+	varMessageLogResponse := _MessageLogResponse{}
+
+	err = json.Unmarshal(data, &varMessageLogResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = MessageLogResponse(varMessageLogResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "createdAt")
+		delete(additionalProperties, "response")
+		delete(additionalProperties, "status")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableMessageLogResponse struct {

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type MessageTest struct {
 	// The returned http response.
 	HttpResponse string `json:"httpResponse"`
 	// The returned http status code.
-	HttpStatus int64 `json:"httpStatus"`
+	HttpStatus           int64 `json:"httpStatus"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _MessageTest MessageTest
@@ -108,6 +108,11 @@ func (o MessageTest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["httpResponse"] = o.HttpResponse
 	toSerialize["httpStatus"] = o.HttpStatus
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *MessageTest) UnmarshalJSON(data []byte) (err error) {
 
 	varMessageTest := _MessageTest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varMessageTest)
+	err = json.Unmarshal(data, &varMessageTest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = MessageTest(varMessageTest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "httpResponse")
+		delete(additionalProperties, "httpStatus")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

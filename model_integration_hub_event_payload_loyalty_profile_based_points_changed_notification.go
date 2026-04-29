@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -31,7 +30,8 @@ type IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification stru
 	CurrentPoints        float32                                                                        `json:"CurrentPoints"`
 	Actions              []IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction `json:"Actions,omitempty"`
 	// Timestamp when the event was published.
-	PublishedAt time.Time `json:"PublishedAt"`
+	PublishedAt          time.Time `json:"PublishedAt"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification
@@ -324,6 +324,11 @@ func (o IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification) 
 		toSerialize["Actions"] = o.Actions
 	}
 	toSerialize["PublishedAt"] = o.PublishedAt
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -356,15 +361,28 @@ func (o *IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification)
 
 	varIntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification := _IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varIntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification)
+	err = json.Unmarshal(data, &varIntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification)
 
 	if err != nil {
 		return err
 	}
 
 	*o = IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification(varIntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "ProfileIntegrationID")
+		delete(additionalProperties, "LoyaltyProgramID")
+		delete(additionalProperties, "SubledgerID")
+		delete(additionalProperties, "SourceOfEvent")
+		delete(additionalProperties, "EmployeeName")
+		delete(additionalProperties, "UserID")
+		delete(additionalProperties, "CurrentPoints")
+		delete(additionalProperties, "Actions")
+		delete(additionalProperties, "PublishedAt")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

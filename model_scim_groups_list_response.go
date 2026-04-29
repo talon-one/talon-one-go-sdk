@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -25,7 +24,8 @@ type ScimGroupsListResponse struct {
 	// SCIM schema for the given resource.
 	Schemas []string `json:"schemas,omitempty"`
 	// Number of results in the response.
-	TotalResults *int64 `json:"totalResults,omitempty"`
+	TotalResults         *int64 `json:"totalResults,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ScimGroupsListResponse ScimGroupsListResponse
@@ -153,6 +153,11 @@ func (o ScimGroupsListResponse) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.TotalResults) {
 		toSerialize["totalResults"] = o.TotalResults
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -180,15 +185,22 @@ func (o *ScimGroupsListResponse) UnmarshalJSON(data []byte) (err error) {
 
 	varScimGroupsListResponse := _ScimGroupsListResponse{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varScimGroupsListResponse)
+	err = json.Unmarshal(data, &varScimGroupsListResponse)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ScimGroupsListResponse(varScimGroupsListResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "Resources")
+		delete(additionalProperties, "schemas")
+		delete(additionalProperties, "totalResults")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

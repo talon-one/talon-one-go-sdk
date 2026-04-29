@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type OktaEventTarget struct {
 	// Identifier of the event target, depending on its type.
 	AlternateId string `json:"alternateId"`
 	// Display name of the event target.
-	DisplayName string `json:"displayName"`
+	DisplayName          string `json:"displayName"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _OktaEventTarget OktaEventTarget
@@ -136,6 +136,11 @@ func (o OktaEventTarget) ToMap() (map[string]interface{}, error) {
 	toSerialize["type"] = o.Type
 	toSerialize["alternateId"] = o.AlternateId
 	toSerialize["displayName"] = o.DisplayName
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -165,15 +170,22 @@ func (o *OktaEventTarget) UnmarshalJSON(data []byte) (err error) {
 
 	varOktaEventTarget := _OktaEventTarget{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varOktaEventTarget)
+	err = json.Unmarshal(data, &varOktaEventTarget)
 
 	if err != nil {
 		return err
 	}
 
 	*o = OktaEventTarget(varOktaEventTarget)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "alternateId")
+		delete(additionalProperties, "displayName")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

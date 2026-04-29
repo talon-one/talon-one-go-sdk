@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,9 +20,10 @@ var _ MappedNullable = &ExperimentResult{}
 
 // ExperimentResult struct for ExperimentResult
 type ExperimentResult struct {
-	Variants     []ExperimentVariantResult         `json:"variants"`
-	Confidence   ExperimentVariantResultConfidence `json:"confidence"`
-	ExperimentId int64                             `json:"experimentId"`
+	Variants             []ExperimentVariantResult         `json:"variants"`
+	Confidence           ExperimentVariantResultConfidence `json:"confidence"`
+	ExperimentId         int64                             `json:"experimentId"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ExperimentResult ExperimentResult
@@ -133,6 +133,11 @@ func (o ExperimentResult) ToMap() (map[string]interface{}, error) {
 	toSerialize["variants"] = o.Variants
 	toSerialize["confidence"] = o.Confidence
 	toSerialize["experimentId"] = o.ExperimentId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -162,15 +167,22 @@ func (o *ExperimentResult) UnmarshalJSON(data []byte) (err error) {
 
 	varExperimentResult := _ExperimentResult{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varExperimentResult)
+	err = json.Unmarshal(data, &varExperimentResult)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ExperimentResult(varExperimentResult)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "variants")
+		delete(additionalProperties, "confidence")
+		delete(additionalProperties, "experimentId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

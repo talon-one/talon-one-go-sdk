@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type NewPicklist struct {
 	// The type of allowed values in the picklist. If the type `time` is chosen, it must be an RFC3339 timestamp string.
 	Type string `json:"type"`
 	// The list of allowed values provided by this picklist.
-	Values []string `json:"values"`
+	Values               []string `json:"values"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewPicklist NewPicklist
@@ -108,6 +108,11 @@ func (o NewPicklist) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["type"] = o.Type
 	toSerialize["values"] = o.Values
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *NewPicklist) UnmarshalJSON(data []byte) (err error) {
 
 	varNewPicklist := _NewPicklist{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewPicklist)
+	err = json.Unmarshal(data, &varNewPicklist)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewPicklist(varNewPicklist)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "values")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

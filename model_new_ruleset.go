@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -30,7 +29,8 @@ type NewRuleset struct {
 	// The version of the rulebuilder used to create this ruleset.
 	RbVersion *string `json:"rbVersion,omitempty"`
 	// Indicates whether this created ruleset should be activated for the campaign that owns it.
-	Activate *bool `json:"activate,omitempty"`
+	Activate             *bool `json:"activate,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewRuleset NewRuleset
@@ -219,6 +219,11 @@ func (o NewRuleset) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Activate) {
 		toSerialize["activate"] = o.Activate
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -247,15 +252,24 @@ func (o *NewRuleset) UnmarshalJSON(data []byte) (err error) {
 
 	varNewRuleset := _NewRuleset{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewRuleset)
+	err = json.Unmarshal(data, &varNewRuleset)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewRuleset(varNewRuleset)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "rules")
+		delete(additionalProperties, "strikethroughRules")
+		delete(additionalProperties, "bindings")
+		delete(additionalProperties, "rbVersion")
+		delete(additionalProperties, "activate")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type ProfileAudiencesChanges struct {
 	// The IDs of the audiences for the customer to join.
 	Adds []int64 `json:"adds"`
 	// The IDs of the audiences for the customer to leave.
-	Deletes []int64 `json:"deletes"`
+	Deletes              []int64 `json:"deletes"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ProfileAudiencesChanges ProfileAudiencesChanges
@@ -108,6 +108,11 @@ func (o ProfileAudiencesChanges) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["adds"] = o.Adds
 	toSerialize["deletes"] = o.Deletes
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *ProfileAudiencesChanges) UnmarshalJSON(data []byte) (err error) {
 
 	varProfileAudiencesChanges := _ProfileAudiencesChanges{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varProfileAudiencesChanges)
+	err = json.Unmarshal(data, &varProfileAudiencesChanges)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ProfileAudiencesChanges(varProfileAudiencesChanges)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "adds")
+		delete(additionalProperties, "deletes")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

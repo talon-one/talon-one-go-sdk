@@ -24,9 +24,12 @@ type ScimSchemaResource struct {
 	// Name of the resource.
 	Name *string `json:"name,omitempty"`
 	// Human-readable description of the schema resource.
-	Description *string                  `json:"description,omitempty"`
-	Attributes  []map[string]interface{} `json:"attributes,omitempty"`
+	Description          *string                  `json:"description,omitempty"`
+	Attributes           []map[string]interface{} `json:"attributes,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ScimSchemaResource ScimSchemaResource
 
 // NewScimSchemaResource instantiates a new ScimSchemaResource object
 // This constructor will assign default values to properties that have it defined,
@@ -195,7 +198,36 @@ func (o ScimSchemaResource) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Attributes) {
 		toSerialize["attributes"] = o.Attributes
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ScimSchemaResource) UnmarshalJSON(data []byte) (err error) {
+	varScimSchemaResource := _ScimSchemaResource{}
+
+	err = json.Unmarshal(data, &varScimSchemaResource)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ScimSchemaResource(varScimSchemaResource)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "attributes")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableScimSchemaResource struct {

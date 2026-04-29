@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -45,7 +44,8 @@ type StrikethroughEffect struct {
 	// The reference identifier of the selected price adjustment for this cart item.
 	AdjustmentReferenceId *string `json:"adjustmentReferenceId,omitempty"`
 	// A list of entities (e.g. audiences) targeted by this effect.
-	Targets []map[string]interface{} `json:"targets,omitempty"`
+	Targets              []map[string]interface{} `json:"targets,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _StrikethroughEffect StrikethroughEffect
@@ -443,6 +443,11 @@ func (o StrikethroughEffect) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Targets) {
 		toSerialize["targets"] = o.Targets
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -475,15 +480,31 @@ func (o *StrikethroughEffect) UnmarshalJSON(data []byte) (err error) {
 
 	varStrikethroughEffect := _StrikethroughEffect{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varStrikethroughEffect)
+	err = json.Unmarshal(data, &varStrikethroughEffect)
 
 	if err != nil {
 		return err
 	}
 
 	*o = StrikethroughEffect(varStrikethroughEffect)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "campaignId")
+		delete(additionalProperties, "rulesetId")
+		delete(additionalProperties, "ruleIndex")
+		delete(additionalProperties, "ruleName")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "props")
+		delete(additionalProperties, "startTime")
+		delete(additionalProperties, "endTime")
+		delete(additionalProperties, "selectedPriceType")
+		delete(additionalProperties, "selectedPrice")
+		delete(additionalProperties, "adjustmentReferenceId")
+		delete(additionalProperties, "targets")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

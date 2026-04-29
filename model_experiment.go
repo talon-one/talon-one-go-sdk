@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -37,7 +36,8 @@ type Experiment struct {
 	State    string              `json:"state"`
 	Variants []ExperimentVariant `json:"variants,omitempty"`
 	// The date and time the experiment was deleted.
-	Deletedat *time.Time `json:"deletedat,omitempty"`
+	Deletedat            *time.Time `json:"deletedat,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Experiment Experiment
@@ -350,6 +350,11 @@ func (o Experiment) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Deletedat) {
 		toSerialize["deletedat"] = o.Deletedat
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -380,15 +385,28 @@ func (o *Experiment) UnmarshalJSON(data []byte) (err error) {
 
 	varExperiment := _Experiment{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varExperiment)
+	err = json.Unmarshal(data, &varExperiment)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Experiment(varExperiment)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "isVariantAssignmentExternal")
+		delete(additionalProperties, "campaign")
+		delete(additionalProperties, "activated")
+		delete(additionalProperties, "state")
+		delete(additionalProperties, "variants")
+		delete(additionalProperties, "deletedat")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

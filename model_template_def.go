@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -43,7 +42,8 @@ type TemplateDef struct {
 	// A flag to control exposure in Rule Builder.
 	Expose *bool `json:"expose,omitempty"`
 	// The template name used in Talang.
-	Name string `json:"name"`
+	Name                 string `json:"name"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _TemplateDef TemplateDef
@@ -392,6 +392,11 @@ func (o TemplateDef) ToMap() (map[string]interface{}, error) {
 		toSerialize["expose"] = o.Expose
 	}
 	toSerialize["name"] = o.Name
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -426,15 +431,30 @@ func (o *TemplateDef) UnmarshalJSON(data []byte) (err error) {
 
 	varTemplateDef := _TemplateDef{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varTemplateDef)
+	err = json.Unmarshal(data, &varTemplateDef)
 
 	if err != nil {
 		return err
 	}
 
 	*o = TemplateDef(varTemplateDef)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "help")
+		delete(additionalProperties, "category")
+		delete(additionalProperties, "expr")
+		delete(additionalProperties, "args")
+		delete(additionalProperties, "expose")
+		delete(additionalProperties, "name")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

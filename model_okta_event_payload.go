@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,7 +20,8 @@ var _ MappedNullable = &OktaEventPayload{}
 
 // OktaEventPayload Payload containing provisioning event details from Okta.
 type OktaEventPayload struct {
-	Data OktaEventPayloadData `json:"data"`
+	Data                 OktaEventPayloadData `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _OktaEventPayload OktaEventPayload
@@ -79,6 +79,11 @@ func (o OktaEventPayload) MarshalJSON() ([]byte, error) {
 func (o OktaEventPayload) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -106,15 +111,20 @@ func (o *OktaEventPayload) UnmarshalJSON(data []byte) (err error) {
 
 	varOktaEventPayload := _OktaEventPayload{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varOktaEventPayload)
+	err = json.Unmarshal(data, &varOktaEventPayload)
 
 	if err != nil {
 		return err
 	}
 
 	*o = OktaEventPayload(varOktaEventPayload)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

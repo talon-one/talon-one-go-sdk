@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -33,7 +32,8 @@ type ChangeLoyaltyTierLevelEffectProps struct {
 	// The name of the tier to which the user has been upgraded.
 	NewTierName string `json:"newTierName"`
 	// The expiration date of the new tier.
-	ExpiryDate *time.Time `json:"expiryDate,omitempty"`
+	ExpiryDate           *time.Time `json:"expiryDate,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ChangeLoyaltyTierLevelEffectProps ChangeLoyaltyTierLevelEffectProps
@@ -239,6 +239,11 @@ func (o ChangeLoyaltyTierLevelEffectProps) ToMap() (map[string]interface{}, erro
 	if !IsNil(o.ExpiryDate) {
 		toSerialize["expiryDate"] = o.ExpiryDate
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -269,15 +274,25 @@ func (o *ChangeLoyaltyTierLevelEffectProps) UnmarshalJSON(data []byte) (err erro
 
 	varChangeLoyaltyTierLevelEffectProps := _ChangeLoyaltyTierLevelEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varChangeLoyaltyTierLevelEffectProps)
+	err = json.Unmarshal(data, &varChangeLoyaltyTierLevelEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ChangeLoyaltyTierLevelEffectProps(varChangeLoyaltyTierLevelEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "ruleTitle")
+		delete(additionalProperties, "programId")
+		delete(additionalProperties, "subLedgerId")
+		delete(additionalProperties, "previousTierName")
+		delete(additionalProperties, "newTierName")
+		delete(additionalProperties, "expiryDate")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

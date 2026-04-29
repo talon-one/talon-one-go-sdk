@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type PriceTypeReferences struct {
 	// The ID of the price type.
 	PriceTypeId int64 `json:"priceTypeId"`
 	// A list of entities that reference the price type, including details about the entities.
-	References []PriceTypeReferenceDetail `json:"references,omitempty"`
+	References           []PriceTypeReferenceDetail `json:"references,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PriceTypeReferences PriceTypeReferences
@@ -117,6 +117,11 @@ func (o PriceTypeReferences) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.References) {
 		toSerialize["references"] = o.References
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -144,15 +149,21 @@ func (o *PriceTypeReferences) UnmarshalJSON(data []byte) (err error) {
 
 	varPriceTypeReferences := _PriceTypeReferences{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPriceTypeReferences)
+	err = json.Unmarshal(data, &varPriceTypeReferences)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PriceTypeReferences(varPriceTypeReferences)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "priceTypeId")
+		delete(additionalProperties, "references")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

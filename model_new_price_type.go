@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -29,6 +28,7 @@ type NewPriceType struct {
 	Description *string `json:"description,omitempty"`
 	// A list of the IDs of the audiences targeted by this price type.
 	TargetedAudiencesIds []int64 `json:"targetedAudiencesIds,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewPriceType NewPriceType
@@ -182,6 +182,11 @@ func (o NewPriceType) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.TargetedAudiencesIds) {
 		toSerialize["targetedAudiencesIds"] = o.TargetedAudiencesIds
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -210,15 +215,23 @@ func (o *NewPriceType) UnmarshalJSON(data []byte) (err error) {
 
 	varNewPriceType := _NewPriceType{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewPriceType)
+	err = json.Unmarshal(data, &varNewPriceType)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewPriceType(varNewPriceType)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "targetedAudiencesIds")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

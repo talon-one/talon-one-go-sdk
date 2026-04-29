@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &CampaignEntity{}
 // CampaignEntity struct for CampaignEntity
 type CampaignEntity struct {
 	// The ID of the campaign that owns this entity.
-	CampaignId int64 `json:"campaignId"`
+	CampaignId           int64 `json:"campaignId"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CampaignEntity CampaignEntity
@@ -80,6 +80,11 @@ func (o CampaignEntity) MarshalJSON() ([]byte, error) {
 func (o CampaignEntity) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["campaignId"] = o.CampaignId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *CampaignEntity) UnmarshalJSON(data []byte) (err error) {
 
 	varCampaignEntity := _CampaignEntity{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCampaignEntity)
+	err = json.Unmarshal(data, &varCampaignEntity)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CampaignEntity(varCampaignEntity)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "campaignId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

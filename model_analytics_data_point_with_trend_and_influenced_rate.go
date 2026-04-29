@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,9 +20,10 @@ var _ MappedNullable = &AnalyticsDataPointWithTrendAndInfluencedRate{}
 
 // AnalyticsDataPointWithTrendAndInfluencedRate struct for AnalyticsDataPointWithTrendAndInfluencedRate
 type AnalyticsDataPointWithTrendAndInfluencedRate struct {
-	Value          float32 `json:"value"`
-	InfluencedRate float32 `json:"influencedRate"`
-	Trend          float32 `json:"trend"`
+	Value                float32 `json:"value"`
+	InfluencedRate       float32 `json:"influencedRate"`
+	Trend                float32 `json:"trend"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AnalyticsDataPointWithTrendAndInfluencedRate AnalyticsDataPointWithTrendAndInfluencedRate
@@ -133,6 +133,11 @@ func (o AnalyticsDataPointWithTrendAndInfluencedRate) ToMap() (map[string]interf
 	toSerialize["value"] = o.Value
 	toSerialize["influencedRate"] = o.InfluencedRate
 	toSerialize["trend"] = o.Trend
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -162,15 +167,22 @@ func (o *AnalyticsDataPointWithTrendAndInfluencedRate) UnmarshalJSON(data []byte
 
 	varAnalyticsDataPointWithTrendAndInfluencedRate := _AnalyticsDataPointWithTrendAndInfluencedRate{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAnalyticsDataPointWithTrendAndInfluencedRate)
+	err = json.Unmarshal(data, &varAnalyticsDataPointWithTrendAndInfluencedRate)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AnalyticsDataPointWithTrendAndInfluencedRate(varAnalyticsDataPointWithTrendAndInfluencedRate)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "value")
+		delete(additionalProperties, "influencedRate")
+		delete(additionalProperties, "trend")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

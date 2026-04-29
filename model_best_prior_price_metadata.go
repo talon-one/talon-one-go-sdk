@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type BestPriorPriceMetadata struct {
 	// Details about campaigns that influenced the final price.
 	InfluencingCampaignDetails []InfluencingCampaignDetails `json:"influencingCampaignDetails"`
 	// Details about the applied price adjustment.
-	AdjustmentDetails *AdjustmentDetails `json:"adjustmentDetails,omitempty"`
+	AdjustmentDetails    *AdjustmentDetails `json:"adjustmentDetails,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _BestPriorPriceMetadata BestPriorPriceMetadata
@@ -117,6 +117,11 @@ func (o BestPriorPriceMetadata) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.AdjustmentDetails) {
 		toSerialize["adjustmentDetails"] = o.AdjustmentDetails
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -144,15 +149,21 @@ func (o *BestPriorPriceMetadata) UnmarshalJSON(data []byte) (err error) {
 
 	varBestPriorPriceMetadata := _BestPriorPriceMetadata{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varBestPriorPriceMetadata)
+	err = json.Unmarshal(data, &varBestPriorPriceMetadata)
 
 	if err != nil {
 		return err
 	}
 
 	*o = BestPriorPriceMetadata(varBestPriorPriceMetadata)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "influencingCampaignDetails")
+		delete(additionalProperties, "adjustmentDetails")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

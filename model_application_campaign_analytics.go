@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -45,7 +44,8 @@ type ApplicationCampaignAnalytics struct {
 	// The total value of discounts given for cart items in influenced sessions.
 	TotalDiscounts *AnalyticsDataPointWithTrend `json:"totalDiscounts,omitempty"`
 	// The number of times a coupon was successfully redeemed in influenced sessions.
-	CouponsCount *AnalyticsDataPointWithTrend `json:"couponsCount,omitempty"`
+	CouponsCount         *AnalyticsDataPointWithTrend `json:"couponsCount,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ApplicationCampaignAnalytics ApplicationCampaignAnalytics
@@ -443,6 +443,11 @@ func (o ApplicationCampaignAnalytics) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CouponsCount) {
 		toSerialize["couponsCount"] = o.CouponsCount
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -475,15 +480,31 @@ func (o *ApplicationCampaignAnalytics) UnmarshalJSON(data []byte) (err error) {
 
 	varApplicationCampaignAnalytics := _ApplicationCampaignAnalytics{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varApplicationCampaignAnalytics)
+	err = json.Unmarshal(data, &varApplicationCampaignAnalytics)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ApplicationCampaignAnalytics(varApplicationCampaignAnalytics)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "startTime")
+		delete(additionalProperties, "endTime")
+		delete(additionalProperties, "campaignId")
+		delete(additionalProperties, "campaignName")
+		delete(additionalProperties, "campaignTags")
+		delete(additionalProperties, "campaignState")
+		delete(additionalProperties, "totalRevenue")
+		delete(additionalProperties, "sessionsCount")
+		delete(additionalProperties, "avgItemsPerSession")
+		delete(additionalProperties, "avgSessionValue")
+		delete(additionalProperties, "totalDiscounts")
+		delete(additionalProperties, "couponsCount")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

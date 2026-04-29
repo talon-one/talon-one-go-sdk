@@ -26,8 +26,11 @@ type UpdateRole struct {
 	// The `Access Control List` json defining the role of the user. This represents the access control on the user level.
 	Acl *string `json:"acl,omitempty"`
 	// An array of user identifiers.
-	Members []int64 `json:"members,omitempty"`
+	Members              []int64 `json:"members,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _UpdateRole UpdateRole
 
 // NewUpdateRole instantiates a new UpdateRole object
 // This constructor will assign default values to properties that have it defined,
@@ -196,7 +199,36 @@ func (o UpdateRole) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Members) {
 		toSerialize["members"] = o.Members
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *UpdateRole) UnmarshalJSON(data []byte) (err error) {
+	varUpdateRole := _UpdateRole{}
+
+	err = json.Unmarshal(data, &varUpdateRole)
+
+	if err != nil {
+		return err
+	}
+
+	*o = UpdateRole(varUpdateRole)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "acl")
+		delete(additionalProperties, "members")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableUpdateRole struct {

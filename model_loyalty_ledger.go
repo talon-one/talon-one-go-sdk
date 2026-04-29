@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type LoyaltyLedger struct {
 	// The balance of the main ledger in the loyalty program.
 	Ledger LoyaltySubLedger `json:"ledger"`
 	// A map containing a list of all loyalty subledger balances.
-	SubLedgers map[string]LoyaltySubLedger `json:"subLedgers,omitempty"`
+	SubLedgers           map[string]LoyaltySubLedger `json:"subLedgers,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _LoyaltyLedger LoyaltyLedger
@@ -117,6 +117,11 @@ func (o LoyaltyLedger) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.SubLedgers) {
 		toSerialize["subLedgers"] = o.SubLedgers
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -144,15 +149,21 @@ func (o *LoyaltyLedger) UnmarshalJSON(data []byte) (err error) {
 
 	varLoyaltyLedger := _LoyaltyLedger{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varLoyaltyLedger)
+	err = json.Unmarshal(data, &varLoyaltyLedger)
 
 	if err != nil {
 		return err
 	}
 
 	*o = LoyaltyLedger(varLoyaltyLedger)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "ledger")
+		delete(additionalProperties, "subLedgers")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type RedeemReferralEffectProps struct {
 	// The id of the referral code that was redeemed.
 	Id int64 `json:"id"`
 	// The referral code that was redeemed.
-	Value string `json:"value"`
+	Value                string `json:"value"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _RedeemReferralEffectProps RedeemReferralEffectProps
@@ -108,6 +108,11 @@ func (o RedeemReferralEffectProps) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["id"] = o.Id
 	toSerialize["value"] = o.Value
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *RedeemReferralEffectProps) UnmarshalJSON(data []byte) (err error) {
 
 	varRedeemReferralEffectProps := _RedeemReferralEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varRedeemReferralEffectProps)
+	err = json.Unmarshal(data, &varRedeemReferralEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = RedeemReferralEffectProps(varRedeemReferralEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "value")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

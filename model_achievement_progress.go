@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -31,7 +30,8 @@ type AchievementProgress struct {
 	// Timestamp at which point the customer completed the achievement.
 	CompletionDate *time.Time `json:"completionDate,omitempty"`
 	// Timestamp at which point the achievement ends and resets for the customer.
-	EndDate *time.Time `json:"endDate,omitempty"`
+	EndDate              *time.Time `json:"endDate,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AchievementProgress AchievementProgress
@@ -220,6 +220,11 @@ func (o AchievementProgress) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.EndDate) {
 		toSerialize["endDate"] = o.EndDate
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -248,15 +253,24 @@ func (o *AchievementProgress) UnmarshalJSON(data []byte) (err error) {
 
 	varAchievementProgress := _AchievementProgress{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAchievementProgress)
+	err = json.Unmarshal(data, &varAchievementProgress)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AchievementProgress(varAchievementProgress)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "progress")
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "completionDate")
+		delete(additionalProperties, "endDate")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

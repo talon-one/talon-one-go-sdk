@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type AccountDashboardStatisticCampaigns struct {
 	// Campaigns scheduled to expire sometime in the next 7 days.
 	EndingSoon int64 `json:"endingSoon"`
 	// Campaigns with less than 10% of budget left.
-	LowOnBudget int64 `json:"lowOnBudget"`
+	LowOnBudget          int64 `json:"lowOnBudget"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AccountDashboardStatisticCampaigns AccountDashboardStatisticCampaigns
@@ -136,6 +136,11 @@ func (o AccountDashboardStatisticCampaigns) ToMap() (map[string]interface{}, err
 	toSerialize["live"] = o.Live
 	toSerialize["endingSoon"] = o.EndingSoon
 	toSerialize["lowOnBudget"] = o.LowOnBudget
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -165,15 +170,22 @@ func (o *AccountDashboardStatisticCampaigns) UnmarshalJSON(data []byte) (err err
 
 	varAccountDashboardStatisticCampaigns := _AccountDashboardStatisticCampaigns{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAccountDashboardStatisticCampaigns)
+	err = json.Unmarshal(data, &varAccountDashboardStatisticCampaigns)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AccountDashboardStatisticCampaigns(varAccountDashboardStatisticCampaigns)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "live")
+		delete(additionalProperties, "endingSoon")
+		delete(additionalProperties, "lowOnBudget")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

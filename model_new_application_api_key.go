@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -43,7 +42,8 @@ type NewApplicationAPIKey struct {
 	// The date the API key was created.
 	Created time.Time `json:"created"`
 	// The API key.
-	Key string `json:"key"`
+	Key                  string `json:"key"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewApplicationAPIKey NewApplicationAPIKey
@@ -388,6 +388,11 @@ func (o NewApplicationAPIKey) ToMap() (map[string]interface{}, error) {
 	toSerialize["applicationID"] = o.ApplicationID
 	toSerialize["created"] = o.Created
 	toSerialize["key"] = o.Key
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -422,15 +427,30 @@ func (o *NewApplicationAPIKey) UnmarshalJSON(data []byte) (err error) {
 
 	varNewApplicationAPIKey := _NewApplicationAPIKey{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewApplicationAPIKey)
+	err = json.Unmarshal(data, &varNewApplicationAPIKey)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewApplicationAPIKey(varNewApplicationAPIKey)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "expires")
+		delete(additionalProperties, "platform")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "timeOffset")
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "createdBy")
+		delete(additionalProperties, "accountID")
+		delete(additionalProperties, "applicationID")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "key")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

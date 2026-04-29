@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,8 +23,9 @@ type NewBaseNotification struct {
 	// Indicates which notification properties to apply.
 	Policy map[string]interface{} `json:"policy"`
 	// Indicates whether the notification is activated.
-	Enabled *bool                  `json:"enabled,omitempty"`
-	Webhook NewNotificationWebhook `json:"webhook"`
+	Enabled              *bool                  `json:"enabled,omitempty"`
+	Webhook              NewNotificationWebhook `json:"webhook"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewBaseNotification NewBaseNotification
@@ -148,6 +148,11 @@ func (o NewBaseNotification) ToMap() (map[string]interface{}, error) {
 		toSerialize["enabled"] = o.Enabled
 	}
 	toSerialize["webhook"] = o.Webhook
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -176,15 +181,22 @@ func (o *NewBaseNotification) UnmarshalJSON(data []byte) (err error) {
 
 	varNewBaseNotification := _NewBaseNotification{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewBaseNotification)
+	err = json.Unmarshal(data, &varNewBaseNotification)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewBaseNotification(varNewBaseNotification)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "policy")
+		delete(additionalProperties, "enabled")
+		delete(additionalProperties, "webhook")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

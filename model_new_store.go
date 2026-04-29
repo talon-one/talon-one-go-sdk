@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -28,7 +27,8 @@ type NewStore struct {
 	// The attributes of the store.
 	Attributes map[string]interface{} `json:"attributes,omitempty"`
 	// The integration ID of the store. You choose this ID when you create a store.  **Note**: You cannot edit the `integrationId` after the store has been created.
-	IntegrationId string `json:"integrationId"`
+	IntegrationId        string `json:"integrationId"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewStore NewStore
@@ -173,6 +173,11 @@ func (o NewStore) ToMap() (map[string]interface{}, error) {
 		toSerialize["attributes"] = o.Attributes
 	}
 	toSerialize["integrationId"] = o.IntegrationId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -202,15 +207,23 @@ func (o *NewStore) UnmarshalJSON(data []byte) (err error) {
 
 	varNewStore := _NewStore{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewStore)
+	err = json.Unmarshal(data, &varNewStore)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewStore(varNewStore)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "integrationId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

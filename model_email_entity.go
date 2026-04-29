@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &EmailEntity{}
 // EmailEntity struct for EmailEntity
 type EmailEntity struct {
 	// The email address associated with the user profile.
-	Email string `json:"email"`
+	Email                string `json:"email"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _EmailEntity EmailEntity
@@ -80,6 +80,11 @@ func (o EmailEntity) MarshalJSON() ([]byte, error) {
 func (o EmailEntity) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["email"] = o.Email
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *EmailEntity) UnmarshalJSON(data []byte) (err error) {
 
 	varEmailEntity := _EmailEntity{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varEmailEntity)
+	err = json.Unmarshal(data, &varEmailEntity)
 
 	if err != nil {
 		return err
 	}
 
 	*o = EmailEntity(varEmailEntity)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "email")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -47,14 +46,15 @@ type RevisionVersion struct {
 	// A list of features for the campaign.
 	Features []string `json:"features,omitempty"`
 	// Arbitrary properties associated with coupons in this campaign.
-	CouponAttributes map[string]interface{} `json:"couponAttributes,omitempty"`
-	AccountId        int64                  `json:"accountId"`
-	ApplicationId    int64                  `json:"applicationId"`
-	CampaignId       int64                  `json:"campaignId"`
-	Created          time.Time              `json:"created"`
-	CreatedBy        int64                  `json:"createdBy"`
-	RevisionId       int64                  `json:"revisionId"`
-	Version          int64                  `json:"version"`
+	CouponAttributes     map[string]interface{} `json:"couponAttributes,omitempty"`
+	AccountId            int64                  `json:"accountId"`
+	ApplicationId        int64                  `json:"applicationId"`
+	CampaignId           int64                  `json:"campaignId"`
+	Created              time.Time              `json:"created"`
+	CreatedBy            int64                  `json:"createdBy"`
+	RevisionId           int64                  `json:"revisionId"`
+	Version              int64                  `json:"version"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _RevisionVersion RevisionVersion
@@ -749,6 +749,11 @@ func (o RevisionVersion) ToMap() (map[string]interface{}, error) {
 	toSerialize["createdBy"] = o.CreatedBy
 	toSerialize["revisionId"] = o.RevisionId
 	toSerialize["version"] = o.Version
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -783,15 +788,40 @@ func (o *RevisionVersion) UnmarshalJSON(data []byte) (err error) {
 
 	varRevisionVersion := _RevisionVersion{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varRevisionVersion)
+	err = json.Unmarshal(data, &varRevisionVersion)
 
 	if err != nil {
 		return err
 	}
 
 	*o = RevisionVersion(varRevisionVersion)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "startTime")
+		delete(additionalProperties, "endTime")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "activeRulesetId")
+		delete(additionalProperties, "tags")
+		delete(additionalProperties, "couponSettings")
+		delete(additionalProperties, "referralSettings")
+		delete(additionalProperties, "limits")
+		delete(additionalProperties, "reevaluateOnReturn")
+		delete(additionalProperties, "features")
+		delete(additionalProperties, "couponAttributes")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "campaignId")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "createdBy")
+		delete(additionalProperties, "revisionId")
+		delete(additionalProperties, "version")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

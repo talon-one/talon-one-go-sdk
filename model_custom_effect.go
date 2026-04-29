@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -49,7 +48,8 @@ type CustomEffect struct {
 	// ID of the user who last updated this effect if available.
 	ModifiedBy *int64 `json:"modifiedBy,omitempty"`
 	// ID of the user who created this effect.
-	CreatedBy int64 `json:"createdBy"`
+	CreatedBy            int64 `json:"createdBy"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CustomEffect CustomEffect
@@ -481,6 +481,11 @@ func (o CustomEffect) ToMap() (map[string]interface{}, error) {
 		toSerialize["modifiedBy"] = o.ModifiedBy
 	}
 	toSerialize["createdBy"] = o.CreatedBy
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -517,15 +522,33 @@ func (o *CustomEffect) UnmarshalJSON(data []byte) (err error) {
 
 	varCustomEffect := _CustomEffect{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCustomEffect)
+	err = json.Unmarshal(data, &varCustomEffect)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CustomEffect(varCustomEffect)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "modified")
+		delete(additionalProperties, "applicationIds")
+		delete(additionalProperties, "isPerItem")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "payload")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "enabled")
+		delete(additionalProperties, "params")
+		delete(additionalProperties, "modifiedBy")
+		delete(additionalProperties, "createdBy")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

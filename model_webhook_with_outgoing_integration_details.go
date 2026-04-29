@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -56,6 +55,7 @@ type WebhookWithOutgoingIntegrationDetails struct {
 	OutgoingIntegrationTypeId *int64 `json:"outgoingIntegrationTypeId,omitempty"`
 	// Name of the outgoing integration.
 	OutgoingIntegrationTypeName *string `json:"outgoingIntegrationTypeName,omitempty"`
+	AdditionalProperties        map[string]interface{}
 }
 
 type _WebhookWithOutgoingIntegrationDetails WebhookWithOutgoingIntegrationDetails
@@ -583,6 +583,11 @@ func (o WebhookWithOutgoingIntegrationDetails) ToMap() (map[string]interface{}, 
 	if !IsNil(o.OutgoingIntegrationTypeName) {
 		toSerialize["outgoingIntegrationTypeName"] = o.OutgoingIntegrationTypeName
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -620,15 +625,36 @@ func (o *WebhookWithOutgoingIntegrationDetails) UnmarshalJSON(data []byte) (err 
 
 	varWebhookWithOutgoingIntegrationDetails := _WebhookWithOutgoingIntegrationDetails{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varWebhookWithOutgoingIntegrationDetails)
+	err = json.Unmarshal(data, &varWebhookWithOutgoingIntegrationDetails)
 
 	if err != nil {
 		return err
 	}
 
 	*o = WebhookWithOutgoingIntegrationDetails(varWebhookWithOutgoingIntegrationDetails)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "modified")
+		delete(additionalProperties, "applicationIds")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "draft")
+		delete(additionalProperties, "verb")
+		delete(additionalProperties, "url")
+		delete(additionalProperties, "headers")
+		delete(additionalProperties, "payload")
+		delete(additionalProperties, "params")
+		delete(additionalProperties, "enabled")
+		delete(additionalProperties, "authenticationId")
+		delete(additionalProperties, "outgoingIntegrationTemplateId")
+		delete(additionalProperties, "outgoingIntegrationTypeId")
+		delete(additionalProperties, "outgoingIntegrationTypeName")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

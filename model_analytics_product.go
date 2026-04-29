@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -28,7 +27,8 @@ type AnalyticsProduct struct {
 	// The ID of the catalog. You can find the ID in the Campaign Manager in **Account** > **Tools** > **Cart item catalogs**.
 	CatalogId int64 `json:"catalogId"`
 	// The number of times the product or SKU was purchased.
-	UnitsSold *AnalyticsDataPointWithTrend `json:"unitsSold,omitempty"`
+	UnitsSold            *AnalyticsDataPointWithTrend `json:"unitsSold,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AnalyticsProduct AnalyticsProduct
@@ -173,6 +173,11 @@ func (o AnalyticsProduct) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.UnitsSold) {
 		toSerialize["unitsSold"] = o.UnitsSold
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -202,15 +207,23 @@ func (o *AnalyticsProduct) UnmarshalJSON(data []byte) (err error) {
 
 	varAnalyticsProduct := _AnalyticsProduct{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAnalyticsProduct)
+	err = json.Unmarshal(data, &varAnalyticsProduct)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AnalyticsProduct(varAnalyticsProduct)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "catalogId")
+		delete(additionalProperties, "unitsSold")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

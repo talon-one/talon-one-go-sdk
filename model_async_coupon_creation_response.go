@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &AsyncCouponCreationResponse{}
 // AsyncCouponCreationResponse struct for AsyncCouponCreationResponse
 type AsyncCouponCreationResponse struct {
 	// The batch ID that all coupons created by the request will have.
-	BatchId string `json:"batchId"`
+	BatchId              string `json:"batchId"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AsyncCouponCreationResponse AsyncCouponCreationResponse
@@ -80,6 +80,11 @@ func (o AsyncCouponCreationResponse) MarshalJSON() ([]byte, error) {
 func (o AsyncCouponCreationResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["batchId"] = o.BatchId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *AsyncCouponCreationResponse) UnmarshalJSON(data []byte) (err error) {
 
 	varAsyncCouponCreationResponse := _AsyncCouponCreationResponse{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAsyncCouponCreationResponse)
+	err = json.Unmarshal(data, &varAsyncCouponCreationResponse)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AsyncCouponCreationResponse(varAsyncCouponCreationResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "batchId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

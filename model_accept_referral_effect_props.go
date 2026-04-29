@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &AcceptReferralEffectProps{}
 // AcceptReferralEffectProps The properties specific to the \"acceptReferral\" effect. TThis gets triggered whenever the referral code is valid and all other conditions in the rules of its campaign are met.
 type AcceptReferralEffectProps struct {
 	// The referral code that was accepted.
-	Value string `json:"value"`
+	Value                string `json:"value"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AcceptReferralEffectProps AcceptReferralEffectProps
@@ -80,6 +80,11 @@ func (o AcceptReferralEffectProps) MarshalJSON() ([]byte, error) {
 func (o AcceptReferralEffectProps) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["value"] = o.Value
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *AcceptReferralEffectProps) UnmarshalJSON(data []byte) (err error) {
 
 	varAcceptReferralEffectProps := _AcceptReferralEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAcceptReferralEffectProps)
+	err = json.Unmarshal(data, &varAcceptReferralEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AcceptReferralEffectProps(varAcceptReferralEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "value")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

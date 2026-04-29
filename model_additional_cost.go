@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,7 +20,8 @@ var _ MappedNullable = &AdditionalCost{}
 
 // AdditionalCost struct for AdditionalCost
 type AdditionalCost struct {
-	Price float32 `json:"price"`
+	Price                float32 `json:"price"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AdditionalCost AdditionalCost
@@ -79,6 +79,11 @@ func (o AdditionalCost) MarshalJSON() ([]byte, error) {
 func (o AdditionalCost) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["price"] = o.Price
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -106,15 +111,20 @@ func (o *AdditionalCost) UnmarshalJSON(data []byte) (err error) {
 
 	varAdditionalCost := _AdditionalCost{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAdditionalCost)
+	err = json.Unmarshal(data, &varAdditionalCost)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AdditionalCost(varAdditionalCost)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "price")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

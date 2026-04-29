@@ -19,8 +19,11 @@ var _ MappedNullable = &AttributesSettings{}
 
 // AttributesSettings Arbitrary settings associated with attributes.
 type AttributesSettings struct {
-	Mandatory *AttributesMandatory `json:"mandatory,omitempty"`
+	Mandatory            *AttributesMandatory `json:"mandatory,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _AttributesSettings AttributesSettings
 
 // NewAttributesSettings instantiates a new AttributesSettings object
 // This constructor will assign default values to properties that have it defined,
@@ -84,7 +87,33 @@ func (o AttributesSettings) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Mandatory) {
 		toSerialize["mandatory"] = o.Mandatory
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *AttributesSettings) UnmarshalJSON(data []byte) (err error) {
+	varAttributesSettings := _AttributesSettings{}
+
+	err = json.Unmarshal(data, &varAttributesSettings)
+
+	if err != nil {
+		return err
+	}
+
+	*o = AttributesSettings(varAttributesSettings)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "mandatory")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableAttributesSettings struct {

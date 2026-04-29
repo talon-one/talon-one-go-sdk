@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,8 +23,9 @@ type NewAccountSignUp struct {
 	// The email address associated with the user profile.
 	Email string `json:"email"`
 	// The password for your account.
-	Password    string `json:"password"`
-	CompanyName string `json:"companyName"`
+	Password             string `json:"password"`
+	CompanyName          string `json:"companyName"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewAccountSignUp NewAccountSignUp
@@ -135,6 +135,11 @@ func (o NewAccountSignUp) ToMap() (map[string]interface{}, error) {
 	toSerialize["email"] = o.Email
 	toSerialize["password"] = o.Password
 	toSerialize["companyName"] = o.CompanyName
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -164,15 +169,22 @@ func (o *NewAccountSignUp) UnmarshalJSON(data []byte) (err error) {
 
 	varNewAccountSignUp := _NewAccountSignUp{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewAccountSignUp)
+	err = json.Unmarshal(data, &varNewAccountSignUp)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewAccountSignUp(varNewAccountSignUp)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "email")
+		delete(additionalProperties, "password")
+		delete(additionalProperties, "companyName")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -38,6 +37,7 @@ type TierDowngradeData struct {
 	TierExpirationDate *time.Time `json:"TierExpirationDate,omitempty"`
 	// The exact date and time the tier was changed.
 	TimestampOfTierChange time.Time `json:"TimestampOfTierChange"`
+	AdditionalProperties  map[string]interface{}
 }
 
 type _TierDowngradeData TierDowngradeData
@@ -297,6 +297,11 @@ func (o TierDowngradeData) ToMap() (map[string]interface{}, error) {
 		toSerialize["TierExpirationDate"] = o.TierExpirationDate
 	}
 	toSerialize["TimestampOfTierChange"] = o.TimestampOfTierChange
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -329,15 +334,27 @@ func (o *TierDowngradeData) UnmarshalJSON(data []byte) (err error) {
 
 	varTierDowngradeData := _TierDowngradeData{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varTierDowngradeData)
+	err = json.Unmarshal(data, &varTierDowngradeData)
 
 	if err != nil {
 		return err
 	}
 
 	*o = TierDowngradeData(varTierDowngradeData)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "CustomerProfileID")
+		delete(additionalProperties, "LoyaltyProgramID")
+		delete(additionalProperties, "SubledgerID")
+		delete(additionalProperties, "CurrentTier")
+		delete(additionalProperties, "CurrentPoints")
+		delete(additionalProperties, "OldTier")
+		delete(additionalProperties, "TierExpirationDate")
+		delete(additionalProperties, "TimestampOfTierChange")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

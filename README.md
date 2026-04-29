@@ -570,6 +570,9 @@ Class | Method | HTTP request | Description
 - [CampaignDetail](docs/CampaignDetail.md)
 - [CampaignEditedNotification](docs/CampaignEditedNotification.md)
 - [CampaignEditedNotificationItem](docs/CampaignEditedNotificationItem.md)
+- [CampaignEligibility](docs/CampaignEligibility.md)
+- [CampaignEligibilityDetails](docs/CampaignEligibilityDetails.md)
+- [CampaignEligibilityFailureDetails](docs/CampaignEligibilityFailureDetails.md)
 - [CampaignEntity](docs/CampaignEntity.md)
 - [CampaignEvaluationGroup](docs/CampaignEvaluationGroup.md)
 - [CampaignEvaluationPosition](docs/CampaignEvaluationPosition.md)
@@ -1037,6 +1040,8 @@ Class | Method | HTTP request | Description
 - [RollbackIncreasedAchievementProgressEffectProps](docs/RollbackIncreasedAchievementProgressEffectProps.md)
 - [RollbackReferralEffectProps](docs/RollbackReferralEffectProps.md)
 - [Rule](docs/Rule.md)
+- [RuleEligibility](docs/RuleEligibility.md)
+- [RuleEligibilityFailureDetails](docs/RuleEligibilityFailureDetails.md)
 - [RuleFailureReason](docs/RuleFailureReason.md)
 - [RuleMetadata](docs/RuleMetadata.md)
 - [Ruleset](docs/Ruleset.md)
@@ -1143,6 +1148,7 @@ Class | Method | HTTP request | Description
 - [UpdatePriceType](docs/UpdatePriceType.md)
 - [UpdateReferral](docs/UpdateReferral.md)
 - [UpdateReferralBatch](docs/UpdateReferralBatch.md)
+- [UpdateReward](docs/UpdateReward.md)
 - [UpdateRole](docs/UpdateRole.md)
 - [UpdateStore](docs/UpdateStore.md)
 - [UpdateUser](docs/UpdateUser.md)
@@ -1160,22 +1166,6 @@ Class | Method | HTTP request | Description
 ## Authorization
 
 ### api_key_v1
-
-- **Type**: API key
-- **API key parameter name**: Authorization
-- **Location**: HTTP header
-
-Note, each API key must be added to a map of `map[string]APIKey` where the key is: Authorization and passed in as the auth context for each request.
-
-### management_key
-
-- **Type**: API key
-- **API key parameter name**: Authorization
-- **Location**: HTTP header
-
-Note, each API key must be added to a map of `map[string]APIKey` where the key is: Authorization and passed in as the auth context for each request.
-
-### manager_auth
 
 - **Type**: API key
 - **API key parameter name**: Authorization

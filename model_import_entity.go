@@ -20,8 +20,11 @@ var _ MappedNullable = &ImportEntity{}
 // ImportEntity struct for ImportEntity
 type ImportEntity struct {
 	// The ID of the Import which created this referral.
-	ImportId *int64 `json:"importId,omitempty"`
+	ImportId             *int64 `json:"importId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ImportEntity ImportEntity
 
 // NewImportEntity instantiates a new ImportEntity object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o ImportEntity) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ImportId) {
 		toSerialize["importId"] = o.ImportId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ImportEntity) UnmarshalJSON(data []byte) (err error) {
+	varImportEntity := _ImportEntity{}
+
+	err = json.Unmarshal(data, &varImportEntity)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ImportEntity(varImportEntity)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "importId")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableImportEntity struct {

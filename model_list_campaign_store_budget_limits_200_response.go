@@ -19,8 +19,11 @@ var _ MappedNullable = &ListCampaignStoreBudgetLimits200Response{}
 
 // ListCampaignStoreBudgetLimits200Response struct for ListCampaignStoreBudgetLimits200Response
 type ListCampaignStoreBudgetLimits200Response struct {
-	Data []ListCampaignStoreBudgets `json:"data,omitempty"`
+	Data                 []ListCampaignStoreBudgets `json:"data,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ListCampaignStoreBudgetLimits200Response ListCampaignStoreBudgetLimits200Response
 
 // NewListCampaignStoreBudgetLimits200Response instantiates a new ListCampaignStoreBudgetLimits200Response object
 // This constructor will assign default values to properties that have it defined,
@@ -84,7 +87,33 @@ func (o ListCampaignStoreBudgetLimits200Response) ToMap() (map[string]interface{
 	if !IsNil(o.Data) {
 		toSerialize["data"] = o.Data
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ListCampaignStoreBudgetLimits200Response) UnmarshalJSON(data []byte) (err error) {
+	varListCampaignStoreBudgetLimits200Response := _ListCampaignStoreBudgetLimits200Response{}
+
+	err = json.Unmarshal(data, &varListCampaignStoreBudgetLimits200Response)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ListCampaignStoreBudgetLimits200Response(varListCampaignStoreBudgetLimits200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableListCampaignStoreBudgetLimits200Response struct {

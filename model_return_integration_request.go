@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type ReturnIntegrationRequest struct {
 	// The returned cart items details.
 	Return NewReturn `json:"return"`
 	// Extends the response with the chosen data entities. Use this property to get as much data as you need in one _Update customer session_ request instead of sending extra requests to other endpoints.
-	ResponseContent []string `json:"responseContent,omitempty"`
+	ResponseContent      []string `json:"responseContent,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ReturnIntegrationRequest ReturnIntegrationRequest
@@ -117,6 +117,11 @@ func (o ReturnIntegrationRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ResponseContent) {
 		toSerialize["responseContent"] = o.ResponseContent
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -144,15 +149,21 @@ func (o *ReturnIntegrationRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varReturnIntegrationRequest := _ReturnIntegrationRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varReturnIntegrationRequest)
+	err = json.Unmarshal(data, &varReturnIntegrationRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ReturnIntegrationRequest(varReturnIntegrationRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "return")
+		delete(additionalProperties, "responseContent")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

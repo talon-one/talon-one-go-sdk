@@ -21,8 +21,11 @@ var _ MappedNullable = &IntegrationCustomerSessionResponse{}
 type IntegrationCustomerSessionResponse struct {
 	CustomerSession *CustomerSessionV2 `json:"customerSession,omitempty"`
 	// The returned effects.  **Note:** This endpoint returns only the effects that are valid after any rollback effects and their corresponding non-rollback effects are removed.
-	Effects []Effect `json:"effects,omitempty"`
+	Effects              []Effect `json:"effects,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _IntegrationCustomerSessionResponse IntegrationCustomerSessionResponse
 
 // NewIntegrationCustomerSessionResponse instantiates a new IntegrationCustomerSessionResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -121,7 +124,34 @@ func (o IntegrationCustomerSessionResponse) ToMap() (map[string]interface{}, err
 	if !IsNil(o.Effects) {
 		toSerialize["effects"] = o.Effects
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *IntegrationCustomerSessionResponse) UnmarshalJSON(data []byte) (err error) {
+	varIntegrationCustomerSessionResponse := _IntegrationCustomerSessionResponse{}
+
+	err = json.Unmarshal(data, &varIntegrationCustomerSessionResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = IntegrationCustomerSessionResponse(varIntegrationCustomerSessionResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "customerSession")
+		delete(additionalProperties, "effects")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableIntegrationCustomerSessionResponse struct {

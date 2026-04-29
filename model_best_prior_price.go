@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -31,9 +30,10 @@ type BestPriorPrice struct {
 	// The context ID of the context active at the time of observation.
 	ContextId string `json:"contextId"`
 	// Price of the item.
-	Price    float32                `json:"price"`
-	Metadata BestPriorPriceMetadata `json:"metadata"`
-	Target   map[string]interface{} `json:"target"`
+	Price                float32                `json:"price"`
+	Metadata             BestPriorPriceMetadata `json:"metadata"`
+	Target               map[string]interface{} `json:"target"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _BestPriorPrice BestPriorPrice
@@ -247,6 +247,11 @@ func (o BestPriorPrice) ToMap() (map[string]interface{}, error) {
 	toSerialize["price"] = o.Price
 	toSerialize["metadata"] = o.Metadata
 	toSerialize["target"] = o.Target
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -280,15 +285,26 @@ func (o *BestPriorPrice) UnmarshalJSON(data []byte) (err error) {
 
 	varBestPriorPrice := _BestPriorPrice{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varBestPriorPrice)
+	err = json.Unmarshal(data, &varBestPriorPrice)
 
 	if err != nil {
 		return err
 	}
 
 	*o = BestPriorPrice(varBestPriorPrice)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "sku")
+		delete(additionalProperties, "observedAt")
+		delete(additionalProperties, "contextId")
+		delete(additionalProperties, "price")
+		delete(additionalProperties, "metadata")
+		delete(additionalProperties, "target")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

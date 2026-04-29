@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -28,7 +27,8 @@ type OneTimeCode struct {
 	// The two-factor authentication token created during sign-in. This token is used to ensure that the correct user is trying to sign in with a given one-time security code.
 	Token string `json:"token"`
 	// The one-time security code used for signing in.
-	Code *string `json:"code,omitempty"`
+	Code                 *string `json:"code,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _OneTimeCode OneTimeCode
@@ -173,6 +173,11 @@ func (o OneTimeCode) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Code) {
 		toSerialize["code"] = o.Code
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -202,15 +207,23 @@ func (o *OneTimeCode) UnmarshalJSON(data []byte) (err error) {
 
 	varOneTimeCode := _OneTimeCode{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varOneTimeCode)
+	err = json.Unmarshal(data, &varOneTimeCode)
 
 	if err != nil {
 		return err
 	}
 
 	*o = OneTimeCode(varOneTimeCode)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "userId")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "token")
+		delete(additionalProperties, "code")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

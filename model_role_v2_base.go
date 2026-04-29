@@ -26,8 +26,11 @@ type RoleV2Base struct {
 	// The permissions that this role gives.
 	Permissions *RoleV2Permissions `json:"permissions,omitempty"`
 	// A list of user IDs the role is assigned to.
-	Members []int64 `json:"members,omitempty"`
+	Members              []int64 `json:"members,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _RoleV2Base RoleV2Base
 
 // NewRoleV2Base instantiates a new RoleV2Base object
 // This constructor will assign default values to properties that have it defined,
@@ -196,7 +199,36 @@ func (o RoleV2Base) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Members) {
 		toSerialize["members"] = o.Members
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *RoleV2Base) UnmarshalJSON(data []byte) (err error) {
+	varRoleV2Base := _RoleV2Base{}
+
+	err = json.Unmarshal(data, &varRoleV2Base)
+
+	if err != nil {
+		return err
+	}
+
+	*o = RoleV2Base(varRoleV2Base)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "permissions")
+		delete(additionalProperties, "members")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableRoleV2Base struct {

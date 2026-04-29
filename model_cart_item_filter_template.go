@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type CartItemFilterTemplate struct {
 	// The name of the Application cart item filter.
 	Name string `json:"name"`
 	// The Talang expression for the cart item filter.
-	Expression []interface{} `json:"expression"`
+	Expression           []interface{} `json:"expression"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CartItemFilterTemplate CartItemFilterTemplate
@@ -108,6 +108,11 @@ func (o CartItemFilterTemplate) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["name"] = o.Name
 	toSerialize["expression"] = o.Expression
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *CartItemFilterTemplate) UnmarshalJSON(data []byte) (err error) {
 
 	varCartItemFilterTemplate := _CartItemFilterTemplate{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCartItemFilterTemplate)
+	err = json.Unmarshal(data, &varCartItemFilterTemplate)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CartItemFilterTemplate(varCartItemFilterTemplate)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "expression")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type CouponCreatedEffectProps struct {
 	// The coupon code that was created.
 	Value string `json:"value"`
 	// The integration identifier of the customer for whom this coupon was created.
-	ProfileId string `json:"profileId"`
+	ProfileId            string `json:"profileId"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CouponCreatedEffectProps CouponCreatedEffectProps
@@ -108,6 +108,11 @@ func (o CouponCreatedEffectProps) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["value"] = o.Value
 	toSerialize["profileId"] = o.ProfileId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *CouponCreatedEffectProps) UnmarshalJSON(data []byte) (err error) {
 
 	varCouponCreatedEffectProps := _CouponCreatedEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCouponCreatedEffectProps)
+	err = json.Unmarshal(data, &varCouponCreatedEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CouponCreatedEffectProps(varCouponCreatedEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "value")
+		delete(additionalProperties, "profileId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

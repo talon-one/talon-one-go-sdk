@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -34,7 +33,8 @@ type DeductLoyaltyPointsEffectProps struct {
 	// The name property gets one of the following two values. It can be the loyalty program name or it can represent a reason for the respective deduction of loyalty points. The latter is an optional value defined in a deduction rule.
 	Name string `json:"name"`
 	// The card on which these points were added.
-	CardIdentifier *string `json:"cardIdentifier,omitempty" validate:"regexp=^[A-Za-z0-9._%+@-]+$"`
+	CardIdentifier       *string `json:"cardIdentifier,omitempty" validate:"regexp=^[A-Za-z0-9._%+@-]+$"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _DeductLoyaltyPointsEffectProps DeductLoyaltyPointsEffectProps
@@ -257,6 +257,11 @@ func (o DeductLoyaltyPointsEffectProps) ToMap() (map[string]interface{}, error) 
 	if !IsNil(o.CardIdentifier) {
 		toSerialize["cardIdentifier"] = o.CardIdentifier
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -289,15 +294,26 @@ func (o *DeductLoyaltyPointsEffectProps) UnmarshalJSON(data []byte) (err error) 
 
 	varDeductLoyaltyPointsEffectProps := _DeductLoyaltyPointsEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varDeductLoyaltyPointsEffectProps)
+	err = json.Unmarshal(data, &varDeductLoyaltyPointsEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = DeductLoyaltyPointsEffectProps(varDeductLoyaltyPointsEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "ruleTitle")
+		delete(additionalProperties, "programId")
+		delete(additionalProperties, "subLedgerId")
+		delete(additionalProperties, "value")
+		delete(additionalProperties, "transactionUUID")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "cardIdentifier")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

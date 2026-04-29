@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type CampaignNotificationGeneric struct {
 	// The total size of the result set.
 	TotalResultSize int64 `json:"TotalResultSize"`
 	// A list of campaign notification data.
-	Data []map[string]interface{} `json:"Data"`
+	Data                 []map[string]interface{} `json:"Data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CampaignNotificationGeneric CampaignNotificationGeneric
@@ -136,6 +136,11 @@ func (o CampaignNotificationGeneric) ToMap() (map[string]interface{}, error) {
 	toSerialize["NotificationType"] = o.NotificationType
 	toSerialize["TotalResultSize"] = o.TotalResultSize
 	toSerialize["Data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -165,15 +170,22 @@ func (o *CampaignNotificationGeneric) UnmarshalJSON(data []byte) (err error) {
 
 	varCampaignNotificationGeneric := _CampaignNotificationGeneric{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCampaignNotificationGeneric)
+	err = json.Unmarshal(data, &varCampaignNotificationGeneric)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CampaignNotificationGeneric(varCampaignNotificationGeneric)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "NotificationType")
+		delete(additionalProperties, "TotalResultSize")
+		delete(additionalProperties, "Data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

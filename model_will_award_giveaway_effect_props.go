@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -27,6 +26,7 @@ type WillAwardGiveawayEffectProps struct {
 	PoolName string `json:"poolName"`
 	// The integration ID of the profile that will be awarded the giveaway.
 	RecipientIntegrationId string `json:"recipientIntegrationId"`
+	AdditionalProperties   map[string]interface{}
 }
 
 type _WillAwardGiveawayEffectProps WillAwardGiveawayEffectProps
@@ -136,6 +136,11 @@ func (o WillAwardGiveawayEffectProps) ToMap() (map[string]interface{}, error) {
 	toSerialize["poolId"] = o.PoolId
 	toSerialize["poolName"] = o.PoolName
 	toSerialize["recipientIntegrationId"] = o.RecipientIntegrationId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -165,15 +170,22 @@ func (o *WillAwardGiveawayEffectProps) UnmarshalJSON(data []byte) (err error) {
 
 	varWillAwardGiveawayEffectProps := _WillAwardGiveawayEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varWillAwardGiveawayEffectProps)
+	err = json.Unmarshal(data, &varWillAwardGiveawayEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = WillAwardGiveawayEffectProps(varWillAwardGiveawayEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "poolId")
+		delete(additionalProperties, "poolName")
+		delete(additionalProperties, "recipientIntegrationId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

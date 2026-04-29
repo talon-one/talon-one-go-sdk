@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &GetEventTypes200Response{}
 
 // GetEventTypes200Response struct for GetEventTypes200Response
 type GetEventTypes200Response struct {
-	TotalResultSize int64       `json:"totalResultSize"`
-	Data            []EventType `json:"data"`
+	TotalResultSize      int64       `json:"totalResultSize"`
+	Data                 []EventType `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GetEventTypes200Response GetEventTypes200Response
@@ -106,6 +106,11 @@ func (o GetEventTypes200Response) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["totalResultSize"] = o.TotalResultSize
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -134,15 +139,21 @@ func (o *GetEventTypes200Response) UnmarshalJSON(data []byte) (err error) {
 
 	varGetEventTypes200Response := _GetEventTypes200Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGetEventTypes200Response)
+	err = json.Unmarshal(data, &varGetEventTypes200Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GetEventTypes200Response(varGetEventTypes200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "totalResultSize")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

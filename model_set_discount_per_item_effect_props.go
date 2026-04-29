@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -47,6 +46,7 @@ type SetDiscountPerItemEffectProps struct {
 	TargetedItemSubPosition *float32 `json:"targetedItemSubPosition,omitempty"`
 	// When set to `true`, the applied discount is excluded from the item's price history.
 	ExcludedFromPriceHistory *bool `json:"excludedFromPriceHistory,omitempty"`
+	AdditionalProperties     map[string]interface{}
 }
 
 type _SetDiscountPerItemEffectProps SetDiscountPerItemEffectProps
@@ -506,6 +506,11 @@ func (o SetDiscountPerItemEffectProps) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ExcludedFromPriceHistory) {
 		toSerialize["excludedFromPriceHistory"] = o.ExcludedFromPriceHistory
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -535,15 +540,32 @@ func (o *SetDiscountPerItemEffectProps) UnmarshalJSON(data []byte) (err error) {
 
 	varSetDiscountPerItemEffectProps := _SetDiscountPerItemEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varSetDiscountPerItemEffectProps)
+	err = json.Unmarshal(data, &varSetDiscountPerItemEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = SetDiscountPerItemEffectProps(varSetDiscountPerItemEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "value")
+		delete(additionalProperties, "position")
+		delete(additionalProperties, "subPosition")
+		delete(additionalProperties, "desiredValue")
+		delete(additionalProperties, "scope")
+		delete(additionalProperties, "totalDiscount")
+		delete(additionalProperties, "desiredTotalDiscount")
+		delete(additionalProperties, "bundleIndex")
+		delete(additionalProperties, "bundleName")
+		delete(additionalProperties, "targetedItemPosition")
+		delete(additionalProperties, "targetedItemSubPosition")
+		delete(additionalProperties, "excludedFromPriceHistory")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

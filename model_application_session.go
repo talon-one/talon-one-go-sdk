@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -51,7 +50,8 @@ type ApplicationSession struct {
 	// The total sum of the session before any discounts applied.
 	Total float32 `json:"total"`
 	// Arbitrary properties associated with this item.
-	Attributes map[string]interface{} `json:"attributes,omitempty"`
+	Attributes           map[string]interface{} `json:"attributes,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ApplicationSession ApplicationSession
@@ -509,6 +509,11 @@ func (o ApplicationSession) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Attributes) {
 		toSerialize["attributes"] = o.Attributes
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -546,15 +551,34 @@ func (o *ApplicationSession) UnmarshalJSON(data []byte) (err error) {
 
 	varApplicationSession := _ApplicationSession{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varApplicationSession)
+	err = json.Unmarshal(data, &varApplicationSession)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ApplicationSession(varApplicationSession)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "integrationId")
+		delete(additionalProperties, "storeIntegrationId")
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "profileId")
+		delete(additionalProperties, "profileintegrationid")
+		delete(additionalProperties, "coupon")
+		delete(additionalProperties, "referral")
+		delete(additionalProperties, "state")
+		delete(additionalProperties, "cartItems")
+		delete(additionalProperties, "discounts")
+		delete(additionalProperties, "totalDiscounts")
+		delete(additionalProperties, "total")
+		delete(additionalProperties, "attributes")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
