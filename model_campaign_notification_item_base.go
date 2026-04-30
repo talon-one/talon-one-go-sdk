@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &CampaignNotificationItemBase{}
 // CampaignNotificationItemBase struct for CampaignNotificationItemBase
 type CampaignNotificationItemBase struct {
 	// The type of the event. Can be one of the following: ['campaign_state_changed', 'campaign_ruleset_changed', 'campaign_edited', 'campaign_created', 'campaign_deleted']
-	Event string `json:"Event"`
+	Event                string `json:"Event"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CampaignNotificationItemBase CampaignNotificationItemBase
@@ -80,6 +80,11 @@ func (o CampaignNotificationItemBase) MarshalJSON() ([]byte, error) {
 func (o CampaignNotificationItemBase) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["Event"] = o.Event
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *CampaignNotificationItemBase) UnmarshalJSON(data []byte) (err error) {
 
 	varCampaignNotificationItemBase := _CampaignNotificationItemBase{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCampaignNotificationItemBase)
+	err = json.Unmarshal(data, &varCampaignNotificationItemBase)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CampaignNotificationItemBase(varCampaignNotificationItemBase)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "Event")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -31,7 +30,8 @@ type ProductUnitAnalyticsDataPoint struct {
 	// The ID of the product.
 	ProductId int64 `json:"productId"`
 	// The name of the product.
-	ProductName string `json:"productName"`
+	ProductName          string `json:"productName"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ProductUnitAnalyticsDataPoint ProductUnitAnalyticsDataPoint
@@ -193,6 +193,11 @@ func (o ProductUnitAnalyticsDataPoint) ToMap() (map[string]interface{}, error) {
 	toSerialize["unitsSold"] = o.UnitsSold
 	toSerialize["productId"] = o.ProductId
 	toSerialize["productName"] = o.ProductName
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -224,15 +229,24 @@ func (o *ProductUnitAnalyticsDataPoint) UnmarshalJSON(data []byte) (err error) {
 
 	varProductUnitAnalyticsDataPoint := _ProductUnitAnalyticsDataPoint{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varProductUnitAnalyticsDataPoint)
+	err = json.Unmarshal(data, &varProductUnitAnalyticsDataPoint)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ProductUnitAnalyticsDataPoint(varProductUnitAnalyticsDataPoint)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "startTime")
+		delete(additionalProperties, "endTime")
+		delete(additionalProperties, "unitsSold")
+		delete(additionalProperties, "productId")
+		delete(additionalProperties, "productName")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

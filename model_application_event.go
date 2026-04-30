@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -43,7 +42,8 @@ type ApplicationEvent struct {
 	// An array containing the effects that were applied as a result of this event.
 	Effects []Effect `json:"effects"`
 	// An array containing the rule failure reasons which happened during this event.
-	RuleFailureReasons []RuleFailureReason `json:"ruleFailureReasons,omitempty"`
+	RuleFailureReasons   []RuleFailureReason `json:"ruleFailureReasons,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ApplicationEvent ApplicationEvent
@@ -406,6 +406,11 @@ func (o ApplicationEvent) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.RuleFailureReasons) {
 		toSerialize["ruleFailureReasons"] = o.RuleFailureReasons
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -438,15 +443,30 @@ func (o *ApplicationEvent) UnmarshalJSON(data []byte) (err error) {
 
 	varApplicationEvent := _ApplicationEvent{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varApplicationEvent)
+	err = json.Unmarshal(data, &varApplicationEvent)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ApplicationEvent(varApplicationEvent)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "profileId")
+		delete(additionalProperties, "storeId")
+		delete(additionalProperties, "storeIntegrationId")
+		delete(additionalProperties, "sessionId")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "effects")
+		delete(additionalProperties, "ruleFailureReasons")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

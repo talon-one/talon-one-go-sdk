@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,8 +23,9 @@ type ItemAttribute struct {
 	// The ID of the attribute of the item.
 	Attributeid int64 `json:"attributeid"`
 	// The name of the attribute.
-	Name  string      `json:"name"`
-	Value interface{} `json:"value"`
+	Name                 string      `json:"name"`
+	Value                interface{} `json:"value"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ItemAttribute ItemAttribute
@@ -139,6 +139,11 @@ func (o ItemAttribute) ToMap() (map[string]interface{}, error) {
 	if o.Value != nil {
 		toSerialize["value"] = o.Value
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -168,15 +173,22 @@ func (o *ItemAttribute) UnmarshalJSON(data []byte) (err error) {
 
 	varItemAttribute := _ItemAttribute{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varItemAttribute)
+	err = json.Unmarshal(data, &varItemAttribute)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ItemAttribute(varItemAttribute)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "attributeid")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "value")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -41,7 +40,8 @@ type GiveawaysPool struct {
 	// ID of the user who created this giveaways pool.
 	CreatedBy int64 `json:"createdBy"`
 	// ID of the user who last updated this giveaways pool if available.
-	ModifiedBy *int64 `json:"modifiedBy,omitempty"`
+	ModifiedBy           *int64 `json:"modifiedBy,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GiveawaysPool GiveawaysPool
@@ -369,6 +369,11 @@ func (o GiveawaysPool) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ModifiedBy) {
 		toSerialize["modifiedBy"] = o.ModifiedBy
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -401,15 +406,29 @@ func (o *GiveawaysPool) UnmarshalJSON(data []byte) (err error) {
 
 	varGiveawaysPool := _GiveawaysPool{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGiveawaysPool)
+	err = json.Unmarshal(data, &varGiveawaysPool)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GiveawaysPool(varGiveawaysPool)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "subscribedApplicationsIds")
+		delete(additionalProperties, "sandbox")
+		delete(additionalProperties, "modified")
+		delete(additionalProperties, "createdBy")
+		delete(additionalProperties, "modifiedBy")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

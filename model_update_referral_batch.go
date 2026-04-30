@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -31,7 +30,8 @@ type UpdateReferralBatch struct {
 	// Expiration date of the referral code. Referral never expires if this is omitted.
 	ExpiryDate *time.Time `json:"expiryDate,omitempty"`
 	// The number of times a referral code can be used. This can be set to 0 for no limit, but any campaign usage limits will still apply.
-	UsageLimit *int64 `json:"usageLimit,omitempty"`
+	UsageLimit           *int64 `json:"usageLimit,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _UpdateReferralBatch UpdateReferralBatch
@@ -229,6 +229,11 @@ func (o UpdateReferralBatch) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.UsageLimit) {
 		toSerialize["usageLimit"] = o.UsageLimit
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -256,15 +261,24 @@ func (o *UpdateReferralBatch) UnmarshalJSON(data []byte) (err error) {
 
 	varUpdateReferralBatch := _UpdateReferralBatch{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varUpdateReferralBatch)
+	err = json.Unmarshal(data, &varUpdateReferralBatch)
 
 	if err != nil {
 		return err
 	}
 
 	*o = UpdateReferralBatch(varUpdateReferralBatch)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "batchID")
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "usageLimit")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

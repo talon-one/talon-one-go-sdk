@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -29,9 +28,10 @@ type History struct {
 	// Identifier of the relevant context at the time the price was observed (e.g. summer sale).
 	ContextId string `json:"contextId"`
 	// Price of the item.
-	Price    float32                `json:"price"`
-	Metadata BestPriorPriceMetadata `json:"metadata"`
-	Target   map[string]interface{} `json:"target"`
+	Price                float32                `json:"price"`
+	Metadata             BestPriorPriceMetadata `json:"metadata"`
+	Target               map[string]interface{} `json:"target"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _History History
@@ -219,6 +219,11 @@ func (o History) ToMap() (map[string]interface{}, error) {
 	toSerialize["price"] = o.Price
 	toSerialize["metadata"] = o.Metadata
 	toSerialize["target"] = o.Target
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -251,15 +256,25 @@ func (o *History) UnmarshalJSON(data []byte) (err error) {
 
 	varHistory := _History{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varHistory)
+	err = json.Unmarshal(data, &varHistory)
 
 	if err != nil {
 		return err
 	}
 
 	*o = History(varHistory)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "observedAt")
+		delete(additionalProperties, "contextId")
+		delete(additionalProperties, "price")
+		delete(additionalProperties, "metadata")
+		delete(additionalProperties, "target")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

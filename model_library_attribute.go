@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -34,7 +33,8 @@ type LibraryAttribute struct {
 	// The presets that indicate to which industry the attribute applies to.
 	Presets []string `json:"presets"`
 	// Short suggestions that are used to group attributes.
-	Suggestions []string `json:"suggestions"`
+	Suggestions          []string `json:"suggestions"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _LibraryAttribute LibraryAttribute
@@ -248,6 +248,11 @@ func (o LibraryAttribute) ToMap() (map[string]interface{}, error) {
 	toSerialize["description"] = o.Description
 	toSerialize["presets"] = o.Presets
 	toSerialize["suggestions"] = o.Suggestions
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -281,15 +286,26 @@ func (o *LibraryAttribute) UnmarshalJSON(data []byte) (err error) {
 
 	varLibraryAttribute := _LibraryAttribute{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varLibraryAttribute)
+	err = json.Unmarshal(data, &varLibraryAttribute)
 
 	if err != nil {
 		return err
 	}
 
 	*o = LibraryAttribute(varLibraryAttribute)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "entity")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "presets")
+		delete(additionalProperties, "suggestions")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

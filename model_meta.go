@@ -26,8 +26,11 @@ type Meta struct {
 	CouponRejectionReason   *CouponRejectionReason   `json:"couponRejectionReason,omitempty"`
 	ReferralRejectionReason *ReferralRejectionReason `json:"referralRejectionReason,omitempty"`
 	// Contains warnings about possible misuse.
-	Warnings map[string]interface{} `json:"warnings,omitempty"`
+	Warnings             map[string]interface{} `json:"warnings,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _Meta Meta
 
 // NewMeta instantiates a new Meta object
 // This constructor will assign default values to properties that have it defined,
@@ -231,7 +234,37 @@ func (o Meta) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Warnings) {
 		toSerialize["warnings"] = o.Warnings
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *Meta) UnmarshalJSON(data []byte) (err error) {
+	varMeta := _Meta{}
+
+	err = json.Unmarshal(data, &varMeta)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Meta(varMeta)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "campaigns")
+		delete(additionalProperties, "coupons")
+		delete(additionalProperties, "couponRejectionReason")
+		delete(additionalProperties, "referralRejectionReason")
+		delete(additionalProperties, "warnings")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableMeta struct {

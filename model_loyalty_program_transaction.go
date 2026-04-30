@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -63,7 +62,8 @@ type LoyaltyProgramTransaction struct {
 	// The flags of the transaction, when applicable. The `createsNegativeBalance`  flag indicates whether the transaction results in a negative balance.
 	Flags *LoyaltyLedgerEntryFlags `json:"flags,omitempty"`
 	// The duration for which the points remain active, relative to the  activation date.  **Note**: This only applies to points for which `awaitsActivation` is `true` and `expiryDate` is not set.
-	ValidityDuration *string `json:"validityDuration,omitempty"`
+	ValidityDuration     *string `json:"validityDuration,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _LoyaltyProgramTransaction LoyaltyProgramTransaction
@@ -740,6 +740,11 @@ func (o LoyaltyProgramTransaction) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ValidityDuration) {
 		toSerialize["validityDuration"] = o.ValidityDuration
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -776,15 +781,40 @@ func (o *LoyaltyProgramTransaction) UnmarshalJSON(data []byte) (err error) {
 
 	varLoyaltyProgramTransaction := _LoyaltyProgramTransaction{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varLoyaltyProgramTransaction)
+	err = json.Unmarshal(data, &varLoyaltyProgramTransaction)
 
 	if err != nil {
 		return err
 	}
 
 	*o = LoyaltyProgramTransaction(varLoyaltyProgramTransaction)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "transactionUUID")
+		delete(additionalProperties, "programId")
+		delete(additionalProperties, "campaignId")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "amount")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "customerProfileId")
+		delete(additionalProperties, "cardIdentifier")
+		delete(additionalProperties, "subledgerId")
+		delete(additionalProperties, "customerSessionId")
+		delete(additionalProperties, "importId")
+		delete(additionalProperties, "userId")
+		delete(additionalProperties, "userEmail")
+		delete(additionalProperties, "rulesetId")
+		delete(additionalProperties, "ruleName")
+		delete(additionalProperties, "flags")
+		delete(additionalProperties, "validityDuration")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -27,7 +26,8 @@ type CampaignDeletedNotificationItem struct {
 	// The campaign whose state changed.
 	Campaign Campaign `json:"campaign"`
 	// Time when the campaign was deleted.
-	DeletedAt time.Time `json:"deletedAt"`
+	DeletedAt            time.Time `json:"deletedAt"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CampaignDeletedNotificationItem CampaignDeletedNotificationItem
@@ -137,6 +137,11 @@ func (o CampaignDeletedNotificationItem) ToMap() (map[string]interface{}, error)
 	toSerialize["Event"] = o.Event
 	toSerialize["campaign"] = o.Campaign
 	toSerialize["deletedAt"] = o.DeletedAt
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -166,15 +171,22 @@ func (o *CampaignDeletedNotificationItem) UnmarshalJSON(data []byte) (err error)
 
 	varCampaignDeletedNotificationItem := _CampaignDeletedNotificationItem{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCampaignDeletedNotificationItem)
+	err = json.Unmarshal(data, &varCampaignDeletedNotificationItem)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CampaignDeletedNotificationItem(varCampaignDeletedNotificationItem)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "Event")
+		delete(additionalProperties, "campaign")
+		delete(additionalProperties, "deletedAt")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -25,7 +24,8 @@ type AccountDashboardStatisticReferrals struct {
 	// Total number of referrals initiated by users.
 	Total float32 `json:"total"`
 	// Values aggregated for the specified date.
-	Datetime time.Time `json:"datetime"`
+	Datetime             time.Time `json:"datetime"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AccountDashboardStatisticReferrals AccountDashboardStatisticReferrals
@@ -109,6 +109,11 @@ func (o AccountDashboardStatisticReferrals) ToMap() (map[string]interface{}, err
 	toSerialize := map[string]interface{}{}
 	toSerialize["total"] = o.Total
 	toSerialize["datetime"] = o.Datetime
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -137,15 +142,21 @@ func (o *AccountDashboardStatisticReferrals) UnmarshalJSON(data []byte) (err err
 
 	varAccountDashboardStatisticReferrals := _AccountDashboardStatisticReferrals{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAccountDashboardStatisticReferrals)
+	err = json.Unmarshal(data, &varAccountDashboardStatisticReferrals)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AccountDashboardStatisticReferrals(varAccountDashboardStatisticReferrals)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "total")
+		delete(additionalProperties, "datetime")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

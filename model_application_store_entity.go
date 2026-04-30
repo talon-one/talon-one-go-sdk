@@ -20,8 +20,11 @@ var _ MappedNullable = &ApplicationStoreEntity{}
 // ApplicationStoreEntity struct for ApplicationStoreEntity
 type ApplicationStoreEntity struct {
 	// The ID of the store.
-	StoreId *int64 `json:"storeId,omitempty"`
+	StoreId              *int64 `json:"storeId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ApplicationStoreEntity ApplicationStoreEntity
 
 // NewApplicationStoreEntity instantiates a new ApplicationStoreEntity object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o ApplicationStoreEntity) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.StoreId) {
 		toSerialize["storeId"] = o.StoreId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ApplicationStoreEntity) UnmarshalJSON(data []byte) (err error) {
+	varApplicationStoreEntity := _ApplicationStoreEntity{}
+
+	err = json.Unmarshal(data, &varApplicationStoreEntity)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ApplicationStoreEntity(varApplicationStoreEntity)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "storeId")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableApplicationStoreEntity struct {

@@ -24,8 +24,11 @@ type IntegrationHubFlowConfigResponse struct {
 	// Maximum number of events to send in a single message to IntegrationHub.
 	MaxEventsPerMessage *int64 `json:"MaxEventsPerMessage,omitempty"`
 	// Maximum number of retries for a IntegrationHub event before it is ignored.
-	MaxRetries *int64 `json:"MaxRetries,omitempty"`
+	MaxRetries           *int64 `json:"MaxRetries,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _IntegrationHubFlowConfigResponse IntegrationHubFlowConfigResponse
 
 // NewIntegrationHubFlowConfigResponse instantiates a new IntegrationHubFlowConfigResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -159,7 +162,35 @@ func (o IntegrationHubFlowConfigResponse) ToMap() (map[string]interface{}, error
 	if !IsNil(o.MaxRetries) {
 		toSerialize["MaxRetries"] = o.MaxRetries
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *IntegrationHubFlowConfigResponse) UnmarshalJSON(data []byte) (err error) {
+	varIntegrationHubFlowConfigResponse := _IntegrationHubFlowConfigResponse{}
+
+	err = json.Unmarshal(data, &varIntegrationHubFlowConfigResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = IntegrationHubFlowConfigResponse(varIntegrationHubFlowConfigResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "WorkerCount")
+		delete(additionalProperties, "MaxEventsPerMessage")
+		delete(additionalProperties, "MaxRetries")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableIntegrationHubFlowConfigResponse struct {

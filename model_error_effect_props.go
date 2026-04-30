@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &ErrorEffectProps{}
 // ErrorEffectProps Whenever an error occurred during evaluation, we return an error effect. This should never happen for rules created in the rule builder.
 type ErrorEffectProps struct {
 	// The error message.
-	Message string `json:"message"`
+	Message              string `json:"message"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ErrorEffectProps ErrorEffectProps
@@ -80,6 +80,11 @@ func (o ErrorEffectProps) MarshalJSON() ([]byte, error) {
 func (o ErrorEffectProps) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["message"] = o.Message
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *ErrorEffectProps) UnmarshalJSON(data []byte) (err error) {
 
 	varErrorEffectProps := _ErrorEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varErrorEffectProps)
+	err = json.Unmarshal(data, &varErrorEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ErrorEffectProps(varErrorEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "message")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

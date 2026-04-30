@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type AudienceReference struct {
 	// The ID of the audience.
 	Id int64 `json:"id"`
 	// The third-party integration of the audience.
-	Integration *string `json:"integration,omitempty"`
+	Integration          *string `json:"integration,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AudienceReference AudienceReference
@@ -154,6 +154,11 @@ func (o AudienceReference) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Integration) {
 		toSerialize["integration"] = o.Integration
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -181,15 +186,22 @@ func (o *AudienceReference) UnmarshalJSON(data []byte) (err error) {
 
 	varAudienceReference := _AudienceReference{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAudienceReference)
+	err = json.Unmarshal(data, &varAudienceReference)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AudienceReference(varAudienceReference)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "integrationId")
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "integration")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

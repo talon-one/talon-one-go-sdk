@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **DisplayName** | Pointer to **string** | A customer-facing name for the rule. | [optional] 
 **DisplayDescription** | Pointer to **string** | A customer-facing description that explains the details of the rule.   For example, this property can contain details about eligibility requirements, reward timelines, or terms and conditions.  | [optional] 
 **RelatedData** | Pointer to **string** | Any additional data associated with the rule, such as an image URL, vendor name, or a content management system (CMS) ID.  | [optional] 
+**Eligibility** | Pointer to [**[]RuleEligibility**](RuleEligibility.md) |  | [optional] 
 
 ## Methods
 
@@ -122,6 +123,31 @@ SetRelatedData sets RelatedData field to given value.
 `func (o *RuleMetadata) HasRelatedData() bool`
 
 HasRelatedData returns a boolean if a field has been set.
+
+### GetEligibility
+
+`func (o *RuleMetadata) GetEligibility() []RuleEligibility`
+
+GetEligibility returns the Eligibility field if non-nil, zero value otherwise.
+
+### GetEligibilityOk
+
+`func (o *RuleMetadata) GetEligibilityOk() (*[]RuleEligibility, bool)`
+
+GetEligibilityOk returns a tuple with the Eligibility field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetEligibility
+
+`func (o *RuleMetadata) SetEligibility(v []RuleEligibility)`
+
+SetEligibility sets Eligibility field to given value.
+
+### HasEligibility
+
+`func (o *RuleMetadata) HasEligibility() bool`
+
+HasEligibility returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &GetCampaignAnalytics200Response{}
 
 // GetCampaignAnalytics200Response struct for GetCampaignAnalytics200Response
 type GetCampaignAnalytics200Response struct {
-	TotalResultSize int64               `json:"totalResultSize"`
-	Data            []CampaignAnalytics `json:"data"`
+	TotalResultSize      int64               `json:"totalResultSize"`
+	Data                 []CampaignAnalytics `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GetCampaignAnalytics200Response GetCampaignAnalytics200Response
@@ -106,6 +106,11 @@ func (o GetCampaignAnalytics200Response) ToMap() (map[string]interface{}, error)
 	toSerialize := map[string]interface{}{}
 	toSerialize["totalResultSize"] = o.TotalResultSize
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -134,15 +139,21 @@ func (o *GetCampaignAnalytics200Response) UnmarshalJSON(data []byte) (err error)
 
 	varGetCampaignAnalytics200Response := _GetCampaignAnalytics200Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGetCampaignAnalytics200Response)
+	err = json.Unmarshal(data, &varGetCampaignAnalytics200Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GetCampaignAnalytics200Response(varGetCampaignAnalytics200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "totalResultSize")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

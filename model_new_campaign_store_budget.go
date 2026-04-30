@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -23,8 +22,9 @@ var _ MappedNullable = &NewCampaignStoreBudget{}
 type NewCampaignStoreBudget struct {
 	Action string `json:"action"`
 	// The set of budget limits for stores linked to the campaign.
-	StoreLimits []NewCampaignStoreBudgetStoreLimit `json:"storeLimits"`
-	Period      *string                            `json:"period,omitempty"`
+	StoreLimits          []NewCampaignStoreBudgetStoreLimit `json:"storeLimits"`
+	Period               *string                            `json:"period,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewCampaignStoreBudget NewCampaignStoreBudget
@@ -143,6 +143,11 @@ func (o NewCampaignStoreBudget) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Period) {
 		toSerialize["period"] = o.Period
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -171,15 +176,22 @@ func (o *NewCampaignStoreBudget) UnmarshalJSON(data []byte) (err error) {
 
 	varNewCampaignStoreBudget := _NewCampaignStoreBudget{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewCampaignStoreBudget)
+	err = json.Unmarshal(data, &varNewCampaignStoreBudget)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewCampaignStoreBudget(varNewCampaignStoreBudget)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "action")
+		delete(additionalProperties, "storeLimits")
+		delete(additionalProperties, "period")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

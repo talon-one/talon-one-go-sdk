@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -40,6 +39,7 @@ type PriceType struct {
 	SubscribedCatalogsIds []int64 `json:"subscribedCatalogsIds"`
 	// A list of the IDs of the audiences targeted by this price type.
 	TargetedAudiencesIds []int64 `json:"targetedAudiencesIds"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PriceType PriceType
@@ -323,6 +323,11 @@ func (o PriceType) ToMap() (map[string]interface{}, error) {
 	toSerialize["modified"] = o.Modified
 	toSerialize["subscribedCatalogsIds"] = o.SubscribedCatalogsIds
 	toSerialize["targetedAudiencesIds"] = o.TargetedAudiencesIds
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -356,15 +361,28 @@ func (o *PriceType) UnmarshalJSON(data []byte) (err error) {
 
 	varPriceType := _PriceType{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPriceType)
+	err = json.Unmarshal(data, &varPriceType)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PriceType(varPriceType)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "modified")
+		delete(additionalProperties, "subscribedCatalogsIds")
+		delete(additionalProperties, "targetedAudiencesIds")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,9 +20,10 @@ var _ MappedNullable = &GetCustomersByAttributes200Response{}
 
 // GetCustomersByAttributes200Response struct for GetCustomersByAttributes200Response
 type GetCustomersByAttributes200Response struct {
-	HasMore         *bool             `json:"hasMore,omitempty"`
-	TotalResultSize *int64            `json:"totalResultSize,omitempty"`
-	Data            []CustomerProfile `json:"data"`
+	HasMore              *bool             `json:"hasMore,omitempty"`
+	TotalResultSize      *int64            `json:"totalResultSize,omitempty"`
+	Data                 []CustomerProfile `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GetCustomersByAttributes200Response GetCustomersByAttributes200Response
@@ -151,6 +151,11 @@ func (o GetCustomersByAttributes200Response) ToMap() (map[string]interface{}, er
 		toSerialize["totalResultSize"] = o.TotalResultSize
 	}
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -178,15 +183,22 @@ func (o *GetCustomersByAttributes200Response) UnmarshalJSON(data []byte) (err er
 
 	varGetCustomersByAttributes200Response := _GetCustomersByAttributes200Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGetCustomersByAttributes200Response)
+	err = json.Unmarshal(data, &varGetCustomersByAttributes200Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GetCustomersByAttributes200Response(varGetCustomersByAttributes200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "hasMore")
+		delete(additionalProperties, "totalResultSize")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

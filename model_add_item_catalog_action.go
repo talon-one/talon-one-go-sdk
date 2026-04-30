@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -29,7 +28,8 @@ type AddItemCatalogAction struct {
 	Attributes map[string]interface{} `json:"attributes,omitempty"`
 	Product    *Product               `json:"product,omitempty"`
 	// Indicates whether to replace the attributes of the item if the same SKU exists.  **Note**: When set to `true`:   - If you do not provide a new `price` value, the existing `price` value is retained.   - If you do not provide a new `product` value, the `product` value is set to `null`.
-	ReplaceIfExists *bool `json:"replaceIfExists,omitempty"`
+	ReplaceIfExists      *bool `json:"replaceIfExists,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AddItemCatalogAction AddItemCatalogAction
@@ -231,6 +231,11 @@ func (o AddItemCatalogAction) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ReplaceIfExists) {
 		toSerialize["replaceIfExists"] = o.ReplaceIfExists
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -258,15 +263,24 @@ func (o *AddItemCatalogAction) UnmarshalJSON(data []byte) (err error) {
 
 	varAddItemCatalogAction := _AddItemCatalogAction{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAddItemCatalogAction)
+	err = json.Unmarshal(data, &varAddItemCatalogAction)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AddItemCatalogAction(varAddItemCatalogAction)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "sku")
+		delete(additionalProperties, "price")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "product")
+		delete(additionalProperties, "replaceIfExists")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

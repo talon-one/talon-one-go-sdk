@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &GetReferralsWithoutTotalCount200Response{}
 
 // GetReferralsWithoutTotalCount200Response struct for GetReferralsWithoutTotalCount200Response
 type GetReferralsWithoutTotalCount200Response struct {
-	HasMore bool       `json:"hasMore"`
-	Data    []Referral `json:"data"`
+	HasMore              bool       `json:"hasMore"`
+	Data                 []Referral `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GetReferralsWithoutTotalCount200Response GetReferralsWithoutTotalCount200Response
@@ -106,6 +106,11 @@ func (o GetReferralsWithoutTotalCount200Response) ToMap() (map[string]interface{
 	toSerialize := map[string]interface{}{}
 	toSerialize["hasMore"] = o.HasMore
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -134,15 +139,21 @@ func (o *GetReferralsWithoutTotalCount200Response) UnmarshalJSON(data []byte) (e
 
 	varGetReferralsWithoutTotalCount200Response := _GetReferralsWithoutTotalCount200Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGetReferralsWithoutTotalCount200Response)
+	err = json.Unmarshal(data, &varGetReferralsWithoutTotalCount200Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GetReferralsWithoutTotalCount200Response(varGetReferralsWithoutTotalCount200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "hasMore")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

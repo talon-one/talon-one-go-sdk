@@ -19,8 +19,11 @@ var _ MappedNullable = &MultipleCustomerProfileIntegrationRequest{}
 
 // MultipleCustomerProfileIntegrationRequest struct for MultipleCustomerProfileIntegrationRequest
 type MultipleCustomerProfileIntegrationRequest struct {
-	CustomerProfiles []MultipleCustomerProfileIntegrationRequestItem `json:"customerProfiles,omitempty"`
+	CustomerProfiles     []MultipleCustomerProfileIntegrationRequestItem `json:"customerProfiles,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _MultipleCustomerProfileIntegrationRequest MultipleCustomerProfileIntegrationRequest
 
 // NewMultipleCustomerProfileIntegrationRequest instantiates a new MultipleCustomerProfileIntegrationRequest object
 // This constructor will assign default values to properties that have it defined,
@@ -84,7 +87,33 @@ func (o MultipleCustomerProfileIntegrationRequest) ToMap() (map[string]interface
 	if !IsNil(o.CustomerProfiles) {
 		toSerialize["customerProfiles"] = o.CustomerProfiles
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *MultipleCustomerProfileIntegrationRequest) UnmarshalJSON(data []byte) (err error) {
+	varMultipleCustomerProfileIntegrationRequest := _MultipleCustomerProfileIntegrationRequest{}
+
+	err = json.Unmarshal(data, &varMultipleCustomerProfileIntegrationRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = MultipleCustomerProfileIntegrationRequest(varMultipleCustomerProfileIntegrationRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "customerProfiles")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableMultipleCustomerProfileIntegrationRequest struct {

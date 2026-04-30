@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -23,7 +22,8 @@ var _ MappedNullable = &MutableEntity{}
 // MutableEntity struct for MutableEntity
 type MutableEntity struct {
 	// The time this entity was last modified.
-	Modified time.Time `json:"modified"`
+	Modified             time.Time `json:"modified"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _MutableEntity MutableEntity
@@ -81,6 +81,11 @@ func (o MutableEntity) MarshalJSON() ([]byte, error) {
 func (o MutableEntity) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["modified"] = o.Modified
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -108,15 +113,20 @@ func (o *MutableEntity) UnmarshalJSON(data []byte) (err error) {
 
 	varMutableEntity := _MutableEntity{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varMutableEntity)
+	err = json.Unmarshal(data, &varMutableEntity)
 
 	if err != nil {
 		return err
 	}
 
 	*o = MutableEntity(varMutableEntity)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "modified")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

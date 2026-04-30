@@ -26,9 +26,12 @@ type ScimServiceProviderConfigResponse struct {
 	Filter           *ScimServiceProviderConfigResponseFilter `json:"filter,omitempty"`
 	Patch            *ScimServiceProviderConfigResponsePatch  `json:"patch,omitempty"`
 	// A list of SCIM schemas that define the structure and data types supported by the service provider.
-	Schemas []string                               `json:"schemas,omitempty"`
-	Sort    *ScimServiceProviderConfigResponseSort `json:"sort,omitempty"`
+	Schemas              []string                               `json:"schemas,omitempty"`
+	Sort                 *ScimServiceProviderConfigResponseSort `json:"sort,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ScimServiceProviderConfigResponse ScimServiceProviderConfigResponse
 
 // NewScimServiceProviderConfigResponse instantiates a new ScimServiceProviderConfigResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -302,7 +305,39 @@ func (o ScimServiceProviderConfigResponse) ToMap() (map[string]interface{}, erro
 	if !IsNil(o.Sort) {
 		toSerialize["sort"] = o.Sort
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ScimServiceProviderConfigResponse) UnmarshalJSON(data []byte) (err error) {
+	varScimServiceProviderConfigResponse := _ScimServiceProviderConfigResponse{}
+
+	err = json.Unmarshal(data, &varScimServiceProviderConfigResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ScimServiceProviderConfigResponse(varScimServiceProviderConfigResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "bulk")
+		delete(additionalProperties, "changePassword")
+		delete(additionalProperties, "documentationUri")
+		delete(additionalProperties, "filter")
+		delete(additionalProperties, "patch")
+		delete(additionalProperties, "schemas")
+		delete(additionalProperties, "sort")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableScimServiceProviderConfigResponse struct {

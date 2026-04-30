@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -65,7 +64,8 @@ type CustomerSessionV2 struct {
 	// The total value of additional costs, before any discounts are applied.
 	AdditionalCostTotal float32 `json:"additionalCostTotal"`
 	// Timestamp of the most recent event received on this session.
-	Updated time.Time `json:"updated"`
+	Updated              time.Time `json:"updated"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CustomerSessionV2 CustomerSessionV2
@@ -781,6 +781,11 @@ func (o CustomerSessionV2) ToMap() (map[string]interface{}, error) {
 	toSerialize["cartItemTotal"] = o.CartItemTotal
 	toSerialize["additionalCostTotal"] = o.AdditionalCostTotal
 	toSerialize["updated"] = o.Updated
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -817,15 +822,41 @@ func (o *CustomerSessionV2) UnmarshalJSON(data []byte) (err error) {
 
 	varCustomerSessionV2 := _CustomerSessionV2{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCustomerSessionV2)
+	err = json.Unmarshal(data, &varCustomerSessionV2)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CustomerSessionV2(varCustomerSessionV2)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "integrationId")
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "profileId")
+		delete(additionalProperties, "storeIntegrationId")
+		delete(additionalProperties, "evaluableCampaignIds")
+		delete(additionalProperties, "couponCodes")
+		delete(additionalProperties, "referralCode")
+		delete(additionalProperties, "loyaltyCards")
+		delete(additionalProperties, "state")
+		delete(additionalProperties, "cartItems")
+		delete(additionalProperties, "experimentVariantAllocations")
+		delete(additionalProperties, "additionalCosts")
+		delete(additionalProperties, "identifiers")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "firstSession")
+		delete(additionalProperties, "updateCount")
+		delete(additionalProperties, "total")
+		delete(additionalProperties, "cartItemTotal")
+		delete(additionalProperties, "additionalCostTotal")
+		delete(additionalProperties, "updated")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

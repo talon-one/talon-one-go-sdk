@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -44,7 +43,8 @@ type LoyaltyLedgerEntry struct {
 	// A map of flags providing additional details about the entry.
 	Flags *LoyaltyLedgerEntryFlags `json:"flags,omitempty"`
 	// The duration for which the points remain active, relative to the  activation date.  **Note**: This only applies to points for which `awaitsActivation` is `true` and `expiryDate` is not set.
-	ValidityDuration *string `json:"validityDuration,omitempty"`
+	ValidityDuration     *string `json:"validityDuration,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _LoyaltyLedgerEntry LoyaltyLedgerEntry
@@ -582,6 +582,11 @@ func (o LoyaltyLedgerEntry) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ValidityDuration) {
 		toSerialize["validityDuration"] = o.ValidityDuration
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -614,15 +619,35 @@ func (o *LoyaltyLedgerEntry) UnmarshalJSON(data []byte) (err error) {
 
 	varLoyaltyLedgerEntry := _LoyaltyLedgerEntry{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varLoyaltyLedgerEntry)
+	err = json.Unmarshal(data, &varLoyaltyLedgerEntry)
 
 	if err != nil {
 		return err
 	}
 
 	*o = LoyaltyLedgerEntry(varLoyaltyLedgerEntry)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "programID")
+		delete(additionalProperties, "customerProfileID")
+		delete(additionalProperties, "cardID")
+		delete(additionalProperties, "customerSessionID")
+		delete(additionalProperties, "eventID")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "amount")
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "subLedgerID")
+		delete(additionalProperties, "userID")
+		delete(additionalProperties, "archived")
+		delete(additionalProperties, "flags")
+		delete(additionalProperties, "validityDuration")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

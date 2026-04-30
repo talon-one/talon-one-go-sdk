@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -28,7 +27,8 @@ type NotificationListItem struct {
 	// The ID of the entity to which this notification belongs. For example, in case of a loyalty notification, this value is the ID of the loyalty program.
 	EntityId int64 `json:"entityId"`
 	// Indicates whether the notification is activated.
-	Enabled bool `json:"enabled"`
+	Enabled              bool `json:"enabled"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NotificationListItem NotificationListItem
@@ -164,6 +164,11 @@ func (o NotificationListItem) ToMap() (map[string]interface{}, error) {
 	toSerialize["notificationName"] = o.NotificationName
 	toSerialize["entityId"] = o.EntityId
 	toSerialize["enabled"] = o.Enabled
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -194,15 +199,23 @@ func (o *NotificationListItem) UnmarshalJSON(data []byte) (err error) {
 
 	varNotificationListItem := _NotificationListItem{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNotificationListItem)
+	err = json.Unmarshal(data, &varNotificationListItem)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NotificationListItem(varNotificationListItem)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "notificationId")
+		delete(additionalProperties, "notificationName")
+		delete(additionalProperties, "entityId")
+		delete(additionalProperties, "enabled")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type AddFreeItemEffectProps struct {
 	// The name / description of the effect
 	Name string `json:"name"`
 	// The original quantity in case a partial reward was applied.
-	DesiredQuantity *int64 `json:"desiredQuantity,omitempty"`
+	DesiredQuantity      *int64 `json:"desiredQuantity,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AddFreeItemEffectProps AddFreeItemEffectProps
@@ -145,6 +145,11 @@ func (o AddFreeItemEffectProps) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.DesiredQuantity) {
 		toSerialize["desiredQuantity"] = o.DesiredQuantity
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -173,15 +178,22 @@ func (o *AddFreeItemEffectProps) UnmarshalJSON(data []byte) (err error) {
 
 	varAddFreeItemEffectProps := _AddFreeItemEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAddFreeItemEffectProps)
+	err = json.Unmarshal(data, &varAddFreeItemEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AddFreeItemEffectProps(varAddFreeItemEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "sku")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "desiredQuantity")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

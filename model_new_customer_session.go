@@ -34,8 +34,11 @@ type NewCustomerSession struct {
 	// The total sum of the cart in one session.
 	Total *float32 `json:"total,omitempty"`
 	// A key-value map of the sessions attributes. The potentially valid attributes are configured in your accounts developer settings.
-	Attributes map[string]interface{} `json:"attributes,omitempty"`
+	Attributes           map[string]interface{} `json:"attributes,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _NewCustomerSession NewCustomerSession
 
 // NewNewCustomerSession instantiates a new NewCustomerSession object
 // This constructor will assign default values to properties that have it defined,
@@ -348,7 +351,40 @@ func (o NewCustomerSession) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Attributes) {
 		toSerialize["attributes"] = o.Attributes
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *NewCustomerSession) UnmarshalJSON(data []byte) (err error) {
+	varNewCustomerSession := _NewCustomerSession{}
+
+	err = json.Unmarshal(data, &varNewCustomerSession)
+
+	if err != nil {
+		return err
+	}
+
+	*o = NewCustomerSession(varNewCustomerSession)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "profileId")
+		delete(additionalProperties, "coupon")
+		delete(additionalProperties, "referral")
+		delete(additionalProperties, "state")
+		delete(additionalProperties, "cartItems")
+		delete(additionalProperties, "identifiers")
+		delete(additionalProperties, "total")
+		delete(additionalProperties, "attributes")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableNewCustomerSession struct {

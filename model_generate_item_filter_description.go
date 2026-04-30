@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &GenerateItemFilterDescription{}
 // GenerateItemFilterDescription struct for GenerateItemFilterDescription
 type GenerateItemFilterDescription struct {
 	// An array of item filter Talang expressions.
-	ItemFilter []map[string]interface{} `json:"itemFilter"`
+	ItemFilter           []map[string]interface{} `json:"itemFilter"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GenerateItemFilterDescription GenerateItemFilterDescription
@@ -80,6 +80,11 @@ func (o GenerateItemFilterDescription) MarshalJSON() ([]byte, error) {
 func (o GenerateItemFilterDescription) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["itemFilter"] = o.ItemFilter
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *GenerateItemFilterDescription) UnmarshalJSON(data []byte) (err error) {
 
 	varGenerateItemFilterDescription := _GenerateItemFilterDescription{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGenerateItemFilterDescription)
+	err = json.Unmarshal(data, &varGenerateItemFilterDescription)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GenerateItemFilterDescription(varGenerateItemFilterDescription)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "itemFilter")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

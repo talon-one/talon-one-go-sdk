@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -30,6 +29,7 @@ type CreateManagementKey struct {
 	Endpoints []Endpoint `json:"endpoints"`
 	// A list of Application IDs that you can access with the management key. An empty or missing list means the management key can be used for all Applications in the account.
 	AllowedApplicationIds []int64 `json:"allowedApplicationIds,omitempty"`
+	AdditionalProperties  map[string]interface{}
 }
 
 type _CreateManagementKey CreateManagementKey
@@ -174,6 +174,11 @@ func (o CreateManagementKey) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.AllowedApplicationIds) {
 		toSerialize["allowedApplicationIds"] = o.AllowedApplicationIds
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -203,15 +208,23 @@ func (o *CreateManagementKey) UnmarshalJSON(data []byte) (err error) {
 
 	varCreateManagementKey := _CreateManagementKey{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCreateManagementKey)
+	err = json.Unmarshal(data, &varCreateManagementKey)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CreateManagementKey(varCreateManagementKey)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "endpoints")
+		delete(additionalProperties, "allowedApplicationIds")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

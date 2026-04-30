@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -55,7 +54,8 @@ type UpdateCampaign struct {
 	// A list of store IDs that you want to link to the campaign.  > [!note] **Note** > - Campaigns with linked store IDs will only be evaluated when there is a >   [customer session update](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2) >   that references a linked store. > - If you linked stores to the campaign by uploading a CSV file, you cannot use this property and it should be empty. > - Use of this property is limited to 50 stores. To link more than 50 stores, upload them via a CSV file.
 	LinkedStoreIds []int64 `json:"linkedStoreIds,omitempty"`
 	// Arbitrary properties associated with coupons in this campaign.
-	CouponAttributes map[string]interface{} `json:"couponAttributes,omitempty"`
+	CouponAttributes     map[string]interface{} `json:"couponAttributes,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _UpdateCampaign UpdateCampaign
@@ -689,6 +689,11 @@ func (o UpdateCampaign) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CouponAttributes) {
 		toSerialize["couponAttributes"] = o.CouponAttributes
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -719,15 +724,37 @@ func (o *UpdateCampaign) UnmarshalJSON(data []byte) (err error) {
 
 	varUpdateCampaign := _UpdateCampaign{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varUpdateCampaign)
+	err = json.Unmarshal(data, &varUpdateCampaign)
 
 	if err != nil {
 		return err
 	}
 
 	*o = UpdateCampaign(varUpdateCampaign)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "startTime")
+		delete(additionalProperties, "endTime")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "state")
+		delete(additionalProperties, "activeRulesetId")
+		delete(additionalProperties, "tags")
+		delete(additionalProperties, "reevaluateOnReturn")
+		delete(additionalProperties, "features")
+		delete(additionalProperties, "couponSettings")
+		delete(additionalProperties, "referralSettings")
+		delete(additionalProperties, "limits")
+		delete(additionalProperties, "campaignGroups")
+		delete(additionalProperties, "evaluationGroupId")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "linkedStoreIds")
+		delete(additionalProperties, "couponAttributes")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

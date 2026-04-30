@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &GenerateCampaignTags{}
 // GenerateCampaignTags struct for GenerateCampaignTags
 type GenerateCampaignTags struct {
 	// ID of a ruleset.
-	RulesetID int64 `json:"rulesetID"`
+	RulesetID            int64 `json:"rulesetID"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GenerateCampaignTags GenerateCampaignTags
@@ -80,6 +80,11 @@ func (o GenerateCampaignTags) MarshalJSON() ([]byte, error) {
 func (o GenerateCampaignTags) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["rulesetID"] = o.RulesetID
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *GenerateCampaignTags) UnmarshalJSON(data []byte) (err error) {
 
 	varGenerateCampaignTags := _GenerateCampaignTags{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGenerateCampaignTags)
+	err = json.Unmarshal(data, &varGenerateCampaignTags)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GenerateCampaignTags(varGenerateCampaignTags)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "rulesetID")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

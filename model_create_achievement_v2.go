@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -47,7 +46,8 @@ type CreateAchievementV2 struct {
 	// A list containing the IDs of all applications that are subscribed to A list containing the IDs of all Applications that are connected to this achievement.
 	SubscribedApplications []int64 `json:"subscribedApplications,omitempty"`
 	// A string containing an IANA timezone descriptor.
-	Timezone string `json:"timezone"`
+	Timezone             string `json:"timezone"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CreateAchievementV2 CreateAchievementV2
@@ -480,6 +480,11 @@ func (o CreateAchievementV2) ToMap() (map[string]interface{}, error) {
 		toSerialize["subscribedApplications"] = o.SubscribedApplications
 	}
 	toSerialize["timezone"] = o.Timezone
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -512,15 +517,32 @@ func (o *CreateAchievementV2) UnmarshalJSON(data []byte) (err error) {
 
 	varCreateAchievementV2 := _CreateAchievementV2{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCreateAchievementV2)
+	err = json.Unmarshal(data, &varCreateAchievementV2)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CreateAchievementV2(varCreateAchievementV2)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "target")
+		delete(additionalProperties, "period")
+		delete(additionalProperties, "recurrencePolicy")
+		delete(additionalProperties, "activationPolicy")
+		delete(additionalProperties, "fixedStartDate")
+		delete(additionalProperties, "endDate")
+		delete(additionalProperties, "allowRollbackAfterCompletion")
+		delete(additionalProperties, "sandbox")
+		delete(additionalProperties, "subscribedApplications")
+		delete(additionalProperties, "timezone")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &RemoveItemCatalogAction{}
 // RemoveItemCatalogAction The specific properties of the \"REMOVE\" catalog sync action.
 type RemoveItemCatalogAction struct {
 	// The unique SKU of the item to remove.
-	Sku string `json:"sku"`
+	Sku                  string `json:"sku"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _RemoveItemCatalogAction RemoveItemCatalogAction
@@ -80,6 +80,11 @@ func (o RemoveItemCatalogAction) MarshalJSON() ([]byte, error) {
 func (o RemoveItemCatalogAction) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["sku"] = o.Sku
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *RemoveItemCatalogAction) UnmarshalJSON(data []byte) (err error) {
 
 	varRemoveItemCatalogAction := _RemoveItemCatalogAction{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varRemoveItemCatalogAction)
+	err = json.Unmarshal(data, &varRemoveItemCatalogAction)
 
 	if err != nil {
 		return err
 	}
 
 	*o = RemoveItemCatalogAction(varRemoveItemCatalogAction)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "sku")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

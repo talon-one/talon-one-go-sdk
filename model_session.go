@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -27,7 +26,8 @@ type Session struct {
 	// The token to use as a bearer token to query Management API endpoints.
 	Token string `json:"token"`
 	// Unix timestamp indicating when the session was first created.
-	Created time.Time `json:"created"`
+	Created              time.Time `json:"created"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Session Session
@@ -137,6 +137,11 @@ func (o Session) ToMap() (map[string]interface{}, error) {
 	toSerialize["userId"] = o.UserId
 	toSerialize["token"] = o.Token
 	toSerialize["created"] = o.Created
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -166,15 +171,22 @@ func (o *Session) UnmarshalJSON(data []byte) (err error) {
 
 	varSession := _Session{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varSession)
+	err = json.Unmarshal(data, &varSession)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Session(varSession)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "userId")
+		delete(additionalProperties, "token")
+		delete(additionalProperties, "created")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

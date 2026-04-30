@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -28,7 +27,8 @@ type NewRoleV2 struct {
 	// The permissions that this role gives.
 	Permissions *RoleV2Permissions `json:"permissions,omitempty"`
 	// A list of user IDs the role is assigned to.
-	Members []int64 `json:"members,omitempty"`
+	Members              []int64 `json:"members,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewRoleV2 NewRoleV2
@@ -182,6 +182,11 @@ func (o NewRoleV2) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Members) {
 		toSerialize["members"] = o.Members
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -210,15 +215,23 @@ func (o *NewRoleV2) UnmarshalJSON(data []byte) (err error) {
 
 	varNewRoleV2 := _NewRoleV2{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewRoleV2)
+	err = json.Unmarshal(data, &varNewRoleV2)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewRoleV2(varNewRoleV2)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "permissions")
+		delete(additionalProperties, "members")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

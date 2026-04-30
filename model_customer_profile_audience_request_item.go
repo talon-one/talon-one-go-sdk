@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type CustomerProfileAudienceRequestItem struct {
 	// The ID of this customer profile in the third-party integration.
 	ProfileIntegrationId string `json:"profileIntegrationId"`
 	// The ID of the audience. You get it via the `id` property when [creating an audience](#tag/Audiences/operation/createAudienceV2).
-	AudienceId int64 `json:"audienceId"`
+	AudienceId           int64 `json:"audienceId"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CustomerProfileAudienceRequestItem CustomerProfileAudienceRequestItem
@@ -136,6 +136,11 @@ func (o CustomerProfileAudienceRequestItem) ToMap() (map[string]interface{}, err
 	toSerialize["action"] = o.Action
 	toSerialize["profileIntegrationId"] = o.ProfileIntegrationId
 	toSerialize["audienceId"] = o.AudienceId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -165,15 +170,22 @@ func (o *CustomerProfileAudienceRequestItem) UnmarshalJSON(data []byte) (err err
 
 	varCustomerProfileAudienceRequestItem := _CustomerProfileAudienceRequestItem{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCustomerProfileAudienceRequestItem)
+	err = json.Unmarshal(data, &varCustomerProfileAudienceRequestItem)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CustomerProfileAudienceRequestItem(varCustomerProfileAudienceRequestItem)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "action")
+		delete(additionalProperties, "profileIntegrationId")
+		delete(additionalProperties, "audienceId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

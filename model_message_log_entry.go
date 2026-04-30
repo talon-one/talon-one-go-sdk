@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -49,7 +48,8 @@ type MessageLogEntry struct {
 	// Identifier of the loyalty program.
 	LoyaltyProgramId *int64 `json:"loyaltyProgramId,omitempty"`
 	// Identifier of the campaign.
-	CampaignId *int64 `json:"campaignId,omitempty"`
+	CampaignId           *int64 `json:"campaignId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _MessageLogEntry MessageLogEntry
@@ -570,6 +570,11 @@ func (o MessageLogEntry) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CampaignId) {
 		toSerialize["campaignId"] = o.CampaignId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -600,15 +605,34 @@ func (o *MessageLogEntry) UnmarshalJSON(data []byte) (err error) {
 
 	varMessageLogEntry := _MessageLogEntry{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varMessageLogEntry)
+	err = json.Unmarshal(data, &varMessageLogEntry)
 
 	if err != nil {
 		return err
 	}
 
 	*o = MessageLogEntry(varMessageLogEntry)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "service")
+		delete(additionalProperties, "changeType")
+		delete(additionalProperties, "notificationId")
+		delete(additionalProperties, "notificationName")
+		delete(additionalProperties, "webhookId")
+		delete(additionalProperties, "webhookName")
+		delete(additionalProperties, "request")
+		delete(additionalProperties, "response")
+		delete(additionalProperties, "createdAt")
+		delete(additionalProperties, "entityType")
+		delete(additionalProperties, "url")
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "loyaltyProgramId")
+		delete(additionalProperties, "campaignId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

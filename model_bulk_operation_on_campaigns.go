@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -27,7 +26,8 @@ type BulkOperationOnCampaigns struct {
 	// The list of campaign IDs on which the operation will be performed.
 	CampaignIds []int64 `json:"campaignIds"`
 	// Timestamp when the revisions are finalized after the `activate_revision` operation. The current time is used when left blank.  **Note:** It must be an RFC3339 timestamp string.
-	ActivateAt *time.Time `json:"activateAt,omitempty"`
+	ActivateAt           *time.Time `json:"activateAt,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _BulkOperationOnCampaigns BulkOperationOnCampaigns
@@ -146,6 +146,11 @@ func (o BulkOperationOnCampaigns) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ActivateAt) {
 		toSerialize["activateAt"] = o.ActivateAt
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -174,15 +179,22 @@ func (o *BulkOperationOnCampaigns) UnmarshalJSON(data []byte) (err error) {
 
 	varBulkOperationOnCampaigns := _BulkOperationOnCampaigns{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varBulkOperationOnCampaigns)
+	err = json.Unmarshal(data, &varBulkOperationOnCampaigns)
 
 	if err != nil {
 		return err
 	}
 
 	*o = BulkOperationOnCampaigns(varBulkOperationOnCampaigns)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "operation")
+		delete(additionalProperties, "campaignIds")
+		delete(additionalProperties, "activateAt")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

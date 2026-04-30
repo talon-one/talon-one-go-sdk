@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &SkuUnitAnalytics{}
 
 // SkuUnitAnalytics struct for SkuUnitAnalytics
 type SkuUnitAnalytics struct {
-	Data   []SkuUnitAnalyticsDataPoint `json:"data"`
-	Totals ProductUnitAnalyticsTotals  `json:"totals"`
+	Data                 []SkuUnitAnalyticsDataPoint `json:"data"`
+	Totals               ProductUnitAnalyticsTotals  `json:"totals"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _SkuUnitAnalytics SkuUnitAnalytics
@@ -106,6 +106,11 @@ func (o SkuUnitAnalytics) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["data"] = o.Data
 	toSerialize["totals"] = o.Totals
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -134,15 +139,21 @@ func (o *SkuUnitAnalytics) UnmarshalJSON(data []byte) (err error) {
 
 	varSkuUnitAnalytics := _SkuUnitAnalytics{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varSkuUnitAnalytics)
+	err = json.Unmarshal(data, &varSkuUnitAnalytics)
 
 	if err != nil {
 		return err
 	}
 
 	*o = SkuUnitAnalytics(varSkuUnitAnalytics)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "data")
+		delete(additionalProperties, "totals")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

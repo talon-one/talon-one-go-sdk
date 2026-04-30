@@ -20,8 +20,11 @@ var _ MappedNullable = &CouponLimitConfigs{}
 // CouponLimitConfigs struct for CouponLimitConfigs
 type CouponLimitConfigs struct {
 	// Limits configuration for a coupon. These limits will override the limits set from the campaign.  **Note:** Only usable when creating a single coupon which is not tied to a specific recipient. Only per-profile limits are allowed to be configured.
-	Limits []LimitConfig `json:"limits,omitempty"`
+	Limits               []LimitConfig `json:"limits,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _CouponLimitConfigs CouponLimitConfigs
 
 // NewCouponLimitConfigs instantiates a new CouponLimitConfigs object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o CouponLimitConfigs) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Limits) {
 		toSerialize["limits"] = o.Limits
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *CouponLimitConfigs) UnmarshalJSON(data []byte) (err error) {
+	varCouponLimitConfigs := _CouponLimitConfigs{}
+
+	err = json.Unmarshal(data, &varCouponLimitConfigs)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CouponLimitConfigs(varCouponLimitConfigs)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "limits")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableCouponLimitConfigs struct {

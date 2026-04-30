@@ -23,8 +23,11 @@ type LoyaltyCardBalances struct {
 	// Map of the loyalty balances of the subledgers of a ledger.
 	SubledgerBalances map[string]LoyaltyBalance `json:"subledgerBalances,omitempty"`
 	// Customer profiles linked to the loyalty card.
-	Profiles []LoyaltyCardProfileRegistration `json:"profiles,omitempty"`
+	Profiles             []LoyaltyCardProfileRegistration `json:"profiles,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _LoyaltyCardBalances LoyaltyCardBalances
 
 // NewLoyaltyCardBalances instantiates a new LoyaltyCardBalances object
 // This constructor will assign default values to properties that have it defined,
@@ -158,7 +161,35 @@ func (o LoyaltyCardBalances) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Profiles) {
 		toSerialize["profiles"] = o.Profiles
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *LoyaltyCardBalances) UnmarshalJSON(data []byte) (err error) {
+	varLoyaltyCardBalances := _LoyaltyCardBalances{}
+
+	err = json.Unmarshal(data, &varLoyaltyCardBalances)
+
+	if err != nil {
+		return err
+	}
+
+	*o = LoyaltyCardBalances(varLoyaltyCardBalances)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "balance")
+		delete(additionalProperties, "subledgerBalances")
+		delete(additionalProperties, "profiles")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableLoyaltyCardBalances struct {

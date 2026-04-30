@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type CampaignEvaluationPosition struct {
 	// The name of the campaign evaluation group the campaign belongs to.
 	GroupName string `json:"groupName"`
 	// The position of the campaign node in its parent group.
-	Position int64 `json:"position"`
+	Position             int64 `json:"position"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CampaignEvaluationPosition CampaignEvaluationPosition
@@ -136,6 +136,11 @@ func (o CampaignEvaluationPosition) ToMap() (map[string]interface{}, error) {
 	toSerialize["groupId"] = o.GroupId
 	toSerialize["groupName"] = o.GroupName
 	toSerialize["position"] = o.Position
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -165,15 +170,22 @@ func (o *CampaignEvaluationPosition) UnmarshalJSON(data []byte) (err error) {
 
 	varCampaignEvaluationPosition := _CampaignEvaluationPosition{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCampaignEvaluationPosition)
+	err = json.Unmarshal(data, &varCampaignEvaluationPosition)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CampaignEvaluationPosition(varCampaignEvaluationPosition)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "groupId")
+		delete(additionalProperties, "groupName")
+		delete(additionalProperties, "position")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

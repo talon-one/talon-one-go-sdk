@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -36,7 +35,8 @@ type RollbackAddedLoyaltyPointsEffectProps struct {
 	// For cart items with `quantity` > 1, the sub-position indicates to which item the loyalty points were rolled back.
 	CartItemSubPosition *float32 `json:"cartItemSubPosition,omitempty"`
 	// The card on which these points were originally added.
-	CardIdentifier *string `json:"cardIdentifier,omitempty" validate:"regexp=^[A-Za-z0-9._%+@-]+$"`
+	CardIdentifier       *string `json:"cardIdentifier,omitempty" validate:"regexp=^[A-Za-z0-9._%+@-]+$"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _RollbackAddedLoyaltyPointsEffectProps RollbackAddedLoyaltyPointsEffectProps
@@ -303,6 +303,11 @@ func (o RollbackAddedLoyaltyPointsEffectProps) ToMap() (map[string]interface{}, 
 	if !IsNil(o.CardIdentifier) {
 		toSerialize["cardIdentifier"] = o.CardIdentifier
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -334,15 +339,27 @@ func (o *RollbackAddedLoyaltyPointsEffectProps) UnmarshalJSON(data []byte) (err 
 
 	varRollbackAddedLoyaltyPointsEffectProps := _RollbackAddedLoyaltyPointsEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varRollbackAddedLoyaltyPointsEffectProps)
+	err = json.Unmarshal(data, &varRollbackAddedLoyaltyPointsEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = RollbackAddedLoyaltyPointsEffectProps(varRollbackAddedLoyaltyPointsEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "programId")
+		delete(additionalProperties, "subLedgerId")
+		delete(additionalProperties, "value")
+		delete(additionalProperties, "recipientIntegrationId")
+		delete(additionalProperties, "transactionUUID")
+		delete(additionalProperties, "cartItemPosition")
+		delete(additionalProperties, "cartItemSubPosition")
+		delete(additionalProperties, "cardIdentifier")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

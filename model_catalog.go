@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -39,7 +38,8 @@ type Catalog struct {
 	// The current version of this catalog.
 	Version int64 `json:"version"`
 	// The ID of user who created this catalog.
-	CreatedBy int64 `json:"createdBy"`
+	CreatedBy            int64 `json:"createdBy"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Catalog Catalog
@@ -314,6 +314,11 @@ func (o Catalog) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["version"] = o.Version
 	toSerialize["createdBy"] = o.CreatedBy
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -348,15 +353,28 @@ func (o *Catalog) UnmarshalJSON(data []byte) (err error) {
 
 	varCatalog := _Catalog{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCatalog)
+	err = json.Unmarshal(data, &varCatalog)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Catalog(varCatalog)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "modified")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "subscribedApplicationsIds")
+		delete(additionalProperties, "version")
+		delete(additionalProperties, "createdBy")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

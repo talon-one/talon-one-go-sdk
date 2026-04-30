@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -35,7 +34,8 @@ type NewPriceAdjustment struct {
 	// The date and time until which the price adjustment is effective.
 	EffectiveUntil *time.Time `json:"effectiveUntil,omitempty"`
 	// Identifier of the context of this price adjustment (e.g. summer sale).
-	ContextId *string `json:"contextId,omitempty"`
+	ContextId            *string `json:"contextId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewPriceAdjustment NewPriceAdjustment
@@ -305,6 +305,11 @@ func (o NewPriceAdjustment) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ContextId) {
 		toSerialize["contextId"] = o.ContextId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -333,15 +338,26 @@ func (o *NewPriceAdjustment) UnmarshalJSON(data []byte) (err error) {
 
 	varNewPriceAdjustment := _NewPriceAdjustment{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewPriceAdjustment)
+	err = json.Unmarshal(data, &varNewPriceAdjustment)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewPriceAdjustment(varNewPriceAdjustment)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "priceType")
+		delete(additionalProperties, "price")
+		delete(additionalProperties, "referenceId")
+		delete(additionalProperties, "calculatedAt")
+		delete(additionalProperties, "effectiveFrom")
+		delete(additionalProperties, "effectiveUntil")
+		delete(additionalProperties, "contextId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

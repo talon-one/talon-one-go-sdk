@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &ReferralCreatedEffectProps{}
 // ReferralCreatedEffectProps The properties specific to the \"referralCreated\" effect. This gets triggered whenever a validated rule contained a \"create referral\" effect, and a referral code was created for a customer. See \"createdReferrals\" on the response for all details of this referral code.
 type ReferralCreatedEffectProps struct {
 	// The referral code that was created.
-	Value string `json:"value"`
+	Value                string `json:"value"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ReferralCreatedEffectProps ReferralCreatedEffectProps
@@ -80,6 +80,11 @@ func (o ReferralCreatedEffectProps) MarshalJSON() ([]byte, error) {
 func (o ReferralCreatedEffectProps) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["value"] = o.Value
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *ReferralCreatedEffectProps) UnmarshalJSON(data []byte) (err error) {
 
 	varReferralCreatedEffectProps := _ReferralCreatedEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varReferralCreatedEffectProps)
+	err = json.Unmarshal(data, &varReferralCreatedEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ReferralCreatedEffectProps(varReferralCreatedEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "value")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

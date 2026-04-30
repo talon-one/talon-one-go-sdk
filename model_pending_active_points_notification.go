@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -25,7 +24,8 @@ type PendingActivePointsNotification struct {
 	// The array of pending points.
 	Data []PendingActivePointsData `json:"Data"`
 	// The type of notification.
-	NotificationType string `json:"NotificationType"`
+	NotificationType     string `json:"NotificationType"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PendingActivePointsNotification PendingActivePointsNotification
@@ -135,6 +135,11 @@ func (o PendingActivePointsNotification) ToMap() (map[string]interface{}, error)
 	toSerialize["TotalResultSize"] = o.TotalResultSize
 	toSerialize["Data"] = o.Data
 	toSerialize["NotificationType"] = o.NotificationType
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -164,15 +169,22 @@ func (o *PendingActivePointsNotification) UnmarshalJSON(data []byte) (err error)
 
 	varPendingActivePointsNotification := _PendingActivePointsNotification{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPendingActivePointsNotification)
+	err = json.Unmarshal(data, &varPendingActivePointsNotification)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PendingActivePointsNotification(varPendingActivePointsNotification)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "TotalResultSize")
+		delete(additionalProperties, "Data")
+		delete(additionalProperties, "NotificationType")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

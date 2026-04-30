@@ -19,8 +19,11 @@ var _ MappedNullable = &ExperimentListResults{}
 
 // ExperimentListResults struct for ExperimentListResults
 type ExperimentListResults struct {
-	Results []ExperimentResult `json:"results,omitempty"`
+	Results              []ExperimentResult `json:"results,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ExperimentListResults ExperimentListResults
 
 // NewExperimentListResults instantiates a new ExperimentListResults object
 // This constructor will assign default values to properties that have it defined,
@@ -84,7 +87,33 @@ func (o ExperimentListResults) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Results) {
 		toSerialize["results"] = o.Results
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ExperimentListResults) UnmarshalJSON(data []byte) (err error) {
+	varExperimentListResults := _ExperimentListResults{}
+
+	err = json.Unmarshal(data, &varExperimentListResults)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ExperimentListResults(varExperimentListResults)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "results")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableExperimentListResults struct {

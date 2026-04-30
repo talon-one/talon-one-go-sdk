@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -51,7 +50,8 @@ type CardLedgerTransactionLogEntryIntegrationAPI struct {
 	// The name of the rule that triggered this effect.
 	RuleName *string `json:"ruleName,omitempty"`
 	// The duration for which the points remain active, relative to the  activation date.  **Note**: This only applies to points for which `awaitsActivation` is `true` and `expiryDate` is not set.
-	ValidityDuration *string `json:"validityDuration,omitempty"`
+	ValidityDuration     *string `json:"validityDuration,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CardLedgerTransactionLogEntryIntegrationAPI CardLedgerTransactionLogEntryIntegrationAPI
@@ -509,6 +509,11 @@ func (o CardLedgerTransactionLogEntryIntegrationAPI) ToMap() (map[string]interfa
 	if !IsNil(o.ValidityDuration) {
 		toSerialize["validityDuration"] = o.ValidityDuration
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -546,15 +551,34 @@ func (o *CardLedgerTransactionLogEntryIntegrationAPI) UnmarshalJSON(data []byte)
 
 	varCardLedgerTransactionLogEntryIntegrationAPI := _CardLedgerTransactionLogEntryIntegrationAPI{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCardLedgerTransactionLogEntryIntegrationAPI)
+	err = json.Unmarshal(data, &varCardLedgerTransactionLogEntryIntegrationAPI)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CardLedgerTransactionLogEntryIntegrationAPI(varCardLedgerTransactionLogEntryIntegrationAPI)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "transactionUUID")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "programId")
+		delete(additionalProperties, "cardIdentifier")
+		delete(additionalProperties, "customerSessionId")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "subledgerId")
+		delete(additionalProperties, "amount")
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "rulesetId")
+		delete(additionalProperties, "ruleName")
+		delete(additionalProperties, "validityDuration")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

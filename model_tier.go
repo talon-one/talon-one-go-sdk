@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -31,7 +30,8 @@ type Tier struct {
 	// Date when tier level expires in the RFC3339 format (in the Loyalty Program's timezone).
 	ExpiryDate *time.Time `json:"expiryDate,omitempty"`
 	// The policy that defines how customer tiers are downgraded in the loyalty program after tier reevaluation.  - `one_down`: If the customer doesn't have enough points to stay in the current tier, they are downgraded by one tier.  - `balance_based`: The customer's tier is reevaluated based on the amount of active points they have at the moment.
-	DowngradePolicy *string `json:"downgradePolicy,omitempty"`
+	DowngradePolicy      *string `json:"downgradePolicy,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Tier Tier
@@ -220,6 +220,11 @@ func (o Tier) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.DowngradePolicy) {
 		toSerialize["downgradePolicy"] = o.DowngradePolicy
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -248,15 +253,24 @@ func (o *Tier) UnmarshalJSON(data []byte) (err error) {
 
 	varTier := _Tier{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varTier)
+	err = json.Unmarshal(data, &varTier)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Tier(varTier)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "downgradePolicy")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

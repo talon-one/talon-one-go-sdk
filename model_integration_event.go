@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -28,7 +27,8 @@ type IntegrationEvent struct {
 	// A string representing the event. Must not be a reserved event name.
 	Type string `json:"type"`
 	// Arbitrary additional JSON data associated with the event.
-	Attributes map[string]interface{} `json:"attributes"`
+	Attributes           map[string]interface{} `json:"attributes"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _IntegrationEvent IntegrationEvent
@@ -182,6 +182,11 @@ func (o IntegrationEvent) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["type"] = o.Type
 	toSerialize["attributes"] = o.Attributes
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -210,15 +215,23 @@ func (o *IntegrationEvent) UnmarshalJSON(data []byte) (err error) {
 
 	varIntegrationEvent := _IntegrationEvent{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varIntegrationEvent)
+	err = json.Unmarshal(data, &varIntegrationEvent)
 
 	if err != nil {
 		return err
 	}
 
 	*o = IntegrationEvent(varIntegrationEvent)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "profileId")
+		delete(additionalProperties, "storeIntegrationId")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "attributes")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

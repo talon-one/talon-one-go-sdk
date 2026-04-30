@@ -28,8 +28,11 @@ type RoleV2ApplicationDetails struct {
 	// Name of the tools-related permission set.
 	Tools *string `json:"tools,omitempty"`
 	// Support user limits for actions that require admin approval within the given application.
-	Thresholds *RolesV2Thresholds `json:"thresholds,omitempty"`
+	Thresholds           *RolesV2Thresholds `json:"thresholds,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _RoleV2ApplicationDetails RoleV2ApplicationDetails
 
 // NewRoleV2ApplicationDetails instantiates a new RoleV2ApplicationDetails object
 // This constructor will assign default values to properties that have it defined,
@@ -233,7 +236,37 @@ func (o RoleV2ApplicationDetails) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Thresholds) {
 		toSerialize["thresholds"] = o.Thresholds
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *RoleV2ApplicationDetails) UnmarshalJSON(data []byte) (err error) {
+	varRoleV2ApplicationDetails := _RoleV2ApplicationDetails{}
+
+	err = json.Unmarshal(data, &varRoleV2ApplicationDetails)
+
+	if err != nil {
+		return err
+	}
+
+	*o = RoleV2ApplicationDetails(varRoleV2ApplicationDetails)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "application")
+		delete(additionalProperties, "campaign")
+		delete(additionalProperties, "draftCampaign")
+		delete(additionalProperties, "tools")
+		delete(additionalProperties, "thresholds")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableRoleV2ApplicationDetails struct {

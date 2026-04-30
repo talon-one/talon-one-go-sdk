@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -38,7 +37,8 @@ type TalangAttribute struct {
 	// The number of campaigns that refer to the attribute.
 	CampaignsCount int64 `json:"campaignsCount"`
 	// Examples of values that can be assigned to the attribute.
-	ExampleValue []string `json:"exampleValue,omitempty"`
+	ExampleValue         []string `json:"exampleValue,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _TalangAttribute TalangAttribute
@@ -342,6 +342,11 @@ func (o TalangAttribute) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ExampleValue) {
 		toSerialize["exampleValue"] = o.ExampleValue
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -373,15 +378,28 @@ func (o *TalangAttribute) UnmarshalJSON(data []byte) (err error) {
 
 	varTalangAttribute := _TalangAttribute{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varTalangAttribute)
+	err = json.Unmarshal(data, &varTalangAttribute)
 
 	if err != nil {
 		return err
 	}
 
 	*o = TalangAttribute(varTalangAttribute)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "entity")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "visible")
+		delete(additionalProperties, "kind")
+		delete(additionalProperties, "campaignsCount")
+		delete(additionalProperties, "exampleValue")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

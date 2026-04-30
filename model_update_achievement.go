@@ -42,7 +42,10 @@ type UpdateAchievement struct {
 	EndDate *time.Time `json:"endDate,omitempty"`
 	// When `true`, customer progress can be rolled back in completed achievements.
 	AllowRollbackAfterCompletion *bool `json:"allowRollbackAfterCompletion,omitempty"`
+	AdditionalProperties         map[string]interface{}
 }
+
+type _UpdateAchievement UpdateAchievement
 
 // NewUpdateAchievement instantiates a new UpdateAchievement object
 // This constructor will assign default values to properties that have it defined,
@@ -459,7 +462,43 @@ func (o UpdateAchievement) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.AllowRollbackAfterCompletion) {
 		toSerialize["allowRollbackAfterCompletion"] = o.AllowRollbackAfterCompletion
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *UpdateAchievement) UnmarshalJSON(data []byte) (err error) {
+	varUpdateAchievement := _UpdateAchievement{}
+
+	err = json.Unmarshal(data, &varUpdateAchievement)
+
+	if err != nil {
+		return err
+	}
+
+	*o = UpdateAchievement(varUpdateAchievement)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "target")
+		delete(additionalProperties, "period")
+		delete(additionalProperties, "periodEndOverride")
+		delete(additionalProperties, "recurrencePolicy")
+		delete(additionalProperties, "activationPolicy")
+		delete(additionalProperties, "fixedStartDate")
+		delete(additionalProperties, "endDate")
+		delete(additionalProperties, "allowRollbackAfterCompletion")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableUpdateAchievement struct {

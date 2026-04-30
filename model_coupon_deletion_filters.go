@@ -47,8 +47,11 @@ type CouponDeletionFilters struct {
 	// Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the coupon creation timestamp. You can use any time zone setting. Talon.One will convert to UTC internally.
 	ExpiresAfter *time.Time `json:"expiresAfter,omitempty"`
 	// Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the coupon creation timestamp. You can use any time zone setting. Talon.One will convert to UTC internally.
-	ExpiresBefore *time.Time `json:"expiresBefore,omitempty"`
+	ExpiresBefore        *time.Time `json:"expiresBefore,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _CouponDeletionFilters CouponDeletionFilters
 
 // NewCouponDeletionFilters instantiates a new CouponDeletionFilters object
 // This constructor will assign default values to properties that have it defined,
@@ -571,7 +574,46 @@ func (o CouponDeletionFilters) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ExpiresBefore) {
 		toSerialize["expiresBefore"] = o.ExpiresBefore
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *CouponDeletionFilters) UnmarshalJSON(data []byte) (err error) {
+	varCouponDeletionFilters := _CouponDeletionFilters{}
+
+	err = json.Unmarshal(data, &varCouponDeletionFilters)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CouponDeletionFilters(varCouponDeletionFilters)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "createdBefore")
+		delete(additionalProperties, "createdAfter")
+		delete(additionalProperties, "startsAfter")
+		delete(additionalProperties, "startsBefore")
+		delete(additionalProperties, "valid")
+		delete(additionalProperties, "usable")
+		delete(additionalProperties, "redeemed")
+		delete(additionalProperties, "recipientIntegrationId")
+		delete(additionalProperties, "exactMatch")
+		delete(additionalProperties, "value")
+		delete(additionalProperties, "batchId")
+		delete(additionalProperties, "referralId")
+		delete(additionalProperties, "expiresAfter")
+		delete(additionalProperties, "expiresBefore")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableCouponDeletionFilters struct {

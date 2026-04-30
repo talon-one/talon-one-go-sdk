@@ -27,8 +27,11 @@ type UpdateApplicationCIF struct {
 	// The ID of the user who last updated the Application cart item filter.
 	ModifiedBy *int64 `json:"modifiedBy,omitempty"`
 	// Timestamp of the most recent update to the Application cart item filter.
-	Modified *time.Time `json:"modified,omitempty"`
+	Modified             *time.Time `json:"modified,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _UpdateApplicationCIF UpdateApplicationCIF
 
 // NewUpdateApplicationCIF instantiates a new UpdateApplicationCIF object
 // This constructor will assign default values to properties that have it defined,
@@ -197,7 +200,36 @@ func (o UpdateApplicationCIF) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Modified) {
 		toSerialize["modified"] = o.Modified
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *UpdateApplicationCIF) UnmarshalJSON(data []byte) (err error) {
+	varUpdateApplicationCIF := _UpdateApplicationCIF{}
+
+	err = json.Unmarshal(data, &varUpdateApplicationCIF)
+
+	if err != nil {
+		return err
+	}
+
+	*o = UpdateApplicationCIF(varUpdateApplicationCIF)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "activeExpressionId")
+		delete(additionalProperties, "modifiedBy")
+		delete(additionalProperties, "modified")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableUpdateApplicationCIF struct {

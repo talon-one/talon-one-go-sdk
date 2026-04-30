@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &Product{}
 // Product The specific properties of the product this item belongs to, if available.
 type Product struct {
 	// The product the item belongs to.
-	Name string `json:"name"`
+	Name                 string `json:"name"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Product Product
@@ -80,6 +80,11 @@ func (o Product) MarshalJSON() ([]byte, error) {
 func (o Product) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["name"] = o.Name
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *Product) UnmarshalJSON(data []byte) (err error) {
 
 	varProduct := _Product{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varProduct)
+	err = json.Unmarshal(data, &varProduct)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Product(varProduct)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

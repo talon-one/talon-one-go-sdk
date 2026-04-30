@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -28,7 +27,8 @@ type OutgoingIntegrationMoEngagePolicy struct {
 	// MoEngage DATA API ID. See [MoEngage Developer Guide](https://developers.moengage.com/hc/en-us/articles/4404674776724-Overview).
 	DataApiId string `json:"dataApiId"`
 	// MoEngage DATA API Key. See [MoEngage Developer Guide](https://developers.moengage.com/hc/en-us/articles/4404674776724-Overview).
-	DataApiKey string `json:"dataApiKey"`
+	DataApiKey           string `json:"dataApiKey"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _OutgoingIntegrationMoEngagePolicy OutgoingIntegrationMoEngagePolicy
@@ -164,6 +164,11 @@ func (o OutgoingIntegrationMoEngagePolicy) ToMap() (map[string]interface{}, erro
 	toSerialize["appId"] = o.AppId
 	toSerialize["dataApiId"] = o.DataApiId
 	toSerialize["dataApiKey"] = o.DataApiKey
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -194,15 +199,23 @@ func (o *OutgoingIntegrationMoEngagePolicy) UnmarshalJSON(data []byte) (err erro
 
 	varOutgoingIntegrationMoEngagePolicy := _OutgoingIntegrationMoEngagePolicy{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varOutgoingIntegrationMoEngagePolicy)
+	err = json.Unmarshal(data, &varOutgoingIntegrationMoEngagePolicy)
 
 	if err != nil {
 		return err
 	}
 
 	*o = OutgoingIntegrationMoEngagePolicy(varOutgoingIntegrationMoEngagePolicy)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "baseUrl")
+		delete(additionalProperties, "appId")
+		delete(additionalProperties, "dataApiId")
+		delete(additionalProperties, "dataApiKey")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

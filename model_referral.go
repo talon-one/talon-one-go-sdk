@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -47,7 +46,8 @@ type Referral struct {
 	// The number of times this referral code has been successfully used.
 	UsageCounter int64 `json:"usageCounter"`
 	// The ID of the batch the referrals belong to.
-	BatchId *string `json:"batchId,omitempty"`
+	BatchId              *string `json:"batchId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Referral Referral
@@ -480,6 +480,11 @@ func (o Referral) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.BatchId) {
 		toSerialize["batchId"] = o.BatchId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -512,15 +517,32 @@ func (o *Referral) UnmarshalJSON(data []byte) (err error) {
 
 	varReferral := _Referral{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varReferral)
+	err = json.Unmarshal(data, &varReferral)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Referral(varReferral)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "usageLimit")
+		delete(additionalProperties, "campaignId")
+		delete(additionalProperties, "advocateProfileIntegrationId")
+		delete(additionalProperties, "friendProfileIntegrationId")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "importId")
+		delete(additionalProperties, "code")
+		delete(additionalProperties, "usageCounter")
+		delete(additionalProperties, "batchId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

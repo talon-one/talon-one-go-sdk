@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -36,7 +35,8 @@ type EventV3 struct {
 	// The ID of the session that happened in the past.
 	ConnectedSessionID *string `json:"connectedSessionID,omitempty"`
 	// The unique identifier of the event that happened in the past.
-	PreviousEventID *string `json:"previousEventID,omitempty"`
+	PreviousEventID      *string `json:"previousEventID,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _EventV3 EventV3
@@ -321,6 +321,11 @@ func (o EventV3) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.PreviousEventID) {
 		toSerialize["previousEventID"] = o.PreviousEventID
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -350,15 +355,27 @@ func (o *EventV3) UnmarshalJSON(data []byte) (err error) {
 
 	varEventV3 := _EventV3{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varEventV3)
+	err = json.Unmarshal(data, &varEventV3)
 
 	if err != nil {
 		return err
 	}
 
 	*o = EventV3(varEventV3)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "profileId")
+		delete(additionalProperties, "storeIntegrationId")
+		delete(additionalProperties, "evaluableCampaignIds")
+		delete(additionalProperties, "integrationId")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "connectedSessionID")
+		delete(additionalProperties, "previousEventID")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

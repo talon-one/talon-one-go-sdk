@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -44,7 +43,8 @@ type CardAddedDeductedPointsBalancesNotification struct {
 	// The list of actions that have been triggered in the loyalty program.
 	Actions []AddedDeductedPointsBalancesAction `json:"Actions"`
 	// The current points balance.
-	CurrentPoints float32 `json:"CurrentPoints"`
+	CurrentPoints        float32 `json:"CurrentPoints"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CardAddedDeductedPointsBalancesNotification CardAddedDeductedPointsBalancesNotification
@@ -388,6 +388,11 @@ func (o CardAddedDeductedPointsBalancesNotification) ToMap() (map[string]interfa
 	toSerialize["UsersPerCardLimit"] = o.UsersPerCardLimit
 	toSerialize["Actions"] = o.Actions
 	toSerialize["CurrentPoints"] = o.CurrentPoints
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -426,15 +431,31 @@ func (o *CardAddedDeductedPointsBalancesNotification) UnmarshalJSON(data []byte)
 
 	varCardAddedDeductedPointsBalancesNotification := _CardAddedDeductedPointsBalancesNotification{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCardAddedDeductedPointsBalancesNotification)
+	err = json.Unmarshal(data, &varCardAddedDeductedPointsBalancesNotification)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CardAddedDeductedPointsBalancesNotification(varCardAddedDeductedPointsBalancesNotification)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "CardIdentifier")
+		delete(additionalProperties, "EmployeeName")
+		delete(additionalProperties, "LoyaltyProgramID")
+		delete(additionalProperties, "NotificationType")
+		delete(additionalProperties, "ProfileIntegrationIDs")
+		delete(additionalProperties, "SessionIntegrationID")
+		delete(additionalProperties, "SubledgerID")
+		delete(additionalProperties, "TypeOfChange")
+		delete(additionalProperties, "UserID")
+		delete(additionalProperties, "UsersPerCardLimit")
+		delete(additionalProperties, "Actions")
+		delete(additionalProperties, "CurrentPoints")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

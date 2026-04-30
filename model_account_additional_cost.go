@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -37,7 +36,8 @@ type AccountAdditionalCost struct {
 	// A list of the IDs of the applications that are subscribed to this additional cost.
 	SubscribedApplicationsIds []int64 `json:"subscribedApplicationsIds,omitempty"`
 	// The type of additional cost. Possible value: - `session`: Additional cost will be added per session. - `item`: Additional cost will be added per item. - `both`: Additional cost will be added per item and session.
-	Type *string `json:"type,omitempty"`
+	Type                 *string `json:"type,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AccountAdditionalCost AccountAdditionalCost
@@ -299,6 +299,11 @@ func (o AccountAdditionalCost) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Type) {
 		toSerialize["type"] = o.Type
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -331,15 +336,27 @@ func (o *AccountAdditionalCost) UnmarshalJSON(data []byte) (err error) {
 
 	varAccountAdditionalCost := _AccountAdditionalCost{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAccountAdditionalCost)
+	err = json.Unmarshal(data, &varAccountAdditionalCost)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AccountAdditionalCost(varAccountAdditionalCost)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "subscribedApplicationsIds")
+		delete(additionalProperties, "type")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

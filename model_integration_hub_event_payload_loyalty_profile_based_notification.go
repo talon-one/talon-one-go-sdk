@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -38,6 +37,7 @@ type IntegrationHubEventPayloadLoyaltyProfileBasedNotification struct {
 	TimestampOfTierChange       *time.Time `json:"TimestampOfTierChange,omitempty"`
 	PointsRequiredToTheNextTier *float32   `json:"PointsRequiredToTheNextTier,omitempty"`
 	NextTier                    *string    `json:"NextTier,omitempty"`
+	AdditionalProperties        map[string]interface{}
 }
 
 type _IntegrationHubEventPayloadLoyaltyProfileBasedNotification IntegrationHubEventPayloadLoyaltyProfileBasedNotification
@@ -540,6 +540,11 @@ func (o IntegrationHubEventPayloadLoyaltyProfileBasedNotification) ToMap() (map[
 	if !IsNil(o.NextTier) {
 		toSerialize["NextTier"] = o.NextTier
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -572,15 +577,34 @@ func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) UnmarshalJSO
 
 	varIntegrationHubEventPayloadLoyaltyProfileBasedNotification := _IntegrationHubEventPayloadLoyaltyProfileBasedNotification{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varIntegrationHubEventPayloadLoyaltyProfileBasedNotification)
+	err = json.Unmarshal(data, &varIntegrationHubEventPayloadLoyaltyProfileBasedNotification)
 
 	if err != nil {
 		return err
 	}
 
 	*o = IntegrationHubEventPayloadLoyaltyProfileBasedNotification(varIntegrationHubEventPayloadLoyaltyProfileBasedNotification)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "ProfileIntegrationID")
+		delete(additionalProperties, "LoyaltyProgramID")
+		delete(additionalProperties, "SubledgerID")
+		delete(additionalProperties, "SourceOfEvent")
+		delete(additionalProperties, "EmployeeName")
+		delete(additionalProperties, "UserID")
+		delete(additionalProperties, "CurrentPoints")
+		delete(additionalProperties, "Actions")
+		delete(additionalProperties, "PublishedAt")
+		delete(additionalProperties, "CurrentTier")
+		delete(additionalProperties, "OldTier")
+		delete(additionalProperties, "TierExpirationDate")
+		delete(additionalProperties, "TimestampOfTierChange")
+		delete(additionalProperties, "PointsRequiredToTheNextTier")
+		delete(additionalProperties, "NextTier")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

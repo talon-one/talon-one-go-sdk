@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type BaseNotificationEntity struct {
 	// Indicates which notification properties to apply.
 	Policy map[string]interface{} `json:"policy"`
 	// Indicates whether the notification is activated.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled              *bool `json:"enabled,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _BaseNotificationEntity BaseNotificationEntity
@@ -121,6 +121,11 @@ func (o BaseNotificationEntity) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Enabled) {
 		toSerialize["enabled"] = o.Enabled
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -148,15 +153,21 @@ func (o *BaseNotificationEntity) UnmarshalJSON(data []byte) (err error) {
 
 	varBaseNotificationEntity := _BaseNotificationEntity{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varBaseNotificationEntity)
+	err = json.Unmarshal(data, &varBaseNotificationEntity)
 
 	if err != nil {
 		return err
 	}
 
 	*o = BaseNotificationEntity(varBaseNotificationEntity)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "policy")
+		delete(additionalProperties, "enabled")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -43,7 +42,8 @@ type Giveaway struct {
 	// The third-party integration ID of the customer profile that was awarded the giveaway, if the giveaway was awarded.
 	ProfileIntegrationId *string `json:"profileIntegrationId,omitempty"`
 	// The internal ID of the customer profile that was awarded the giveaway, if the giveaway was awarded and an internal ID exists.
-	ProfileId *int64 `json:"profileId,omitempty"`
+	ProfileId            *int64 `json:"profileId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Giveaway Giveaway
@@ -424,6 +424,11 @@ func (o Giveaway) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ProfileId) {
 		toSerialize["profileId"] = o.ProfileId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -454,15 +459,30 @@ func (o *Giveaway) UnmarshalJSON(data []byte) (err error) {
 
 	varGiveaway := _Giveaway{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGiveaway)
+	err = json.Unmarshal(data, &varGiveaway)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Giveaway(varGiveaway)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "code")
+		delete(additionalProperties, "poolId")
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "endDate")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "used")
+		delete(additionalProperties, "importId")
+		delete(additionalProperties, "profileIntegrationId")
+		delete(additionalProperties, "profileId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

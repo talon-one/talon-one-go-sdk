@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -34,7 +33,8 @@ type SetDiscountPerAdditionalCostPerItemEffectProps struct {
 	// The name of the additional cost.
 	AdditionalCost string `json:"additionalCost"`
 	// Only with [partial discounts enabled](https://docs.talon.one/docs/product/campaigns/campaign-evaluation/#partial-discounts). Represents the monetary value of the discount to be applied to additional discount without considering budget limitations.
-	DesiredValue *float32 `json:"desiredValue,omitempty"`
+	DesiredValue         *float32 `json:"desiredValue,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _SetDiscountPerAdditionalCostPerItemEffectProps SetDiscountPerAdditionalCostPerItemEffectProps
@@ -266,6 +266,11 @@ func (o SetDiscountPerAdditionalCostPerItemEffectProps) ToMap() (map[string]inte
 	if !IsNil(o.DesiredValue) {
 		toSerialize["desiredValue"] = o.DesiredValue
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -297,15 +302,26 @@ func (o *SetDiscountPerAdditionalCostPerItemEffectProps) UnmarshalJSON(data []by
 
 	varSetDiscountPerAdditionalCostPerItemEffectProps := _SetDiscountPerAdditionalCostPerItemEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varSetDiscountPerAdditionalCostPerItemEffectProps)
+	err = json.Unmarshal(data, &varSetDiscountPerAdditionalCostPerItemEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = SetDiscountPerAdditionalCostPerItemEffectProps(varSetDiscountPerAdditionalCostPerItemEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "additionalCostId")
+		delete(additionalProperties, "value")
+		delete(additionalProperties, "position")
+		delete(additionalProperties, "subPosition")
+		delete(additionalProperties, "additionalCost")
+		delete(additionalProperties, "desiredValue")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

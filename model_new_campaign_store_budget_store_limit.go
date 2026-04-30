@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type NewCampaignStoreBudgetStoreLimit struct {
 	// The ID of the store. You can get this ID with the [List stores](#tag/Stores/operation/listStores) endpoint.
 	StoreId int64 `json:"storeId"`
 	// The value to set for the limit.
-	Limit float32 `json:"limit"`
+	Limit                float32 `json:"limit"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewCampaignStoreBudgetStoreLimit NewCampaignStoreBudgetStoreLimit
@@ -108,6 +108,11 @@ func (o NewCampaignStoreBudgetStoreLimit) ToMap() (map[string]interface{}, error
 	toSerialize := map[string]interface{}{}
 	toSerialize["storeId"] = o.StoreId
 	toSerialize["limit"] = o.Limit
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *NewCampaignStoreBudgetStoreLimit) UnmarshalJSON(data []byte) (err error
 
 	varNewCampaignStoreBudgetStoreLimit := _NewCampaignStoreBudgetStoreLimit{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewCampaignStoreBudgetStoreLimit)
+	err = json.Unmarshal(data, &varNewCampaignStoreBudgetStoreLimit)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewCampaignStoreBudgetStoreLimit(varNewCampaignStoreBudgetStoreLimit)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "storeId")
+		delete(additionalProperties, "limit")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

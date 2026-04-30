@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type NewCampaignCollection struct {
 	// A short description of the purpose of this collection.
 	Description *string `json:"description,omitempty"`
 	// The name of this collection.
-	Name string `json:"name" validate:"regexp=^[^[:cntrl:]\\\\s][^[:cntrl:]]*$"`
+	Name                 string `json:"name" validate:"regexp=^[^[:cntrl:]\\\\s][^[:cntrl:]]*$"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewCampaignCollection NewCampaignCollection
@@ -117,6 +117,11 @@ func (o NewCampaignCollection) ToMap() (map[string]interface{}, error) {
 		toSerialize["description"] = o.Description
 	}
 	toSerialize["name"] = o.Name
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -144,15 +149,21 @@ func (o *NewCampaignCollection) UnmarshalJSON(data []byte) (err error) {
 
 	varNewCampaignCollection := _NewCampaignCollection{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewCampaignCollection)
+	err = json.Unmarshal(data, &varNewCampaignCollection)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewCampaignCollection(varNewCampaignCollection)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "name")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -20,8 +20,11 @@ var _ MappedNullable = &ApplicationCustomerEntity{}
 // ApplicationCustomerEntity struct for ApplicationCustomerEntity
 type ApplicationCustomerEntity struct {
 	// The globally unique Talon.One ID of the customer that created this entity.
-	ProfileId *int64 `json:"profileId,omitempty"`
+	ProfileId            *int64 `json:"profileId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ApplicationCustomerEntity ApplicationCustomerEntity
 
 // NewApplicationCustomerEntity instantiates a new ApplicationCustomerEntity object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o ApplicationCustomerEntity) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ProfileId) {
 		toSerialize["profileId"] = o.ProfileId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ApplicationCustomerEntity) UnmarshalJSON(data []byte) (err error) {
+	varApplicationCustomerEntity := _ApplicationCustomerEntity{}
+
+	err = json.Unmarshal(data, &varApplicationCustomerEntity)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ApplicationCustomerEntity(varApplicationCustomerEntity)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "profileId")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableApplicationCustomerEntity struct {

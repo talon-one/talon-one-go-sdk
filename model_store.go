@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -39,7 +38,8 @@ type Store struct {
 	// Timestamp of the most recent update on this entity.
 	Updated time.Time `json:"updated"`
 	// A list of IDs of the campaigns that are linked with current store.
-	LinkedCampaignIds []int64 `json:"linkedCampaignIds,omitempty"`
+	LinkedCampaignIds    []int64 `json:"linkedCampaignIds,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Store Store
@@ -323,6 +323,11 @@ func (o Store) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.LinkedCampaignIds) {
 		toSerialize["linkedCampaignIds"] = o.LinkedCampaignIds
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -356,15 +361,28 @@ func (o *Store) UnmarshalJSON(data []byte) (err error) {
 
 	varStore := _Store{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varStore)
+	err = json.Unmarshal(data, &varStore)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Store(varStore)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "integrationId")
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "updated")
+		delete(additionalProperties, "linkedCampaignIds")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

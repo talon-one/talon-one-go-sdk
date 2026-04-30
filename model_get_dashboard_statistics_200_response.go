@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &GetDashboardStatistics200Response{}
 
 // GetDashboardStatistics200Response struct for GetDashboardStatistics200Response
 type GetDashboardStatistics200Response struct {
-	TotalResultSize int64                  `json:"totalResultSize"`
-	Data            []LoyaltyDashboardData `json:"data"`
+	TotalResultSize      int64                  `json:"totalResultSize"`
+	Data                 []LoyaltyDashboardData `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GetDashboardStatistics200Response GetDashboardStatistics200Response
@@ -106,6 +106,11 @@ func (o GetDashboardStatistics200Response) ToMap() (map[string]interface{}, erro
 	toSerialize := map[string]interface{}{}
 	toSerialize["totalResultSize"] = o.TotalResultSize
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -134,15 +139,21 @@ func (o *GetDashboardStatistics200Response) UnmarshalJSON(data []byte) (err erro
 
 	varGetDashboardStatistics200Response := _GetDashboardStatistics200Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGetDashboardStatistics200Response)
+	err = json.Unmarshal(data, &varGetDashboardStatistics200Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GetDashboardStatistics200Response(varGetDashboardStatistics200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "totalResultSize")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

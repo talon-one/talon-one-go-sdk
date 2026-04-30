@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &MultiApplicationEntity{}
 // MultiApplicationEntity struct for MultiApplicationEntity
 type MultiApplicationEntity struct {
 	// The IDs of the Applications that are related to this entity.
-	ApplicationIds []int64 `json:"applicationIds"`
+	ApplicationIds       []int64 `json:"applicationIds"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _MultiApplicationEntity MultiApplicationEntity
@@ -80,6 +80,11 @@ func (o MultiApplicationEntity) MarshalJSON() ([]byte, error) {
 func (o MultiApplicationEntity) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["applicationIds"] = o.ApplicationIds
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *MultiApplicationEntity) UnmarshalJSON(data []byte) (err error) {
 
 	varMultiApplicationEntity := _MultiApplicationEntity{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varMultiApplicationEntity)
+	err = json.Unmarshal(data, &varMultiApplicationEntity)
 
 	if err != nil {
 		return err
 	}
 
 	*o = MultiApplicationEntity(varMultiApplicationEntity)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "applicationIds")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

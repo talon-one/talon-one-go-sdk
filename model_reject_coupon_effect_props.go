@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -33,6 +32,7 @@ type RejectCouponEffectProps struct {
 	Details *string `json:"details,omitempty"`
 	// The reason why the campaign was not applied.
 	CampaignExclusionReason *string `json:"campaignExclusionReason,omitempty"`
+	AdditionalProperties    map[string]interface{}
 }
 
 type _RejectCouponEffectProps RejectCouponEffectProps
@@ -256,6 +256,11 @@ func (o RejectCouponEffectProps) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CampaignExclusionReason) {
 		toSerialize["campaignExclusionReason"] = o.CampaignExclusionReason
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -284,15 +289,25 @@ func (o *RejectCouponEffectProps) UnmarshalJSON(data []byte) (err error) {
 
 	varRejectCouponEffectProps := _RejectCouponEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varRejectCouponEffectProps)
+	err = json.Unmarshal(data, &varRejectCouponEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = RejectCouponEffectProps(varRejectCouponEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "value")
+		delete(additionalProperties, "rejectionReason")
+		delete(additionalProperties, "conditionIndex")
+		delete(additionalProperties, "effectIndex")
+		delete(additionalProperties, "details")
+		delete(additionalProperties, "campaignExclusionReason")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

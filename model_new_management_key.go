@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -43,7 +42,8 @@ type NewManagementKey struct {
 	// The last time the management key was used.
 	LastUsed *time.Time `json:"lastUsed,omitempty"`
 	// The management key.
-	Key string `json:"key"`
+	Key                  string `json:"key"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewManagementKey NewManagementKey
@@ -388,6 +388,11 @@ func (o NewManagementKey) ToMap() (map[string]interface{}, error) {
 		toSerialize["lastUsed"] = o.LastUsed
 	}
 	toSerialize["key"] = o.Key
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -422,15 +427,30 @@ func (o *NewManagementKey) UnmarshalJSON(data []byte) (err error) {
 
 	varNewManagementKey := _NewManagementKey{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewManagementKey)
+	err = json.Unmarshal(data, &varNewManagementKey)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewManagementKey(varNewManagementKey)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "endpoints")
+		delete(additionalProperties, "allowedApplicationIds")
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "createdBy")
+		delete(additionalProperties, "accountID")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "disabled")
+		delete(additionalProperties, "lastUsed")
+		delete(additionalProperties, "key")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -23,6 +22,7 @@ var _ MappedNullable = &LoyaltyDashboardPointsBreakdown{}
 type LoyaltyDashboardPointsBreakdown struct {
 	CreatedManually      float32 `json:"createdManually"`
 	CreatedViaRuleEngine float32 `json:"createdViaRuleEngine"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _LoyaltyDashboardPointsBreakdown LoyaltyDashboardPointsBreakdown
@@ -106,6 +106,11 @@ func (o LoyaltyDashboardPointsBreakdown) ToMap() (map[string]interface{}, error)
 	toSerialize := map[string]interface{}{}
 	toSerialize["createdManually"] = o.CreatedManually
 	toSerialize["createdViaRuleEngine"] = o.CreatedViaRuleEngine
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -134,15 +139,21 @@ func (o *LoyaltyDashboardPointsBreakdown) UnmarshalJSON(data []byte) (err error)
 
 	varLoyaltyDashboardPointsBreakdown := _LoyaltyDashboardPointsBreakdown{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varLoyaltyDashboardPointsBreakdown)
+	err = json.Unmarshal(data, &varLoyaltyDashboardPointsBreakdown)
 
 	if err != nil {
 		return err
 	}
 
 	*o = LoyaltyDashboardPointsBreakdown(varLoyaltyDashboardPointsBreakdown)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "createdManually")
+		delete(additionalProperties, "createdViaRuleEngine")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

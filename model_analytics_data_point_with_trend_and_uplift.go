@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,9 +20,10 @@ var _ MappedNullable = &AnalyticsDataPointWithTrendAndUplift{}
 
 // AnalyticsDataPointWithTrendAndUplift struct for AnalyticsDataPointWithTrendAndUplift
 type AnalyticsDataPointWithTrendAndUplift struct {
-	Value  float32 `json:"value"`
-	Uplift float32 `json:"uplift"`
-	Trend  float32 `json:"trend"`
+	Value                float32 `json:"value"`
+	Uplift               float32 `json:"uplift"`
+	Trend                float32 `json:"trend"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AnalyticsDataPointWithTrendAndUplift AnalyticsDataPointWithTrendAndUplift
@@ -133,6 +133,11 @@ func (o AnalyticsDataPointWithTrendAndUplift) ToMap() (map[string]interface{}, e
 	toSerialize["value"] = o.Value
 	toSerialize["uplift"] = o.Uplift
 	toSerialize["trend"] = o.Trend
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -162,15 +167,22 @@ func (o *AnalyticsDataPointWithTrendAndUplift) UnmarshalJSON(data []byte) (err e
 
 	varAnalyticsDataPointWithTrendAndUplift := _AnalyticsDataPointWithTrendAndUplift{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAnalyticsDataPointWithTrendAndUplift)
+	err = json.Unmarshal(data, &varAnalyticsDataPointWithTrendAndUplift)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AnalyticsDataPointWithTrendAndUplift(varAnalyticsDataPointWithTrendAndUplift)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "value")
+		delete(additionalProperties, "uplift")
+		delete(additionalProperties, "trend")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

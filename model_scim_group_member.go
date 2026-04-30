@@ -22,8 +22,11 @@ type ScimGroupMember struct {
 	// Unique identifier of the member.
 	Value *string `json:"value,omitempty"`
 	// Identifier of the user. This is usually an email address.
-	Display *string `json:"display,omitempty"`
+	Display              *string `json:"display,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ScimGroupMember ScimGroupMember
 
 // NewScimGroupMember instantiates a new ScimGroupMember object
 // This constructor will assign default values to properties that have it defined,
@@ -122,7 +125,34 @@ func (o ScimGroupMember) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Display) {
 		toSerialize["display"] = o.Display
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ScimGroupMember) UnmarshalJSON(data []byte) (err error) {
+	varScimGroupMember := _ScimGroupMember{}
+
+	err = json.Unmarshal(data, &varScimGroupMember)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ScimGroupMember(varScimGroupMember)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "value")
+		delete(additionalProperties, "display")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableScimGroupMember struct {

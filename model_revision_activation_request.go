@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -25,7 +24,8 @@ type RevisionActivationRequest struct {
 	// The list of IDs of the users who will receive the activation request.
 	UserIds []int64 `json:"userIds"`
 	// Time when the revisions are finalized after the `activate_revision` operation. The current time is used when left blank.  **Note:** It must be an RFC3339 timestamp string.
-	ActivateAt *time.Time `json:"activateAt,omitempty"`
+	ActivateAt           *time.Time `json:"activateAt,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _RevisionActivationRequest RevisionActivationRequest
@@ -118,6 +118,11 @@ func (o RevisionActivationRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ActivateAt) {
 		toSerialize["activateAt"] = o.ActivateAt
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -145,15 +150,21 @@ func (o *RevisionActivationRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varRevisionActivationRequest := _RevisionActivationRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varRevisionActivationRequest)
+	err = json.Unmarshal(data, &varRevisionActivationRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = RevisionActivationRequest(varRevisionActivationRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "userIds")
+		delete(additionalProperties, "activateAt")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

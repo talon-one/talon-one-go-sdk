@@ -22,8 +22,11 @@ type LoyaltyLedgerTransactions struct {
 	// If `true`, it means that there is more data to request in the source collection.
 	HasMore *bool `json:"hasMore,omitempty"`
 	// List of transaction entries from a loyalty ledger.
-	Data []LoyaltyLedgerEntry `json:"data,omitempty"`
+	Data                 []LoyaltyLedgerEntry `json:"data,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _LoyaltyLedgerTransactions LoyaltyLedgerTransactions
 
 // NewLoyaltyLedgerTransactions instantiates a new LoyaltyLedgerTransactions object
 // This constructor will assign default values to properties that have it defined,
@@ -122,7 +125,34 @@ func (o LoyaltyLedgerTransactions) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Data) {
 		toSerialize["data"] = o.Data
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *LoyaltyLedgerTransactions) UnmarshalJSON(data []byte) (err error) {
+	varLoyaltyLedgerTransactions := _LoyaltyLedgerTransactions{}
+
+	err = json.Unmarshal(data, &varLoyaltyLedgerTransactions)
+
+	if err != nil {
+		return err
+	}
+
+	*o = LoyaltyLedgerTransactions(varLoyaltyLedgerTransactions)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "hasMore")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableLoyaltyLedgerTransactions struct {

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -30,7 +29,8 @@ type FunctionDef struct {
 	// Extended help text for the function.
 	Help *string `json:"help,omitempty"`
 	// An array of argument definitions.
-	Args []FuncArgDef `json:"args"`
+	Args                 []FuncArgDef `json:"args"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _FunctionDef FunctionDef
@@ -210,6 +210,11 @@ func (o FunctionDef) ToMap() (map[string]interface{}, error) {
 		toSerialize["help"] = o.Help
 	}
 	toSerialize["args"] = o.Args
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -239,15 +244,24 @@ func (o *FunctionDef) UnmarshalJSON(data []byte) (err error) {
 
 	varFunctionDef := _FunctionDef{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varFunctionDef)
+	err = json.Unmarshal(data, &varFunctionDef)
 
 	if err != nil {
 		return err
 	}
 
 	*o = FunctionDef(varFunctionDef)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "help")
+		delete(additionalProperties, "args")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

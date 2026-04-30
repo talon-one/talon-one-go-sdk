@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,8 +25,9 @@ type NewUser struct {
 	// The password for your account.
 	Password string `json:"password"`
 	// Your name.
-	Name        *string `json:"name,omitempty"`
-	InviteToken string  `json:"inviteToken"`
+	Name                 *string `json:"name,omitempty"`
+	InviteToken          string  `json:"inviteToken"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewUser NewUser
@@ -172,6 +172,11 @@ func (o NewUser) ToMap() (map[string]interface{}, error) {
 		toSerialize["name"] = o.Name
 	}
 	toSerialize["inviteToken"] = o.InviteToken
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -201,15 +206,23 @@ func (o *NewUser) UnmarshalJSON(data []byte) (err error) {
 
 	varNewUser := _NewUser{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewUser)
+	err = json.Unmarshal(data, &varNewUser)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewUser(varNewUser)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "email")
+		delete(additionalProperties, "password")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "inviteToken")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

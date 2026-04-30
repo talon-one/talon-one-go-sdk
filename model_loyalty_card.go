@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -53,7 +52,8 @@ type LoyaltyCard struct {
 	// The identifier of the card to which the points were transferred.
 	NewCardIdentifier *string `json:"newCardIdentifier,omitempty" validate:"regexp=^[A-Za-z0-9._%+@-]+$"`
 	// The ID of the batch in which the loyalty card was created.
-	BatchId *string `json:"batchId,omitempty"`
+	BatchId              *string `json:"batchId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _LoyaltyCard LoyaltyCard
@@ -591,6 +591,11 @@ func (o LoyaltyCard) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.BatchId) {
 		toSerialize["batchId"] = o.BatchId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -623,15 +628,35 @@ func (o *LoyaltyCard) UnmarshalJSON(data []byte) (err error) {
 
 	varLoyaltyCard := _LoyaltyCard{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varLoyaltyCard)
+	err = json.Unmarshal(data, &varLoyaltyCard)
 
 	if err != nil {
 		return err
 	}
 
 	*o = LoyaltyCard(varLoyaltyCard)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "programID")
+		delete(additionalProperties, "programName")
+		delete(additionalProperties, "programTitle")
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "blockReason")
+		delete(additionalProperties, "identifier")
+		delete(additionalProperties, "usersPerCardLimit")
+		delete(additionalProperties, "profiles")
+		delete(additionalProperties, "ledger")
+		delete(additionalProperties, "subledgers")
+		delete(additionalProperties, "modified")
+		delete(additionalProperties, "oldCardIdentifier")
+		delete(additionalProperties, "newCardIdentifier")
+		delete(additionalProperties, "batchId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

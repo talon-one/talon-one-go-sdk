@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -30,7 +29,8 @@ type NewInvitation struct {
 	// A list of the IDs of the roles assigned to the user.
 	Roles []int64 `json:"roles,omitempty"`
 	// Indicates the access level of the user.
-	Acl *string `json:"acl,omitempty"`
+	Acl                  *string `json:"acl,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewInvitation NewInvitation
@@ -228,6 +228,11 @@ func (o NewInvitation) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Acl) {
 		toSerialize["acl"] = o.Acl
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -255,15 +260,24 @@ func (o *NewInvitation) UnmarshalJSON(data []byte) (err error) {
 
 	varNewInvitation := _NewInvitation{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewInvitation)
+	err = json.Unmarshal(data, &varNewInvitation)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewInvitation(varNewInvitation)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "email")
+		delete(additionalProperties, "isAdmin")
+		delete(additionalProperties, "roles")
+		delete(additionalProperties, "acl")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -20,9 +20,12 @@ var _ MappedNullable = &RoleV2Permissions{}
 // RoleV2Permissions struct for RoleV2Permissions
 type RoleV2Permissions struct {
 	// List of grouped logical operations referenced by roles.
-	PermissionSets []RoleV2PermissionSet `json:"permissionSets,omitempty"`
-	Roles          *RoleV2RolesGroup     `json:"roles,omitempty"`
+	PermissionSets       []RoleV2PermissionSet `json:"permissionSets,omitempty"`
+	Roles                *RoleV2RolesGroup     `json:"roles,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _RoleV2Permissions RoleV2Permissions
 
 // NewRoleV2Permissions instantiates a new RoleV2Permissions object
 // This constructor will assign default values to properties that have it defined,
@@ -121,7 +124,34 @@ func (o RoleV2Permissions) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Roles) {
 		toSerialize["roles"] = o.Roles
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *RoleV2Permissions) UnmarshalJSON(data []byte) (err error) {
+	varRoleV2Permissions := _RoleV2Permissions{}
+
+	err = json.Unmarshal(data, &varRoleV2Permissions)
+
+	if err != nil {
+		return err
+	}
+
+	*o = RoleV2Permissions(varRoleV2Permissions)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "permissionSets")
+		delete(additionalProperties, "roles")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableRoleV2Permissions struct {

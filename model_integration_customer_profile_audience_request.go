@@ -19,8 +19,11 @@ var _ MappedNullable = &IntegrationCustomerProfileAudienceRequest{}
 
 // IntegrationCustomerProfileAudienceRequest struct for IntegrationCustomerProfileAudienceRequest
 type IntegrationCustomerProfileAudienceRequest struct {
-	Data []IntegrationCustomerProfileAudienceRequestItem `json:"data,omitempty"`
+	Data                 []IntegrationCustomerProfileAudienceRequestItem `json:"data,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _IntegrationCustomerProfileAudienceRequest IntegrationCustomerProfileAudienceRequest
 
 // NewIntegrationCustomerProfileAudienceRequest instantiates a new IntegrationCustomerProfileAudienceRequest object
 // This constructor will assign default values to properties that have it defined,
@@ -84,7 +87,33 @@ func (o IntegrationCustomerProfileAudienceRequest) ToMap() (map[string]interface
 	if !IsNil(o.Data) {
 		toSerialize["data"] = o.Data
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *IntegrationCustomerProfileAudienceRequest) UnmarshalJSON(data []byte) (err error) {
+	varIntegrationCustomerProfileAudienceRequest := _IntegrationCustomerProfileAudienceRequest{}
+
+	err = json.Unmarshal(data, &varIntegrationCustomerProfileAudienceRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = IntegrationCustomerProfileAudienceRequest(varIntegrationCustomerProfileAudienceRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableIntegrationCustomerProfileAudienceRequest struct {

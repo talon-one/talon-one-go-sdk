@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -34,7 +33,8 @@ type CustomerAnalytics struct {
 	// Total Revenue across all closed sessions.
 	TotalRevenue float32 `json:"totalRevenue"`
 	// The sum of discounts that were given across all closed sessions.
-	TotalDiscounts float32 `json:"totalDiscounts"`
+	TotalDiscounts       float32 `json:"totalDiscounts"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CustomerAnalytics CustomerAnalytics
@@ -248,6 +248,11 @@ func (o CustomerAnalytics) ToMap() (map[string]interface{}, error) {
 	toSerialize["totalDiscountedOrders"] = o.TotalDiscountedOrders
 	toSerialize["totalRevenue"] = o.TotalRevenue
 	toSerialize["totalDiscounts"] = o.TotalDiscounts
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -281,15 +286,26 @@ func (o *CustomerAnalytics) UnmarshalJSON(data []byte) (err error) {
 
 	varCustomerAnalytics := _CustomerAnalytics{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCustomerAnalytics)
+	err = json.Unmarshal(data, &varCustomerAnalytics)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CustomerAnalytics(varCustomerAnalytics)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "acceptedCoupons")
+		delete(additionalProperties, "createdCoupons")
+		delete(additionalProperties, "freeItems")
+		delete(additionalProperties, "totalOrders")
+		delete(additionalProperties, "totalDiscountedOrders")
+		delete(additionalProperties, "totalRevenue")
+		delete(additionalProperties, "totalDiscounts")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

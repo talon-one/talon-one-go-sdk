@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -39,6 +38,7 @@ type NewCouponCreationJob struct {
 	Attributes map[string]interface{} `json:"attributes"`
 	// An indication of whether the code can be redeemed only if it has been reserved first.
 	IsReservationMandatory *bool `json:"isReservationMandatory,omitempty"`
+	AdditionalProperties   map[string]interface{}
 }
 
 type _NewCouponCreationJob NewCouponCreationJob
@@ -371,6 +371,11 @@ func (o NewCouponCreationJob) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.IsReservationMandatory) {
 		toSerialize["isReservationMandatory"] = o.IsReservationMandatory
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -399,15 +404,28 @@ func (o *NewCouponCreationJob) UnmarshalJSON(data []byte) (err error) {
 
 	varNewCouponCreationJob := _NewCouponCreationJob{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewCouponCreationJob)
+	err = json.Unmarshal(data, &varNewCouponCreationJob)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewCouponCreationJob(varNewCouponCreationJob)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "usageLimit")
+		delete(additionalProperties, "discountLimit")
+		delete(additionalProperties, "reservationLimit")
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "numberOfCoupons")
+		delete(additionalProperties, "couponSettings")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "isReservationMandatory")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -48,7 +47,8 @@ type RuleFailureReason struct {
 	// The ID of the evaluation group. For more information, see [Managing campaign evaluation](https://docs.talon.one/docs/product/applications/managing-campaign-evaluation).
 	EvaluationGroupID *int64 `json:"evaluationGroupID,omitempty"`
 	// The evaluation mode of the evaluation group. For more information, see [Managing campaign evaluation](https://docs.talon.one/docs/product/applications/managing-campaign-
-	EvaluationGroupMode *string `json:"evaluationGroupMode,omitempty"`
+	EvaluationGroupMode  *string `json:"evaluationGroupMode,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _RuleFailureReason RuleFailureReason
@@ -525,6 +525,11 @@ func (o RuleFailureReason) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.EvaluationGroupMode) {
 		toSerialize["evaluationGroupMode"] = o.EvaluationGroupMode
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -556,15 +561,33 @@ func (o *RuleFailureReason) UnmarshalJSON(data []byte) (err error) {
 
 	varRuleFailureReason := _RuleFailureReason{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varRuleFailureReason)
+	err = json.Unmarshal(data, &varRuleFailureReason)
 
 	if err != nil {
 		return err
 	}
 
 	*o = RuleFailureReason(varRuleFailureReason)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "campaignID")
+		delete(additionalProperties, "campaignName")
+		delete(additionalProperties, "rulesetID")
+		delete(additionalProperties, "couponID")
+		delete(additionalProperties, "couponValue")
+		delete(additionalProperties, "referralID")
+		delete(additionalProperties, "referralValue")
+		delete(additionalProperties, "ruleIndex")
+		delete(additionalProperties, "ruleName")
+		delete(additionalProperties, "conditionIndex")
+		delete(additionalProperties, "effectIndex")
+		delete(additionalProperties, "details")
+		delete(additionalProperties, "evaluationGroupID")
+		delete(additionalProperties, "evaluationGroupMode")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -20,8 +20,11 @@ var _ MappedNullable = &OutgoingIntegrationTypes{}
 // OutgoingIntegrationTypes struct for OutgoingIntegrationTypes
 type OutgoingIntegrationTypes struct {
 	// List of outgoing integrations.
-	Data []OutgoingIntegrationType `json:"data,omitempty"`
+	Data                 []OutgoingIntegrationType `json:"data,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _OutgoingIntegrationTypes OutgoingIntegrationTypes
 
 // NewOutgoingIntegrationTypes instantiates a new OutgoingIntegrationTypes object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o OutgoingIntegrationTypes) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Data) {
 		toSerialize["data"] = o.Data
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *OutgoingIntegrationTypes) UnmarshalJSON(data []byte) (err error) {
+	varOutgoingIntegrationTypes := _OutgoingIntegrationTypes{}
+
+	err = json.Unmarshal(data, &varOutgoingIntegrationTypes)
+
+	if err != nil {
+		return err
+	}
+
+	*o = OutgoingIntegrationTypes(varOutgoingIntegrationTypes)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableOutgoingIntegrationTypes struct {

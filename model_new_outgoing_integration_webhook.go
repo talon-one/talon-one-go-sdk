@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type NewOutgoingIntegrationWebhook struct {
 	// A description of the webhook.
 	Description *string `json:"description,omitempty"`
 	// IDs of the Applications to which a webhook must be linked.
-	ApplicationIds []int64 `json:"applicationIds"`
+	ApplicationIds       []int64 `json:"applicationIds"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewOutgoingIntegrationWebhook NewOutgoingIntegrationWebhook
@@ -145,6 +145,11 @@ func (o NewOutgoingIntegrationWebhook) ToMap() (map[string]interface{}, error) {
 		toSerialize["description"] = o.Description
 	}
 	toSerialize["applicationIds"] = o.ApplicationIds
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -173,15 +178,22 @@ func (o *NewOutgoingIntegrationWebhook) UnmarshalJSON(data []byte) (err error) {
 
 	varNewOutgoingIntegrationWebhook := _NewOutgoingIntegrationWebhook{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewOutgoingIntegrationWebhook)
+	err = json.Unmarshal(data, &varNewOutgoingIntegrationWebhook)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewOutgoingIntegrationWebhook(varNewOutgoingIntegrationWebhook)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "applicationIds")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

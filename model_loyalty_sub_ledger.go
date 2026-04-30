@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -44,7 +43,8 @@ type LoyaltySubLedger struct {
 	// List of expired points.
 	ExpiredPoints []LoyaltyLedgerEntry `json:"expiredPoints,omitempty"`
 	// Tier for which the ledger is eligible.
-	CurrentTier *Tier `json:"currentTier,omitempty"`
+	CurrentTier          *Tier `json:"currentTier,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _LoyaltySubLedger LoyaltySubLedger
@@ -442,6 +442,11 @@ func (o LoyaltySubLedger) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CurrentTier) {
 		toSerialize["currentTier"] = o.CurrentTier
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -474,15 +479,31 @@ func (o *LoyaltySubLedger) UnmarshalJSON(data []byte) (err error) {
 
 	varLoyaltySubLedger := _LoyaltySubLedger{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varLoyaltySubLedger)
+	err = json.Unmarshal(data, &varLoyaltySubLedger)
 
 	if err != nil {
 		return err
 	}
 
 	*o = LoyaltySubLedger(varLoyaltySubLedger)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "total")
+		delete(additionalProperties, "totalActivePoints")
+		delete(additionalProperties, "totalPendingPoints")
+		delete(additionalProperties, "totalSpentPoints")
+		delete(additionalProperties, "totalExpiredPoints")
+		delete(additionalProperties, "totalNegativePoints")
+		delete(additionalProperties, "transactions")
+		delete(additionalProperties, "expiringPoints")
+		delete(additionalProperties, "activePoints")
+		delete(additionalProperties, "pendingPoints")
+		delete(additionalProperties, "expiredPoints")
+		delete(additionalProperties, "currentTier")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

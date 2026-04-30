@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type CampaignEvaluationTreeChangedNotification struct {
 	// The previous campaign evaluation tree.
 	OldEvaluationTree *CampaignSet `json:"oldEvaluationTree,omitempty"`
 	// The new campaign evaluation tree.
-	EvaluationTree CampaignSet `json:"evaluationTree"`
+	EvaluationTree       CampaignSet `json:"evaluationTree"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CampaignEvaluationTreeChangedNotification CampaignEvaluationTreeChangedNotification
@@ -145,6 +145,11 @@ func (o CampaignEvaluationTreeChangedNotification) ToMap() (map[string]interface
 		toSerialize["oldEvaluationTree"] = o.OldEvaluationTree
 	}
 	toSerialize["evaluationTree"] = o.EvaluationTree
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -173,15 +178,22 @@ func (o *CampaignEvaluationTreeChangedNotification) UnmarshalJSON(data []byte) (
 
 	varCampaignEvaluationTreeChangedNotification := _CampaignEvaluationTreeChangedNotification{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCampaignEvaluationTreeChangedNotification)
+	err = json.Unmarshal(data, &varCampaignEvaluationTreeChangedNotification)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CampaignEvaluationTreeChangedNotification(varCampaignEvaluationTreeChangedNotification)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "oldEvaluationTree")
+		delete(additionalProperties, "evaluationTree")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -38,7 +37,8 @@ type CampaignSetBranchNode struct {
 	// The mode by which campaigns in the campaign evaluation group are evaluated.
 	EvaluationMode string `json:"evaluationMode"`
 	// The evaluation scope of the campaign evaluation group.
-	EvaluationScope string `json:"evaluationScope"`
+	EvaluationScope      string `json:"evaluationScope"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CampaignSetBranchNode CampaignSetBranchNode
@@ -313,6 +313,11 @@ func (o CampaignSetBranchNode) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["evaluationMode"] = o.EvaluationMode
 	toSerialize["evaluationScope"] = o.EvaluationScope
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -347,15 +352,28 @@ func (o *CampaignSetBranchNode) UnmarshalJSON(data []byte) (err error) {
 
 	varCampaignSetBranchNode := _CampaignSetBranchNode{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCampaignSetBranchNode)
+	err = json.Unmarshal(data, &varCampaignSetBranchNode)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CampaignSetBranchNode(varCampaignSetBranchNode)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "elements")
+		delete(additionalProperties, "groupId")
+		delete(additionalProperties, "locked")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "evaluationMode")
+		delete(additionalProperties, "evaluationScope")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

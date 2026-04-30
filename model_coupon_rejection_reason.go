@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,9 +20,10 @@ var _ MappedNullable = &CouponRejectionReason{}
 
 // CouponRejectionReason Holds a reference to the campaign, the coupon and the reason for which that coupon was rejected. Should only be present when there is a 'rejectCoupon' effect.
 type CouponRejectionReason struct {
-	CampaignId int64  `json:"campaignId"`
-	CouponId   int64  `json:"couponId"`
-	Reason     string `json:"reason"`
+	CampaignId           int64  `json:"campaignId"`
+	CouponId             int64  `json:"couponId"`
+	Reason               string `json:"reason"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CouponRejectionReason CouponRejectionReason
@@ -133,6 +133,11 @@ func (o CouponRejectionReason) ToMap() (map[string]interface{}, error) {
 	toSerialize["campaignId"] = o.CampaignId
 	toSerialize["couponId"] = o.CouponId
 	toSerialize["reason"] = o.Reason
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -162,15 +167,22 @@ func (o *CouponRejectionReason) UnmarshalJSON(data []byte) (err error) {
 
 	varCouponRejectionReason := _CouponRejectionReason{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCouponRejectionReason)
+	err = json.Unmarshal(data, &varCouponRejectionReason)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CouponRejectionReason(varCouponRejectionReason)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "campaignId")
+		delete(additionalProperties, "couponId")
+		delete(additionalProperties, "reason")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

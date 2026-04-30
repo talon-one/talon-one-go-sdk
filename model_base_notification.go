@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -29,7 +28,8 @@ type BaseNotification struct {
 	// Unique ID for this entity.
 	Id int64 `json:"id"`
 	// The notification type.
-	Type string `json:"type"`
+	Type                 string `json:"type"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _BaseNotification BaseNotification
@@ -204,6 +204,11 @@ func (o BaseNotification) ToMap() (map[string]interface{}, error) {
 	toSerialize["webhook"] = o.Webhook
 	toSerialize["id"] = o.Id
 	toSerialize["type"] = o.Type
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -234,15 +239,24 @@ func (o *BaseNotification) UnmarshalJSON(data []byte) (err error) {
 
 	varBaseNotification := _BaseNotification{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varBaseNotification)
+	err = json.Unmarshal(data, &varBaseNotification)
 
 	if err != nil {
 		return err
 	}
 
 	*o = BaseNotification(varBaseNotification)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "policy")
+		delete(additionalProperties, "enabled")
+		delete(additionalProperties, "webhook")
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "type")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type ExperimentVariantResultConfidence struct {
 	// The calculated confidence value of the average customer discounted session value.
 	AvgDiscountedSessionValue float32 `json:"avgDiscountedSessionValue"`
 	// The calculated confidence value of the number of items from sessions value.
-	AvgItemsPerSession float32 `json:"avgItemsPerSession"`
+	AvgItemsPerSession   float32 `json:"avgItemsPerSession"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ExperimentVariantResultConfidence ExperimentVariantResultConfidence
@@ -136,6 +136,11 @@ func (o ExperimentVariantResultConfidence) ToMap() (map[string]interface{}, erro
 	toSerialize["avgSessionValue"] = o.AvgSessionValue
 	toSerialize["avgDiscountedSessionValue"] = o.AvgDiscountedSessionValue
 	toSerialize["avgItemsPerSession"] = o.AvgItemsPerSession
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -165,15 +170,22 @@ func (o *ExperimentVariantResultConfidence) UnmarshalJSON(data []byte) (err erro
 
 	varExperimentVariantResultConfidence := _ExperimentVariantResultConfidence{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varExperimentVariantResultConfidence)
+	err = json.Unmarshal(data, &varExperimentVariantResultConfidence)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ExperimentVariantResultConfidence(varExperimentVariantResultConfidence)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "avgSessionValue")
+		delete(additionalProperties, "avgDiscountedSessionValue")
+		delete(additionalProperties, "avgItemsPerSession")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

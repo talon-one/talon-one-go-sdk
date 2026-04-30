@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -23,16 +22,17 @@ var _ MappedNullable = &Revision{}
 // Revision struct for Revision
 type Revision struct {
 	// Unique ID for this entity. Not to be confused with the Integration ID, which is set by your integration layer and used in most endpoints.
-	Id             int64            `json:"id"`
-	ActivateAt     *time.Time       `json:"activateAt,omitempty"`
-	AccountId      int64            `json:"accountId"`
-	ApplicationId  int64            `json:"applicationId"`
-	CampaignId     int64            `json:"campaignId"`
-	Created        time.Time        `json:"created"`
-	CreatedBy      int64            `json:"createdBy"`
-	ActivatedAt    *time.Time       `json:"activatedAt,omitempty"`
-	ActivatedBy    *int64           `json:"activatedBy,omitempty"`
-	CurrentVersion *RevisionVersion `json:"currentVersion,omitempty"`
+	Id                   int64            `json:"id"`
+	ActivateAt           *time.Time       `json:"activateAt,omitempty"`
+	AccountId            int64            `json:"accountId"`
+	ApplicationId        int64            `json:"applicationId"`
+	CampaignId           int64            `json:"campaignId"`
+	Created              time.Time        `json:"created"`
+	CreatedBy            int64            `json:"createdBy"`
+	ActivatedAt          *time.Time       `json:"activatedAt,omitempty"`
+	ActivatedBy          *int64           `json:"activatedBy,omitempty"`
+	CurrentVersion       *RevisionVersion `json:"currentVersion,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Revision Revision
@@ -360,6 +360,11 @@ func (o Revision) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CurrentVersion) {
 		toSerialize["currentVersion"] = o.CurrentVersion
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -392,15 +397,29 @@ func (o *Revision) UnmarshalJSON(data []byte) (err error) {
 
 	varRevision := _Revision{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varRevision)
+	err = json.Unmarshal(data, &varRevision)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Revision(varRevision)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "activateAt")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "campaignId")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "createdBy")
+		delete(additionalProperties, "activatedAt")
+		delete(additionalProperties, "activatedBy")
+		delete(additionalProperties, "currentVersion")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -28,7 +27,8 @@ type AchievementReference struct {
 	// The name of the Application associated with the campaign that references this achievement.
 	ApplicationName string `json:"applicationName"`
 	// The ID of the campaign that references this achievement.
-	CampaignId int64 `json:"campaignId"`
+	CampaignId           int64 `json:"campaignId"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AchievementReference AchievementReference
@@ -164,6 +164,11 @@ func (o AchievementReference) ToMap() (map[string]interface{}, error) {
 	toSerialize["applicationId"] = o.ApplicationId
 	toSerialize["applicationName"] = o.ApplicationName
 	toSerialize["campaignId"] = o.CampaignId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -194,15 +199,23 @@ func (o *AchievementReference) UnmarshalJSON(data []byte) (err error) {
 
 	varAchievementReference := _AchievementReference{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAchievementReference)
+	err = json.Unmarshal(data, &varAchievementReference)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AchievementReference(varAchievementReference)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "achievementId")
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "applicationName")
+		delete(additionalProperties, "campaignId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

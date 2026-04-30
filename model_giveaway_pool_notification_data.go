@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -40,7 +39,8 @@ type GiveawayPoolNotificationData struct {
 	// The number of codes remaining in the giveaway pool.
 	RemainingCodes int64 `json:"RemainingCodes"`
 	// The percentage threshold for the notification. The notification is triggered when the number of codes drops below this threshold.
-	ThresholdPercent int64 `json:"ThresholdPercent"`
+	ThresholdPercent     int64 `json:"ThresholdPercent"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GiveawayPoolNotificationData GiveawayPoolNotificationData
@@ -332,6 +332,11 @@ func (o GiveawayPoolNotificationData) ToMap() (map[string]interface{}, error) {
 	toSerialize["UsedCodes"] = o.UsedCodes
 	toSerialize["RemainingCodes"] = o.RemainingCodes
 	toSerialize["ThresholdPercent"] = o.ThresholdPercent
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -368,15 +373,29 @@ func (o *GiveawayPoolNotificationData) UnmarshalJSON(data []byte) (err error) {
 
 	varGiveawayPoolNotificationData := _GiveawayPoolNotificationData{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGiveawayPoolNotificationData)
+	err = json.Unmarshal(data, &varGiveawayPoolNotificationData)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GiveawayPoolNotificationData(varGiveawayPoolNotificationData)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "Event")
+		delete(additionalProperties, "PoolId")
+		delete(additionalProperties, "PoolName")
+		delete(additionalProperties, "PoolDescription")
+		delete(additionalProperties, "AccountId")
+		delete(additionalProperties, "ApplicationId")
+		delete(additionalProperties, "TotalCodes")
+		delete(additionalProperties, "UsedCodes")
+		delete(additionalProperties, "RemainingCodes")
+		delete(additionalProperties, "ThresholdPercent")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

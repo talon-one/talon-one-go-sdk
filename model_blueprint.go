@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -47,7 +46,8 @@ type Blueprint struct {
 	// Timestamp when the blueprint was last updated.
 	Modified *time.Time `json:"modified,omitempty"`
 	// ID of the user who last updated the blueprint.
-	ModifiedBy *int64 `json:"modifiedBy,omitempty"`
+	ModifiedBy           *int64 `json:"modifiedBy,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Blueprint Blueprint
@@ -444,6 +444,11 @@ func (o Blueprint) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ModifiedBy) {
 		toSerialize["modifiedBy"] = o.ModifiedBy
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -480,15 +485,32 @@ func (o *Blueprint) UnmarshalJSON(data []byte) (err error) {
 
 	varBlueprint := _Blueprint{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varBlueprint)
+	err = json.Unmarshal(data, &varBlueprint)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Blueprint(varBlueprint)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "category")
+		delete(additionalProperties, "source")
+		delete(additionalProperties, "rules")
+		delete(additionalProperties, "cartItemFilters")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "createdBy")
+		delete(additionalProperties, "modified")
+		delete(additionalProperties, "modifiedBy")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -24,8 +24,11 @@ type ReturnedCartItem struct {
 	// Number of cart items to return.
 	Quantity *int64 `json:"quantity,omitempty"`
 	// The SKU of the cart item in the provided customer session's `cartItems` property.
-	Sku *string `json:"sku,omitempty"`
+	Sku                  *string `json:"sku,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ReturnedCartItem ReturnedCartItem
 
 // NewReturnedCartItem instantiates a new ReturnedCartItem object
 // This constructor will assign default values to properties that have it defined,
@@ -159,7 +162,35 @@ func (o ReturnedCartItem) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Sku) {
 		toSerialize["sku"] = o.Sku
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ReturnedCartItem) UnmarshalJSON(data []byte) (err error) {
+	varReturnedCartItem := _ReturnedCartItem{}
+
+	err = json.Unmarshal(data, &varReturnedCartItem)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ReturnedCartItem(varReturnedCartItem)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "position")
+		delete(additionalProperties, "quantity")
+		delete(additionalProperties, "sku")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableReturnedCartItem struct {

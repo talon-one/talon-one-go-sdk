@@ -26,8 +26,11 @@ type HiddenConditionsEffects struct {
 	// List of the IDs of hidden custom effects.
 	CustomEffects []int64 `json:"customEffects,omitempty"`
 	// List of the IDs of hidden webhooks.
-	Webhooks []int64 `json:"webhooks,omitempty"`
+	Webhooks             []int64 `json:"webhooks,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _HiddenConditionsEffects HiddenConditionsEffects
 
 // NewHiddenConditionsEffects instantiates a new HiddenConditionsEffects object
 // This constructor will assign default values to properties that have it defined,
@@ -196,7 +199,36 @@ func (o HiddenConditionsEffects) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Webhooks) {
 		toSerialize["webhooks"] = o.Webhooks
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *HiddenConditionsEffects) UnmarshalJSON(data []byte) (err error) {
+	varHiddenConditionsEffects := _HiddenConditionsEffects{}
+
+	err = json.Unmarshal(data, &varHiddenConditionsEffects)
+
+	if err != nil {
+		return err
+	}
+
+	*o = HiddenConditionsEffects(varHiddenConditionsEffects)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "builtInEffects")
+		delete(additionalProperties, "conditions")
+		delete(additionalProperties, "customEffects")
+		delete(additionalProperties, "webhooks")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableHiddenConditionsEffects struct {

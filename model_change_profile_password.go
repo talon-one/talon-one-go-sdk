@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type ChangeProfilePassword struct {
 	// Your old password.
 	Password string `json:"password"`
 	// Your new password.
-	NewPassword string `json:"newPassword"`
+	NewPassword          string `json:"newPassword"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ChangeProfilePassword ChangeProfilePassword
@@ -108,6 +108,11 @@ func (o ChangeProfilePassword) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["password"] = o.Password
 	toSerialize["newPassword"] = o.NewPassword
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *ChangeProfilePassword) UnmarshalJSON(data []byte) (err error) {
 
 	varChangeProfilePassword := _ChangeProfilePassword{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varChangeProfilePassword)
+	err = json.Unmarshal(data, &varChangeProfilePassword)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ChangeProfilePassword(varChangeProfilePassword)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "password")
+		delete(additionalProperties, "newPassword")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

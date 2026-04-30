@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &Endpoint{}
 // Endpoint struct for Endpoint
 type Endpoint struct {
 	// allowed endpoint
-	Path string `json:"path"`
+	Path                 string `json:"path"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Endpoint Endpoint
@@ -80,6 +80,11 @@ func (o Endpoint) MarshalJSON() ([]byte, error) {
 func (o Endpoint) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["path"] = o.Path
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *Endpoint) UnmarshalJSON(data []byte) (err error) {
 
 	varEndpoint := _Endpoint{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varEndpoint)
+	err = json.Unmarshal(data, &varEndpoint)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Endpoint(varEndpoint)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "path")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

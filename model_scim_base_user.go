@@ -24,9 +24,12 @@ type ScimBaseUser struct {
 	// Display name of the user.
 	DisplayName *string `json:"displayName,omitempty"`
 	// Unique identifier of the user. This is usually an email address.
-	UserName *string           `json:"userName,omitempty"`
-	Name     *ScimBaseUserName `json:"name,omitempty"`
+	UserName             *string           `json:"userName,omitempty"`
+	Name                 *ScimBaseUserName `json:"name,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ScimBaseUser ScimBaseUser
 
 // NewScimBaseUser instantiates a new ScimBaseUser object
 // This constructor will assign default values to properties that have it defined,
@@ -195,7 +198,36 @@ func (o ScimBaseUser) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Name) {
 		toSerialize["name"] = o.Name
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ScimBaseUser) UnmarshalJSON(data []byte) (err error) {
+	varScimBaseUser := _ScimBaseUser{}
+
+	err = json.Unmarshal(data, &varScimBaseUser)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ScimBaseUser(varScimBaseUser)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "active")
+		delete(additionalProperties, "displayName")
+		delete(additionalProperties, "userName")
+		delete(additionalProperties, "name")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableScimBaseUser struct {

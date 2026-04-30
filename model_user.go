@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -56,6 +55,7 @@ type User struct {
 	LatestFeedTimestamp *time.Time `json:"latestFeedTimestamp,omitempty"`
 	// Additional user attributes, created and used by external identity providers.
 	AdditionalAttributes map[string]interface{} `json:"additionalAttributes,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _User User
@@ -601,6 +601,11 @@ func (o User) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.AdditionalAttributes) {
 		toSerialize["additionalAttributes"] = o.AdditionalAttributes
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -636,15 +641,36 @@ func (o *User) UnmarshalJSON(data []byte) (err error) {
 
 	varUser := _User{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varUser)
+	err = json.Unmarshal(data, &varUser)
 
 	if err != nil {
 		return err
 	}
 
 	*o = User(varUser)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "modified")
+		delete(additionalProperties, "email")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "state")
+		delete(additionalProperties, "inviteToken")
+		delete(additionalProperties, "isAdmin")
+		delete(additionalProperties, "policy")
+		delete(additionalProperties, "roles")
+		delete(additionalProperties, "authMethod")
+		delete(additionalProperties, "applicationNotificationSubscriptions")
+		delete(additionalProperties, "lastSignedIn")
+		delete(additionalProperties, "lastAccessed")
+		delete(additionalProperties, "latestFeedTimestamp")
+		delete(additionalProperties, "additionalAttributes")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

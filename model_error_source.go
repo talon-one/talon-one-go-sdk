@@ -26,8 +26,11 @@ type ErrorSource struct {
 	// Line number in uploaded multipart file that caused this error. 'N/A' if unknown.
 	Line *string `json:"line,omitempty"`
 	// Pointer to the resource that caused this error.
-	Resource *string `json:"resource,omitempty"`
+	Resource             *string `json:"resource,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ErrorSource ErrorSource
 
 // NewErrorSource instantiates a new ErrorSource object
 // This constructor will assign default values to properties that have it defined,
@@ -196,7 +199,36 @@ func (o ErrorSource) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Resource) {
 		toSerialize["resource"] = o.Resource
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ErrorSource) UnmarshalJSON(data []byte) (err error) {
+	varErrorSource := _ErrorSource{}
+
+	err = json.Unmarshal(data, &varErrorSource)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ErrorSource(varErrorSource)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "pointer")
+		delete(additionalProperties, "parameter")
+		delete(additionalProperties, "line")
+		delete(additionalProperties, "resource")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableErrorSource struct {

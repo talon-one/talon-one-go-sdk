@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type NewCollection struct {
 	// A list of the IDs of the Applications where this collection is enabled.
 	SubscribedApplicationsIds []int64 `json:"subscribedApplicationsIds,omitempty"`
 	// The name of this collection.
-	Name string `json:"name" validate:"regexp=^[^[:cntrl:]\\\\s][^[:cntrl:]]*$"`
+	Name                 string `json:"name" validate:"regexp=^[^[:cntrl:]\\\\s][^[:cntrl:]]*$"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewCollection NewCollection
@@ -154,6 +154,11 @@ func (o NewCollection) ToMap() (map[string]interface{}, error) {
 		toSerialize["subscribedApplicationsIds"] = o.SubscribedApplicationsIds
 	}
 	toSerialize["name"] = o.Name
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -181,15 +186,22 @@ func (o *NewCollection) UnmarshalJSON(data []byte) (err error) {
 
 	varNewCollection := _NewCollection{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewCollection)
+	err = json.Unmarshal(data, &varNewCollection)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewCollection(varNewCollection)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "subscribedApplicationsIds")
+		delete(additionalProperties, "name")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

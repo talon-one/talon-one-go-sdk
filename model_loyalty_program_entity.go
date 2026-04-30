@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type LoyaltyProgramEntity struct {
 	// The integration name of the loyalty program that owns this entity.
 	ProgramName *string `json:"programName,omitempty"`
 	// The Campaign Manager-displayed name of the loyalty program that owns this entity.
-	ProgramTitle *string `json:"programTitle,omitempty"`
+	ProgramTitle         *string `json:"programTitle,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _LoyaltyProgramEntity LoyaltyProgramEntity
@@ -154,6 +154,11 @@ func (o LoyaltyProgramEntity) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ProgramTitle) {
 		toSerialize["programTitle"] = o.ProgramTitle
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -181,15 +186,22 @@ func (o *LoyaltyProgramEntity) UnmarshalJSON(data []byte) (err error) {
 
 	varLoyaltyProgramEntity := _LoyaltyProgramEntity{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varLoyaltyProgramEntity)
+	err = json.Unmarshal(data, &varLoyaltyProgramEntity)
 
 	if err != nil {
 		return err
 	}
 
 	*o = LoyaltyProgramEntity(varLoyaltyProgramEntity)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "programID")
+		delete(additionalProperties, "programName")
+		delete(additionalProperties, "programTitle")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

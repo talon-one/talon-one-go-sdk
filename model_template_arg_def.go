@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -35,6 +34,7 @@ type TemplateArgDef struct {
 	PicklistID *int64 `json:"picklistID,omitempty"`
 	// Whether or not this attribute's value is restricted by picklist (`picklist` property)
 	RestrictedByPicklist *bool `json:"restrictedByPicklist,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _TemplateArgDef TemplateArgDef
@@ -284,6 +284,11 @@ func (o TemplateArgDef) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.RestrictedByPicklist) {
 		toSerialize["restrictedByPicklist"] = o.RestrictedByPicklist
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -313,15 +318,26 @@ func (o *TemplateArgDef) UnmarshalJSON(data []byte) (err error) {
 
 	varTemplateArgDef := _TemplateArgDef{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varTemplateArgDef)
+	err = json.Unmarshal(data, &varTemplateArgDef)
 
 	if err != nil {
 		return err
 	}
 
 	*o = TemplateArgDef(varTemplateArgDef)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "ui")
+		delete(additionalProperties, "key")
+		delete(additionalProperties, "picklistID")
+		delete(additionalProperties, "restrictedByPicklist")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type WebhookAuthenticationWebhookRef struct {
 	// The title of the webhook authentication.
 	Title string `json:"title" validate:"regexp=^[A-Za-z][A-Za-z0-9_.!~*'() -]*$"`
 	// A description of the webhook authentication.
-	Description *string `json:"description,omitempty"`
+	Description          *string `json:"description,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _WebhookAuthenticationWebhookRef WebhookAuthenticationWebhookRef
@@ -145,6 +145,11 @@ func (o WebhookAuthenticationWebhookRef) ToMap() (map[string]interface{}, error)
 	if !IsNil(o.Description) {
 		toSerialize["description"] = o.Description
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -173,15 +178,22 @@ func (o *WebhookAuthenticationWebhookRef) UnmarshalJSON(data []byte) (err error)
 
 	varWebhookAuthenticationWebhookRef := _WebhookAuthenticationWebhookRef{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varWebhookAuthenticationWebhookRef)
+	err = json.Unmarshal(data, &varWebhookAuthenticationWebhookRef)
 
 	if err != nil {
 		return err
 	}
 
 	*o = WebhookAuthenticationWebhookRef(varWebhookAuthenticationWebhookRef)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "description")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

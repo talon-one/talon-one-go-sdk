@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &GetCouponsWithoutTotalCount200Response{}
 
 // GetCouponsWithoutTotalCount200Response struct for GetCouponsWithoutTotalCount200Response
 type GetCouponsWithoutTotalCount200Response struct {
-	HasMore bool     `json:"hasMore"`
-	Data    []Coupon `json:"data"`
+	HasMore              bool     `json:"hasMore"`
+	Data                 []Coupon `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GetCouponsWithoutTotalCount200Response GetCouponsWithoutTotalCount200Response
@@ -106,6 +106,11 @@ func (o GetCouponsWithoutTotalCount200Response) ToMap() (map[string]interface{},
 	toSerialize := map[string]interface{}{}
 	toSerialize["hasMore"] = o.HasMore
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -134,15 +139,21 @@ func (o *GetCouponsWithoutTotalCount200Response) UnmarshalJSON(data []byte) (err
 
 	varGetCouponsWithoutTotalCount200Response := _GetCouponsWithoutTotalCount200Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGetCouponsWithoutTotalCount200Response)
+	err = json.Unmarshal(data, &varGetCouponsWithoutTotalCount200Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GetCouponsWithoutTotalCount200Response(varGetCouponsWithoutTotalCount200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "hasMore")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type Notification struct {
 	// name of the notification.
 	Name string `json:"name"`
 	// description of the notification.
-	Description string `json:"description"`
+	Description          string `json:"description"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Notification Notification
@@ -136,6 +136,11 @@ func (o Notification) ToMap() (map[string]interface{}, error) {
 	toSerialize["id"] = o.Id
 	toSerialize["name"] = o.Name
 	toSerialize["description"] = o.Description
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -165,15 +170,22 @@ func (o *Notification) UnmarshalJSON(data []byte) (err error) {
 
 	varNotification := _Notification{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNotification)
+	err = json.Unmarshal(data, &varNotification)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Notification(varNotification)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

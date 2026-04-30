@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &ApplicationNotification{}
 // ApplicationNotification struct for ApplicationNotification
 type ApplicationNotification struct {
 	// Event type. It can be one of the following: ['campaign_evaluation_tree_changed']
-	Event string `json:"event"`
+	Event                string `json:"event"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ApplicationNotification ApplicationNotification
@@ -80,6 +80,11 @@ func (o ApplicationNotification) MarshalJSON() ([]byte, error) {
 func (o ApplicationNotification) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["event"] = o.Event
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *ApplicationNotification) UnmarshalJSON(data []byte) (err error) {
 
 	varApplicationNotification := _ApplicationNotification{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varApplicationNotification)
+	err = json.Unmarshal(data, &varApplicationNotification)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ApplicationNotification(varApplicationNotification)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "event")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

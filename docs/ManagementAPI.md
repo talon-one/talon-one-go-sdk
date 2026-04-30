@@ -3760,7 +3760,7 @@ Name | Type | Description  | Notes
 
 ## ExportLoyaltyBalance
 
-> string ExportLoyaltyBalance(ctx, loyaltyProgramId).EndDate(endDate).Execute()
+> string ExportLoyaltyBalance(ctx, loyaltyProgramId).EndDate(endDate).Balances(balances).Execute()
 
 Export customer loyalty balance to CSV
 
@@ -3782,10 +3782,11 @@ import (
 func main() {
 	loyaltyProgramId := "loyaltyProgramId_example" // string | The identifier for the loyalty program.
 	endDate := time.Now() // time.Time | Used to return expired, active, and pending loyalty balances before this timestamp. You can enter any past, present, or future timestamp value.  > [!note] **Note** > - This must be an RFC3339 timestamp string. > - You can include a time component in your string, for example, `T23:59:59` to specify the end of the day. The time zone setting >   considered is `UTC`. If you do not include a time component, a default time value of `T00:00:00` (midnight) in `UTC` is considered.  (optional)
+	balances := "balances_example" // string | Filters which balance fields are included in the CSV export. `currentBalance` is always returned.  By default, all balance fields are included. When this parameter is provided, only the listed fields contain values and the rest are returned empty.  Accepted values: - `currentBalance` - `pendingBalance` - `expiredBalance` - `spentBalance` - `negativeBalance`  Multiple values must be provided as a comma-separated list.  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ManagementAPI.ExportLoyaltyBalance(context.Background(), loyaltyProgramId).EndDate(endDate).Execute()
+	resp, r, err := apiClient.ManagementAPI.ExportLoyaltyBalance(context.Background(), loyaltyProgramId).EndDate(endDate).Balances(balances).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.ExportLoyaltyBalance``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -3812,6 +3813,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
  **endDate** | **time.Time** | Used to return expired, active, and pending loyalty balances before this timestamp. You can enter any past, present, or future timestamp value.  &gt; [!note] **Note** &gt; - This must be an RFC3339 timestamp string. &gt; - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting &gt;   considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.  | 
+ **balances** | **string** | Filters which balance fields are included in the CSV export. &#x60;currentBalance&#x60; is always returned.  By default, all balance fields are included. When this parameter is provided, only the listed fields contain values and the rest are returned empty.  Accepted values: - &#x60;currentBalance&#x60; - &#x60;pendingBalance&#x60; - &#x60;expiredBalance&#x60; - &#x60;spentBalance&#x60; - &#x60;negativeBalance&#x60;  Multiple values must be provided as a comma-separated list.  | 
 
 ### Return type
 
@@ -3833,7 +3835,7 @@ Name | Type | Description  | Notes
 
 ## ExportLoyaltyBalances
 
-> string ExportLoyaltyBalances(ctx, loyaltyProgramId).EndDate(endDate).Execute()
+> string ExportLoyaltyBalances(ctx, loyaltyProgramId).EndDate(endDate).Balances(balances).Execute()
 
 Export customer loyalty balances
 
@@ -3855,10 +3857,11 @@ import (
 func main() {
 	loyaltyProgramId := "loyaltyProgramId_example" // string | The identifier for the loyalty program.
 	endDate := time.Now() // time.Time | Used to return expired, active, and pending loyalty balances before this timestamp. You can enter any past, present, or future timestamp value.  > [!note] **Note** > - This must be an RFC3339 timestamp string. > - You can include a time component in your string, for example, `T23:59:59` to specify the end of the day. The time zone setting >   considered is `UTC`. If you do not include a time component, a default time value of `T00:00:00` (midnight) in `UTC` is considered. > - This parameter does not affect the `currentTier` field in the CSV file, which shows the customer's tier at the time of export.  (optional)
+	balances := "balances_example" // string | Filters which balance fields are included in the CSV export. `currentBalance` is always returned.  By default, all balance fields are included. When this parameter is provided, only the listed fields contain values and the rest are returned empty.  Accepted values: - `currentBalance` - `pendingBalance` - `expiredBalance` - `spentBalance` - `negativeBalance`  Multiple values must be provided as a comma-separated list.  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ManagementAPI.ExportLoyaltyBalances(context.Background(), loyaltyProgramId).EndDate(endDate).Execute()
+	resp, r, err := apiClient.ManagementAPI.ExportLoyaltyBalances(context.Background(), loyaltyProgramId).EndDate(endDate).Balances(balances).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.ExportLoyaltyBalances``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -3885,6 +3888,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
  **endDate** | **time.Time** | Used to return expired, active, and pending loyalty balances before this timestamp. You can enter any past, present, or future timestamp value.  &gt; [!note] **Note** &gt; - This must be an RFC3339 timestamp string. &gt; - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting &gt;   considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered. &gt; - This parameter does not affect the &#x60;currentTier&#x60; field in the CSV file, which shows the customer&#39;s tier at the time of export.  | 
+ **balances** | **string** | Filters which balance fields are included in the CSV export. &#x60;currentBalance&#x60; is always returned.  By default, all balance fields are included. When this parameter is provided, only the listed fields contain values and the rest are returned empty.  Accepted values: - &#x60;currentBalance&#x60; - &#x60;pendingBalance&#x60; - &#x60;expiredBalance&#x60; - &#x60;spentBalance&#x60; - &#x60;negativeBalance&#x60;  Multiple values must be provided as a comma-separated list.  | 
 
 ### Return type
 
@@ -3906,7 +3910,7 @@ Name | Type | Description  | Notes
 
 ## ExportLoyaltyCardBalances
 
-> string ExportLoyaltyCardBalances(ctx, loyaltyProgramId).EndDate(endDate).Execute()
+> string ExportLoyaltyCardBalances(ctx, loyaltyProgramId).EndDate(endDate).Balances(balances).Execute()
 
 Export all card transaction logs
 
@@ -3928,10 +3932,11 @@ import (
 func main() {
 	loyaltyProgramId := int64(789) // int64 | Identifier of the card-based loyalty program containing the loyalty card. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint. 
 	endDate := time.Now() // time.Time | Used to return expired, active, and pending loyalty balances before this timestamp. You can enter any past, present, or future timestamp value.  > [!note] **Note** > - This must be an RFC3339 timestamp string. > - You can include a time component in your string, for example, `T23:59:59` to specify the end of the day. The time zone setting >   considered is `UTC`. If you do not include a time component, a default time value of `T00:00:00` (midnight) in `UTC` is considered.  (optional)
+	balances := "balances_example" // string | Filters which balance fields are included in the CSV export. By default, all balance fields are included. When this parameter is provided, only the listed fields contain values and the rest are returned empty.  Accepted values: - `currentBalance` - `pendingBalance` - `expiredBalance` - `spentBalance` - `negativeBalance`  Multiple values must be provided as a comma-separated list.  **Note:** - The `negativeBalance` value is not supported for card balance exports. - Providing an unsupported or invalid value returns a `400 Bad Request` error.  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ManagementAPI.ExportLoyaltyCardBalances(context.Background(), loyaltyProgramId).EndDate(endDate).Execute()
+	resp, r, err := apiClient.ManagementAPI.ExportLoyaltyCardBalances(context.Background(), loyaltyProgramId).EndDate(endDate).Balances(balances).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.ExportLoyaltyCardBalances``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -3958,6 +3963,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
  **endDate** | **time.Time** | Used to return expired, active, and pending loyalty balances before this timestamp. You can enter any past, present, or future timestamp value.  &gt; [!note] **Note** &gt; - This must be an RFC3339 timestamp string. &gt; - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting &gt;   considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.  | 
+ **balances** | **string** | Filters which balance fields are included in the CSV export. By default, all balance fields are included. When this parameter is provided, only the listed fields contain values and the rest are returned empty.  Accepted values: - &#x60;currentBalance&#x60; - &#x60;pendingBalance&#x60; - &#x60;expiredBalance&#x60; - &#x60;spentBalance&#x60; - &#x60;negativeBalance&#x60;  Multiple values must be provided as a comma-separated list.  **Note:** - The &#x60;negativeBalance&#x60; value is not supported for card balance exports. - Providing an unsupported or invalid value returns a &#x60;400 Bad Request&#x60; error.  | 
 
 ### Return type
 

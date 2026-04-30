@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -37,7 +36,8 @@ type Change struct {
 	// Resource after the change occurred.
 	New map[string]interface{} `json:"new,omitempty"`
 	// ID of management key used to perform changes.
-	ManagementKeyId *int64 `json:"managementKeyId,omitempty"`
+	ManagementKeyId      *int64 `json:"managementKeyId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Change Change
@@ -313,6 +313,11 @@ func (o Change) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ManagementKeyId) {
 		toSerialize["managementKeyId"] = o.ManagementKeyId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -343,15 +348,27 @@ func (o *Change) UnmarshalJSON(data []byte) (err error) {
 
 	varChange := _Change{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varChange)
+	err = json.Unmarshal(data, &varChange)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Change(varChange)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "userId")
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "entity")
+		delete(additionalProperties, "old")
+		delete(additionalProperties, "new")
+		delete(additionalProperties, "managementKeyId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

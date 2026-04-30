@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -56,7 +55,8 @@ type Account struct {
 	// The current number of inactive Campaigns in your account.
 	CampaignsInactiveCount int64 `json:"campaignsInactiveCount"`
 	// Arbitrary properties associated with this campaign.
-	Attributes map[string]interface{} `json:"attributes,omitempty"`
+	Attributes           map[string]interface{} `json:"attributes,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Account Account
@@ -619,6 +619,11 @@ func (o Account) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Attributes) {
 		toSerialize["attributes"] = o.Attributes
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -656,15 +661,37 @@ func (o *Account) UnmarshalJSON(data []byte) (err error) {
 
 	varAccount := _Account{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAccount)
+	err = json.Unmarshal(data, &varAccount)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Account(varAccount)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "modified")
+		delete(additionalProperties, "companyName")
+		delete(additionalProperties, "domainName")
+		delete(additionalProperties, "state")
+		delete(additionalProperties, "billingEmail")
+		delete(additionalProperties, "planName")
+		delete(additionalProperties, "planExpires")
+		delete(additionalProperties, "applicationLimit")
+		delete(additionalProperties, "userLimit")
+		delete(additionalProperties, "campaignLimit")
+		delete(additionalProperties, "apiLimit")
+		delete(additionalProperties, "applicationCount")
+		delete(additionalProperties, "userCount")
+		delete(additionalProperties, "campaignsActiveCount")
+		delete(additionalProperties, "campaignsInactiveCount")
+		delete(additionalProperties, "attributes")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

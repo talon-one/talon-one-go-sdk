@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -47,7 +46,8 @@ type AudienceCustomer struct {
 	// A list of the IDs of the Applications that are connected to this customer profile.
 	ConnectedApplicationsIds []int64 `json:"connectedApplicationsIds,omitempty"`
 	// A list of the IDs of the audiences that are connected to this customer profile.
-	ConnectedAudiences []int64 `json:"connectedAudiences,omitempty"`
+	ConnectedAudiences   []int64 `json:"connectedAudiences,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AudienceCustomer AudienceCustomer
@@ -471,6 +471,11 @@ func (o AudienceCustomer) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ConnectedAudiences) {
 		toSerialize["connectedAudiences"] = o.ConnectedAudiences
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -504,15 +509,32 @@ func (o *AudienceCustomer) UnmarshalJSON(data []byte) (err error) {
 
 	varAudienceCustomer := _AudienceCustomer{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAudienceCustomer)
+	err = json.Unmarshal(data, &varAudienceCustomer)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AudienceCustomer(varAudienceCustomer)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "integrationId")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "closedSessions")
+		delete(additionalProperties, "totalSales")
+		delete(additionalProperties, "loyaltyMemberships")
+		delete(additionalProperties, "audienceMemberships")
+		delete(additionalProperties, "lastActivity")
+		delete(additionalProperties, "sandbox")
+		delete(additionalProperties, "connectedApplicationsIds")
+		delete(additionalProperties, "connectedAudiences")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

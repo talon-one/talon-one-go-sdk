@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type IntegrationRequest struct {
 	// The customer session update details.
 	CustomerSession NewCustomerSessionV2 `json:"customerSession"`
 	// Extends the response with the chosen data entities. Use this property to get as much data as you need in one _Update customer session_ request instead of sending extra requests to other endpoints.  **Note:** To retrieve loyalty card details, your request must include a loyalty card ID.
-	ResponseContent []string `json:"responseContent,omitempty"`
+	ResponseContent      []string `json:"responseContent,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _IntegrationRequest IntegrationRequest
@@ -117,6 +117,11 @@ func (o IntegrationRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ResponseContent) {
 		toSerialize["responseContent"] = o.ResponseContent
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -144,15 +149,21 @@ func (o *IntegrationRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varIntegrationRequest := _IntegrationRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varIntegrationRequest)
+	err = json.Unmarshal(data, &varIntegrationRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = IntegrationRequest(varIntegrationRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "customerSession")
+		delete(additionalProperties, "responseContent")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

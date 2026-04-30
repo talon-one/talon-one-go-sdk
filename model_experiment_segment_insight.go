@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -30,7 +29,8 @@ type ExperimentSegmentInsight struct {
 	// The ID of the variant that performed better in this segment.
 	WinnerVariantId int64 `json:"winnerVariantId"`
 	// Per-variant metric values for this segment.
-	Variants []ExperimentSegmentInsightVariant `json:"variants"`
+	Variants             []ExperimentSegmentInsightVariant `json:"variants"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ExperimentSegmentInsight ExperimentSegmentInsight
@@ -192,6 +192,11 @@ func (o ExperimentSegmentInsight) ToMap() (map[string]interface{}, error) {
 	toSerialize["confidence"] = o.Confidence
 	toSerialize["winnerVariantId"] = o.WinnerVariantId
 	toSerialize["variants"] = o.Variants
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -223,15 +228,24 @@ func (o *ExperimentSegmentInsight) UnmarshalJSON(data []byte) (err error) {
 
 	varExperimentSegmentInsight := _ExperimentSegmentInsight{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varExperimentSegmentInsight)
+	err = json.Unmarshal(data, &varExperimentSegmentInsight)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ExperimentSegmentInsight(varExperimentSegmentInsight)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "dimension")
+		delete(additionalProperties, "bucket")
+		delete(additionalProperties, "confidence")
+		delete(additionalProperties, "winnerVariantId")
+		delete(additionalProperties, "variants")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

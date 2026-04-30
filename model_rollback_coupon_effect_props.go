@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &RollbackCouponEffectProps{}
 // RollbackCouponEffectProps The properties specific to the \"rollbackCoupon\" effect. This gets triggered whenever previously closed session is now cancelled and a coupon redemption was cancelled on our internal usage limit counters.
 type RollbackCouponEffectProps struct {
 	// The coupon code whose usage has been rolled back.
-	Value string `json:"value"`
+	Value                string `json:"value"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _RollbackCouponEffectProps RollbackCouponEffectProps
@@ -80,6 +80,11 @@ func (o RollbackCouponEffectProps) MarshalJSON() ([]byte, error) {
 func (o RollbackCouponEffectProps) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["value"] = o.Value
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *RollbackCouponEffectProps) UnmarshalJSON(data []byte) (err error) {
 
 	varRollbackCouponEffectProps := _RollbackCouponEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varRollbackCouponEffectProps)
+	err = json.Unmarshal(data, &varRollbackCouponEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = RollbackCouponEffectProps(varRollbackCouponEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "value")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -28,7 +27,8 @@ type UpdateCampaignGroup struct {
 	// A list of IDs of the Applications that this campaign access group is enabled for.
 	SubscribedApplicationsIds []int64 `json:"subscribedApplicationsIds,omitempty"`
 	// A list of IDs of the campaigns that are part of the campaign access group.
-	CampaignIds []int64 `json:"campaignIds,omitempty"`
+	CampaignIds          []int64 `json:"campaignIds,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _UpdateCampaignGroup UpdateCampaignGroup
@@ -191,6 +191,11 @@ func (o UpdateCampaignGroup) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CampaignIds) {
 		toSerialize["campaignIds"] = o.CampaignIds
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -218,15 +223,23 @@ func (o *UpdateCampaignGroup) UnmarshalJSON(data []byte) (err error) {
 
 	varUpdateCampaignGroup := _UpdateCampaignGroup{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varUpdateCampaignGroup)
+	err = json.Unmarshal(data, &varUpdateCampaignGroup)
 
 	if err != nil {
 		return err
 	}
 
 	*o = UpdateCampaignGroup(varUpdateCampaignGroup)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "subscribedApplicationsIds")
+		delete(additionalProperties, "campaignIds")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

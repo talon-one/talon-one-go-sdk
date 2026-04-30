@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type ScimPatchOperation struct {
 	// The path specifying the attribute that should be updated.
 	Path *string `json:"path,omitempty"`
 	// The value that should be updated. Required if `op` is `add` or `replace`.
-	Value *string `json:"value,omitempty"`
+	Value                *string `json:"value,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ScimPatchOperation ScimPatchOperation
@@ -154,6 +154,11 @@ func (o ScimPatchOperation) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Value) {
 		toSerialize["value"] = o.Value
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -181,15 +186,22 @@ func (o *ScimPatchOperation) UnmarshalJSON(data []byte) (err error) {
 
 	varScimPatchOperation := _ScimPatchOperation{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varScimPatchOperation)
+	err = json.Unmarshal(data, &varScimPatchOperation)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ScimPatchOperation(varScimPatchOperation)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "op")
+		delete(additionalProperties, "path")
+		delete(additionalProperties, "value")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

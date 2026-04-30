@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,8 +25,9 @@ type PromoteExperiment struct {
 	// The ID of the Experiment Variant to build the new campaign.
 	VariantId int64 `json:"variantId"`
 	// Force disable the experiment.
-	DisableExperiment *bool                  `json:"disableExperiment,omitempty"`
-	Campaign          ExperimentCampaignCopy `json:"campaign"`
+	DisableExperiment    *bool                  `json:"disableExperiment,omitempty"`
+	Campaign             ExperimentCampaignCopy `json:"campaign"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PromoteExperiment PromoteExperiment
@@ -172,6 +172,11 @@ func (o PromoteExperiment) ToMap() (map[string]interface{}, error) {
 		toSerialize["disableExperiment"] = o.DisableExperiment
 	}
 	toSerialize["campaign"] = o.Campaign
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -201,15 +206,23 @@ func (o *PromoteExperiment) UnmarshalJSON(data []byte) (err error) {
 
 	varPromoteExperiment := _PromoteExperiment{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPromoteExperiment)
+	err = json.Unmarshal(data, &varPromoteExperiment)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PromoteExperiment(varPromoteExperiment)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "targetApplicationId")
+		delete(additionalProperties, "variantId")
+		delete(additionalProperties, "disableExperiment")
+		delete(additionalProperties, "campaign")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

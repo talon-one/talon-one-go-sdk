@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -25,7 +24,8 @@ type CouponEntity struct {
 	// The internal ID of the coupon.
 	Id int64 `json:"id"`
 	// The time the coupon was created.
-	Created time.Time `json:"created"`
+	Created              time.Time `json:"created"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CouponEntity CouponEntity
@@ -109,6 +109,11 @@ func (o CouponEntity) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["id"] = o.Id
 	toSerialize["created"] = o.Created
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -137,15 +142,21 @@ func (o *CouponEntity) UnmarshalJSON(data []byte) (err error) {
 
 	varCouponEntity := _CouponEntity{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCouponEntity)
+	err = json.Unmarshal(data, &varCouponEntity)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CouponEntity(varCouponEntity)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

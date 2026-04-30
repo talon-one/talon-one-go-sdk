@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &GetWebhooks200Response{}
 
 // GetWebhooks200Response struct for GetWebhooks200Response
 type GetWebhooks200Response struct {
-	TotalResultSize int64                                   `json:"totalResultSize"`
-	Data            []WebhookWithOutgoingIntegrationDetails `json:"data"`
+	TotalResultSize      int64                                   `json:"totalResultSize"`
+	Data                 []WebhookWithOutgoingIntegrationDetails `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GetWebhooks200Response GetWebhooks200Response
@@ -106,6 +106,11 @@ func (o GetWebhooks200Response) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["totalResultSize"] = o.TotalResultSize
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -134,15 +139,21 @@ func (o *GetWebhooks200Response) UnmarshalJSON(data []byte) (err error) {
 
 	varGetWebhooks200Response := _GetWebhooks200Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGetWebhooks200Response)
+	err = json.Unmarshal(data, &varGetWebhooks200Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GetWebhooks200Response(varGetWebhooks200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "totalResultSize")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

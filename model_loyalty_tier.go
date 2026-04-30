@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -35,7 +34,8 @@ type LoyaltyTier struct {
 	// The name of the tier.
 	Name string `json:"name"`
 	// The minimum amount of points required to enter the tier.
-	MinPoints float32 `json:"minPoints"`
+	MinPoints            float32 `json:"minPoints"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _LoyaltyTier LoyaltyTier
@@ -267,6 +267,11 @@ func (o LoyaltyTier) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["name"] = o.Name
 	toSerialize["minPoints"] = o.MinPoints
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -298,15 +303,26 @@ func (o *LoyaltyTier) UnmarshalJSON(data []byte) (err error) {
 
 	varLoyaltyTier := _LoyaltyTier{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varLoyaltyTier)
+	err = json.Unmarshal(data, &varLoyaltyTier)
 
 	if err != nil {
 		return err
 	}
 
 	*o = LoyaltyTier(varLoyaltyTier)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "programID")
+		delete(additionalProperties, "programName")
+		delete(additionalProperties, "programTitle")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "minPoints")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

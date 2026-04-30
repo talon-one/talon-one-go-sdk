@@ -20,8 +20,11 @@ var _ MappedNullable = &UpdateLoyaltyCardRequest{}
 // UpdateLoyaltyCardRequest struct for UpdateLoyaltyCardRequest
 type UpdateLoyaltyCardRequest struct {
 	// Status of the loyalty card. Can be `active` or `inactive`.
-	Status *string `json:"status,omitempty"`
+	Status               *string `json:"status,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _UpdateLoyaltyCardRequest UpdateLoyaltyCardRequest
 
 // NewUpdateLoyaltyCardRequest instantiates a new UpdateLoyaltyCardRequest object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o UpdateLoyaltyCardRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Status) {
 		toSerialize["status"] = o.Status
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *UpdateLoyaltyCardRequest) UnmarshalJSON(data []byte) (err error) {
+	varUpdateLoyaltyCardRequest := _UpdateLoyaltyCardRequest{}
+
+	err = json.Unmarshal(data, &varUpdateLoyaltyCardRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = UpdateLoyaltyCardRequest(varUpdateLoyaltyCardRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "status")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableUpdateLoyaltyCardRequest struct {

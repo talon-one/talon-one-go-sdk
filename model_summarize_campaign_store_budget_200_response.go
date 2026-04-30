@@ -19,8 +19,11 @@ var _ MappedNullable = &SummarizeCampaignStoreBudget200Response{}
 
 // SummarizeCampaignStoreBudget200Response struct for SummarizeCampaignStoreBudget200Response
 type SummarizeCampaignStoreBudget200Response struct {
-	Data []SummaryCampaignStoreBudget `json:"data,omitempty"`
+	Data                 []SummaryCampaignStoreBudget `json:"data,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _SummarizeCampaignStoreBudget200Response SummarizeCampaignStoreBudget200Response
 
 // NewSummarizeCampaignStoreBudget200Response instantiates a new SummarizeCampaignStoreBudget200Response object
 // This constructor will assign default values to properties that have it defined,
@@ -84,7 +87,33 @@ func (o SummarizeCampaignStoreBudget200Response) ToMap() (map[string]interface{}
 	if !IsNil(o.Data) {
 		toSerialize["data"] = o.Data
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *SummarizeCampaignStoreBudget200Response) UnmarshalJSON(data []byte) (err error) {
+	varSummarizeCampaignStoreBudget200Response := _SummarizeCampaignStoreBudget200Response{}
+
+	err = json.Unmarshal(data, &varSummarizeCampaignStoreBudget200Response)
+
+	if err != nil {
+		return err
+	}
+
+	*o = SummarizeCampaignStoreBudget200Response(varSummarizeCampaignStoreBudget200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableSummarizeCampaignStoreBudget200Response struct {

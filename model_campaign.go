@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -125,7 +124,8 @@ type Campaign struct {
 	// ID of the latest version applied on the current revision.
 	CurrentRevisionVersionId *int64 `json:"currentRevisionVersionId,omitempty"`
 	// Flag for determining whether we use current revision when sending requests with staging API key.
-	StageRevision *bool `json:"stageRevision,omitempty"`
+	StageRevision        *bool `json:"stageRevision,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Campaign Campaign
@@ -1914,6 +1914,11 @@ func (o Campaign) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.StageRevision) {
 		toSerialize["stageRevision"] = o.StageRevision
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -1952,15 +1957,72 @@ func (o *Campaign) UnmarshalJSON(data []byte) (err error) {
 
 	varCampaign := _Campaign{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCampaign)
+	err = json.Unmarshal(data, &varCampaign)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Campaign(varCampaign)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "userId")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "startTime")
+		delete(additionalProperties, "endTime")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "state")
+		delete(additionalProperties, "activeRulesetId")
+		delete(additionalProperties, "tags")
+		delete(additionalProperties, "reevaluateOnReturn")
+		delete(additionalProperties, "features")
+		delete(additionalProperties, "couponSettings")
+		delete(additionalProperties, "referralSettings")
+		delete(additionalProperties, "limits")
+		delete(additionalProperties, "campaignGroups")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "linkedStoreIds")
+		delete(additionalProperties, "couponAttributes")
+		delete(additionalProperties, "budgets")
+		delete(additionalProperties, "couponRedemptionCount")
+		delete(additionalProperties, "referralRedemptionCount")
+		delete(additionalProperties, "discountCount")
+		delete(additionalProperties, "discountEffectCount")
+		delete(additionalProperties, "couponCreationCount")
+		delete(additionalProperties, "customEffectCount")
+		delete(additionalProperties, "referralCreationCount")
+		delete(additionalProperties, "addFreeItemEffectCount")
+		delete(additionalProperties, "awardedGiveawaysCount")
+		delete(additionalProperties, "createdLoyaltyPointsCount")
+		delete(additionalProperties, "createdLoyaltyPointsEffectCount")
+		delete(additionalProperties, "redeemedLoyaltyPointsCount")
+		delete(additionalProperties, "redeemedLoyaltyPointsEffectCount")
+		delete(additionalProperties, "callApiEffectCount")
+		delete(additionalProperties, "reservecouponEffectCount")
+		delete(additionalProperties, "lastActivity")
+		delete(additionalProperties, "updated")
+		delete(additionalProperties, "createdBy")
+		delete(additionalProperties, "updatedBy")
+		delete(additionalProperties, "templateId")
+		delete(additionalProperties, "frontendState")
+		delete(additionalProperties, "storesImported")
+		delete(additionalProperties, "valueMapsIds")
+		delete(additionalProperties, "experimentId")
+		delete(additionalProperties, "revisionFrontendState")
+		delete(additionalProperties, "activeRevisionId")
+		delete(additionalProperties, "activeRevisionVersionId")
+		delete(additionalProperties, "version")
+		delete(additionalProperties, "currentRevisionId")
+		delete(additionalProperties, "currentRevisionVersionId")
+		delete(additionalProperties, "stageRevision")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

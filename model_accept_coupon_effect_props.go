@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &AcceptCouponEffectProps{}
 // AcceptCouponEffectProps The properties specific to the \"acceptCoupon\" effect. This gets triggered whenever the coupon is valid and all other conditions in the rules of its campaign are met.
 type AcceptCouponEffectProps struct {
 	// The coupon code that was accepted.
-	Value string `json:"value"`
+	Value                string `json:"value"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AcceptCouponEffectProps AcceptCouponEffectProps
@@ -80,6 +80,11 @@ func (o AcceptCouponEffectProps) MarshalJSON() ([]byte, error) {
 func (o AcceptCouponEffectProps) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["value"] = o.Value
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *AcceptCouponEffectProps) UnmarshalJSON(data []byte) (err error) {
 
 	varAcceptCouponEffectProps := _AcceptCouponEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAcceptCouponEffectProps)
+	err = json.Unmarshal(data, &varAcceptCouponEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AcceptCouponEffectProps(varAcceptCouponEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "value")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

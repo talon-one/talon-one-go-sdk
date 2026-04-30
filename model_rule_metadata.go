@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -28,7 +27,9 @@ type RuleMetadata struct {
 	// A customer-facing description that explains the details of the rule.   For example, this property can contain details about eligibility requirements, reward timelines, or terms and conditions.
 	DisplayDescription *string `json:"displayDescription,omitempty"`
 	// Any additional data associated with the rule, such as an image URL, vendor name, or a content management system (CMS) ID.
-	RelatedData *string `json:"relatedData,omitempty"`
+	RelatedData          *string           `json:"relatedData,omitempty"`
+	Eligibility          []RuleEligibility `json:"eligibility,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _RuleMetadata RuleMetadata
@@ -171,6 +172,38 @@ func (o *RuleMetadata) SetRelatedData(v string) {
 	o.RelatedData = &v
 }
 
+// GetEligibility returns the Eligibility field value if set, zero value otherwise.
+func (o *RuleMetadata) GetEligibility() []RuleEligibility {
+	if o == nil || IsNil(o.Eligibility) {
+		var ret []RuleEligibility
+		return ret
+	}
+	return o.Eligibility
+}
+
+// GetEligibilityOk returns a tuple with the Eligibility field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *RuleMetadata) GetEligibilityOk() ([]RuleEligibility, bool) {
+	if o == nil || IsNil(o.Eligibility) {
+		return nil, false
+	}
+	return o.Eligibility, true
+}
+
+// HasEligibility returns a boolean if a field has been set.
+func (o *RuleMetadata) HasEligibility() bool {
+	if o != nil && !IsNil(o.Eligibility) {
+		return true
+	}
+
+	return false
+}
+
+// SetEligibility gets a reference to the given []RuleEligibility and assigns it to the Eligibility field.
+func (o *RuleMetadata) SetEligibility(v []RuleEligibility) {
+	o.Eligibility = v
+}
+
 func (o RuleMetadata) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -191,6 +224,14 @@ func (o RuleMetadata) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.RelatedData) {
 		toSerialize["relatedData"] = o.RelatedData
 	}
+	if !IsNil(o.Eligibility) {
+		toSerialize["eligibility"] = o.Eligibility
+	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -218,15 +259,24 @@ func (o *RuleMetadata) UnmarshalJSON(data []byte) (err error) {
 
 	varRuleMetadata := _RuleMetadata{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varRuleMetadata)
+	err = json.Unmarshal(data, &varRuleMetadata)
 
 	if err != nil {
 		return err
 	}
 
 	*o = RuleMetadata(varRuleMetadata)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "displayName")
+		delete(additionalProperties, "displayDescription")
+		delete(additionalProperties, "relatedData")
+		delete(additionalProperties, "eligibility")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

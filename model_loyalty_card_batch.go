@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,8 +25,9 @@ type LoyaltyCardBatch struct {
 	// ID of the loyalty card batch.
 	BatchId *string `json:"batchId,omitempty" validate:"regexp=^[A-Za-z0-9_-]*$"`
 	// Status of the loyalty cards in the batch.
-	Status           *string                `json:"status,omitempty"`
-	CardCodeSettings *CodeGeneratorSettings `json:"cardCodeSettings,omitempty"`
+	Status               *string                `json:"status,omitempty"`
+	CardCodeSettings     *CodeGeneratorSettings `json:"cardCodeSettings,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _LoyaltyCardBatch LoyaltyCardBatch
@@ -194,6 +194,11 @@ func (o LoyaltyCardBatch) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CardCodeSettings) {
 		toSerialize["cardCodeSettings"] = o.CardCodeSettings
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -221,15 +226,23 @@ func (o *LoyaltyCardBatch) UnmarshalJSON(data []byte) (err error) {
 
 	varLoyaltyCardBatch := _LoyaltyCardBatch{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varLoyaltyCardBatch)
+	err = json.Unmarshal(data, &varLoyaltyCardBatch)
 
 	if err != nil {
 		return err
 	}
 
 	*o = LoyaltyCardBatch(varLoyaltyCardBatch)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "numberOfCards")
+		delete(additionalProperties, "batchId")
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "cardCodeSettings")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

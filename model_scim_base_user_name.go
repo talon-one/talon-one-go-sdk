@@ -20,8 +20,11 @@ var _ MappedNullable = &ScimBaseUserName{}
 // ScimBaseUserName The components of the user’s real name.
 type ScimBaseUserName struct {
 	// The full name, including all middle names, titles, and suffixes as appropriate, formatted for display.
-	Formatted *string `json:"formatted,omitempty"`
+	Formatted            *string `json:"formatted,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ScimBaseUserName ScimBaseUserName
 
 // NewScimBaseUserName instantiates a new ScimBaseUserName object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o ScimBaseUserName) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Formatted) {
 		toSerialize["formatted"] = o.Formatted
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ScimBaseUserName) UnmarshalJSON(data []byte) (err error) {
+	varScimBaseUserName := _ScimBaseUserName{}
+
+	err = json.Unmarshal(data, &varScimBaseUserName)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ScimBaseUserName(varScimBaseUserName)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "formatted")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableScimBaseUserName struct {

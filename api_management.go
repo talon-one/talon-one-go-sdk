@@ -7265,11 +7265,18 @@ type ApiExportLoyaltyBalanceRequest struct {
 	ApiService       *ManagementAPIService
 	loyaltyProgramId string
 	endDate          *time.Time
+	balances         *string
 }
 
 // Used to return expired, active, and pending loyalty balances before this timestamp. You can enter any past, present, or future timestamp value.  &gt; [!note] **Note** &gt; - This must be an RFC3339 timestamp string. &gt; - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting &gt;   considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.
 func (r ApiExportLoyaltyBalanceRequest) EndDate(endDate time.Time) ApiExportLoyaltyBalanceRequest {
 	r.endDate = &endDate
+	return r
+}
+
+// Filters which balance fields are included in the CSV export. &#x60;currentBalance&#x60; is always returned.  By default, all balance fields are included. When this parameter is provided, only the listed fields contain values and the rest are returned empty.  Accepted values: - &#x60;currentBalance&#x60; - &#x60;pendingBalance&#x60; - &#x60;expiredBalance&#x60; - &#x60;spentBalance&#x60; - &#x60;negativeBalance&#x60;  Multiple values must be provided as a comma-separated list.
+func (r ApiExportLoyaltyBalanceRequest) Balances(balances string) ApiExportLoyaltyBalanceRequest {
+	r.balances = &balances
 	return r
 }
 
@@ -7330,6 +7337,9 @@ func (a *ManagementAPIService) ExportLoyaltyBalanceExecute(r ApiExportLoyaltyBal
 
 	if r.endDate != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "endDate", r.endDate, "form", "")
+	}
+	if r.balances != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "balances", r.balances, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -7425,11 +7435,18 @@ type ApiExportLoyaltyBalancesRequest struct {
 	ApiService       *ManagementAPIService
 	loyaltyProgramId string
 	endDate          *time.Time
+	balances         *string
 }
 
 // Used to return expired, active, and pending loyalty balances before this timestamp. You can enter any past, present, or future timestamp value.  &gt; [!note] **Note** &gt; - This must be an RFC3339 timestamp string. &gt; - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting &gt;   considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered. &gt; - This parameter does not affect the &#x60;currentTier&#x60; field in the CSV file, which shows the customer&#39;s tier at the time of export.
 func (r ApiExportLoyaltyBalancesRequest) EndDate(endDate time.Time) ApiExportLoyaltyBalancesRequest {
 	r.endDate = &endDate
+	return r
+}
+
+// Filters which balance fields are included in the CSV export. &#x60;currentBalance&#x60; is always returned.  By default, all balance fields are included. When this parameter is provided, only the listed fields contain values and the rest are returned empty.  Accepted values: - &#x60;currentBalance&#x60; - &#x60;pendingBalance&#x60; - &#x60;expiredBalance&#x60; - &#x60;spentBalance&#x60; - &#x60;negativeBalance&#x60;  Multiple values must be provided as a comma-separated list.
+func (r ApiExportLoyaltyBalancesRequest) Balances(balances string) ApiExportLoyaltyBalancesRequest {
+	r.balances = &balances
 	return r
 }
 
@@ -7494,6 +7511,9 @@ func (a *ManagementAPIService) ExportLoyaltyBalancesExecute(r ApiExportLoyaltyBa
 
 	if r.endDate != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "endDate", r.endDate, "form", "")
+	}
+	if r.balances != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "balances", r.balances, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -7589,11 +7609,18 @@ type ApiExportLoyaltyCardBalancesRequest struct {
 	ApiService       *ManagementAPIService
 	loyaltyProgramId int64
 	endDate          *time.Time
+	balances         *string
 }
 
 // Used to return expired, active, and pending loyalty balances before this timestamp. You can enter any past, present, or future timestamp value.  &gt; [!note] **Note** &gt; - This must be an RFC3339 timestamp string. &gt; - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting &gt;   considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.
 func (r ApiExportLoyaltyCardBalancesRequest) EndDate(endDate time.Time) ApiExportLoyaltyCardBalancesRequest {
 	r.endDate = &endDate
+	return r
+}
+
+// Filters which balance fields are included in the CSV export. By default, all balance fields are included. When this parameter is provided, only the listed fields contain values and the rest are returned empty.  Accepted values: - &#x60;currentBalance&#x60; - &#x60;pendingBalance&#x60; - &#x60;expiredBalance&#x60; - &#x60;spentBalance&#x60; - &#x60;negativeBalance&#x60;  Multiple values must be provided as a comma-separated list.  **Note:** - The &#x60;negativeBalance&#x60; value is not supported for card balance exports. - Providing an unsupported or invalid value returns a &#x60;400 Bad Request&#x60; error.
+func (r ApiExportLoyaltyCardBalancesRequest) Balances(balances string) ApiExportLoyaltyCardBalancesRequest {
+	r.balances = &balances
 	return r
 }
 
@@ -7659,6 +7686,9 @@ func (a *ManagementAPIService) ExportLoyaltyCardBalancesExecute(r ApiExportLoyal
 
 	if r.endDate != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "endDate", r.endDate, "form", "")
+	}
+	if r.balances != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "balances", r.balances, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

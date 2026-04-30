@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,7 +20,8 @@ var _ MappedNullable = &GenerateCouponRejections200Response{}
 
 // GenerateCouponRejections200Response struct for GenerateCouponRejections200Response
 type GenerateCouponRejections200Response struct {
-	Data []CouponFailureSummary `json:"data"`
+	Data                 []CouponFailureSummary `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GenerateCouponRejections200Response GenerateCouponRejections200Response
@@ -79,6 +79,11 @@ func (o GenerateCouponRejections200Response) MarshalJSON() ([]byte, error) {
 func (o GenerateCouponRejections200Response) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -106,15 +111,20 @@ func (o *GenerateCouponRejections200Response) UnmarshalJSON(data []byte) (err er
 
 	varGenerateCouponRejections200Response := _GenerateCouponRejections200Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGenerateCouponRejections200Response)
+	err = json.Unmarshal(data, &varGenerateCouponRejections200Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GenerateCouponRejections200Response(varGenerateCouponRejections200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

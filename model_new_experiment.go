@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,6 +23,7 @@ type NewExperiment struct {
 	// The source of the assignment. - false - The variant assignment is handled internally by Talon.One. - true - The variant assignment is handled externally.
 	IsVariantAssignmentExternal bool        `json:"isVariantAssignmentExternal"`
 	Campaign                    NewCampaign `json:"campaign"`
+	AdditionalProperties        map[string]interface{}
 }
 
 type _NewExperiment NewExperiment
@@ -107,6 +107,11 @@ func (o NewExperiment) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["isVariantAssignmentExternal"] = o.IsVariantAssignmentExternal
 	toSerialize["campaign"] = o.Campaign
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -135,15 +140,21 @@ func (o *NewExperiment) UnmarshalJSON(data []byte) (err error) {
 
 	varNewExperiment := _NewExperiment{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewExperiment)
+	err = json.Unmarshal(data, &varNewExperiment)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewExperiment(varNewExperiment)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "isVariantAssignmentExternal")
+		delete(additionalProperties, "campaign")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

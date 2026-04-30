@@ -22,8 +22,11 @@ type StrikethroughDebugResponse struct {
 	// The campaign IDs that got fetched for the evaluation process.
 	CampaignsIDs []int64 `json:"campaignsIDs,omitempty"`
 	// The strikethrough effects that are returned from the evaluation process.
-	Effects []StrikethroughEffect `json:"effects,omitempty"`
+	Effects              []StrikethroughEffect `json:"effects,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _StrikethroughDebugResponse StrikethroughDebugResponse
 
 // NewStrikethroughDebugResponse instantiates a new StrikethroughDebugResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -122,7 +125,34 @@ func (o StrikethroughDebugResponse) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Effects) {
 		toSerialize["effects"] = o.Effects
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *StrikethroughDebugResponse) UnmarshalJSON(data []byte) (err error) {
+	varStrikethroughDebugResponse := _StrikethroughDebugResponse{}
+
+	err = json.Unmarshal(data, &varStrikethroughDebugResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = StrikethroughDebugResponse(varStrikethroughDebugResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "campaignsIDs")
+		delete(additionalProperties, "effects")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableStrikethroughDebugResponse struct {

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type NewEventType struct {
 	// The integration name for this event type. This will be used in URLs and cannot be changed after an event type has been created.
 	Name string `json:"name"`
 	// A description of what the event represents.
-	Description *string `json:"description,omitempty"`
+	Description          *string `json:"description,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewEventType NewEventType
@@ -145,6 +145,11 @@ func (o NewEventType) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Description) {
 		toSerialize["description"] = o.Description
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -173,15 +178,22 @@ func (o *NewEventType) UnmarshalJSON(data []byte) (err error) {
 
 	varNewEventType := _NewEventType{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewEventType)
+	err = json.Unmarshal(data, &varNewEventType)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewEventType(varNewEventType)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

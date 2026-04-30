@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &GetAudienceMemberships200Response{}
 
 // GetAudienceMemberships200Response struct for GetAudienceMemberships200Response
 type GetAudienceMemberships200Response struct {
-	HasMore *bool             `json:"hasMore,omitempty"`
-	Data    []CustomerProfile `json:"data"`
+	HasMore              *bool             `json:"hasMore,omitempty"`
+	Data                 []CustomerProfile `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GetAudienceMemberships200Response GetAudienceMemberships200Response
@@ -115,6 +115,11 @@ func (o GetAudienceMemberships200Response) ToMap() (map[string]interface{}, erro
 		toSerialize["hasMore"] = o.HasMore
 	}
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -142,15 +147,21 @@ func (o *GetAudienceMemberships200Response) UnmarshalJSON(data []byte) (err erro
 
 	varGetAudienceMemberships200Response := _GetAudienceMemberships200Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGetAudienceMemberships200Response)
+	err = json.Unmarshal(data, &varGetAudienceMemberships200Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GetAudienceMemberships200Response(varGetAudienceMemberships200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "hasMore")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

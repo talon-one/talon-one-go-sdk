@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type CampaignTemplateCollection struct {
 	// The name of this collection.
 	Name string `json:"name" validate:"regexp=^[A-Za-z](\\\\w|\\\\s)*$"`
 	// A short description of the purpose of this collection.
-	Description *string `json:"description,omitempty"`
+	Description          *string `json:"description,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CampaignTemplateCollection CampaignTemplateCollection
@@ -117,6 +117,11 @@ func (o CampaignTemplateCollection) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Description) {
 		toSerialize["description"] = o.Description
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -144,15 +149,21 @@ func (o *CampaignTemplateCollection) UnmarshalJSON(data []byte) (err error) {
 
 	varCampaignTemplateCollection := _CampaignTemplateCollection{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCampaignTemplateCollection)
+	err = json.Unmarshal(data, &varCampaignTemplateCollection)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CampaignTemplateCollection(varCampaignTemplateCollection)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

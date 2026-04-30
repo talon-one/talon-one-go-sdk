@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -30,7 +29,8 @@ type AwardGiveawayEffectProps struct {
 	// The internal ID for the giveaway that was awarded.
 	GiveawayId int64 `json:"giveawayId"`
 	// The giveaway code that was awarded.
-	Code string `json:"code"`
+	Code                 string `json:"code"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AwardGiveawayEffectProps AwardGiveawayEffectProps
@@ -192,6 +192,11 @@ func (o AwardGiveawayEffectProps) ToMap() (map[string]interface{}, error) {
 	toSerialize["recipientIntegrationId"] = o.RecipientIntegrationId
 	toSerialize["giveawayId"] = o.GiveawayId
 	toSerialize["code"] = o.Code
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -223,15 +228,24 @@ func (o *AwardGiveawayEffectProps) UnmarshalJSON(data []byte) (err error) {
 
 	varAwardGiveawayEffectProps := _AwardGiveawayEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAwardGiveawayEffectProps)
+	err = json.Unmarshal(data, &varAwardGiveawayEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AwardGiveawayEffectProps(varAwardGiveawayEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "poolId")
+		delete(additionalProperties, "poolName")
+		delete(additionalProperties, "recipientIntegrationId")
+		delete(additionalProperties, "giveawayId")
+		delete(additionalProperties, "code")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

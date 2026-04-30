@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,9 +20,10 @@ var _ MappedNullable = &CreateTemplateCampaignResponse{}
 
 // CreateTemplateCampaignResponse struct for CreateTemplateCampaignResponse
 type CreateTemplateCampaignResponse struct {
-	Campaign    Campaign     `json:"campaign"`
-	Ruleset     Ruleset      `json:"ruleset"`
-	Collections []Collection `json:"collections,omitempty"`
+	Campaign             Campaign     `json:"campaign"`
+	Ruleset              Ruleset      `json:"ruleset"`
+	Collections          []Collection `json:"collections,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CreateTemplateCampaignResponse CreateTemplateCampaignResponse
@@ -142,6 +142,11 @@ func (o CreateTemplateCampaignResponse) ToMap() (map[string]interface{}, error) 
 	if !IsNil(o.Collections) {
 		toSerialize["collections"] = o.Collections
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -170,15 +175,22 @@ func (o *CreateTemplateCampaignResponse) UnmarshalJSON(data []byte) (err error) 
 
 	varCreateTemplateCampaignResponse := _CreateTemplateCampaignResponse{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCreateTemplateCampaignResponse)
+	err = json.Unmarshal(data, &varCreateTemplateCampaignResponse)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CreateTemplateCampaignResponse(varCreateTemplateCampaignResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "campaign")
+		delete(additionalProperties, "ruleset")
+		delete(additionalProperties, "collections")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -23,8 +23,11 @@ type ErrorResponseWithStatus struct {
 	// An array of individual problems encountered during the request.
 	Errors []APIError `json:"errors,omitempty"`
 	// The error code
-	StatusCode *int64 `json:"StatusCode,omitempty"`
+	StatusCode           *int64 `json:"StatusCode,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ErrorResponseWithStatus ErrorResponseWithStatus
 
 // NewErrorResponseWithStatus instantiates a new ErrorResponseWithStatus object
 // This constructor will assign default values to properties that have it defined,
@@ -158,7 +161,35 @@ func (o ErrorResponseWithStatus) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.StatusCode) {
 		toSerialize["StatusCode"] = o.StatusCode
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ErrorResponseWithStatus) UnmarshalJSON(data []byte) (err error) {
+	varErrorResponseWithStatus := _ErrorResponseWithStatus{}
+
+	err = json.Unmarshal(data, &varErrorResponseWithStatus)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ErrorResponseWithStatus(varErrorResponseWithStatus)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "message")
+		delete(additionalProperties, "errors")
+		delete(additionalProperties, "StatusCode")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableErrorResponseWithStatus struct {

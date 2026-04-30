@@ -22,8 +22,11 @@ type ApplicationCIFReferences struct {
 	// The ID of the Application Cart Item Filter that is referenced by a campaign.
 	ApplicationCartItemFilterId *int64 `json:"applicationCartItemFilterId,omitempty"`
 	// Campaigns that reference a speciifc Application Cart Item Filter.
-	Campaigns []CampaignDetail `json:"campaigns,omitempty"`
+	Campaigns            []CampaignDetail `json:"campaigns,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ApplicationCIFReferences ApplicationCIFReferences
 
 // NewApplicationCIFReferences instantiates a new ApplicationCIFReferences object
 // This constructor will assign default values to properties that have it defined,
@@ -122,7 +125,34 @@ func (o ApplicationCIFReferences) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Campaigns) {
 		toSerialize["campaigns"] = o.Campaigns
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ApplicationCIFReferences) UnmarshalJSON(data []byte) (err error) {
+	varApplicationCIFReferences := _ApplicationCIFReferences{}
+
+	err = json.Unmarshal(data, &varApplicationCIFReferences)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ApplicationCIFReferences(varApplicationCIFReferences)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "applicationCartItemFilterId")
+		delete(additionalProperties, "campaigns")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableApplicationCIFReferences struct {

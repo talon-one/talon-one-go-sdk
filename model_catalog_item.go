@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -33,9 +32,10 @@ type CatalogItem struct {
 	// The ID of the catalog the item belongs to.
 	Catalogid int64 `json:"catalogid"`
 	// The version of the catalog item.
-	Version    int64           `json:"version"`
-	Attributes []ItemAttribute `json:"attributes,omitempty"`
-	Product    *Product        `json:"product,omitempty"`
+	Version              int64           `json:"version"`
+	Attributes           []ItemAttribute `json:"attributes,omitempty"`
+	Product              *Product        `json:"product,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CatalogItem CatalogItem
@@ -302,6 +302,11 @@ func (o CatalogItem) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Product) {
 		toSerialize["product"] = o.Product
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -333,15 +338,27 @@ func (o *CatalogItem) UnmarshalJSON(data []byte) (err error) {
 
 	varCatalogItem := _CatalogItem{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCatalogItem)
+	err = json.Unmarshal(data, &varCatalogItem)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CatalogItem(varCatalogItem)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "sku")
+		delete(additionalProperties, "price")
+		delete(additionalProperties, "catalogid")
+		delete(additionalProperties, "version")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "product")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

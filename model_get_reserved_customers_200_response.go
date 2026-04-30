@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &GetReservedCustomers200Response{}
 
 // GetReservedCustomers200Response struct for GetReservedCustomers200Response
 type GetReservedCustomers200Response struct {
-	TotalResultSize int64             `json:"totalResultSize"`
-	Data            []CustomerProfile `json:"data"`
+	TotalResultSize      int64             `json:"totalResultSize"`
+	Data                 []CustomerProfile `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GetReservedCustomers200Response GetReservedCustomers200Response
@@ -106,6 +106,11 @@ func (o GetReservedCustomers200Response) ToMap() (map[string]interface{}, error)
 	toSerialize := map[string]interface{}{}
 	toSerialize["totalResultSize"] = o.TotalResultSize
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -134,15 +139,21 @@ func (o *GetReservedCustomers200Response) UnmarshalJSON(data []byte) (err error)
 
 	varGetReservedCustomers200Response := _GetReservedCustomers200Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGetReservedCustomers200Response)
+	err = json.Unmarshal(data, &varGetReservedCustomers200Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GetReservedCustomers200Response(varGetReservedCustomers200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "totalResultSize")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

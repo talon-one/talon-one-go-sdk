@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type SamlConnectionInternal struct {
 	// ID of the SAML service.
 	Name string `json:"name"`
 	// Identity Provider metadata XML document.
-	MetadataDocument string `json:"metadataDocument"`
+	MetadataDocument     string `json:"metadataDocument"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _SamlConnectionInternal SamlConnectionInternal
@@ -108,6 +108,11 @@ func (o SamlConnectionInternal) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["name"] = o.Name
 	toSerialize["metadataDocument"] = o.MetadataDocument
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *SamlConnectionInternal) UnmarshalJSON(data []byte) (err error) {
 
 	varSamlConnectionInternal := _SamlConnectionInternal{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varSamlConnectionInternal)
+	err = json.Unmarshal(data, &varSamlConnectionInternal)
 
 	if err != nil {
 		return err
 	}
 
 	*o = SamlConnectionInternal(varSamlConnectionInternal)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "metadataDocument")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

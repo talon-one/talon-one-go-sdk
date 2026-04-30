@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,9 +20,10 @@ var _ MappedNullable = &ReferralRejectionReason{}
 
 // ReferralRejectionReason Holds a reference to the campaign, the referral and the reason for which that referral was rejected. Should only be present when there is a 'rejectReferral' effect.
 type ReferralRejectionReason struct {
-	CampaignId int64  `json:"campaignId"`
-	ReferralId int64  `json:"referralId"`
-	Reason     string `json:"reason"`
+	CampaignId           int64  `json:"campaignId"`
+	ReferralId           int64  `json:"referralId"`
+	Reason               string `json:"reason"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ReferralRejectionReason ReferralRejectionReason
@@ -133,6 +133,11 @@ func (o ReferralRejectionReason) ToMap() (map[string]interface{}, error) {
 	toSerialize["campaignId"] = o.CampaignId
 	toSerialize["referralId"] = o.ReferralId
 	toSerialize["reason"] = o.Reason
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -162,15 +167,22 @@ func (o *ReferralRejectionReason) UnmarshalJSON(data []byte) (err error) {
 
 	varReferralRejectionReason := _ReferralRejectionReason{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varReferralRejectionReason)
+	err = json.Unmarshal(data, &varReferralRejectionReason)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ReferralRejectionReason(varReferralRejectionReason)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "campaignId")
+		delete(additionalProperties, "referralId")
+		delete(additionalProperties, "reason")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

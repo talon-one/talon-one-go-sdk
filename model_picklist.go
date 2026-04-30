@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -37,7 +36,8 @@ type Picklist struct {
 	// The ID of the account that owns this entity.
 	AccountId *int64 `json:"accountId,omitempty"`
 	// Imported flag shows that a picklist is imported by a CSV file or not
-	Imported *bool `json:"imported,omitempty"`
+	Imported             *bool `json:"imported,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Picklist Picklist
@@ -304,6 +304,11 @@ func (o Picklist) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Imported) {
 		toSerialize["imported"] = o.Imported
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -335,15 +340,27 @@ func (o *Picklist) UnmarshalJSON(data []byte) (err error) {
 
 	varPicklist := _Picklist{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPicklist)
+	err = json.Unmarshal(data, &varPicklist)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Picklist(varPicklist)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "values")
+		delete(additionalProperties, "modifiedBy")
+		delete(additionalProperties, "createdBy")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "imported")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

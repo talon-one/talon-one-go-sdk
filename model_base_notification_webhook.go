@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -33,7 +32,8 @@ type BaseNotificationWebhook struct {
 	// List of API HTTP headers for the given webhook-based notification.
 	Headers []string `json:"headers"`
 	// Indicates whether the notification is activated.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled              *bool `json:"enabled,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _BaseNotificationWebhook BaseNotificationWebhook
@@ -234,6 +234,11 @@ func (o BaseNotificationWebhook) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Enabled) {
 		toSerialize["enabled"] = o.Enabled
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -265,15 +270,25 @@ func (o *BaseNotificationWebhook) UnmarshalJSON(data []byte) (err error) {
 
 	varBaseNotificationWebhook := _BaseNotificationWebhook{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varBaseNotificationWebhook)
+	err = json.Unmarshal(data, &varBaseNotificationWebhook)
 
 	if err != nil {
 		return err
 	}
 
 	*o = BaseNotificationWebhook(varBaseNotificationWebhook)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "modified")
+		delete(additionalProperties, "url")
+		delete(additionalProperties, "headers")
+		delete(additionalProperties, "enabled")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

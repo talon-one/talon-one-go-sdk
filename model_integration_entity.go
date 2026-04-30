@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -25,7 +24,8 @@ type IntegrationEntity struct {
 	// The integration ID set by your integration layer.
 	IntegrationId string `json:"integrationId"`
 	// The time this entity was created.
-	Created time.Time `json:"created"`
+	Created              time.Time `json:"created"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _IntegrationEntity IntegrationEntity
@@ -109,6 +109,11 @@ func (o IntegrationEntity) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["integrationId"] = o.IntegrationId
 	toSerialize["created"] = o.Created
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -137,15 +142,21 @@ func (o *IntegrationEntity) UnmarshalJSON(data []byte) (err error) {
 
 	varIntegrationEntity := _IntegrationEntity{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varIntegrationEntity)
+	err = json.Unmarshal(data, &varIntegrationEntity)
 
 	if err != nil {
 		return err
 	}
 
 	*o = IntegrationEntity(varIntegrationEntity)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "integrationId")
+		delete(additionalProperties, "created")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

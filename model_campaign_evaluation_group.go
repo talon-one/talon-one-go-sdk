@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -36,7 +35,8 @@ type CampaignEvaluationGroup struct {
 	// An indicator of whether the campaign evaluation group is locked for modification.
 	Locked bool `json:"locked"`
 	// Unique ID for this entity. Not to be confused with the Integration ID, which is set by your integration layer and used in most endpoints.
-	Id int64 `json:"id"`
+	Id                   int64 `json:"id"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CampaignEvaluationGroup CampaignEvaluationGroup
@@ -285,6 +285,11 @@ func (o CampaignEvaluationGroup) ToMap() (map[string]interface{}, error) {
 	toSerialize["evaluationScope"] = o.EvaluationScope
 	toSerialize["locked"] = o.Locked
 	toSerialize["id"] = o.Id
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -318,15 +323,27 @@ func (o *CampaignEvaluationGroup) UnmarshalJSON(data []byte) (err error) {
 
 	varCampaignEvaluationGroup := _CampaignEvaluationGroup{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCampaignEvaluationGroup)
+	err = json.Unmarshal(data, &varCampaignEvaluationGroup)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CampaignEvaluationGroup(varCampaignEvaluationGroup)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "parentId")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "evaluationMode")
+		delete(additionalProperties, "evaluationScope")
+		delete(additionalProperties, "locked")
+		delete(additionalProperties, "id")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

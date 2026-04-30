@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -53,7 +52,8 @@ type AddLoyaltyPointsEffectProps struct {
 	// If `true`, the loyalty points remain pending until a specific action is complete. The `startDate` parameter automatically sets to `on_action`.
 	AwaitsActivation *bool `json:"awaitsActivation,omitempty"`
 	// The duration for which the points remain active, calculated relative to the  activation date.    **Note**: This value is returned only if `awaitsActivation` is `true`  and `expiryDate` is not set.
-	ValidityDuration *string `json:"validityDuration,omitempty"`
+	ValidityDuration     *string `json:"validityDuration,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AddLoyaltyPointsEffectProps AddLoyaltyPointsEffectProps
@@ -591,6 +591,11 @@ func (o AddLoyaltyPointsEffectProps) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ValidityDuration) {
 		toSerialize["validityDuration"] = o.ValidityDuration
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -623,15 +628,35 @@ func (o *AddLoyaltyPointsEffectProps) UnmarshalJSON(data []byte) (err error) {
 
 	varAddLoyaltyPointsEffectProps := _AddLoyaltyPointsEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAddLoyaltyPointsEffectProps)
+	err = json.Unmarshal(data, &varAddLoyaltyPointsEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AddLoyaltyPointsEffectProps(varAddLoyaltyPointsEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "programId")
+		delete(additionalProperties, "subLedgerId")
+		delete(additionalProperties, "value")
+		delete(additionalProperties, "desiredValue")
+		delete(additionalProperties, "recipientIntegrationId")
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "transactionUUID")
+		delete(additionalProperties, "cartItemPosition")
+		delete(additionalProperties, "cartItemSubPosition")
+		delete(additionalProperties, "cardIdentifier")
+		delete(additionalProperties, "bundleIndex")
+		delete(additionalProperties, "bundleName")
+		delete(additionalProperties, "awaitsActivation")
+		delete(additionalProperties, "validityDuration")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

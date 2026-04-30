@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &AnalyticsDataPoint{}
 
 // AnalyticsDataPoint struct for AnalyticsDataPoint
 type AnalyticsDataPoint struct {
-	Total      float32 `json:"total"`
-	Influenced float32 `json:"influenced"`
+	Total                float32 `json:"total"`
+	Influenced           float32 `json:"influenced"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AnalyticsDataPoint AnalyticsDataPoint
@@ -106,6 +106,11 @@ func (o AnalyticsDataPoint) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["total"] = o.Total
 	toSerialize["influenced"] = o.Influenced
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -134,15 +139,21 @@ func (o *AnalyticsDataPoint) UnmarshalJSON(data []byte) (err error) {
 
 	varAnalyticsDataPoint := _AnalyticsDataPoint{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAnalyticsDataPoint)
+	err = json.Unmarshal(data, &varAnalyticsDataPoint)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AnalyticsDataPoint(varAnalyticsDataPoint)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "total")
+		delete(additionalProperties, "influenced")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

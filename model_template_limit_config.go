@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -28,7 +27,8 @@ type TemplateLimitConfig struct {
 	// The period on which the budget limit recurs.
 	Period *string `json:"period,omitempty"`
 	// The entity that this limit applies to.
-	Entities []string `json:"entities"`
+	Entities             []string `json:"entities"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _TemplateLimitConfig TemplateLimitConfig
@@ -173,6 +173,11 @@ func (o TemplateLimitConfig) ToMap() (map[string]interface{}, error) {
 		toSerialize["period"] = o.Period
 	}
 	toSerialize["entities"] = o.Entities
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -202,15 +207,23 @@ func (o *TemplateLimitConfig) UnmarshalJSON(data []byte) (err error) {
 
 	varTemplateLimitConfig := _TemplateLimitConfig{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varTemplateLimitConfig)
+	err = json.Unmarshal(data, &varTemplateLimitConfig)
 
 	if err != nil {
 		return err
 	}
 
 	*o = TemplateLimitConfig(varTemplateLimitConfig)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "action")
+		delete(additionalProperties, "limit")
+		delete(additionalProperties, "period")
+		delete(additionalProperties, "entities")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

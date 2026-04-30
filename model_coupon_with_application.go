@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -69,7 +68,8 @@ type CouponWithApplication struct {
 	// The ID of the application.
 	ApplicationId int64 `json:"applicationId"`
 	// Name of the Application that is connected to the coupon.
-	ApplicationName string `json:"applicationName"`
+	ApplicationName      string `json:"applicationName"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CouponWithApplication CouponWithApplication
@@ -895,6 +895,11 @@ func (o CouponWithApplication) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["applicationId"] = o.ApplicationId
 	toSerialize["applicationName"] = o.ApplicationName
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -927,15 +932,43 @@ func (o *CouponWithApplication) UnmarshalJSON(data []byte) (err error) {
 
 	varCouponWithApplication := _CouponWithApplication{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCouponWithApplication)
+	err = json.Unmarshal(data, &varCouponWithApplication)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CouponWithApplication(varCouponWithApplication)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "campaignId")
+		delete(additionalProperties, "value")
+		delete(additionalProperties, "usageLimit")
+		delete(additionalProperties, "discountLimit")
+		delete(additionalProperties, "reservationLimit")
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "limits")
+		delete(additionalProperties, "usageCounter")
+		delete(additionalProperties, "discountCounter")
+		delete(additionalProperties, "discountRemainder")
+		delete(additionalProperties, "reservationCounter")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "referralId")
+		delete(additionalProperties, "recipientIntegrationId")
+		delete(additionalProperties, "importId")
+		delete(additionalProperties, "reservation")
+		delete(additionalProperties, "batchId")
+		delete(additionalProperties, "isReservationMandatory")
+		delete(additionalProperties, "implicitlyReserved")
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "applicationName")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

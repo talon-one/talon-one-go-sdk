@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type SamlLoginEndpoint struct {
 	// ID of the SAML service.
 	Name string `json:"name"`
 	// The single sign-on URL.
-	LoginURL string `json:"loginURL"`
+	LoginURL             string `json:"loginURL"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _SamlLoginEndpoint SamlLoginEndpoint
@@ -136,6 +136,11 @@ func (o SamlLoginEndpoint) ToMap() (map[string]interface{}, error) {
 	toSerialize["id"] = o.Id
 	toSerialize["name"] = o.Name
 	toSerialize["loginURL"] = o.LoginURL
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -165,15 +170,22 @@ func (o *SamlLoginEndpoint) UnmarshalJSON(data []byte) (err error) {
 
 	varSamlLoginEndpoint := _SamlLoginEndpoint{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varSamlLoginEndpoint)
+	err = json.Unmarshal(data, &varSamlLoginEndpoint)
 
 	if err != nil {
 		return err
 	}
 
 	*o = SamlLoginEndpoint(varSamlLoginEndpoint)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "loginURL")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -30,7 +29,8 @@ type AsyncCouponsData struct {
 	//
 	EmployeeName string `json:"EmployeeName"`
 	// The type of the notification
-	NotificationType string `json:"NotificationType"`
+	NotificationType     string `json:"NotificationType"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AsyncCouponsData AsyncCouponsData
@@ -192,6 +192,11 @@ func (o AsyncCouponsData) ToMap() (map[string]interface{}, error) {
 	toSerialize["Operation"] = o.Operation
 	toSerialize["EmployeeName"] = o.EmployeeName
 	toSerialize["NotificationType"] = o.NotificationType
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -223,15 +228,24 @@ func (o *AsyncCouponsData) UnmarshalJSON(data []byte) (err error) {
 
 	varAsyncCouponsData := _AsyncCouponsData{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAsyncCouponsData)
+	err = json.Unmarshal(data, &varAsyncCouponsData)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AsyncCouponsData(varAsyncCouponsData)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "BatchID")
+		delete(additionalProperties, "TypeOfChange")
+		delete(additionalProperties, "Operation")
+		delete(additionalProperties, "EmployeeName")
+		delete(additionalProperties, "NotificationType")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

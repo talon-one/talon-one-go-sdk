@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -32,7 +31,8 @@ type UpdateCampaignEvaluationGroup struct {
 	// The evaluation scope of the campaign evaluation group.
 	EvaluationScope string `json:"evaluationScope"`
 	// An indicator of whether the campaign evaluation group is locked for modification.
-	Locked bool `json:"locked"`
+	Locked               bool `json:"locked"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _UpdateCampaignEvaluationGroup UpdateCampaignEvaluationGroup
@@ -229,6 +229,11 @@ func (o UpdateCampaignEvaluationGroup) ToMap() (map[string]interface{}, error) {
 	toSerialize["evaluationMode"] = o.EvaluationMode
 	toSerialize["evaluationScope"] = o.EvaluationScope
 	toSerialize["locked"] = o.Locked
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -260,15 +265,25 @@ func (o *UpdateCampaignEvaluationGroup) UnmarshalJSON(data []byte) (err error) {
 
 	varUpdateCampaignEvaluationGroup := _UpdateCampaignEvaluationGroup{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varUpdateCampaignEvaluationGroup)
+	err = json.Unmarshal(data, &varUpdateCampaignEvaluationGroup)
 
 	if err != nil {
 		return err
 	}
 
 	*o = UpdateCampaignEvaluationGroup(varUpdateCampaignEvaluationGroup)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "parentId")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "evaluationMode")
+		delete(additionalProperties, "evaluationScope")
+		delete(additionalProperties, "locked")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

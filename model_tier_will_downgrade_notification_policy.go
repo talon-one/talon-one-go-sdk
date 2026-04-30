@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,8 +25,9 @@ type TierWillDowngradeNotificationPolicy struct {
 	// Indicates whether batching is activated.
 	BatchingEnabled *bool `json:"batchingEnabled,omitempty"`
 	// The required size of each batch of data. This value applies only when `batchingEnabled` is `true`.
-	BatchSize *int64                                 `json:"batchSize,omitempty"`
-	Triggers  []TierWillDowngradeNotificationTrigger `json:"triggers"`
+	BatchSize            *int64                                 `json:"batchSize,omitempty"`
+	Triggers             []TierWillDowngradeNotificationTrigger `json:"triggers"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _TierWillDowngradeNotificationPolicy TierWillDowngradeNotificationPolicy
@@ -189,6 +189,11 @@ func (o TierWillDowngradeNotificationPolicy) ToMap() (map[string]interface{}, er
 		toSerialize["batchSize"] = o.BatchSize
 	}
 	toSerialize["triggers"] = o.Triggers
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -217,15 +222,23 @@ func (o *TierWillDowngradeNotificationPolicy) UnmarshalJSON(data []byte) (err er
 
 	varTierWillDowngradeNotificationPolicy := _TierWillDowngradeNotificationPolicy{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varTierWillDowngradeNotificationPolicy)
+	err = json.Unmarshal(data, &varTierWillDowngradeNotificationPolicy)
 
 	if err != nil {
 		return err
 	}
 
 	*o = TierWillDowngradeNotificationPolicy(varTierWillDowngradeNotificationPolicy)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "batchingEnabled")
+		delete(additionalProperties, "batchSize")
+		delete(additionalProperties, "triggers")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

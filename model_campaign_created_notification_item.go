@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -30,7 +29,8 @@ type CampaignCreatedNotificationItem struct {
 	// The current details of the [placeholders](https://docs.talon.one/docs/product/campaigns/templates/create-templates#use-placeholders) in the campaign.
 	Placeholders []PlaceholderDetails `json:"placeholders,omitempty"`
 	// The campaign position within the evaluation tree.
-	EvaluationPosition CampaignEvaluationPosition `json:"evaluationPosition"`
+	EvaluationPosition   CampaignEvaluationPosition `json:"evaluationPosition"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CampaignCreatedNotificationItem CampaignCreatedNotificationItem
@@ -210,6 +210,11 @@ func (o CampaignCreatedNotificationItem) ToMap() (map[string]interface{}, error)
 		toSerialize["placeholders"] = o.Placeholders
 	}
 	toSerialize["evaluationPosition"] = o.EvaluationPosition
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -239,15 +244,24 @@ func (o *CampaignCreatedNotificationItem) UnmarshalJSON(data []byte) (err error)
 
 	varCampaignCreatedNotificationItem := _CampaignCreatedNotificationItem{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCampaignCreatedNotificationItem)
+	err = json.Unmarshal(data, &varCampaignCreatedNotificationItem)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CampaignCreatedNotificationItem(varCampaignCreatedNotificationItem)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "Event")
+		delete(additionalProperties, "campaign")
+		delete(additionalProperties, "ruleset")
+		delete(additionalProperties, "placeholders")
+		delete(additionalProperties, "evaluationPosition")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

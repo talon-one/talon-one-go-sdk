@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -67,7 +66,8 @@ type ExtendedCoupon struct {
 	// An indication of whether the coupon is implicitly reserved for all customers.
 	ImplicitlyReserved *bool `json:"implicitlyReserved,omitempty"`
 	// The ID of the application.
-	ApplicationId int64 `json:"ApplicationId"`
+	ApplicationId        int64 `json:"ApplicationId"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ExtendedCoupon ExtendedCoupon
@@ -867,6 +867,11 @@ func (o ExtendedCoupon) ToMap() (map[string]interface{}, error) {
 		toSerialize["implicitlyReserved"] = o.ImplicitlyReserved
 	}
 	toSerialize["ApplicationId"] = o.ApplicationId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -898,15 +903,42 @@ func (o *ExtendedCoupon) UnmarshalJSON(data []byte) (err error) {
 
 	varExtendedCoupon := _ExtendedCoupon{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varExtendedCoupon)
+	err = json.Unmarshal(data, &varExtendedCoupon)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ExtendedCoupon(varExtendedCoupon)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "campaignId")
+		delete(additionalProperties, "value")
+		delete(additionalProperties, "usageLimit")
+		delete(additionalProperties, "discountLimit")
+		delete(additionalProperties, "reservationLimit")
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "limits")
+		delete(additionalProperties, "usageCounter")
+		delete(additionalProperties, "discountCounter")
+		delete(additionalProperties, "discountRemainder")
+		delete(additionalProperties, "reservationCounter")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "referralId")
+		delete(additionalProperties, "recipientIntegrationId")
+		delete(additionalProperties, "importId")
+		delete(additionalProperties, "reservation")
+		delete(additionalProperties, "batchId")
+		delete(additionalProperties, "isReservationMandatory")
+		delete(additionalProperties, "implicitlyReserved")
+		delete(additionalProperties, "ApplicationId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

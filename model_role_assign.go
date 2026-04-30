@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type RoleAssign struct {
 	// An array of user IDs.
 	Users []int64 `json:"users"`
 	// An array of role IDs.
-	Roles []int64 `json:"roles"`
+	Roles                []int64 `json:"roles"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _RoleAssign RoleAssign
@@ -108,6 +108,11 @@ func (o RoleAssign) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["users"] = o.Users
 	toSerialize["roles"] = o.Roles
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *RoleAssign) UnmarshalJSON(data []byte) (err error) {
 
 	varRoleAssign := _RoleAssign{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varRoleAssign)
+	err = json.Unmarshal(data, &varRoleAssign)
 
 	if err != nil {
 		return err
 	}
 
 	*o = RoleAssign(varRoleAssign)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "users")
+		delete(additionalProperties, "roles")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

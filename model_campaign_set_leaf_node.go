@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type CampaignSetLeafNode struct {
 	// Indicates the node type.
 	Type string `json:"type"`
 	// ID of the campaign
-	CampaignId int64 `json:"campaignId"`
+	CampaignId           int64 `json:"campaignId"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CampaignSetLeafNode CampaignSetLeafNode
@@ -108,6 +108,11 @@ func (o CampaignSetLeafNode) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["type"] = o.Type
 	toSerialize["campaignId"] = o.CampaignId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *CampaignSetLeafNode) UnmarshalJSON(data []byte) (err error) {
 
 	varCampaignSetLeafNode := _CampaignSetLeafNode{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCampaignSetLeafNode)
+	err = json.Unmarshal(data, &varCampaignSetLeafNode)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CampaignSetLeafNode(varCampaignSetLeafNode)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "campaignId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

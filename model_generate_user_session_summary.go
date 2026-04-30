@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type GenerateUserSessionSummary struct {
 	// The ID of the session.
 	SessionID string `json:"sessionID"`
 	// The ID of the Application. It is displayed in your Talon.One deployment URL.
-	ApplicationID float32 `json:"applicationID"`
+	ApplicationID        float32 `json:"applicationID"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GenerateUserSessionSummary GenerateUserSessionSummary
@@ -108,6 +108,11 @@ func (o GenerateUserSessionSummary) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["sessionID"] = o.SessionID
 	toSerialize["applicationID"] = o.ApplicationID
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *GenerateUserSessionSummary) UnmarshalJSON(data []byte) (err error) {
 
 	varGenerateUserSessionSummary := _GenerateUserSessionSummary{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGenerateUserSessionSummary)
+	err = json.Unmarshal(data, &varGenerateUserSessionSummary)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GenerateUserSessionSummary(varGenerateUserSessionSummary)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "sessionID")
+		delete(additionalProperties, "applicationID")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

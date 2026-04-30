@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type CardExpiringPointsNotificationTrigger struct {
 	// The amount of period.
 	Amount int64 `json:"amount"`
 	// Notification period indicated by a letter; \"w\" means week, \"d\" means day.
-	Period string `json:"period"`
+	Period               string `json:"period"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CardExpiringPointsNotificationTrigger CardExpiringPointsNotificationTrigger
@@ -108,6 +108,11 @@ func (o CardExpiringPointsNotificationTrigger) ToMap() (map[string]interface{}, 
 	toSerialize := map[string]interface{}{}
 	toSerialize["amount"] = o.Amount
 	toSerialize["period"] = o.Period
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *CardExpiringPointsNotificationTrigger) UnmarshalJSON(data []byte) (err 
 
 	varCardExpiringPointsNotificationTrigger := _CardExpiringPointsNotificationTrigger{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCardExpiringPointsNotificationTrigger)
+	err = json.Unmarshal(data, &varCardExpiringPointsNotificationTrigger)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CardExpiringPointsNotificationTrigger(varCardExpiringPointsNotificationTrigger)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "amount")
+		delete(additionalProperties, "period")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

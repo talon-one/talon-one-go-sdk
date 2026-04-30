@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -37,7 +36,8 @@ type StrikethroughLabelingNotification struct {
 	// The type of notification.
 	NotificationType string `json:"NotificationType"`
 	// Timestamp at which the notification was sent.
-	SentAt time.Time `json:"sentAt"`
+	SentAt               time.Time `json:"sentAt"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _StrikethroughLabelingNotification StrikethroughLabelingNotification
@@ -321,6 +321,11 @@ func (o StrikethroughLabelingNotification) ToMap() (map[string]interface{}, erro
 	toSerialize["changedItems"] = o.ChangedItems
 	toSerialize["NotificationType"] = o.NotificationType
 	toSerialize["sentAt"] = o.SentAt
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -354,15 +359,28 @@ func (o *StrikethroughLabelingNotification) UnmarshalJSON(data []byte) (err erro
 
 	varStrikethroughLabelingNotification := _StrikethroughLabelingNotification{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varStrikethroughLabelingNotification)
+	err = json.Unmarshal(data, &varStrikethroughLabelingNotification)
 
 	if err != nil {
 		return err
 	}
 
 	*o = StrikethroughLabelingNotification(varStrikethroughLabelingNotification)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "version")
+		delete(additionalProperties, "validFrom")
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "currentBatch")
+		delete(additionalProperties, "totalBatches")
+		delete(additionalProperties, "trigger")
+		delete(additionalProperties, "changedItems")
+		delete(additionalProperties, "NotificationType")
+		delete(additionalProperties, "sentAt")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

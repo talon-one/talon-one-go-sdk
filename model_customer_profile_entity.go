@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -25,7 +24,8 @@ type CustomerProfileEntity struct {
 	// The internal ID of the customer profile.
 	Id int64 `json:"id"`
 	// The time the customer profile was created.
-	Created time.Time `json:"created"`
+	Created              time.Time `json:"created"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CustomerProfileEntity CustomerProfileEntity
@@ -109,6 +109,11 @@ func (o CustomerProfileEntity) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["id"] = o.Id
 	toSerialize["created"] = o.Created
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -137,15 +142,21 @@ func (o *CustomerProfileEntity) UnmarshalJSON(data []byte) (err error) {
 
 	varCustomerProfileEntity := _CustomerProfileEntity{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCustomerProfileEntity)
+	err = json.Unmarshal(data, &varCustomerProfileEntity)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CustomerProfileEntity(varCustomerProfileEntity)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

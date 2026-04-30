@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &GetLoyaltyCardTransactions200Response{}
 
 // GetLoyaltyCardTransactions200Response struct for GetLoyaltyCardTransactions200Response
 type GetLoyaltyCardTransactions200Response struct {
-	HasMore bool                                          `json:"hasMore"`
-	Data    []CardLedgerTransactionLogEntryIntegrationAPI `json:"data"`
+	HasMore              bool                                          `json:"hasMore"`
+	Data                 []CardLedgerTransactionLogEntryIntegrationAPI `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GetLoyaltyCardTransactions200Response GetLoyaltyCardTransactions200Response
@@ -106,6 +106,11 @@ func (o GetLoyaltyCardTransactions200Response) ToMap() (map[string]interface{}, 
 	toSerialize := map[string]interface{}{}
 	toSerialize["hasMore"] = o.HasMore
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -134,15 +139,21 @@ func (o *GetLoyaltyCardTransactions200Response) UnmarshalJSON(data []byte) (err 
 
 	varGetLoyaltyCardTransactions200Response := _GetLoyaltyCardTransactions200Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGetLoyaltyCardTransactions200Response)
+	err = json.Unmarshal(data, &varGetLoyaltyCardTransactions200Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GetLoyaltyCardTransactions200Response(varGetLoyaltyCardTransactions200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "hasMore")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

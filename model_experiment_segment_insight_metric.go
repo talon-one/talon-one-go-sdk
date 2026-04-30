@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type ExperimentSegmentInsightMetric struct {
 	// The metric being measured.
 	Metric string `json:"metric"`
 	// Segments with statistically significant results for this metric. An empty array means no significant segments were found. Segments are sorted by confidence score from highest to lowest.
-	Segments []ExperimentSegmentInsight `json:"segments"`
+	Segments             []ExperimentSegmentInsight `json:"segments"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ExperimentSegmentInsightMetric ExperimentSegmentInsightMetric
@@ -108,6 +108,11 @@ func (o ExperimentSegmentInsightMetric) ToMap() (map[string]interface{}, error) 
 	toSerialize := map[string]interface{}{}
 	toSerialize["metric"] = o.Metric
 	toSerialize["segments"] = o.Segments
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *ExperimentSegmentInsightMetric) UnmarshalJSON(data []byte) (err error) 
 
 	varExperimentSegmentInsightMetric := _ExperimentSegmentInsightMetric{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varExperimentSegmentInsightMetric)
+	err = json.Unmarshal(data, &varExperimentSegmentInsightMetric)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ExperimentSegmentInsightMetric(varExperimentSegmentInsightMetric)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "metric")
+		delete(additionalProperties, "segments")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

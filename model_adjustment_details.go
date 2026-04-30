@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type AdjustmentDetails struct {
 	// The selected price type for the SKU targeted by this effect.
 	SelectedPriceType string `json:"selectedPriceType"`
 	// The value of the applied price adjustment.
-	Value float32 `json:"value"`
+	Value                float32 `json:"value"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AdjustmentDetails AdjustmentDetails
@@ -136,6 +136,11 @@ func (o AdjustmentDetails) ToMap() (map[string]interface{}, error) {
 	toSerialize["referenceId"] = o.ReferenceId
 	toSerialize["selectedPriceType"] = o.SelectedPriceType
 	toSerialize["value"] = o.Value
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -165,15 +170,22 @@ func (o *AdjustmentDetails) UnmarshalJSON(data []byte) (err error) {
 
 	varAdjustmentDetails := _AdjustmentDetails{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAdjustmentDetails)
+	err = json.Unmarshal(data, &varAdjustmentDetails)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AdjustmentDetails(varAdjustmentDetails)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "referenceId")
+		delete(additionalProperties, "selectedPriceType")
+		delete(additionalProperties, "value")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

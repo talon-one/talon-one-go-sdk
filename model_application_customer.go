@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -46,6 +45,7 @@ type ApplicationCustomer struct {
 	Sandbox *bool `json:"sandbox,omitempty"`
 	// The Integration ID of the Customer Profile that referred this Customer in the Application.
 	AdvocateIntegrationId *string `json:"advocateIntegrationId,omitempty"`
+	AdditionalProperties  map[string]interface{}
 }
 
 type _ApplicationCustomer ApplicationCustomer
@@ -434,6 +434,11 @@ func (o ApplicationCustomer) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.AdvocateIntegrationId) {
 		toSerialize["advocateIntegrationId"] = o.AdvocateIntegrationId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -467,15 +472,31 @@ func (o *ApplicationCustomer) UnmarshalJSON(data []byte) (err error) {
 
 	varApplicationCustomer := _ApplicationCustomer{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varApplicationCustomer)
+	err = json.Unmarshal(data, &varApplicationCustomer)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ApplicationCustomer(varApplicationCustomer)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "integrationId")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "closedSessions")
+		delete(additionalProperties, "totalSales")
+		delete(additionalProperties, "loyaltyMemberships")
+		delete(additionalProperties, "audienceMemberships")
+		delete(additionalProperties, "lastActivity")
+		delete(additionalProperties, "sandbox")
+		delete(additionalProperties, "advocateIntegrationId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

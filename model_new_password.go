@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,8 +21,9 @@ var _ MappedNullable = &NewPassword{}
 // NewPassword struct for NewPassword
 type NewPassword struct {
 	// The new password for your account.
-	Password   string `json:"password"`
-	ResetToken string `json:"resetToken"`
+	Password             string `json:"password"`
+	ResetToken           string `json:"resetToken"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewPassword NewPassword
@@ -107,6 +107,11 @@ func (o NewPassword) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["password"] = o.Password
 	toSerialize["resetToken"] = o.ResetToken
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -135,15 +140,21 @@ func (o *NewPassword) UnmarshalJSON(data []byte) (err error) {
 
 	varNewPassword := _NewPassword{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewPassword)
+	err = json.Unmarshal(data, &varNewPassword)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewPassword(varNewPassword)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "password")
+		delete(additionalProperties, "resetToken")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

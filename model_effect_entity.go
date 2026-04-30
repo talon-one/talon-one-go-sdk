@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -53,6 +52,7 @@ type EffectEntity struct {
 	SelectedPrice *float32 `json:"selectedPrice,omitempty"`
 	// The reference identifier of the selected price adjustment for this SKU. This is only returned if the `selectedPrice` resulted from a price adjustment.
 	AdjustmentReferenceId *string `json:"adjustmentReferenceId,omitempty"`
+	AdditionalProperties  map[string]interface{}
 }
 
 type _EffectEntity EffectEntity
@@ -599,6 +599,11 @@ func (o EffectEntity) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.AdjustmentReferenceId) {
 		toSerialize["adjustmentReferenceId"] = o.AdjustmentReferenceId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -630,15 +635,35 @@ func (o *EffectEntity) UnmarshalJSON(data []byte) (err error) {
 
 	varEffectEntity := _EffectEntity{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varEffectEntity)
+	err = json.Unmarshal(data, &varEffectEntity)
 
 	if err != nil {
 		return err
 	}
 
 	*o = EffectEntity(varEffectEntity)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "experimentId")
+		delete(additionalProperties, "campaignId")
+		delete(additionalProperties, "rulesetId")
+		delete(additionalProperties, "ruleIndex")
+		delete(additionalProperties, "ruleName")
+		delete(additionalProperties, "effectType")
+		delete(additionalProperties, "triggeredByCoupon")
+		delete(additionalProperties, "triggeredForCatalogItem")
+		delete(additionalProperties, "conditionIndex")
+		delete(additionalProperties, "evaluationGroupID")
+		delete(additionalProperties, "evaluationGroupMode")
+		delete(additionalProperties, "campaignRevisionId")
+		delete(additionalProperties, "campaignRevisionVersionId")
+		delete(additionalProperties, "selectedPriceType")
+		delete(additionalProperties, "selectedPrice")
+		delete(additionalProperties, "adjustmentReferenceId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

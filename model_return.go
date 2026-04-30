@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -43,7 +42,8 @@ type Return struct {
 	// The integration ID of the profile this return was requested on.
 	ProfileIntegrationId *string `json:"profileIntegrationId,omitempty"`
 	// ID of the user who requested this return.
-	CreatedBy *int64 `json:"createdBy,omitempty"`
+	CreatedBy            *int64 `json:"createdBy,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Return Return
@@ -388,6 +388,11 @@ func (o Return) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CreatedBy) {
 		toSerialize["createdBy"] = o.CreatedBy
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -422,15 +427,30 @@ func (o *Return) UnmarshalJSON(data []byte) (err error) {
 
 	varReturn := _Return{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varReturn)
+	err = json.Unmarshal(data, &varReturn)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Return(varReturn)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "returnedCartItems")
+		delete(additionalProperties, "eventId")
+		delete(additionalProperties, "sessionId")
+		delete(additionalProperties, "sessionIntegrationId")
+		delete(additionalProperties, "profileId")
+		delete(additionalProperties, "profileIntegrationId")
+		delete(additionalProperties, "createdBy")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

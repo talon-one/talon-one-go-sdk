@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,8 +21,9 @@ var _ MappedNullable = &ScimPatchRequest{}
 // ScimPatchRequest SCIM Patch request
 type ScimPatchRequest struct {
 	// SCIM schema for the given resource.
-	Schemas    []string             `json:"schemas,omitempty"`
-	Operations []ScimPatchOperation `json:"Operations"`
+	Schemas              []string             `json:"schemas,omitempty"`
+	Operations           []ScimPatchOperation `json:"Operations"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ScimPatchRequest ScimPatchRequest
@@ -116,6 +116,11 @@ func (o ScimPatchRequest) ToMap() (map[string]interface{}, error) {
 		toSerialize["schemas"] = o.Schemas
 	}
 	toSerialize["Operations"] = o.Operations
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -143,15 +148,21 @@ func (o *ScimPatchRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varScimPatchRequest := _ScimPatchRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varScimPatchRequest)
+	err = json.Unmarshal(data, &varScimPatchRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ScimPatchRequest(varScimPatchRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "schemas")
+		delete(additionalProperties, "Operations")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

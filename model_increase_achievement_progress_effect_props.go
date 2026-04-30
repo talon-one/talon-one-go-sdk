@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -34,7 +33,8 @@ type IncreaseAchievementProgressEffectProps struct {
 	// The target value to complete the achievement.
 	Target float32 `json:"target"`
 	// Indicates if the customer has completed the achievement in the current session.
-	IsJustCompleted bool `json:"isJustCompleted"`
+	IsJustCompleted      bool `json:"isJustCompleted"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _IncreaseAchievementProgressEffectProps IncreaseAchievementProgressEffectProps
@@ -257,6 +257,11 @@ func (o IncreaseAchievementProgressEffectProps) ToMap() (map[string]interface{},
 	toSerialize["value"] = o.Value
 	toSerialize["target"] = o.Target
 	toSerialize["isJustCompleted"] = o.IsJustCompleted
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -289,15 +294,26 @@ func (o *IncreaseAchievementProgressEffectProps) UnmarshalJSON(data []byte) (err
 
 	varIncreaseAchievementProgressEffectProps := _IncreaseAchievementProgressEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varIncreaseAchievementProgressEffectProps)
+	err = json.Unmarshal(data, &varIncreaseAchievementProgressEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = IncreaseAchievementProgressEffectProps(varIncreaseAchievementProgressEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "achievementId")
+		delete(additionalProperties, "achievementName")
+		delete(additionalProperties, "progressTrackerId")
+		delete(additionalProperties, "delta")
+		delete(additionalProperties, "value")
+		delete(additionalProperties, "target")
+		delete(additionalProperties, "isJustCompleted")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

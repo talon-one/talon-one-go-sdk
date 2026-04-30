@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -28,7 +27,8 @@ type NewRole struct {
 	// The `Access Control List` json defining the role of the user. This represents the access control on the user level.
 	Acl string `json:"acl"`
 	// An array of user identifiers.
-	Members []int64 `json:"members"`
+	Members              []int64 `json:"members"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewRole NewRole
@@ -173,6 +173,11 @@ func (o NewRole) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["acl"] = o.Acl
 	toSerialize["members"] = o.Members
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -202,15 +207,23 @@ func (o *NewRole) UnmarshalJSON(data []byte) (err error) {
 
 	varNewRole := _NewRole{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewRole)
+	err = json.Unmarshal(data, &varNewRole)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewRole(varNewRole)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "acl")
+		delete(additionalProperties, "members")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

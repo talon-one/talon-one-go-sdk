@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -29,7 +28,8 @@ type CampaignSet struct {
 	Version int64                 `json:"version"`
 	Set     CampaignSetBranchNode `json:"set"`
 	// Name of the user who last updated this campaign set, if available.
-	UpdatedBy *string `json:"updatedBy,omitempty"`
+	UpdatedBy            *string `json:"updatedBy,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CampaignSet CampaignSet
@@ -200,6 +200,11 @@ func (o CampaignSet) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.UpdatedBy) {
 		toSerialize["updatedBy"] = o.UpdatedBy
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -230,15 +235,24 @@ func (o *CampaignSet) UnmarshalJSON(data []byte) (err error) {
 
 	varCampaignSet := _CampaignSet{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCampaignSet)
+	err = json.Unmarshal(data, &varCampaignSet)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CampaignSet(varCampaignSet)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "version")
+		delete(additionalProperties, "set")
+		delete(additionalProperties, "updatedBy")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

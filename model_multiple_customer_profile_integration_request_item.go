@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type MultipleCustomerProfileIntegrationRequestItem struct {
 	// Arbitrary properties associated with this item.
 	Attributes map[string]interface{} `json:"attributes,omitempty"`
 	// The identifier of this profile, set by your integration layer. It must be unique within the account.  To get the `integrationId` of the profile from a `sessionId`, use the [Update customer session](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2).
-	IntegrationId string `json:"integrationId"`
+	IntegrationId        string `json:"integrationId"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _MultipleCustomerProfileIntegrationRequestItem MultipleCustomerProfileIntegrationRequestItem
@@ -117,6 +117,11 @@ func (o MultipleCustomerProfileIntegrationRequestItem) ToMap() (map[string]inter
 		toSerialize["attributes"] = o.Attributes
 	}
 	toSerialize["integrationId"] = o.IntegrationId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -144,15 +149,21 @@ func (o *MultipleCustomerProfileIntegrationRequestItem) UnmarshalJSON(data []byt
 
 	varMultipleCustomerProfileIntegrationRequestItem := _MultipleCustomerProfileIntegrationRequestItem{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varMultipleCustomerProfileIntegrationRequestItem)
+	err = json.Unmarshal(data, &varMultipleCustomerProfileIntegrationRequestItem)
 
 	if err != nil {
 		return err
 	}
 
 	*o = MultipleCustomerProfileIntegrationRequestItem(varMultipleCustomerProfileIntegrationRequestItem)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "integrationId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

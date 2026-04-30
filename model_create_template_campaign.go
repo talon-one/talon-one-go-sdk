@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -40,7 +39,8 @@ type CreateTemplateCampaign struct {
 	// The ID of the campaign evaluation group the campaign belongs to.
 	EvaluationGroupId *int64 `json:"evaluationGroupId,omitempty"`
 	// A list of store IDs that are linked to the campaign.  **Note:** Campaigns with linked store IDs will only be evaluated when there is a [customer session update](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2) that references a linked store.
-	LinkedStoreIds []int64 `json:"linkedStoreIds,omitempty"`
+	LinkedStoreIds       []int64 `json:"linkedStoreIds,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CreateTemplateCampaign CreateTemplateCampaign
@@ -404,6 +404,11 @@ func (o CreateTemplateCampaign) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.LinkedStoreIds) {
 		toSerialize["linkedStoreIds"] = o.LinkedStoreIds
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -432,15 +437,29 @@ func (o *CreateTemplateCampaign) UnmarshalJSON(data []byte) (err error) {
 
 	varCreateTemplateCampaign := _CreateTemplateCampaign{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCreateTemplateCampaign)
+	err = json.Unmarshal(data, &varCreateTemplateCampaign)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CreateTemplateCampaign(varCreateTemplateCampaign)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "templateId")
+		delete(additionalProperties, "campaignAttributesOverrides")
+		delete(additionalProperties, "templateParamValues")
+		delete(additionalProperties, "limitOverrides")
+		delete(additionalProperties, "campaignGroups")
+		delete(additionalProperties, "tags")
+		delete(additionalProperties, "evaluationGroupId")
+		delete(additionalProperties, "linkedStoreIds")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

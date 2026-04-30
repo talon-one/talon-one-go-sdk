@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type LoginParams struct {
 	// The email address associated with the user profile.
 	Email string `json:"email"`
 	// The password for your account.
-	Password string `json:"password"`
+	Password             string `json:"password"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _LoginParams LoginParams
@@ -108,6 +108,11 @@ func (o LoginParams) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["email"] = o.Email
 	toSerialize["password"] = o.Password
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *LoginParams) UnmarshalJSON(data []byte) (err error) {
 
 	varLoginParams := _LoginParams{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varLoginParams)
+	err = json.Unmarshal(data, &varLoginParams)
 
 	if err != nil {
 		return err
 	}
 
 	*o = LoginParams(varLoginParams)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "email")
+		delete(additionalProperties, "password")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

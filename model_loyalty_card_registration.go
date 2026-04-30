@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &LoyaltyCardRegistration{}
 // LoyaltyCardRegistration struct for LoyaltyCardRegistration
 type LoyaltyCardRegistration struct {
 	// The integrationId of the customer profile.
-	IntegrationId string `json:"integrationId"`
+	IntegrationId        string `json:"integrationId"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _LoyaltyCardRegistration LoyaltyCardRegistration
@@ -80,6 +80,11 @@ func (o LoyaltyCardRegistration) MarshalJSON() ([]byte, error) {
 func (o LoyaltyCardRegistration) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["integrationId"] = o.IntegrationId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *LoyaltyCardRegistration) UnmarshalJSON(data []byte) (err error) {
 
 	varLoyaltyCardRegistration := _LoyaltyCardRegistration{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varLoyaltyCardRegistration)
+	err = json.Unmarshal(data, &varLoyaltyCardRegistration)
 
 	if err != nil {
 		return err
 	}
 
 	*o = LoyaltyCardRegistration(varLoyaltyCardRegistration)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "integrationId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

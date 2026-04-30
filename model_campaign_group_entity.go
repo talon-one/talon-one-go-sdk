@@ -20,8 +20,11 @@ var _ MappedNullable = &CampaignGroupEntity{}
 // CampaignGroupEntity struct for CampaignGroupEntity
 type CampaignGroupEntity struct {
 	// The IDs of the campaign groups that own this entity.
-	CampaignGroups []int64 `json:"campaignGroups,omitempty"`
+	CampaignGroups       []int64 `json:"campaignGroups,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _CampaignGroupEntity CampaignGroupEntity
 
 // NewCampaignGroupEntity instantiates a new CampaignGroupEntity object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o CampaignGroupEntity) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CampaignGroups) {
 		toSerialize["campaignGroups"] = o.CampaignGroups
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *CampaignGroupEntity) UnmarshalJSON(data []byte) (err error) {
+	varCampaignGroupEntity := _CampaignGroupEntity{}
+
+	err = json.Unmarshal(data, &varCampaignGroupEntity)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CampaignGroupEntity(varCampaignGroupEntity)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "campaignGroups")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableCampaignGroupEntity struct {

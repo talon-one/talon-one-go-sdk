@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -39,7 +38,8 @@ type RoleV2 struct {
 	// A list of user IDs the role is assigned to.
 	Members []int64 `json:"members,omitempty"`
 	// Identifies if the role is read-only. For read-only roles, you can only assign or unassign users. You cannot edit any other properties, such as the name, description, or permissions. The 'isReadonly' property cannot be set for new or existing roles. It is reserved for predefined roles, such as the Talon.One support role.
-	IsReadonly *bool `json:"isReadonly,omitempty"`
+	IsReadonly           *bool `json:"isReadonly,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _RoleV2 RoleV2
@@ -354,6 +354,11 @@ func (o RoleV2) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.IsReadonly) {
 		toSerialize["isReadonly"] = o.IsReadonly
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -384,15 +389,28 @@ func (o *RoleV2) UnmarshalJSON(data []byte) (err error) {
 
 	varRoleV2 := _RoleV2{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varRoleV2)
+	err = json.Unmarshal(data, &varRoleV2)
 
 	if err != nil {
 		return err
 	}
 
 	*o = RoleV2(varRoleV2)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "modified")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "permissions")
+		delete(additionalProperties, "members")
+		delete(additionalProperties, "isReadonly")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

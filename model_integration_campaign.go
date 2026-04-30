@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -26,7 +25,7 @@ type IntegrationCampaign struct {
 	ApplicationId int64 `json:"applicationId"`
 	// Unique ID of Campaign.
 	Id int64 `json:"id"`
-	// A user-facing name for this campaign.
+	// The name of the campaign.
 	Name string `json:"name"`
 	// A detailed description of the campaign.
 	Description *string `json:"description,omitempty"`
@@ -42,6 +41,9 @@ type IntegrationCampaign struct {
 	Tags []string `json:"tags"`
 	// The features enabled in this campaign.
 	Features []string `json:"features"`
+	// A list of rules containing customer-facing details of the rewards defined in the campaign.
+	Rules                []RuleMetadata `json:"rules,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _IntegrationCampaign IntegrationCampaign
@@ -343,6 +345,38 @@ func (o *IntegrationCampaign) SetFeatures(v []string) {
 	o.Features = v
 }
 
+// GetRules returns the Rules field value if set, zero value otherwise.
+func (o *IntegrationCampaign) GetRules() []RuleMetadata {
+	if o == nil || IsNil(o.Rules) {
+		var ret []RuleMetadata
+		return ret
+	}
+	return o.Rules
+}
+
+// GetRulesOk returns a tuple with the Rules field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IntegrationCampaign) GetRulesOk() ([]RuleMetadata, bool) {
+	if o == nil || IsNil(o.Rules) {
+		return nil, false
+	}
+	return o.Rules, true
+}
+
+// HasRules returns a boolean if a field has been set.
+func (o *IntegrationCampaign) HasRules() bool {
+	if o != nil && !IsNil(o.Rules) {
+		return true
+	}
+
+	return false
+}
+
+// SetRules gets a reference to the given []RuleMetadata and assigns it to the Rules field.
+func (o *IntegrationCampaign) SetRules(v []RuleMetadata) {
+	o.Rules = v
+}
+
 func (o IntegrationCampaign) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -371,6 +405,14 @@ func (o IntegrationCampaign) ToMap() (map[string]interface{}, error) {
 	toSerialize["state"] = o.State
 	toSerialize["tags"] = o.Tags
 	toSerialize["features"] = o.Features
+	if !IsNil(o.Rules) {
+		toSerialize["rules"] = o.Rules
+	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -403,15 +445,30 @@ func (o *IntegrationCampaign) UnmarshalJSON(data []byte) (err error) {
 
 	varIntegrationCampaign := _IntegrationCampaign{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varIntegrationCampaign)
+	err = json.Unmarshal(data, &varIntegrationCampaign)
 
 	if err != nil {
 		return err
 	}
 
 	*o = IntegrationCampaign(varIntegrationCampaign)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "startTime")
+		delete(additionalProperties, "endTime")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "state")
+		delete(additionalProperties, "tags")
+		delete(additionalProperties, "features")
+		delete(additionalProperties, "rules")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -21,8 +21,11 @@ type GenerateRuleTitleRule struct {
 	// An array of effectful Talang expressions in arrays that will be evaluated when a rule matches.
 
 	// A Talang expression that will be evaluated in the context of the given event.
-	Condition []interface{} `json:"condition,omitempty"`
+	Condition            []interface{} `json:"condition,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _GenerateRuleTitleRule GenerateRuleTitleRule
 
 // NewGenerateRuleTitleRule instantiates a new GenerateRuleTitleRule object
 // This constructor will assign default values to properties that have it defined,
@@ -122,7 +125,34 @@ func (o GenerateRuleTitleRule) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Condition) {
 		toSerialize["condition"] = o.Condition
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *GenerateRuleTitleRule) UnmarshalJSON(data []byte) (err error) {
+	varGenerateRuleTitleRule := _GenerateRuleTitleRule{}
+
+	err = json.Unmarshal(data, &varGenerateRuleTitleRule)
+
+	if err != nil {
+		return err
+	}
+
+	*o = GenerateRuleTitleRule(varGenerateRuleTitleRule)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "effects")
+		delete(additionalProperties, "condition")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableGenerateRuleTitleRule struct {

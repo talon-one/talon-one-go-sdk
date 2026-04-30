@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,10 +20,11 @@ var _ MappedNullable = &SummaryCampaignStoreBudget{}
 
 // SummaryCampaignStoreBudget struct for SummaryCampaignStoreBudget
 type SummaryCampaignStoreBudget struct {
-	Action     string  `json:"action"`
-	Period     *string `json:"period,omitempty"`
-	StoreCount int64   `json:"storeCount"`
-	Imported   bool    `json:"imported"`
+	Action               string  `json:"action"`
+	Period               *string `json:"period,omitempty"`
+	StoreCount           int64   `json:"storeCount"`
+	Imported             bool    `json:"imported"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _SummaryCampaignStoreBudget SummaryCampaignStoreBudget
@@ -169,6 +169,11 @@ func (o SummaryCampaignStoreBudget) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["storeCount"] = o.StoreCount
 	toSerialize["imported"] = o.Imported
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -198,15 +203,23 @@ func (o *SummaryCampaignStoreBudget) UnmarshalJSON(data []byte) (err error) {
 
 	varSummaryCampaignStoreBudget := _SummaryCampaignStoreBudget{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varSummaryCampaignStoreBudget)
+	err = json.Unmarshal(data, &varSummaryCampaignStoreBudget)
 
 	if err != nil {
 		return err
 	}
 
 	*o = SummaryCampaignStoreBudget(varSummaryCampaignStoreBudget)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "action")
+		delete(additionalProperties, "period")
+		delete(additionalProperties, "storeCount")
+		delete(additionalProperties, "imported")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

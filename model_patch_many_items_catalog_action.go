@@ -24,8 +24,11 @@ type PatchManyItemsCatalogAction struct {
 	// The list of filters used to select the items to patch, joined by `AND`.  **Note:** Every item in the catalog will be modified if there are no filters.
 	Filters []CatalogActionFilter `json:"filters,omitempty"`
 	// The attributes of the items to patch.
-	Attributes map[string]interface{} `json:"attributes,omitempty"`
+	Attributes           map[string]interface{} `json:"attributes,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _PatchManyItemsCatalogAction PatchManyItemsCatalogAction
 
 // NewPatchManyItemsCatalogAction instantiates a new PatchManyItemsCatalogAction object
 // This constructor will assign default values to properties that have it defined,
@@ -159,7 +162,35 @@ func (o PatchManyItemsCatalogAction) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Attributes) {
 		toSerialize["attributes"] = o.Attributes
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *PatchManyItemsCatalogAction) UnmarshalJSON(data []byte) (err error) {
+	varPatchManyItemsCatalogAction := _PatchManyItemsCatalogAction{}
+
+	err = json.Unmarshal(data, &varPatchManyItemsCatalogAction)
+
+	if err != nil {
+		return err
+	}
+
+	*o = PatchManyItemsCatalogAction(varPatchManyItemsCatalogAction)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "price")
+		delete(additionalProperties, "filters")
+		delete(additionalProperties, "attributes")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullablePatchManyItemsCatalogAction struct {

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &UserEntity{}
 // UserEntity struct for UserEntity
 type UserEntity struct {
 	// The ID of the user associated with this entity.
-	UserId int64 `json:"userId"`
+	UserId               int64 `json:"userId"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _UserEntity UserEntity
@@ -80,6 +80,11 @@ func (o UserEntity) MarshalJSON() ([]byte, error) {
 func (o UserEntity) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["userId"] = o.UserId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *UserEntity) UnmarshalJSON(data []byte) (err error) {
 
 	varUserEntity := _UserEntity{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varUserEntity)
+	err = json.Unmarshal(data, &varUserEntity)
 
 	if err != nil {
 		return err
 	}
 
 	*o = UserEntity(varUserEntity)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "userId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

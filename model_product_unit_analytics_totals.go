@@ -20,8 +20,11 @@ var _ MappedNullable = &ProductUnitAnalyticsTotals{}
 // ProductUnitAnalyticsTotals struct for ProductUnitAnalyticsTotals
 type ProductUnitAnalyticsTotals struct {
 	// The number of times the product or SKU was purchased.
-	UnitsSold *AnalyticsDataPointWithTrend `json:"unitsSold,omitempty"`
+	UnitsSold            *AnalyticsDataPointWithTrend `json:"unitsSold,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ProductUnitAnalyticsTotals ProductUnitAnalyticsTotals
 
 // NewProductUnitAnalyticsTotals instantiates a new ProductUnitAnalyticsTotals object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o ProductUnitAnalyticsTotals) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.UnitsSold) {
 		toSerialize["unitsSold"] = o.UnitsSold
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ProductUnitAnalyticsTotals) UnmarshalJSON(data []byte) (err error) {
+	varProductUnitAnalyticsTotals := _ProductUnitAnalyticsTotals{}
+
+	err = json.Unmarshal(data, &varProductUnitAnalyticsTotals)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ProductUnitAnalyticsTotals(varProductUnitAnalyticsTotals)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "unitsSold")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableProductUnitAnalyticsTotals struct {

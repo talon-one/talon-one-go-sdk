@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &ApplicationEntity{}
 // ApplicationEntity struct for ApplicationEntity
 type ApplicationEntity struct {
 	// The ID of the Application that owns this entity.
-	ApplicationId int64 `json:"applicationId"`
+	ApplicationId        int64 `json:"applicationId"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ApplicationEntity ApplicationEntity
@@ -80,6 +80,11 @@ func (o ApplicationEntity) MarshalJSON() ([]byte, error) {
 func (o ApplicationEntity) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["applicationId"] = o.ApplicationId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *ApplicationEntity) UnmarshalJSON(data []byte) (err error) {
 
 	varApplicationEntity := _ApplicationEntity{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varApplicationEntity)
+	err = json.Unmarshal(data, &varApplicationEntity)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ApplicationEntity(varApplicationEntity)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "applicationId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

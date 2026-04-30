@@ -19,8 +19,11 @@ var _ MappedNullable = &MultipleCustomerProfileIntegrationResponseV2{}
 
 // MultipleCustomerProfileIntegrationResponseV2 struct for MultipleCustomerProfileIntegrationResponseV2
 type MultipleCustomerProfileIntegrationResponseV2 struct {
-	IntegrationStates []CustomerProfileUpdateV2Response `json:"integrationStates,omitempty"`
+	IntegrationStates    []CustomerProfileUpdateV2Response `json:"integrationStates,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _MultipleCustomerProfileIntegrationResponseV2 MultipleCustomerProfileIntegrationResponseV2
 
 // NewMultipleCustomerProfileIntegrationResponseV2 instantiates a new MultipleCustomerProfileIntegrationResponseV2 object
 // This constructor will assign default values to properties that have it defined,
@@ -84,7 +87,33 @@ func (o MultipleCustomerProfileIntegrationResponseV2) ToMap() (map[string]interf
 	if !IsNil(o.IntegrationStates) {
 		toSerialize["integrationStates"] = o.IntegrationStates
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *MultipleCustomerProfileIntegrationResponseV2) UnmarshalJSON(data []byte) (err error) {
+	varMultipleCustomerProfileIntegrationResponseV2 := _MultipleCustomerProfileIntegrationResponseV2{}
+
+	err = json.Unmarshal(data, &varMultipleCustomerProfileIntegrationResponseV2)
+
+	if err != nil {
+		return err
+	}
+
+	*o = MultipleCustomerProfileIntegrationResponseV2(varMultipleCustomerProfileIntegrationResponseV2)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "integrationStates")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableMultipleCustomerProfileIntegrationResponseV2 struct {

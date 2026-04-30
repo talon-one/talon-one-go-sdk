@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -33,7 +32,8 @@ type ApplicationReferee struct {
 	// Advocate's referral code.
 	Code string `json:"code"`
 	// Timestamp of the moment the customer redeemed the referral.
-	Created time.Time `json:"created"`
+	Created              time.Time `json:"created"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ApplicationReferee ApplicationReferee
@@ -221,6 +221,11 @@ func (o ApplicationReferee) ToMap() (map[string]interface{}, error) {
 	toSerialize["friendIntegrationId"] = o.FriendIntegrationId
 	toSerialize["code"] = o.Code
 	toSerialize["created"] = o.Created
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -253,15 +258,25 @@ func (o *ApplicationReferee) UnmarshalJSON(data []byte) (err error) {
 
 	varApplicationReferee := _ApplicationReferee{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varApplicationReferee)
+	err = json.Unmarshal(data, &varApplicationReferee)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ApplicationReferee(varApplicationReferee)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "sessionId")
+		delete(additionalProperties, "advocateIntegrationId")
+		delete(additionalProperties, "friendIntegrationId")
+		delete(additionalProperties, "code")
+		delete(additionalProperties, "created")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

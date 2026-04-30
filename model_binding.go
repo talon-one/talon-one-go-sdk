@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -36,7 +35,8 @@ type Binding struct {
 	// Id of the attribute attached to the placeholder.
 	AttributeId *int64 `json:"attributeId,omitempty"`
 	// Describes the placeholder field and value in the template. This description can be used when creating campaigns from this template.
-	Description *string `json:"description,omitempty"`
+	Description          *string `json:"description,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Binding Binding
@@ -330,6 +330,11 @@ func (o Binding) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Description) {
 		toSerialize["description"] = o.Description
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -358,15 +363,27 @@ func (o *Binding) UnmarshalJSON(data []byte) (err error) {
 
 	varBinding := _Binding{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varBinding)
+	err = json.Unmarshal(data, &varBinding)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Binding(varBinding)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "expression")
+		delete(additionalProperties, "valueType")
+		delete(additionalProperties, "minValue")
+		delete(additionalProperties, "maxValue")
+		delete(additionalProperties, "attributeId")
+		delete(additionalProperties, "description")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

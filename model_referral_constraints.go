@@ -25,8 +25,11 @@ type ReferralConstraints struct {
 	// Expiration date of the referral code. Referral never expires if this is omitted.
 	ExpiryDate *time.Time `json:"expiryDate,omitempty"`
 	// The number of times a referral code can be used. `0` means no limit but any campaign usage limits will still apply.
-	UsageLimit *int64 `json:"usageLimit,omitempty"`
+	UsageLimit           *int64 `json:"usageLimit,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ReferralConstraints ReferralConstraints
 
 // NewReferralConstraints instantiates a new ReferralConstraints object
 // This constructor will assign default values to properties that have it defined,
@@ -160,7 +163,35 @@ func (o ReferralConstraints) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.UsageLimit) {
 		toSerialize["usageLimit"] = o.UsageLimit
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ReferralConstraints) UnmarshalJSON(data []byte) (err error) {
+	varReferralConstraints := _ReferralConstraints{}
+
+	err = json.Unmarshal(data, &varReferralConstraints)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ReferralConstraints(varReferralConstraints)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "usageLimit")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableReferralConstraints struct {

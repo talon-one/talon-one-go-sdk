@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -36,7 +35,8 @@ type OutgoingIntegrationTemplate struct {
 	// The relative URL corresponding to each integration template.
 	RelativeUrl string `json:"relativeUrl"`
 	// The list of HTTP headers for this integration template.
-	Headers []string `json:"headers"`
+	Headers              []string `json:"headers"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _OutgoingIntegrationTemplate OutgoingIntegrationTemplate
@@ -276,6 +276,11 @@ func (o OutgoingIntegrationTemplate) ToMap() (map[string]interface{}, error) {
 	toSerialize["method"] = o.Method
 	toSerialize["relativeUrl"] = o.RelativeUrl
 	toSerialize["headers"] = o.Headers
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -310,15 +315,27 @@ func (o *OutgoingIntegrationTemplate) UnmarshalJSON(data []byte) (err error) {
 
 	varOutgoingIntegrationTemplate := _OutgoingIntegrationTemplate{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varOutgoingIntegrationTemplate)
+	err = json.Unmarshal(data, &varOutgoingIntegrationTemplate)
 
 	if err != nil {
 		return err
 	}
 
 	*o = OutgoingIntegrationTemplate(varOutgoingIntegrationTemplate)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "integrationType")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "payload")
+		delete(additionalProperties, "method")
+		delete(additionalProperties, "relativeUrl")
+		delete(additionalProperties, "headers")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

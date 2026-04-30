@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &AsyncCouponDeletionJobResponse{}
 // AsyncCouponDeletionJobResponse struct for AsyncCouponDeletionJobResponse
 type AsyncCouponDeletionJobResponse struct {
 	// Unique ID for this entity. Not to be confused with the Integration ID, which is set by your integration layer and used in most endpoints.
-	Id int64 `json:"id"`
+	Id                   int64 `json:"id"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AsyncCouponDeletionJobResponse AsyncCouponDeletionJobResponse
@@ -80,6 +80,11 @@ func (o AsyncCouponDeletionJobResponse) MarshalJSON() ([]byte, error) {
 func (o AsyncCouponDeletionJobResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["id"] = o.Id
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *AsyncCouponDeletionJobResponse) UnmarshalJSON(data []byte) (err error) 
 
 	varAsyncCouponDeletionJobResponse := _AsyncCouponDeletionJobResponse{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAsyncCouponDeletionJobResponse)
+	err = json.Unmarshal(data, &varAsyncCouponDeletionJobResponse)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AsyncCouponDeletionJobResponse(varAsyncCouponDeletionJobResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

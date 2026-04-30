@@ -39,8 +39,11 @@ type UpdateCoupon struct {
 	// An indication of whether the code can be redeemed only if it has been reserved first.
 	IsReservationMandatory *bool `json:"isReservationMandatory,omitempty"`
 	// An indication of whether the coupon is implicitly reserved for all customers.
-	ImplicitlyReserved *bool `json:"implicitlyReserved,omitempty"`
+	ImplicitlyReserved   *bool `json:"implicitlyReserved,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _UpdateCoupon UpdateCoupon
 
 // NewUpdateCoupon instantiates a new UpdateCoupon object
 // This constructor will assign default values to properties that have it defined,
@@ -423,7 +426,42 @@ func (o UpdateCoupon) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ImplicitlyReserved) {
 		toSerialize["implicitlyReserved"] = o.ImplicitlyReserved
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *UpdateCoupon) UnmarshalJSON(data []byte) (err error) {
+	varUpdateCoupon := _UpdateCoupon{}
+
+	err = json.Unmarshal(data, &varUpdateCoupon)
+
+	if err != nil {
+		return err
+	}
+
+	*o = UpdateCoupon(varUpdateCoupon)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "usageLimit")
+		delete(additionalProperties, "discountLimit")
+		delete(additionalProperties, "reservationLimit")
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "limits")
+		delete(additionalProperties, "recipientIntegrationId")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "isReservationMandatory")
+		delete(additionalProperties, "implicitlyReserved")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableUpdateCoupon struct {

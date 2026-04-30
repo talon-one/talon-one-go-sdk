@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &GetCustomerActivityReportsWithoutTotalCount200Response{}
 
 // GetCustomerActivityReportsWithoutTotalCount200Response struct for GetCustomerActivityReportsWithoutTotalCount200Response
 type GetCustomerActivityReportsWithoutTotalCount200Response struct {
-	HasMore bool                     `json:"hasMore"`
-	Data    []CustomerActivityReport `json:"data"`
+	HasMore              bool                     `json:"hasMore"`
+	Data                 []CustomerActivityReport `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GetCustomerActivityReportsWithoutTotalCount200Response GetCustomerActivityReportsWithoutTotalCount200Response
@@ -106,6 +106,11 @@ func (o GetCustomerActivityReportsWithoutTotalCount200Response) ToMap() (map[str
 	toSerialize := map[string]interface{}{}
 	toSerialize["hasMore"] = o.HasMore
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -134,15 +139,21 @@ func (o *GetCustomerActivityReportsWithoutTotalCount200Response) UnmarshalJSON(d
 
 	varGetCustomerActivityReportsWithoutTotalCount200Response := _GetCustomerActivityReportsWithoutTotalCount200Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGetCustomerActivityReportsWithoutTotalCount200Response)
+	err = json.Unmarshal(data, &varGetCustomerActivityReportsWithoutTotalCount200Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GetCustomerActivityReportsWithoutTotalCount200Response(varGetCustomerActivityReportsWithoutTotalCount200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "hasMore")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

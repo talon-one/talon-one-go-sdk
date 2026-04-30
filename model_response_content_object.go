@@ -20,8 +20,11 @@ var _ MappedNullable = &ResponseContentObject{}
 // ResponseContentObject struct for ResponseContentObject
 type ResponseContentObject struct {
 	// Extends the response with the chosen data entities. Use this property to get as much data back as needed from one request instead of sending extra requests to other endpoints.
-	ResponseContent []string `json:"responseContent,omitempty"`
+	ResponseContent      []string `json:"responseContent,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ResponseContentObject ResponseContentObject
 
 // NewResponseContentObject instantiates a new ResponseContentObject object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o ResponseContentObject) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ResponseContent) {
 		toSerialize["responseContent"] = o.ResponseContent
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ResponseContentObject) UnmarshalJSON(data []byte) (err error) {
+	varResponseContentObject := _ResponseContentObject{}
+
+	err = json.Unmarshal(data, &varResponseContentObject)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ResponseContentObject(varResponseContentObject)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "responseContent")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableResponseContentObject struct {

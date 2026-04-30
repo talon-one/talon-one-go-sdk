@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,8 +25,9 @@ type ScimNewUser struct {
 	// Display name of the user.
 	DisplayName *string `json:"displayName,omitempty"`
 	// Unique identifier of the user. This is usually an email address.
-	UserName string            `json:"userName"`
-	Name     *ScimBaseUserName `json:"name,omitempty"`
+	UserName             string            `json:"userName"`
+	Name                 *ScimBaseUserName `json:"name,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ScimNewUser ScimNewUser
@@ -190,6 +190,11 @@ func (o ScimNewUser) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Name) {
 		toSerialize["name"] = o.Name
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -217,15 +222,23 @@ func (o *ScimNewUser) UnmarshalJSON(data []byte) (err error) {
 
 	varScimNewUser := _ScimNewUser{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varScimNewUser)
+	err = json.Unmarshal(data, &varScimNewUser)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ScimNewUser(varScimNewUser)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "active")
+		delete(additionalProperties, "displayName")
+		delete(additionalProperties, "userName")
+		delete(additionalProperties, "name")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

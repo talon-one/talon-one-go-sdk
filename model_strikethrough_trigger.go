@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -31,7 +30,8 @@ type StrikethroughTrigger struct {
 	// The total number of items affected by the event that triggered the strikethrough labeling.
 	TotalAffectedItems int32 `json:"totalAffectedItems"`
 	// The arbitrary properties associated with this trigger type.
-	Payload map[string]interface{} `json:"payload"`
+	Payload              map[string]interface{} `json:"payload"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _StrikethroughTrigger StrikethroughTrigger
@@ -193,6 +193,11 @@ func (o StrikethroughTrigger) ToMap() (map[string]interface{}, error) {
 	toSerialize["triggeredAt"] = o.TriggeredAt
 	toSerialize["totalAffectedItems"] = o.TotalAffectedItems
 	toSerialize["payload"] = o.Payload
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -224,15 +229,24 @@ func (o *StrikethroughTrigger) UnmarshalJSON(data []byte) (err error) {
 
 	varStrikethroughTrigger := _StrikethroughTrigger{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varStrikethroughTrigger)
+	err = json.Unmarshal(data, &varStrikethroughTrigger)
 
 	if err != nil {
 		return err
 	}
 
 	*o = StrikethroughTrigger(varStrikethroughTrigger)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "triggeredAt")
+		delete(additionalProperties, "totalAffectedItems")
+		delete(additionalProperties, "payload")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -22,8 +22,11 @@ type AudienceAnalytics struct {
 	// The ID of the audience.
 	AudienceId *int64 `json:"audienceId,omitempty"`
 	// The member count of the audience.
-	MembersCount *int64 `json:"membersCount,omitempty"`
+	MembersCount         *int64 `json:"membersCount,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _AudienceAnalytics AudienceAnalytics
 
 // NewAudienceAnalytics instantiates a new AudienceAnalytics object
 // This constructor will assign default values to properties that have it defined,
@@ -122,7 +125,34 @@ func (o AudienceAnalytics) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.MembersCount) {
 		toSerialize["membersCount"] = o.MembersCount
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *AudienceAnalytics) UnmarshalJSON(data []byte) (err error) {
+	varAudienceAnalytics := _AudienceAnalytics{}
+
+	err = json.Unmarshal(data, &varAudienceAnalytics)
+
+	if err != nil {
+		return err
+	}
+
+	*o = AudienceAnalytics(varAudienceAnalytics)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "audienceId")
+		delete(additionalProperties, "membersCount")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableAudienceAnalytics struct {

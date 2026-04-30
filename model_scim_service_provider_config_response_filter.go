@@ -22,8 +22,11 @@ type ScimServiceProviderConfigResponseFilter struct {
 	// The maximum number of resources that can be returned in a single filtered query response.
 	MaxResults *int64 `json:"maxResults,omitempty"`
 	// Indicates whether the SCIM service provider supports filtering operations.
-	Supported *bool `json:"supported,omitempty"`
+	Supported            *bool `json:"supported,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ScimServiceProviderConfigResponseFilter ScimServiceProviderConfigResponseFilter
 
 // NewScimServiceProviderConfigResponseFilter instantiates a new ScimServiceProviderConfigResponseFilter object
 // This constructor will assign default values to properties that have it defined,
@@ -122,7 +125,34 @@ func (o ScimServiceProviderConfigResponseFilter) ToMap() (map[string]interface{}
 	if !IsNil(o.Supported) {
 		toSerialize["supported"] = o.Supported
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ScimServiceProviderConfigResponseFilter) UnmarshalJSON(data []byte) (err error) {
+	varScimServiceProviderConfigResponseFilter := _ScimServiceProviderConfigResponseFilter{}
+
+	err = json.Unmarshal(data, &varScimServiceProviderConfigResponseFilter)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ScimServiceProviderConfigResponseFilter(varScimServiceProviderConfigResponseFilter)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "maxResults")
+		delete(additionalProperties, "supported")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableScimServiceProviderConfigResponseFilter struct {

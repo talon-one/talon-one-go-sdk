@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -32,7 +31,8 @@ type TimePoint struct {
 	// The achievement ends and resets at this minute.
 	Minute int64 `json:"minute"`
 	// The achievement ends and resets at this second.
-	Second int64 `json:"second"`
+	Second               int64 `json:"second"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _TimePoint TimePoint
@@ -247,6 +247,11 @@ func (o TimePoint) ToMap() (map[string]interface{}, error) {
 	toSerialize["hour"] = o.Hour
 	toSerialize["minute"] = o.Minute
 	toSerialize["second"] = o.Second
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -276,15 +281,25 @@ func (o *TimePoint) UnmarshalJSON(data []byte) (err error) {
 
 	varTimePoint := _TimePoint{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varTimePoint)
+	err = json.Unmarshal(data, &varTimePoint)
 
 	if err != nil {
 		return err
 	}
 
 	*o = TimePoint(varTimePoint)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "month")
+		delete(additionalProperties, "dayOfMonth")
+		delete(additionalProperties, "dayOfWeek")
+		delete(additionalProperties, "hour")
+		delete(additionalProperties, "minute")
+		delete(additionalProperties, "second")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

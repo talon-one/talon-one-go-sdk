@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,8 +21,9 @@ var _ MappedNullable = &UpdateAttributeEffectProps{}
 // UpdateAttributeEffectProps The properties specific to the \"updateAttribute\" effect. This gets triggered whenever a validated rule contained an \"update an attribute\" effect.
 type UpdateAttributeEffectProps struct {
 	// The exact path of the attribute that was updated.
-	Path  string      `json:"path"`
-	Value interface{} `json:"value"`
+	Path                 string      `json:"path"`
+	Value                interface{} `json:"value"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _UpdateAttributeEffectProps UpdateAttributeEffectProps
@@ -111,6 +111,11 @@ func (o UpdateAttributeEffectProps) ToMap() (map[string]interface{}, error) {
 	if o.Value != nil {
 		toSerialize["value"] = o.Value
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -139,15 +144,21 @@ func (o *UpdateAttributeEffectProps) UnmarshalJSON(data []byte) (err error) {
 
 	varUpdateAttributeEffectProps := _UpdateAttributeEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varUpdateAttributeEffectProps)
+	err = json.Unmarshal(data, &varUpdateAttributeEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = UpdateAttributeEffectProps(varUpdateAttributeEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "path")
+		delete(additionalProperties, "value")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -20,8 +20,11 @@ var _ MappedNullable = &ScimServiceProviderConfigResponsePatch{}
 // ScimServiceProviderConfigResponsePatch Configuration settings related to patch operations, which allow partial updates to SCIM resources.
 type ScimServiceProviderConfigResponsePatch struct {
 	// Indicates whether the service provider supports patch operations for modifying resources.
-	Supported *bool `json:"supported,omitempty"`
+	Supported            *bool `json:"supported,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ScimServiceProviderConfigResponsePatch ScimServiceProviderConfigResponsePatch
 
 // NewScimServiceProviderConfigResponsePatch instantiates a new ScimServiceProviderConfigResponsePatch object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o ScimServiceProviderConfigResponsePatch) ToMap() (map[string]interface{},
 	if !IsNil(o.Supported) {
 		toSerialize["supported"] = o.Supported
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ScimServiceProviderConfigResponsePatch) UnmarshalJSON(data []byte) (err error) {
+	varScimServiceProviderConfigResponsePatch := _ScimServiceProviderConfigResponsePatch{}
+
+	err = json.Unmarshal(data, &varScimServiceProviderConfigResponsePatch)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ScimServiceProviderConfigResponsePatch(varScimServiceProviderConfigResponsePatch)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "supported")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableScimServiceProviderConfigResponsePatch struct {

@@ -28,8 +28,11 @@ type UpdateBlueprint struct {
 	// Replaces the stored rules. Rules should only contain title (no description, as description is at the blueprint level).
 	Rules []CatalogRule `json:"rules,omitempty"`
 	// Replaces the stored cart item filters. Cart item filters should only contain name (no description, as description is at the blueprint level).
-	CartItemFilters []CartItemFilterTemplate `json:"cartItemFilters,omitempty"`
+	CartItemFilters      []CartItemFilterTemplate `json:"cartItemFilters,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _UpdateBlueprint UpdateBlueprint
 
 // NewUpdateBlueprint instantiates a new UpdateBlueprint object
 // This constructor will assign default values to properties that have it defined,
@@ -233,7 +236,37 @@ func (o UpdateBlueprint) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CartItemFilters) {
 		toSerialize["cartItemFilters"] = o.CartItemFilters
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *UpdateBlueprint) UnmarshalJSON(data []byte) (err error) {
+	varUpdateBlueprint := _UpdateBlueprint{}
+
+	err = json.Unmarshal(data, &varUpdateBlueprint)
+
+	if err != nil {
+		return err
+	}
+
+	*o = UpdateBlueprint(varUpdateBlueprint)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "category")
+		delete(additionalProperties, "rules")
+		delete(additionalProperties, "cartItemFilters")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableUpdateBlueprint struct {

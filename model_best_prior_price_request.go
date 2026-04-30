@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -31,6 +30,7 @@ type BestPriorPriceRequest struct {
 	// Sets the timeframe for retrieving historical pricing data. Can be one of the following values: - `strict`: The timeframe ends at the `timeframeEndDate` value. - `price`: The timeframe ends at the start of current price value and takes the prices prior to the start of the current price value into account. - `sale`:  The timeframe ends at the start of current `contextId` and takes the prices prior to the start of the `contextId` into account.
 	TimeframeEndDateType string           `json:"timeframeEndDateType"`
 	Target               *BestPriorTarget `json:"target,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _BestPriorPriceRequest BestPriorPriceRequest
@@ -201,6 +201,11 @@ func (o BestPriorPriceRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Target) {
 		toSerialize["target"] = o.Target
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -231,15 +236,24 @@ func (o *BestPriorPriceRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varBestPriorPriceRequest := _BestPriorPriceRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varBestPriorPriceRequest)
+	err = json.Unmarshal(data, &varBestPriorPriceRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = BestPriorPriceRequest(varBestPriorPriceRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "skus")
+		delete(additionalProperties, "timeframeEndDate")
+		delete(additionalProperties, "timeframe")
+		delete(additionalProperties, "timeframeEndDateType")
+		delete(additionalProperties, "target")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

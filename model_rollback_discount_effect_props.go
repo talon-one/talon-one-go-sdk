@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -34,7 +33,8 @@ type RollbackDiscountEffectProps struct {
 	// The name of the additional cost that was rolled back.
 	AdditionalCost *string `json:"additionalCost,omitempty"`
 	// The scope of the rolled back discount - For a discount per session, it can be one of `cartItems`, `additionalCosts` or `sessionTotal` - For a discount per item, it can be one of `price`, `additionalCosts` or `itemTotal`
-	Scope *string `json:"scope,omitempty"`
+	Scope                *string `json:"scope,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _RollbackDiscountEffectProps RollbackDiscountEffectProps
@@ -293,6 +293,11 @@ func (o RollbackDiscountEffectProps) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Scope) {
 		toSerialize["scope"] = o.Scope
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -321,15 +326,26 @@ func (o *RollbackDiscountEffectProps) UnmarshalJSON(data []byte) (err error) {
 
 	varRollbackDiscountEffectProps := _RollbackDiscountEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varRollbackDiscountEffectProps)
+	err = json.Unmarshal(data, &varRollbackDiscountEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = RollbackDiscountEffectProps(varRollbackDiscountEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "value")
+		delete(additionalProperties, "cartItemPosition")
+		delete(additionalProperties, "cartItemSubPosition")
+		delete(additionalProperties, "additionalCostId")
+		delete(additionalProperties, "additionalCost")
+		delete(additionalProperties, "scope")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

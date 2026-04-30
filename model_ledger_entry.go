@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -41,7 +40,8 @@ type LedgerEntry struct {
 	// Expiration date of the points.
 	ExpiryDate time.Time `json:"expiryDate"`
 	// The ID of the balancing ledgerEntry.
-	ReferenceId *int64 `json:"referenceId,omitempty"`
+	ReferenceId          *int64 `json:"referenceId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _LedgerEntry LedgerEntry
@@ -351,6 +351,11 @@ func (o LedgerEntry) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ReferenceId) {
 		toSerialize["referenceId"] = o.ReferenceId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -385,15 +390,29 @@ func (o *LedgerEntry) UnmarshalJSON(data []byte) (err error) {
 
 	varLedgerEntry := _LedgerEntry{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varLedgerEntry)
+	err = json.Unmarshal(data, &varLedgerEntry)
 
 	if err != nil {
 		return err
 	}
 
 	*o = LedgerEntry(varLedgerEntry)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "profileId")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "loyaltyProgramId")
+		delete(additionalProperties, "eventId")
+		delete(additionalProperties, "amount")
+		delete(additionalProperties, "reason")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "referenceId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

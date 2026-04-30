@@ -21,8 +21,11 @@ var _ MappedNullable = &LoyaltyBalancesWithTiers{}
 type LoyaltyBalancesWithTiers struct {
 	Balance *LoyaltyBalanceWithTier `json:"balance,omitempty"`
 	// Map of the loyalty balances of the subledgers of a ledger.
-	SubledgerBalances map[string]LoyaltyBalanceWithTier `json:"subledgerBalances,omitempty"`
+	SubledgerBalances    map[string]LoyaltyBalanceWithTier `json:"subledgerBalances,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _LoyaltyBalancesWithTiers LoyaltyBalancesWithTiers
 
 // NewLoyaltyBalancesWithTiers instantiates a new LoyaltyBalancesWithTiers object
 // This constructor will assign default values to properties that have it defined,
@@ -121,7 +124,34 @@ func (o LoyaltyBalancesWithTiers) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.SubledgerBalances) {
 		toSerialize["subledgerBalances"] = o.SubledgerBalances
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *LoyaltyBalancesWithTiers) UnmarshalJSON(data []byte) (err error) {
+	varLoyaltyBalancesWithTiers := _LoyaltyBalancesWithTiers{}
+
+	err = json.Unmarshal(data, &varLoyaltyBalancesWithTiers)
+
+	if err != nil {
+		return err
+	}
+
+	*o = LoyaltyBalancesWithTiers(varLoyaltyBalancesWithTiers)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "balance")
+		delete(additionalProperties, "subledgerBalances")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableLoyaltyBalancesWithTiers struct {

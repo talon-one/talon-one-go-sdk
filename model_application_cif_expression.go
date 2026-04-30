@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -33,7 +32,8 @@ type ApplicationCIFExpression struct {
 	// Arbitrary additional JSON data associated with the Application cart item filter.
 	Expression []interface{} `json:"expression,omitempty"`
 	// The ID of the Application that owns this entity.
-	ApplicationId int64 `json:"applicationId"`
+	ApplicationId        int64 `json:"applicationId"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ApplicationCIFExpression ApplicationCIFExpression
@@ -248,6 +248,11 @@ func (o ApplicationCIFExpression) ToMap() (map[string]interface{}, error) {
 		toSerialize["expression"] = o.Expression
 	}
 	toSerialize["applicationId"] = o.ApplicationId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -277,15 +282,25 @@ func (o *ApplicationCIFExpression) UnmarshalJSON(data []byte) (err error) {
 
 	varApplicationCIFExpression := _ApplicationCIFExpression{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varApplicationCIFExpression)
+	err = json.Unmarshal(data, &varApplicationCIFExpression)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ApplicationCIFExpression(varApplicationCIFExpression)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "cartItemFilterId")
+		delete(additionalProperties, "createdBy")
+		delete(additionalProperties, "expression")
+		delete(additionalProperties, "applicationId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

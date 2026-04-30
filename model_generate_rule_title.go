@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -23,7 +22,8 @@ var _ MappedNullable = &GenerateRuleTitle{}
 type GenerateRuleTitle struct {
 	Rule GenerateRuleTitleRule `json:"rule"`
 	// Currency for the campaign.
-	Currency string `json:"currency"`
+	Currency             string `json:"currency"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GenerateRuleTitle GenerateRuleTitle
@@ -107,6 +107,11 @@ func (o GenerateRuleTitle) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["rule"] = o.Rule
 	toSerialize["currency"] = o.Currency
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -135,15 +140,21 @@ func (o *GenerateRuleTitle) UnmarshalJSON(data []byte) (err error) {
 
 	varGenerateRuleTitle := _GenerateRuleTitle{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGenerateRuleTitle)
+	err = json.Unmarshal(data, &varGenerateRuleTitle)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GenerateRuleTitle(varGenerateRuleTitle)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "rule")
+		delete(additionalProperties, "currency")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

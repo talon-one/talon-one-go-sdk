@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type ReserveCouponEffectProps struct {
 	// The ID of this customer profile in the third-party integration.
 	ProfileIntegrationId string `json:"profileIntegrationId"`
 	// Indicates whether this is a new coupon reservation or not.
-	IsNewReservation bool `json:"isNewReservation"`
+	IsNewReservation     bool `json:"isNewReservation"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ReserveCouponEffectProps ReserveCouponEffectProps
@@ -136,6 +136,11 @@ func (o ReserveCouponEffectProps) ToMap() (map[string]interface{}, error) {
 	toSerialize["couponValue"] = o.CouponValue
 	toSerialize["profileIntegrationId"] = o.ProfileIntegrationId
 	toSerialize["isNewReservation"] = o.IsNewReservation
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -165,15 +170,22 @@ func (o *ReserveCouponEffectProps) UnmarshalJSON(data []byte) (err error) {
 
 	varReserveCouponEffectProps := _ReserveCouponEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varReserveCouponEffectProps)
+	err = json.Unmarshal(data, &varReserveCouponEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ReserveCouponEffectProps(varReserveCouponEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "couponValue")
+		delete(additionalProperties, "profileIntegrationId")
+		delete(additionalProperties, "isNewReservation")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

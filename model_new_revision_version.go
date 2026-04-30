@@ -43,8 +43,11 @@ type NewRevisionVersion struct {
 	// A list of features for the campaign.
 	Features []string `json:"features,omitempty"`
 	// Arbitrary properties associated with coupons in this campaign.
-	CouponAttributes map[string]interface{} `json:"couponAttributes,omitempty"`
+	CouponAttributes     map[string]interface{} `json:"couponAttributes,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _NewRevisionVersion NewRevisionVersion
 
 // NewNewRevisionVersion instantiates a new NewRevisionVersion object
 // This constructor will assign default values to properties that have it defined,
@@ -572,7 +575,45 @@ func (o NewRevisionVersion) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CouponAttributes) {
 		toSerialize["couponAttributes"] = o.CouponAttributes
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *NewRevisionVersion) UnmarshalJSON(data []byte) (err error) {
+	varNewRevisionVersion := _NewRevisionVersion{}
+
+	err = json.Unmarshal(data, &varNewRevisionVersion)
+
+	if err != nil {
+		return err
+	}
+
+	*o = NewRevisionVersion(varNewRevisionVersion)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "startTime")
+		delete(additionalProperties, "endTime")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "activeRulesetId")
+		delete(additionalProperties, "tags")
+		delete(additionalProperties, "couponSettings")
+		delete(additionalProperties, "referralSettings")
+		delete(additionalProperties, "limits")
+		delete(additionalProperties, "reevaluateOnReturn")
+		delete(additionalProperties, "features")
+		delete(additionalProperties, "couponAttributes")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableNewRevisionVersion struct {

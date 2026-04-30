@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -55,7 +54,8 @@ type NewCampaign struct {
 	// Arbitrary properties associated with coupons in this campaign.
 	CouponAttributes map[string]interface{} `json:"couponAttributes,omitempty"`
 	// The ID of the campaign evaluation group the campaign belongs to.
-	EvaluationGroupId *int64 `json:"evaluationGroupId,omitempty"`
+	EvaluationGroupId    *int64 `json:"evaluationGroupId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewCampaign NewCampaign
@@ -678,6 +678,11 @@ func (o NewCampaign) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.EvaluationGroupId) {
 		toSerialize["evaluationGroupId"] = o.EvaluationGroupId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -709,15 +714,37 @@ func (o *NewCampaign) UnmarshalJSON(data []byte) (err error) {
 
 	varNewCampaign := _NewCampaign{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewCampaign)
+	err = json.Unmarshal(data, &varNewCampaign)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewCampaign(varNewCampaign)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "startTime")
+		delete(additionalProperties, "endTime")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "state")
+		delete(additionalProperties, "activeRulesetId")
+		delete(additionalProperties, "tags")
+		delete(additionalProperties, "reevaluateOnReturn")
+		delete(additionalProperties, "features")
+		delete(additionalProperties, "couponSettings")
+		delete(additionalProperties, "referralSettings")
+		delete(additionalProperties, "limits")
+		delete(additionalProperties, "campaignGroups")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "linkedStoreIds")
+		delete(additionalProperties, "couponAttributes")
+		delete(additionalProperties, "evaluationGroupId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -58,7 +57,8 @@ type NewLoyaltyProgram struct {
 	// A string containing an IANA timezone descriptor.
 	Timezone string `json:"timezone"`
 	// Defines the type of loyalty program: - `true`: the program is a card-based. - `false`: the program is profile-based.
-	CardBased bool `json:"cardBased"`
+	CardBased            bool `json:"cardBased"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewLoyaltyProgram NewLoyaltyProgram
@@ -685,6 +685,11 @@ func (o NewLoyaltyProgram) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["timezone"] = o.Timezone
 	toSerialize["cardBased"] = o.CardBased
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -719,15 +724,38 @@ func (o *NewLoyaltyProgram) UnmarshalJSON(data []byte) (err error) {
 
 	varNewLoyaltyProgram := _NewLoyaltyProgram{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewLoyaltyProgram)
+	err = json.Unmarshal(data, &varNewLoyaltyProgram)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewLoyaltyProgram(varNewLoyaltyProgram)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "subscribedApplications")
+		delete(additionalProperties, "defaultValidity")
+		delete(additionalProperties, "defaultPending")
+		delete(additionalProperties, "allowSubledger")
+		delete(additionalProperties, "usersPerCardLimit")
+		delete(additionalProperties, "sandbox")
+		delete(additionalProperties, "programJoinPolicy")
+		delete(additionalProperties, "tiersExpirationPolicy")
+		delete(additionalProperties, "tierCycleStartDate")
+		delete(additionalProperties, "tiersExpireIn")
+		delete(additionalProperties, "tiersDowngradePolicy")
+		delete(additionalProperties, "cardCodeSettings")
+		delete(additionalProperties, "returnPolicy")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "tiers")
+		delete(additionalProperties, "timezone")
+		delete(additionalProperties, "cardBased")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

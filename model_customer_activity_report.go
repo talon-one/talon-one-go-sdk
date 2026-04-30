@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -47,7 +46,8 @@ type CustomerActivityReport struct {
 	// Number of orders without coupon used in all customer campaigns.
 	TotalOrdersNoCoupon int64 `json:"totalOrdersNoCoupon"`
 	// The name of the campaign this customer belongs to.
-	CampaignName string `json:"campaignName"`
+	CampaignName         string `json:"campaignName"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CustomerActivityReport CustomerActivityReport
@@ -426,6 +426,11 @@ func (o CustomerActivityReport) ToMap() (map[string]interface{}, error) {
 	toSerialize["totalOrders"] = o.TotalOrders
 	toSerialize["totalOrdersNoCoupon"] = o.TotalOrdersNoCoupon
 	toSerialize["campaignName"] = o.CampaignName
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -464,15 +469,32 @@ func (o *CustomerActivityReport) UnmarshalJSON(data []byte) (err error) {
 
 	varCustomerActivityReport := _CustomerActivityReport{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCustomerActivityReport)
+	err = json.Unmarshal(data, &varCustomerActivityReport)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CustomerActivityReport(varCustomerActivityReport)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "integrationId")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "customerId")
+		delete(additionalProperties, "lastActivity")
+		delete(additionalProperties, "couponRedemptions")
+		delete(additionalProperties, "couponUseAttempts")
+		delete(additionalProperties, "couponFailedAttempts")
+		delete(additionalProperties, "accruedDiscounts")
+		delete(additionalProperties, "accruedRevenue")
+		delete(additionalProperties, "totalOrders")
+		delete(additionalProperties, "totalOrdersNoCoupon")
+		delete(additionalProperties, "campaignName")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

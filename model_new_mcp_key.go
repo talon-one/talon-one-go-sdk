@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -39,7 +38,8 @@ type NewMCPKey struct {
 	// The last time the MCP key was used.
 	LastUsed *time.Time `json:"lastUsed,omitempty"`
 	// The generated MCP key. Only returned once on creation.
-	Key string `json:"key"`
+	Key                  string `json:"key"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewMCPKey NewMCPKey
@@ -323,6 +323,11 @@ func (o NewMCPKey) ToMap() (map[string]interface{}, error) {
 		toSerialize["lastUsed"] = o.LastUsed
 	}
 	toSerialize["key"] = o.Key
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -356,15 +361,28 @@ func (o *NewMCPKey) UnmarshalJSON(data []byte) (err error) {
 
 	varNewMCPKey := _NewMCPKey{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewMCPKey)
+	err = json.Unmarshal(data, &varNewMCPKey)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewMCPKey(varNewMCPKey)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "createdBy")
+		delete(additionalProperties, "accountID")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "disabled")
+		delete(additionalProperties, "lastUsed")
+		delete(additionalProperties, "key")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

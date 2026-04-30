@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,8 +21,9 @@ var _ MappedNullable = &StrikethroughSetDiscountPerItemMemberEffectProps{}
 // StrikethroughSetDiscountPerItemMemberEffectProps setDiscountPerItem member effect in strikethrough pricing payload.
 type StrikethroughSetDiscountPerItemMemberEffectProps struct {
 	// effect name.
-	Name  string      `json:"name"`
-	Value interface{} `json:"value"`
+	Name                 string      `json:"name"`
+	Value                interface{} `json:"value"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _StrikethroughSetDiscountPerItemMemberEffectProps StrikethroughSetDiscountPerItemMemberEffectProps
@@ -111,6 +111,11 @@ func (o StrikethroughSetDiscountPerItemMemberEffectProps) ToMap() (map[string]in
 	if o.Value != nil {
 		toSerialize["value"] = o.Value
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -139,15 +144,21 @@ func (o *StrikethroughSetDiscountPerItemMemberEffectProps) UnmarshalJSON(data []
 
 	varStrikethroughSetDiscountPerItemMemberEffectProps := _StrikethroughSetDiscountPerItemMemberEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varStrikethroughSetDiscountPerItemMemberEffectProps)
+	err = json.Unmarshal(data, &varStrikethroughSetDiscountPerItemMemberEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = StrikethroughSetDiscountPerItemMemberEffectProps(varStrikethroughSetDiscountPerItemMemberEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "value")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

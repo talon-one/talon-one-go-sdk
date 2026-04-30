@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,8 +20,9 @@ var _ MappedNullable = &LabelTargetAudience{}
 
 // LabelTargetAudience Represents the targeted audience.
 type LabelTargetAudience struct {
-	Type     string            `json:"type"`
-	Audience AudienceReference `json:"audience"`
+	Type                 string            `json:"type"`
+	Audience             AudienceReference `json:"audience"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _LabelTargetAudience LabelTargetAudience
@@ -106,6 +106,11 @@ func (o LabelTargetAudience) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["type"] = o.Type
 	toSerialize["audience"] = o.Audience
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -134,15 +139,21 @@ func (o *LabelTargetAudience) UnmarshalJSON(data []byte) (err error) {
 
 	varLabelTargetAudience := _LabelTargetAudience{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varLabelTargetAudience)
+	err = json.Unmarshal(data, &varLabelTargetAudience)
 
 	if err != nil {
 		return err
 	}
 
 	*o = LabelTargetAudience(varLabelTargetAudience)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "audience")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

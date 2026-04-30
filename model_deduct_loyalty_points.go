@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -28,7 +27,8 @@ type DeductLoyaltyPoints struct {
 	// ID of the subledger the points are deducted from.
 	SubledgerId *string `json:"subledgerId,omitempty"`
 	// ID of the Application that is connected to the loyalty program.
-	ApplicationId *int64 `json:"applicationId,omitempty"`
+	ApplicationId        *int64 `json:"applicationId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _DeductLoyaltyPoints DeductLoyaltyPoints
@@ -191,6 +191,11 @@ func (o DeductLoyaltyPoints) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ApplicationId) {
 		toSerialize["applicationId"] = o.ApplicationId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -218,15 +223,23 @@ func (o *DeductLoyaltyPoints) UnmarshalJSON(data []byte) (err error) {
 
 	varDeductLoyaltyPoints := _DeductLoyaltyPoints{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varDeductLoyaltyPoints)
+	err = json.Unmarshal(data, &varDeductLoyaltyPoints)
 
 	if err != nil {
 		return err
 	}
 
 	*o = DeductLoyaltyPoints(varDeductLoyaltyPoints)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "points")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "subledgerId")
+		delete(additionalProperties, "applicationId")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

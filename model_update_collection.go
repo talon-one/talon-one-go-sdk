@@ -23,7 +23,10 @@ type UpdateCollection struct {
 	Description *string `json:"description,omitempty"`
 	// A list of the IDs of the Applications where this collection is enabled.
 	SubscribedApplicationsIds []int64 `json:"subscribedApplicationsIds,omitempty"`
+	AdditionalProperties      map[string]interface{}
 }
+
+type _UpdateCollection UpdateCollection
 
 // NewUpdateCollection instantiates a new UpdateCollection object
 // This constructor will assign default values to properties that have it defined,
@@ -122,7 +125,34 @@ func (o UpdateCollection) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.SubscribedApplicationsIds) {
 		toSerialize["subscribedApplicationsIds"] = o.SubscribedApplicationsIds
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *UpdateCollection) UnmarshalJSON(data []byte) (err error) {
+	varUpdateCollection := _UpdateCollection{}
+
+	err = json.Unmarshal(data, &varUpdateCollection)
+
+	if err != nil {
+		return err
+	}
+
+	*o = UpdateCollection(varUpdateCollection)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "subscribedApplicationsIds")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableUpdateCollection struct {

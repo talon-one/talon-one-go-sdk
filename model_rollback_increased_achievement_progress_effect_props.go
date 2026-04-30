@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -32,7 +31,8 @@ type RollbackIncreasedAchievementProgressEffectProps struct {
 	// The current progress of the customer in the achievement.
 	CurrentProgress float32 `json:"currentProgress"`
 	// The target value to complete the achievement.
-	Target float32 `json:"target"`
+	Target               float32 `json:"target"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _RollbackIncreasedAchievementProgressEffectProps RollbackIncreasedAchievementProgressEffectProps
@@ -220,6 +220,11 @@ func (o RollbackIncreasedAchievementProgressEffectProps) ToMap() (map[string]int
 	toSerialize["decreaseProgressBy"] = o.DecreaseProgressBy
 	toSerialize["currentProgress"] = o.CurrentProgress
 	toSerialize["target"] = o.Target
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -252,15 +257,25 @@ func (o *RollbackIncreasedAchievementProgressEffectProps) UnmarshalJSON(data []b
 
 	varRollbackIncreasedAchievementProgressEffectProps := _RollbackIncreasedAchievementProgressEffectProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varRollbackIncreasedAchievementProgressEffectProps)
+	err = json.Unmarshal(data, &varRollbackIncreasedAchievementProgressEffectProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = RollbackIncreasedAchievementProgressEffectProps(varRollbackIncreasedAchievementProgressEffectProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "achievementId")
+		delete(additionalProperties, "achievementName")
+		delete(additionalProperties, "progressTrackerId")
+		delete(additionalProperties, "decreaseProgressBy")
+		delete(additionalProperties, "currentProgress")
+		delete(additionalProperties, "target")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

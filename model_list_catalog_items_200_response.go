@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,9 +20,10 @@ var _ MappedNullable = &ListCatalogItems200Response{}
 
 // ListCatalogItems200Response struct for ListCatalogItems200Response
 type ListCatalogItems200Response struct {
-	HasMore         *bool         `json:"hasMore,omitempty"`
-	TotalResultSize *int64        `json:"totalResultSize,omitempty"`
-	Data            []CatalogItem `json:"data"`
+	HasMore              *bool         `json:"hasMore,omitempty"`
+	TotalResultSize      *int64        `json:"totalResultSize,omitempty"`
+	Data                 []CatalogItem `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ListCatalogItems200Response ListCatalogItems200Response
@@ -151,6 +151,11 @@ func (o ListCatalogItems200Response) ToMap() (map[string]interface{}, error) {
 		toSerialize["totalResultSize"] = o.TotalResultSize
 	}
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -178,15 +183,22 @@ func (o *ListCatalogItems200Response) UnmarshalJSON(data []byte) (err error) {
 
 	varListCatalogItems200Response := _ListCatalogItems200Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varListCatalogItems200Response)
+	err = json.Unmarshal(data, &varListCatalogItems200Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ListCatalogItems200Response(varListCatalogItems200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "hasMore")
+		delete(additionalProperties, "totalResultSize")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

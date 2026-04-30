@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &CampaignSearch{}
 // CampaignSearch struct for CampaignSearch
 type CampaignSearch struct {
 	// Properties to match against a campaign. All provided attributes will be exactly matched against campaign attributes.
-	Attributes map[string]interface{} `json:"attributes"`
+	Attributes           map[string]interface{} `json:"attributes"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CampaignSearch CampaignSearch
@@ -80,6 +80,11 @@ func (o CampaignSearch) MarshalJSON() ([]byte, error) {
 func (o CampaignSearch) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["attributes"] = o.Attributes
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *CampaignSearch) UnmarshalJSON(data []byte) (err error) {
 
 	varCampaignSearch := _CampaignSearch{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCampaignSearch)
+	err = json.Unmarshal(data, &varCampaignSearch)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CampaignSearch(varCampaignSearch)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "attributes")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

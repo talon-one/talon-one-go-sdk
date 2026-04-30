@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -28,8 +27,9 @@ type AccountDashboardStatistic struct {
 	// Aggregated statistic for account loyalty points.
 	LoyaltyPoints []AccountDashboardStatisticLoyaltyPoints `json:"loyaltyPoints,omitempty"`
 	// Aggregated statistic for account referrals.
-	Referrals []AccountDashboardStatisticReferrals `json:"referrals,omitempty"`
-	Campaigns AccountDashboardStatisticCampaigns   `json:"campaigns"`
+	Referrals            []AccountDashboardStatisticReferrals `json:"referrals,omitempty"`
+	Campaigns            AccountDashboardStatisticCampaigns   `json:"campaigns"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AccountDashboardStatistic AccountDashboardStatistic
@@ -227,6 +227,11 @@ func (o AccountDashboardStatistic) ToMap() (map[string]interface{}, error) {
 		toSerialize["referrals"] = o.Referrals
 	}
 	toSerialize["campaigns"] = o.Campaigns
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -254,15 +259,24 @@ func (o *AccountDashboardStatistic) UnmarshalJSON(data []byte) (err error) {
 
 	varAccountDashboardStatistic := _AccountDashboardStatistic{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAccountDashboardStatistic)
+	err = json.Unmarshal(data, &varAccountDashboardStatistic)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AccountDashboardStatistic(varAccountDashboardStatistic)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "revenue")
+		delete(additionalProperties, "discounts")
+		delete(additionalProperties, "loyaltyPoints")
+		delete(additionalProperties, "referrals")
+		delete(additionalProperties, "campaigns")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

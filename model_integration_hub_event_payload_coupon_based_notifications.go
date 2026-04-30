@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -41,9 +40,10 @@ type IntegrationHubEventPayloadCouponBasedNotifications struct {
 	Attributes             map[string]interface{}                                     `json:"Attributes,omitempty"`
 	Limits                 []IntegrationHubEventPayloadCouponBasedNotificationsLimits `json:"Limits,omitempty"`
 	// Timestamp when the event was published.
-	PublishedAt   time.Time `json:"PublishedAt"`
-	SourceOfEvent string    `json:"SourceOfEvent"`
-	EmployeeName  string    `json:"EmployeeName"`
+	PublishedAt          time.Time `json:"PublishedAt"`
+	SourceOfEvent        string    `json:"SourceOfEvent"`
+	EmployeeName         string    `json:"EmployeeName"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _IntegrationHubEventPayloadCouponBasedNotifications IntegrationHubEventPayloadCouponBasedNotifications
@@ -729,6 +729,11 @@ func (o IntegrationHubEventPayloadCouponBasedNotifications) ToMap() (map[string]
 	toSerialize["PublishedAt"] = o.PublishedAt
 	toSerialize["SourceOfEvent"] = o.SourceOfEvent
 	toSerialize["EmployeeName"] = o.EmployeeName
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -764,15 +769,40 @@ func (o *IntegrationHubEventPayloadCouponBasedNotifications) UnmarshalJSON(data 
 
 	varIntegrationHubEventPayloadCouponBasedNotifications := _IntegrationHubEventPayloadCouponBasedNotifications{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varIntegrationHubEventPayloadCouponBasedNotifications)
+	err = json.Unmarshal(data, &varIntegrationHubEventPayloadCouponBasedNotifications)
 
 	if err != nil {
 		return err
 	}
 
 	*o = IntegrationHubEventPayloadCouponBasedNotifications(varIntegrationHubEventPayloadCouponBasedNotifications)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "Id")
+		delete(additionalProperties, "Created")
+		delete(additionalProperties, "CampaignId")
+		delete(additionalProperties, "Value")
+		delete(additionalProperties, "UsageLimit")
+		delete(additionalProperties, "DiscountLimit")
+		delete(additionalProperties, "ReservationLimit")
+		delete(additionalProperties, "StartDate")
+		delete(additionalProperties, "ExpiryDate")
+		delete(additionalProperties, "UsageCounter")
+		delete(additionalProperties, "DiscountCounter")
+		delete(additionalProperties, "DiscountRemainder")
+		delete(additionalProperties, "ReferralId")
+		delete(additionalProperties, "RecipientIntegrationId")
+		delete(additionalProperties, "ImportId")
+		delete(additionalProperties, "BatchId")
+		delete(additionalProperties, "Attributes")
+		delete(additionalProperties, "Limits")
+		delete(additionalProperties, "PublishedAt")
+		delete(additionalProperties, "SourceOfEvent")
+		delete(additionalProperties, "EmployeeName")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

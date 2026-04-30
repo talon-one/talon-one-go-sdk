@@ -20,8 +20,11 @@ var _ MappedNullable = &RoleV2Readonly{}
 // RoleV2Readonly struct for RoleV2Readonly
 type RoleV2Readonly struct {
 	// Identifies if the role is read-only. For read-only roles, you can only assign or unassign users. You cannot edit any other properties, such as the name, description, or permissions. The 'isReadonly' property cannot be set for new or existing roles. It is reserved for predefined roles, such as the Talon.One support role.
-	IsReadonly *bool `json:"isReadonly,omitempty"`
+	IsReadonly           *bool `json:"isReadonly,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _RoleV2Readonly RoleV2Readonly
 
 // NewRoleV2Readonly instantiates a new RoleV2Readonly object
 // This constructor will assign default values to properties that have it defined,
@@ -89,7 +92,33 @@ func (o RoleV2Readonly) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.IsReadonly) {
 		toSerialize["isReadonly"] = o.IsReadonly
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *RoleV2Readonly) UnmarshalJSON(data []byte) (err error) {
+	varRoleV2Readonly := _RoleV2Readonly{}
+
+	err = json.Unmarshal(data, &varRoleV2Readonly)
+
+	if err != nil {
+		return err
+	}
+
+	*o = RoleV2Readonly(varRoleV2Readonly)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "isReadonly")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableRoleV2Readonly struct {

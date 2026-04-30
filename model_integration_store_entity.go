@@ -20,8 +20,11 @@ var _ MappedNullable = &IntegrationStoreEntity{}
 // IntegrationStoreEntity struct for IntegrationStoreEntity
 type IntegrationStoreEntity struct {
 	// The integration ID of the store. You choose this ID when you create a store.
-	StoreIntegrationId *string `json:"storeIntegrationId,omitempty"`
+	StoreIntegrationId   *string `json:"storeIntegrationId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _IntegrationStoreEntity IntegrationStoreEntity
 
 // NewIntegrationStoreEntity instantiates a new IntegrationStoreEntity object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o IntegrationStoreEntity) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.StoreIntegrationId) {
 		toSerialize["storeIntegrationId"] = o.StoreIntegrationId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *IntegrationStoreEntity) UnmarshalJSON(data []byte) (err error) {
+	varIntegrationStoreEntity := _IntegrationStoreEntity{}
+
+	err = json.Unmarshal(data, &varIntegrationStoreEntity)
+
+	if err != nil {
+		return err
+	}
+
+	*o = IntegrationStoreEntity(varIntegrationStoreEntity)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "storeIntegrationId")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableIntegrationStoreEntity struct {

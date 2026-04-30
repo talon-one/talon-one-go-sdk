@@ -20,8 +20,11 @@ var _ MappedNullable = &AudienceIntegrationID{}
 // AudienceIntegrationID struct for AudienceIntegrationID
 type AudienceIntegrationID struct {
 	// The ID of this audience in the third-party integration.
-	IntegrationId *string `json:"integrationId,omitempty"`
+	IntegrationId        *string `json:"integrationId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _AudienceIntegrationID AudienceIntegrationID
 
 // NewAudienceIntegrationID instantiates a new AudienceIntegrationID object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o AudienceIntegrationID) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.IntegrationId) {
 		toSerialize["integrationId"] = o.IntegrationId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *AudienceIntegrationID) UnmarshalJSON(data []byte) (err error) {
+	varAudienceIntegrationID := _AudienceIntegrationID{}
+
+	err = json.Unmarshal(data, &varAudienceIntegrationID)
+
+	if err != nil {
+		return err
+	}
+
+	*o = AudienceIntegrationID(varAudienceIntegrationID)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "integrationId")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableAudienceIntegrationID struct {

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -44,6 +43,7 @@ type CreateAchievement struct {
 	EndDate *time.Time `json:"endDate,omitempty"`
 	// When `true`, customer progress can be rolled back in completed achievements.
 	AllowRollbackAfterCompletion *bool `json:"allowRollbackAfterCompletion,omitempty"`
+	AdditionalProperties         map[string]interface{}
 }
 
 type _CreateAchievement CreateAchievement
@@ -427,6 +427,11 @@ func (o CreateAchievement) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.AllowRollbackAfterCompletion) {
 		toSerialize["allowRollbackAfterCompletion"] = o.AllowRollbackAfterCompletion
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -457,15 +462,30 @@ func (o *CreateAchievement) UnmarshalJSON(data []byte) (err error) {
 
 	varCreateAchievement := _CreateAchievement{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCreateAchievement)
+	err = json.Unmarshal(data, &varCreateAchievement)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CreateAchievement(varCreateAchievement)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "target")
+		delete(additionalProperties, "period")
+		delete(additionalProperties, "periodEndOverride")
+		delete(additionalProperties, "recurrencePolicy")
+		delete(additionalProperties, "activationPolicy")
+		delete(additionalProperties, "fixedStartDate")
+		delete(additionalProperties, "endDate")
+		delete(additionalProperties, "allowRollbackAfterCompletion")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

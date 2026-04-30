@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -48,7 +47,8 @@ type AccountLimits struct {
 	// The price for a secondary deployment according to contractual agreements.
 	SecondaryDeploymentPrice int64 `json:"SecondaryDeploymentPrice"`
 	// The currency of the contract.
-	CurrencyCode string `json:"currencyCode"`
+	CurrencyCode         string `json:"currencyCode"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AccountLimits AccountLimits
@@ -444,6 +444,11 @@ func (o AccountLimits) ToMap() (map[string]interface{}, error) {
 	toSerialize["promotionTypes"] = o.PromotionTypes
 	toSerialize["SecondaryDeploymentPrice"] = o.SecondaryDeploymentPrice
 	toSerialize["currencyCode"] = o.CurrencyCode
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -484,15 +489,33 @@ func (o *AccountLimits) UnmarshalJSON(data []byte) (err error) {
 
 	varAccountLimits := _AccountLimits{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAccountLimits)
+	err = json.Unmarshal(data, &varAccountLimits)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AccountLimits(varAccountLimits)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "liveApplications")
+		delete(additionalProperties, "sandboxApplications")
+		delete(additionalProperties, "activeCampaigns")
+		delete(additionalProperties, "coupons")
+		delete(additionalProperties, "referralCodes")
+		delete(additionalProperties, "activeRules")
+		delete(additionalProperties, "liveLoyaltyPrograms")
+		delete(additionalProperties, "sandboxLoyaltyPrograms")
+		delete(additionalProperties, "webhooks")
+		delete(additionalProperties, "users")
+		delete(additionalProperties, "apiVolume")
+		delete(additionalProperties, "promotionTypes")
+		delete(additionalProperties, "SecondaryDeploymentPrice")
+		delete(additionalProperties, "currencyCode")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

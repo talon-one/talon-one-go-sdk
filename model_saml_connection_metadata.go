@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -27,7 +26,8 @@ type SamlConnectionMetadata struct {
 	Enabled   bool    `json:"enabled"`
 	AccountId float32 `json:"accountId"`
 	// Identity Provider metadata XML document.
-	MetadataDocument string `json:"metadataDocument"`
+	MetadataDocument     string `json:"metadataDocument"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _SamlConnectionMetadata SamlConnectionMetadata
@@ -163,6 +163,11 @@ func (o SamlConnectionMetadata) ToMap() (map[string]interface{}, error) {
 	toSerialize["enabled"] = o.Enabled
 	toSerialize["accountId"] = o.AccountId
 	toSerialize["metadataDocument"] = o.MetadataDocument
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -193,15 +198,23 @@ func (o *SamlConnectionMetadata) UnmarshalJSON(data []byte) (err error) {
 
 	varSamlConnectionMetadata := _SamlConnectionMetadata{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varSamlConnectionMetadata)
+	err = json.Unmarshal(data, &varSamlConnectionMetadata)
 
 	if err != nil {
 		return err
 	}
 
 	*o = SamlConnectionMetadata(varSamlConnectionMetadata)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "enabled")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "metadataDocument")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type CodeGeneratorSettings struct {
 	// List of characters used to generate the random parts of a code.
 	ValidCharacters []string `json:"validCharacters"`
 	// The pattern used to generate codes, such as coupon codes, referral codes, and loyalty cards. The character `#` is a placeholder and is replaced by a random character from the `validCharacters` set.
-	CouponPattern string `json:"couponPattern" validate:"regexp=^[A-Za-z0-9._%+@#-]+$"`
+	CouponPattern        string `json:"couponPattern" validate:"regexp=^[A-Za-z0-9._%+@#-]+$"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CodeGeneratorSettings CodeGeneratorSettings
@@ -108,6 +108,11 @@ func (o CodeGeneratorSettings) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["validCharacters"] = o.ValidCharacters
 	toSerialize["couponPattern"] = o.CouponPattern
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *CodeGeneratorSettings) UnmarshalJSON(data []byte) (err error) {
 
 	varCodeGeneratorSettings := _CodeGeneratorSettings{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCodeGeneratorSettings)
+	err = json.Unmarshal(data, &varCodeGeneratorSettings)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CodeGeneratorSettings(varCodeGeneratorSettings)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "validCharacters")
+		delete(additionalProperties, "couponPattern")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

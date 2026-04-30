@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -30,7 +29,8 @@ type OutgoingIntegrationType struct {
 	// Category of the outgoing integration.
 	Category *string `json:"category,omitempty"`
 	// Http link to the outgoing integration's documentation.
-	DocumentationLink *string `json:"documentationLink,omitempty"`
+	DocumentationLink    *string `json:"documentationLink,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _OutgoingIntegrationType OutgoingIntegrationType
@@ -219,6 +219,11 @@ func (o OutgoingIntegrationType) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.DocumentationLink) {
 		toSerialize["documentationLink"] = o.DocumentationLink
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -247,15 +252,24 @@ func (o *OutgoingIntegrationType) UnmarshalJSON(data []byte) (err error) {
 
 	varOutgoingIntegrationType := _OutgoingIntegrationType{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varOutgoingIntegrationType)
+	err = json.Unmarshal(data, &varOutgoingIntegrationType)
 
 	if err != nil {
 		return err
 	}
 
 	*o = OutgoingIntegrationType(varOutgoingIntegrationType)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "category")
+		delete(additionalProperties, "documentationLink")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

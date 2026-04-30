@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,7 +20,8 @@ var _ MappedNullable = &CollectionItem{}
 
 // CollectionItem struct for CollectionItem
 type CollectionItem struct {
-	Item string `json:"item"`
+	Item                 string `json:"item"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CollectionItem CollectionItem
@@ -79,6 +79,11 @@ func (o CollectionItem) MarshalJSON() ([]byte, error) {
 func (o CollectionItem) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["item"] = o.Item
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -106,15 +111,20 @@ func (o *CollectionItem) UnmarshalJSON(data []byte) (err error) {
 
 	varCollectionItem := _CollectionItem{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCollectionItem)
+	err = json.Unmarshal(data, &varCollectionItem)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CollectionItem(varCollectionItem)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "item")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

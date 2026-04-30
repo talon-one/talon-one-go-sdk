@@ -29,8 +29,11 @@ type CouponConstraints struct {
 	// Timestamp at which point the coupon becomes valid.
 	StartDate *time.Time `json:"startDate,omitempty"`
 	// Expiration date of the coupon. Coupon never expires if this is omitted.
-	ExpiryDate *time.Time `json:"expiryDate,omitempty"`
+	ExpiryDate           *time.Time `json:"expiryDate,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _CouponConstraints CouponConstraints
 
 // NewCouponConstraints instantiates a new CouponConstraints object
 // This constructor will assign default values to properties that have it defined,
@@ -234,7 +237,37 @@ func (o CouponConstraints) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ExpiryDate) {
 		toSerialize["expiryDate"] = o.ExpiryDate
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *CouponConstraints) UnmarshalJSON(data []byte) (err error) {
+	varCouponConstraints := _CouponConstraints{}
+
+	err = json.Unmarshal(data, &varCouponConstraints)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CouponConstraints(varCouponConstraints)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "usageLimit")
+		delete(additionalProperties, "discountLimit")
+		delete(additionalProperties, "reservationLimit")
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "expiryDate")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableCouponConstraints struct {

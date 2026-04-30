@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &UpdateExperimentVariantName{}
 // UpdateExperimentVariantName struct for UpdateExperimentVariantName
 type UpdateExperimentVariantName struct {
 	// The name of the variant.
-	Name string `json:"name"`
+	Name                 string `json:"name"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _UpdateExperimentVariantName UpdateExperimentVariantName
@@ -80,6 +80,11 @@ func (o UpdateExperimentVariantName) MarshalJSON() ([]byte, error) {
 func (o UpdateExperimentVariantName) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["name"] = o.Name
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *UpdateExperimentVariantName) UnmarshalJSON(data []byte) (err error) {
 
 	varUpdateExperimentVariantName := _UpdateExperimentVariantName{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varUpdateExperimentVariantName)
+	err = json.Unmarshal(data, &varUpdateExperimentVariantName)
 
 	if err != nil {
 		return err
 	}
 
 	*o = UpdateExperimentVariantName(varUpdateExperimentVariantName)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

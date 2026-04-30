@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,9 +20,10 @@ var _ MappedNullable = &GetApplicationCustomers200Response{}
 
 // GetApplicationCustomers200Response struct for GetApplicationCustomers200Response
 type GetApplicationCustomers200Response struct {
-	TotalResultSize *int64                `json:"totalResultSize,omitempty"`
-	HasMore         *bool                 `json:"hasMore,omitempty"`
-	Data            []ApplicationCustomer `json:"data"`
+	TotalResultSize      *int64                `json:"totalResultSize,omitempty"`
+	HasMore              *bool                 `json:"hasMore,omitempty"`
+	Data                 []ApplicationCustomer `json:"data"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GetApplicationCustomers200Response GetApplicationCustomers200Response
@@ -151,6 +151,11 @@ func (o GetApplicationCustomers200Response) ToMap() (map[string]interface{}, err
 		toSerialize["hasMore"] = o.HasMore
 	}
 	toSerialize["data"] = o.Data
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -178,15 +183,22 @@ func (o *GetApplicationCustomers200Response) UnmarshalJSON(data []byte) (err err
 
 	varGetApplicationCustomers200Response := _GetApplicationCustomers200Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGetApplicationCustomers200Response)
+	err = json.Unmarshal(data, &varGetApplicationCustomers200Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GetApplicationCustomers200Response(varGetApplicationCustomers200Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "totalResultSize")
+		delete(additionalProperties, "hasMore")
+		delete(additionalProperties, "data")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

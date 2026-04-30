@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -43,7 +42,8 @@ type Ruleset struct {
 	// The ID of the campaign template that owns this entity.
 	TemplateId *int64 `json:"templateId,omitempty"`
 	// Timestamp indicating when this Ruleset was activated.
-	ActivatedAt *time.Time `json:"activatedAt,omitempty"`
+	ActivatedAt          *time.Time `json:"activatedAt,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Ruleset Ruleset
@@ -415,6 +415,11 @@ func (o Ruleset) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ActivatedAt) {
 		toSerialize["activatedAt"] = o.ActivatedAt
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -446,15 +451,30 @@ func (o *Ruleset) UnmarshalJSON(data []byte) (err error) {
 
 	varRuleset := _Ruleset{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varRuleset)
+	err = json.Unmarshal(data, &varRuleset)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Ruleset(varRuleset)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "userId")
+		delete(additionalProperties, "rules")
+		delete(additionalProperties, "strikethroughRules")
+		delete(additionalProperties, "bindings")
+		delete(additionalProperties, "rbVersion")
+		delete(additionalProperties, "activate")
+		delete(additionalProperties, "campaignId")
+		delete(additionalProperties, "templateId")
+		delete(additionalProperties, "activatedAt")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -27,7 +26,8 @@ type PriceHistoryRequest struct {
 	// The start date of the period for which historical prices should be retrieved.
 	StartDate time.Time `json:"startDate"`
 	// The end date of the period for which historical prices should be retrieved.
-	EndDate time.Time `json:"endDate"`
+	EndDate              time.Time `json:"endDate"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _PriceHistoryRequest PriceHistoryRequest
@@ -137,6 +137,11 @@ func (o PriceHistoryRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize["sku"] = o.Sku
 	toSerialize["startDate"] = o.StartDate
 	toSerialize["endDate"] = o.EndDate
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -166,15 +171,22 @@ func (o *PriceHistoryRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varPriceHistoryRequest := _PriceHistoryRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varPriceHistoryRequest)
+	err = json.Unmarshal(data, &varPriceHistoryRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = PriceHistoryRequest(varPriceHistoryRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "sku")
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "endDate")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

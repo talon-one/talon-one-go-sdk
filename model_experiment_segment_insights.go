@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -28,7 +27,8 @@ type ExperimentSegmentInsights struct {
 	// Number of segmentation dimensions that had sufficient data variance to test. Dimensions where all sessions fall into a single bucket are excluded.
 	DimensionsTested int64 `json:"dimensionsTested"`
 	// Empty string when segment insights are available. Contains a reason code when insights could not be computed (e.g., \"insufficient_data\" when the experiment has fewer than 100 sessions per variant).
-	Reason string `json:"reason"`
+	Reason               string `json:"reason"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ExperimentSegmentInsights ExperimentSegmentInsights
@@ -164,6 +164,11 @@ func (o ExperimentSegmentInsights) ToMap() (map[string]interface{}, error) {
 	toSerialize["totalSegmentsTested"] = o.TotalSegmentsTested
 	toSerialize["dimensionsTested"] = o.DimensionsTested
 	toSerialize["reason"] = o.Reason
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -194,15 +199,23 @@ func (o *ExperimentSegmentInsights) UnmarshalJSON(data []byte) (err error) {
 
 	varExperimentSegmentInsights := _ExperimentSegmentInsights{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varExperimentSegmentInsights)
+	err = json.Unmarshal(data, &varExperimentSegmentInsights)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ExperimentSegmentInsights(varExperimentSegmentInsights)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "metrics")
+		delete(additionalProperties, "totalSegmentsTested")
+		delete(additionalProperties, "dimensionsTested")
+		delete(additionalProperties, "reason")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

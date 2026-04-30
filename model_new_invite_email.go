@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type NewInviteEmail struct {
 	// Email address of the user.
 	Email string `json:"email"`
 	// Invitation token of the user.
-	Token string `json:"token"`
+	Token                string `json:"token"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewInviteEmail NewInviteEmail
@@ -108,6 +108,11 @@ func (o NewInviteEmail) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["email"] = o.Email
 	toSerialize["token"] = o.Token
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *NewInviteEmail) UnmarshalJSON(data []byte) (err error) {
 
 	varNewInviteEmail := _NewInviteEmail{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewInviteEmail)
+	err = json.Unmarshal(data, &varNewInviteEmail)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewInviteEmail(varNewInviteEmail)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "email")
+		delete(additionalProperties, "token")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

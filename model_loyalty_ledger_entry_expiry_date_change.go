@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -27,7 +26,8 @@ type LoyaltyLedgerEntryExpiryDateChange struct {
 	// Expiry date of the transactions before applying the extension or update.
 	PreviousExpiryDate *time.Time `json:"previousExpiryDate,omitempty"`
 	// Expiry date of the transaction after applying the extension or update.
-	NewExpiryDate time.Time `json:"newExpiryDate"`
+	NewExpiryDate        time.Time `json:"newExpiryDate"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _LoyaltyLedgerEntryExpiryDateChange LoyaltyLedgerEntryExpiryDateChange
@@ -146,6 +146,11 @@ func (o LoyaltyLedgerEntryExpiryDateChange) ToMap() (map[string]interface{}, err
 		toSerialize["previousExpiryDate"] = o.PreviousExpiryDate
 	}
 	toSerialize["newExpiryDate"] = o.NewExpiryDate
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -174,15 +179,22 @@ func (o *LoyaltyLedgerEntryExpiryDateChange) UnmarshalJSON(data []byte) (err err
 
 	varLoyaltyLedgerEntryExpiryDateChange := _LoyaltyLedgerEntryExpiryDateChange{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varLoyaltyLedgerEntryExpiryDateChange)
+	err = json.Unmarshal(data, &varLoyaltyLedgerEntryExpiryDateChange)
 
 	if err != nil {
 		return err
 	}
 
 	*o = LoyaltyLedgerEntryExpiryDateChange(varLoyaltyLedgerEntryExpiryDateChange)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "transactionUUID")
+		delete(additionalProperties, "previousExpiryDate")
+		delete(additionalProperties, "newExpiryDate")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

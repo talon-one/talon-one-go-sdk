@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -32,7 +31,8 @@ type IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification stru
 	TierExpirationDate    *time.Time `json:"TierExpirationDate,omitempty"`
 	TimestampOfTierChange *time.Time `json:"TimestampOfTierChange,omitempty"`
 	// Timestamp when the event was published.
-	PublishedAt time.Time `json:"PublishedAt"`
+	PublishedAt          time.Time `json:"PublishedAt"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification
@@ -360,6 +360,11 @@ func (o IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification) 
 		toSerialize["TimestampOfTierChange"] = o.TimestampOfTierChange
 	}
 	toSerialize["PublishedAt"] = o.PublishedAt
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -392,15 +397,29 @@ func (o *IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification)
 
 	varIntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification := _IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varIntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification)
+	err = json.Unmarshal(data, &varIntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification)
 
 	if err != nil {
 		return err
 	}
 
 	*o = IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification(varIntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "ProfileIntegrationID")
+		delete(additionalProperties, "LoyaltyProgramID")
+		delete(additionalProperties, "SubledgerID")
+		delete(additionalProperties, "SourceOfEvent")
+		delete(additionalProperties, "CurrentTier")
+		delete(additionalProperties, "CurrentPoints")
+		delete(additionalProperties, "OldTier")
+		delete(additionalProperties, "TierExpirationDate")
+		delete(additionalProperties, "TimestampOfTierChange")
+		delete(additionalProperties, "PublishedAt")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

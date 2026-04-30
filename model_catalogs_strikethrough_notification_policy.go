@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type CatalogsStrikethroughNotificationPolicy struct {
 	// The number of days in advance that strikethrough pricing updates should be sent.
 	AheadOfDaysTrigger *int64 `json:"aheadOfDaysTrigger,omitempty"`
 	// The required size of each batch of data.
-	BatchSize *int64 `json:"batchSize,omitempty"`
+	BatchSize            *int64 `json:"batchSize,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CatalogsStrikethroughNotificationPolicy CatalogsStrikethroughNotificationPolicy
@@ -158,6 +158,11 @@ func (o CatalogsStrikethroughNotificationPolicy) ToMap() (map[string]interface{}
 	if !IsNil(o.BatchSize) {
 		toSerialize["batchSize"] = o.BatchSize
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -185,15 +190,22 @@ func (o *CatalogsStrikethroughNotificationPolicy) UnmarshalJSON(data []byte) (er
 
 	varCatalogsStrikethroughNotificationPolicy := _CatalogsStrikethroughNotificationPolicy{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCatalogsStrikethroughNotificationPolicy)
+	err = json.Unmarshal(data, &varCatalogsStrikethroughNotificationPolicy)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CatalogsStrikethroughNotificationPolicy(varCatalogsStrikethroughNotificationPolicy)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "aheadOfDaysTrigger")
+		delete(additionalProperties, "batchSize")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

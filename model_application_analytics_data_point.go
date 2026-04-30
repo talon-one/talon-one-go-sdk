@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -37,7 +36,8 @@ type ApplicationAnalyticsDataPoint struct {
 	// The total value of discounts given for cart items in influenced sessions.
 	TotalDiscounts *float32 `json:"totalDiscounts,omitempty"`
 	// The number of times a coupon was successfully redeemed in influenced sessions.
-	CouponsCount *float32 `json:"couponsCount,omitempty"`
+	CouponsCount         *float32 `json:"couponsCount,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ApplicationAnalyticsDataPoint ApplicationAnalyticsDataPoint
@@ -331,6 +331,11 @@ func (o ApplicationAnalyticsDataPoint) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CouponsCount) {
 		toSerialize["couponsCount"] = o.CouponsCount
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -359,15 +364,27 @@ func (o *ApplicationAnalyticsDataPoint) UnmarshalJSON(data []byte) (err error) {
 
 	varApplicationAnalyticsDataPoint := _ApplicationAnalyticsDataPoint{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varApplicationAnalyticsDataPoint)
+	err = json.Unmarshal(data, &varApplicationAnalyticsDataPoint)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ApplicationAnalyticsDataPoint(varApplicationAnalyticsDataPoint)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "startTime")
+		delete(additionalProperties, "endTime")
+		delete(additionalProperties, "totalRevenue")
+		delete(additionalProperties, "sessionsCount")
+		delete(additionalProperties, "avgItemsPerSession")
+		delete(additionalProperties, "avgSessionValue")
+		delete(additionalProperties, "totalDiscounts")
+		delete(additionalProperties, "couponsCount")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

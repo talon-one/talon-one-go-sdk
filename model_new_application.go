@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -52,6 +51,7 @@ type NewApplication struct {
 	Key *string `json:"key,omitempty" validate:"regexp=^[a-fA-F0-9]{16}$"`
 	// Indicates whether the campaign staging and revisions feature is enabled for the Application.  **Important:** After this feature is enabled, it cannot be disabled.
 	EnableCampaignStateManagement *bool `json:"enableCampaignStateManagement,omitempty"`
+	AdditionalProperties          map[string]interface{}
 }
 
 type _NewApplication NewApplication
@@ -616,6 +616,11 @@ func (o NewApplication) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.EnableCampaignStateManagement) {
 		toSerialize["enableCampaignStateManagement"] = o.EnableCampaignStateManagement
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -645,15 +650,35 @@ func (o *NewApplication) UnmarshalJSON(data []byte) (err error) {
 
 	varNewApplication := _NewApplication{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewApplication)
+	err = json.Unmarshal(data, &varNewApplication)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewApplication(varNewApplication)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "timezone")
+		delete(additionalProperties, "currency")
+		delete(additionalProperties, "caseSensitivity")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "limits")
+		delete(additionalProperties, "defaultDiscountScope")
+		delete(additionalProperties, "enableCascadingDiscounts")
+		delete(additionalProperties, "enableFlattenedCartItems")
+		delete(additionalProperties, "attributesSettings")
+		delete(additionalProperties, "sandbox")
+		delete(additionalProperties, "enablePartialDiscounts")
+		delete(additionalProperties, "defaultDiscountAdditionalCostPerItemScope")
+		delete(additionalProperties, "key")
+		delete(additionalProperties, "enableCampaignStateManagement")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

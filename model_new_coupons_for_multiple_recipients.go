@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -39,7 +38,8 @@ type NewCouponsForMultipleRecipients struct {
 	// List of characters used to generate the random parts of a code. By default, the list of characters is equivalent to the `[A-Z, 0-9]` regular expression.
 	ValidCharacters []string `json:"validCharacters,omitempty"`
 	// The pattern used to generate coupon codes. The character `#` is a placeholder and is replaced by a random character from the `validCharacters` set.
-	CouponPattern *string `json:"couponPattern,omitempty"`
+	CouponPattern        *string `json:"couponPattern,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewCouponsForMultipleRecipients NewCouponsForMultipleRecipients
@@ -377,6 +377,11 @@ func (o NewCouponsForMultipleRecipients) ToMap() (map[string]interface{}, error)
 	if !IsNil(o.CouponPattern) {
 		toSerialize["couponPattern"] = o.CouponPattern
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -404,15 +409,28 @@ func (o *NewCouponsForMultipleRecipients) UnmarshalJSON(data []byte) (err error)
 
 	varNewCouponsForMultipleRecipients := _NewCouponsForMultipleRecipients{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewCouponsForMultipleRecipients)
+	err = json.Unmarshal(data, &varNewCouponsForMultipleRecipients)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewCouponsForMultipleRecipients(varNewCouponsForMultipleRecipients)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "usageLimit")
+		delete(additionalProperties, "discountLimit")
+		delete(additionalProperties, "reservationLimit")
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "recipientsIntegrationIds")
+		delete(additionalProperties, "validCharacters")
+		delete(additionalProperties, "couponPattern")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

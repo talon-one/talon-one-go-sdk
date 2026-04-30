@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -49,7 +48,8 @@ type InventoryReferral struct {
 	// The ID of the batch the referrals belong to.
 	BatchId *string `json:"batchId,omitempty"`
 	// An array of referred customers.
-	ReferredCustomers []string `json:"referredCustomers"`
+	ReferredCustomers    []string `json:"referredCustomers"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _InventoryReferral InventoryReferral
@@ -508,6 +508,11 @@ func (o InventoryReferral) ToMap() (map[string]interface{}, error) {
 		toSerialize["batchId"] = o.BatchId
 	}
 	toSerialize["referredCustomers"] = o.ReferredCustomers
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -541,15 +546,33 @@ func (o *InventoryReferral) UnmarshalJSON(data []byte) (err error) {
 
 	varInventoryReferral := _InventoryReferral{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varInventoryReferral)
+	err = json.Unmarshal(data, &varInventoryReferral)
 
 	if err != nil {
 		return err
 	}
 
 	*o = InventoryReferral(varInventoryReferral)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "usageLimit")
+		delete(additionalProperties, "campaignId")
+		delete(additionalProperties, "advocateProfileIntegrationId")
+		delete(additionalProperties, "friendProfileIntegrationId")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "importId")
+		delete(additionalProperties, "code")
+		delete(additionalProperties, "usageCounter")
+		delete(additionalProperties, "batchId")
+		delete(additionalProperties, "referredCustomers")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

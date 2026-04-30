@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -38,7 +37,8 @@ type OutgoingIntegrationTemplateWithConfigurationDetails struct {
 	// The list of HTTP headers for this integration template.
 	Headers []string `json:"headers"`
 	// The outgoing integration policy specific to each integration type.
-	Policy map[string]interface{} `json:"policy"`
+	Policy               map[string]interface{} `json:"policy"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _OutgoingIntegrationTemplateWithConfigurationDetails OutgoingIntegrationTemplateWithConfigurationDetails
@@ -304,6 +304,11 @@ func (o OutgoingIntegrationTemplateWithConfigurationDetails) ToMap() (map[string
 	toSerialize["relativeUrl"] = o.RelativeUrl
 	toSerialize["headers"] = o.Headers
 	toSerialize["policy"] = o.Policy
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -339,15 +344,28 @@ func (o *OutgoingIntegrationTemplateWithConfigurationDetails) UnmarshalJSON(data
 
 	varOutgoingIntegrationTemplateWithConfigurationDetails := _OutgoingIntegrationTemplateWithConfigurationDetails{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varOutgoingIntegrationTemplateWithConfigurationDetails)
+	err = json.Unmarshal(data, &varOutgoingIntegrationTemplateWithConfigurationDetails)
 
 	if err != nil {
 		return err
 	}
 
 	*o = OutgoingIntegrationTemplateWithConfigurationDetails(varOutgoingIntegrationTemplateWithConfigurationDetails)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "integrationType")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "payload")
+		delete(additionalProperties, "method")
+		delete(additionalProperties, "relativeUrl")
+		delete(additionalProperties, "headers")
+		delete(additionalProperties, "policy")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

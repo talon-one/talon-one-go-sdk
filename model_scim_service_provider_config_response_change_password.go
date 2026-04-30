@@ -20,8 +20,11 @@ var _ MappedNullable = &ScimServiceProviderConfigResponseChangePassword{}
 // ScimServiceProviderConfigResponseChangePassword Configuration settings related to the ability to change user passwords.
 type ScimServiceProviderConfigResponseChangePassword struct {
 	// Indicates whether the service provider supports password changes via the SCIM API.
-	Supported *bool `json:"supported,omitempty"`
+	Supported            *bool `json:"supported,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ScimServiceProviderConfigResponseChangePassword ScimServiceProviderConfigResponseChangePassword
 
 // NewScimServiceProviderConfigResponseChangePassword instantiates a new ScimServiceProviderConfigResponseChangePassword object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o ScimServiceProviderConfigResponseChangePassword) ToMap() (map[string]int
 	if !IsNil(o.Supported) {
 		toSerialize["supported"] = o.Supported
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ScimServiceProviderConfigResponseChangePassword) UnmarshalJSON(data []byte) (err error) {
+	varScimServiceProviderConfigResponseChangePassword := _ScimServiceProviderConfigResponseChangePassword{}
+
+	err = json.Unmarshal(data, &varScimServiceProviderConfigResponseChangePassword)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ScimServiceProviderConfigResponseChangePassword(varScimServiceProviderConfigResponseChangePassword)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "supported")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableScimServiceProviderConfigResponseChangePassword struct {

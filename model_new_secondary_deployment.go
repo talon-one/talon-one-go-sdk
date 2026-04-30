@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &NewSecondaryDeployment{}
 // NewSecondaryDeployment struct for NewSecondaryDeployment
 type NewSecondaryDeployment struct {
 	// The name of the deployment. Used as subdomain, e.g. experimental.your-company.europe-west1.talon.one
-	Name string `json:"name" validate:"regexp=^[a-z0-9]+$"`
+	Name                 string `json:"name" validate:"regexp=^[a-z0-9]+$"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewSecondaryDeployment NewSecondaryDeployment
@@ -80,6 +80,11 @@ func (o NewSecondaryDeployment) MarshalJSON() ([]byte, error) {
 func (o NewSecondaryDeployment) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["name"] = o.Name
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *NewSecondaryDeployment) UnmarshalJSON(data []byte) (err error) {
 
 	varNewSecondaryDeployment := _NewSecondaryDeployment{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNewSecondaryDeployment)
+	err = json.Unmarshal(data, &varNewSecondaryDeployment)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NewSecondaryDeployment(varNewSecondaryDeployment)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,7 +21,8 @@ var _ MappedNullable = &NotificationActivation{}
 // NotificationActivation struct for NotificationActivation
 type NotificationActivation struct {
 	// Indicates whether the notification is activated.
-	Enabled bool `json:"enabled"`
+	Enabled              bool `json:"enabled"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NotificationActivation NotificationActivation
@@ -80,6 +80,11 @@ func (o NotificationActivation) MarshalJSON() ([]byte, error) {
 func (o NotificationActivation) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["enabled"] = o.Enabled
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *NotificationActivation) UnmarshalJSON(data []byte) (err error) {
 
 	varNotificationActivation := _NotificationActivation{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varNotificationActivation)
+	err = json.Unmarshal(data, &varNotificationActivation)
 
 	if err != nil {
 		return err
 	}
 
 	*o = NotificationActivation(varNotificationActivation)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "enabled")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

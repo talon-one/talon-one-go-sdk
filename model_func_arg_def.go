@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type FuncArgDef struct {
 	// The type of value this argument expects.
 	Type string `json:"type"`
 	// A campaigner-friendly description of the argument, this will also be shown in the rule editor.
-	Description *string `json:"description,omitempty"`
+	Description          *string `json:"description,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _FuncArgDef FuncArgDef
@@ -117,6 +117,11 @@ func (o FuncArgDef) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Description) {
 		toSerialize["description"] = o.Description
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -144,15 +149,21 @@ func (o *FuncArgDef) UnmarshalJSON(data []byte) (err error) {
 
 	varFuncArgDef := _FuncArgDef{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varFuncArgDef)
+	err = json.Unmarshal(data, &varFuncArgDef)
 
 	if err != nil {
 		return err
 	}
 
 	*o = FuncArgDef(varFuncArgDef)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "description")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

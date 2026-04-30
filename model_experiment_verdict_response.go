@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -24,7 +23,8 @@ var _ MappedNullable = &ExperimentVerdictResponse{}
 type ExperimentVerdictResponse struct {
 	Verdict ExperimentVerdict `json:"verdict"`
 	// Timestamp of the moment when the verdict was generated.
-	Generated time.Time `json:"generated"`
+	Generated            time.Time `json:"generated"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ExperimentVerdictResponse ExperimentVerdictResponse
@@ -108,6 +108,11 @@ func (o ExperimentVerdictResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["verdict"] = o.Verdict
 	toSerialize["generated"] = o.Generated
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *ExperimentVerdictResponse) UnmarshalJSON(data []byte) (err error) {
 
 	varExperimentVerdictResponse := _ExperimentVerdictResponse{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varExperimentVerdictResponse)
+	err = json.Unmarshal(data, &varExperimentVerdictResponse)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ExperimentVerdictResponse(varExperimentVerdictResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "verdict")
+		delete(additionalProperties, "generated")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

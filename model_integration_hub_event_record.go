@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -22,14 +21,15 @@ var _ MappedNullable = &IntegrationHubEventRecord{}
 
 // IntegrationHubEventRecord struct for IntegrationHubEventRecord
 type IntegrationHubEventRecord struct {
-	Id           int64       `json:"Id"`
-	FlowId       int64       `json:"FlowId"`
-	EventType    string      `json:"EventType"`
-	EventData    interface{} `json:"EventData"`
-	PublishedAt  time.Time   `json:"PublishedAt"`
-	ProcessedAt  *time.Time  `json:"ProcessedAt,omitempty"`
-	ProcessAfter time.Time   `json:"ProcessAfter"`
-	Retry        int64       `json:"Retry"`
+	Id                   int64       `json:"Id"`
+	FlowId               int64       `json:"FlowId"`
+	EventType            string      `json:"EventType"`
+	EventData            interface{} `json:"EventData"`
+	PublishedAt          time.Time   `json:"PublishedAt"`
+	ProcessedAt          *time.Time  `json:"ProcessedAt,omitempty"`
+	ProcessAfter         time.Time   `json:"ProcessAfter"`
+	Retry                int64       `json:"Retry"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _IntegrationHubEventRecord IntegrationHubEventRecord
@@ -282,6 +282,11 @@ func (o IntegrationHubEventRecord) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["ProcessAfter"] = o.ProcessAfter
 	toSerialize["Retry"] = o.Retry
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -315,15 +320,27 @@ func (o *IntegrationHubEventRecord) UnmarshalJSON(data []byte) (err error) {
 
 	varIntegrationHubEventRecord := _IntegrationHubEventRecord{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varIntegrationHubEventRecord)
+	err = json.Unmarshal(data, &varIntegrationHubEventRecord)
 
 	if err != nil {
 		return err
 	}
 
 	*o = IntegrationHubEventRecord(varIntegrationHubEventRecord)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "Id")
+		delete(additionalProperties, "FlowId")
+		delete(additionalProperties, "EventType")
+		delete(additionalProperties, "EventData")
+		delete(additionalProperties, "PublishedAt")
+		delete(additionalProperties, "ProcessedAt")
+		delete(additionalProperties, "ProcessAfter")
+		delete(additionalProperties, "Retry")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

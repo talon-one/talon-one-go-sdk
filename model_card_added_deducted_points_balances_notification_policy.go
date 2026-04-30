@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,8 +21,9 @@ var _ MappedNullable = &CardAddedDeductedPointsBalancesNotificationPolicy{}
 // CardAddedDeductedPointsBalancesNotificationPolicy struct for CardAddedDeductedPointsBalancesNotificationPolicy
 type CardAddedDeductedPointsBalancesNotificationPolicy struct {
 	// Notification name.
-	Name   string   `json:"name"`
-	Scopes []string `json:"scopes"`
+	Name                 string   `json:"name"`
+	Scopes               []string `json:"scopes"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CardAddedDeductedPointsBalancesNotificationPolicy CardAddedDeductedPointsBalancesNotificationPolicy
@@ -107,6 +107,11 @@ func (o CardAddedDeductedPointsBalancesNotificationPolicy) ToMap() (map[string]i
 	toSerialize := map[string]interface{}{}
 	toSerialize["name"] = o.Name
 	toSerialize["scopes"] = o.Scopes
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -135,15 +140,21 @@ func (o *CardAddedDeductedPointsBalancesNotificationPolicy) UnmarshalJSON(data [
 
 	varCardAddedDeductedPointsBalancesNotificationPolicy := _CardAddedDeductedPointsBalancesNotificationPolicy{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCardAddedDeductedPointsBalancesNotificationPolicy)
+	err = json.Unmarshal(data, &varCardAddedDeductedPointsBalancesNotificationPolicy)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CardAddedDeductedPointsBalancesNotificationPolicy(varCardAddedDeductedPointsBalancesNotificationPolicy)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "scopes")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

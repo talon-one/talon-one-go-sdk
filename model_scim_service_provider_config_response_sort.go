@@ -20,8 +20,11 @@ var _ MappedNullable = &ScimServiceProviderConfigResponseSort{}
 // ScimServiceProviderConfigResponseSort Configuration settings related to sorting SCIM resources in query responses.
 type ScimServiceProviderConfigResponseSort struct {
 	// Indicates whether the service provider supports sorting operations for ordered query results.
-	Supported *bool `json:"supported,omitempty"`
+	Supported            *bool `json:"supported,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ScimServiceProviderConfigResponseSort ScimServiceProviderConfigResponseSort
 
 // NewScimServiceProviderConfigResponseSort instantiates a new ScimServiceProviderConfigResponseSort object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o ScimServiceProviderConfigResponseSort) ToMap() (map[string]interface{}, 
 	if !IsNil(o.Supported) {
 		toSerialize["supported"] = o.Supported
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ScimServiceProviderConfigResponseSort) UnmarshalJSON(data []byte) (err error) {
+	varScimServiceProviderConfigResponseSort := _ScimServiceProviderConfigResponseSort{}
+
+	err = json.Unmarshal(data, &varScimServiceProviderConfigResponseSort)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ScimServiceProviderConfigResponseSort(varScimServiceProviderConfigResponseSort)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "supported")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableScimServiceProviderConfigResponseSort struct {

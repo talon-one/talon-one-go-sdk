@@ -23,7 +23,10 @@ type CampaignTemplateCouponReservationSettings struct {
 	ReservationLimit *int64 `json:"reservationLimit,omitempty"`
 	// An indication of whether the code can be redeemed only if it has been reserved first.
 	IsReservationMandatory *bool `json:"isReservationMandatory,omitempty"`
+	AdditionalProperties   map[string]interface{}
 }
+
+type _CampaignTemplateCouponReservationSettings CampaignTemplateCouponReservationSettings
 
 // NewCampaignTemplateCouponReservationSettings instantiates a new CampaignTemplateCouponReservationSettings object
 // This constructor will assign default values to properties that have it defined,
@@ -126,7 +129,34 @@ func (o CampaignTemplateCouponReservationSettings) ToMap() (map[string]interface
 	if !IsNil(o.IsReservationMandatory) {
 		toSerialize["isReservationMandatory"] = o.IsReservationMandatory
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *CampaignTemplateCouponReservationSettings) UnmarshalJSON(data []byte) (err error) {
+	varCampaignTemplateCouponReservationSettings := _CampaignTemplateCouponReservationSettings{}
+
+	err = json.Unmarshal(data, &varCampaignTemplateCouponReservationSettings)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CampaignTemplateCouponReservationSettings(varCampaignTemplateCouponReservationSettings)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "reservationLimit")
+		delete(additionalProperties, "isReservationMandatory")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableCampaignTemplateCouponReservationSettings struct {

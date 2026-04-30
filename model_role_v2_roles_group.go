@@ -26,8 +26,11 @@ type RoleV2RolesGroup struct {
 	// A map of the link between the campaign access group-related permission set and the Application ID the permissions apply to.
 	CampaignAccessGroups map[string]string `json:"campaignAccessGroups,omitempty"`
 	// Name of the account-level permission set
-	Account *string `json:"account,omitempty"`
+	Account              *string `json:"account,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _RoleV2RolesGroup RoleV2RolesGroup
 
 // NewRoleV2RolesGroup instantiates a new RoleV2RolesGroup object
 // This constructor will assign default values to properties that have it defined,
@@ -196,7 +199,36 @@ func (o RoleV2RolesGroup) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Account) {
 		toSerialize["account"] = o.Account
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *RoleV2RolesGroup) UnmarshalJSON(data []byte) (err error) {
+	varRoleV2RolesGroup := _RoleV2RolesGroup{}
+
+	err = json.Unmarshal(data, &varRoleV2RolesGroup)
+
+	if err != nil {
+		return err
+	}
+
+	*o = RoleV2RolesGroup(varRoleV2RolesGroup)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "applications")
+		delete(additionalProperties, "loyaltyPrograms")
+		delete(additionalProperties, "campaignAccessGroups")
+		delete(additionalProperties, "account")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableRoleV2RolesGroup struct {

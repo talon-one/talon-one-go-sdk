@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -40,7 +39,8 @@ type IntegrationEventV3Request struct {
 	// Identifiers of the loyalty cards used during this event.
 	LoyaltyCards []string `json:"loyaltyCards,omitempty"`
 	// Optional list of requested information to be present on the response related to the tracking custom event.
-	ResponseContent []string `json:"responseContent,omitempty"`
+	ResponseContent      []string `json:"responseContent,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _IntegrationEventV3Request IntegrationEventV3Request
@@ -395,6 +395,11 @@ func (o IntegrationEventV3Request) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ResponseContent) {
 		toSerialize["responseContent"] = o.ResponseContent
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -424,15 +429,29 @@ func (o *IntegrationEventV3Request) UnmarshalJSON(data []byte) (err error) {
 
 	varIntegrationEventV3Request := _IntegrationEventV3Request{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varIntegrationEventV3Request)
+	err = json.Unmarshal(data, &varIntegrationEventV3Request)
 
 	if err != nil {
 		return err
 	}
 
 	*o = IntegrationEventV3Request(varIntegrationEventV3Request)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "profileId")
+		delete(additionalProperties, "storeIntegrationId")
+		delete(additionalProperties, "evaluableCampaignIds")
+		delete(additionalProperties, "integrationId")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "connectedSessionID")
+		delete(additionalProperties, "previousEventID")
+		delete(additionalProperties, "loyaltyCards")
+		delete(additionalProperties, "responseContent")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

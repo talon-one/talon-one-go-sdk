@@ -28,8 +28,11 @@ type LoyaltyBalance struct {
 	// Total amount of points awarded but never redeemed. They cannot be used anymore.
 	ExpiredPoints *float32 `json:"expiredPoints,omitempty"`
 	// Total amount of negative points. This implies that `activePoints` is `0`.
-	NegativePoints *float32 `json:"negativePoints,omitempty"`
+	NegativePoints       *float32 `json:"negativePoints,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _LoyaltyBalance LoyaltyBalance
 
 // NewLoyaltyBalance instantiates a new LoyaltyBalance object
 // This constructor will assign default values to properties that have it defined,
@@ -233,7 +236,37 @@ func (o LoyaltyBalance) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.NegativePoints) {
 		toSerialize["negativePoints"] = o.NegativePoints
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *LoyaltyBalance) UnmarshalJSON(data []byte) (err error) {
+	varLoyaltyBalance := _LoyaltyBalance{}
+
+	err = json.Unmarshal(data, &varLoyaltyBalance)
+
+	if err != nil {
+		return err
+	}
+
+	*o = LoyaltyBalance(varLoyaltyBalance)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "activePoints")
+		delete(additionalProperties, "pendingPoints")
+		delete(additionalProperties, "spentPoints")
+		delete(additionalProperties, "expiredPoints")
+		delete(additionalProperties, "negativePoints")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableLoyaltyBalance struct {

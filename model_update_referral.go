@@ -29,8 +29,11 @@ type UpdateReferral struct {
 	// The number of times a referral code can be used. This can be set to 0 for no limit, but any campaign usage limits will still apply.
 	UsageLimit *int64 `json:"usageLimit,omitempty"`
 	// Arbitrary properties associated with this item.
-	Attributes map[string]interface{} `json:"attributes,omitempty"`
+	Attributes           map[string]interface{} `json:"attributes,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _UpdateReferral UpdateReferral
 
 // NewUpdateReferral instantiates a new UpdateReferral object
 // This constructor will assign default values to properties that have it defined,
@@ -234,7 +237,37 @@ func (o UpdateReferral) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Attributes) {
 		toSerialize["attributes"] = o.Attributes
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *UpdateReferral) UnmarshalJSON(data []byte) (err error) {
+	varUpdateReferral := _UpdateReferral{}
+
+	err = json.Unmarshal(data, &varUpdateReferral)
+
+	if err != nil {
+		return err
+	}
+
+	*o = UpdateReferral(varUpdateReferral)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "friendProfileIntegrationId")
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "usageLimit")
+		delete(additionalProperties, "attributes")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableUpdateReferral struct {

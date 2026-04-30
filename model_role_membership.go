@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type RoleMembership struct {
 	// ID of role.
 	RoleID int64 `json:"RoleID"`
 	// ID of User.
-	UserID int64 `json:"UserID"`
+	UserID               int64 `json:"UserID"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _RoleMembership RoleMembership
@@ -108,6 +108,11 @@ func (o RoleMembership) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["RoleID"] = o.RoleID
 	toSerialize["UserID"] = o.UserID
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *RoleMembership) UnmarshalJSON(data []byte) (err error) {
 
 	varRoleMembership := _RoleMembership{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varRoleMembership)
+	err = json.Unmarshal(data, &varRoleMembership)
 
 	if err != nil {
 		return err
 	}
 
 	*o = RoleMembership(varRoleMembership)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "RoleID")
+		delete(additionalProperties, "UserID")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

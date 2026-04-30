@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -51,7 +50,8 @@ type LedgerTransactionLogEntryIntegrationAPI struct {
 	// The flags of the transaction, when applicable. The `createsNegativeBalance`  flag indicates whether the transaction results in a negative balance.
 	Flags *LoyaltyLedgerEntryFlags `json:"flags,omitempty"`
 	// The duration for which the points remain active, relative to the  activation date.  **Note**: This only applies to points for which `awaitsActivation` is `true` and `expiryDate` is not set.
-	ValidityDuration *string `json:"validityDuration,omitempty"`
+	ValidityDuration     *string `json:"validityDuration,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _LedgerTransactionLogEntryIntegrationAPI LedgerTransactionLogEntryIntegrationAPI
@@ -518,6 +518,11 @@ func (o LedgerTransactionLogEntryIntegrationAPI) ToMap() (map[string]interface{}
 	if !IsNil(o.ValidityDuration) {
 		toSerialize["validityDuration"] = o.ValidityDuration
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -554,15 +559,34 @@ func (o *LedgerTransactionLogEntryIntegrationAPI) UnmarshalJSON(data []byte) (er
 
 	varLedgerTransactionLogEntryIntegrationAPI := _LedgerTransactionLogEntryIntegrationAPI{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varLedgerTransactionLogEntryIntegrationAPI)
+	err = json.Unmarshal(data, &varLedgerTransactionLogEntryIntegrationAPI)
 
 	if err != nil {
 		return err
 	}
 
 	*o = LedgerTransactionLogEntryIntegrationAPI(varLedgerTransactionLogEntryIntegrationAPI)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "transactionUUID")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "programId")
+		delete(additionalProperties, "customerSessionId")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "subledgerId")
+		delete(additionalProperties, "amount")
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "rulesetId")
+		delete(additionalProperties, "ruleName")
+		delete(additionalProperties, "flags")
+		delete(additionalProperties, "validityDuration")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

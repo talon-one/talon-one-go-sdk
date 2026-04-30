@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -57,7 +56,8 @@ type Achievement struct {
 	// Indicates if a customer has made progress in the achievement.
 	HasProgress *bool `json:"hasProgress,omitempty"`
 	// The status of the achievement.
-	Status *string `json:"status,omitempty"`
+	Status               *string `json:"status,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Achievement Achievement
@@ -650,6 +650,11 @@ func (o Achievement) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Status) {
 		toSerialize["status"] = o.Status
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -684,15 +689,37 @@ func (o *Achievement) UnmarshalJSON(data []byte) (err error) {
 
 	varAchievement := _Achievement{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAchievement)
+	err = json.Unmarshal(data, &varAchievement)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Achievement(varAchievement)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "target")
+		delete(additionalProperties, "period")
+		delete(additionalProperties, "periodEndOverride")
+		delete(additionalProperties, "recurrencePolicy")
+		delete(additionalProperties, "activationPolicy")
+		delete(additionalProperties, "fixedStartDate")
+		delete(additionalProperties, "endDate")
+		delete(additionalProperties, "allowRollbackAfterCompletion")
+		delete(additionalProperties, "campaignId")
+		delete(additionalProperties, "userId")
+		delete(additionalProperties, "createdBy")
+		delete(additionalProperties, "hasProgress")
+		delete(additionalProperties, "status")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,7 +20,8 @@ var _ MappedNullable = &ManagerConfig{}
 
 // ManagerConfig struct for ManagerConfig
 type ManagerConfig struct {
-	SchemaVersion int64 `json:"schemaVersion"`
+	SchemaVersion        int64 `json:"schemaVersion"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ManagerConfig ManagerConfig
@@ -79,6 +79,11 @@ func (o ManagerConfig) MarshalJSON() ([]byte, error) {
 func (o ManagerConfig) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["schemaVersion"] = o.SchemaVersion
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -106,15 +111,20 @@ func (o *ManagerConfig) UnmarshalJSON(data []byte) (err error) {
 
 	varManagerConfig := _ManagerConfig{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varManagerConfig)
+	err = json.Unmarshal(data, &varManagerConfig)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ManagerConfig(varManagerConfig)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "schemaVersion")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

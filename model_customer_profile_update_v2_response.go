@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -21,7 +20,8 @@ var _ MappedNullable = &CustomerProfileUpdateV2Response{}
 
 // CustomerProfileUpdateV2Response Contains the updated customer profiles entities. This is the response type returned by the V2 PUT customer_profiles endpoint
 type CustomerProfileUpdateV2Response struct {
-	CustomerProfile CustomerProfile `json:"customerProfile"`
+	CustomerProfile      CustomerProfile `json:"customerProfile"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CustomerProfileUpdateV2Response CustomerProfileUpdateV2Response
@@ -79,6 +79,11 @@ func (o CustomerProfileUpdateV2Response) MarshalJSON() ([]byte, error) {
 func (o CustomerProfileUpdateV2Response) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["customerProfile"] = o.CustomerProfile
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -106,15 +111,20 @@ func (o *CustomerProfileUpdateV2Response) UnmarshalJSON(data []byte) (err error)
 
 	varCustomerProfileUpdateV2Response := _CustomerProfileUpdateV2Response{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCustomerProfileUpdateV2Response)
+	err = json.Unmarshal(data, &varCustomerProfileUpdateV2Response)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CustomerProfileUpdateV2Response(varCustomerProfileUpdateV2Response)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "customerProfile")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

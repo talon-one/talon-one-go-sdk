@@ -26,8 +26,11 @@ type CustomerProfileIntegrationRequestV2 struct {
 	// Extends the response with the chosen data entities. Use this property to get as much data back as needed from one request instead of sending extra requests to other endpoints.
 	ResponseContent []string `json:"responseContent,omitempty"`
 	// Audiences memberships changes for this profile.
-	AudiencesChanges *ProfileAudiencesChanges `json:"audiencesChanges,omitempty"`
+	AudiencesChanges     *ProfileAudiencesChanges `json:"audiencesChanges,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _CustomerProfileIntegrationRequestV2 CustomerProfileIntegrationRequestV2
 
 // NewCustomerProfileIntegrationRequestV2 instantiates a new CustomerProfileIntegrationRequestV2 object
 // This constructor will assign default values to properties that have it defined,
@@ -196,7 +199,36 @@ func (o CustomerProfileIntegrationRequestV2) ToMap() (map[string]interface{}, er
 	if !IsNil(o.AudiencesChanges) {
 		toSerialize["audiencesChanges"] = o.AudiencesChanges
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *CustomerProfileIntegrationRequestV2) UnmarshalJSON(data []byte) (err error) {
+	varCustomerProfileIntegrationRequestV2 := _CustomerProfileIntegrationRequestV2{}
+
+	err = json.Unmarshal(data, &varCustomerProfileIntegrationRequestV2)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CustomerProfileIntegrationRequestV2(varCustomerProfileIntegrationRequestV2)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "evaluableCampaignIds")
+		delete(additionalProperties, "responseContent")
+		delete(additionalProperties, "audiencesChanges")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableCustomerProfileIntegrationRequestV2 struct {

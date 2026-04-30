@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -42,8 +41,9 @@ type CouponDeletionJob struct {
 	// ID of the user who created this effect.
 	CreatedBy int64 `json:"createdBy"`
 	// Indicates whether the user that created this job was notified of its final state.
-	Communicated bool    `json:"communicated"`
-	CampaignIDs  []int64 `json:"campaignIDs,omitempty"`
+	Communicated         bool    `json:"communicated"`
+	CampaignIDs          []int64 `json:"campaignIDs,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CouponDeletionJob CouponDeletionJob
@@ -405,6 +405,11 @@ func (o CouponDeletionJob) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CampaignIDs) {
 		toSerialize["campaignIDs"] = o.CampaignIDs
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -441,15 +446,31 @@ func (o *CouponDeletionJob) UnmarshalJSON(data []byte) (err error) {
 
 	varCouponDeletionJob := _CouponDeletionJob{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCouponDeletionJob)
+	err = json.Unmarshal(data, &varCouponDeletionJob)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CouponDeletionJob(varCouponDeletionJob)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created")
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "filters")
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "deletedAmount")
+		delete(additionalProperties, "failCount")
+		delete(additionalProperties, "errors")
+		delete(additionalProperties, "createdBy")
+		delete(additionalProperties, "communicated")
+		delete(additionalProperties, "campaignIDs")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

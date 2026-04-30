@@ -33,8 +33,11 @@ type UpdateCouponBatch struct {
 	// Optional property to set the value of custom coupon attributes. They are defined in the Campaign Manager, see [Managing attributes](https://docs.talon.one/docs/product/account/dev-tools/managing-attributes).  Coupon attributes can also be set to _mandatory_ in your Application [settings](https://docs.talon.one/docs/product/applications/using-attributes#making-attributes-mandatory). If your Application uses mandatory attributes, you must use this property to set their value.
 	Attributes map[string]interface{} `json:"attributes,omitempty"`
 	// The ID of the batch the coupon(s) belong to.
-	BatchID *string `json:"batchID,omitempty"`
+	BatchID              *string `json:"batchID,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _UpdateCouponBatch UpdateCouponBatch
 
 // NewUpdateCouponBatch instantiates a new UpdateCouponBatch object
 // This constructor will assign default values to properties that have it defined,
@@ -308,7 +311,39 @@ func (o UpdateCouponBatch) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.BatchID) {
 		toSerialize["batchID"] = o.BatchID
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *UpdateCouponBatch) UnmarshalJSON(data []byte) (err error) {
+	varUpdateCouponBatch := _UpdateCouponBatch{}
+
+	err = json.Unmarshal(data, &varUpdateCouponBatch)
+
+	if err != nil {
+		return err
+	}
+
+	*o = UpdateCouponBatch(varUpdateCouponBatch)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "usageLimit")
+		delete(additionalProperties, "discountLimit")
+		delete(additionalProperties, "reservationLimit")
+		delete(additionalProperties, "startDate")
+		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "batchID")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableUpdateCouponBatch struct {

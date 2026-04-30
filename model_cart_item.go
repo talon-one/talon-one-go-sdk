@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -62,7 +61,8 @@ type CartItem struct {
 	// The date and time until which the price adjustment is effective. Only returned if the selected price resulted from a price adjustment that contains this field.
 	AdjustmentEffectiveUntil *time.Time `json:"adjustmentEffectiveUntil,omitempty"`
 	// A map of keys and values representing the price types and related price adjustment details for this cart item. The keys correspond to the `priceType` names.
-	Prices map[string]PriceDetail `json:"prices,omitempty"`
+	Prices               map[string]PriceDetail `json:"prices,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CartItem CartItem
@@ -811,6 +811,11 @@ func (o CartItem) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Prices) {
 		toSerialize["prices"] = o.Prices
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -839,15 +844,40 @@ func (o *CartItem) UnmarshalJSON(data []byte) (err error) {
 
 	varCartItem := _CartItem{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCartItem)
+	err = json.Unmarshal(data, &varCartItem)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CartItem(varCartItem)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "sku")
+		delete(additionalProperties, "quantity")
+		delete(additionalProperties, "returnedQuantity")
+		delete(additionalProperties, "remainingQuantity")
+		delete(additionalProperties, "price")
+		delete(additionalProperties, "category")
+		delete(additionalProperties, "product")
+		delete(additionalProperties, "weight")
+		delete(additionalProperties, "height")
+		delete(additionalProperties, "width")
+		delete(additionalProperties, "length")
+		delete(additionalProperties, "position")
+		delete(additionalProperties, "attributes")
+		delete(additionalProperties, "additionalCosts")
+		delete(additionalProperties, "catalogItemID")
+		delete(additionalProperties, "selectedPriceType")
+		delete(additionalProperties, "adjustmentReferenceId")
+		delete(additionalProperties, "adjustmentEffectiveFrom")
+		delete(additionalProperties, "adjustmentEffectiveUntil")
+		delete(additionalProperties, "prices")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

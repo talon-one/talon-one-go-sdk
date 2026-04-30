@@ -31,8 +31,11 @@ type ExperimentCampaignCopy struct {
 	// A list of tags for the campaign.
 	Tags []string `json:"tags,omitempty"`
 	// The ID of the campaign evaluation group the campaign belongs to.
-	EvaluationGroupId *int64 `json:"evaluationGroupId,omitempty"`
+	EvaluationGroupId    *int64 `json:"evaluationGroupId,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ExperimentCampaignCopy ExperimentCampaignCopy
 
 // NewExperimentCampaignCopy instantiates a new ExperimentCampaignCopy object
 // This constructor will assign default values to properties that have it defined,
@@ -271,7 +274,38 @@ func (o ExperimentCampaignCopy) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.EvaluationGroupId) {
 		toSerialize["evaluationGroupId"] = o.EvaluationGroupId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ExperimentCampaignCopy) UnmarshalJSON(data []byte) (err error) {
+	varExperimentCampaignCopy := _ExperimentCampaignCopy{}
+
+	err = json.Unmarshal(data, &varExperimentCampaignCopy)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ExperimentCampaignCopy(varExperimentCampaignCopy)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "startTime")
+		delete(additionalProperties, "endTime")
+		delete(additionalProperties, "tags")
+		delete(additionalProperties, "evaluationGroupId")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableExperimentCampaignCopy struct {

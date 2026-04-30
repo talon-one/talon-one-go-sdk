@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -36,7 +35,8 @@ type BaseSamlConnection struct {
 	// Metadata URL.
 	MetadataURL *string `json:"metadataURL,omitempty"`
 	// The application-defined unique identifier that is the intended audience of the SAML assertion. This is most often the SP Entity ID of your application. When not specified, the ACS URL will be used.
-	AudienceURI *string `json:"audienceURI,omitempty"`
+	AudienceURI          *string `json:"audienceURI,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _BaseSamlConnection BaseSamlConnection
@@ -303,6 +303,11 @@ func (o BaseSamlConnection) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.AudienceURI) {
 		toSerialize["audienceURI"] = o.AudienceURI
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -334,15 +339,27 @@ func (o *BaseSamlConnection) UnmarshalJSON(data []byte) (err error) {
 
 	varBaseSamlConnection := _BaseSamlConnection{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varBaseSamlConnection)
+	err = json.Unmarshal(data, &varBaseSamlConnection)
 
 	if err != nil {
 		return err
 	}
 
 	*o = BaseSamlConnection(varBaseSamlConnection)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "accountId")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "enabled")
+		delete(additionalProperties, "issuer")
+		delete(additionalProperties, "signOnURL")
+		delete(additionalProperties, "signOutURL")
+		delete(additionalProperties, "metadataURL")
+		delete(additionalProperties, "audienceURI")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

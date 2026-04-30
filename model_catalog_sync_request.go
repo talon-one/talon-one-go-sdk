@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -23,7 +22,8 @@ var _ MappedNullable = &CatalogSyncRequest{}
 type CatalogSyncRequest struct {
 	Actions []map[string]interface{} `json:"actions"`
 	// The version number of the catalog to apply the actions on.
-	Version *int64 `json:"version,omitempty"`
+	Version              *int64 `json:"version,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CatalogSyncRequest CatalogSyncRequest
@@ -116,6 +116,11 @@ func (o CatalogSyncRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Version) {
 		toSerialize["version"] = o.Version
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -143,15 +148,21 @@ func (o *CatalogSyncRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varCatalogSyncRequest := _CatalogSyncRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCatalogSyncRequest)
+	err = json.Unmarshal(data, &varCatalogSyncRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CatalogSyncRequest(varCatalogSyncRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "actions")
+		delete(additionalProperties, "version")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type IntegrationHubConfig struct {
 	// The url used to integrate the IntegrationHub Marketplace.
 	IntegrationHubUrl string `json:"integrationHubUrl"`
 	// Access token used to authenticate a user in Talon.One.
-	AccessToken string `json:"accessToken"`
+	AccessToken          string `json:"accessToken"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _IntegrationHubConfig IntegrationHubConfig
@@ -108,6 +108,11 @@ func (o IntegrationHubConfig) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["integrationHubUrl"] = o.IntegrationHubUrl
 	toSerialize["accessToken"] = o.AccessToken
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *IntegrationHubConfig) UnmarshalJSON(data []byte) (err error) {
 
 	varIntegrationHubConfig := _IntegrationHubConfig{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varIntegrationHubConfig)
+	err = json.Unmarshal(data, &varIntegrationHubConfig)
 
 	if err != nil {
 		return err
 	}
 
 	*o = IntegrationHubConfig(varIntegrationHubConfig)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "integrationHubUrl")
+		delete(additionalProperties, "accessToken")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

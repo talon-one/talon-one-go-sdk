@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -24,7 +23,8 @@ type OutgoingIntegrationBrazePolicy struct {
 	// The base URL of your Braze deployment.
 	BaseUrl string `json:"baseUrl"`
 	// The API key of your Braze deployment.
-	ApiKey string `json:"apiKey"`
+	ApiKey               string `json:"apiKey"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _OutgoingIntegrationBrazePolicy OutgoingIntegrationBrazePolicy
@@ -108,6 +108,11 @@ func (o OutgoingIntegrationBrazePolicy) ToMap() (map[string]interface{}, error) 
 	toSerialize := map[string]interface{}{}
 	toSerialize["baseUrl"] = o.BaseUrl
 	toSerialize["apiKey"] = o.ApiKey
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *OutgoingIntegrationBrazePolicy) UnmarshalJSON(data []byte) (err error) 
 
 	varOutgoingIntegrationBrazePolicy := _OutgoingIntegrationBrazePolicy{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varOutgoingIntegrationBrazePolicy)
+	err = json.Unmarshal(data, &varOutgoingIntegrationBrazePolicy)
 
 	if err != nil {
 		return err
 	}
 
 	*o = OutgoingIntegrationBrazePolicy(varOutgoingIntegrationBrazePolicy)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "baseUrl")
+		delete(additionalProperties, "apiKey")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

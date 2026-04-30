@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,8 +21,9 @@ var _ MappedNullable = &OktaEvent{}
 // OktaEvent Single event definition in the event data emitted by Okta.
 type OktaEvent struct {
 	// Event type defining an action.
-	EventType string            `json:"eventType"`
-	Target    []OktaEventTarget `json:"target"`
+	EventType            string            `json:"eventType"`
+	Target               []OktaEventTarget `json:"target"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _OktaEvent OktaEvent
@@ -107,6 +107,11 @@ func (o OktaEvent) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["eventType"] = o.EventType
 	toSerialize["target"] = o.Target
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -135,15 +140,21 @@ func (o *OktaEvent) UnmarshalJSON(data []byte) (err error) {
 
 	varOktaEvent := _OktaEvent{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varOktaEvent)
+	err = json.Unmarshal(data, &varOktaEvent)
 
 	if err != nil {
 		return err
 	}
 
 	*o = OktaEvent(varOktaEvent)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "eventType")
+		delete(additionalProperties, "target")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -35,7 +34,8 @@ type AccessLogEntry struct {
 	// payload of request
 	RequestPayload string `json:"requestPayload"`
 	// payload of response
-	ResponsePayload string `json:"responsePayload"`
+	ResponsePayload      string `json:"responsePayload"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AccessLogEntry AccessLogEntry
@@ -249,6 +249,11 @@ func (o AccessLogEntry) ToMap() (map[string]interface{}, error) {
 	toSerialize["time"] = o.Time
 	toSerialize["requestPayload"] = o.RequestPayload
 	toSerialize["responsePayload"] = o.ResponsePayload
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -282,15 +287,26 @@ func (o *AccessLogEntry) UnmarshalJSON(data []byte) (err error) {
 
 	varAccessLogEntry := _AccessLogEntry{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAccessLogEntry)
+	err = json.Unmarshal(data, &varAccessLogEntry)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AccessLogEntry(varAccessLogEntry)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "uuid")
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "method")
+		delete(additionalProperties, "requestUri")
+		delete(additionalProperties, "time")
+		delete(additionalProperties, "requestPayload")
+		delete(additionalProperties, "responsePayload")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

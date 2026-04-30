@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -32,7 +31,8 @@ type SlotDef struct {
 	// Extended help text for the slot.
 	Help *string `json:"help,omitempty"`
 	// Whether or not this slot can be updated by rule effects.
-	Writable bool `json:"writable"`
+	Writable             bool `json:"writable"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _SlotDef SlotDef
@@ -238,6 +238,11 @@ func (o SlotDef) ToMap() (map[string]interface{}, error) {
 		toSerialize["help"] = o.Help
 	}
 	toSerialize["writable"] = o.Writable
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -268,15 +273,25 @@ func (o *SlotDef) UnmarshalJSON(data []byte) (err error) {
 
 	varSlotDef := _SlotDef{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varSlotDef)
+	err = json.Unmarshal(data, &varSlotDef)
 
 	if err != nil {
 		return err
 	}
 
 	*o = SlotDef(varSlotDef)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "help")
+		delete(additionalProperties, "writable")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

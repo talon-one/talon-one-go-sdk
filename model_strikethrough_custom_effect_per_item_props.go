@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -26,7 +25,8 @@ type StrikethroughCustomEffectPerItemProps struct {
 	// The type of the custom effect.
 	Name string `json:"name"`
 	// The JSON payload of the custom effect.
-	Payload map[string]interface{} `json:"payload"`
+	Payload              map[string]interface{} `json:"payload"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _StrikethroughCustomEffectPerItemProps StrikethroughCustomEffectPerItemProps
@@ -136,6 +136,11 @@ func (o StrikethroughCustomEffectPerItemProps) ToMap() (map[string]interface{}, 
 	toSerialize["effectId"] = o.EffectId
 	toSerialize["name"] = o.Name
 	toSerialize["payload"] = o.Payload
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -165,15 +170,22 @@ func (o *StrikethroughCustomEffectPerItemProps) UnmarshalJSON(data []byte) (err 
 
 	varStrikethroughCustomEffectPerItemProps := _StrikethroughCustomEffectPerItemProps{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varStrikethroughCustomEffectPerItemProps)
+	err = json.Unmarshal(data, &varStrikethroughCustomEffectPerItemProps)
 
 	if err != nil {
 		return err
 	}
 
 	*o = StrikethroughCustomEffectPerItemProps(varStrikethroughCustomEffectPerItemProps)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "effectId")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "payload")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

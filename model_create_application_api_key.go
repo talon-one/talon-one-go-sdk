@@ -11,7 +11,6 @@ API version:
 package talon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -31,7 +30,8 @@ type CreateApplicationAPIKey struct {
 	// The API key type. Can be empty or `staging`.  Staging API keys can only be used for dry requests with the [Update customer session](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2) endpoint, [Update customer profile](https://docs.talon.one/integration-api#tag/Customer-profiles/operation/updateCustomerProfileV2) endpoint, and [Track event](https://docs.talon.one/integration-api#tag/Events/operation/trackEventV2) endpoint.  When using the _Update customer profile_ endpoint with a staging API key, the query parameter `runRuleEngine` must be `true`.
 	Type *string `json:"type,omitempty"`
 	// A time offset in nanoseconds associated with the API key. When making a request using the API key, rule evaluation is based on a date that is calculated by adding the offset to the current date.
-	TimeOffset *int64 `json:"timeOffset,omitempty"`
+	TimeOffset           *int64 `json:"timeOffset,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CreateApplicationAPIKey CreateApplicationAPIKey
@@ -220,6 +220,11 @@ func (o CreateApplicationAPIKey) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.TimeOffset) {
 		toSerialize["timeOffset"] = o.TimeOffset
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -248,15 +253,24 @@ func (o *CreateApplicationAPIKey) UnmarshalJSON(data []byte) (err error) {
 
 	varCreateApplicationAPIKey := _CreateApplicationAPIKey{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCreateApplicationAPIKey)
+	err = json.Unmarshal(data, &varCreateApplicationAPIKey)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CreateApplicationAPIKey(varCreateApplicationAPIKey)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "expires")
+		delete(additionalProperties, "platform")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "timeOffset")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

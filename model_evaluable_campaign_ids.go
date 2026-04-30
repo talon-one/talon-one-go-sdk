@@ -21,7 +21,10 @@ var _ MappedNullable = &EvaluableCampaignIds{}
 type EvaluableCampaignIds struct {
 	// When using the `dry` query parameter, use this property to list the campaign to be evaluated by the Rule Engine.  These campaigns will be evaluated, even if they are disabled, allowing you to test specific campaigns before activating them.
 	EvaluableCampaignIds []int64 `json:"evaluableCampaignIds,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _EvaluableCampaignIds EvaluableCampaignIds
 
 // NewEvaluableCampaignIds instantiates a new EvaluableCampaignIds object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o EvaluableCampaignIds) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.EvaluableCampaignIds) {
 		toSerialize["evaluableCampaignIds"] = o.EvaluableCampaignIds
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *EvaluableCampaignIds) UnmarshalJSON(data []byte) (err error) {
+	varEvaluableCampaignIds := _EvaluableCampaignIds{}
+
+	err = json.Unmarshal(data, &varEvaluableCampaignIds)
+
+	if err != nil {
+		return err
+	}
+
+	*o = EvaluableCampaignIds(varEvaluableCampaignIds)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "evaluableCampaignIds")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableEvaluableCampaignIds struct {

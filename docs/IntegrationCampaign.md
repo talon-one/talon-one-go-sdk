@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **ApplicationId** | **int64** | The ID of the Application that owns this entity. | 
 **Id** | **int64** | Unique ID of Campaign. | 
-**Name** | **string** | A user-facing name for this campaign. | 
+**Name** | **string** | The name of the campaign. | 
 **Description** | Pointer to **string** | A detailed description of the campaign. | [optional] 
 **StartTime** | Pointer to **time.Time** | Timestamp when the campaign will become active. | [optional] 
 **EndTime** | Pointer to **time.Time** | Timestamp when the campaign will become inactive. | [optional] 
@@ -14,6 +14,7 @@ Name | Type | Description | Notes
 **State** | **string** | The state of the campaign.  | [default to "enabled"]
 **Tags** | **[]string** | A list of tags for the campaign. | 
 **Features** | **[]string** | The features enabled in this campaign. | 
+**Rules** | Pointer to [**[]RuleMetadata**](RuleMetadata.md) | A list of rules containing customer-facing details of the rewards defined in the campaign. | [optional] 
 
 ## Methods
 
@@ -253,6 +254,31 @@ and a boolean to check if the value has been set.
 
 SetFeatures sets Features field to given value.
 
+
+### GetRules
+
+`func (o *IntegrationCampaign) GetRules() []RuleMetadata`
+
+GetRules returns the Rules field if non-nil, zero value otherwise.
+
+### GetRulesOk
+
+`func (o *IntegrationCampaign) GetRulesOk() (*[]RuleMetadata, bool)`
+
+GetRulesOk returns a tuple with the Rules field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRules
+
+`func (o *IntegrationCampaign) SetRules(v []RuleMetadata)`
+
+SetRules sets Rules field to given value.
+
+### HasRules
+
+`func (o *IntegrationCampaign) HasRules() bool`
+
+HasRules returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
