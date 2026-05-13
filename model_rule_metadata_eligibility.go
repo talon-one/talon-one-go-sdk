@@ -15,11 +15,11 @@ import (
 	"fmt"
 )
 
-// checks if the RuleMetadata type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &RuleMetadata{}
+// checks if the RuleMetadataEligibility type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &RuleMetadataEligibility{}
 
-// RuleMetadata struct for RuleMetadata
-type RuleMetadata struct {
+// RuleMetadataEligibility struct for RuleMetadataEligibility
+type RuleMetadataEligibility struct {
 	// A short description of the rule.
 	Title string `json:"title"`
 	// A customer-facing name for the rule.
@@ -27,32 +27,34 @@ type RuleMetadata struct {
 	// A customer-facing description that explains the details of the rule.   For example, this property can contain details about eligibility requirements, reward timelines, or terms and conditions.
 	DisplayDescription *string `json:"displayDescription,omitempty"`
 	// Any additional data associated with the rule, such as an image URL, vendor name, or a content management system (CMS) ID.
-	RelatedData          *string `json:"relatedData,omitempty"`
+	RelatedData          *string           `json:"relatedData,omitempty"`
+	Eligibility          []RuleEligibility `json:"eligibility"`
 	AdditionalProperties map[string]interface{}
 }
 
-type _RuleMetadata RuleMetadata
+type _RuleMetadataEligibility RuleMetadataEligibility
 
-// NewRuleMetadata instantiates a new RuleMetadata object
+// NewRuleMetadataEligibility instantiates a new RuleMetadataEligibility object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildRuleMetadata(title string) *RuleMetadata {
-	this := RuleMetadata{}
+func BuildRuleMetadataEligibility(title string, eligibility []RuleEligibility) *RuleMetadataEligibility {
+	this := RuleMetadataEligibility{}
 	this.Title = title
+	this.Eligibility = eligibility
 	return &this
 }
 
-// NewRuleMetadataWithDefaults instantiates a new RuleMetadata object
+// NewRuleMetadataEligibilityWithDefaults instantiates a new RuleMetadataEligibility object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewRuleMetadataWithDefaults() *RuleMetadata {
-	this := RuleMetadata{}
+func NewRuleMetadataEligibilityWithDefaults() *RuleMetadataEligibility {
+	this := RuleMetadataEligibility{}
 	return &this
 }
 
 // GetTitle returns the Title field value
-func (o *RuleMetadata) GetTitle() string {
+func (o *RuleMetadataEligibility) GetTitle() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -63,7 +65,7 @@ func (o *RuleMetadata) GetTitle() string {
 
 // GetTitleOk returns a tuple with the Title field value
 // and a boolean to check if the value has been set.
-func (o *RuleMetadata) GetTitleOk() (*string, bool) {
+func (o *RuleMetadataEligibility) GetTitleOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -71,12 +73,12 @@ func (o *RuleMetadata) GetTitleOk() (*string, bool) {
 }
 
 // SetTitle sets field value
-func (o *RuleMetadata) SetTitle(v string) {
+func (o *RuleMetadataEligibility) SetTitle(v string) {
 	o.Title = v
 }
 
 // GetDisplayName returns the DisplayName field value if set, zero value otherwise.
-func (o *RuleMetadata) GetDisplayName() string {
+func (o *RuleMetadataEligibility) GetDisplayName() string {
 	if o == nil || IsNil(o.DisplayName) {
 		var ret string
 		return ret
@@ -86,7 +88,7 @@ func (o *RuleMetadata) GetDisplayName() string {
 
 // GetDisplayNameOk returns a tuple with the DisplayName field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *RuleMetadata) GetDisplayNameOk() (*string, bool) {
+func (o *RuleMetadataEligibility) GetDisplayNameOk() (*string, bool) {
 	if o == nil || IsNil(o.DisplayName) {
 		return nil, false
 	}
@@ -94,7 +96,7 @@ func (o *RuleMetadata) GetDisplayNameOk() (*string, bool) {
 }
 
 // HasDisplayName returns a boolean if a field has been set.
-func (o *RuleMetadata) HasDisplayName() bool {
+func (o *RuleMetadataEligibility) HasDisplayName() bool {
 	if o != nil && !IsNil(o.DisplayName) {
 		return true
 	}
@@ -103,12 +105,12 @@ func (o *RuleMetadata) HasDisplayName() bool {
 }
 
 // SetDisplayName gets a reference to the given string and assigns it to the DisplayName field.
-func (o *RuleMetadata) SetDisplayName(v string) {
+func (o *RuleMetadataEligibility) SetDisplayName(v string) {
 	o.DisplayName = &v
 }
 
 // GetDisplayDescription returns the DisplayDescription field value if set, zero value otherwise.
-func (o *RuleMetadata) GetDisplayDescription() string {
+func (o *RuleMetadataEligibility) GetDisplayDescription() string {
 	if o == nil || IsNil(o.DisplayDescription) {
 		var ret string
 		return ret
@@ -118,7 +120,7 @@ func (o *RuleMetadata) GetDisplayDescription() string {
 
 // GetDisplayDescriptionOk returns a tuple with the DisplayDescription field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *RuleMetadata) GetDisplayDescriptionOk() (*string, bool) {
+func (o *RuleMetadataEligibility) GetDisplayDescriptionOk() (*string, bool) {
 	if o == nil || IsNil(o.DisplayDescription) {
 		return nil, false
 	}
@@ -126,7 +128,7 @@ func (o *RuleMetadata) GetDisplayDescriptionOk() (*string, bool) {
 }
 
 // HasDisplayDescription returns a boolean if a field has been set.
-func (o *RuleMetadata) HasDisplayDescription() bool {
+func (o *RuleMetadataEligibility) HasDisplayDescription() bool {
 	if o != nil && !IsNil(o.DisplayDescription) {
 		return true
 	}
@@ -135,12 +137,12 @@ func (o *RuleMetadata) HasDisplayDescription() bool {
 }
 
 // SetDisplayDescription gets a reference to the given string and assigns it to the DisplayDescription field.
-func (o *RuleMetadata) SetDisplayDescription(v string) {
+func (o *RuleMetadataEligibility) SetDisplayDescription(v string) {
 	o.DisplayDescription = &v
 }
 
 // GetRelatedData returns the RelatedData field value if set, zero value otherwise.
-func (o *RuleMetadata) GetRelatedData() string {
+func (o *RuleMetadataEligibility) GetRelatedData() string {
 	if o == nil || IsNil(o.RelatedData) {
 		var ret string
 		return ret
@@ -150,7 +152,7 @@ func (o *RuleMetadata) GetRelatedData() string {
 
 // GetRelatedDataOk returns a tuple with the RelatedData field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *RuleMetadata) GetRelatedDataOk() (*string, bool) {
+func (o *RuleMetadataEligibility) GetRelatedDataOk() (*string, bool) {
 	if o == nil || IsNil(o.RelatedData) {
 		return nil, false
 	}
@@ -158,7 +160,7 @@ func (o *RuleMetadata) GetRelatedDataOk() (*string, bool) {
 }
 
 // HasRelatedData returns a boolean if a field has been set.
-func (o *RuleMetadata) HasRelatedData() bool {
+func (o *RuleMetadataEligibility) HasRelatedData() bool {
 	if o != nil && !IsNil(o.RelatedData) {
 		return true
 	}
@@ -167,11 +169,35 @@ func (o *RuleMetadata) HasRelatedData() bool {
 }
 
 // SetRelatedData gets a reference to the given string and assigns it to the RelatedData field.
-func (o *RuleMetadata) SetRelatedData(v string) {
+func (o *RuleMetadataEligibility) SetRelatedData(v string) {
 	o.RelatedData = &v
 }
 
-func (o RuleMetadata) MarshalJSON() ([]byte, error) {
+// GetEligibility returns the Eligibility field value
+func (o *RuleMetadataEligibility) GetEligibility() []RuleEligibility {
+	if o == nil {
+		var ret []RuleEligibility
+		return ret
+	}
+
+	return o.Eligibility
+}
+
+// GetEligibilityOk returns a tuple with the Eligibility field value
+// and a boolean to check if the value has been set.
+func (o *RuleMetadataEligibility) GetEligibilityOk() ([]RuleEligibility, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Eligibility, true
+}
+
+// SetEligibility sets field value
+func (o *RuleMetadataEligibility) SetEligibility(v []RuleEligibility) {
+	o.Eligibility = v
+}
+
+func (o RuleMetadataEligibility) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -179,7 +205,7 @@ func (o RuleMetadata) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-func (o RuleMetadata) ToMap() (map[string]interface{}, error) {
+func (o RuleMetadataEligibility) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["title"] = o.Title
 	if !IsNil(o.DisplayName) {
@@ -191,6 +217,7 @@ func (o RuleMetadata) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.RelatedData) {
 		toSerialize["relatedData"] = o.RelatedData
 	}
+	toSerialize["eligibility"] = o.Eligibility
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value
@@ -199,12 +226,13 @@ func (o RuleMetadata) ToMap() (map[string]interface{}, error) {
 	return toSerialize, nil
 }
 
-func (o *RuleMetadata) UnmarshalJSON(data []byte) (err error) {
+func (o *RuleMetadataEligibility) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
 		"title",
+		"eligibility",
 	}
 
 	allProperties := make(map[string]interface{})
@@ -221,15 +249,15 @@ func (o *RuleMetadata) UnmarshalJSON(data []byte) (err error) {
 		}
 	}
 
-	varRuleMetadata := _RuleMetadata{}
+	varRuleMetadataEligibility := _RuleMetadataEligibility{}
 
-	err = json.Unmarshal(data, &varRuleMetadata)
+	err = json.Unmarshal(data, &varRuleMetadataEligibility)
 
 	if err != nil {
 		return err
 	}
 
-	*o = RuleMetadata(varRuleMetadata)
+	*o = RuleMetadataEligibility(varRuleMetadataEligibility)
 
 	additionalProperties := make(map[string]interface{})
 
@@ -238,44 +266,45 @@ func (o *RuleMetadata) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "displayName")
 		delete(additionalProperties, "displayDescription")
 		delete(additionalProperties, "relatedData")
+		delete(additionalProperties, "eligibility")
 		o.AdditionalProperties = additionalProperties
 	}
 
 	return err
 }
 
-type NullableRuleMetadata struct {
-	value *RuleMetadata
+type NullableRuleMetadataEligibility struct {
+	value *RuleMetadataEligibility
 	isSet bool
 }
 
-func (v NullableRuleMetadata) Get() *RuleMetadata {
+func (v NullableRuleMetadataEligibility) Get() *RuleMetadataEligibility {
 	return v.value
 }
 
-func (v *NullableRuleMetadata) Set(val *RuleMetadata) {
+func (v *NullableRuleMetadataEligibility) Set(val *RuleMetadataEligibility) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableRuleMetadata) IsSet() bool {
+func (v NullableRuleMetadataEligibility) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableRuleMetadata) Unset() {
+func (v *NullableRuleMetadataEligibility) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func BuildNullableRuleMetadata(val *RuleMetadata) *NullableRuleMetadata {
-	return &NullableRuleMetadata{value: val, isSet: true}
+func BuildNullableRuleMetadataEligibility(val *RuleMetadataEligibility) *NullableRuleMetadataEligibility {
+	return &NullableRuleMetadataEligibility{value: val, isSet: true}
 }
 
-func (v NullableRuleMetadata) MarshalJSON() ([]byte, error) {
+func (v NullableRuleMetadataEligibility) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableRuleMetadata) UnmarshalJSON(src []byte) error {
+func (v *NullableRuleMetadataEligibility) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }

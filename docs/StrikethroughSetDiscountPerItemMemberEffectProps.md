@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Name** | **string** | effect name. | 
+**Name** | **string** | The effect name. | 
 **Value** | **interface{}** |  | 
 
 ## Methods

@@ -110,12 +110,12 @@ Method | HTTP request | Description
 [**GetExperiment**](ManagementAPI.md#GetExperiment) | **Get** /v1/applications/{applicationId}/experiments/{experimentId} | Get experiment in Application
 [**GetExports**](ManagementAPI.md#GetExports) | **Get** /v1/exports | Get exports
 [**GetLoyaltyCard**](ManagementAPI.md#GetLoyaltyCard) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId} | Get loyalty card
-[**GetLoyaltyCardTransactionLogs**](ManagementAPI.md#GetLoyaltyCardTransactionLogs) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/logs | List card&#39;s transactions
+[**GetLoyaltyCardTransactionLogs**](ManagementAPI.md#GetLoyaltyCardTransactionLogs) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/logs | List card&#39;s transactions (Management API)
 [**GetLoyaltyCards**](ManagementAPI.md#GetLoyaltyCards) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/cards | List loyalty cards
-[**GetLoyaltyLedgerBalances**](ManagementAPI.md#GetLoyaltyLedgerBalances) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/ledger_balances | Get customer&#39;s loyalty balances
+[**GetLoyaltyLedgerBalances**](ManagementAPI.md#GetLoyaltyLedgerBalances) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/ledger_balances | Get customer&#39;s loyalty balances (Management API)
 [**GetLoyaltyPoints**](ManagementAPI.md#GetLoyaltyPoints) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId} | Get customer&#39;s full loyalty ledger
 [**GetLoyaltyProgram**](ManagementAPI.md#GetLoyaltyProgram) | **Get** /v1/loyalty_programs/{loyaltyProgramId} | Get loyalty program
-[**GetLoyaltyProgramProfileLedgerTransactions**](ManagementAPI.md#GetLoyaltyProgramProfileLedgerTransactions) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/ledger_transactions | List customer&#39;s loyalty transactions
+[**GetLoyaltyProgramProfileLedgerTransactions**](ManagementAPI.md#GetLoyaltyProgramProfileLedgerTransactions) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/ledger_transactions | List customer&#39;s loyalty transactions (Management API)
 [**GetLoyaltyProgramTransactions**](ManagementAPI.md#GetLoyaltyProgramTransactions) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/transactions | List loyalty program transactions
 [**GetLoyaltyPrograms**](ManagementAPI.md#GetLoyaltyPrograms) | **Get** /v1/loyalty_programs | List loyalty programs
 [**GetLoyaltyStatistics**](ManagementAPI.md#GetLoyaltyStatistics) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/statistics | Get loyalty program statistics
@@ -8163,7 +8163,7 @@ Name | Type | Description  | Notes
 
 > GetLoyaltyCardTransactionLogs200Response GetLoyaltyCardTransactionLogs(ctx, loyaltyProgramId, loyaltyCardId).StartDate(startDate).EndDate(endDate).PageSize(pageSize).Skip(skip).SubledgerId(subledgerId).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).Execute()
 
-List card's transactions
+List card's transactions (Management API)
 
 
 
@@ -8333,7 +8333,7 @@ Name | Type | Description  | Notes
 
 > LoyaltyBalancesWithTiers GetLoyaltyLedgerBalances(ctx, loyaltyProgramId, integrationId).EndDate(endDate).SubledgerId(subledgerId).IncludeTiers(includeTiers).IncludeProjectedTier(includeProjectedTier).Execute()
 
-Get customer's loyalty balances
+Get customer's loyalty balances (Management API)
 
 
 
@@ -8558,7 +8558,7 @@ Name | Type | Description  | Notes
 
 > GetLoyaltyProgramProfileTransactions200Response GetLoyaltyProgramProfileLedgerTransactions(ctx, loyaltyProgramId, integrationId).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).SubledgerId(subledgerId).LoyaltyTransactionType(loyaltyTransactionType).StartDate(startDate).EndDate(endDate).PageSize(pageSize).Skip(skip).AwaitsActivation(awaitsActivation).Execute()
 
-List customer's loyalty transactions
+List customer's loyalty transactions (Management API)
 
 
 
@@ -9661,7 +9661,7 @@ import (
 
 func main() {
 	collectionId := int64(789) // int64 | The ID of the collection. You can get it with the [List collections in account](#tag/Collections/operation/listAccountCollections) endpoint.
-	upFile := "upFile_example" // string | The file containing the data that is being imported. (optional)
+	upFile := os.NewFile(1234, "some_file") // *os.File | The CSV file containing the data that is being imported. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -9691,7 +9691,7 @@ Other parameters are passed through a pointer to a apiImportAccountCollectionReq
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **upFile** | **string** | The file containing the data that is being imported. | 
+ **upFile** | ***os.File** | The CSV file containing the data that is being imported. | 
 
 ### Return type
 
@@ -9733,7 +9733,7 @@ import (
 
 func main() {
 	attributeId := int64(789) // int64 | The ID of the attribute. You can find the ID in the Campaign Manager's URL when you display the details of an attribute in **Account** > **Tools** > **Attributes**.
-	upFile := "upFile_example" // string | The file containing the data that is being imported. (optional)
+	upFile := os.NewFile(1234, "some_file") // *os.File | The CSV file containing the data that is being imported. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -9763,7 +9763,7 @@ Other parameters are passed through a pointer to a apiImportAllowedListRequest s
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **upFile** | **string** | The file containing the data that is being imported. | 
+ **upFile** | ***os.File** | The CSV file containing the data that is being imported. | 
 
 ### Return type
 
@@ -9805,7 +9805,7 @@ import (
 
 func main() {
 	audienceId := int64(789) // int64 | The ID of the audience.
-	upFile := "upFile_example" // string | The file containing the data that is being imported. (optional)
+	upFile := os.NewFile(1234, "some_file") // *os.File | The CSV file containing the data that is being imported. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -9835,7 +9835,7 @@ Other parameters are passed through a pointer to a apiImportAudiencesMemberships
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **upFile** | **string** | The file containing the data that is being imported. | 
+ **upFile** | ***os.File** | The CSV file containing the data that is being imported. | 
 
 ### Return type
 
@@ -9880,7 +9880,7 @@ func main() {
 	campaignId := int64(789) // int64 | The ID of the campaign. It is displayed in your Talon.One deployment URL.
 	action := "action_example" // string | The action that this budget is limiting. (optional)
 	period := "period_example" // string | The period to which the limit applies.  **Note**: For budgets with no period, set this to `overall`.  (optional)
-	upFile := "upFile_example" // string | The file containing the data that is being imported. (optional)
+	upFile := os.NewFile(1234, "some_file") // *os.File | The CSV file containing the data that is being imported. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -9914,7 +9914,7 @@ Name | Type | Description  | Notes
 
  **action** | **string** | The action that this budget is limiting. | 
  **period** | **string** | The period to which the limit applies.  **Note**: For budgets with no period, set this to &#x60;overall&#x60;.  | 
- **upFile** | **string** | The file containing the data that is being imported. | 
+ **upFile** | ***os.File** | The CSV file containing the data that is being imported. | 
 
 ### Return type
 
@@ -9957,7 +9957,7 @@ import (
 func main() {
 	applicationId := int64(789) // int64 | The ID of the Application. It is displayed in your Talon.One deployment URL.
 	campaignId := int64(789) // int64 | The ID of the campaign. It is displayed in your Talon.One deployment URL.
-	upFile := "upFile_example" // string | The file containing the data that is being imported. (optional)
+	upFile := os.NewFile(1234, "some_file") // *os.File | The CSV file containing the data that is being imported. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -9989,7 +9989,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **upFile** | **string** | The file containing the data that is being imported. | 
+ **upFile** | ***os.File** | The CSV file containing the data that is being imported. | 
 
 ### Return type
 
@@ -10033,7 +10033,7 @@ func main() {
 	applicationId := int64(789) // int64 | The ID of the Application. It is displayed in your Talon.One deployment URL.
 	campaignId := int64(789) // int64 | The ID of the campaign. It is displayed in your Talon.One deployment URL.
 	collectionId := int64(789) // int64 | The ID of the collection. You can get it with the [List collections in Application](#tag/Collections/operation/listCollectionsInApplication) endpoint.
-	upFile := "upFile_example" // string | The file containing the data that is being imported. (optional)
+	upFile := os.NewFile(1234, "some_file") // *os.File | The CSV file containing the data that is being imported. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -10067,7 +10067,7 @@ Name | Type | Description  | Notes
 
 
 
- **upFile** | **string** | The file containing the data that is being imported. | 
+ **upFile** | ***os.File** | The CSV file containing the data that is being imported. | 
 
 ### Return type
 
@@ -10111,7 +10111,7 @@ func main() {
 	applicationId := int64(789) // int64 | The ID of the Application. It is displayed in your Talon.One deployment URL.
 	campaignId := int64(789) // int64 | The ID of the campaign. It is displayed in your Talon.One deployment URL.
 	skipDuplicates := true // bool | An indicator of whether to skip duplicate coupon values instead of causing an error. Duplicate values are ignored when `skipDuplicates=true`.  (optional)
-	upFile := "upFile_example" // string | The file containing the data that is being imported. (optional)
+	upFile := os.NewFile(1234, "some_file") // *os.File | The CSV file containing the data that is being imported. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -10144,7 +10144,7 @@ Name | Type | Description  | Notes
 
 
  **skipDuplicates** | **bool** | An indicator of whether to skip duplicate coupon values instead of causing an error. Duplicate values are ignored when &#x60;skipDuplicates&#x3D;true&#x60;.  | 
- **upFile** | **string** | The file containing the data that is being imported. | 
+ **upFile** | ***os.File** | The CSV file containing the data that is being imported. | 
 
 ### Return type
 
@@ -10186,7 +10186,7 @@ import (
 
 func main() {
 	loyaltyProgramId := int64(789) // int64 | Identifier of the card-based loyalty program containing the loyalty card. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint. 
-	upFile := "upFile_example" // string | The file containing the data that is being imported. (optional)
+	upFile := os.NewFile(1234, "some_file") // *os.File | The CSV file containing the data that is being imported. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -10216,7 +10216,7 @@ Other parameters are passed through a pointer to a apiImportLoyaltyCardsRequest 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **upFile** | **string** | The file containing the data that is being imported. | 
+ **upFile** | ***os.File** | The CSV file containing the data that is being imported. | 
 
 ### Return type
 
@@ -10258,7 +10258,7 @@ import (
 
 func main() {
 	loyaltyProgramId := int64(789) // int64 | Identifier of the loyalty program. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint. 
-	upFile := "upFile_example" // string | The file containing the data that is being imported. (optional)
+	upFile := os.NewFile(1234, "some_file") // *os.File | The CSV file containing the data that is being imported. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -10288,7 +10288,7 @@ Other parameters are passed through a pointer to a apiImportLoyaltyCustomersTier
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **upFile** | **string** | The file containing the data that is being imported. | 
+ **upFile** | ***os.File** | The CSV file containing the data that is being imported. | 
 
 ### Return type
 
@@ -10331,7 +10331,7 @@ import (
 func main() {
 	loyaltyProgramId := int64(789) // int64 | Identifier of the loyalty program. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint. 
 	notificationsEnabled := true // bool | Indicates whether the points import triggers notifications about its effects. For example, a notification is sent if the import upgrades a customer's tier or offsets their negative points balance.  This parameter is optional and defaults to `true`.  (optional)
-	upFile := "upFile_example" // string | The file containing the data that is being imported. (optional)
+	upFile := os.NewFile(1234, "some_file") // *os.File | The CSV file containing the data that is being imported. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -10362,7 +10362,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
  **notificationsEnabled** | **bool** | Indicates whether the points import triggers notifications about its effects. For example, a notification is sent if the import upgrades a customer&#39;s tier or offsets their negative points balance.  This parameter is optional and defaults to &#x60;true&#x60;.  | 
- **upFile** | **string** | The file containing the data that is being imported. | 
+ **upFile** | ***os.File** | The CSV file containing the data that is being imported. | 
 
 ### Return type
 
@@ -10404,7 +10404,7 @@ import (
 
 func main() {
 	poolId := int64(789) // int64 | The ID of the pool. You can find it in the Campaign Manager, in the **Giveaways** section.
-	upFile := "upFile_example" // string | The file containing the data that is being imported. (optional)
+	upFile := os.NewFile(1234, "some_file") // *os.File | The CSV file containing the data that is being imported. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -10434,7 +10434,7 @@ Other parameters are passed through a pointer to a apiImportPoolGiveawaysRequest
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **upFile** | **string** | The file containing the data that is being imported. | 
+ **upFile** | ***os.File** | The CSV file containing the data that is being imported. | 
 
 ### Return type
 
@@ -10477,7 +10477,7 @@ import (
 func main() {
 	applicationId := int64(789) // int64 | The ID of the Application. It is displayed in your Talon.One deployment URL.
 	campaignId := int64(789) // int64 | The ID of the campaign. It is displayed in your Talon.One deployment URL.
-	upFile := "upFile_example" // string | The file containing the data that is being imported. (optional)
+	upFile := os.NewFile(1234, "some_file") // *os.File | The CSV file containing the data that is being imported. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -10509,7 +10509,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **upFile** | **string** | The file containing the data that is being imported. | 
+ **upFile** | ***os.File** | The CSV file containing the data that is being imported. | 
 
 ### Return type
 

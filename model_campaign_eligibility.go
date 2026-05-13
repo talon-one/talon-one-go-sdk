@@ -21,10 +21,10 @@ var _ MappedNullable = &CampaignEligibility{}
 
 // CampaignEligibility struct for CampaignEligibility
 type CampaignEligibility struct {
-	// Unique ID of Campaign.
-	Id int64 `json:"id"`
 	// The ID of the Application that owns this entity.
 	ApplicationId int64 `json:"applicationId"`
+	// Unique ID of Campaign.
+	Id int64 `json:"id"`
 	// The name of the campaign.
 	Name string `json:"name"`
 	// A detailed description of the campaign.
@@ -41,10 +41,10 @@ type CampaignEligibility struct {
 	Tags []string `json:"tags"`
 	// The features enabled in this campaign.
 	Features []string `json:"features"`
-	// A list of rules containing customer-facing details of the rewards defined in the campaign.
-	Rules []RuleMetadata `json:"rules,omitempty"`
 	// The customer's eligibility for each campaign in the current customer session.
-	Eligibility          []CampaignEligibilityDetails `json:"eligibility"`
+	Eligibility []CampaignEligibilityDetails `json:"eligibility"`
+	// A list of rules containing customer-facing details of the rewards defined in the campaign.
+	Rules                []RuleMetadataEligibility `json:"rules"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -54,15 +54,16 @@ type _CampaignEligibility CampaignEligibility
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCampaignEligibility(id int64, applicationId int64, name string, state string, tags []string, features []string, eligibility []CampaignEligibilityDetails) *CampaignEligibility {
+func BuildCampaignEligibility(applicationId int64, id int64, name string, state string, tags []string, features []string, eligibility []CampaignEligibilityDetails, rules []RuleMetadataEligibility) *CampaignEligibility {
 	this := CampaignEligibility{}
-	this.Id = id
 	this.ApplicationId = applicationId
+	this.Id = id
 	this.Name = name
 	this.State = state
 	this.Tags = tags
 	this.Features = features
 	this.Eligibility = eligibility
+	this.Rules = rules
 	return &this
 }
 
@@ -74,30 +75,6 @@ func NewCampaignEligibilityWithDefaults() *CampaignEligibility {
 	var state string = "enabled"
 	this.State = state
 	return &this
-}
-
-// GetId returns the Id field value
-func (o *CampaignEligibility) GetId() int64 {
-	if o == nil {
-		var ret int64
-		return ret
-	}
-
-	return o.Id
-}
-
-// GetIdOk returns a tuple with the Id field value
-// and a boolean to check if the value has been set.
-func (o *CampaignEligibility) GetIdOk() (*int64, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Id, true
-}
-
-// SetId sets field value
-func (o *CampaignEligibility) SetId(v int64) {
-	o.Id = v
 }
 
 // GetApplicationId returns the ApplicationId field value
@@ -122,6 +99,30 @@ func (o *CampaignEligibility) GetApplicationIdOk() (*int64, bool) {
 // SetApplicationId sets field value
 func (o *CampaignEligibility) SetApplicationId(v int64) {
 	o.ApplicationId = v
+}
+
+// GetId returns the Id field value
+func (o *CampaignEligibility) GetId() int64 {
+	if o == nil {
+		var ret int64
+		return ret
+	}
+
+	return o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value
+// and a boolean to check if the value has been set.
+func (o *CampaignEligibility) GetIdOk() (*int64, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Id, true
+}
+
+// SetId sets field value
+func (o *CampaignEligibility) SetId(v int64) {
+	o.Id = v
 }
 
 // GetName returns the Name field value
@@ -348,38 +349,6 @@ func (o *CampaignEligibility) SetFeatures(v []string) {
 	o.Features = v
 }
 
-// GetRules returns the Rules field value if set, zero value otherwise.
-func (o *CampaignEligibility) GetRules() []RuleMetadata {
-	if o == nil || IsNil(o.Rules) {
-		var ret []RuleMetadata
-		return ret
-	}
-	return o.Rules
-}
-
-// GetRulesOk returns a tuple with the Rules field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *CampaignEligibility) GetRulesOk() ([]RuleMetadata, bool) {
-	if o == nil || IsNil(o.Rules) {
-		return nil, false
-	}
-	return o.Rules, true
-}
-
-// HasRules returns a boolean if a field has been set.
-func (o *CampaignEligibility) HasRules() bool {
-	if o != nil && !IsNil(o.Rules) {
-		return true
-	}
-
-	return false
-}
-
-// SetRules gets a reference to the given []RuleMetadata and assigns it to the Rules field.
-func (o *CampaignEligibility) SetRules(v []RuleMetadata) {
-	o.Rules = v
-}
-
 // GetEligibility returns the Eligibility field value
 func (o *CampaignEligibility) GetEligibility() []CampaignEligibilityDetails {
 	if o == nil {
@@ -404,6 +373,30 @@ func (o *CampaignEligibility) SetEligibility(v []CampaignEligibilityDetails) {
 	o.Eligibility = v
 }
 
+// GetRules returns the Rules field value
+func (o *CampaignEligibility) GetRules() []RuleMetadataEligibility {
+	if o == nil {
+		var ret []RuleMetadataEligibility
+		return ret
+	}
+
+	return o.Rules
+}
+
+// GetRulesOk returns a tuple with the Rules field value
+// and a boolean to check if the value has been set.
+func (o *CampaignEligibility) GetRulesOk() ([]RuleMetadataEligibility, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Rules, true
+}
+
+// SetRules sets field value
+func (o *CampaignEligibility) SetRules(v []RuleMetadataEligibility) {
+	o.Rules = v
+}
+
 func (o CampaignEligibility) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -414,8 +407,8 @@ func (o CampaignEligibility) MarshalJSON() ([]byte, error) {
 
 func (o CampaignEligibility) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["id"] = o.Id
 	toSerialize["applicationId"] = o.ApplicationId
+	toSerialize["id"] = o.Id
 	toSerialize["name"] = o.Name
 	if !IsNil(o.Description) {
 		toSerialize["description"] = o.Description
@@ -432,10 +425,8 @@ func (o CampaignEligibility) ToMap() (map[string]interface{}, error) {
 	toSerialize["state"] = o.State
 	toSerialize["tags"] = o.Tags
 	toSerialize["features"] = o.Features
-	if !IsNil(o.Rules) {
-		toSerialize["rules"] = o.Rules
-	}
 	toSerialize["eligibility"] = o.Eligibility
+	toSerialize["rules"] = o.Rules
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value
@@ -449,13 +440,14 @@ func (o *CampaignEligibility) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"id",
 		"applicationId",
+		"id",
 		"name",
 		"state",
 		"tags",
 		"features",
 		"eligibility",
+		"rules",
 	}
 
 	allProperties := make(map[string]interface{})
@@ -485,8 +477,8 @@ func (o *CampaignEligibility) UnmarshalJSON(data []byte) (err error) {
 	additionalProperties := make(map[string]interface{})
 
 	if err = json.Unmarshal(data, &additionalProperties); err == nil {
-		delete(additionalProperties, "id")
 		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "id")
 		delete(additionalProperties, "name")
 		delete(additionalProperties, "description")
 		delete(additionalProperties, "startTime")
@@ -495,8 +487,8 @@ func (o *CampaignEligibility) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "state")
 		delete(additionalProperties, "tags")
 		delete(additionalProperties, "features")
-		delete(additionalProperties, "rules")
 		delete(additionalProperties, "eligibility")
+		delete(additionalProperties, "rules")
 		o.AdditionalProperties = additionalProperties
 	}
 

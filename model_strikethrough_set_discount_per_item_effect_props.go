@@ -20,10 +20,11 @@ var _ MappedNullable = &StrikethroughSetDiscountPerItemEffectProps{}
 
 // StrikethroughSetDiscountPerItemEffectProps setDiscountPerItem effect in strikethrough pricing payload.
 type StrikethroughSetDiscountPerItemEffectProps struct {
-	// effect name.
-	Name                     string      `json:"name"`
-	Value                    interface{} `json:"value"`
-	ExcludedFromPriceHistory *bool       `json:"excludedFromPriceHistory,omitempty"`
+	// The effect name.
+	Name  string      `json:"name"`
+	Value interface{} `json:"value"`
+	// When set to `true`, the applied discount is excluded from the item's price history.
+	ExcludedFromPriceHistory *bool `json:"excludedFromPriceHistory,omitempty"`
 	AdditionalProperties     map[string]interface{}
 }
 

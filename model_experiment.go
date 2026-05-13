@@ -35,6 +35,10 @@ type Experiment struct {
 	// A disabled experiment is not evaluated for rules or coupons.
 	State    string              `json:"state"`
 	Variants []ExperimentVariant `json:"variants,omitempty"`
+	// The goal of the experiment. Determines which single metric is used to decide the winning variant. When set to `other`, multiple metrics are used.
+	GoalType string `json:"goalType"`
+	// A description of the experiment goal. Provides context for the AI summary and helps it interpret the outcome of the experiment against the stated goal.
+	GoalDescription *string `json:"goalDescription,omitempty"`
 	// The date and time the experiment was deleted.
 	Deletedat            *time.Time `json:"deletedat,omitempty"`
 	AdditionalProperties map[string]interface{}
@@ -46,12 +50,13 @@ type _Experiment Experiment
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildExperiment(id int64, created time.Time, applicationId int64, state string) *Experiment {
+func BuildExperiment(id int64, created time.Time, applicationId int64, state string, goalType string) *Experiment {
 	this := Experiment{}
 	this.Id = id
 	this.Created = created
 	this.ApplicationId = applicationId
 	this.State = state
+	this.GoalType = goalType
 	return &this
 }
 
@@ -289,6 +294,62 @@ func (o *Experiment) SetVariants(v []ExperimentVariant) {
 	o.Variants = v
 }
 
+// GetGoalType returns the GoalType field value
+func (o *Experiment) GetGoalType() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.GoalType
+}
+
+// GetGoalTypeOk returns a tuple with the GoalType field value
+// and a boolean to check if the value has been set.
+func (o *Experiment) GetGoalTypeOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.GoalType, true
+}
+
+// SetGoalType sets field value
+func (o *Experiment) SetGoalType(v string) {
+	o.GoalType = v
+}
+
+// GetGoalDescription returns the GoalDescription field value if set, zero value otherwise.
+func (o *Experiment) GetGoalDescription() string {
+	if o == nil || IsNil(o.GoalDescription) {
+		var ret string
+		return ret
+	}
+	return *o.GoalDescription
+}
+
+// GetGoalDescriptionOk returns a tuple with the GoalDescription field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Experiment) GetGoalDescriptionOk() (*string, bool) {
+	if o == nil || IsNil(o.GoalDescription) {
+		return nil, false
+	}
+	return o.GoalDescription, true
+}
+
+// HasGoalDescription returns a boolean if a field has been set.
+func (o *Experiment) HasGoalDescription() bool {
+	if o != nil && !IsNil(o.GoalDescription) {
+		return true
+	}
+
+	return false
+}
+
+// SetGoalDescription gets a reference to the given string and assigns it to the GoalDescription field.
+func (o *Experiment) SetGoalDescription(v string) {
+	o.GoalDescription = &v
+}
+
 // GetDeletedat returns the Deletedat field value if set, zero value otherwise.
 func (o *Experiment) GetDeletedat() time.Time {
 	if o == nil || IsNil(o.Deletedat) {
@@ -347,6 +408,10 @@ func (o Experiment) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Variants) {
 		toSerialize["variants"] = o.Variants
 	}
+	toSerialize["goalType"] = o.GoalType
+	if !IsNil(o.GoalDescription) {
+		toSerialize["goalDescription"] = o.GoalDescription
+	}
 	if !IsNil(o.Deletedat) {
 		toSerialize["deletedat"] = o.Deletedat
 	}
@@ -367,6 +432,7 @@ func (o *Experiment) UnmarshalJSON(data []byte) (err error) {
 		"created",
 		"applicationId",
 		"state",
+		"goalType",
 	}
 
 	allProperties := make(map[string]interface{})
@@ -404,6 +470,8 @@ func (o *Experiment) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "activated")
 		delete(additionalProperties, "state")
 		delete(additionalProperties, "variants")
+		delete(additionalProperties, "goalType")
+		delete(additionalProperties, "goalDescription")
 		delete(additionalProperties, "deletedat")
 		o.AdditionalProperties = additionalProperties
 	}

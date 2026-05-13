@@ -12,8 +12,10 @@ Name | Type | Description | Notes
 **Description** | Pointer to **string** | A description of the reward. | [optional] 
 **ApplicationIds** | **[]int64** | The IDs of the Applications this reward is connected to.   **Note**: Currently, a reward can only be connected to one Application.  | 
 **Sandbox** | **bool** | Indicates if this is a live or sandbox reward. Rewards of a given type can only be connected to Applications of the same type. | 
-**Rule** | Pointer to [**[]Rule**](Rule.md) | Rule to apply. | [optional] 
+**VisibilityConditions** | Pointer to [**Rule**](Rule.md) | An optional rule that manages who can see this reward. If not specified, the reward is visible to all customers.  **Note:** Only the &#x60;condition&#x60; field is evaluated within this rule. The &#x60;effects&#x60; field must be an empty array, and &#x60;bindings&#x60; are not supported.  | [optional] 
+**Rule** | Pointer to [**Rule**](Rule.md) | Rule to apply.  **Note**: The &#x60;bindings&#x60; field inside the rule must not be used in this endpoint. All bindings should be defined at the reward level via the top-level &#x60;bindings&#x60; field.  | [optional] 
 **Bindings** | Pointer to [**[]Binding**](Binding.md) | A list of named variables created before the reward&#39;s rules are evaluated.  Each binding pairs a name with a talang expression. The expression is evaluated once  and its result is available by name in any rule condition or effect. Bindings must be defined outside of individual rules. | [optional] 
+**Modified** | Pointer to **time.Time** | The timestamp when the reward was last updated in RFC3339 format. | [optional] 
 **Status** | **string** | The status of the reward. | 
 
 ## Methods
@@ -200,22 +202,47 @@ and a boolean to check if the value has been set.
 SetSandbox sets Sandbox field to given value.
 
 
+### GetVisibilityConditions
+
+`func (o *Reward) GetVisibilityConditions() Rule`
+
+GetVisibilityConditions returns the VisibilityConditions field if non-nil, zero value otherwise.
+
+### GetVisibilityConditionsOk
+
+`func (o *Reward) GetVisibilityConditionsOk() (*Rule, bool)`
+
+GetVisibilityConditionsOk returns a tuple with the VisibilityConditions field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetVisibilityConditions
+
+`func (o *Reward) SetVisibilityConditions(v Rule)`
+
+SetVisibilityConditions sets VisibilityConditions field to given value.
+
+### HasVisibilityConditions
+
+`func (o *Reward) HasVisibilityConditions() bool`
+
+HasVisibilityConditions returns a boolean if a field has been set.
+
 ### GetRule
 
-`func (o *Reward) GetRule() []Rule`
+`func (o *Reward) GetRule() Rule`
 
 GetRule returns the Rule field if non-nil, zero value otherwise.
 
 ### GetRuleOk
 
-`func (o *Reward) GetRuleOk() (*[]Rule, bool)`
+`func (o *Reward) GetRuleOk() (*Rule, bool)`
 
 GetRuleOk returns a tuple with the Rule field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetRule
 
-`func (o *Reward) SetRule(v []Rule)`
+`func (o *Reward) SetRule(v Rule)`
 
 SetRule sets Rule field to given value.
 
@@ -249,6 +276,31 @@ SetBindings sets Bindings field to given value.
 `func (o *Reward) HasBindings() bool`
 
 HasBindings returns a boolean if a field has been set.
+
+### GetModified
+
+`func (o *Reward) GetModified() time.Time`
+
+GetModified returns the Modified field if non-nil, zero value otherwise.
+
+### GetModifiedOk
+
+`func (o *Reward) GetModifiedOk() (*time.Time, bool)`
+
+GetModifiedOk returns a tuple with the Modified field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetModified
+
+`func (o *Reward) SetModified(v time.Time)`
+
+SetModified sets Modified field to given value.
+
+### HasModified
+
+`func (o *Reward) HasModified() bool`
+
+HasModified returns a boolean if a field has been set.
 
 ### GetStatus
 

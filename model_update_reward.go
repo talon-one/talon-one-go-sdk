@@ -26,8 +26,10 @@ type UpdateReward struct {
 	Description *string `json:"description,omitempty"`
 	// The status of the reward.
 	Status string `json:"status"`
+	// An optional rule that manages who can see this reward. If not specified, the reward is visible to all customers.  **Note:** Only the `condition` field is evaluated within this rule. The `effects` field must be an empty array, and `bindings` are not supported.
+	VisibilityConditions *Rule `json:"visibilityConditions,omitempty"`
 	// Rule to apply.  **Note**: The `bindings` field inside the rule must not be used in this endpoint. All bindings should be defined at the reward level via the top-level `bindings` field.
-	Rule []Rule `json:"rule,omitempty"`
+	Rule *Rule `json:"rule,omitempty"`
 	// A list of named variables created before the reward's rules are evaluated.  Each binding pairs a name with a talang expression. The expression is evaluated once  and its result is available by name in any rule condition or effect. Bindings must be defined outside of individual rules.
 	Bindings             []Binding `json:"bindings,omitempty"`
 	AdditionalProperties map[string]interface{}
@@ -134,18 +136,50 @@ func (o *UpdateReward) SetStatus(v string) {
 	o.Status = v
 }
 
-// GetRule returns the Rule field value if set, zero value otherwise.
-func (o *UpdateReward) GetRule() []Rule {
-	if o == nil || IsNil(o.Rule) {
-		var ret []Rule
+// GetVisibilityConditions returns the VisibilityConditions field value if set, zero value otherwise.
+func (o *UpdateReward) GetVisibilityConditions() Rule {
+	if o == nil || IsNil(o.VisibilityConditions) {
+		var ret Rule
 		return ret
 	}
-	return o.Rule
+	return *o.VisibilityConditions
+}
+
+// GetVisibilityConditionsOk returns a tuple with the VisibilityConditions field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *UpdateReward) GetVisibilityConditionsOk() (*Rule, bool) {
+	if o == nil || IsNil(o.VisibilityConditions) {
+		return nil, false
+	}
+	return o.VisibilityConditions, true
+}
+
+// HasVisibilityConditions returns a boolean if a field has been set.
+func (o *UpdateReward) HasVisibilityConditions() bool {
+	if o != nil && !IsNil(o.VisibilityConditions) {
+		return true
+	}
+
+	return false
+}
+
+// SetVisibilityConditions gets a reference to the given Rule and assigns it to the VisibilityConditions field.
+func (o *UpdateReward) SetVisibilityConditions(v Rule) {
+	o.VisibilityConditions = &v
+}
+
+// GetRule returns the Rule field value if set, zero value otherwise.
+func (o *UpdateReward) GetRule() Rule {
+	if o == nil || IsNil(o.Rule) {
+		var ret Rule
+		return ret
+	}
+	return *o.Rule
 }
 
 // GetRuleOk returns a tuple with the Rule field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *UpdateReward) GetRuleOk() ([]Rule, bool) {
+func (o *UpdateReward) GetRuleOk() (*Rule, bool) {
 	if o == nil || IsNil(o.Rule) {
 		return nil, false
 	}
@@ -161,9 +195,9 @@ func (o *UpdateReward) HasRule() bool {
 	return false
 }
 
-// SetRule gets a reference to the given []Rule and assigns it to the Rule field.
-func (o *UpdateReward) SetRule(v []Rule) {
-	o.Rule = v
+// SetRule gets a reference to the given Rule and assigns it to the Rule field.
+func (o *UpdateReward) SetRule(v Rule) {
+	o.Rule = &v
 }
 
 // GetBindings returns the Bindings field value if set, zero value otherwise.
@@ -213,6 +247,9 @@ func (o UpdateReward) ToMap() (map[string]interface{}, error) {
 		toSerialize["description"] = o.Description
 	}
 	toSerialize["status"] = o.Status
+	if !IsNil(o.VisibilityConditions) {
+		toSerialize["visibilityConditions"] = o.VisibilityConditions
+	}
 	if !IsNil(o.Rule) {
 		toSerialize["rule"] = o.Rule
 	}
@@ -266,6 +303,7 @@ func (o *UpdateReward) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "name")
 		delete(additionalProperties, "description")
 		delete(additionalProperties, "status")
+		delete(additionalProperties, "visibilityConditions")
 		delete(additionalProperties, "rule")
 		delete(additionalProperties, "bindings")
 		o.AdditionalProperties = additionalProperties

@@ -2378,8 +2378,10 @@ paths:
         You can filter balances by date and subledger ID, and include tier-related
         information in the response.
 
-        > [!note] If no filtering options are applied, you retrieve all loyalty
-        > balances on the current date for the given integration ID.
+        > [!note] **Note**
+        > - For most use cases, especially real-time integrations, use the Integration API endpoint:
+            [Get customer's loyalty balances](https://docs.talon.one/integration-api#tag/Loyalty/operation/getLoyaltyBalances).
+        > - If no filtering options are applied, you retrieve all loyalty balances on the current date for the given integration ID.
 
         Loyalty balances are calculated when Talon.One receives your request using
         the points stored in our database, so retrieving a large number of balances
@@ -2494,7 +2496,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponseWithStatus"
           description: Not found
-      summary: Get customer's loyalty balances
+      summary: Get customer's loyalty balances (Management API)
       tags:
       - management
   /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/transactions:
@@ -2867,9 +2869,11 @@ paths:
         You can filter transactions by date or by ledger (subledger or main ledger). If no filters are applied, the last 50
         loyalty transactions for the given integration ID are returned.
 
-        > [!note] To retrieve all loyalty program transaction logs in a given
-        > loyalty program, use the [List loyalty program transactions](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyProgramTransactions)
-        > endpoint.
+        > [!note] **Note**
+        > - For most use cases, especially real-time integrations, use the Integration API endpoint:
+        >   [List customer's loyalty transactions](https://docs.talon.one/integration-api#tag/Loyalty/operation/getLoyaltyProgramProfileTransactions).
+        > - To retrieve all loyalty program transaction logs in a given loyalty program, use the
+        >   [List loyalty program transactions](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyProgramTransactions) endpoint.
       operationId: getLoyaltyProgramProfileLedgerTransactions
       parameters:
       - description: |
@@ -3034,7 +3038,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponseWithStatus"
           description: Not found
-      summary: List customer's loyalty transactions
+      summary: List customer's loyalty transactions (Management API)
       tags:
       - management
   /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/delete_transactions:
@@ -6993,8 +6997,14 @@ paths:
     get:
       description: |
         Retrieve the transaction logs for the given [loyalty card](https://docs.talon.one/docs/product/loyalty-programs/card-based/card-based-overview)
-        within the specified [card-based loyalty program](https://docs.talon.one/docs/product/loyalty-programs/overview#loyalty-program-types) with filtering options applied.
-        If no filtering options are applied, the last 50 loyalty transactions for the given loyalty card are returned.
+        within the specified [card-based loyalty program](https://docs.talon.one/docs/product/loyalty-programs/overview#loyalty-program-types)
+        with filtering options applied.
+
+        > [!note] For most use cases, especially real-time integrations, use the Integration API endpoint:
+        > [List card's transactions](https://docs.talon.one/integration-api#tag/Loyalty-cards/operation/getLoyaltyCardTransactions).
+
+        If no filtering options are applied, the last 50 loyalty transactions for
+        the given loyalty card are returned.
       operationId: getLoyaltyCardTransactionLogs
       parameters:
       - description: |
@@ -7120,7 +7130,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponseWithStatus"
           description: Not found
-      summary: List card's transactions
+      summary: List card's transactions (Management API)
       tags:
       - management
   /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/transfer:
@@ -13690,7 +13700,8 @@ components:
       description: The strikethrough labels notification for an application.
       properties:
         version:
-          description: The version of the strikethrough pricing notification.
+          description: |
+            The version of the strikethrough pricing notification. Set for **scheduled** strikethrough pricing updates only.
           enum:
           - v2
           type: string
@@ -17102,6 +17113,142 @@ components:
         lastActivity: 2022-11-10T23:00:00Z
         endTime: 2021-09-22T22:00:00Z
         referralRedemptionCount: 3
+    IntegrationCampaignBase:
+      allOf:
+      - $ref: "#/components/schemas/ApplicationEntity"
+      - properties:
+          id:
+            description: Unique ID of Campaign.
+            example: 4
+            format: int64
+            type: integer
+          name:
+            description: The name of the campaign.
+            example: Summer promotions
+            minLength: 1
+            title: Campaign Name
+            type: string
+          description:
+            description: A detailed description of the campaign.
+            example: Campaign for all summer 2021 promotions
+            title: Campaign Description
+            type: string
+          startTime:
+            description: Timestamp when the campaign will become active.
+            example: 2021-07-20T22:00:00Z
+            format: date-time
+            type: string
+          endTime:
+            description: Timestamp when the campaign will become inactive.
+            example: 2021-09-22T22:00:00Z
+            format: date-time
+            type: string
+          attributes:
+            $ref: "#/components/schemas/IntegrationCampaignBase_allOf_attributes"
+          state:
+            default: enabled
+            description: |
+              The state of the campaign.
+            enum:
+            - enabled
+            example: enabled
+            type: string
+          tags:
+            description: A list of tags for the campaign.
+            example:
+            - summer
+            items:
+              maxLength: 50
+              minLength: 1
+              type: string
+            maxItems: 50
+            type: array
+          features:
+            description: The features enabled in this campaign.
+            example:
+            - coupons
+            - referrals
+            items:
+              enum:
+              - coupons
+              - referrals
+              - loyalty
+              - giveaways
+              - strikethrough
+              - achievements
+              type: string
+            type: array
+        required:
+        - features
+        - id
+        - name
+        - state
+        - tags
+    CampaignEligibilityFailureDetails:
+      description: The details about why the customer was not eligible for the campaign
+        in the current session.
+      properties:
+        failureCode:
+          description: A code identifying why the customer was not eligible for the
+            campaign.
+          enum:
+          - ALL_RULES_FAILED
+          - SKIPPED
+          - AUDIENCE_NOT_MATCHED
+          type: string
+      required:
+      - failureCode
+    CampaignEligibilityDetails:
+      example:
+        details: ""
+        passed: true
+        couponCode: couponCode
+      properties:
+        passed:
+          description: Indicates whether the customer was eligible for the campaign
+            in the current session.
+          type: boolean
+        couponCode:
+          description: "The coupon code used to check a customer's eligibility for\
+            \ the campaign in the current session, if applicable."
+          type: string
+        details:
+          allOf:
+          - $ref: "#/components/schemas/CampaignEligibilityFailureDetails"
+          description: The details about why the customer was not eligible for the
+            campaign in the current session. Only returned when `passed` is `false`.
+      required:
+      - passed
+    RuleMetadata:
+      example:
+        displayDescription: Get a 20% discount on all shoes during Thanksgiving! Offer
+          valid till Dec 5 only.
+        displayName: 20% off all shoes!
+        relatedData: https://example.com/discounts/20-off-shoes.png
+        title: Give discount via coupon
+      properties:
+        title:
+          description: A short description of the rule.
+          example: Give discount via coupon
+          type: string
+        displayName:
+          description: A customer-facing name for the rule.
+          example: 20% off all shoes!
+          type: string
+        displayDescription:
+          description: "A customer-facing description that explains the details of\
+            \ the rule. \n\nFor example, this property can contain details about eligibility\
+            \ requirements, reward timelines, or terms and conditions.\n"
+          example: Get a 20% discount on all shoes during Thanksgiving! Offer valid
+            till Dec 5 only.
+          type: string
+        relatedData:
+          description: |
+            Any additional data associated with the rule, such as an image URL, vendor name, or a content management system (CMS) ID.
+          example: https://example.com/discounts/20-off-shoes.png
+          type: string
+      required:
+      - title
     RuleEligibilityFailureDetails:
       description: The details about why the customer was not eligible for the rule
         in the current session.
@@ -17171,7 +17318,16 @@ components:
             rule in the current session. Only returned when `passed` is `false`.
       required:
       - passed
-    RuleMetadata:
+    RuleMetadataEligibility:
+      allOf:
+      - $ref: "#/components/schemas/RuleMetadata"
+      - properties:
+          eligibility:
+            items:
+              $ref: "#/components/schemas/RuleEligibility"
+            type: array
+        required:
+        - eligibility
       example:
         displayDescription: Get a 20% discount on all shoes during Thanksgiving! Offer
           valid till Dec 5 only.
@@ -17185,189 +17341,9 @@ components:
           couponCode: couponCode
         relatedData: https://example.com/discounts/20-off-shoes.png
         title: Give discount via coupon
-      properties:
-        title:
-          description: A short description of the rule.
-          example: Give discount via coupon
-          type: string
-        displayName:
-          description: A customer-facing name for the rule.
-          example: 20% off all shoes!
-          type: string
-        displayDescription:
-          description: "A customer-facing description that explains the details of\
-            \ the rule. \n\nFor example, this property can contain details about eligibility\
-            \ requirements, reward timelines, or terms and conditions.\n"
-          example: Get a 20% discount on all shoes during Thanksgiving! Offer valid
-            till Dec 5 only.
-          type: string
-        relatedData:
-          description: |
-            Any additional data associated with the rule, such as an image URL, vendor name, or a content management system (CMS) ID.
-          example: https://example.com/discounts/20-off-shoes.png
-          type: string
-        eligibility:
-          items:
-            $ref: "#/components/schemas/RuleEligibility"
-          type: array
-      required:
-      - title
-    IntegrationCampaign:
-      allOf:
-      - properties:
-          id:
-            description: Unique ID of Campaign.
-            example: 4
-            format: int64
-            type: integer
-        required:
-        - id
-      - $ref: "#/components/schemas/ApplicationEntity"
-      - properties:
-          name:
-            description: The name of the campaign.
-            example: Summer promotions
-            minLength: 1
-            title: Campaign Name
-            type: string
-          description:
-            description: A detailed description of the campaign.
-            example: Campaign for all summer 2021 promotions
-            title: Campaign Description
-            type: string
-          startTime:
-            description: Timestamp when the campaign will become active.
-            example: 2021-07-20T22:00:00Z
-            format: date-time
-            type: string
-          endTime:
-            description: Timestamp when the campaign will become inactive.
-            example: 2021-09-22T22:00:00Z
-            format: date-time
-            type: string
-          attributes:
-            $ref: "#/components/schemas/IntegrationCampaign_allOf_attributes"
-          state:
-            default: enabled
-            description: |
-              The state of the campaign.
-            enum:
-            - enabled
-            example: enabled
-            type: string
-          tags:
-            description: A list of tags for the campaign.
-            example:
-            - summer
-            items:
-              maxLength: 50
-              minLength: 1
-              type: string
-            maxItems: 50
-            type: array
-          features:
-            description: The features enabled in this campaign.
-            example:
-            - coupons
-            - referrals
-            items:
-              enum:
-              - coupons
-              - referrals
-              - loyalty
-              - giveaways
-              - strikethrough
-              - achievements
-              type: string
-            type: array
-          rules:
-            description: A list of rules containing customer-facing details of the
-              rewards defined in the campaign.
-            items:
-              $ref: "#/components/schemas/RuleMetadata"
-            type: array
-        required:
-        - features
-        - name
-        - state
-        - tags
-      example:
-        features:
-        - coupons
-        - referrals
-        name: Summer promotions
-        description: Campaign for all summer 2021 promotions
-        startTime: 2021-07-20T22:00:00Z
-        attributes: null
-        rules:
-        - displayDescription: Get a 20% discount on all shoes during Thanksgiving!
-            Offer valid till Dec 5 only.
-          displayName: 20% off all shoes!
-          eligibility:
-          - details: ""
-            passed: true
-            couponCode: couponCode
-          - details: ""
-            passed: true
-            couponCode: couponCode
-          relatedData: https://example.com/discounts/20-off-shoes.png
-          title: Give discount via coupon
-        - displayDescription: Get a 20% discount on all shoes during Thanksgiving!
-            Offer valid till Dec 5 only.
-          displayName: 20% off all shoes!
-          eligibility:
-          - details: ""
-            passed: true
-            couponCode: couponCode
-          - details: ""
-            passed: true
-            couponCode: couponCode
-          relatedData: https://example.com/discounts/20-off-shoes.png
-          title: Give discount via coupon
-        id: 4
-        endTime: 2021-09-22T22:00:00Z
-        state: enabled
-        applicationId: 322
-        tags:
-        - summer
-    CampaignEligibilityFailureDetails:
-      description: The details about why the customer was not eligible for the campaign
-        in the current session.
-      properties:
-        failureCode:
-          description: A code identifying why the customer was not eligible for the
-            campaign.
-          enum:
-          - ALL_RULES_FAILED
-          - SKIPPED
-          - AUDIENCE_NOT_MATCHED
-          type: string
-      required:
-      - failureCode
-    CampaignEligibilityDetails:
-      example:
-        details: ""
-        passed: true
-        couponCode: couponCode
-      properties:
-        passed:
-          description: Indicates whether the customer was eligible for the campaign
-            in the current session.
-          type: boolean
-        couponCode:
-          description: "The coupon code used to check a customer's eligibility for\
-            \ the campaign in the current session, if applicable."
-          type: string
-        details:
-          allOf:
-          - $ref: "#/components/schemas/CampaignEligibilityFailureDetails"
-          description: The details about why the customer was not eligible for the
-            campaign in the current session. Only returned when `passed` is `false`.
-      required:
-      - passed
     CampaignEligibility:
       allOf:
-      - $ref: "#/components/schemas/IntegrationCampaign"
+      - $ref: "#/components/schemas/IntegrationCampaignBase"
       - description: "A list of campaigns and their evaluation status for the current\
           \ customer session.\n\n**Note**:\n\n- This response can **only** be included\
           \ if the `dry` parameter in the query is set to `true`. \n- Do not include\
@@ -17380,8 +17356,15 @@ components:
             items:
               $ref: "#/components/schemas/CampaignEligibilityDetails"
             type: array
+          rules:
+            description: A list of rules containing customer-facing details of the
+              rewards defined in the campaign.
+            items:
+              $ref: "#/components/schemas/RuleMetadataEligibility"
+            type: array
         required:
         - eligibility
+        - rules
       example:
         features:
         - coupons
@@ -20401,6 +20384,43 @@ components:
           items:
             $ref: "#/components/schemas/IntegrationCustomerProfileAudienceRequestItem"
           type: array
+    IntegrationCampaign:
+      allOf:
+      - $ref: "#/components/schemas/IntegrationCampaignBase"
+      - properties:
+          rules:
+            description: A list of rules containing customer-facing details of the
+              rewards defined in the campaign.
+            items:
+              $ref: "#/components/schemas/RuleMetadata"
+            type: array
+        required:
+        - rules
+      example:
+        features:
+        - coupons
+        - referrals
+        name: Summer promotions
+        description: Campaign for all summer 2021 promotions
+        startTime: 2021-07-20T22:00:00Z
+        attributes: null
+        rules:
+        - displayDescription: Get a 20% discount on all shoes during Thanksgiving!
+            Offer valid till Dec 5 only.
+          displayName: 20% off all shoes!
+          relatedData: https://example.com/discounts/20-off-shoes.png
+          title: Give discount via coupon
+        - displayDescription: Get a 20% discount on all shoes during Thanksgiving!
+            Offer valid till Dec 5 only.
+          displayName: 20% off all shoes!
+          relatedData: https://example.com/discounts/20-off-shoes.png
+          title: Give discount via coupon
+        id: 4
+        endTime: 2021-09-22T22:00:00Z
+        state: enabled
+        applicationId: 322
+        tags:
+        - summer
     NewAttribute:
       allOf:
       - properties:
@@ -25368,11 +25388,13 @@ components:
       description: setDiscountPerItem effect in strikethrough pricing payload.
       properties:
         name:
-          description: effect name.
+          description: The effect name.
           example: 1EuroOff
           type: string
         value: {}
         excludedFromPriceHistory:
+          description: "When set to `true`, the applied discount is excluded from\
+            \ the item's price history."
           type: boolean
       required:
       - name
@@ -25401,7 +25423,7 @@ components:
       description: setDiscountPerItem member effect in strikethrough pricing payload.
       properties:
         name:
-          description: effect name.
+          description: The effect name.
           example: 10% off members only
           type: string
         value: {}
@@ -27538,14 +27560,33 @@ components:
             items:
               $ref: "#/components/schemas/ExperimentVariant"
             type: array
+          goalType:
+            description: |
+              The goal of the experiment. Determines which single metric is used to decide the winning variant. When set to `other`, multiple metrics are used.
+            enum:
+            - other
+            - maximize_revenue
+            - optimize_discount_efficiency
+            - maximize_items_sold
+            type: string
+          goalDescription:
+            description: |
+              A description of the experiment goal. Provides context for the AI summary and helps it interpret the outcome of the experiment against the stated goal.
+            example: Offering free shipping will increase average order revenue more
+              than a 10% discount
+            type: string
           deletedat:
             description: |
               The date and time the experiment was deleted.
             format: date-time
             type: string
         required:
+        - goalType
         - state
       example:
+        goalType: other
+        goalDescription: Offering free shipping will increase average order revenue
+          more than a 10% discount
         deletedat: 2000-01-23T04:56:07.000+00:00
         created: 2020-06-10T09:05:27.993483Z
         campaign:
@@ -28074,8 +28115,24 @@ components:
           type: boolean
         campaign:
           $ref: "#/components/schemas/NewCampaign"
+        goalType:
+          description: |
+            The goal of the experiment. Determines which single metric is used to decide the winning variant. When set to `other`, multiple metrics are used.
+          enum:
+          - other
+          - maximize_revenue
+          - optimize_discount_efficiency
+          - maximize_items_sold
+          type: string
+        goalDescription:
+          description: |
+            A description of the experiment goal. Provides context for the AI summary and helps it interpret the outcome of the experiment against the stated goal.
+          example: Offering free shipping will increase average order revenue more
+            than a 10% discount
+          type: string
       required:
       - campaign
+      - goalType
       - isVariantAssignmentExternal
     ExperimentListResultsRequest:
       properties:
@@ -28195,6 +28252,21 @@ components:
             type: boolean
           campaign:
             $ref: "#/components/schemas/UpdateCampaign"
+          goalType:
+            description: |
+              The goal of the experiment. Determines which single metric is used to decide the winning variant. When set to `other`, multiple metrics are used.
+            enum:
+            - other
+            - maximize_revenue
+            - optimize_discount_efficiency
+            - maximize_items_sold
+            type: string
+          goalDescription:
+            description: |
+              A description of the experiment goal. Provides context for the AI summary and helps it interpret the outcome of the experiment against the stated goal.
+            example: Offering free shipping will increase average order revenue more
+              than a 10% discount
+            type: string
         required:
         - campaign
         - isVariantAssignmentExternal
@@ -33572,6 +33644,68 @@ components:
       required:
       - name
       - value
+    FeatureFlagUpdate:
+      properties:
+        name:
+          description: The name of the feature flag.
+          example: canCreateCampaignFromTemplate
+          type: string
+        value:
+          description: The value of the feature flag.
+          example: "true"
+          type: string
+      required:
+      - name
+      - value
+    NewRiskNotification:
+      description: Data for creating a new risk notification.
+      properties:
+        entity:
+          description: The entity type to analyze within the given time frame.
+          enum:
+          - customer_profile
+          - customer_session
+          example: customer_profile
+          type: string
+        activity:
+          description: The activity metric to analyze within the given entity.
+          enum:
+          - loyalty_points_earned
+          - discounted_amount
+          - completed_orders
+          - coupon_attempts
+          example: loyalty_points_earned
+          type: string
+        timeFrame:
+          description: The rolling time window for risk evaluation.
+          enum:
+          - 1_day
+          - 1_week
+          - 1_month
+          example: 1_week
+          type: string
+      required:
+      - activity
+      - entity
+      - timeFrame
+    RiskNotification:
+      allOf:
+      - $ref: "#/components/schemas/Entity"
+      - $ref: "#/components/schemas/NewRiskNotification"
+      - properties:
+          active:
+            description: Indicates whether this risk notification is active.
+            example: true
+            type: boolean
+          modified:
+            description: Timestamp of the most recent update.
+            example: 2026-04-16T09:05:27.993483Z
+            format: date-time
+            type: string
+        required:
+        - active
+        - modified
+      description: A risk notification configuration rule.
     Change:
       allOf:
       - $ref: "#/components/schemas/Entity"
@@ -33807,7 +33941,7 @@ components:
             format: int64
             type: integer
           attributes:
-            $ref: "#/components/schemas/IntegrationCampaign_allOf_attributes"
+            $ref: "#/components/schemas/IntegrationCampaignBase_allOf_attributes"
         required:
         - applicationCount
         - billingEmail
@@ -36528,21 +36662,6 @@ components:
           example: true
           title: Sandbox
           type: boolean
-        rule:
-          description: Rule to apply.
-          items:
-            $ref: "#/components/schemas/Rule"
-          type: array
-        bindings:
-          description: A list of named variables created before the reward's rules
-            are evaluated.  Each binding pairs a name with a talang expression. The
-            expression is evaluated once  and its result is available by name in any
-            rule condition or effect. Bindings must be defined outside of individual
-            rules.
-          example: []
-          items:
-            $ref: "#/components/schemas/Binding"
-          type: array
       required:
       - apiName
       - applicationIds
@@ -36554,6 +36673,39 @@ components:
       - $ref: "#/components/schemas/AccountEntity"
       - $ref: "#/components/schemas/NewReward"
       - properties:
+          visibilityConditions:
+            allOf:
+            - $ref: "#/components/schemas/Rule"
+            description: |
+              An optional rule that manages who can see this reward. If not specified, the reward
+              is visible to all customers.
+
+              **Note:** Only the `condition` field is evaluated within this rule. The `effects` field must be an empty array,
+              and `bindings` are not supported.
+          rule:
+            allOf:
+            - $ref: "#/components/schemas/Rule"
+            description: |
+              Rule to apply.
+
+              **Note**: The `bindings` field inside the rule must not be used in this
+              endpoint. All bindings should be defined at the reward level via the
+              top-level `bindings` field.
+          bindings:
+            description: A list of named variables created before the reward's rules
+              are evaluated.  Each binding pairs a name with a talang expression.
+              The expression is evaluated once  and its result is available by name
+              in any rule condition or effect. Bindings must be defined outside of
+              individual rules.
+            example: []
+            items:
+              $ref: "#/components/schemas/Binding"
+            type: array
+          modified:
+            description: The timestamp when the reward was last updated in RFC3339
+              format.
+            format: date-time
+            type: string
           status:
             description: The status of the reward.
             enum:
@@ -36581,16 +36733,24 @@ components:
           - inactive
           example: active
           type: string
+        visibilityConditions:
+          allOf:
+          - $ref: "#/components/schemas/Rule"
+          description: |
+            An optional rule that manages who can see this reward. If not specified, the reward
+            is visible to all customers.
+
+            **Note:** Only the `condition` field is evaluated within this rule. The `effects` field must be an empty array,
+            and `bindings` are not supported.
         rule:
+          allOf:
+          - $ref: "#/components/schemas/Rule"
           description: |
             Rule to apply.
 
             **Note**: The `bindings` field inside the rule must not be used in this
             endpoint. All bindings should be defined at the reward level via the
             top-level `bindings` field.
-          items:
-            $ref: "#/components/schemas/Rule"
-          type: array
         bindings:
           description: A list of named variables created before the reward's rules
             are evaluated.  Each binding pairs a name with a talang expression. The
@@ -38317,25 +38477,11 @@ components:
           - displayDescription: Get a 20% discount on all shoes during Thanksgiving!
               Offer valid till Dec 5 only.
             displayName: 20% off all shoes!
-            eligibility:
-            - details: ""
-              passed: true
-              couponCode: couponCode
-            - details: ""
-              passed: true
-              couponCode: couponCode
             relatedData: https://example.com/discounts/20-off-shoes.png
             title: Give discount via coupon
           - displayDescription: Get a 20% discount on all shoes during Thanksgiving!
               Offer valid till Dec 5 only.
             displayName: 20% off all shoes!
-            eligibility:
-            - details: ""
-              passed: true
-              couponCode: couponCode
-            - details: ""
-              passed: true
-              couponCode: couponCode
             relatedData: https://example.com/discounts/20-off-shoes.png
             title: Give discount via coupon
           id: 4
@@ -38355,25 +38501,11 @@ components:
           - displayDescription: Get a 20% discount on all shoes during Thanksgiving!
               Offer valid till Dec 5 only.
             displayName: 20% off all shoes!
-            eligibility:
-            - details: ""
-              passed: true
-              couponCode: couponCode
-            - details: ""
-              passed: true
-              couponCode: couponCode
             relatedData: https://example.com/discounts/20-off-shoes.png
             title: Give discount via coupon
           - displayDescription: Get a 20% discount on all shoes during Thanksgiving!
               Offer valid till Dec 5 only.
             displayName: 20% off all shoes!
-            eligibility:
-            - details: ""
-              passed: true
-              couponCode: couponCode
-            - details: ""
-              passed: true
-              couponCode: couponCode
             relatedData: https://example.com/discounts/20-off-shoes.png
             title: Give discount via coupon
           id: 4
@@ -40387,7 +40519,10 @@ components:
     listExperiments_200_response:
       example:
         data:
-        - deletedat: 2000-01-23T04:56:07.000+00:00
+        - goalType: other
+          goalDescription: Offering free shipping will increase average order revenue
+            more than a 10% discount
+          deletedat: 2000-01-23T04:56:07.000+00:00
           created: 2020-06-10T09:05:27.993483Z
           campaign:
             type: advanced
@@ -40907,7 +41042,10 @@ components:
           applicationId: 322
           isVariantAssignmentExternal: true
           activated: 2000-01-23T04:56:07.000+00:00
-        - deletedat: 2000-01-23T04:56:07.000+00:00
+        - goalType: other
+          goalDescription: Offering free shipping will increase average order revenue
+            more than a 10% discount
+          deletedat: 2000-01-23T04:56:07.000+00:00
           created: 2020-06-10T09:05:27.993483Z
           campaign:
             type: advanced
@@ -41657,8 +41795,8 @@ components:
     importLoyaltyPoints_request:
       properties:
         upFile:
-          description: The file containing the data that is being imported.
-          format: csv
+          description: The CSV file containing the data that is being imported.
+          format: binary
           type: string
     getLoyaltyProgramTransactions_200_response:
       example:
@@ -43454,7 +43592,7 @@ components:
           items: {}
           minItems: 1
           type: array
-    IntegrationCampaign_allOf_attributes:
+    IntegrationCampaignBase_allOf_attributes:
       description: Arbitrary properties associated with this campaign.
       type: object
     Attributes_of_coupon:

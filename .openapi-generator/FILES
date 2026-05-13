@@ -284,6 +284,7 @@ docs/Export.md
 docs/ExtendLoyaltyPointsExpiryDateEffectProps.md
 docs/ExtendedCoupon.md
 docs/FeatureFlag.md
+docs/FeatureFlagUpdate.md
 docs/FeaturesFeed.md
 docs/FuncArgDef.md
 docs/FunctionDef.md
@@ -355,6 +356,7 @@ docs/IncreaseAchievementProgressEffectProps.md
 docs/InfluencingCampaignDetails.md
 docs/IntegrationAPI.md
 docs/IntegrationCampaign.md
+docs/IntegrationCampaignBase.md
 docs/IntegrationCoupon.md
 docs/IntegrationCustomerProfileAudienceRequest.md
 docs/IntegrationCustomerProfileAudienceRequestItem.md
@@ -515,6 +517,7 @@ docs/NewReferralsForMultipleAdvocates.md
 docs/NewReturn.md
 docs/NewRevisionVersion.md
 docs/NewReward.md
+docs/NewRiskNotification.md
 docs/NewRole.md
 docs/NewRoleV2.md
 docs/NewRuleset.md
@@ -584,6 +587,7 @@ docs/RevisionActivation.md
 docs/RevisionActivationRequest.md
 docs/RevisionVersion.md
 docs/Reward.md
+docs/RiskNotification.md
 docs/Role.md
 docs/RoleAssign.md
 docs/RoleMembership.md
@@ -606,6 +610,7 @@ docs/RuleEligibility.md
 docs/RuleEligibilityFailureDetails.md
 docs/RuleFailureReason.md
 docs/RuleMetadata.md
+docs/RuleMetadataEligibility.md
 docs/Ruleset.md
 docs/SSOConfig.md
 docs/SamlConnection.md
@@ -992,6 +997,7 @@ model_export.go
 model_extend_loyalty_points_expiry_date_effect_props.go
 model_extended_coupon.go
 model_feature_flag.go
+model_feature_flag_update.go
 model_features_feed.go
 model_func_arg_def.go
 model_function_def.go
@@ -1062,6 +1068,7 @@ model_import_entity.go
 model_increase_achievement_progress_effect_props.go
 model_influencing_campaign_details.go
 model_integration_campaign.go
+model_integration_campaign_base.go
 model_integration_coupon.go
 model_integration_customer_profile_audience_request.go
 model_integration_customer_profile_audience_request_item.go
@@ -1221,6 +1228,7 @@ model_new_referrals_for_multiple_advocates.go
 model_new_return.go
 model_new_revision_version.go
 model_new_reward.go
+model_new_risk_notification.go
 model_new_role.go
 model_new_role_v2.go
 model_new_ruleset.go
@@ -1290,6 +1298,7 @@ model_revision_activation.go
 model_revision_activation_request.go
 model_revision_version.go
 model_reward.go
+model_risk_notification.go
 model_role.go
 model_role_assign.go
 model_role_membership.go
@@ -1312,6 +1321,7 @@ model_rule_eligibility.go
 model_rule_eligibility_failure_details.go
 model_rule_failure_reason.go
 model_rule_metadata.go
+model_rule_metadata_eligibility.go
 model_ruleset.go
 model_saml_connection.go
 model_saml_connection_internal.go
