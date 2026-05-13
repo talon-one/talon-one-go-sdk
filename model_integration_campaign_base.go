@@ -16,11 +16,11 @@ import (
 	"time"
 )
 
-// checks if the IntegrationCampaign type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &IntegrationCampaign{}
+// checks if the IntegrationCampaignBase type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &IntegrationCampaignBase{}
 
-// IntegrationCampaign struct for IntegrationCampaign
-type IntegrationCampaign struct {
+// IntegrationCampaignBase struct for IntegrationCampaignBase
+type IntegrationCampaignBase struct {
 	// The ID of the Application that owns this entity.
 	ApplicationId int64 `json:"applicationId"`
 	// Unique ID of Campaign.
@@ -40,42 +40,39 @@ type IntegrationCampaign struct {
 	// A list of tags for the campaign.
 	Tags []string `json:"tags"`
 	// The features enabled in this campaign.
-	Features []string `json:"features"`
-	// A list of rules containing customer-facing details of the rewards defined in the campaign.
-	Rules                []RuleMetadata `json:"rules"`
+	Features             []string `json:"features"`
 	AdditionalProperties map[string]interface{}
 }
 
-type _IntegrationCampaign IntegrationCampaign
+type _IntegrationCampaignBase IntegrationCampaignBase
 
-// NewIntegrationCampaign instantiates a new IntegrationCampaign object
+// NewIntegrationCampaignBase instantiates a new IntegrationCampaignBase object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildIntegrationCampaign(applicationId int64, id int64, name string, state string, tags []string, features []string, rules []RuleMetadata) *IntegrationCampaign {
-	this := IntegrationCampaign{}
+func BuildIntegrationCampaignBase(applicationId int64, id int64, name string, state string, tags []string, features []string) *IntegrationCampaignBase {
+	this := IntegrationCampaignBase{}
 	this.ApplicationId = applicationId
 	this.Id = id
 	this.Name = name
 	this.State = state
 	this.Tags = tags
 	this.Features = features
-	this.Rules = rules
 	return &this
 }
 
-// NewIntegrationCampaignWithDefaults instantiates a new IntegrationCampaign object
+// NewIntegrationCampaignBaseWithDefaults instantiates a new IntegrationCampaignBase object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewIntegrationCampaignWithDefaults() *IntegrationCampaign {
-	this := IntegrationCampaign{}
+func NewIntegrationCampaignBaseWithDefaults() *IntegrationCampaignBase {
+	this := IntegrationCampaignBase{}
 	var state string = "enabled"
 	this.State = state
 	return &this
 }
 
 // GetApplicationId returns the ApplicationId field value
-func (o *IntegrationCampaign) GetApplicationId() int64 {
+func (o *IntegrationCampaignBase) GetApplicationId() int64 {
 	if o == nil {
 		var ret int64
 		return ret
@@ -86,7 +83,7 @@ func (o *IntegrationCampaign) GetApplicationId() int64 {
 
 // GetApplicationIdOk returns a tuple with the ApplicationId field value
 // and a boolean to check if the value has been set.
-func (o *IntegrationCampaign) GetApplicationIdOk() (*int64, bool) {
+func (o *IntegrationCampaignBase) GetApplicationIdOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -94,12 +91,12 @@ func (o *IntegrationCampaign) GetApplicationIdOk() (*int64, bool) {
 }
 
 // SetApplicationId sets field value
-func (o *IntegrationCampaign) SetApplicationId(v int64) {
+func (o *IntegrationCampaignBase) SetApplicationId(v int64) {
 	o.ApplicationId = v
 }
 
 // GetId returns the Id field value
-func (o *IntegrationCampaign) GetId() int64 {
+func (o *IntegrationCampaignBase) GetId() int64 {
 	if o == nil {
 		var ret int64
 		return ret
@@ -110,7 +107,7 @@ func (o *IntegrationCampaign) GetId() int64 {
 
 // GetIdOk returns a tuple with the Id field value
 // and a boolean to check if the value has been set.
-func (o *IntegrationCampaign) GetIdOk() (*int64, bool) {
+func (o *IntegrationCampaignBase) GetIdOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -118,12 +115,12 @@ func (o *IntegrationCampaign) GetIdOk() (*int64, bool) {
 }
 
 // SetId sets field value
-func (o *IntegrationCampaign) SetId(v int64) {
+func (o *IntegrationCampaignBase) SetId(v int64) {
 	o.Id = v
 }
 
 // GetName returns the Name field value
-func (o *IntegrationCampaign) GetName() string {
+func (o *IntegrationCampaignBase) GetName() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -134,7 +131,7 @@ func (o *IntegrationCampaign) GetName() string {
 
 // GetNameOk returns a tuple with the Name field value
 // and a boolean to check if the value has been set.
-func (o *IntegrationCampaign) GetNameOk() (*string, bool) {
+func (o *IntegrationCampaignBase) GetNameOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -142,12 +139,12 @@ func (o *IntegrationCampaign) GetNameOk() (*string, bool) {
 }
 
 // SetName sets field value
-func (o *IntegrationCampaign) SetName(v string) {
+func (o *IntegrationCampaignBase) SetName(v string) {
 	o.Name = v
 }
 
 // GetDescription returns the Description field value if set, zero value otherwise.
-func (o *IntegrationCampaign) GetDescription() string {
+func (o *IntegrationCampaignBase) GetDescription() string {
 	if o == nil || IsNil(o.Description) {
 		var ret string
 		return ret
@@ -157,7 +154,7 @@ func (o *IntegrationCampaign) GetDescription() string {
 
 // GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *IntegrationCampaign) GetDescriptionOk() (*string, bool) {
+func (o *IntegrationCampaignBase) GetDescriptionOk() (*string, bool) {
 	if o == nil || IsNil(o.Description) {
 		return nil, false
 	}
@@ -165,7 +162,7 @@ func (o *IntegrationCampaign) GetDescriptionOk() (*string, bool) {
 }
 
 // HasDescription returns a boolean if a field has been set.
-func (o *IntegrationCampaign) HasDescription() bool {
+func (o *IntegrationCampaignBase) HasDescription() bool {
 	if o != nil && !IsNil(o.Description) {
 		return true
 	}
@@ -174,12 +171,12 @@ func (o *IntegrationCampaign) HasDescription() bool {
 }
 
 // SetDescription gets a reference to the given string and assigns it to the Description field.
-func (o *IntegrationCampaign) SetDescription(v string) {
+func (o *IntegrationCampaignBase) SetDescription(v string) {
 	o.Description = &v
 }
 
 // GetStartTime returns the StartTime field value if set, zero value otherwise.
-func (o *IntegrationCampaign) GetStartTime() time.Time {
+func (o *IntegrationCampaignBase) GetStartTime() time.Time {
 	if o == nil || IsNil(o.StartTime) {
 		var ret time.Time
 		return ret
@@ -189,7 +186,7 @@ func (o *IntegrationCampaign) GetStartTime() time.Time {
 
 // GetStartTimeOk returns a tuple with the StartTime field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *IntegrationCampaign) GetStartTimeOk() (*time.Time, bool) {
+func (o *IntegrationCampaignBase) GetStartTimeOk() (*time.Time, bool) {
 	if o == nil || IsNil(o.StartTime) {
 		return nil, false
 	}
@@ -197,7 +194,7 @@ func (o *IntegrationCampaign) GetStartTimeOk() (*time.Time, bool) {
 }
 
 // HasStartTime returns a boolean if a field has been set.
-func (o *IntegrationCampaign) HasStartTime() bool {
+func (o *IntegrationCampaignBase) HasStartTime() bool {
 	if o != nil && !IsNil(o.StartTime) {
 		return true
 	}
@@ -206,12 +203,12 @@ func (o *IntegrationCampaign) HasStartTime() bool {
 }
 
 // SetStartTime gets a reference to the given time.Time and assigns it to the StartTime field.
-func (o *IntegrationCampaign) SetStartTime(v time.Time) {
+func (o *IntegrationCampaignBase) SetStartTime(v time.Time) {
 	o.StartTime = &v
 }
 
 // GetEndTime returns the EndTime field value if set, zero value otherwise.
-func (o *IntegrationCampaign) GetEndTime() time.Time {
+func (o *IntegrationCampaignBase) GetEndTime() time.Time {
 	if o == nil || IsNil(o.EndTime) {
 		var ret time.Time
 		return ret
@@ -221,7 +218,7 @@ func (o *IntegrationCampaign) GetEndTime() time.Time {
 
 // GetEndTimeOk returns a tuple with the EndTime field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *IntegrationCampaign) GetEndTimeOk() (*time.Time, bool) {
+func (o *IntegrationCampaignBase) GetEndTimeOk() (*time.Time, bool) {
 	if o == nil || IsNil(o.EndTime) {
 		return nil, false
 	}
@@ -229,7 +226,7 @@ func (o *IntegrationCampaign) GetEndTimeOk() (*time.Time, bool) {
 }
 
 // HasEndTime returns a boolean if a field has been set.
-func (o *IntegrationCampaign) HasEndTime() bool {
+func (o *IntegrationCampaignBase) HasEndTime() bool {
 	if o != nil && !IsNil(o.EndTime) {
 		return true
 	}
@@ -238,12 +235,12 @@ func (o *IntegrationCampaign) HasEndTime() bool {
 }
 
 // SetEndTime gets a reference to the given time.Time and assigns it to the EndTime field.
-func (o *IntegrationCampaign) SetEndTime(v time.Time) {
+func (o *IntegrationCampaignBase) SetEndTime(v time.Time) {
 	o.EndTime = &v
 }
 
 // GetAttributes returns the Attributes field value if set, zero value otherwise.
-func (o *IntegrationCampaign) GetAttributes() map[string]interface{} {
+func (o *IntegrationCampaignBase) GetAttributes() map[string]interface{} {
 	if o == nil || IsNil(o.Attributes) {
 		var ret map[string]interface{}
 		return ret
@@ -253,7 +250,7 @@ func (o *IntegrationCampaign) GetAttributes() map[string]interface{} {
 
 // GetAttributesOk returns a tuple with the Attributes field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *IntegrationCampaign) GetAttributesOk() (map[string]interface{}, bool) {
+func (o *IntegrationCampaignBase) GetAttributesOk() (map[string]interface{}, bool) {
 	if o == nil || IsNil(o.Attributes) {
 		return map[string]interface{}{}, false
 	}
@@ -261,7 +258,7 @@ func (o *IntegrationCampaign) GetAttributesOk() (map[string]interface{}, bool) {
 }
 
 // HasAttributes returns a boolean if a field has been set.
-func (o *IntegrationCampaign) HasAttributes() bool {
+func (o *IntegrationCampaignBase) HasAttributes() bool {
 	if o != nil && !IsNil(o.Attributes) {
 		return true
 	}
@@ -270,12 +267,12 @@ func (o *IntegrationCampaign) HasAttributes() bool {
 }
 
 // SetAttributes gets a reference to the given map[string]interface{} and assigns it to the Attributes field.
-func (o *IntegrationCampaign) SetAttributes(v map[string]interface{}) {
+func (o *IntegrationCampaignBase) SetAttributes(v map[string]interface{}) {
 	o.Attributes = v
 }
 
 // GetState returns the State field value
-func (o *IntegrationCampaign) GetState() string {
+func (o *IntegrationCampaignBase) GetState() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -286,7 +283,7 @@ func (o *IntegrationCampaign) GetState() string {
 
 // GetStateOk returns a tuple with the State field value
 // and a boolean to check if the value has been set.
-func (o *IntegrationCampaign) GetStateOk() (*string, bool) {
+func (o *IntegrationCampaignBase) GetStateOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -294,12 +291,12 @@ func (o *IntegrationCampaign) GetStateOk() (*string, bool) {
 }
 
 // SetState sets field value
-func (o *IntegrationCampaign) SetState(v string) {
+func (o *IntegrationCampaignBase) SetState(v string) {
 	o.State = v
 }
 
 // GetTags returns the Tags field value
-func (o *IntegrationCampaign) GetTags() []string {
+func (o *IntegrationCampaignBase) GetTags() []string {
 	if o == nil {
 		var ret []string
 		return ret
@@ -310,7 +307,7 @@ func (o *IntegrationCampaign) GetTags() []string {
 
 // GetTagsOk returns a tuple with the Tags field value
 // and a boolean to check if the value has been set.
-func (o *IntegrationCampaign) GetTagsOk() ([]string, bool) {
+func (o *IntegrationCampaignBase) GetTagsOk() ([]string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -318,12 +315,12 @@ func (o *IntegrationCampaign) GetTagsOk() ([]string, bool) {
 }
 
 // SetTags sets field value
-func (o *IntegrationCampaign) SetTags(v []string) {
+func (o *IntegrationCampaignBase) SetTags(v []string) {
 	o.Tags = v
 }
 
 // GetFeatures returns the Features field value
-func (o *IntegrationCampaign) GetFeatures() []string {
+func (o *IntegrationCampaignBase) GetFeatures() []string {
 	if o == nil {
 		var ret []string
 		return ret
@@ -334,7 +331,7 @@ func (o *IntegrationCampaign) GetFeatures() []string {
 
 // GetFeaturesOk returns a tuple with the Features field value
 // and a boolean to check if the value has been set.
-func (o *IntegrationCampaign) GetFeaturesOk() ([]string, bool) {
+func (o *IntegrationCampaignBase) GetFeaturesOk() ([]string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -342,35 +339,11 @@ func (o *IntegrationCampaign) GetFeaturesOk() ([]string, bool) {
 }
 
 // SetFeatures sets field value
-func (o *IntegrationCampaign) SetFeatures(v []string) {
+func (o *IntegrationCampaignBase) SetFeatures(v []string) {
 	o.Features = v
 }
 
-// GetRules returns the Rules field value
-func (o *IntegrationCampaign) GetRules() []RuleMetadata {
-	if o == nil {
-		var ret []RuleMetadata
-		return ret
-	}
-
-	return o.Rules
-}
-
-// GetRulesOk returns a tuple with the Rules field value
-// and a boolean to check if the value has been set.
-func (o *IntegrationCampaign) GetRulesOk() ([]RuleMetadata, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return o.Rules, true
-}
-
-// SetRules sets field value
-func (o *IntegrationCampaign) SetRules(v []RuleMetadata) {
-	o.Rules = v
-}
-
-func (o IntegrationCampaign) MarshalJSON() ([]byte, error) {
+func (o IntegrationCampaignBase) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -378,7 +351,7 @@ func (o IntegrationCampaign) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-func (o IntegrationCampaign) ToMap() (map[string]interface{}, error) {
+func (o IntegrationCampaignBase) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["applicationId"] = o.ApplicationId
 	toSerialize["id"] = o.Id
@@ -398,7 +371,6 @@ func (o IntegrationCampaign) ToMap() (map[string]interface{}, error) {
 	toSerialize["state"] = o.State
 	toSerialize["tags"] = o.Tags
 	toSerialize["features"] = o.Features
-	toSerialize["rules"] = o.Rules
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value
@@ -407,7 +379,7 @@ func (o IntegrationCampaign) ToMap() (map[string]interface{}, error) {
 	return toSerialize, nil
 }
 
-func (o *IntegrationCampaign) UnmarshalJSON(data []byte) (err error) {
+func (o *IntegrationCampaignBase) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
@@ -418,7 +390,6 @@ func (o *IntegrationCampaign) UnmarshalJSON(data []byte) (err error) {
 		"state",
 		"tags",
 		"features",
-		"rules",
 	}
 
 	allProperties := make(map[string]interface{})
@@ -435,15 +406,15 @@ func (o *IntegrationCampaign) UnmarshalJSON(data []byte) (err error) {
 		}
 	}
 
-	varIntegrationCampaign := _IntegrationCampaign{}
+	varIntegrationCampaignBase := _IntegrationCampaignBase{}
 
-	err = json.Unmarshal(data, &varIntegrationCampaign)
+	err = json.Unmarshal(data, &varIntegrationCampaignBase)
 
 	if err != nil {
 		return err
 	}
 
-	*o = IntegrationCampaign(varIntegrationCampaign)
+	*o = IntegrationCampaignBase(varIntegrationCampaignBase)
 
 	additionalProperties := make(map[string]interface{})
 
@@ -458,45 +429,44 @@ func (o *IntegrationCampaign) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "state")
 		delete(additionalProperties, "tags")
 		delete(additionalProperties, "features")
-		delete(additionalProperties, "rules")
 		o.AdditionalProperties = additionalProperties
 	}
 
 	return err
 }
 
-type NullableIntegrationCampaign struct {
-	value *IntegrationCampaign
+type NullableIntegrationCampaignBase struct {
+	value *IntegrationCampaignBase
 	isSet bool
 }
 
-func (v NullableIntegrationCampaign) Get() *IntegrationCampaign {
+func (v NullableIntegrationCampaignBase) Get() *IntegrationCampaignBase {
 	return v.value
 }
 
-func (v *NullableIntegrationCampaign) Set(val *IntegrationCampaign) {
+func (v *NullableIntegrationCampaignBase) Set(val *IntegrationCampaignBase) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableIntegrationCampaign) IsSet() bool {
+func (v NullableIntegrationCampaignBase) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableIntegrationCampaign) Unset() {
+func (v *NullableIntegrationCampaignBase) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func BuildNullableIntegrationCampaign(val *IntegrationCampaign) *NullableIntegrationCampaign {
-	return &NullableIntegrationCampaign{value: val, isSet: true}
+func BuildNullableIntegrationCampaignBase(val *IntegrationCampaignBase) *NullableIntegrationCampaignBase {
+	return &NullableIntegrationCampaignBase{value: val, isSet: true}
 }
 
-func (v NullableIntegrationCampaign) MarshalJSON() ([]byte, error) {
+func (v NullableIntegrationCampaignBase) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableIntegrationCampaign) UnmarshalJSON(src []byte) error {
+func (v *NullableIntegrationCampaignBase) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }

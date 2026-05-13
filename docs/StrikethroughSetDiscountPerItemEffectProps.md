@@ -4,9 +4,9 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Name** | **string** | effect name. | 
+**Name** | **string** | The effect name. | 
 **Value** | **interface{}** |  | 
-**ExcludedFromPriceHistory** | Pointer to **bool** |  | [optional] 
+**ExcludedFromPriceHistory** | Pointer to **bool** | When set to &#x60;true&#x60;, the applied discount is excluded from the item&#39;s price history. | [optional] 
 
 ## Methods
 

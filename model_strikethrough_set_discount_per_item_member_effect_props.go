@@ -20,7 +20,7 @@ var _ MappedNullable = &StrikethroughSetDiscountPerItemMemberEffectProps{}
 
 // StrikethroughSetDiscountPerItemMemberEffectProps setDiscountPerItem member effect in strikethrough pricing payload.
 type StrikethroughSetDiscountPerItemMemberEffectProps struct {
-	// effect name.
+	// The effect name.
 	Name                 string      `json:"name"`
 	Value                interface{} `json:"value"`
 	AdditionalProperties map[string]interface{}

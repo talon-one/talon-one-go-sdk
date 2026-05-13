@@ -4,8 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **int64** | Unique ID of Campaign. | 
 **ApplicationId** | **int64** | The ID of the Application that owns this entity. | 
+**Id** | **int64** | Unique ID of Campaign. | 
 **Name** | **string** | The name of the campaign. | 
 **Description** | Pointer to **string** | A detailed description of the campaign. | [optional] 
 **StartTime** | Pointer to **time.Time** | Timestamp when the campaign will become active. | [optional] 
@@ -14,14 +14,14 @@ Name | Type | Description | Notes
 **State** | **string** | The state of the campaign.  | [default to "enabled"]
 **Tags** | **[]string** | A list of tags for the campaign. | 
 **Features** | **[]string** | The features enabled in this campaign. | 
-**Rules** | Pointer to [**[]RuleMetadata**](RuleMetadata.md) | A list of rules containing customer-facing details of the rewards defined in the campaign. | [optional] 
 **Eligibility** | [**[]CampaignEligibilityDetails**](CampaignEligibilityDetails.md) | The customer&#39;s eligibility for each campaign in the current customer session. | 
+**Rules** | [**[]RuleMetadataEligibility**](RuleMetadataEligibility.md) | A list of rules containing customer-facing details of the rewards defined in the campaign. | 
 
 ## Methods
 
 ### NewCampaignEligibility
 
-`func NewCampaignEligibility(id int64, applicationId int64, name string, state string, tags []string, features []string, eligibility []CampaignEligibilityDetails, ) *CampaignEligibility`
+`func NewCampaignEligibility(applicationId int64, id int64, name string, state string, tags []string, features []string, eligibility []CampaignEligibilityDetails, rules []RuleMetadataEligibility, ) *CampaignEligibility`
 
 NewCampaignEligibility instantiates a new CampaignEligibility object
 This constructor will assign default values to properties that have it defined,
@@ -35,26 +35,6 @@ will change when the set of required properties is changed
 NewCampaignEligibilityWithDefaults instantiates a new CampaignEligibility object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
-
-### GetId
-
-`func (o *CampaignEligibility) GetId() int64`
-
-GetId returns the Id field if non-nil, zero value otherwise.
-
-### GetIdOk
-
-`func (o *CampaignEligibility) GetIdOk() (*int64, bool)`
-
-GetIdOk returns a tuple with the Id field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetId
-
-`func (o *CampaignEligibility) SetId(v int64)`
-
-SetId sets Id field to given value.
-
 
 ### GetApplicationId
 
@@ -74,6 +54,26 @@ and a boolean to check if the value has been set.
 `func (o *CampaignEligibility) SetApplicationId(v int64)`
 
 SetApplicationId sets ApplicationId field to given value.
+
+
+### GetId
+
+`func (o *CampaignEligibility) GetId() int64`
+
+GetId returns the Id field if non-nil, zero value otherwise.
+
+### GetIdOk
+
+`func (o *CampaignEligibility) GetIdOk() (*int64, bool)`
+
+GetIdOk returns a tuple with the Id field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetId
+
+`func (o *CampaignEligibility) SetId(v int64)`
+
+SetId sets Id field to given value.
 
 
 ### GetName
@@ -256,31 +256,6 @@ and a boolean to check if the value has been set.
 SetFeatures sets Features field to given value.
 
 
-### GetRules
-
-`func (o *CampaignEligibility) GetRules() []RuleMetadata`
-
-GetRules returns the Rules field if non-nil, zero value otherwise.
-
-### GetRulesOk
-
-`func (o *CampaignEligibility) GetRulesOk() (*[]RuleMetadata, bool)`
-
-GetRulesOk returns a tuple with the Rules field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetRules
-
-`func (o *CampaignEligibility) SetRules(v []RuleMetadata)`
-
-SetRules sets Rules field to given value.
-
-### HasRules
-
-`func (o *CampaignEligibility) HasRules() bool`
-
-HasRules returns a boolean if a field has been set.
-
 ### GetEligibility
 
 `func (o *CampaignEligibility) GetEligibility() []CampaignEligibilityDetails`
@@ -299,6 +274,26 @@ and a boolean to check if the value has been set.
 `func (o *CampaignEligibility) SetEligibility(v []CampaignEligibilityDetails)`
 
 SetEligibility sets Eligibility field to given value.
+
+
+### GetRules
+
+`func (o *CampaignEligibility) GetRules() []RuleMetadataEligibility`
+
+GetRules returns the Rules field if non-nil, zero value otherwise.
+
+### GetRulesOk
+
+`func (o *CampaignEligibility) GetRulesOk() (*[]RuleMetadataEligibility, bool)`
+
+GetRulesOk returns a tuple with the Rules field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRules
+
+`func (o *CampaignEligibility) SetRules(v []RuleMetadataEligibility)`
+
+SetRules sets Rules field to given value.
 
 
 

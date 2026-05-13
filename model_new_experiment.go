@@ -23,7 +23,11 @@ type NewExperiment struct {
 	// The source of the assignment. - false - The variant assignment is handled internally by Talon.One. - true - The variant assignment is handled externally.
 	IsVariantAssignmentExternal bool        `json:"isVariantAssignmentExternal"`
 	Campaign                    NewCampaign `json:"campaign"`
-	AdditionalProperties        map[string]interface{}
+	// The goal of the experiment. Determines which single metric is used to decide the winning variant. When set to `other`, multiple metrics are used.
+	GoalType string `json:"goalType"`
+	// A description of the experiment goal. Provides context for the AI summary and helps it interpret the outcome of the experiment against the stated goal.
+	GoalDescription      *string `json:"goalDescription,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _NewExperiment NewExperiment
@@ -32,10 +36,11 @@ type _NewExperiment NewExperiment
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildNewExperiment(isVariantAssignmentExternal bool, campaign NewCampaign) *NewExperiment {
+func BuildNewExperiment(isVariantAssignmentExternal bool, campaign NewCampaign, goalType string) *NewExperiment {
 	this := NewExperiment{}
 	this.IsVariantAssignmentExternal = isVariantAssignmentExternal
 	this.Campaign = campaign
+	this.GoalType = goalType
 	return &this
 }
 
@@ -95,6 +100,62 @@ func (o *NewExperiment) SetCampaign(v NewCampaign) {
 	o.Campaign = v
 }
 
+// GetGoalType returns the GoalType field value
+func (o *NewExperiment) GetGoalType() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.GoalType
+}
+
+// GetGoalTypeOk returns a tuple with the GoalType field value
+// and a boolean to check if the value has been set.
+func (o *NewExperiment) GetGoalTypeOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.GoalType, true
+}
+
+// SetGoalType sets field value
+func (o *NewExperiment) SetGoalType(v string) {
+	o.GoalType = v
+}
+
+// GetGoalDescription returns the GoalDescription field value if set, zero value otherwise.
+func (o *NewExperiment) GetGoalDescription() string {
+	if o == nil || IsNil(o.GoalDescription) {
+		var ret string
+		return ret
+	}
+	return *o.GoalDescription
+}
+
+// GetGoalDescriptionOk returns a tuple with the GoalDescription field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *NewExperiment) GetGoalDescriptionOk() (*string, bool) {
+	if o == nil || IsNil(o.GoalDescription) {
+		return nil, false
+	}
+	return o.GoalDescription, true
+}
+
+// HasGoalDescription returns a boolean if a field has been set.
+func (o *NewExperiment) HasGoalDescription() bool {
+	if o != nil && !IsNil(o.GoalDescription) {
+		return true
+	}
+
+	return false
+}
+
+// SetGoalDescription gets a reference to the given string and assigns it to the GoalDescription field.
+func (o *NewExperiment) SetGoalDescription(v string) {
+	o.GoalDescription = &v
+}
+
 func (o NewExperiment) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -107,6 +168,10 @@ func (o NewExperiment) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["isVariantAssignmentExternal"] = o.IsVariantAssignmentExternal
 	toSerialize["campaign"] = o.Campaign
+	toSerialize["goalType"] = o.GoalType
+	if !IsNil(o.GoalDescription) {
+		toSerialize["goalDescription"] = o.GoalDescription
+	}
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value
@@ -122,6 +187,7 @@ func (o *NewExperiment) UnmarshalJSON(data []byte) (err error) {
 	requiredProperties := []string{
 		"isVariantAssignmentExternal",
 		"campaign",
+		"goalType",
 	}
 
 	allProperties := make(map[string]interface{})
@@ -153,6 +219,8 @@ func (o *NewExperiment) UnmarshalJSON(data []byte) (err error) {
 	if err = json.Unmarshal(data, &additionalProperties); err == nil {
 		delete(additionalProperties, "isVariantAssignmentExternal")
 		delete(additionalProperties, "campaign")
+		delete(additionalProperties, "goalType")
+		delete(additionalProperties, "goalDescription")
 		o.AdditionalProperties = additionalProperties
 	}
 

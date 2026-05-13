@@ -37,10 +37,14 @@ type Reward struct {
 	ApplicationIds []int64 `json:"applicationIds"`
 	// Indicates if this is a live or sandbox reward. Rewards of a given type can only be connected to Applications of the same type.
 	Sandbox bool `json:"sandbox"`
-	// Rule to apply.
-	Rule []Rule `json:"rule,omitempty"`
+	// An optional rule that manages who can see this reward. If not specified, the reward is visible to all customers.  **Note:** Only the `condition` field is evaluated within this rule. The `effects` field must be an empty array, and `bindings` are not supported.
+	VisibilityConditions *Rule `json:"visibilityConditions,omitempty"`
+	// Rule to apply.  **Note**: The `bindings` field inside the rule must not be used in this endpoint. All bindings should be defined at the reward level via the top-level `bindings` field.
+	Rule *Rule `json:"rule,omitempty"`
 	// A list of named variables created before the reward's rules are evaluated.  Each binding pairs a name with a talang expression. The expression is evaluated once  and its result is available by name in any rule condition or effect. Bindings must be defined outside of individual rules.
 	Bindings []Binding `json:"bindings,omitempty"`
+	// The timestamp when the reward was last updated in RFC3339 format.
+	Modified *time.Time `json:"modified,omitempty"`
 	// The status of the reward.
 	Status               string `json:"status"`
 	AdditionalProperties map[string]interface{}
@@ -273,18 +277,50 @@ func (o *Reward) SetSandbox(v bool) {
 	o.Sandbox = v
 }
 
-// GetRule returns the Rule field value if set, zero value otherwise.
-func (o *Reward) GetRule() []Rule {
-	if o == nil || IsNil(o.Rule) {
-		var ret []Rule
+// GetVisibilityConditions returns the VisibilityConditions field value if set, zero value otherwise.
+func (o *Reward) GetVisibilityConditions() Rule {
+	if o == nil || IsNil(o.VisibilityConditions) {
+		var ret Rule
 		return ret
 	}
-	return o.Rule
+	return *o.VisibilityConditions
+}
+
+// GetVisibilityConditionsOk returns a tuple with the VisibilityConditions field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Reward) GetVisibilityConditionsOk() (*Rule, bool) {
+	if o == nil || IsNil(o.VisibilityConditions) {
+		return nil, false
+	}
+	return o.VisibilityConditions, true
+}
+
+// HasVisibilityConditions returns a boolean if a field has been set.
+func (o *Reward) HasVisibilityConditions() bool {
+	if o != nil && !IsNil(o.VisibilityConditions) {
+		return true
+	}
+
+	return false
+}
+
+// SetVisibilityConditions gets a reference to the given Rule and assigns it to the VisibilityConditions field.
+func (o *Reward) SetVisibilityConditions(v Rule) {
+	o.VisibilityConditions = &v
+}
+
+// GetRule returns the Rule field value if set, zero value otherwise.
+func (o *Reward) GetRule() Rule {
+	if o == nil || IsNil(o.Rule) {
+		var ret Rule
+		return ret
+	}
+	return *o.Rule
 }
 
 // GetRuleOk returns a tuple with the Rule field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Reward) GetRuleOk() ([]Rule, bool) {
+func (o *Reward) GetRuleOk() (*Rule, bool) {
 	if o == nil || IsNil(o.Rule) {
 		return nil, false
 	}
@@ -300,9 +336,9 @@ func (o *Reward) HasRule() bool {
 	return false
 }
 
-// SetRule gets a reference to the given []Rule and assigns it to the Rule field.
-func (o *Reward) SetRule(v []Rule) {
-	o.Rule = v
+// SetRule gets a reference to the given Rule and assigns it to the Rule field.
+func (o *Reward) SetRule(v Rule) {
+	o.Rule = &v
 }
 
 // GetBindings returns the Bindings field value if set, zero value otherwise.
@@ -335,6 +371,38 @@ func (o *Reward) HasBindings() bool {
 // SetBindings gets a reference to the given []Binding and assigns it to the Bindings field.
 func (o *Reward) SetBindings(v []Binding) {
 	o.Bindings = v
+}
+
+// GetModified returns the Modified field value if set, zero value otherwise.
+func (o *Reward) GetModified() time.Time {
+	if o == nil || IsNil(o.Modified) {
+		var ret time.Time
+		return ret
+	}
+	return *o.Modified
+}
+
+// GetModifiedOk returns a tuple with the Modified field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Reward) GetModifiedOk() (*time.Time, bool) {
+	if o == nil || IsNil(o.Modified) {
+		return nil, false
+	}
+	return o.Modified, true
+}
+
+// HasModified returns a boolean if a field has been set.
+func (o *Reward) HasModified() bool {
+	if o != nil && !IsNil(o.Modified) {
+		return true
+	}
+
+	return false
+}
+
+// SetModified gets a reference to the given time.Time and assigns it to the Modified field.
+func (o *Reward) SetModified(v time.Time) {
+	o.Modified = &v
 }
 
 // GetStatus returns the Status field value
@@ -381,11 +449,17 @@ func (o Reward) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["applicationIds"] = o.ApplicationIds
 	toSerialize["sandbox"] = o.Sandbox
+	if !IsNil(o.VisibilityConditions) {
+		toSerialize["visibilityConditions"] = o.VisibilityConditions
+	}
 	if !IsNil(o.Rule) {
 		toSerialize["rule"] = o.Rule
 	}
 	if !IsNil(o.Bindings) {
 		toSerialize["bindings"] = o.Bindings
+	}
+	if !IsNil(o.Modified) {
+		toSerialize["modified"] = o.Modified
 	}
 	toSerialize["status"] = o.Status
 
@@ -446,8 +520,10 @@ func (o *Reward) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "description")
 		delete(additionalProperties, "applicationIds")
 		delete(additionalProperties, "sandbox")
+		delete(additionalProperties, "visibilityConditions")
 		delete(additionalProperties, "rule")
 		delete(additionalProperties, "bindings")
+		delete(additionalProperties, "modified")
 		delete(additionalProperties, "status")
 		o.AdditionalProperties = additionalProperties
 	}

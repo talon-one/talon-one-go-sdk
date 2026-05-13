@@ -16,6 +16,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"os"
 	"reflect"
 	"strings"
 	"time"
@@ -16734,11 +16735,17 @@ func (r ApiGetLoyaltyCardTransactionLogsRequest) Execute() (*GetLoyaltyCardTrans
 }
 
 /*
-GetLoyaltyCardTransactionLogs List card's transactions
+GetLoyaltyCardTransactionLogs List card's transactions (Management API)
 
 Retrieve the transaction logs for the given [loyalty card](https://docs.talon.one/docs/product/loyalty-programs/card-based/card-based-overview)
-within the specified [card-based loyalty program](https://docs.talon.one/docs/product/loyalty-programs/overview#loyalty-program-types) with filtering options applied.
-If no filtering options are applied, the last 50 loyalty transactions for the given loyalty card are returned.
+within the specified [card-based loyalty program](https://docs.talon.one/docs/product/loyalty-programs/overview#loyalty-program-types)
+with filtering options applied.
+
+> [!note] For most use cases, especially real-time integrations, use the Integration API endpoint:
+> [List card's transactions](https://docs.talon.one/integration-api#tag/Loyalty-cards/operation/getLoyaltyCardTransactions).
+
+If no filtering options are applied, the last 50 loyalty transactions for
+the given loyalty card are returned.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param loyaltyProgramId Identifier of the card-based loyalty program containing the loyalty card. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
@@ -17157,7 +17164,7 @@ func (r ApiGetLoyaltyLedgerBalancesRequest) Execute() (*LoyaltyBalancesWithTiers
 }
 
 /*
-GetLoyaltyLedgerBalances Get customer's loyalty balances
+GetLoyaltyLedgerBalances Get customer's loyalty balances (Management API)
 
 Retrieve loyalty ledger balances for the given Integration ID in the
 specified loyalty program.
@@ -17165,8 +17172,12 @@ specified loyalty program.
 You can filter balances by date and subledger ID, and include tier-related
 information in the response.
 
-> [!note] If no filtering options are applied, you retrieve all loyalty
-> balances on the current date for the given integration ID.
+> [!note] **Note**
+> - For most use cases, especially real-time integrations, use the Integration API endpoint:
+
+	[Get customer's loyalty balances](https://docs.talon.one/integration-api#tag/Loyalty/operation/getLoyaltyBalances).
+
+> - If no filtering options are applied, you retrieve all loyalty balances on the current date for the given integration ID.
 
 Loyalty balances are calculated when Talon.One receives your request using
 the points stored in our database, so retrieving a large number of balances
@@ -17670,7 +17681,7 @@ func (r ApiGetLoyaltyProgramProfileLedgerTransactionsRequest) Execute() (*GetLoy
 }
 
 /*
-GetLoyaltyProgramProfileLedgerTransactions List customer's loyalty transactions
+GetLoyaltyProgramProfileLedgerTransactions List customer's loyalty transactions (Management API)
 
 Retrieve paginated results of loyalty transaction logs for the given
 Integration ID in the specified loyalty program.
@@ -17678,9 +17689,11 @@ Integration ID in the specified loyalty program.
 You can filter transactions by date or by ledger (subledger or main ledger). If no filters are applied, the last 50
 loyalty transactions for the given integration ID are returned.
 
-> [!note] To retrieve all loyalty program transaction logs in a given
-> loyalty program, use the [List loyalty program transactions](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyProgramTransactions)
-> endpoint.
+> [!note] **Note**
+> - For most use cases, especially real-time integrations, use the Integration API endpoint:
+>   [List customer's loyalty transactions](https://docs.talon.one/integration-api#tag/Loyalty/operation/getLoyaltyProgramProfileTransactions).
+> - To retrieve all loyalty program transaction logs in a given loyalty program, use the
+>   [List loyalty program transactions](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyProgramTransactions) endpoint.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param loyaltyProgramId Identifier of the profile-based loyalty program. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
@@ -19969,12 +19982,12 @@ type ApiImportAccountCollectionRequest struct {
 	ctx          context.Context
 	ApiService   *ManagementAPIService
 	collectionId int64
-	upFile       *string
+	upFile       *os.File
 }
 
-// The file containing the data that is being imported.
-func (r ApiImportAccountCollectionRequest) UpFile(upFile string) ApiImportAccountCollectionRequest {
-	r.upFile = &upFile
+// The CSV file containing the data that is being imported.
+func (r ApiImportAccountCollectionRequest) UpFile(upFile *os.File) ApiImportAccountCollectionRequest {
+	r.upFile = upFile
 	return r
 }
 
@@ -20062,8 +20075,20 @@ func (a *ManagementAPIService) ImportAccountCollectionExecute(r ApiImportAccount
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if r.upFile != nil {
-		parameterAddToHeaderOrQuery(localVarFormParams, "upFile", r.upFile, "", "")
+	var upFileLocalVarFormFileName string
+	var upFileLocalVarFileName string
+	var upFileLocalVarFileBytes []byte
+
+	upFileLocalVarFormFileName = "upFile"
+	upFileLocalVarFile := r.upFile
+
+	if upFileLocalVarFile != nil {
+		fbs, _ := io.ReadAll(upFileLocalVarFile)
+
+		upFileLocalVarFileBytes = fbs
+		upFileLocalVarFileName = upFileLocalVarFile.Name()
+		upFileLocalVarFile.Close()
+		formFiles = append(formFiles, formFile{fileBytes: upFileLocalVarFileBytes, fileName: upFileLocalVarFileName, formFileName: upFileLocalVarFormFileName})
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -20141,12 +20166,12 @@ type ApiImportAllowedListRequest struct {
 	ctx         context.Context
 	ApiService  *ManagementAPIService
 	attributeId int64
-	upFile      *string
+	upFile      *os.File
 }
 
-// The file containing the data that is being imported.
-func (r ApiImportAllowedListRequest) UpFile(upFile string) ApiImportAllowedListRequest {
-	r.upFile = &upFile
+// The CSV file containing the data that is being imported.
+func (r ApiImportAllowedListRequest) UpFile(upFile *os.File) ApiImportAllowedListRequest {
+	r.upFile = upFile
 	return r
 }
 
@@ -20233,8 +20258,20 @@ func (a *ManagementAPIService) ImportAllowedListExecute(r ApiImportAllowedListRe
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if r.upFile != nil {
-		parameterAddToHeaderOrQuery(localVarFormParams, "upFile", r.upFile, "", "")
+	var upFileLocalVarFormFileName string
+	var upFileLocalVarFileName string
+	var upFileLocalVarFileBytes []byte
+
+	upFileLocalVarFormFileName = "upFile"
+	upFileLocalVarFile := r.upFile
+
+	if upFileLocalVarFile != nil {
+		fbs, _ := io.ReadAll(upFileLocalVarFile)
+
+		upFileLocalVarFileBytes = fbs
+		upFileLocalVarFileName = upFileLocalVarFile.Name()
+		upFileLocalVarFile.Close()
+		formFiles = append(formFiles, formFile{fileBytes: upFileLocalVarFileBytes, fileName: upFileLocalVarFileName, formFileName: upFileLocalVarFormFileName})
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -20323,12 +20360,12 @@ type ApiImportAudiencesMembershipsRequest struct {
 	ctx        context.Context
 	ApiService *ManagementAPIService
 	audienceId int64
-	upFile     *string
+	upFile     *os.File
 }
 
-// The file containing the data that is being imported.
-func (r ApiImportAudiencesMembershipsRequest) UpFile(upFile string) ApiImportAudiencesMembershipsRequest {
-	r.upFile = &upFile
+// The CSV file containing the data that is being imported.
+func (r ApiImportAudiencesMembershipsRequest) UpFile(upFile *os.File) ApiImportAudiencesMembershipsRequest {
+	r.upFile = upFile
 	return r
 }
 
@@ -20411,8 +20448,20 @@ func (a *ManagementAPIService) ImportAudiencesMembershipsExecute(r ApiImportAudi
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if r.upFile != nil {
-		parameterAddToHeaderOrQuery(localVarFormParams, "upFile", r.upFile, "", "")
+	var upFileLocalVarFormFileName string
+	var upFileLocalVarFileName string
+	var upFileLocalVarFileBytes []byte
+
+	upFileLocalVarFormFileName = "upFile"
+	upFileLocalVarFile := r.upFile
+
+	if upFileLocalVarFile != nil {
+		fbs, _ := io.ReadAll(upFileLocalVarFile)
+
+		upFileLocalVarFileBytes = fbs
+		upFileLocalVarFileName = upFileLocalVarFile.Name()
+		upFileLocalVarFile.Close()
+		formFiles = append(formFiles, formFile{fileBytes: upFileLocalVarFileBytes, fileName: upFileLocalVarFileName, formFileName: upFileLocalVarFormFileName})
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -20504,7 +20553,7 @@ type ApiImportCampaignStoreBudgetRequest struct {
 	campaignId    int64
 	action        *string
 	period        *string
-	upFile        *string
+	upFile        *os.File
 }
 
 // The action that this budget is limiting.
@@ -20519,9 +20568,9 @@ func (r ApiImportCampaignStoreBudgetRequest) Period(period string) ApiImportCamp
 	return r
 }
 
-// The file containing the data that is being imported.
-func (r ApiImportCampaignStoreBudgetRequest) UpFile(upFile string) ApiImportCampaignStoreBudgetRequest {
-	r.upFile = &upFile
+// The CSV file containing the data that is being imported.
+func (r ApiImportCampaignStoreBudgetRequest) UpFile(upFile *os.File) ApiImportCampaignStoreBudgetRequest {
+	r.upFile = upFile
 	return r
 }
 
@@ -20603,8 +20652,20 @@ func (a *ManagementAPIService) ImportCampaignStoreBudgetExecute(r ApiImportCampa
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if r.upFile != nil {
-		parameterAddToHeaderOrQuery(localVarFormParams, "upFile", r.upFile, "", "")
+	var upFileLocalVarFormFileName string
+	var upFileLocalVarFileName string
+	var upFileLocalVarFileBytes []byte
+
+	upFileLocalVarFormFileName = "upFile"
+	upFileLocalVarFile := r.upFile
+
+	if upFileLocalVarFile != nil {
+		fbs, _ := io.ReadAll(upFileLocalVarFile)
+
+		upFileLocalVarFileBytes = fbs
+		upFileLocalVarFileName = upFileLocalVarFile.Name()
+		upFileLocalVarFile.Close()
+		formFiles = append(formFiles, formFile{fileBytes: upFileLocalVarFileBytes, fileName: upFileLocalVarFileName, formFileName: upFileLocalVarFormFileName})
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -20672,12 +20733,12 @@ type ApiImportCampaignStoresRequest struct {
 	ApiService    *ManagementAPIService
 	applicationId int64
 	campaignId    int64
-	upFile        *string
+	upFile        *os.File
 }
 
-// The file containing the data that is being imported.
-func (r ApiImportCampaignStoresRequest) UpFile(upFile string) ApiImportCampaignStoresRequest {
-	r.upFile = &upFile
+// The CSV file containing the data that is being imported.
+func (r ApiImportCampaignStoresRequest) UpFile(upFile *os.File) ApiImportCampaignStoresRequest {
+	r.upFile = upFile
 	return r
 }
 
@@ -20752,8 +20813,20 @@ func (a *ManagementAPIService) ImportCampaignStoresExecute(r ApiImportCampaignSt
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if r.upFile != nil {
-		parameterAddToHeaderOrQuery(localVarFormParams, "upFile", r.upFile, "", "")
+	var upFileLocalVarFormFileName string
+	var upFileLocalVarFileName string
+	var upFileLocalVarFileBytes []byte
+
+	upFileLocalVarFormFileName = "upFile"
+	upFileLocalVarFile := r.upFile
+
+	if upFileLocalVarFile != nil {
+		fbs, _ := io.ReadAll(upFileLocalVarFile)
+
+		upFileLocalVarFileBytes = fbs
+		upFileLocalVarFileName = upFileLocalVarFile.Name()
+		upFileLocalVarFile.Close()
+		formFiles = append(formFiles, formFile{fileBytes: upFileLocalVarFileBytes, fileName: upFileLocalVarFileName, formFileName: upFileLocalVarFormFileName})
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -20844,12 +20917,12 @@ type ApiImportCollectionRequest struct {
 	applicationId int64
 	campaignId    int64
 	collectionId  int64
-	upFile        *string
+	upFile        *os.File
 }
 
-// The file containing the data that is being imported.
-func (r ApiImportCollectionRequest) UpFile(upFile string) ApiImportCollectionRequest {
-	r.upFile = &upFile
+// The CSV file containing the data that is being imported.
+func (r ApiImportCollectionRequest) UpFile(upFile *os.File) ApiImportCollectionRequest {
+	r.upFile = upFile
 	return r
 }
 
@@ -20943,8 +21016,20 @@ func (a *ManagementAPIService) ImportCollectionExecute(r ApiImportCollectionRequ
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if r.upFile != nil {
-		parameterAddToHeaderOrQuery(localVarFormParams, "upFile", r.upFile, "", "")
+	var upFileLocalVarFormFileName string
+	var upFileLocalVarFileName string
+	var upFileLocalVarFileBytes []byte
+
+	upFileLocalVarFormFileName = "upFile"
+	upFileLocalVarFile := r.upFile
+
+	if upFileLocalVarFile != nil {
+		fbs, _ := io.ReadAll(upFileLocalVarFile)
+
+		upFileLocalVarFileBytes = fbs
+		upFileLocalVarFileName = upFileLocalVarFile.Name()
+		upFileLocalVarFile.Close()
+		formFiles = append(formFiles, formFile{fileBytes: upFileLocalVarFileBytes, fileName: upFileLocalVarFileName, formFileName: upFileLocalVarFormFileName})
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -21013,7 +21098,7 @@ type ApiImportCouponsRequest struct {
 	applicationId  int64
 	campaignId     int64
 	skipDuplicates *bool
-	upFile         *string
+	upFile         *os.File
 }
 
 // An indicator of whether to skip duplicate coupon values instead of causing an error. Duplicate values are ignored when &#x60;skipDuplicates&#x3D;true&#x60;.
@@ -21022,9 +21107,9 @@ func (r ApiImportCouponsRequest) SkipDuplicates(skipDuplicates bool) ApiImportCo
 	return r
 }
 
-// The file containing the data that is being imported.
-func (r ApiImportCouponsRequest) UpFile(upFile string) ApiImportCouponsRequest {
-	r.upFile = &upFile
+// The CSV file containing the data that is being imported.
+func (r ApiImportCouponsRequest) UpFile(upFile *os.File) ApiImportCouponsRequest {
+	r.upFile = upFile
 	return r
 }
 
@@ -21126,8 +21211,20 @@ func (a *ManagementAPIService) ImportCouponsExecute(r ApiImportCouponsRequest) (
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if r.upFile != nil {
-		parameterAddToHeaderOrQuery(localVarFormParams, "upFile", r.upFile, "", "")
+	var upFileLocalVarFormFileName string
+	var upFileLocalVarFileName string
+	var upFileLocalVarFileBytes []byte
+
+	upFileLocalVarFormFileName = "upFile"
+	upFileLocalVarFile := r.upFile
+
+	if upFileLocalVarFile != nil {
+		fbs, _ := io.ReadAll(upFileLocalVarFile)
+
+		upFileLocalVarFileBytes = fbs
+		upFileLocalVarFileName = upFileLocalVarFile.Name()
+		upFileLocalVarFile.Close()
+		formFiles = append(formFiles, formFile{fileBytes: upFileLocalVarFileBytes, fileName: upFileLocalVarFileName, formFileName: upFileLocalVarFormFileName})
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -21184,12 +21281,12 @@ type ApiImportLoyaltyCardsRequest struct {
 	ctx              context.Context
 	ApiService       *ManagementAPIService
 	loyaltyProgramId int64
-	upFile           *string
+	upFile           *os.File
 }
 
-// The file containing the data that is being imported.
-func (r ApiImportLoyaltyCardsRequest) UpFile(upFile string) ApiImportLoyaltyCardsRequest {
-	r.upFile = &upFile
+// The CSV file containing the data that is being imported.
+func (r ApiImportLoyaltyCardsRequest) UpFile(upFile *os.File) ApiImportLoyaltyCardsRequest {
+	r.upFile = upFile
 	return r
 }
 
@@ -21276,8 +21373,20 @@ func (a *ManagementAPIService) ImportLoyaltyCardsExecute(r ApiImportLoyaltyCards
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if r.upFile != nil {
-		parameterAddToHeaderOrQuery(localVarFormParams, "upFile", r.upFile, "", "")
+	var upFileLocalVarFormFileName string
+	var upFileLocalVarFileName string
+	var upFileLocalVarFileBytes []byte
+
+	upFileLocalVarFormFileName = "upFile"
+	upFileLocalVarFile := r.upFile
+
+	if upFileLocalVarFile != nil {
+		fbs, _ := io.ReadAll(upFileLocalVarFile)
+
+		upFileLocalVarFileBytes = fbs
+		upFileLocalVarFileName = upFileLocalVarFile.Name()
+		upFileLocalVarFile.Close()
+		formFiles = append(formFiles, formFile{fileBytes: upFileLocalVarFileBytes, fileName: upFileLocalVarFileName, formFileName: upFileLocalVarFormFileName})
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -21355,12 +21464,12 @@ type ApiImportLoyaltyCustomersTiersRequest struct {
 	ctx              context.Context
 	ApiService       *ManagementAPIService
 	loyaltyProgramId int64
-	upFile           *string
+	upFile           *os.File
 }
 
-// The file containing the data that is being imported.
-func (r ApiImportLoyaltyCustomersTiersRequest) UpFile(upFile string) ApiImportLoyaltyCustomersTiersRequest {
-	r.upFile = &upFile
+// The CSV file containing the data that is being imported.
+func (r ApiImportLoyaltyCustomersTiersRequest) UpFile(upFile *os.File) ApiImportLoyaltyCustomersTiersRequest {
+	r.upFile = upFile
 	return r
 }
 
@@ -21469,8 +21578,20 @@ func (a *ManagementAPIService) ImportLoyaltyCustomersTiersExecute(r ApiImportLoy
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if r.upFile != nil {
-		parameterAddToHeaderOrQuery(localVarFormParams, "upFile", r.upFile, "", "")
+	var upFileLocalVarFormFileName string
+	var upFileLocalVarFileName string
+	var upFileLocalVarFileBytes []byte
+
+	upFileLocalVarFormFileName = "upFile"
+	upFileLocalVarFile := r.upFile
+
+	if upFileLocalVarFile != nil {
+		fbs, _ := io.ReadAll(upFileLocalVarFile)
+
+		upFileLocalVarFileBytes = fbs
+		upFileLocalVarFileName = upFileLocalVarFile.Name()
+		upFileLocalVarFile.Close()
+		formFiles = append(formFiles, formFile{fileBytes: upFileLocalVarFileBytes, fileName: upFileLocalVarFileName, formFileName: upFileLocalVarFormFileName})
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -21560,7 +21681,7 @@ type ApiImportLoyaltyPointsRequest struct {
 	ApiService           *ManagementAPIService
 	loyaltyProgramId     int64
 	notificationsEnabled *bool
-	upFile               *string
+	upFile               *os.File
 }
 
 // Indicates whether the points import triggers notifications about its effects. For example, a notification is sent if the import upgrades a customer&#39;s tier or offsets their negative points balance.  This parameter is optional and defaults to &#x60;true&#x60;.
@@ -21569,9 +21690,9 @@ func (r ApiImportLoyaltyPointsRequest) NotificationsEnabled(notificationsEnabled
 	return r
 }
 
-// The file containing the data that is being imported.
-func (r ApiImportLoyaltyPointsRequest) UpFile(upFile string) ApiImportLoyaltyPointsRequest {
-	r.upFile = &upFile
+// The CSV file containing the data that is being imported.
+func (r ApiImportLoyaltyPointsRequest) UpFile(upFile *os.File) ApiImportLoyaltyPointsRequest {
+	r.upFile = upFile
 	return r
 }
 
@@ -21728,8 +21849,20 @@ func (a *ManagementAPIService) ImportLoyaltyPointsExecute(r ApiImportLoyaltyPoin
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if r.upFile != nil {
-		parameterAddToHeaderOrQuery(localVarFormParams, "upFile", r.upFile, "", "")
+	var upFileLocalVarFormFileName string
+	var upFileLocalVarFileName string
+	var upFileLocalVarFileBytes []byte
+
+	upFileLocalVarFormFileName = "upFile"
+	upFileLocalVarFile := r.upFile
+
+	if upFileLocalVarFile != nil {
+		fbs, _ := io.ReadAll(upFileLocalVarFile)
+
+		upFileLocalVarFileBytes = fbs
+		upFileLocalVarFileName = upFileLocalVarFile.Name()
+		upFileLocalVarFile.Close()
+		formFiles = append(formFiles, formFile{fileBytes: upFileLocalVarFileBytes, fileName: upFileLocalVarFileName, formFileName: upFileLocalVarFormFileName})
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -21786,12 +21919,12 @@ type ApiImportPoolGiveawaysRequest struct {
 	ctx        context.Context
 	ApiService *ManagementAPIService
 	poolId     int64
-	upFile     *string
+	upFile     *os.File
 }
 
-// The file containing the data that is being imported.
-func (r ApiImportPoolGiveawaysRequest) UpFile(upFile string) ApiImportPoolGiveawaysRequest {
-	r.upFile = &upFile
+// The CSV file containing the data that is being imported.
+func (r ApiImportPoolGiveawaysRequest) UpFile(upFile *os.File) ApiImportPoolGiveawaysRequest {
+	r.upFile = upFile
 	return r
 }
 
@@ -21888,8 +22021,20 @@ func (a *ManagementAPIService) ImportPoolGiveawaysExecute(r ApiImportPoolGiveawa
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if r.upFile != nil {
-		parameterAddToHeaderOrQuery(localVarFormParams, "upFile", r.upFile, "", "")
+	var upFileLocalVarFormFileName string
+	var upFileLocalVarFileName string
+	var upFileLocalVarFileBytes []byte
+
+	upFileLocalVarFormFileName = "upFile"
+	upFileLocalVarFile := r.upFile
+
+	if upFileLocalVarFile != nil {
+		fbs, _ := io.ReadAll(upFileLocalVarFile)
+
+		upFileLocalVarFileBytes = fbs
+		upFileLocalVarFileName = upFileLocalVarFile.Name()
+		upFileLocalVarFile.Close()
+		formFiles = append(formFiles, formFile{fileBytes: upFileLocalVarFileBytes, fileName: upFileLocalVarFileName, formFileName: upFileLocalVarFormFileName})
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -21947,12 +22092,12 @@ type ApiImportReferralsRequest struct {
 	ApiService    *ManagementAPIService
 	applicationId int64
 	campaignId    int64
-	upFile        *string
+	upFile        *os.File
 }
 
-// The file containing the data that is being imported.
-func (r ApiImportReferralsRequest) UpFile(upFile string) ApiImportReferralsRequest {
-	r.upFile = &upFile
+// The CSV file containing the data that is being imported.
+func (r ApiImportReferralsRequest) UpFile(upFile *os.File) ApiImportReferralsRequest {
+	r.upFile = upFile
 	return r
 }
 
@@ -22054,8 +22199,20 @@ func (a *ManagementAPIService) ImportReferralsExecute(r ApiImportReferralsReques
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if r.upFile != nil {
-		parameterAddToHeaderOrQuery(localVarFormParams, "upFile", r.upFile, "", "")
+	var upFileLocalVarFormFileName string
+	var upFileLocalVarFileName string
+	var upFileLocalVarFileBytes []byte
+
+	upFileLocalVarFormFileName = "upFile"
+	upFileLocalVarFile := r.upFile
+
+	if upFileLocalVarFile != nil {
+		fbs, _ := io.ReadAll(upFileLocalVarFile)
+
+		upFileLocalVarFileBytes = fbs
+		upFileLocalVarFileName = upFileLocalVarFile.Name()
+		upFileLocalVarFile.Close()
+		formFiles = append(formFiles, formFile{fileBytes: upFileLocalVarFileBytes, fileName: upFileLocalVarFileName, formFileName: upFileLocalVarFormFileName})
 	}
 	if r.ctx != nil {
 		// API Key Authentication
