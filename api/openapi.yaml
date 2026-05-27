@@ -1435,21 +1435,15 @@ paths:
 
         To use this endpoint:
 
-        1. Define a [custom event](https://docs.talon.one/docs/dev/concepts/entities/events#creating-a-custom-event)
+        1. [Create a custom event](https://docs.talon.one/docs/dev/concepts/entities/events#creating-a-custom-event)
         in the Campaign Manager.
-        1. Update or create a rule to check for this event.
-        1. Trigger the event with this endpoint. After you have successfully sent an
-        event to Talon.One, you can list the received events in the **Events** view
-        in the Campaign Manager.
+        1. In a rule, add the **Check for event types** [condition](https://docs.talon.one/docs/dev/concepts/entities/events#use-an-event-in-a-rule) and select the event you created.
+        1. Trigger the event with this endpoint.
 
-        Talon.One also offers a set of [built-in
-        events](https://docs.talon.one/docs/dev/concepts/entities/events). Ensure
-        you do not create a custom event when you can use a built-in event.
+        You can [list](https://docs.talon.one/docs/product/applications/display-events#list-events) the received events in the **Events** view of the Campaign Manager.
 
-        For example, use this endpoint to trigger an event when a customer shares a
-        link to a product.
-
-        See the [tutorial](https://docs.talon.one/docs/product/tutorials/referrals/incentivizing-product-link-sharing).
+        For example, you can use this endpoint to trigger an event when a customer shares a
+        link to a product. See our [tutorial](https://docs.talon.one/docs/product/tutorials/referrals/incentivizing-product-link-sharing).
 
         > [!note] **Note**
         > - `profileId` is required even though the schema does not specify it.
@@ -5268,7 +5262,7 @@ paths:
         - `customerprofileid`: The integration ID of the customer profile to whom
         the tier should be assigned.
         - `tiername`: The name of an existing tier to assign to the customer.
-        - `expirydate`: The expiration date of the tier when the tier is
+        - `expirydate`: The expiry date of the tier when the tier is
         reevaluated. It should be a future date.
 
         About customer assignment to a tier:
@@ -5276,9 +5270,11 @@ paths:
         - If the customer isn't already in a tier, the customer is assigned to the
         specified tier during the tier import.
         - If the customer is already in the tier that's specified in the CSV file,
-        only the expiration date is updated.
+        only the expiry date is updated.
 
-        > [!note] We recommend not using this endpoint to update the tier of a customer.
+        > [!note] We recommend importing customers into the tier that matches their
+        > current balance. If a customer is imported into a lower tier, any session
+        > or points update automatically upgrades them to the tier they qualify for.
 
         To update a customer's tier, you can
         [add](/management-api#tag/Loyalty/operation/addLoyaltyPoints) or
@@ -6131,7 +6127,7 @@ paths:
         identifiers of the customer profiles linked to the loyalty card. The
         identifiers should be separated with a semicolon (;).
 
-        > [!note] We recommend limiting your file size to 500MB.
+        > [!note] Your CSV file must contain less than 500,000 rows. Requests time out after 30 seconds.
 
         ## Example
 
@@ -13353,6 +13349,20 @@ components:
             $ref: "#/components/schemas/NewStore"
       description: body
       required: true
+    NewSupportRequest:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SupportRequestInput"
+      description: body
+      required: true
+    UpdateSupportRequest:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UpdateSupportRequest"
+      description: body
+      required: true
     NewReward:
       content:
         application/json:
@@ -14320,7 +14330,7 @@ components:
           total:
             description: "The total value of cart items and additional costs in the\
               \ session, before any discounts are applied."
-            example: 119.99
+            example: 134.99
             title: Session Total
             type: number
           cartItemTotal:
@@ -14335,6 +14345,13 @@ components:
             example: 20
             title: Additional Costs Total
             type: number
+          cartItemAdditionalCostTotal:
+            description: "The total value of additional costs applied to individual\
+              \ items, before any discounts are applied."
+            example: 15
+            readOnly: true
+            title: Cart Item Additional Cost Total
+            type: number
           updated:
             description: Timestamp of the most recent event received on this session.
             example: 2020-02-08T14:15:22Z
@@ -14343,6 +14360,7 @@ components:
             type: string
         required:
         - additionalCostTotal
+        - cartItemAdditionalCostTotal
         - cartItemTotal
         - firstSession
         - total
@@ -14351,6 +14369,7 @@ components:
       example:
         couponCodes:
         - XMAS-20-2021
+        cartItemAdditionalCostTotal: 15
         updateCount: 3
         created: 2020-02-07T08:15:22Z
         identifiers:
@@ -14361,7 +14380,7 @@ components:
           variantID: 2
         - experimentID: 1
           variantID: 2
-        total: 119.99
+        total: 134.99
         loyaltyCards:
         - loyalty-card-1
         additionalCosts:
@@ -15577,6 +15596,7 @@ components:
         customerSession:
           couponCodes:
           - XMAS-20-2021
+          cartItemAdditionalCostTotal: 15
           updateCount: 3
           created: 2020-02-07T08:15:22Z
           identifiers:
@@ -15587,7 +15607,7 @@ components:
             variantID: 2
           - experimentID: 1
             variantID: 2
-          total: 119.99
+          total: 134.99
           loyaltyCards:
           - loyalty-card-1
           additionalCosts:
@@ -16642,6 +16662,7 @@ components:
             - giveaways
             - strikethrough
             - achievements
+            - advancedEvents
             type: string
           type: array
         couponSettings:
@@ -17995,8 +18016,8 @@ components:
       - $ref: "#/components/schemas/IntegrationStoreEntity"
       - properties:
           type:
-            description: A string representing the event. Must not be a reserved event
-              name.
+            description: "The name of the event. Must be a [custom event](https://docs.talon.one/docs/dev/concepts/entities/events#custom-events),\
+              \ not a built-in event."
             example: pageViewed
             minLength: 1
             title: Event Type
@@ -18006,6 +18027,14 @@ components:
         required:
         - attributes
         - type
+    EventV3Entity:
+      properties:
+        integrationId:
+          description: |
+            The unique ID of the event. Only one event with this ID can be registered.
+          example: 175KJPS947296
+          minLength: 1
+          type: string
     LedgerEntry:
       allOf:
       - $ref: "#/components/schemas/Entity"
@@ -18167,6 +18196,7 @@ components:
       - $ref: "#/components/schemas/Entity"
       - $ref: "#/components/schemas/ApplicationEntity"
       - $ref: "#/components/schemas/IntegrationEvent"
+      - $ref: "#/components/schemas/EventV3Entity"
       - properties:
           sessionId:
             description: The ID of the session that this event occurred in.
@@ -18230,56 +18260,38 @@ components:
           loyaltyProgramId: 323414846
           id: 6
           referenceId: 6
+        integrationId: 175KJPS947296
         attributes: "{myAttribute=myValue}"
         id: 6
         sessionId: 175KJPS947296
         applicationId: 322
         type: pageViewed
-    IntegrationProfileEntityV3:
+    EventV3Connections:
       properties:
-        profileId:
-          description: |
-            ID of the customer profile set by your integration layer.
-
-            **Note:** If the customer does not yet have a known `profileId`, we recommend you use a guest `profileId`.
-          example: URNGV8294NV
+        connectedSessionId:
+          description: "The ID of the session to reference. The session must be in\
+            \ `closed` state. Otherwise, the API call will fail."
+          example: 175KJPS947296
+          minLength: 1
           type: string
-      required:
-      - profileId
     EventV3:
       allOf:
-      - $ref: "#/components/schemas/IntegrationProfileEntityV3"
-      - $ref: "#/components/schemas/IntegrationStoreEntity"
-      - $ref: "#/components/schemas/EvaluableCampaignIds"
+      - $ref: "#/components/schemas/EventV3Connections"
+      - $ref: "#/components/schemas/Entity"
+      - $ref: "#/components/schemas/ApplicationEntity"
+      - $ref: "#/components/schemas/IntegrationEvent"
+      - $ref: "#/components/schemas/EventV3Entity"
       - properties:
-          integrationId:
+          effects:
             description: |
-              The unique ID of the current event. Only one event with this ID could be activated, duplicated events are forbidden.
-            example: 175KJPS947296
-            minLength: 1
-            type: string
-          type:
-            description: |
-              A string representing the event name. Must not be a reserved event name. You create this value when you [create an attribute](https://docs.talon.one/docs/dev/concepts/entities/events#creating-a-custom-event) of type `event` in the Campaign Manager.
-            example: pageViewed
-            minLength: 1
-            title: Event Type
-            type: string
-          attributes:
-            $ref: "#/components/schemas/EventV3_allOf_attributes"
-          connectedSessionID:
-            description: The ID of the session that happened in the past.
-            example: 175KJPS947296
-            minLength: 1
-            type: string
-          previousEventID:
-            description: The unique identifier of the event that happened in the past.
-            example: 175KJPS947296
-            minLength: 1
-            type: string
+              An array of effects generated by the rules of the enabled campaigns of the Application.
+
+              You decide how to apply them in your system. See the list of [API effects](https://docs.talon.one/docs/dev/integration-api/api-effects).
+            items:
+              type: object
+            type: array
         required:
-        - integrationId
-        - type
+        - effects
     AccountEntity:
       properties:
         accountId:
@@ -19880,6 +19892,7 @@ components:
             loyaltyProgramId: 323414846
             id: 6
             referenceId: 6
+          integrationId: 175KJPS947296
           attributes: "{myAttribute=myValue}"
           id: 6
           sessionId: 175KJPS947296
@@ -20700,8 +20713,8 @@ components:
     EventAttributesEntity:
       properties:
         type:
-          description: |
-            A string representing the event name. Must not be a reserved event name. You create this value when you [create an attribute](https://docs.talon.one/docs/dev/concepts/entities/events#creating-a-custom-event) of type `event` in the Campaign Manager.
+          description: "The name of the event. Must be a [custom event](https://docs.talon.one/docs/dev/concepts/entities/events#custom-events),\
+            \ not a built-in event."
           example: pageViewed
           minLength: 1
           title: Event Type
@@ -23880,6 +23893,7 @@ components:
             - giveaways
             - strikethrough
             - achievements
+            - advancedEvents
             type: string
           type: array
         couponAttributes:
@@ -24339,6 +24353,7 @@ components:
             - giveaways
             - strikethrough
             - achievements
+            - advancedEvents
             type: string
           type: array
         couponSettings:
@@ -26978,6 +26993,7 @@ components:
             - giveaways
             - strikethrough
             - achievements
+            - advancedEvents
             type: string
           type: array
         couponSettings:
@@ -27282,6 +27298,7 @@ components:
             - giveaways
             - strikethrough
             - achievements
+            - advancedEvents
             type: string
           type: array
         couponSettings:
@@ -28116,13 +28133,14 @@ components:
         campaign:
           $ref: "#/components/schemas/NewCampaign"
         goalType:
+          default: other
           description: |
             The goal of the experiment. Determines which single metric is used to decide the winning variant. When set to `other`, multiple metrics are used.
           enum:
           - other
           - maximize_revenue
-          - optimize_discount_efficiency
           - maximize_items_sold
+          - optimize_discount_efficiency
           type: string
         goalDescription:
           description: |
@@ -28254,16 +28272,16 @@ components:
             $ref: "#/components/schemas/UpdateCampaign"
           goalType:
             description: |
-              The goal of the experiment. Determines which single metric is used to decide the winning variant. When set to `other`, multiple metrics are used.
+              The goal of the experiment. Determines which single metric is used to decide the winning variant. When set to `other`, multiple metrics are used. If omitted, the current value is preserved.
             enum:
             - other
             - maximize_revenue
-            - optimize_discount_efficiency
             - maximize_items_sold
+            - optimize_discount_efficiency
             type: string
           goalDescription:
             description: |
-              A description of the experiment goal. Provides context for the AI summary and helps it interpret the outcome of the experiment against the stated goal.
+              A description of the experiment goal. Provides context for the AI summary and helps it interpret the outcome of the experiment against the stated goal. If omitted, the current value is preserved.
             example: Offering free shipping will increase average order revenue more
               than a 10% discount
             type: string
@@ -31314,6 +31332,7 @@ components:
       - $ref: "#/components/schemas/ApplicationCustomerEntity"
       - $ref: "#/components/schemas/ApplicationStoreEntity"
       - $ref: "#/components/schemas/IntegrationStoreEntity"
+      - $ref: "#/components/schemas/EventV3Entity"
       - properties:
           sessionId:
             description: The globally unique Talon.One ID of the session that contains
@@ -31321,8 +31340,8 @@ components:
             format: int64
             type: integer
           type:
-            description: A string representing the event. Must not be a reserved event
-              name.
+            description: "The name of the event. Must be a [custom event](https://docs.talon.one/docs/dev/concepts/entities/events#custom-events),\
+              \ not a built-in event."
             type: string
           attributes:
             $ref: "#/components/schemas/ApplicationEvent_allOf_attributes"
@@ -31381,6 +31400,7 @@ components:
         storeIntegrationId: STORE-001
         created: 2020-06-10T09:05:27.993483Z
         profileId: 138
+        integrationId: 175KJPS947296
         attributes: null
         id: 6
         sessionId: 6
@@ -32055,9 +32075,12 @@ components:
             discountValue: 6.027456183070403
           - campaignId: 0
             discountValue: 6.027456183070403
-        observedAt: 2020-11-10T23:00:00Z
+        observedAt: 2025-11-10T23:00:00Z
         price: 99.99
-        contextId: Summer Sale 2025
+        contextIds:
+        - SpringSale
+        - SummerSale2025
+        contextId: ""
         id: 1
         sku: NVR-GN-GV-UUP
         target: "{}"
@@ -32073,13 +32096,23 @@ components:
           type: string
         observedAt:
           description: The date and time when the price was observed.
-          example: 2020-11-10T23:00:00Z
+          example: 2025-11-10T23:00:00Z
           format: date-time
           type: string
-        contextId:
+        contextIds:
           description: |
-            The context ID of the context active at the time of observation.
-          example: Summer Sale 2025
+            The identifiers of the relevant context at the time the price was observed. Includes the context IDs of any price adjustments and of the campaigns that influenced the final price.
+          example:
+          - SpringSale
+          - SummerSale2025
+          items:
+            type: string
+          type: array
+        contextId:
+          default: ""
+          description: |
+            This property is **deprecated**. Use `contextIds` instead. Defaults to an empty string.
+          example: ""
           type: string
         price:
           description: Price of the item.
@@ -32090,7 +32123,7 @@ components:
         target:
           type: object
       required:
-      - contextId
+      - contextIds
       - id
       - metadata
       - observedAt
@@ -32139,9 +32172,12 @@ components:
             discountValue: 6.027456183070403
           - campaignId: 0
             discountValue: 6.027456183070403
-        observedAt: 2020-11-10T23:00:00Z
+        observedAt: 2025-11-10T23:00:00Z
         price: 99.99
-        contextId: Summer Sale 2025
+        contextIds:
+        - SpringSale
+        - SummerSale2025
+        contextId: ""
         id: 1
         target: "{}"
       properties:
@@ -32152,13 +32188,23 @@ components:
           type: integer
         observedAt:
           description: The date and time when the price was observed.
-          example: 2020-11-10T23:00:00Z
+          example: 2025-11-10T23:00:00Z
           format: date-time
           type: string
-        contextId:
+        contextIds:
           description: |
-            Identifier of the relevant context at the time the price was observed (e.g. summer sale).
-          example: Summer Sale 2025
+            The identifiers of the relevant context at the time the price was observed. Includes the context IDs of any price adjustments and of the campaigns that influenced the final price.
+          example:
+          - SpringSale
+          - SummerSale2025
+          items:
+            type: string
+          type: array
+        contextId:
+          default: ""
+          description: |
+            This property is **deprecated**. Use `contextIds` instead. Defaults to an empty string.
+          example: ""
           type: string
         price:
           description: Price of the item.
@@ -32169,7 +32215,7 @@ components:
         target:
           type: object
       required:
-      - contextId
+      - contextIds
       - id
       - metadata
       - observedAt
@@ -32185,9 +32231,12 @@ components:
               discountValue: 6.027456183070403
             - campaignId: 0
               discountValue: 6.027456183070403
-          observedAt: 2020-11-10T23:00:00Z
+          observedAt: 2025-11-10T23:00:00Z
           price: 99.99
-          contextId: Summer Sale 2025
+          contextIds:
+          - SpringSale
+          - SummerSale2025
+          contextId: ""
           id: 1
           target: "{}"
         - metadata:
@@ -32197,9 +32246,12 @@ components:
               discountValue: 6.027456183070403
             - campaignId: 0
               discountValue: 6.027456183070403
-          observedAt: 2020-11-10T23:00:00Z
+          observedAt: 2025-11-10T23:00:00Z
           price: 99.99
-          contextId: Summer Sale 2025
+          contextIds:
+          - SpringSale
+          - SummerSale2025
+          contextId: ""
           id: 1
           target: "{}"
         sku:
@@ -32243,6 +32295,8 @@ components:
             - Session
             - Store
             - Achievements
+            - AdvancedEvent
+            - AdvancedEventConnectedSession
             type: string
           name:
             description: |
@@ -32605,18 +32659,39 @@ components:
     CatalogAction:
       description: Definition of all the properties that are needed for a single catalog
         sync action.
+      example:
+        payload: "{}"
+        type: ADD
+      properties:
+        type:
+          description: The type of sync action.
+          enum:
+          - ADD
+          - PATCH
+          - PATCH_MANY
+          - REMOVE
+          - REMOVE_MANY
+          - ADD_PRICE_ADJUSTMENT
+          example: ADD
+          type: string
+        payload:
+          type: object
       required:
       - payload
       - type
-      type: object
     CatalogSyncRequest:
       example:
         actions:
-        - null
-        - null
-        - null
-        - null
-        - null
+        - payload: "{}"
+          type: ADD
+        - payload: "{}"
+          type: ADD
+        - payload: "{}"
+          type: ADD
+        - payload: "{}"
+          type: ADD
+        - payload: "{}"
+          type: ADD
         version: 244
       properties:
         actions:
@@ -35544,13 +35619,6 @@ components:
             \ achievements."
           example: false
           type: boolean
-        sandbox:
-          description: Indicates if this achievement is a live or sandbox achievement.
-            Achievements of a given type can only be connected to Applications of
-            the same type.
-          example: true
-          title: Sandbox
-          type: boolean
         subscribedApplications:
           description: A list containing the IDs of all applications that are subscribed
             to A list containing the IDs of all Applications that are connected to
@@ -35563,11 +35631,6 @@ components:
             type: integer
           minItems: 0
           type: array
-        timezone:
-          description: A string containing an IANA timezone descriptor.
-          example: Europe/Berlin
-          minLength: 1
-          type: string
     AchievementAdditionalPropertiesV2:
       properties:
         userId:
@@ -35601,7 +35664,20 @@ components:
       - $ref: "#/components/schemas/Entity"
       - $ref: "#/components/schemas/AchievementBaseV2"
       - $ref: "#/components/schemas/AchievementAdditionalPropertiesV2"
-      - required:
+      - properties:
+          sandbox:
+            description: Indicates if this achievement is a live or sandbox achievement.
+              Achievements of a given type can only be connected to Applications of
+              the same type.
+            example: true
+            title: Sandbox
+            type: boolean
+          timezone:
+            description: A string containing an IANA timezone descriptor.
+            example: Europe/Berlin
+            minLength: 1
+            type: string
+        required:
         - activationPolicy
         - description
         - name
@@ -35611,21 +35687,39 @@ components:
         - target
         - timezone
         - title
-        type: object
     CreateAchievementV2:
       allOf:
       - $ref: "#/components/schemas/AchievementBaseV2"
-      - required:
+      - properties:
+          sandbox:
+            description: Indicates if this achievement is a live or sandbox achievement.
+              Achievements of a given type can only be connected to Applications of
+              the same type.
+            example: true
+            title: Sandbox
+            type: boolean
+          timezone:
+            description: A string containing an IANA timezone descriptor.
+            example: Europe/Berlin
+            minLength: 1
+            type: string
+        required:
         - description
         - name
         - sandbox
         - target
         - timezone
         - title
-        type: object
     UpdateAchievementV2:
       allOf:
       - $ref: "#/components/schemas/AchievementBaseV2"
+      - required:
+        - description
+        - name
+        - subscribedApplications
+        - target
+        - title
+        type: object
     AchievementReference:
       properties:
         achievementId:
@@ -36369,9 +36463,15 @@ components:
           LoyaltyProgramID:
             format: int64
             type: integer
+          LoyaltyProgramName:
+            description: The name of the loyalty program.
+            type: string
           SubledgerID:
             type: string
           SourceOfEvent:
+            type: string
+          CurrentTier:
+            description: The name of the customer's current tier.
             type: string
           EmployeeName:
             type: string
@@ -36391,7 +36491,9 @@ components:
             type: string
         required:
         - CurrentPoints
+        - CurrentTier
         - LoyaltyProgramID
+        - LoyaltyProgramName
         - ProfileIntegrationID
         - PublishedAt
         - SourceOfEvent
@@ -36404,11 +36506,16 @@ components:
           LoyaltyProgramID:
             format: int64
             type: integer
+          LoyaltyProgramName:
+            description: The name of the loyalty program.
+            type: string
           SubledgerID:
             type: string
           SourceOfEvent:
             type: string
           CurrentTier:
+            description: "The name of the customer's current tier, or null if the\
+              \ customer was downgraded below all tiers."
             type: string
           CurrentPoints:
             format: float
@@ -36428,6 +36535,7 @@ components:
         required:
         - CurrentPoints
         - LoyaltyProgramID
+        - LoyaltyProgramName
         - ProfileIntegrationID
         - PublishedAt
         - SourceOfEvent
@@ -36440,11 +36548,15 @@ components:
           LoyaltyProgramID:
             format: int64
             type: integer
+          LoyaltyProgramName:
+            description: The name of the loyalty program.
+            type: string
           SubledgerID:
             type: string
           SourceOfEvent:
             type: string
           CurrentTier:
+            description: The name of the customer's current tier.
             type: string
           CurrentPoints:
             format: float
@@ -36468,7 +36580,9 @@ components:
             type: string
         required:
         - CurrentPoints
+        - CurrentTier
         - LoyaltyProgramID
+        - LoyaltyProgramName
         - ProfileIntegrationID
         - PublishedAt
         - SourceOfEvent
@@ -36585,6 +36699,9 @@ components:
         ProcessedAt:
           format: date-time
           type: string
+        DeliveredAt:
+          format: date-time
+          type: string
         ProcessAfter:
           format: date-time
           type: string
@@ -36599,6 +36716,27 @@ components:
       - ProcessAfter
       - PublishedAt
       - Retry
+    IntegrationHubEventStatusUpdate:
+      properties:
+        EventId:
+          description: The ID of the integration hub event.
+          example: 123
+          format: int64
+          type: integer
+        Status:
+          description: The delivery outcome for the event.
+          enum:
+          - delivered
+          - failed
+          type: string
+          x-generate-enum-go: true
+      required:
+      - EventId
+      - Status
+    IntegrationHubEventStatusUpdates:
+      items:
+        $ref: "#/components/schemas/IntegrationHubEventStatusUpdate"
+      type: array
     IntegrationHubConfig:
       description: Config used for accessing integrations in IntegrationHub
       properties:
@@ -36629,6 +36767,182 @@ components:
         required:
         - applicationId
         - applicationName
+    SupportRequestInput:
+      properties:
+        applicationId:
+          description: Identifier of the Application connected to the loyalty program
+            or the campaign. It is displayed in your Talon.One deployment URL.
+          example: 322
+          format: int64
+          type: integer
+        campaignId:
+          description: Identifier of the campaign where the coupon or gift card is
+            created.
+          example: 100
+          format: int64
+          type: integer
+        loyaltyProgramId:
+          description: "Identifier of the loyalty program. You can get the ID with\
+            \ the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms)\
+            \ endpoint."
+          example: 8
+          format: int64
+          type: integer
+        subledgerId:
+          description: "Identifier of the subledger the points are added to or deducted\
+            \ from. If there is no existing subledger with this ID, the subledger\
+            \ is created automatically."
+          example: 123
+          format: int64
+          type: integer
+        customerProfileId:
+          description: Integration ID of the customer profile linked to the support
+            request.
+          example: URNGV8294NV
+          type: string
+        requestType:
+          description: "Type of reward requested, including gift cards, personal coupons,\
+            \ and loyalty point additions or deductions."
+          enum:
+          - gift_card
+          - personal_coupon
+          - loyalty_points_added
+          - loyalty_points_deducted
+          example: personal_coupon
+          type: string
+        requestValue:
+          description: Requested monetary balance of the gift card or the number of
+            loyalty points to be added or deducted.
+          example: 20.5
+          exclusiveMinimum: true
+          format: float
+          minimum: 0
+          type: number
+        requestNote:
+          description: Notes attached to the support request.
+          example: Support request for coupon failure.
+          type: string
+      required:
+      - applicationId
+      - customerProfileId
+      - requestNote
+      - requestType
+    SupportRequest:
+      description: Summary of a support request created by a customer support agent.
+      properties:
+        id:
+          description: Identifier of the support request.
+          example: 1
+          format: int64
+          type: integer
+        applicationId:
+          description: Identifier of the Application connected to the loyalty program
+            or the campaign. It is displayed in your Talon.One deployment URL.
+          example: 322
+          format: int64
+          type: integer
+        campaignId:
+          description: Identifier of the campaign where the coupon or gift card is
+            created.
+          example: 100
+          format: int64
+          type: integer
+        loyaltyProgramId:
+          description: Identifier of the loyalty program where the points are added
+            or deducted.
+          example: 8
+          format: int64
+          type: integer
+        subledgerId:
+          description: "Identifier of the subledger the points are added to or deducted\
+            \ from. If there is no existing subledger with this ID, the subledger\
+            \ is created automatically."
+          example: 123
+          format: int64
+          type: integer
+        createdByUser:
+          description: Email address of the customer support agent who created the
+            support request.
+          example: support.agent.name@company.com
+          type: string
+        createdAt:
+          description: Timestamp when the request was made.
+          example: 2025-07-20T22:00:00Z
+          format: date-time
+          type: string
+        customerProfileId:
+          description: Integration ID of the customer profile linked to the support
+            request.
+          example: URNGV8294NV
+          type: string
+        requestType:
+          description: "Type of reward requested, including gift cards, personal coupons,\
+            \ and loyalty point additions or deductions."
+          enum:
+          - gift_card
+          - personal_coupon
+          - loyalty_points_added
+          - loyalty_points_deducted
+          example: personal_coupon
+          type: string
+        requestValue:
+          description: Requested monetary balance of the gift card or the number of
+            loyalty points to be added or deducted.
+          example: 20.5
+          exclusiveMinimum: true
+          format: float
+          minimum: 0
+          type: number
+        requestNote:
+          description: Notes attached to the support request.
+          example: Support request for coupon failure.
+          type: string
+        requestStatus:
+          description: Current status of the support request.
+          enum:
+          - pending_approval
+          - approved
+          - rejected
+          example: approved
+          type: string
+        processedAt:
+          description: Timestamp when the request was approved or rejected.
+          example: 2025-07-20T22:10:00Z
+          format: date-time
+          type: string
+        processingNote:
+          description: Notes attached by the admin when rejecting or approving a request.
+          example: Rejected as the customer was awarded points already.
+          type: string
+        processedByUser:
+          description: Email address of the admin who approved or rejected the support
+            request.
+          example: admin.name@company.com
+          type: string
+      required:
+      - applicationId
+      - createdAt
+      - createdByUser
+      - customerProfileId
+      - id
+      - requestNote
+      - requestStatus
+      - requestType
+    UpdateSupportRequest:
+      properties:
+        requestStatus:
+          description: Current status of the support request.
+          enum:
+          - approved
+          - rejected
+          example: approved
+          type: string
+        processingNote:
+          description: Notes attached by the admin when rejecting or approving a request.
+          example: Rejected as the customer was awarded points already.
+          type: string
+      required:
+      - requestStatus
     NewReward:
       properties:
         name:
@@ -36667,6 +36981,37 @@ components:
       - applicationIds
       - name
       - sandbox
+    RewardPointsRequired:
+      description: The loyalty points required to activate a reward.
+      properties:
+        id:
+          description: |
+            The ID of the `pointsRequired` entry. When updating a reward,
+            include this property to update an existing entry. Omit it to create a new one.
+          example: 1
+          format: int64
+          type: integer
+        amount:
+          description: The number of loyalty points required to activate the reward.
+          example: 500
+          minimum: 0
+          type: number
+        loyaltyProgramId:
+          description: The ID of the associated loyalty program.
+          example: 10
+          format: int64
+          type: integer
+        subledgerId:
+          description: |
+            The ID of the subledger within the loyalty program from which points are deducted when activating the reward.
+
+            To specify the main ledger, provide an empty string ("").
+          example: mysubledger
+          type: string
+      required:
+      - amount
+      - loyaltyProgramId
+      - subledgerId
     Reward:
       allOf:
       - $ref: "#/components/schemas/Entity"
@@ -36713,6 +37058,11 @@ components:
             - inactive
             example: active
             type: string
+          pointsRequired:
+            description: The loyalty points required to activate a reward.
+            items:
+              $ref: "#/components/schemas/RewardPointsRequired"
+            type: array
         required:
         - status
     UpdateReward:
@@ -36761,12 +37111,53 @@ components:
           items:
             $ref: "#/components/schemas/Binding"
           type: array
+        pointsRequired:
+          description: |
+            The loyalty points required to activate the reward. Each object defines the specific
+            loyalty program and subledger from which points are deducted when activating the reward.
+
+            **Note:**
+            - Objects with an `id` are updated.
+            - Objects without an `id` are created.
+            - Existing objects omitted from the payload are deleted.
+          items:
+            $ref: "#/components/schemas/RewardPointsRequired"
+          type: array
       required:
       - name
       - status
+    IntegrationProfileEntityV3:
+      properties:
+        profileId:
+          description: |
+            ID of the customer profile set by your integration layer.
+
+            **Note:** If the customer does not yet have a known `profileId`, we recommend you use a guest `profileId`.
+          example: URNGV8294NV
+          type: string
+      required:
+      - profileId
+    NewEventV3Entity:
+      properties:
+        integrationId:
+          description: |
+            The unique ID of the event. Only one event with this ID can be registered.
+          example: 175KJPS947296
+          minLength: 1
+          type: string
+      required:
+      - integrationId
+    EventV3RequestEntity:
+      allOf:
+      - $ref: "#/components/schemas/IntegrationProfileEntityV3"
+      - $ref: "#/components/schemas/IntegrationStoreEntity"
+      - $ref: "#/components/schemas/EvaluableCampaignIds"
+      - $ref: "#/components/schemas/EventAttributesEntity"
+      - $ref: "#/components/schemas/NewEventV3Entity"
+      - $ref: "#/components/schemas/EventV3Connections"
     IntegrationEventV3Request:
       allOf:
-      - $ref: "#/components/schemas/EventV3"
+      - $ref: "#/components/schemas/EventV3RequestEntity"
       - properties:
           loyaltyCards:
             description: Identifiers of the loyalty cards used during this event.
@@ -42639,6 +43030,7 @@ components:
           storeIntegrationId: STORE-001
           created: 2020-06-10T09:05:27.993483Z
           profileId: 138
+          integrationId: 175KJPS947296
           attributes: null
           id: 6
           sessionId: 6
@@ -42712,6 +43104,7 @@ components:
           storeIntegrationId: STORE-001
           created: 2020-06-10T09:05:27.993483Z
           profileId: 138
+          integrationId: 175KJPS947296
           attributes: null
           id: 6
           sessionId: 6
@@ -43610,12 +44003,6 @@ components:
       description: Arbitrary additional JSON data associated with the event.
       example: "{myAttribute=myValue}"
       type: object
-    EventV3_allOf_attributes:
-      description: "Arbitrary additional JSON properties associated with the event.\
-        \ They must be created in the Campaign Manager before setting them with this\
-        \ property. See [creating custom attributes](https://docs.talon.one/docs/product/account/dev-tools/managing-attributes#creating-a-custom-attribute)."
-      example: "{myAttribute=myValue}"
-      type: object
     NewCustomerSession_allOf_attributes:
       description: |
         A key-value map of the sessions attributes. The potentially valid attributes are configured in your accounts developer settings.
@@ -43660,6 +44047,19 @@ components:
           type: boolean
         campaign:
           $ref: "#/components/schemas/ExperimentCampaignCopy"
+        goalType:
+          description: |
+            The goal of the experiment. Determines which single metric is used to decide the winning variant. When set to `other`, multiple metrics are used. If omitted, the value from the source experiment is used.
+          enum:
+          - other
+          - maximize_revenue
+          - maximize_items_sold
+          - optimize_discount_efficiency
+          type: string
+        goalDescription:
+          description: |
+            A description of the experiment goal. Provides context for the AI summary and helps it interpret the outcome of the experiment against the stated goal. If omitted, the value from the source experiment is used.
+          type: string
       required:
       - campaign
       - isVariantAssignmentExternal

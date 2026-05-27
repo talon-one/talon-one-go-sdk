@@ -49,6 +49,8 @@ func BuildNewExperiment(isVariantAssignmentExternal bool, campaign NewCampaign, 
 // but it doesn't guarantee that properties required by API are set
 func NewNewExperimentWithDefaults() *NewExperiment {
 	this := NewExperiment{}
+	var goalType string = "other"
+	this.GoalType = goalType
 	return &this
 }
 

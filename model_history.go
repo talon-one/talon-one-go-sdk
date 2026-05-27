@@ -25,8 +25,10 @@ type History struct {
 	Id int64 `json:"id"`
 	// The date and time when the price was observed.
 	ObservedAt time.Time `json:"observedAt"`
-	// Identifier of the relevant context at the time the price was observed (e.g. summer sale).
-	ContextId string `json:"contextId"`
+	// The identifiers of the relevant context at the time the price was observed. Includes the context IDs of any price adjustments and of the campaigns that influenced the final price.
+	ContextIds []string `json:"contextIds"`
+	// This property is **deprecated**. Use `contextIds` instead. Defaults to an empty string.
+	ContextId *string `json:"contextId,omitempty"`
 	// Price of the item.
 	Price                float32                `json:"price"`
 	Metadata             BestPriorPriceMetadata `json:"metadata"`
@@ -40,11 +42,13 @@ type _History History
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildHistory(id int64, observedAt time.Time, contextId string, price float32, metadata BestPriorPriceMetadata, target map[string]interface{}) *History {
+func BuildHistory(id int64, observedAt time.Time, contextIds []string, price float32, metadata BestPriorPriceMetadata, target map[string]interface{}) *History {
 	this := History{}
 	this.Id = id
 	this.ObservedAt = observedAt
-	this.ContextId = contextId
+	this.ContextIds = contextIds
+	var contextId string = ""
+	this.ContextId = &contextId
 	this.Price = price
 	this.Metadata = metadata
 	this.Target = target
@@ -56,6 +60,8 @@ func BuildHistory(id int64, observedAt time.Time, contextId string, price float3
 // but it doesn't guarantee that properties required by API are set
 func NewHistoryWithDefaults() *History {
 	this := History{}
+	var contextId string = ""
+	this.ContextId = &contextId
 	return &this
 }
 
@@ -107,28 +113,60 @@ func (o *History) SetObservedAt(v time.Time) {
 	o.ObservedAt = v
 }
 
-// GetContextId returns the ContextId field value
-func (o *History) GetContextId() string {
+// GetContextIds returns the ContextIds field value
+func (o *History) GetContextIds() []string {
 	if o == nil {
-		var ret string
+		var ret []string
 		return ret
 	}
 
-	return o.ContextId
+	return o.ContextIds
 }
 
-// GetContextIdOk returns a tuple with the ContextId field value
+// GetContextIdsOk returns a tuple with the ContextIds field value
 // and a boolean to check if the value has been set.
-func (o *History) GetContextIdOk() (*string, bool) {
+func (o *History) GetContextIdsOk() ([]string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.ContextId, true
+	return o.ContextIds, true
 }
 
-// SetContextId sets field value
+// SetContextIds sets field value
+func (o *History) SetContextIds(v []string) {
+	o.ContextIds = v
+}
+
+// GetContextId returns the ContextId field value if set, zero value otherwise.
+func (o *History) GetContextId() string {
+	if o == nil || IsNil(o.ContextId) {
+		var ret string
+		return ret
+	}
+	return *o.ContextId
+}
+
+// GetContextIdOk returns a tuple with the ContextId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *History) GetContextIdOk() (*string, bool) {
+	if o == nil || IsNil(o.ContextId) {
+		return nil, false
+	}
+	return o.ContextId, true
+}
+
+// HasContextId returns a boolean if a field has been set.
+func (o *History) HasContextId() bool {
+	if o != nil && !IsNil(o.ContextId) {
+		return true
+	}
+
+	return false
+}
+
+// SetContextId gets a reference to the given string and assigns it to the ContextId field.
 func (o *History) SetContextId(v string) {
-	o.ContextId = v
+	o.ContextId = &v
 }
 
 // GetPrice returns the Price field value
@@ -215,7 +253,10 @@ func (o History) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["id"] = o.Id
 	toSerialize["observedAt"] = o.ObservedAt
-	toSerialize["contextId"] = o.ContextId
+	toSerialize["contextIds"] = o.ContextIds
+	if !IsNil(o.ContextId) {
+		toSerialize["contextId"] = o.ContextId
+	}
 	toSerialize["price"] = o.Price
 	toSerialize["metadata"] = o.Metadata
 	toSerialize["target"] = o.Target
@@ -234,7 +275,7 @@ func (o *History) UnmarshalJSON(data []byte) (err error) {
 	requiredProperties := []string{
 		"id",
 		"observedAt",
-		"contextId",
+		"contextIds",
 		"price",
 		"metadata",
 		"target",
@@ -269,6 +310,7 @@ func (o *History) UnmarshalJSON(data []byte) (err error) {
 	if err = json.Unmarshal(data, &additionalProperties); err == nil {
 		delete(additionalProperties, "id")
 		delete(additionalProperties, "observedAt")
+		delete(additionalProperties, "contextIds")
 		delete(additionalProperties, "contextId")
 		delete(additionalProperties, "price")
 		delete(additionalProperties, "metadata")

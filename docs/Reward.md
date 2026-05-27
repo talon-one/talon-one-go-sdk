@@ -17,6 +17,7 @@ Name | Type | Description | Notes
 **Bindings** | Pointer to [**[]Binding**](Binding.md) | A list of named variables created before the reward&#39;s rules are evaluated.  Each binding pairs a name with a talang expression. The expression is evaluated once  and its result is available by name in any rule condition or effect. Bindings must be defined outside of individual rules. | [optional] 
 **Modified** | Pointer to **time.Time** | The timestamp when the reward was last updated in RFC3339 format. | [optional] 
 **Status** | **string** | The status of the reward. | 
+**PointsRequired** | Pointer to [**[]RewardPointsRequired**](RewardPointsRequired.md) | The loyalty points required to activate a reward. | [optional] 
 
 ## Methods
 
@@ -321,6 +322,31 @@ and a boolean to check if the value has been set.
 
 SetStatus sets Status field to given value.
 
+
+### GetPointsRequired
+
+`func (o *Reward) GetPointsRequired() []RewardPointsRequired`
+
+GetPointsRequired returns the PointsRequired field if non-nil, zero value otherwise.
+
+### GetPointsRequiredOk
+
+`func (o *Reward) GetPointsRequiredOk() (*[]RewardPointsRequired, bool)`
+
+GetPointsRequiredOk returns a tuple with the PointsRequired field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPointsRequired
+
+`func (o *Reward) SetPointsRequired(v []RewardPointsRequired)`
+
+SetPointsRequired sets PointsRequired field to given value.
+
+### HasPointsRequired
+
+`func (o *Reward) HasPointsRequired() bool`
+
+HasPointsRequired returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

@@ -21,17 +21,20 @@ var _ MappedNullable = &IntegrationHubEventPayloadLoyaltyProfileBasedNotificatio
 
 // IntegrationHubEventPayloadLoyaltyProfileBasedNotification struct for IntegrationHubEventPayloadLoyaltyProfileBasedNotification
 type IntegrationHubEventPayloadLoyaltyProfileBasedNotification struct {
-	ProfileIntegrationID string                                                                         `json:"ProfileIntegrationID"`
-	LoyaltyProgramID     int64                                                                          `json:"LoyaltyProgramID"`
-	SubledgerID          string                                                                         `json:"SubledgerID"`
-	SourceOfEvent        string                                                                         `json:"SourceOfEvent"`
-	EmployeeName         *string                                                                        `json:"EmployeeName,omitempty"`
-	UserID               *int64                                                                         `json:"UserID,omitempty"`
-	CurrentPoints        float32                                                                        `json:"CurrentPoints"`
-	Actions              []IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction `json:"Actions,omitempty"`
+	ProfileIntegrationID string `json:"ProfileIntegrationID"`
+	LoyaltyProgramID     int64  `json:"LoyaltyProgramID"`
+	// The name of the loyalty program.
+	LoyaltyProgramName string `json:"LoyaltyProgramName"`
+	SubledgerID        string `json:"SubledgerID"`
+	SourceOfEvent      string `json:"SourceOfEvent"`
+	// The name of the customer's current tier.
+	CurrentTier   string                                                                         `json:"CurrentTier"`
+	EmployeeName  *string                                                                        `json:"EmployeeName,omitempty"`
+	UserID        *int64                                                                         `json:"UserID,omitempty"`
+	CurrentPoints float32                                                                        `json:"CurrentPoints"`
+	Actions       []IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction `json:"Actions,omitempty"`
 	// Timestamp when the event was published.
 	PublishedAt                 time.Time  `json:"PublishedAt"`
-	CurrentTier                 *string    `json:"CurrentTier,omitempty"`
 	OldTier                     *string    `json:"OldTier,omitempty"`
 	TierExpirationDate          *time.Time `json:"TierExpirationDate,omitempty"`
 	TimestampOfTierChange       *time.Time `json:"TimestampOfTierChange,omitempty"`
@@ -46,12 +49,14 @@ type _IntegrationHubEventPayloadLoyaltyProfileBasedNotification IntegrationHubEv
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildIntegrationHubEventPayloadLoyaltyProfileBasedNotification(profileIntegrationID string, loyaltyProgramID int64, subledgerID string, sourceOfEvent string, currentPoints float32, publishedAt time.Time) *IntegrationHubEventPayloadLoyaltyProfileBasedNotification {
+func BuildIntegrationHubEventPayloadLoyaltyProfileBasedNotification(profileIntegrationID string, loyaltyProgramID int64, loyaltyProgramName string, subledgerID string, sourceOfEvent string, currentTier string, currentPoints float32, publishedAt time.Time) *IntegrationHubEventPayloadLoyaltyProfileBasedNotification {
 	this := IntegrationHubEventPayloadLoyaltyProfileBasedNotification{}
 	this.ProfileIntegrationID = profileIntegrationID
 	this.LoyaltyProgramID = loyaltyProgramID
+	this.LoyaltyProgramName = loyaltyProgramName
 	this.SubledgerID = subledgerID
 	this.SourceOfEvent = sourceOfEvent
+	this.CurrentTier = currentTier
 	this.CurrentPoints = currentPoints
 	this.PublishedAt = publishedAt
 	return &this
@@ -113,6 +118,30 @@ func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) SetLoyaltyPr
 	o.LoyaltyProgramID = v
 }
 
+// GetLoyaltyProgramName returns the LoyaltyProgramName field value
+func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) GetLoyaltyProgramName() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.LoyaltyProgramName
+}
+
+// GetLoyaltyProgramNameOk returns a tuple with the LoyaltyProgramName field value
+// and a boolean to check if the value has been set.
+func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) GetLoyaltyProgramNameOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.LoyaltyProgramName, true
+}
+
+// SetLoyaltyProgramName sets field value
+func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) SetLoyaltyProgramName(v string) {
+	o.LoyaltyProgramName = v
+}
+
 // GetSubledgerID returns the SubledgerID field value
 func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) GetSubledgerID() string {
 	if o == nil {
@@ -159,6 +188,30 @@ func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) GetSourceOfE
 // SetSourceOfEvent sets field value
 func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) SetSourceOfEvent(v string) {
 	o.SourceOfEvent = v
+}
+
+// GetCurrentTier returns the CurrentTier field value
+func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) GetCurrentTier() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.CurrentTier
+}
+
+// GetCurrentTierOk returns a tuple with the CurrentTier field value
+// and a boolean to check if the value has been set.
+func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) GetCurrentTierOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.CurrentTier, true
+}
+
+// SetCurrentTier sets field value
+func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) SetCurrentTier(v string) {
+	o.CurrentTier = v
 }
 
 // GetEmployeeName returns the EmployeeName field value if set, zero value otherwise.
@@ -303,38 +356,6 @@ func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) GetPublished
 // SetPublishedAt sets field value
 func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) SetPublishedAt(v time.Time) {
 	o.PublishedAt = v
-}
-
-// GetCurrentTier returns the CurrentTier field value if set, zero value otherwise.
-func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) GetCurrentTier() string {
-	if o == nil || IsNil(o.CurrentTier) {
-		var ret string
-		return ret
-	}
-	return *o.CurrentTier
-}
-
-// GetCurrentTierOk returns a tuple with the CurrentTier field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) GetCurrentTierOk() (*string, bool) {
-	if o == nil || IsNil(o.CurrentTier) {
-		return nil, false
-	}
-	return o.CurrentTier, true
-}
-
-// HasCurrentTier returns a boolean if a field has been set.
-func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) HasCurrentTier() bool {
-	if o != nil && !IsNil(o.CurrentTier) {
-		return true
-	}
-
-	return false
-}
-
-// SetCurrentTier gets a reference to the given string and assigns it to the CurrentTier field.
-func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) SetCurrentTier(v string) {
-	o.CurrentTier = &v
 }
 
 // GetOldTier returns the OldTier field value if set, zero value otherwise.
@@ -509,8 +530,10 @@ func (o IntegrationHubEventPayloadLoyaltyProfileBasedNotification) ToMap() (map[
 	toSerialize := map[string]interface{}{}
 	toSerialize["ProfileIntegrationID"] = o.ProfileIntegrationID
 	toSerialize["LoyaltyProgramID"] = o.LoyaltyProgramID
+	toSerialize["LoyaltyProgramName"] = o.LoyaltyProgramName
 	toSerialize["SubledgerID"] = o.SubledgerID
 	toSerialize["SourceOfEvent"] = o.SourceOfEvent
+	toSerialize["CurrentTier"] = o.CurrentTier
 	if !IsNil(o.EmployeeName) {
 		toSerialize["EmployeeName"] = o.EmployeeName
 	}
@@ -522,9 +545,6 @@ func (o IntegrationHubEventPayloadLoyaltyProfileBasedNotification) ToMap() (map[
 		toSerialize["Actions"] = o.Actions
 	}
 	toSerialize["PublishedAt"] = o.PublishedAt
-	if !IsNil(o.CurrentTier) {
-		toSerialize["CurrentTier"] = o.CurrentTier
-	}
 	if !IsNil(o.OldTier) {
 		toSerialize["OldTier"] = o.OldTier
 	}
@@ -555,8 +575,10 @@ func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) UnmarshalJSO
 	requiredProperties := []string{
 		"ProfileIntegrationID",
 		"LoyaltyProgramID",
+		"LoyaltyProgramName",
 		"SubledgerID",
 		"SourceOfEvent",
+		"CurrentTier",
 		"CurrentPoints",
 		"PublishedAt",
 	}
@@ -590,14 +612,15 @@ func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) UnmarshalJSO
 	if err = json.Unmarshal(data, &additionalProperties); err == nil {
 		delete(additionalProperties, "ProfileIntegrationID")
 		delete(additionalProperties, "LoyaltyProgramID")
+		delete(additionalProperties, "LoyaltyProgramName")
 		delete(additionalProperties, "SubledgerID")
 		delete(additionalProperties, "SourceOfEvent")
+		delete(additionalProperties, "CurrentTier")
 		delete(additionalProperties, "EmployeeName")
 		delete(additionalProperties, "UserID")
 		delete(additionalProperties, "CurrentPoints")
 		delete(additionalProperties, "Actions")
 		delete(additionalProperties, "PublishedAt")
-		delete(additionalProperties, "CurrentTier")
 		delete(additionalProperties, "OldTier")
 		delete(additionalProperties, "TierExpirationDate")
 		delete(additionalProperties, "TimestampOfTierChange")

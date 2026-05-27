@@ -63,6 +63,8 @@ type CustomerSessionV2 struct {
 	CartItemTotal float32 `json:"cartItemTotal"`
 	// The total value of additional costs, before any discounts are applied.
 	AdditionalCostTotal float32 `json:"additionalCostTotal"`
+	// The total value of additional costs applied to individual items, before any discounts are applied.
+	CartItemAdditionalCostTotal float32 `json:"cartItemAdditionalCostTotal"`
 	// Timestamp of the most recent event received on this session.
 	Updated              time.Time `json:"updated"`
 	AdditionalProperties map[string]interface{}
@@ -74,7 +76,7 @@ type _CustomerSessionV2 CustomerSessionV2
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCustomerSessionV2(id int64, created time.Time, integrationId string, applicationId int64, firstSession bool, updateCount int64, total float32, cartItemTotal float32, additionalCostTotal float32, updated time.Time) *CustomerSessionV2 {
+func BuildCustomerSessionV2(id int64, created time.Time, integrationId string, applicationId int64, firstSession bool, updateCount int64, total float32, cartItemTotal float32, additionalCostTotal float32, cartItemAdditionalCostTotal float32, updated time.Time) *CustomerSessionV2 {
 	this := CustomerSessionV2{}
 	this.Id = id
 	this.Created = created
@@ -87,6 +89,7 @@ func BuildCustomerSessionV2(id int64, created time.Time, integrationId string, a
 	this.Total = total
 	this.CartItemTotal = cartItemTotal
 	this.AdditionalCostTotal = additionalCostTotal
+	this.CartItemAdditionalCostTotal = cartItemAdditionalCostTotal
 	this.Updated = updated
 	return &this
 }
@@ -701,6 +704,30 @@ func (o *CustomerSessionV2) SetAdditionalCostTotal(v float32) {
 	o.AdditionalCostTotal = v
 }
 
+// GetCartItemAdditionalCostTotal returns the CartItemAdditionalCostTotal field value
+func (o *CustomerSessionV2) GetCartItemAdditionalCostTotal() float32 {
+	if o == nil {
+		var ret float32
+		return ret
+	}
+
+	return o.CartItemAdditionalCostTotal
+}
+
+// GetCartItemAdditionalCostTotalOk returns a tuple with the CartItemAdditionalCostTotal field value
+// and a boolean to check if the value has been set.
+func (o *CustomerSessionV2) GetCartItemAdditionalCostTotalOk() (*float32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.CartItemAdditionalCostTotal, true
+}
+
+// SetCartItemAdditionalCostTotal sets field value
+func (o *CustomerSessionV2) SetCartItemAdditionalCostTotal(v float32) {
+	o.CartItemAdditionalCostTotal = v
+}
+
 // GetUpdated returns the Updated field value
 func (o *CustomerSessionV2) GetUpdated() time.Time {
 	if o == nil {
@@ -780,6 +807,7 @@ func (o CustomerSessionV2) ToMap() (map[string]interface{}, error) {
 	toSerialize["total"] = o.Total
 	toSerialize["cartItemTotal"] = o.CartItemTotal
 	toSerialize["additionalCostTotal"] = o.AdditionalCostTotal
+	toSerialize["cartItemAdditionalCostTotal"] = o.CartItemAdditionalCostTotal
 	toSerialize["updated"] = o.Updated
 
 	for key, value := range o.AdditionalProperties {
@@ -803,6 +831,7 @@ func (o *CustomerSessionV2) UnmarshalJSON(data []byte) (err error) {
 		"total",
 		"cartItemTotal",
 		"additionalCostTotal",
+		"cartItemAdditionalCostTotal",
 		"updated",
 	}
 
@@ -854,6 +883,7 @@ func (o *CustomerSessionV2) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "total")
 		delete(additionalProperties, "cartItemTotal")
 		delete(additionalProperties, "additionalCostTotal")
+		delete(additionalProperties, "cartItemAdditionalCostTotal")
 		delete(additionalProperties, "updated")
 		o.AdditionalProperties = additionalProperties
 	}

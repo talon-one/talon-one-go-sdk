@@ -10,6 +10,7 @@ Name | Type | Description | Notes
 **EventData** | **interface{}** |  | 
 **PublishedAt** | **time.Time** |  | 
 **ProcessedAt** | Pointer to **time.Time** |  | [optional] 
+**DeliveredAt** | Pointer to **time.Time** |  | [optional] 
 **ProcessAfter** | **time.Time** |  | 
 **Retry** | **int64** |  | 
 
@@ -166,6 +167,31 @@ SetProcessedAt sets ProcessedAt field to given value.
 `func (o *IntegrationHubEventRecord) HasProcessedAt() bool`
 
 HasProcessedAt returns a boolean if a field has been set.
+
+### GetDeliveredAt
+
+`func (o *IntegrationHubEventRecord) GetDeliveredAt() time.Time`
+
+GetDeliveredAt returns the DeliveredAt field if non-nil, zero value otherwise.
+
+### GetDeliveredAtOk
+
+`func (o *IntegrationHubEventRecord) GetDeliveredAtOk() (*time.Time, bool)`
+
+GetDeliveredAtOk returns a tuple with the DeliveredAt field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetDeliveredAt
+
+`func (o *IntegrationHubEventRecord) SetDeliveredAt(v time.Time)`
+
+SetDeliveredAt sets DeliveredAt field to given value.
+
+### HasDeliveredAt
+
+`func (o *IntegrationHubEventRecord) HasDeliveredAt() bool`
+
+HasDeliveredAt returns a boolean if a field has been set.
 
 ### GetProcessAfter
 

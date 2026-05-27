@@ -6,9 +6,10 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **ProfileIntegrationID** | **string** |  | 
 **LoyaltyProgramID** | **int64** |  | 
+**LoyaltyProgramName** | **string** | The name of the loyalty program. | 
 **SubledgerID** | **string** |  | 
 **SourceOfEvent** | **string** |  | 
-**CurrentTier** | Pointer to **string** |  | [optional] 
+**CurrentTier** | Pointer to **string** | The name of the customer&#39;s current tier, or null if the customer was downgraded below all tiers. | [optional] 
 **CurrentPoints** | **float32** |  | 
 **OldTier** | Pointer to **string** |  | [optional] 
 **TierExpirationDate** | Pointer to **time.Time** |  | [optional] 
@@ -19,7 +20,7 @@ Name | Type | Description | Notes
 
 ### NewIntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification
 
-`func NewIntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification(profileIntegrationID string, loyaltyProgramID int64, subledgerID string, sourceOfEvent string, currentPoints float32, publishedAt time.Time, ) *IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification`
+`func NewIntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification(profileIntegrationID string, loyaltyProgramID int64, loyaltyProgramName string, subledgerID string, sourceOfEvent string, currentPoints float32, publishedAt time.Time, ) *IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification`
 
 NewIntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification instantiates a new IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification object
 This constructor will assign default values to properties that have it defined,
@@ -72,6 +73,26 @@ and a boolean to check if the value has been set.
 `func (o *IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification) SetLoyaltyProgramID(v int64)`
 
 SetLoyaltyProgramID sets LoyaltyProgramID field to given value.
+
+
+### GetLoyaltyProgramName
+
+`func (o *IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification) GetLoyaltyProgramName() string`
+
+GetLoyaltyProgramName returns the LoyaltyProgramName field if non-nil, zero value otherwise.
+
+### GetLoyaltyProgramNameOk
+
+`func (o *IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification) GetLoyaltyProgramNameOk() (*string, bool)`
+
+GetLoyaltyProgramNameOk returns a tuple with the LoyaltyProgramName field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetLoyaltyProgramName
+
+`func (o *IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification) SetLoyaltyProgramName(v string)`
+
+SetLoyaltyProgramName sets LoyaltyProgramName field to given value.
 
 
 ### GetSubledgerID

@@ -23,7 +23,11 @@ type ExperimentCopyExperiment struct {
 	// The source of the assignment. - false - The variant assignment is handled internally by Talon.One. - true - The variant assignment is handled externally.
 	IsVariantAssignmentExternal bool                   `json:"isVariantAssignmentExternal"`
 	Campaign                    ExperimentCampaignCopy `json:"campaign"`
-	AdditionalProperties        map[string]interface{}
+	// The goal of the experiment. Determines which single metric is used to decide the winning variant. When set to `other`, multiple metrics are used. If omitted, the value from the source experiment is used.
+	GoalType *string `json:"goalType,omitempty"`
+	// A description of the experiment goal. Provides context for the AI summary and helps it interpret the outcome of the experiment against the stated goal. If omitted, the value from the source experiment is used.
+	GoalDescription      *string `json:"goalDescription,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ExperimentCopyExperiment ExperimentCopyExperiment
@@ -95,6 +99,70 @@ func (o *ExperimentCopyExperiment) SetCampaign(v ExperimentCampaignCopy) {
 	o.Campaign = v
 }
 
+// GetGoalType returns the GoalType field value if set, zero value otherwise.
+func (o *ExperimentCopyExperiment) GetGoalType() string {
+	if o == nil || IsNil(o.GoalType) {
+		var ret string
+		return ret
+	}
+	return *o.GoalType
+}
+
+// GetGoalTypeOk returns a tuple with the GoalType field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ExperimentCopyExperiment) GetGoalTypeOk() (*string, bool) {
+	if o == nil || IsNil(o.GoalType) {
+		return nil, false
+	}
+	return o.GoalType, true
+}
+
+// HasGoalType returns a boolean if a field has been set.
+func (o *ExperimentCopyExperiment) HasGoalType() bool {
+	if o != nil && !IsNil(o.GoalType) {
+		return true
+	}
+
+	return false
+}
+
+// SetGoalType gets a reference to the given string and assigns it to the GoalType field.
+func (o *ExperimentCopyExperiment) SetGoalType(v string) {
+	o.GoalType = &v
+}
+
+// GetGoalDescription returns the GoalDescription field value if set, zero value otherwise.
+func (o *ExperimentCopyExperiment) GetGoalDescription() string {
+	if o == nil || IsNil(o.GoalDescription) {
+		var ret string
+		return ret
+	}
+	return *o.GoalDescription
+}
+
+// GetGoalDescriptionOk returns a tuple with the GoalDescription field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ExperimentCopyExperiment) GetGoalDescriptionOk() (*string, bool) {
+	if o == nil || IsNil(o.GoalDescription) {
+		return nil, false
+	}
+	return o.GoalDescription, true
+}
+
+// HasGoalDescription returns a boolean if a field has been set.
+func (o *ExperimentCopyExperiment) HasGoalDescription() bool {
+	if o != nil && !IsNil(o.GoalDescription) {
+		return true
+	}
+
+	return false
+}
+
+// SetGoalDescription gets a reference to the given string and assigns it to the GoalDescription field.
+func (o *ExperimentCopyExperiment) SetGoalDescription(v string) {
+	o.GoalDescription = &v
+}
+
 func (o ExperimentCopyExperiment) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -107,6 +175,12 @@ func (o ExperimentCopyExperiment) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["isVariantAssignmentExternal"] = o.IsVariantAssignmentExternal
 	toSerialize["campaign"] = o.Campaign
+	if !IsNil(o.GoalType) {
+		toSerialize["goalType"] = o.GoalType
+	}
+	if !IsNil(o.GoalDescription) {
+		toSerialize["goalDescription"] = o.GoalDescription
+	}
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value
@@ -153,6 +227,8 @@ func (o *ExperimentCopyExperiment) UnmarshalJSON(data []byte) (err error) {
 	if err = json.Unmarshal(data, &additionalProperties); err == nil {
 		delete(additionalProperties, "isVariantAssignmentExternal")
 		delete(additionalProperties, "campaign")
+		delete(additionalProperties, "goalType")
+		delete(additionalProperties, "goalDescription")
 		o.AdditionalProperties = additionalProperties
 	}
 
