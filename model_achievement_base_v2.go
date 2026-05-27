@@ -40,13 +40,9 @@ type AchievementBaseV2 struct {
 	EndDate *time.Time `json:"endDate,omitempty"`
 	// When `true`, customer progress can be rolled back in completed achievements.
 	AllowRollbackAfterCompletion *bool `json:"allowRollbackAfterCompletion,omitempty"`
-	// Indicates if this achievement is a live or sandbox achievement. Achievements of a given type can only be connected to Applications of the same type.
-	Sandbox *bool `json:"sandbox,omitempty"`
 	// A list containing the IDs of all applications that are subscribed to A list containing the IDs of all Applications that are connected to this achievement.
 	SubscribedApplications []int64 `json:"subscribedApplications,omitempty"`
-	// A string containing an IANA timezone descriptor.
-	Timezone             *string `json:"timezone,omitempty"`
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties   map[string]interface{}
 }
 
 type _AchievementBaseV2 AchievementBaseV2
@@ -388,38 +384,6 @@ func (o *AchievementBaseV2) SetAllowRollbackAfterCompletion(v bool) {
 	o.AllowRollbackAfterCompletion = &v
 }
 
-// GetSandbox returns the Sandbox field value if set, zero value otherwise.
-func (o *AchievementBaseV2) GetSandbox() bool {
-	if o == nil || IsNil(o.Sandbox) {
-		var ret bool
-		return ret
-	}
-	return *o.Sandbox
-}
-
-// GetSandboxOk returns a tuple with the Sandbox field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *AchievementBaseV2) GetSandboxOk() (*bool, bool) {
-	if o == nil || IsNil(o.Sandbox) {
-		return nil, false
-	}
-	return o.Sandbox, true
-}
-
-// HasSandbox returns a boolean if a field has been set.
-func (o *AchievementBaseV2) HasSandbox() bool {
-	if o != nil && !IsNil(o.Sandbox) {
-		return true
-	}
-
-	return false
-}
-
-// SetSandbox gets a reference to the given bool and assigns it to the Sandbox field.
-func (o *AchievementBaseV2) SetSandbox(v bool) {
-	o.Sandbox = &v
-}
-
 // GetSubscribedApplications returns the SubscribedApplications field value if set, zero value otherwise.
 func (o *AchievementBaseV2) GetSubscribedApplications() []int64 {
 	if o == nil || IsNil(o.SubscribedApplications) {
@@ -450,38 +414,6 @@ func (o *AchievementBaseV2) HasSubscribedApplications() bool {
 // SetSubscribedApplications gets a reference to the given []int64 and assigns it to the SubscribedApplications field.
 func (o *AchievementBaseV2) SetSubscribedApplications(v []int64) {
 	o.SubscribedApplications = v
-}
-
-// GetTimezone returns the Timezone field value if set, zero value otherwise.
-func (o *AchievementBaseV2) GetTimezone() string {
-	if o == nil || IsNil(o.Timezone) {
-		var ret string
-		return ret
-	}
-	return *o.Timezone
-}
-
-// GetTimezoneOk returns a tuple with the Timezone field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *AchievementBaseV2) GetTimezoneOk() (*string, bool) {
-	if o == nil || IsNil(o.Timezone) {
-		return nil, false
-	}
-	return o.Timezone, true
-}
-
-// HasTimezone returns a boolean if a field has been set.
-func (o *AchievementBaseV2) HasTimezone() bool {
-	if o != nil && !IsNil(o.Timezone) {
-		return true
-	}
-
-	return false
-}
-
-// SetTimezone gets a reference to the given string and assigns it to the Timezone field.
-func (o *AchievementBaseV2) SetTimezone(v string) {
-	o.Timezone = &v
 }
 
 func (o AchievementBaseV2) MarshalJSON() ([]byte, error) {
@@ -524,14 +456,8 @@ func (o AchievementBaseV2) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.AllowRollbackAfterCompletion) {
 		toSerialize["allowRollbackAfterCompletion"] = o.AllowRollbackAfterCompletion
 	}
-	if !IsNil(o.Sandbox) {
-		toSerialize["sandbox"] = o.Sandbox
-	}
 	if !IsNil(o.SubscribedApplications) {
 		toSerialize["subscribedApplications"] = o.SubscribedApplications
-	}
-	if !IsNil(o.Timezone) {
-		toSerialize["timezone"] = o.Timezone
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -565,9 +491,7 @@ func (o *AchievementBaseV2) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "fixedStartDate")
 		delete(additionalProperties, "endDate")
 		delete(additionalProperties, "allowRollbackAfterCompletion")
-		delete(additionalProperties, "sandbox")
 		delete(additionalProperties, "subscribedApplications")
-		delete(additionalProperties, "timezone")
 		o.AdditionalProperties = additionalProperties
 	}
 

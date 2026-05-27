@@ -46,7 +46,9 @@ type Reward struct {
 	// The timestamp when the reward was last updated in RFC3339 format.
 	Modified *time.Time `json:"modified,omitempty"`
 	// The status of the reward.
-	Status               string `json:"status"`
+	Status string `json:"status"`
+	// The loyalty points required to activate a reward.
+	PointsRequired       []RewardPointsRequired `json:"pointsRequired,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -429,6 +431,38 @@ func (o *Reward) SetStatus(v string) {
 	o.Status = v
 }
 
+// GetPointsRequired returns the PointsRequired field value if set, zero value otherwise.
+func (o *Reward) GetPointsRequired() []RewardPointsRequired {
+	if o == nil || IsNil(o.PointsRequired) {
+		var ret []RewardPointsRequired
+		return ret
+	}
+	return o.PointsRequired
+}
+
+// GetPointsRequiredOk returns a tuple with the PointsRequired field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Reward) GetPointsRequiredOk() ([]RewardPointsRequired, bool) {
+	if o == nil || IsNil(o.PointsRequired) {
+		return nil, false
+	}
+	return o.PointsRequired, true
+}
+
+// HasPointsRequired returns a boolean if a field has been set.
+func (o *Reward) HasPointsRequired() bool {
+	if o != nil && !IsNil(o.PointsRequired) {
+		return true
+	}
+
+	return false
+}
+
+// SetPointsRequired gets a reference to the given []RewardPointsRequired and assigns it to the PointsRequired field.
+func (o *Reward) SetPointsRequired(v []RewardPointsRequired) {
+	o.PointsRequired = v
+}
+
 func (o Reward) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -462,6 +496,9 @@ func (o Reward) ToMap() (map[string]interface{}, error) {
 		toSerialize["modified"] = o.Modified
 	}
 	toSerialize["status"] = o.Status
+	if !IsNil(o.PointsRequired) {
+		toSerialize["pointsRequired"] = o.PointsRequired
+	}
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value
@@ -525,6 +562,7 @@ func (o *Reward) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "bindings")
 		delete(additionalProperties, "modified")
 		delete(additionalProperties, "status")
+		delete(additionalProperties, "pointsRequired")
 		o.AdditionalProperties = additionalProperties
 	}
 

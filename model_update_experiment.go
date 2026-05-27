@@ -23,9 +23,9 @@ type UpdateExperiment struct {
 	// The source of the assignment. - false - The variant assignment is handled internally by Talon.One. - true - The variant assignment is handled externally.
 	IsVariantAssignmentExternal bool           `json:"isVariantAssignmentExternal"`
 	Campaign                    UpdateCampaign `json:"campaign"`
-	// The goal of the experiment. Determines which single metric is used to decide the winning variant. When set to `other`, multiple metrics are used.
+	// The goal of the experiment. Determines which single metric is used to decide the winning variant. When set to `other`, multiple metrics are used. If omitted, the current value is preserved.
 	GoalType *string `json:"goalType,omitempty"`
-	// A description of the experiment goal. Provides context for the AI summary and helps it interpret the outcome of the experiment against the stated goal.
+	// A description of the experiment goal. Provides context for the AI summary and helps it interpret the outcome of the experiment against the stated goal. If omitted, the current value is preserved.
 	GoalDescription      *string `json:"goalDescription,omitempty"`
 	AdditionalProperties map[string]interface{}
 }

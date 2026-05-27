@@ -20,7 +20,7 @@ var _ MappedNullable = &CatalogSyncRequest{}
 
 // CatalogSyncRequest struct for CatalogSyncRequest
 type CatalogSyncRequest struct {
-	Actions []map[string]interface{} `json:"actions"`
+	Actions []CatalogAction `json:"actions"`
 	// The version number of the catalog to apply the actions on.
 	Version              *int64 `json:"version,omitempty"`
 	AdditionalProperties map[string]interface{}
@@ -32,7 +32,7 @@ type _CatalogSyncRequest CatalogSyncRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCatalogSyncRequest(actions []map[string]interface{}) *CatalogSyncRequest {
+func BuildCatalogSyncRequest(actions []CatalogAction) *CatalogSyncRequest {
 	this := CatalogSyncRequest{}
 	this.Actions = actions
 	return &this
@@ -47,9 +47,9 @@ func NewCatalogSyncRequestWithDefaults() *CatalogSyncRequest {
 }
 
 // GetActions returns the Actions field value
-func (o *CatalogSyncRequest) GetActions() []map[string]interface{} {
+func (o *CatalogSyncRequest) GetActions() []CatalogAction {
 	if o == nil {
-		var ret []map[string]interface{}
+		var ret []CatalogAction
 		return ret
 	}
 
@@ -58,7 +58,7 @@ func (o *CatalogSyncRequest) GetActions() []map[string]interface{} {
 
 // GetActionsOk returns a tuple with the Actions field value
 // and a boolean to check if the value has been set.
-func (o *CatalogSyncRequest) GetActionsOk() ([]map[string]interface{}, bool) {
+func (o *CatalogSyncRequest) GetActionsOk() ([]CatalogAction, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -66,7 +66,7 @@ func (o *CatalogSyncRequest) GetActionsOk() ([]map[string]interface{}, bool) {
 }
 
 // SetActions sets field value
-func (o *CatalogSyncRequest) SetActions(v []map[string]interface{}) {
+func (o *CatalogSyncRequest) SetActions(v []CatalogAction) {
 	o.Actions = v
 }
 

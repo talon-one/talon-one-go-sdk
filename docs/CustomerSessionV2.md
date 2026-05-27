@@ -25,13 +25,14 @@ Name | Type | Description | Notes
 **Total** | **float32** | The total value of cart items and additional costs in the session, before any discounts are applied. | 
 **CartItemTotal** | **float32** | The total value of cart items, before any discounts are applied. | 
 **AdditionalCostTotal** | **float32** | The total value of additional costs, before any discounts are applied. | 
+**CartItemAdditionalCostTotal** | **float32** | The total value of additional costs applied to individual items, before any discounts are applied. | [readonly] 
 **Updated** | **time.Time** | Timestamp of the most recent event received on this session. | 
 
 ## Methods
 
 ### NewCustomerSessionV2
 
-`func NewCustomerSessionV2(id int64, created time.Time, integrationId string, applicationId int64, firstSession bool, updateCount int64, total float32, cartItemTotal float32, additionalCostTotal float32, updated time.Time, ) *CustomerSessionV2`
+`func NewCustomerSessionV2(id int64, created time.Time, integrationId string, applicationId int64, firstSession bool, updateCount int64, total float32, cartItemTotal float32, additionalCostTotal float32, cartItemAdditionalCostTotal float32, updated time.Time, ) *CustomerSessionV2`
 
 NewCustomerSessionV2 instantiates a new CustomerSessionV2 object
 This constructor will assign default values to properties that have it defined,
@@ -524,6 +525,26 @@ and a boolean to check if the value has been set.
 `func (o *CustomerSessionV2) SetAdditionalCostTotal(v float32)`
 
 SetAdditionalCostTotal sets AdditionalCostTotal field to given value.
+
+
+### GetCartItemAdditionalCostTotal
+
+`func (o *CustomerSessionV2) GetCartItemAdditionalCostTotal() float32`
+
+GetCartItemAdditionalCostTotal returns the CartItemAdditionalCostTotal field if non-nil, zero value otherwise.
+
+### GetCartItemAdditionalCostTotalOk
+
+`func (o *CustomerSessionV2) GetCartItemAdditionalCostTotalOk() (*float32, bool)`
+
+GetCartItemAdditionalCostTotalOk returns a tuple with the CartItemAdditionalCostTotal field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCartItemAdditionalCostTotal
+
+`func (o *CustomerSessionV2) SetCartItemAdditionalCostTotal(v float32)`
+
+SetCartItemAdditionalCostTotal sets CartItemAdditionalCostTotal field to given value.
 
 
 ### GetUpdated

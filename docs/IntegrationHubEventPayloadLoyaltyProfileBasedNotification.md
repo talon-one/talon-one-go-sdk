@@ -6,14 +6,15 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **ProfileIntegrationID** | **string** |  | 
 **LoyaltyProgramID** | **int64** |  | 
+**LoyaltyProgramName** | **string** | The name of the loyalty program. | 
 **SubledgerID** | **string** |  | 
 **SourceOfEvent** | **string** |  | 
+**CurrentTier** | **string** | The name of the customer&#39;s current tier. | 
 **EmployeeName** | Pointer to **string** |  | [optional] 
 **UserID** | Pointer to **int64** |  | [optional] 
 **CurrentPoints** | **float32** |  | 
 **Actions** | Pointer to [**[]IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction**](IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction.md) |  | [optional] 
 **PublishedAt** | **time.Time** | Timestamp when the event was published. | 
-**CurrentTier** | Pointer to **string** |  | [optional] 
 **OldTier** | Pointer to **string** |  | [optional] 
 **TierExpirationDate** | Pointer to **time.Time** |  | [optional] 
 **TimestampOfTierChange** | Pointer to **time.Time** |  | [optional] 
@@ -24,7 +25,7 @@ Name | Type | Description | Notes
 
 ### NewIntegrationHubEventPayloadLoyaltyProfileBasedNotification
 
-`func NewIntegrationHubEventPayloadLoyaltyProfileBasedNotification(profileIntegrationID string, loyaltyProgramID int64, subledgerID string, sourceOfEvent string, currentPoints float32, publishedAt time.Time, ) *IntegrationHubEventPayloadLoyaltyProfileBasedNotification`
+`func NewIntegrationHubEventPayloadLoyaltyProfileBasedNotification(profileIntegrationID string, loyaltyProgramID int64, loyaltyProgramName string, subledgerID string, sourceOfEvent string, currentTier string, currentPoints float32, publishedAt time.Time, ) *IntegrationHubEventPayloadLoyaltyProfileBasedNotification`
 
 NewIntegrationHubEventPayloadLoyaltyProfileBasedNotification instantiates a new IntegrationHubEventPayloadLoyaltyProfileBasedNotification object
 This constructor will assign default values to properties that have it defined,
@@ -79,6 +80,26 @@ and a boolean to check if the value has been set.
 SetLoyaltyProgramID sets LoyaltyProgramID field to given value.
 
 
+### GetLoyaltyProgramName
+
+`func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) GetLoyaltyProgramName() string`
+
+GetLoyaltyProgramName returns the LoyaltyProgramName field if non-nil, zero value otherwise.
+
+### GetLoyaltyProgramNameOk
+
+`func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) GetLoyaltyProgramNameOk() (*string, bool)`
+
+GetLoyaltyProgramNameOk returns a tuple with the LoyaltyProgramName field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetLoyaltyProgramName
+
+`func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) SetLoyaltyProgramName(v string)`
+
+SetLoyaltyProgramName sets LoyaltyProgramName field to given value.
+
+
 ### GetSubledgerID
 
 `func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) GetSubledgerID() string`
@@ -117,6 +138,26 @@ and a boolean to check if the value has been set.
 `func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) SetSourceOfEvent(v string)`
 
 SetSourceOfEvent sets SourceOfEvent field to given value.
+
+
+### GetCurrentTier
+
+`func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) GetCurrentTier() string`
+
+GetCurrentTier returns the CurrentTier field if non-nil, zero value otherwise.
+
+### GetCurrentTierOk
+
+`func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) GetCurrentTierOk() (*string, bool)`
+
+GetCurrentTierOk returns a tuple with the CurrentTier field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCurrentTier
+
+`func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) SetCurrentTier(v string)`
+
+SetCurrentTier sets CurrentTier field to given value.
 
 
 ### GetEmployeeName
@@ -233,31 +274,6 @@ and a boolean to check if the value has been set.
 
 SetPublishedAt sets PublishedAt field to given value.
 
-
-### GetCurrentTier
-
-`func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) GetCurrentTier() string`
-
-GetCurrentTier returns the CurrentTier field if non-nil, zero value otherwise.
-
-### GetCurrentTierOk
-
-`func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) GetCurrentTierOk() (*string, bool)`
-
-GetCurrentTierOk returns a tuple with the CurrentTier field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetCurrentTier
-
-`func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) SetCurrentTier(v string)`
-
-SetCurrentTier sets CurrentTier field to given value.
-
-### HasCurrentTier
-
-`func (o *IntegrationHubEventPayloadLoyaltyProfileBasedNotification) HasCurrentTier() bool`
-
-HasCurrentTier returns a boolean if a field has been set.
 
 ### GetOldTier
 

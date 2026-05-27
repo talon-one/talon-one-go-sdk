@@ -7,7 +7,8 @@ Name | Type | Description | Notes
 **Id** | **int64** | The ID of the historical price. | 
 **Sku** | **string** | sku | 
 **ObservedAt** | **time.Time** | The date and time when the price was observed. | 
-**ContextId** | **string** | The context ID of the context active at the time of observation.  | 
+**ContextIds** | **[]string** | The identifiers of the relevant context at the time the price was observed. Includes the context IDs of any price adjustments and of the campaigns that influenced the final price.  | 
+**ContextId** | Pointer to **string** | This property is **deprecated**. Use &#x60;contextIds&#x60; instead. Defaults to an empty string.  | [optional] [default to ""]
 **Price** | **float32** | Price of the item. | 
 **Metadata** | [**BestPriorPriceMetadata**](BestPriorPriceMetadata.md) |  | 
 **Target** | **map[string]interface{}** |  | 
@@ -16,7 +17,7 @@ Name | Type | Description | Notes
 
 ### NewBestPriorPrice
 
-`func NewBestPriorPrice(id int64, sku string, observedAt time.Time, contextId string, price float32, metadata BestPriorPriceMetadata, target map[string]interface{}, ) *BestPriorPrice`
+`func NewBestPriorPrice(id int64, sku string, observedAt time.Time, contextIds []string, price float32, metadata BestPriorPriceMetadata, target map[string]interface{}, ) *BestPriorPrice`
 
 NewBestPriorPrice instantiates a new BestPriorPrice object
 This constructor will assign default values to properties that have it defined,
@@ -91,6 +92,26 @@ and a boolean to check if the value has been set.
 SetObservedAt sets ObservedAt field to given value.
 
 
+### GetContextIds
+
+`func (o *BestPriorPrice) GetContextIds() []string`
+
+GetContextIds returns the ContextIds field if non-nil, zero value otherwise.
+
+### GetContextIdsOk
+
+`func (o *BestPriorPrice) GetContextIdsOk() (*[]string, bool)`
+
+GetContextIdsOk returns a tuple with the ContextIds field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetContextIds
+
+`func (o *BestPriorPrice) SetContextIds(v []string)`
+
+SetContextIds sets ContextIds field to given value.
+
+
 ### GetContextId
 
 `func (o *BestPriorPrice) GetContextId() string`
@@ -110,6 +131,11 @@ and a boolean to check if the value has been set.
 
 SetContextId sets ContextId field to given value.
 
+### HasContextId
+
+`func (o *BestPriorPrice) HasContextId() bool`
+
+HasContextId returns a boolean if a field has been set.
 
 ### GetPrice
 

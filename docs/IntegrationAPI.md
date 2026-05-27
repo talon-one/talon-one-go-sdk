@@ -2101,7 +2101,7 @@ import (
 
 func main() {
 	catalogId := int64(789) // int64 | The ID of the catalog. You can find the ID in the Campaign Manager in **Account** > **Tools** > **Cart item catalogs**.
-	catalogSyncRequest := *openapiclient.NewCatalogSyncRequest([]map[string]interface{}{map[string]interface{}(123)}) // CatalogSyncRequest | body
+	catalogSyncRequest := *openapiclient.NewCatalogSyncRequest([]openapiclient.CatalogAction{*openapiclient.NewCatalogAction("ADD", map[string]interface{}(123))}) // CatalogSyncRequest | body
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)

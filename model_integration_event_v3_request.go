@@ -26,16 +26,14 @@ type IntegrationEventV3Request struct {
 	StoreIntegrationId *string `json:"storeIntegrationId,omitempty"`
 	// When using the `dry` query parameter, use this property to list the campaign to be evaluated by the Rule Engine.  These campaigns will be evaluated, even if they are disabled, allowing you to test specific campaigns before activating them.
 	EvaluableCampaignIds []int64 `json:"evaluableCampaignIds,omitempty"`
-	// The unique ID of the current event. Only one event with this ID could be activated, duplicated events are forbidden.
-	IntegrationId string `json:"integrationId"`
-	// A string representing the event name. Must not be a reserved event name. You create this value when you [create an attribute](https://docs.talon.one/docs/dev/concepts/entities/events#creating-a-custom-event) of type `event` in the Campaign Manager.
+	// The name of the event. Must be a [custom event](https://docs.talon.one/docs/dev/concepts/entities/events#custom-events), not a built-in event.
 	Type string `json:"type"`
 	// Arbitrary additional JSON properties associated with the event. They must be created in the Campaign Manager before setting them with this property. See [creating custom attributes](https://docs.talon.one/docs/product/account/dev-tools/managing-attributes#creating-a-custom-attribute).
 	Attributes map[string]interface{} `json:"attributes,omitempty"`
-	// The ID of the session that happened in the past.
-	ConnectedSessionID *string `json:"connectedSessionID,omitempty"`
-	// The unique identifier of the event that happened in the past.
-	PreviousEventID *string `json:"previousEventID,omitempty"`
+	// The unique ID of the event. Only one event with this ID can be registered.
+	IntegrationId string `json:"integrationId"`
+	// The ID of the session to reference. The session must be in `closed` state. Otherwise, the API call will fail.
+	ConnectedSessionId *string `json:"connectedSessionId,omitempty"`
 	// Identifiers of the loyalty cards used during this event.
 	LoyaltyCards []string `json:"loyaltyCards,omitempty"`
 	// Optional list of requested information to be present on the response related to the tracking custom event.
@@ -49,11 +47,11 @@ type _IntegrationEventV3Request IntegrationEventV3Request
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildIntegrationEventV3Request(profileId string, integrationId string, type_ string) *IntegrationEventV3Request {
+func BuildIntegrationEventV3Request(profileId string, type_ string, integrationId string) *IntegrationEventV3Request {
 	this := IntegrationEventV3Request{}
 	this.ProfileId = profileId
-	this.IntegrationId = integrationId
 	this.Type = type_
+	this.IntegrationId = integrationId
 	return &this
 }
 
@@ -153,30 +151,6 @@ func (o *IntegrationEventV3Request) SetEvaluableCampaignIds(v []int64) {
 	o.EvaluableCampaignIds = v
 }
 
-// GetIntegrationId returns the IntegrationId field value
-func (o *IntegrationEventV3Request) GetIntegrationId() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.IntegrationId
-}
-
-// GetIntegrationIdOk returns a tuple with the IntegrationId field value
-// and a boolean to check if the value has been set.
-func (o *IntegrationEventV3Request) GetIntegrationIdOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.IntegrationId, true
-}
-
-// SetIntegrationId sets field value
-func (o *IntegrationEventV3Request) SetIntegrationId(v string) {
-	o.IntegrationId = v
-}
-
 // GetType returns the Type field value
 func (o *IntegrationEventV3Request) GetType() string {
 	if o == nil {
@@ -233,68 +207,60 @@ func (o *IntegrationEventV3Request) SetAttributes(v map[string]interface{}) {
 	o.Attributes = v
 }
 
-// GetConnectedSessionID returns the ConnectedSessionID field value if set, zero value otherwise.
-func (o *IntegrationEventV3Request) GetConnectedSessionID() string {
-	if o == nil || IsNil(o.ConnectedSessionID) {
+// GetIntegrationId returns the IntegrationId field value
+func (o *IntegrationEventV3Request) GetIntegrationId() string {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.ConnectedSessionID
+
+	return o.IntegrationId
 }
 
-// GetConnectedSessionIDOk returns a tuple with the ConnectedSessionID field value if set, nil otherwise
+// GetIntegrationIdOk returns a tuple with the IntegrationId field value
 // and a boolean to check if the value has been set.
-func (o *IntegrationEventV3Request) GetConnectedSessionIDOk() (*string, bool) {
-	if o == nil || IsNil(o.ConnectedSessionID) {
+func (o *IntegrationEventV3Request) GetIntegrationIdOk() (*string, bool) {
+	if o == nil {
 		return nil, false
 	}
-	return o.ConnectedSessionID, true
+	return &o.IntegrationId, true
 }
 
-// HasConnectedSessionID returns a boolean if a field has been set.
-func (o *IntegrationEventV3Request) HasConnectedSessionID() bool {
-	if o != nil && !IsNil(o.ConnectedSessionID) {
+// SetIntegrationId sets field value
+func (o *IntegrationEventV3Request) SetIntegrationId(v string) {
+	o.IntegrationId = v
+}
+
+// GetConnectedSessionId returns the ConnectedSessionId field value if set, zero value otherwise.
+func (o *IntegrationEventV3Request) GetConnectedSessionId() string {
+	if o == nil || IsNil(o.ConnectedSessionId) {
+		var ret string
+		return ret
+	}
+	return *o.ConnectedSessionId
+}
+
+// GetConnectedSessionIdOk returns a tuple with the ConnectedSessionId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IntegrationEventV3Request) GetConnectedSessionIdOk() (*string, bool) {
+	if o == nil || IsNil(o.ConnectedSessionId) {
+		return nil, false
+	}
+	return o.ConnectedSessionId, true
+}
+
+// HasConnectedSessionId returns a boolean if a field has been set.
+func (o *IntegrationEventV3Request) HasConnectedSessionId() bool {
+	if o != nil && !IsNil(o.ConnectedSessionId) {
 		return true
 	}
 
 	return false
 }
 
-// SetConnectedSessionID gets a reference to the given string and assigns it to the ConnectedSessionID field.
-func (o *IntegrationEventV3Request) SetConnectedSessionID(v string) {
-	o.ConnectedSessionID = &v
-}
-
-// GetPreviousEventID returns the PreviousEventID field value if set, zero value otherwise.
-func (o *IntegrationEventV3Request) GetPreviousEventID() string {
-	if o == nil || IsNil(o.PreviousEventID) {
-		var ret string
-		return ret
-	}
-	return *o.PreviousEventID
-}
-
-// GetPreviousEventIDOk returns a tuple with the PreviousEventID field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *IntegrationEventV3Request) GetPreviousEventIDOk() (*string, bool) {
-	if o == nil || IsNil(o.PreviousEventID) {
-		return nil, false
-	}
-	return o.PreviousEventID, true
-}
-
-// HasPreviousEventID returns a boolean if a field has been set.
-func (o *IntegrationEventV3Request) HasPreviousEventID() bool {
-	if o != nil && !IsNil(o.PreviousEventID) {
-		return true
-	}
-
-	return false
-}
-
-// SetPreviousEventID gets a reference to the given string and assigns it to the PreviousEventID field.
-func (o *IntegrationEventV3Request) SetPreviousEventID(v string) {
-	o.PreviousEventID = &v
+// SetConnectedSessionId gets a reference to the given string and assigns it to the ConnectedSessionId field.
+func (o *IntegrationEventV3Request) SetConnectedSessionId(v string) {
+	o.ConnectedSessionId = &v
 }
 
 // GetLoyaltyCards returns the LoyaltyCards field value if set, zero value otherwise.
@@ -378,16 +344,13 @@ func (o IntegrationEventV3Request) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.EvaluableCampaignIds) {
 		toSerialize["evaluableCampaignIds"] = o.EvaluableCampaignIds
 	}
-	toSerialize["integrationId"] = o.IntegrationId
 	toSerialize["type"] = o.Type
 	if !IsNil(o.Attributes) {
 		toSerialize["attributes"] = o.Attributes
 	}
-	if !IsNil(o.ConnectedSessionID) {
-		toSerialize["connectedSessionID"] = o.ConnectedSessionID
-	}
-	if !IsNil(o.PreviousEventID) {
-		toSerialize["previousEventID"] = o.PreviousEventID
+	toSerialize["integrationId"] = o.IntegrationId
+	if !IsNil(o.ConnectedSessionId) {
+		toSerialize["connectedSessionId"] = o.ConnectedSessionId
 	}
 	if !IsNil(o.LoyaltyCards) {
 		toSerialize["loyaltyCards"] = o.LoyaltyCards
@@ -409,8 +372,8 @@ func (o *IntegrationEventV3Request) UnmarshalJSON(data []byte) (err error) {
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
 		"profileId",
-		"integrationId",
 		"type",
+		"integrationId",
 	}
 
 	allProperties := make(map[string]interface{})
@@ -443,11 +406,10 @@ func (o *IntegrationEventV3Request) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "profileId")
 		delete(additionalProperties, "storeIntegrationId")
 		delete(additionalProperties, "evaluableCampaignIds")
-		delete(additionalProperties, "integrationId")
 		delete(additionalProperties, "type")
 		delete(additionalProperties, "attributes")
-		delete(additionalProperties, "connectedSessionID")
-		delete(additionalProperties, "previousEventID")
+		delete(additionalProperties, "integrationId")
+		delete(additionalProperties, "connectedSessionId")
 		delete(additionalProperties, "loyaltyCards")
 		delete(additionalProperties, "responseContent")
 		o.AdditionalProperties = additionalProperties

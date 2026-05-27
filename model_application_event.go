@@ -33,9 +33,11 @@ type ApplicationEvent struct {
 	StoreId *int64 `json:"storeId,omitempty"`
 	// The integration ID of the store. You choose this ID when you create a store.
 	StoreIntegrationId *string `json:"storeIntegrationId,omitempty"`
+	// The unique ID of the event. Only one event with this ID can be registered.
+	IntegrationId *string `json:"integrationId,omitempty"`
 	// The globally unique Talon.One ID of the session that contains this event.
 	SessionId *int64 `json:"sessionId,omitempty"`
-	// A string representing the event. Must not be a reserved event name.
+	// The name of the event. Must be a [custom event](https://docs.talon.one/docs/dev/concepts/entities/events#custom-events), not a built-in event.
 	Type string `json:"type"`
 	// Additional JSON serialized data associated with the event.
 	Attributes map[string]interface{} `json:"attributes"`
@@ -239,6 +241,38 @@ func (o *ApplicationEvent) SetStoreIntegrationId(v string) {
 	o.StoreIntegrationId = &v
 }
 
+// GetIntegrationId returns the IntegrationId field value if set, zero value otherwise.
+func (o *ApplicationEvent) GetIntegrationId() string {
+	if o == nil || IsNil(o.IntegrationId) {
+		var ret string
+		return ret
+	}
+	return *o.IntegrationId
+}
+
+// GetIntegrationIdOk returns a tuple with the IntegrationId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ApplicationEvent) GetIntegrationIdOk() (*string, bool) {
+	if o == nil || IsNil(o.IntegrationId) {
+		return nil, false
+	}
+	return o.IntegrationId, true
+}
+
+// HasIntegrationId returns a boolean if a field has been set.
+func (o *ApplicationEvent) HasIntegrationId() bool {
+	if o != nil && !IsNil(o.IntegrationId) {
+		return true
+	}
+
+	return false
+}
+
+// SetIntegrationId gets a reference to the given string and assigns it to the IntegrationId field.
+func (o *ApplicationEvent) SetIntegrationId(v string) {
+	o.IntegrationId = &v
+}
+
 // GetSessionId returns the SessionId field value if set, zero value otherwise.
 func (o *ApplicationEvent) GetSessionId() int64 {
 	if o == nil || IsNil(o.SessionId) {
@@ -397,6 +431,9 @@ func (o ApplicationEvent) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.StoreIntegrationId) {
 		toSerialize["storeIntegrationId"] = o.StoreIntegrationId
 	}
+	if !IsNil(o.IntegrationId) {
+		toSerialize["integrationId"] = o.IntegrationId
+	}
 	if !IsNil(o.SessionId) {
 		toSerialize["sessionId"] = o.SessionId
 	}
@@ -460,6 +497,7 @@ func (o *ApplicationEvent) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "profileId")
 		delete(additionalProperties, "storeId")
 		delete(additionalProperties, "storeIntegrationId")
+		delete(additionalProperties, "integrationId")
 		delete(additionalProperties, "sessionId")
 		delete(additionalProperties, "type")
 		delete(additionalProperties, "attributes")

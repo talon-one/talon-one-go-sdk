@@ -4,14 +4,14 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Actions** | **[]map[string]interface{}** |  | 
+**Actions** | [**[]CatalogAction**](CatalogAction.md) |  | 
 **Version** | Pointer to **int64** | The version number of the catalog to apply the actions on. | [optional] 
 
 ## Methods
 
 ### NewCatalogSyncRequest
 
-`func NewCatalogSyncRequest(actions []map[string]interface{}, ) *CatalogSyncRequest`
+`func NewCatalogSyncRequest(actions []CatalogAction, ) *CatalogSyncRequest`
 
 NewCatalogSyncRequest instantiates a new CatalogSyncRequest object
 This constructor will assign default values to properties that have it defined,
@@ -28,20 +28,20 @@ but it doesn't guarantee that properties required by API are set
 
 ### GetActions
 
-`func (o *CatalogSyncRequest) GetActions() []map[string]interface{}`
+`func (o *CatalogSyncRequest) GetActions() []CatalogAction`
 
 GetActions returns the Actions field if non-nil, zero value otherwise.
 
 ### GetActionsOk
 
-`func (o *CatalogSyncRequest) GetActionsOk() (*[]map[string]interface{}, bool)`
+`func (o *CatalogSyncRequest) GetActionsOk() (*[]CatalogAction, bool)`
 
 GetActionsOk returns a tuple with the Actions field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetActions
 
-`func (o *CatalogSyncRequest) SetActions(v []map[string]interface{})`
+`func (o *CatalogSyncRequest) SetActions(v []CatalogAction)`
 
 SetActions sets Actions field to given value.
 

@@ -31,7 +31,9 @@ type UpdateReward struct {
 	// Rule to apply.  **Note**: The `bindings` field inside the rule must not be used in this endpoint. All bindings should be defined at the reward level via the top-level `bindings` field.
 	Rule *Rule `json:"rule,omitempty"`
 	// A list of named variables created before the reward's rules are evaluated.  Each binding pairs a name with a talang expression. The expression is evaluated once  and its result is available by name in any rule condition or effect. Bindings must be defined outside of individual rules.
-	Bindings             []Binding `json:"bindings,omitempty"`
+	Bindings []Binding `json:"bindings,omitempty"`
+	// The loyalty points required to activate the reward. Each object defines the specific loyalty program and subledger from which points are deducted when activating the reward.  **Note:** - Objects with an `id` are updated. - Objects without an `id` are created. - Existing objects omitted from the payload are deleted.
+	PointsRequired       []RewardPointsRequired `json:"pointsRequired,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -232,6 +234,38 @@ func (o *UpdateReward) SetBindings(v []Binding) {
 	o.Bindings = v
 }
 
+// GetPointsRequired returns the PointsRequired field value if set, zero value otherwise.
+func (o *UpdateReward) GetPointsRequired() []RewardPointsRequired {
+	if o == nil || IsNil(o.PointsRequired) {
+		var ret []RewardPointsRequired
+		return ret
+	}
+	return o.PointsRequired
+}
+
+// GetPointsRequiredOk returns a tuple with the PointsRequired field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *UpdateReward) GetPointsRequiredOk() ([]RewardPointsRequired, bool) {
+	if o == nil || IsNil(o.PointsRequired) {
+		return nil, false
+	}
+	return o.PointsRequired, true
+}
+
+// HasPointsRequired returns a boolean if a field has been set.
+func (o *UpdateReward) HasPointsRequired() bool {
+	if o != nil && !IsNil(o.PointsRequired) {
+		return true
+	}
+
+	return false
+}
+
+// SetPointsRequired gets a reference to the given []RewardPointsRequired and assigns it to the PointsRequired field.
+func (o *UpdateReward) SetPointsRequired(v []RewardPointsRequired) {
+	o.PointsRequired = v
+}
+
 func (o UpdateReward) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -255,6 +289,9 @@ func (o UpdateReward) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Bindings) {
 		toSerialize["bindings"] = o.Bindings
+	}
+	if !IsNil(o.PointsRequired) {
+		toSerialize["pointsRequired"] = o.PointsRequired
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -306,6 +343,7 @@ func (o *UpdateReward) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "visibilityConditions")
 		delete(additionalProperties, "rule")
 		delete(additionalProperties, "bindings")
+		delete(additionalProperties, "pointsRequired")
 		o.AdditionalProperties = additionalProperties
 	}
 

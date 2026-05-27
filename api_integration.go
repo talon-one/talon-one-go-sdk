@@ -5539,21 +5539,15 @@ Triggers a custom event.
 
 To use this endpoint:
 
-1. Define a [custom event](https://docs.talon.one/docs/dev/concepts/entities/events#creating-a-custom-event)
+1. [Create a custom event](https://docs.talon.one/docs/dev/concepts/entities/events#creating-a-custom-event)
 in the Campaign Manager.
-1. Update or create a rule to check for this event.
-1. Trigger the event with this endpoint. After you have successfully sent an
-event to Talon.One, you can list the received events in the **Events** view
-in the Campaign Manager.
+1. In a rule, add the **Check for event types** [condition](https://docs.talon.one/docs/dev/concepts/entities/events#use-an-event-in-a-rule) and select the event you created.
+1. Trigger the event with this endpoint.
 
-Talon.One also offers a set of [built-in
-events](https://docs.talon.one/docs/dev/concepts/entities/events). Ensure
-you do not create a custom event when you can use a built-in event.
+You can [list](https://docs.talon.one/docs/product/applications/display-events#list-events) the received events in the **Events** view of the Campaign Manager.
 
-For example, use this endpoint to trigger an event when a customer shares a
-link to a product.
-
-See the [tutorial](https://docs.talon.one/docs/product/tutorials/referrals/incentivizing-product-link-sharing).
+For example, you can use this endpoint to trigger an event when a customer shares a
+link to a product. See our [tutorial](https://docs.talon.one/docs/product/tutorials/referrals/incentivizing-product-link-sharing).
 
 > [!note] **Note**
 > - `profileId` is required even though the schema does not specify it.

@@ -21312,7 +21312,7 @@ which must match the regular expression `^[A-Za-z0-9._%+@-]+$`.
 identifiers of the customer profiles linked to the loyalty card. The
 identifiers should be separated with a semicolon (;).
 
-> [!note] We recommend limiting your file size to 500MB.
+> [!note] Your CSV file must contain less than 500,000 rows. Requests time out after 30 seconds.
 
 ## Example
 
@@ -21495,7 +21495,7 @@ the main ledger will be used.
 - `customerprofileid`: The integration ID of the customer profile to whom
 the tier should be assigned.
 - `tiername`: The name of an existing tier to assign to the customer.
-- `expirydate`: The expiration date of the tier when the tier is
+- `expirydate`: The expiry date of the tier when the tier is
 reevaluated. It should be a future date.
 
 About customer assignment to a tier:
@@ -21503,9 +21503,11 @@ About customer assignment to a tier:
 - If the customer isn't already in a tier, the customer is assigned to the
 specified tier during the tier import.
 - If the customer is already in the tier that's specified in the CSV file,
-only the expiration date is updated.
+only the expiry date is updated.
 
-> [!note] We recommend not using this endpoint to update the tier of a customer.
+> [!note] We recommend importing customers into the tier that matches their
+> current balance. If a customer is imported into a lower tier, any session
+> or points update automatically upgrades them to the tier they qualify for.
 
 To update a customer's tier, you can
 [add](/management-api#tag/Loyalty/operation/addLoyaltyPoints) or

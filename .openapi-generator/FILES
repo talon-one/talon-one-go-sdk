@@ -173,6 +173,7 @@ docs/CardLedgerTransactionLogEntryIntegrationAPI.md
 docs/CartItem.md
 docs/CartItemFilterTemplate.md
 docs/Catalog.md
+docs/CatalogAction.md
 docs/CatalogActionFilter.md
 docs/CatalogItem.md
 docs/CatalogRule.md
@@ -252,6 +253,9 @@ docs/EventAttributesEntity.md
 docs/EventType.md
 docs/EventV2.md
 docs/EventV3.md
+docs/EventV3Connections.md
+docs/EventV3Entity.md
+docs/EventV3RequestEntity.md
 docs/Experiment.md
 docs/ExperimentCampaignCopy.md
 docs/ExperimentCopy.md
@@ -377,6 +381,7 @@ docs/IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationActio
 docs/IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification.md
 docs/IntegrationHubEventPayloadLoyaltyProfileBasedTierUpgradeNotification.md
 docs/IntegrationHubEventRecord.md
+docs/IntegrationHubEventStatusUpdate.md
 docs/IntegrationHubFlow.md
 docs/IntegrationHubFlowConfig.md
 docs/IntegrationHubFlowConfigResponse.md
@@ -491,6 +496,7 @@ docs/NewCustomerSession.md
 docs/NewCustomerSessionV2.md
 docs/NewEvent.md
 docs/NewEventType.md
+docs/NewEventV3Entity.md
 docs/NewExperiment.md
 docs/NewExperimentVariant.md
 docs/NewExperimentVariantArray.md
@@ -587,6 +593,7 @@ docs/RevisionActivation.md
 docs/RevisionActivationRequest.md
 docs/RevisionVersion.md
 docs/Reward.md
+docs/RewardPointsRequired.md
 docs/RiskNotification.md
 docs/Role.md
 docs/RoleAssign.md
@@ -661,6 +668,8 @@ docs/StrikethroughSetDiscountPerItemMemberEffectProps.md
 docs/StrikethroughTrigger.md
 docs/SummarizeCampaignStoreBudget200Response.md
 docs/SummaryCampaignStoreBudget.md
+docs/SupportRequest.md
+docs/SupportRequestInput.md
 docs/TalangAttribute.md
 docs/TalangAttributeVisibility.md
 docs/TemplateArgDef.md
@@ -718,6 +727,7 @@ docs/UpdateReferralBatch.md
 docs/UpdateReward.md
 docs/UpdateRole.md
 docs/UpdateStore.md
+docs/UpdateSupportRequest.md
 docs/UpdateUser.md
 docs/User.md
 docs/UserEntity.md
@@ -886,6 +896,7 @@ model_card_ledger_transaction_log_entry_integration_api.go
 model_cart_item.go
 model_cart_item_filter_template.go
 model_catalog.go
+model_catalog_action.go
 model_catalog_action_filter.go
 model_catalog_item.go
 model_catalog_rule.go
@@ -965,6 +976,9 @@ model_event_attributes_entity.go
 model_event_type.go
 model_event_v2.go
 model_event_v3.go
+model_event_v3_connections.go
+model_event_v3_entity.go
+model_event_v3_request_entity.go
 model_experiment.go
 model_experiment_campaign_copy.go
 model_experiment_copy.go
@@ -1089,6 +1103,7 @@ model_integration_hub_event_payload_loyalty_profile_based_points_changed_notific
 model_integration_hub_event_payload_loyalty_profile_based_tier_downgrade_notification.go
 model_integration_hub_event_payload_loyalty_profile_based_tier_upgrade_notification.go
 model_integration_hub_event_record.go
+model_integration_hub_event_status_update.go
 model_integration_hub_flow.go
 model_integration_hub_flow_config.go
 model_integration_hub_flow_config_response.go
@@ -1202,6 +1217,7 @@ model_new_customer_session.go
 model_new_customer_session_v2.go
 model_new_event.go
 model_new_event_type.go
+model_new_event_v3_entity.go
 model_new_experiment.go
 model_new_experiment_variant.go
 model_new_experiment_variant_array.go
@@ -1298,6 +1314,7 @@ model_revision_activation.go
 model_revision_activation_request.go
 model_revision_version.go
 model_reward.go
+model_reward_points_required.go
 model_risk_notification.go
 model_role.go
 model_role_assign.go
@@ -1372,6 +1389,8 @@ model_strikethrough_set_discount_per_item_member_effect_props.go
 model_strikethrough_trigger.go
 model_summarize_campaign_store_budget_200_response.go
 model_summary_campaign_store_budget.go
+model_support_request.go
+model_support_request_input.go
 model_talang_attribute.go
 model_talang_attribute_visibility.go
 model_template_arg_def.go
@@ -1429,6 +1448,7 @@ model_update_referral_batch.go
 model_update_reward.go
 model_update_role.go
 model_update_store.go
+model_update_support_request.go
 model_update_user.go
 model_user.go
 model_user_entity.go

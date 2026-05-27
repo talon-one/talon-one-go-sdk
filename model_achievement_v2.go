@@ -45,12 +45,8 @@ type AchievementV2 struct {
 	EndDate *time.Time `json:"endDate,omitempty"`
 	// When `true`, customer progress can be rolled back in completed achievements.
 	AllowRollbackAfterCompletion *bool `json:"allowRollbackAfterCompletion,omitempty"`
-	// Indicates if this achievement is a live or sandbox achievement. Achievements of a given type can only be connected to Applications of the same type.
-	Sandbox bool `json:"sandbox"`
 	// A list containing the IDs of all applications that are subscribed to A list containing the IDs of all Applications that are connected to this achievement.
 	SubscribedApplications []int64 `json:"subscribedApplications"`
-	// A string containing an IANA timezone descriptor.
-	Timezone string `json:"timezone"`
 	// The ID of the user that created this achievement.
 	UserId int64 `json:"userId"`
 	// Name of the user that created the achievement.  **Note**: This is not available if the user has been deleted.
@@ -58,7 +54,11 @@ type AchievementV2 struct {
 	// Indicates if a customer has made progress in the achievement.
 	HasProgress *bool `json:"hasProgress,omitempty"`
 	// The status of the achievement.
-	Status               *string `json:"status,omitempty"`
+	Status *string `json:"status,omitempty"`
+	// Indicates if this achievement is a live or sandbox achievement. Achievements of a given type can only be connected to Applications of the same type.
+	Sandbox bool `json:"sandbox"`
+	// A string containing an IANA timezone descriptor.
+	Timezone             string `json:"timezone"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -68,7 +68,7 @@ type _AchievementV2 AchievementV2
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildAchievementV2(id int64, created time.Time, name string, title string, description string, target float32, recurrencePolicy string, activationPolicy string, sandbox bool, subscribedApplications []int64, timezone string, userId int64) *AchievementV2 {
+func BuildAchievementV2(id int64, created time.Time, name string, title string, description string, target float32, recurrencePolicy string, activationPolicy string, subscribedApplications []int64, userId int64, sandbox bool, timezone string) *AchievementV2 {
 	this := AchievementV2{}
 	this.Id = id
 	this.Created = created
@@ -78,10 +78,10 @@ func BuildAchievementV2(id int64, created time.Time, name string, title string, 
 	this.Target = target
 	this.RecurrencePolicy = recurrencePolicy
 	this.ActivationPolicy = activationPolicy
-	this.Sandbox = sandbox
 	this.SubscribedApplications = subscribedApplications
-	this.Timezone = timezone
 	this.UserId = userId
+	this.Sandbox = sandbox
+	this.Timezone = timezone
 	return &this
 }
 
@@ -413,30 +413,6 @@ func (o *AchievementV2) SetAllowRollbackAfterCompletion(v bool) {
 	o.AllowRollbackAfterCompletion = &v
 }
 
-// GetSandbox returns the Sandbox field value
-func (o *AchievementV2) GetSandbox() bool {
-	if o == nil {
-		var ret bool
-		return ret
-	}
-
-	return o.Sandbox
-}
-
-// GetSandboxOk returns a tuple with the Sandbox field value
-// and a boolean to check if the value has been set.
-func (o *AchievementV2) GetSandboxOk() (*bool, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Sandbox, true
-}
-
-// SetSandbox sets field value
-func (o *AchievementV2) SetSandbox(v bool) {
-	o.Sandbox = v
-}
-
 // GetSubscribedApplications returns the SubscribedApplications field value
 func (o *AchievementV2) GetSubscribedApplications() []int64 {
 	if o == nil {
@@ -459,30 +435,6 @@ func (o *AchievementV2) GetSubscribedApplicationsOk() ([]int64, bool) {
 // SetSubscribedApplications sets field value
 func (o *AchievementV2) SetSubscribedApplications(v []int64) {
 	o.SubscribedApplications = v
-}
-
-// GetTimezone returns the Timezone field value
-func (o *AchievementV2) GetTimezone() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Timezone
-}
-
-// GetTimezoneOk returns a tuple with the Timezone field value
-// and a boolean to check if the value has been set.
-func (o *AchievementV2) GetTimezoneOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Timezone, true
-}
-
-// SetTimezone sets field value
-func (o *AchievementV2) SetTimezone(v string) {
-	o.Timezone = v
 }
 
 // GetUserId returns the UserId field value
@@ -605,6 +557,54 @@ func (o *AchievementV2) SetStatus(v string) {
 	o.Status = &v
 }
 
+// GetSandbox returns the Sandbox field value
+func (o *AchievementV2) GetSandbox() bool {
+	if o == nil {
+		var ret bool
+		return ret
+	}
+
+	return o.Sandbox
+}
+
+// GetSandboxOk returns a tuple with the Sandbox field value
+// and a boolean to check if the value has been set.
+func (o *AchievementV2) GetSandboxOk() (*bool, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Sandbox, true
+}
+
+// SetSandbox sets field value
+func (o *AchievementV2) SetSandbox(v bool) {
+	o.Sandbox = v
+}
+
+// GetTimezone returns the Timezone field value
+func (o *AchievementV2) GetTimezone() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Timezone
+}
+
+// GetTimezoneOk returns a tuple with the Timezone field value
+// and a boolean to check if the value has been set.
+func (o *AchievementV2) GetTimezoneOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Timezone, true
+}
+
+// SetTimezone sets field value
+func (o *AchievementV2) SetTimezone(v string) {
+	o.Timezone = v
+}
+
 func (o AchievementV2) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -635,9 +635,7 @@ func (o AchievementV2) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.AllowRollbackAfterCompletion) {
 		toSerialize["allowRollbackAfterCompletion"] = o.AllowRollbackAfterCompletion
 	}
-	toSerialize["sandbox"] = o.Sandbox
 	toSerialize["subscribedApplications"] = o.SubscribedApplications
-	toSerialize["timezone"] = o.Timezone
 	toSerialize["userId"] = o.UserId
 	if !IsNil(o.CreatedBy) {
 		toSerialize["createdBy"] = o.CreatedBy
@@ -648,6 +646,8 @@ func (o AchievementV2) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Status) {
 		toSerialize["status"] = o.Status
 	}
+	toSerialize["sandbox"] = o.Sandbox
+	toSerialize["timezone"] = o.Timezone
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value
@@ -669,10 +669,10 @@ func (o *AchievementV2) UnmarshalJSON(data []byte) (err error) {
 		"target",
 		"recurrencePolicy",
 		"activationPolicy",
-		"sandbox",
 		"subscribedApplications",
-		"timezone",
 		"userId",
+		"sandbox",
+		"timezone",
 	}
 
 	allProperties := make(map[string]interface{})
@@ -714,13 +714,13 @@ func (o *AchievementV2) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "fixedStartDate")
 		delete(additionalProperties, "endDate")
 		delete(additionalProperties, "allowRollbackAfterCompletion")
-		delete(additionalProperties, "sandbox")
 		delete(additionalProperties, "subscribedApplications")
-		delete(additionalProperties, "timezone")
 		delete(additionalProperties, "userId")
 		delete(additionalProperties, "createdBy")
 		delete(additionalProperties, "hasProgress")
 		delete(additionalProperties, "status")
+		delete(additionalProperties, "sandbox")
+		delete(additionalProperties, "timezone")
 		o.AdditionalProperties = additionalProperties
 	}
 

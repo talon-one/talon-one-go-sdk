@@ -27,6 +27,7 @@ type IntegrationHubEventRecord struct {
 	EventData            interface{} `json:"EventData"`
 	PublishedAt          time.Time   `json:"PublishedAt"`
 	ProcessedAt          *time.Time  `json:"ProcessedAt,omitempty"`
+	DeliveredAt          *time.Time  `json:"DeliveredAt,omitempty"`
 	ProcessAfter         time.Time   `json:"ProcessAfter"`
 	Retry                int64       `json:"Retry"`
 	AdditionalProperties map[string]interface{}
@@ -212,6 +213,38 @@ func (o *IntegrationHubEventRecord) SetProcessedAt(v time.Time) {
 	o.ProcessedAt = &v
 }
 
+// GetDeliveredAt returns the DeliveredAt field value if set, zero value otherwise.
+func (o *IntegrationHubEventRecord) GetDeliveredAt() time.Time {
+	if o == nil || IsNil(o.DeliveredAt) {
+		var ret time.Time
+		return ret
+	}
+	return *o.DeliveredAt
+}
+
+// GetDeliveredAtOk returns a tuple with the DeliveredAt field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IntegrationHubEventRecord) GetDeliveredAtOk() (*time.Time, bool) {
+	if o == nil || IsNil(o.DeliveredAt) {
+		return nil, false
+	}
+	return o.DeliveredAt, true
+}
+
+// HasDeliveredAt returns a boolean if a field has been set.
+func (o *IntegrationHubEventRecord) HasDeliveredAt() bool {
+	if o != nil && !IsNil(o.DeliveredAt) {
+		return true
+	}
+
+	return false
+}
+
+// SetDeliveredAt gets a reference to the given time.Time and assigns it to the DeliveredAt field.
+func (o *IntegrationHubEventRecord) SetDeliveredAt(v time.Time) {
+	o.DeliveredAt = &v
+}
+
 // GetProcessAfter returns the ProcessAfter field value
 func (o *IntegrationHubEventRecord) GetProcessAfter() time.Time {
 	if o == nil {
@@ -280,6 +313,9 @@ func (o IntegrationHubEventRecord) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ProcessedAt) {
 		toSerialize["ProcessedAt"] = o.ProcessedAt
 	}
+	if !IsNil(o.DeliveredAt) {
+		toSerialize["DeliveredAt"] = o.DeliveredAt
+	}
 	toSerialize["ProcessAfter"] = o.ProcessAfter
 	toSerialize["Retry"] = o.Retry
 
@@ -337,6 +373,7 @@ func (o *IntegrationHubEventRecord) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "EventData")
 		delete(additionalProperties, "PublishedAt")
 		delete(additionalProperties, "ProcessedAt")
+		delete(additionalProperties, "DeliveredAt")
 		delete(additionalProperties, "ProcessAfter")
 		delete(additionalProperties, "Retry")
 		o.AdditionalProperties = additionalProperties

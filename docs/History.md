@@ -6,7 +6,8 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **int64** | The ID of the historical price. | 
 **ObservedAt** | **time.Time** | The date and time when the price was observed. | 
-**ContextId** | **string** | Identifier of the relevant context at the time the price was observed (e.g. summer sale).  | 
+**ContextIds** | **[]string** | The identifiers of the relevant context at the time the price was observed. Includes the context IDs of any price adjustments and of the campaigns that influenced the final price.  | 
+**ContextId** | Pointer to **string** | This property is **deprecated**. Use &#x60;contextIds&#x60; instead. Defaults to an empty string.  | [optional] [default to ""]
 **Price** | **float32** | Price of the item. | 
 **Metadata** | [**BestPriorPriceMetadata**](BestPriorPriceMetadata.md) |  | 
 **Target** | **map[string]interface{}** |  | 
@@ -15,7 +16,7 @@ Name | Type | Description | Notes
 
 ### NewHistory
 
-`func NewHistory(id int64, observedAt time.Time, contextId string, price float32, metadata BestPriorPriceMetadata, target map[string]interface{}, ) *History`
+`func NewHistory(id int64, observedAt time.Time, contextIds []string, price float32, metadata BestPriorPriceMetadata, target map[string]interface{}, ) *History`
 
 NewHistory instantiates a new History object
 This constructor will assign default values to properties that have it defined,
@@ -70,6 +71,26 @@ and a boolean to check if the value has been set.
 SetObservedAt sets ObservedAt field to given value.
 
 
+### GetContextIds
+
+`func (o *History) GetContextIds() []string`
+
+GetContextIds returns the ContextIds field if non-nil, zero value otherwise.
+
+### GetContextIdsOk
+
+`func (o *History) GetContextIdsOk() (*[]string, bool)`
+
+GetContextIdsOk returns a tuple with the ContextIds field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetContextIds
+
+`func (o *History) SetContextIds(v []string)`
+
+SetContextIds sets ContextIds field to given value.
+
+
 ### GetContextId
 
 `func (o *History) GetContextId() string`
@@ -89,6 +110,11 @@ and a boolean to check if the value has been set.
 
 SetContextId sets ContextId field to given value.
 
+### HasContextId
+
+`func (o *History) HasContextId() bool`
+
+HasContextId returns a boolean if a field has been set.
 
 ### GetPrice
 
