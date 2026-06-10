@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 **IntegrationId** | Pointer to **string** | The unique ID of the event. Only one event with this ID can be registered.  | [optional] 
 **SessionId** | Pointer to **int64** | The globally unique Talon.One ID of the session that contains this event. | [optional] 
 **Type** | **string** | The name of the event. Must be a [custom event](https://docs.talon.one/docs/dev/concepts/entities/events#custom-events), not a built-in event. | 
-**Attributes** | **map[string]interface{}** | Additional JSON serialized data associated with the event. | 
+**Attributes** | **map[string]interface{}** | Arbitrary properties associated with this campaign. | 
 **Effects** | [**[]Effect**](Effect.md) | An array containing the effects that were applied as a result of this event. | 
 **RuleFailureReasons** | Pointer to [**[]RuleFailureReason**](RuleFailureReason.md) | An array containing the rule failure reasons which happened during this event. | [optional] 
 

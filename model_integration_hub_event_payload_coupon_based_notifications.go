@@ -21,24 +21,25 @@ var _ MappedNullable = &IntegrationHubEventPayloadCouponBasedNotifications{}
 
 // IntegrationHubEventPayloadCouponBasedNotifications struct for IntegrationHubEventPayloadCouponBasedNotifications
 type IntegrationHubEventPayloadCouponBasedNotifications struct {
-	Id                     int64                                                      `json:"Id"`
-	Created                time.Time                                                  `json:"Created"`
-	CampaignId             int64                                                      `json:"CampaignId"`
-	Value                  string                                                     `json:"Value"`
-	UsageLimit             int64                                                      `json:"UsageLimit"`
-	DiscountLimit          *float32                                                   `json:"DiscountLimit,omitempty"`
-	ReservationLimit       *int64                                                     `json:"ReservationLimit,omitempty"`
-	StartDate              *time.Time                                                 `json:"StartDate,omitempty"`
-	ExpiryDate             *time.Time                                                 `json:"ExpiryDate,omitempty"`
-	UsageCounter           int64                                                      `json:"UsageCounter"`
-	DiscountCounter        *float32                                                   `json:"DiscountCounter,omitempty"`
-	DiscountRemainder      *float32                                                   `json:"DiscountRemainder,omitempty"`
-	ReferralId             *int64                                                     `json:"ReferralId,omitempty"`
-	RecipientIntegrationId *string                                                    `json:"RecipientIntegrationId,omitempty"`
-	ImportId               *int64                                                     `json:"ImportId,omitempty"`
-	BatchId                *string                                                    `json:"BatchId,omitempty"`
-	Attributes             map[string]interface{}                                     `json:"Attributes,omitempty"`
-	Limits                 []IntegrationHubEventPayloadCouponBasedNotificationsLimits `json:"Limits,omitempty"`
+	Id                     int64      `json:"Id"`
+	Created                time.Time  `json:"Created"`
+	CampaignId             int64      `json:"CampaignId"`
+	Value                  string     `json:"Value"`
+	UsageLimit             int64      `json:"UsageLimit"`
+	DiscountLimit          *float32   `json:"DiscountLimit,omitempty"`
+	ReservationLimit       *int64     `json:"ReservationLimit,omitempty"`
+	StartDate              *time.Time `json:"StartDate,omitempty"`
+	ExpiryDate             *time.Time `json:"ExpiryDate,omitempty"`
+	UsageCounter           int64      `json:"UsageCounter"`
+	DiscountCounter        *float32   `json:"DiscountCounter,omitempty"`
+	DiscountRemainder      *float32   `json:"DiscountRemainder,omitempty"`
+	ReferralId             *int64     `json:"ReferralId,omitempty"`
+	RecipientIntegrationId *string    `json:"RecipientIntegrationId,omitempty"`
+	ImportId               *int64     `json:"ImportId,omitempty"`
+	BatchId                *string    `json:"BatchId,omitempty"`
+	// Arbitrary properties associated with this campaign.
+	Attributes map[string]interface{}                                     `json:"Attributes,omitempty"`
+	Limits     []IntegrationHubEventPayloadCouponBasedNotificationsLimits `json:"Limits,omitempty"`
 	// Timestamp when the event was published.
 	PublishedAt          time.Time `json:"PublishedAt"`
 	SourceOfEvent        string    `json:"SourceOfEvent"`

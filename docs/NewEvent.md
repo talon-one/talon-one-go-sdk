@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **ProfileId** | Pointer to **string** | ID of the customer profile set by your integration layer.  **Note:** If the customer does not yet have a known &#x60;profileId&#x60;, we recommend you use a guest &#x60;profileId&#x60;.  | [optional] 
 **StoreIntegrationId** | Pointer to **string** | The integration ID of the store. You choose this ID when you create a store. | [optional] 
 **Type** | **string** | The name of the event. Must be a [custom event](https://docs.talon.one/docs/dev/concepts/entities/events#custom-events), not a built-in event. | 
-**Attributes** | **map[string]interface{}** | Arbitrary additional JSON data associated with the event. | 
+**Attributes** | **map[string]interface{}** | Arbitrary properties associated with this campaign. | 
 **SessionId** | **string** | The ID of the session that this event occurred in. | 
 
 ## Methods

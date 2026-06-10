@@ -4,13 +4,13 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Name** | **string** | The name / description of this discount | 
-**AdditionalCostId** | **int64** | The ID of the additional cost. | 
-**Value** | **float32** | The total monetary value of the discount. | 
-**Position** | **float32** | The index of the item in the cart item list containing the additional cost to be discounted. | 
-**SubPosition** | Pointer to **float32** | For cart items with &#x60;quantity&#x60; &gt; 1, the sub position indicates which item the discount applies to.  | [optional] 
-**AdditionalCost** | **string** | The name of the additional cost. | 
-**DesiredValue** | Pointer to **float32** | Only with [partial discounts enabled](https://docs.talon.one/docs/product/campaigns/campaign-evaluation/#partial-discounts). Represents the monetary value of the discount to be applied to additional discount without considering budget limitations.  | [optional] 
+**Name** | **string** | The description of this discount. &#x60;#number&#x60; is appended to the name. It is equal to the &#x60;position&#x60; property. | 
+**AdditionalCostId** | **int64** | The identifier of the additional cost to be discounted. | 
+**Value** | **float32** | The monetary value of the effective discount applied to the item&#39;s additional cost. | 
+**Position** | **float32** | The index of the item in the &#x60;cartItem&#x60; object containing the additional cost that this discount applies to. | 
+**SubPosition** | Pointer to **float32** | The index of the item unit in its line item. | [optional] 
+**AdditionalCost** | **string** | The API name of the additional cost to be discounted. | 
+**DesiredValue** | Pointer to **float32** | _[(Partial discounts enabled only)](https://docs.talon.one/docs/product/applications/manage-general-settings#partial-discounts)_. The monetary value of the discount to be applied to the additional cost without considering budget limitations. | [optional] 
 
 ## Methods
 

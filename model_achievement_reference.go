@@ -27,7 +27,9 @@ type AchievementReference struct {
 	// The name of the Application associated with the campaign that references this achievement.
 	ApplicationName string `json:"applicationName"`
 	// The ID of the campaign that references this achievement.
-	CampaignId           int64 `json:"campaignId"`
+	CampaignId int64 `json:"campaignId"`
+	// The name of the campaign that references this achievement.
+	CampaignName         string `json:"campaignName"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -37,12 +39,13 @@ type _AchievementReference AchievementReference
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildAchievementReference(achievementId int64, applicationId int64, applicationName string, campaignId int64) *AchievementReference {
+func BuildAchievementReference(achievementId int64, applicationId int64, applicationName string, campaignId int64, campaignName string) *AchievementReference {
 	this := AchievementReference{}
 	this.AchievementId = achievementId
 	this.ApplicationId = applicationId
 	this.ApplicationName = applicationName
 	this.CampaignId = campaignId
+	this.CampaignName = campaignName
 	return &this
 }
 
@@ -150,6 +153,30 @@ func (o *AchievementReference) SetCampaignId(v int64) {
 	o.CampaignId = v
 }
 
+// GetCampaignName returns the CampaignName field value
+func (o *AchievementReference) GetCampaignName() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.CampaignName
+}
+
+// GetCampaignNameOk returns a tuple with the CampaignName field value
+// and a boolean to check if the value has been set.
+func (o *AchievementReference) GetCampaignNameOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.CampaignName, true
+}
+
+// SetCampaignName sets field value
+func (o *AchievementReference) SetCampaignName(v string) {
+	o.CampaignName = v
+}
+
 func (o AchievementReference) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -164,6 +191,7 @@ func (o AchievementReference) ToMap() (map[string]interface{}, error) {
 	toSerialize["applicationId"] = o.ApplicationId
 	toSerialize["applicationName"] = o.ApplicationName
 	toSerialize["campaignId"] = o.CampaignId
+	toSerialize["campaignName"] = o.CampaignName
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value
@@ -181,6 +209,7 @@ func (o *AchievementReference) UnmarshalJSON(data []byte) (err error) {
 		"applicationId",
 		"applicationName",
 		"campaignId",
+		"campaignName",
 	}
 
 	allProperties := make(map[string]interface{})
@@ -214,6 +243,7 @@ func (o *AchievementReference) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "applicationId")
 		delete(additionalProperties, "applicationName")
 		delete(additionalProperties, "campaignId")
+		delete(additionalProperties, "campaignName")
 		o.AdditionalProperties = additionalProperties
 	}
 

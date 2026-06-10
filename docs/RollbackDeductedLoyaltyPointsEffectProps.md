@@ -6,12 +6,12 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **ProgramId** | **int64** | The ID of the loyalty program where these points were reimbursed. | 
 **SubLedgerId** | **string** | The ID of the subledger within the loyalty program where these points were reimbursed. | 
-**Value** | **float32** | The amount of reimbursed points that were added. | 
+**Value** | **float32** | The amount of points that were reimbursed. | 
 **RecipientIntegrationId** | **string** | The user for whom these points were reimbursed. | 
-**StartDate** | Pointer to **time.Time** | Date after which the reimbursed points will be valid. | [optional] 
-**ExpiryDate** | Pointer to **time.Time** | Date after which the reimbursed points will expire. | [optional] 
-**TransactionUUID** | **string** | The identifier of &#39;addition&#39; entries added to the ledger as the &#x60;deductLoyaltyPoints&#x60; effect is rolled back. | 
-**CardIdentifier** | Pointer to **string** | The card on which these points were added. | [optional] 
+**StartDate** | Pointer to **time.Time** | The date after which the reimbursed points will be valid. | [optional] 
+**ExpiryDate** | Pointer to **time.Time** | The date after which the reimbursed points will expire. | [optional] 
+**TransactionUUID** | **string** | The identifier of this loyalty point transaction. | 
+**CardIdentifier** | Pointer to **string** | The identifier of the card from which these points were originally deducted. | [optional] 
 
 ## Methods
 

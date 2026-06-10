@@ -8,9 +8,9 @@ Name | Type | Description | Notes
 **ChangePassword** | Pointer to [**ScimServiceProviderConfigResponseChangePassword**](ScimServiceProviderConfigResponseChangePassword.md) |  | [optional] 
 **DocumentationUri** | Pointer to **string** | The URI that points to the SCIM service provider&#39;s documentation, providing further details about the service&#39;s capabilities and usage. | [optional] 
 **Filter** | Pointer to [**ScimServiceProviderConfigResponseFilter**](ScimServiceProviderConfigResponseFilter.md) |  | [optional] 
-**Patch** | Pointer to [**ScimServiceProviderConfigResponsePatch**](ScimServiceProviderConfigResponsePatch.md) |  | [optional] 
+**Patch** | Pointer to [**ScimServiceProviderConfigResponseChangePassword**](ScimServiceProviderConfigResponseChangePassword.md) |  | [optional] 
 **Schemas** | Pointer to **[]string** | A list of SCIM schemas that define the structure and data types supported by the service provider. | [optional] 
-**Sort** | Pointer to [**ScimServiceProviderConfigResponseSort**](ScimServiceProviderConfigResponseSort.md) |  | [optional] 
+**Sort** | Pointer to [**ScimServiceProviderConfigResponseChangePassword**](ScimServiceProviderConfigResponseChangePassword.md) |  | [optional] 
 
 ## Methods
 
@@ -133,20 +133,20 @@ HasFilter returns a boolean if a field has been set.
 
 ### GetPatch
 
-`func (o *ScimServiceProviderConfigResponse) GetPatch() ScimServiceProviderConfigResponsePatch`
+`func (o *ScimServiceProviderConfigResponse) GetPatch() ScimServiceProviderConfigResponseChangePassword`
 
 GetPatch returns the Patch field if non-nil, zero value otherwise.
 
 ### GetPatchOk
 
-`func (o *ScimServiceProviderConfigResponse) GetPatchOk() (*ScimServiceProviderConfigResponsePatch, bool)`
+`func (o *ScimServiceProviderConfigResponse) GetPatchOk() (*ScimServiceProviderConfigResponseChangePassword, bool)`
 
 GetPatchOk returns a tuple with the Patch field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetPatch
 
-`func (o *ScimServiceProviderConfigResponse) SetPatch(v ScimServiceProviderConfigResponsePatch)`
+`func (o *ScimServiceProviderConfigResponse) SetPatch(v ScimServiceProviderConfigResponseChangePassword)`
 
 SetPatch sets Patch field to given value.
 
@@ -183,20 +183,20 @@ HasSchemas returns a boolean if a field has been set.
 
 ### GetSort
 
-`func (o *ScimServiceProviderConfigResponse) GetSort() ScimServiceProviderConfigResponseSort`
+`func (o *ScimServiceProviderConfigResponse) GetSort() ScimServiceProviderConfigResponseChangePassword`
 
 GetSort returns the Sort field if non-nil, zero value otherwise.
 
 ### GetSortOk
 
-`func (o *ScimServiceProviderConfigResponse) GetSortOk() (*ScimServiceProviderConfigResponseSort, bool)`
+`func (o *ScimServiceProviderConfigResponse) GetSortOk() (*ScimServiceProviderConfigResponseChangePassword, bool)`
 
 GetSortOk returns a tuple with the Sort field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetSort
 
-`func (o *ScimServiceProviderConfigResponse) SetSort(v ScimServiceProviderConfigResponseSort)`
+`func (o *ScimServiceProviderConfigResponse) SetSort(v ScimServiceProviderConfigResponseChangePassword)`
 
 SetSort sets Sort field to given value.
 

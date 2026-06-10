@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **AccountId** | **int64** | The ID of the account that owns this entity. | 
 **UserId** | **int64** | The ID of the user associated with this entity. | 
 **Entity** | **string** | The name of the entity that was exported. | 
-**Filter** | **map[string]interface{}** | Map of keys and values that were used to filter the exported rows. | 
+**Filter** | **map[string]interface{}** | Arbitrary properties associated with this campaign. | 
 
 ## Methods
 

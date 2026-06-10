@@ -1153,7 +1153,7 @@ func (r ApiDeleteAudienceV2Request) Execute() (*http.Response, error) {
 /*
 DeleteAudienceV2 Delete audience
 
-Delete an audience created by a third-party integration.
+Delete an audience.
 
 > [!warning] This endpoint also removes any associations recorded between a
 customer profile and this audience.
@@ -2660,6 +2660,134 @@ func (a *IntegrationAPIService) GetCustomerSessionExecute(r ApiGetCustomerSessio
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiGetEventV3Request struct {
+	ctx           context.Context
+	ApiService    *IntegrationAPIService
+	integrationId string
+}
+
+func (r ApiGetEventV3Request) Execute() (*EventV3, *http.Response, error) {
+	return r.ApiService.GetEventV3Execute(r)
+}
+
+/*
+GetEventV3 Get advanced event
+
+Retrieve an advanced event by its identifier.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param integrationId The unique ID of the advanced event.
+	@return ApiGetEventV3Request
+*/
+func (a *IntegrationAPIService) GetEventV3(ctx context.Context, integrationId string) ApiGetEventV3Request {
+	return ApiGetEventV3Request{
+		ApiService:    a,
+		ctx:           ctx,
+		integrationId: integrationId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return EventV3
+func (a *IntegrationAPIService) GetEventV3Execute(r ApiGetEventV3Request) (*EventV3, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *EventV3
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IntegrationAPIService.GetEventV3")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v3/events/{integrationId}"
+	localVarPath = strings.Replace(localVarPath, "{"+"integrationId"+"}", url.PathEscape(parameterValueToString(r.integrationId, "integrationId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiGetLoyaltyBalancesRequest struct {
 	ctx                  context.Context
 	ApiService           *IntegrationAPIService
@@ -3618,7 +3746,7 @@ type ApiGetLoyaltyProgramProfilePointsRequest struct {
 	loyaltyProgramId   int64
 	integrationId      string
 	status             *string
-	subledgerId        *string
+	subledgerId        *[]string
 	customerSessionIDs *[]string
 	transactionUUIDs   *[]string
 	pageSize           *int64
@@ -3632,8 +3760,8 @@ func (r ApiGetLoyaltyProgramProfilePointsRequest) Status(status string) ApiGetLo
 	return r
 }
 
-// The ID of the subledger by which we filter the data.
-func (r ApiGetLoyaltyProgramProfilePointsRequest) SubledgerId(subledgerId string) ApiGetLoyaltyProgramProfilePointsRequest {
+// Filter the results by a list of subledger IDs.  To include multiple IDs, repeat the parameter for each one, for example, &#x60;?subledgerId&#x3D;id1&amp;subledgerId&#x3D;id2&#x60;.  The response contains only data associated with the specified subledgers.
+func (r ApiGetLoyaltyProgramProfilePointsRequest) SubledgerId(subledgerId []string) ApiGetLoyaltyProgramProfilePointsRequest {
 	r.subledgerId = &subledgerId
 	return r
 }
@@ -3728,7 +3856,15 @@ func (a *IntegrationAPIService) GetLoyaltyProgramProfilePointsExecute(r ApiGetLo
 		r.status = &defaultValue
 	}
 	if r.subledgerId != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "subledgerId", r.subledgerId, "form", "")
+		t := *r.subledgerId
+		if reflect.TypeOf(t).Kind() == reflect.Slice {
+			s := reflect.ValueOf(t)
+			for i := 0; i < s.Len(); i++ {
+				parameterAddToHeaderOrQuery(localVarQueryParams, "subledgerId", s.Index(i).Interface(), "form", "multi")
+			}
+		} else {
+			parameterAddToHeaderOrQuery(localVarQueryParams, "subledgerId", t, "form", "multi")
+		}
 	}
 	if r.customerSessionIDs != nil {
 		t := *r.customerSessionIDs
@@ -5535,7 +5671,7 @@ func (r ApiTrackEventV2Request) Execute() (*IntegrationEventV2Response, *http.Re
 /*
 TrackEventV2 Track event
 
-Triggers a custom event.
+Trigger a custom event.
 
 To use this endpoint:
 
@@ -5685,7 +5821,223 @@ func (a *IntegrationAPIService) TrackEventV2Execute(r ApiTrackEventV2Request) (*
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 409 {
-			var v UpdateCustomerProfileV2409Response
+			var v UpdateCustomerSessionV2409Response
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiTrackEventV3Request struct {
+	ctx                       context.Context
+	ApiService                *IntegrationAPIService
+	integrationEventV3Request *IntegrationEventV3Request
+	silent                    *string
+	dry                       *bool
+	forceCompleteEvaluation   *bool
+}
+
+// body
+func (r ApiTrackEventV3Request) IntegrationEventV3Request(integrationEventV3Request IntegrationEventV3Request) ApiTrackEventV3Request {
+	r.integrationEventV3Request = &integrationEventV3Request
+	return r
+}
+
+// Possible values: &#x60;yes&#x60; or &#x60;no&#x60;. - &#x60;yes&#x60;: Increases the performance of the API call by returning a 204 response. - &#x60;no&#x60;: Returns a 200 response that contains the updated customer profiles.
+func (r ApiTrackEventV3Request) Silent(silent string) ApiTrackEventV3Request {
+	r.silent = &silent
+	return r
+}
+
+// Indicates whether to persist the changes. Changes are ignored when &#x60;dry&#x3D;true&#x60;.
+func (r ApiTrackEventV3Request) Dry(dry bool) ApiTrackEventV3Request {
+	r.dry = &dry
+	return r
+}
+
+// Forces evaluation for all matching campaigns regardless of the [campaign evaluation mode](https://docs.talon.one/docs/product/applications/managing-campaign-evaluation#setting-campaign-evaluation-mode). Requires &#x60;dry&#x3D;true&#x60;.
+func (r ApiTrackEventV3Request) ForceCompleteEvaluation(forceCompleteEvaluation bool) ApiTrackEventV3Request {
+	r.forceCompleteEvaluation = &forceCompleteEvaluation
+	return r
+}
+
+func (r ApiTrackEventV3Request) Execute() (*IntegrationEventV3Response, *http.Response, error) {
+	return r.ApiService.TrackEventV3Execute(r)
+}
+
+/*
+TrackEventV3 Track advanced event
+
+Trigger an advanced event.
+
+Advanced events are idempotent, uniquely identifiable events. They can also
+reference a previously closed session to add more context for rule evaluation.
+
+To use this endpoint:
+
+1. [Create a custom event](https://docs.talon.one/docs/dev/concepts/entities/events#creating-a-custom-event)
+in the Campaign Manager.
+1. In a rule, add the **Check for event types** [condition](https://docs.talon.one/docs/dev/concepts/entities/events#use-an-event-in-a-rule) and select the event you created.
+1. Trigger the event with this endpoint.
+
+You can [list](https://docs.talon.one/docs/product/applications/display-events#list-events) the received events in the **Events** view of the Campaign Manager.
+
+For example, you can use this endpoint to trigger an event when a customer shares a
+link to a product. See our [tutorial](https://docs.talon.one/docs/product/tutorials/referrals/incentivizing-product-link-sharing).
+
+> [!note] **Note**
+> - If the customer profile does not exist, it will be created. However, the `customer_profile_created` [built-in event](https://docs.talon.one/docs/dev/concepts/entities/events) is **not** triggered.
+> - We recommend sending requests sequentially. See [Managing parallel requests](https://docs.talon.one/docs/dev/getting-started/integration-tutorial#managing-parallel-requests).
+> - [Archived campaigns](https://docs.talon.one/docs/product/campaigns/managing-campaigns#archiving-a-campaign) are not considered in rule evaluation.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiTrackEventV3Request
+*/
+func (a *IntegrationAPIService) TrackEventV3(ctx context.Context) ApiTrackEventV3Request {
+	return ApiTrackEventV3Request{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return IntegrationEventV3Response
+func (a *IntegrationAPIService) TrackEventV3Execute(r ApiTrackEventV3Request) (*IntegrationEventV3Response, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *IntegrationEventV3Response
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IntegrationAPIService.TrackEventV3")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v3/events"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.integrationEventV3Request == nil {
+		return localVarReturnValue, nil, reportError("integrationEventV3Request is required and must be specified")
+	}
+
+	if r.silent != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "silent", r.silent, "form", "")
+	} else {
+		var defaultValue string = "yes"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "silent", defaultValue, "form", "")
+		r.silent = &defaultValue
+	}
+	if r.dry != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "dry", r.dry, "form", "")
+	}
+	if r.forceCompleteEvaluation != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "forceCompleteEvaluation", r.forceCompleteEvaluation, "form", "")
+	} else {
+		var defaultValue bool = false
+		parameterAddToHeaderOrQuery(localVarQueryParams, "forceCompleteEvaluation", defaultValue, "form", "")
+		r.forceCompleteEvaluation = &defaultValue
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.integrationEventV3Request
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 409 {
+			var v UpdateCustomerSessionV2409Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -6505,7 +6857,7 @@ func (a *IntegrationAPIService) UpdateCustomerProfileV2Execute(r ApiUpdateCustom
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 409 {
-			var v UpdateCustomerProfileV2409Response
+			var v UpdateCustomerSessionV2409Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

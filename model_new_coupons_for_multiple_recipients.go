@@ -31,7 +31,7 @@ type NewCouponsForMultipleRecipients struct {
 	StartDate *time.Time `json:"startDate,omitempty"`
 	// Expiration date of the coupon. Coupon never expires if this is omitted.
 	ExpiryDate *time.Time `json:"expiryDate,omitempty"`
-	// Arbitrary properties associated with this item.
+	// Arbitrary properties associated with this campaign.
 	Attributes map[string]interface{} `json:"attributes,omitempty"`
 	// The integration IDs for recipients.
 	RecipientsIntegrationIds []string `json:"recipientsIntegrationIds"`

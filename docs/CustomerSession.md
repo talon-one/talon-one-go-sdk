@@ -14,7 +14,7 @@ Name | Type | Description | Notes
 **CartItems** | Pointer to [**[]CartItem**](CartItem.md) | Serialized JSON representation. | [optional] 
 **Identifiers** | Pointer to **[]string** | Session custom identifiers that you can set limits on or use inside your rules.  For example, you can use IP addresses as identifiers to potentially identify devices and limit discounts abuse in case of customers creating multiple accounts. See the [tutorial](https://docs.talon.one/docs/dev/tutorials/using-identifiers).  | [optional] 
 **Total** | Pointer to **float32** | The total sum of the cart in one session. | [optional] 
-**Attributes** | Pointer to **map[string]interface{}** | A key-value map of the sessions attributes. The potentially valid attributes are configured in your accounts developer settings.  | [optional] 
+**Attributes** | Pointer to **map[string]interface{}** | Arbitrary properties associated with this campaign. | [optional] 
 **FirstSession** | **bool** | Indicates whether this is the first session for the customer&#39;s profile. Will always be true for anonymous sessions. | 
 **UpdateCount** | **int64** | The number of times the session was updated. When the session is created, this value is initialized to &#x60;1&#x60;. | 
 **Discounts** | **map[string]float32** | A map of labelled discount values, values will be in the same currency as the application associated with the session. | 

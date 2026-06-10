@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **PoolId** | **int64** | The ID of the pool to return giveaway codes from. | 
 **StartDate** | Pointer to **time.Time** | Timestamp at which point the giveaway becomes valid. | [optional] 
 **EndDate** | Pointer to **time.Time** | Timestamp at which point the giveaway becomes invalid. | [optional] 
-**Attributes** | Pointer to **map[string]interface{}** | Arbitrary properties associated with this giveaway. | [optional] 
+**Attributes** | Pointer to **map[string]interface{}** | Arbitrary properties associated with this campaign. | [optional] 
 **Used** | Pointer to **bool** | Indicates whether this giveaway code was given before. | [optional] 
 **ImportId** | Pointer to **int64** | The ID of the Import which created this giveaway. | [optional] 
 **ProfileIntegrationId** | Pointer to **string** | The third-party integration ID of the customer profile that was awarded the giveaway, if the giveaway was awarded. | [optional] 

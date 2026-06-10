@@ -18,9 +18,9 @@ import (
 // checks if the UpdateAttributeEffectProps type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &UpdateAttributeEffectProps{}
 
-// UpdateAttributeEffectProps The properties specific to the \"updateAttribute\" effect. This gets triggered whenever a validated rule contained an \"update an attribute\" effect.
+// UpdateAttributeEffectProps This effect indicates that a rule containing an [Update attribute value](https://docs.talon.one/docs/product/rules/effects/available-effects#update-effects) or [Update cart item attribute value](https://docs.talon.one/docs/product/rules/effects/available-effects#update-effects) was validated. You should update the value of the attribute in your system based on the content of the returned effect.
 type UpdateAttributeEffectProps struct {
-	// The exact path of the attribute that was updated.
+	// The entity type and the attribute name.
 	Path                 string      `json:"path"`
 	Value                interface{} `json:"value"`
 	AdditionalProperties map[string]interface{}

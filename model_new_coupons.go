@@ -37,7 +37,7 @@ type NewCoupons struct {
 	NumberOfCoupons int64 `json:"numberOfCoupons"`
 	// **DEPRECATED** To create more than 20,000 coupons in one request, use [Create coupons asynchronously](https://docs.talon.one/management-api#tag/Coupons/operation/createCouponsAsync) endpoint.
 	UniquePrefix *string `json:"uniquePrefix,omitempty"`
-	// Arbitrary properties associated with this item.
+	// Arbitrary properties associated with this campaign.
 	Attributes map[string]interface{} `json:"attributes,omitempty"`
 	// The integration ID for this coupon's beneficiary's profile.
 	RecipientIntegrationId *string `json:"recipientIntegrationId,omitempty"`

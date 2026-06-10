@@ -24,9 +24,11 @@ type AchievementAdditionalPropertiesV2 struct {
 	UserId int64 `json:"userId"`
 	// Name of the user that created the achievement.  **Note**: This is not available if the user has been deleted.
 	CreatedBy *string `json:"createdBy,omitempty"`
+	// Deprecated
+	PeriodEndOverride *TimePoint `json:"periodEndOverride,omitempty"`
 	// Indicates if a customer has made progress in the achievement.
 	HasProgress *bool `json:"hasProgress,omitempty"`
-	// The status of the achievement.
+	// The status of the achievement.                                                                                               - `active`: The achievement is available to customers. - `scheduled`: The achievement has a `fixedStartDate` set in the future. - `expired`: The achievement's `endDate` is in the past.
 	Status               *string `json:"status,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
@@ -107,6 +109,41 @@ func (o *AchievementAdditionalPropertiesV2) SetCreatedBy(v string) {
 	o.CreatedBy = &v
 }
 
+// GetPeriodEndOverride returns the PeriodEndOverride field value if set, zero value otherwise.
+// Deprecated
+func (o *AchievementAdditionalPropertiesV2) GetPeriodEndOverride() TimePoint {
+	if o == nil || IsNil(o.PeriodEndOverride) {
+		var ret TimePoint
+		return ret
+	}
+	return *o.PeriodEndOverride
+}
+
+// GetPeriodEndOverrideOk returns a tuple with the PeriodEndOverride field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// Deprecated
+func (o *AchievementAdditionalPropertiesV2) GetPeriodEndOverrideOk() (*TimePoint, bool) {
+	if o == nil || IsNil(o.PeriodEndOverride) {
+		return nil, false
+	}
+	return o.PeriodEndOverride, true
+}
+
+// HasPeriodEndOverride returns a boolean if a field has been set.
+func (o *AchievementAdditionalPropertiesV2) HasPeriodEndOverride() bool {
+	if o != nil && !IsNil(o.PeriodEndOverride) {
+		return true
+	}
+
+	return false
+}
+
+// SetPeriodEndOverride gets a reference to the given TimePoint and assigns it to the PeriodEndOverride field.
+// Deprecated
+func (o *AchievementAdditionalPropertiesV2) SetPeriodEndOverride(v TimePoint) {
+	o.PeriodEndOverride = &v
+}
+
 // GetHasProgress returns the HasProgress field value if set, zero value otherwise.
 func (o *AchievementAdditionalPropertiesV2) GetHasProgress() bool {
 	if o == nil || IsNil(o.HasProgress) {
@@ -185,6 +222,9 @@ func (o AchievementAdditionalPropertiesV2) ToMap() (map[string]interface{}, erro
 	if !IsNil(o.CreatedBy) {
 		toSerialize["createdBy"] = o.CreatedBy
 	}
+	if !IsNil(o.PeriodEndOverride) {
+		toSerialize["periodEndOverride"] = o.PeriodEndOverride
+	}
 	if !IsNil(o.HasProgress) {
 		toSerialize["hasProgress"] = o.HasProgress
 	}
@@ -236,6 +276,7 @@ func (o *AchievementAdditionalPropertiesV2) UnmarshalJSON(data []byte) (err erro
 	if err = json.Unmarshal(data, &additionalProperties); err == nil {
 		delete(additionalProperties, "userId")
 		delete(additionalProperties, "createdBy")
+		delete(additionalProperties, "periodEndOverride")
 		delete(additionalProperties, "hasProgress")
 		delete(additionalProperties, "status")
 		o.AdditionalProperties = additionalProperties

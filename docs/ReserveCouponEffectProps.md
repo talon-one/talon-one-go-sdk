@@ -4,8 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**CouponValue** | **string** | The value of the coupon currently on scope. | 
-**ProfileIntegrationId** | **string** | The ID of this customer profile in the third-party integration. | 
+**CouponValue** | **string** | The coupon code that was created. | 
+**ProfileIntegrationId** | **string** | The integration identifier of the customer for whom this coupon was reserved. | 
 **IsNewReservation** | **bool** | Indicates whether this is a new coupon reservation or not. | 
 
 ## Methods

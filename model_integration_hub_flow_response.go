@@ -13,6 +13,7 @@ package talon
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 )
 
 // checks if the IntegrationHubFlowResponse type satisfies the MappedNullable interface at compile time
@@ -21,14 +22,24 @@ var _ MappedNullable = &IntegrationHubFlowResponse{}
 // IntegrationHubFlowResponse struct for IntegrationHubFlowResponse
 type IntegrationHubFlowResponse struct {
 	// ID of the integration hub flow.
-	Id int64 `json:"Id"`
-	// ID of application the flow is registered for.
-	ApplicationID *int64 `json:"ApplicationID,omitempty"`
+	Id int64 `json:"id"`
+	// Name of the integration.
+	IntegrationName *string `json:"integrationName,omitempty"`
+	// Name of the integration instance.
+	InstanceName *string `json:"instanceName,omitempty"`
+	// Timestamp when the flow was created.
+	CreatedAt time.Time `json:"createdAt"`
+	// Timestamp until which the flow is disabled. Null when the flow is active.
+	DisabledUntil NullableTime `json:"disabledUntil,omitempty"`
+	// ID of the application the flow is registered for.
+	ApplicationId *int64 `json:"applicationId,omitempty"`
+	// ID of the loyalty program the flow is registered for.
+	LoyaltyProgramId *int64 `json:"loyaltyProgramId,omitempty"`
 	// The event type we want to register a flow for.
-	EventType string `json:"EventType"`
+	EventType string `json:"eventType"`
 	// The URL of the integration hub flow that we want to trigger for the event.
-	IntegrationHubFlowUrl string                           `json:"IntegrationHubFlowUrl"`
-	Config                IntegrationHubFlowConfigResponse `json:"Config"`
+	IntegrationHubFlowUrl string                           `json:"integrationHubFlowUrl"`
+	Config                IntegrationHubFlowConfigResponse `json:"config"`
 	AdditionalProperties  map[string]interface{}
 }
 
@@ -38,9 +49,10 @@ type _IntegrationHubFlowResponse IntegrationHubFlowResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildIntegrationHubFlowResponse(id int64, eventType string, integrationHubFlowUrl string, config IntegrationHubFlowConfigResponse) *IntegrationHubFlowResponse {
+func BuildIntegrationHubFlowResponse(id int64, createdAt time.Time, eventType string, integrationHubFlowUrl string, config IntegrationHubFlowConfigResponse) *IntegrationHubFlowResponse {
 	this := IntegrationHubFlowResponse{}
 	this.Id = id
+	this.CreatedAt = createdAt
 	this.EventType = eventType
 	this.IntegrationHubFlowUrl = integrationHubFlowUrl
 	this.Config = config
@@ -79,36 +91,199 @@ func (o *IntegrationHubFlowResponse) SetId(v int64) {
 	o.Id = v
 }
 
-// GetApplicationID returns the ApplicationID field value if set, zero value otherwise.
-func (o *IntegrationHubFlowResponse) GetApplicationID() int64 {
-	if o == nil || IsNil(o.ApplicationID) {
-		var ret int64
+// GetIntegrationName returns the IntegrationName field value if set, zero value otherwise.
+func (o *IntegrationHubFlowResponse) GetIntegrationName() string {
+	if o == nil || IsNil(o.IntegrationName) {
+		var ret string
 		return ret
 	}
-	return *o.ApplicationID
+	return *o.IntegrationName
 }
 
-// GetApplicationIDOk returns a tuple with the ApplicationID field value if set, nil otherwise
+// GetIntegrationNameOk returns a tuple with the IntegrationName field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *IntegrationHubFlowResponse) GetApplicationIDOk() (*int64, bool) {
-	if o == nil || IsNil(o.ApplicationID) {
+func (o *IntegrationHubFlowResponse) GetIntegrationNameOk() (*string, bool) {
+	if o == nil || IsNil(o.IntegrationName) {
 		return nil, false
 	}
-	return o.ApplicationID, true
+	return o.IntegrationName, true
 }
 
-// HasApplicationID returns a boolean if a field has been set.
-func (o *IntegrationHubFlowResponse) HasApplicationID() bool {
-	if o != nil && !IsNil(o.ApplicationID) {
+// HasIntegrationName returns a boolean if a field has been set.
+func (o *IntegrationHubFlowResponse) HasIntegrationName() bool {
+	if o != nil && !IsNil(o.IntegrationName) {
 		return true
 	}
 
 	return false
 }
 
-// SetApplicationID gets a reference to the given int64 and assigns it to the ApplicationID field.
-func (o *IntegrationHubFlowResponse) SetApplicationID(v int64) {
-	o.ApplicationID = &v
+// SetIntegrationName gets a reference to the given string and assigns it to the IntegrationName field.
+func (o *IntegrationHubFlowResponse) SetIntegrationName(v string) {
+	o.IntegrationName = &v
+}
+
+// GetInstanceName returns the InstanceName field value if set, zero value otherwise.
+func (o *IntegrationHubFlowResponse) GetInstanceName() string {
+	if o == nil || IsNil(o.InstanceName) {
+		var ret string
+		return ret
+	}
+	return *o.InstanceName
+}
+
+// GetInstanceNameOk returns a tuple with the InstanceName field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IntegrationHubFlowResponse) GetInstanceNameOk() (*string, bool) {
+	if o == nil || IsNil(o.InstanceName) {
+		return nil, false
+	}
+	return o.InstanceName, true
+}
+
+// HasInstanceName returns a boolean if a field has been set.
+func (o *IntegrationHubFlowResponse) HasInstanceName() bool {
+	if o != nil && !IsNil(o.InstanceName) {
+		return true
+	}
+
+	return false
+}
+
+// SetInstanceName gets a reference to the given string and assigns it to the InstanceName field.
+func (o *IntegrationHubFlowResponse) SetInstanceName(v string) {
+	o.InstanceName = &v
+}
+
+// GetCreatedAt returns the CreatedAt field value
+func (o *IntegrationHubFlowResponse) GetCreatedAt() time.Time {
+	if o == nil {
+		var ret time.Time
+		return ret
+	}
+
+	return o.CreatedAt
+}
+
+// GetCreatedAtOk returns a tuple with the CreatedAt field value
+// and a boolean to check if the value has been set.
+func (o *IntegrationHubFlowResponse) GetCreatedAtOk() (*time.Time, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.CreatedAt, true
+}
+
+// SetCreatedAt sets field value
+func (o *IntegrationHubFlowResponse) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
+}
+
+// GetDisabledUntil returns the DisabledUntil field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *IntegrationHubFlowResponse) GetDisabledUntil() time.Time {
+	if o == nil || IsNil(o.DisabledUntil.Get()) {
+		var ret time.Time
+		return ret
+	}
+	return *o.DisabledUntil.Get()
+}
+
+// GetDisabledUntilOk returns a tuple with the DisabledUntil field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *IntegrationHubFlowResponse) GetDisabledUntilOk() (*time.Time, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.DisabledUntil.Get(), o.DisabledUntil.IsSet()
+}
+
+// HasDisabledUntil returns a boolean if a field has been set.
+func (o *IntegrationHubFlowResponse) HasDisabledUntil() bool {
+	if o != nil && o.DisabledUntil.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetDisabledUntil gets a reference to the given NullableTime and assigns it to the DisabledUntil field.
+func (o *IntegrationHubFlowResponse) SetDisabledUntil(v time.Time) {
+	o.DisabledUntil.Set(&v)
+}
+
+// SetDisabledUntilNil sets the value for DisabledUntil to be an explicit nil
+func (o *IntegrationHubFlowResponse) SetDisabledUntilNil() {
+	o.DisabledUntil.Set(nil)
+}
+
+// UnsetDisabledUntil ensures that no value is present for DisabledUntil, not even an explicit nil
+func (o *IntegrationHubFlowResponse) UnsetDisabledUntil() {
+	o.DisabledUntil.Unset()
+}
+
+// GetApplicationId returns the ApplicationId field value if set, zero value otherwise.
+func (o *IntegrationHubFlowResponse) GetApplicationId() int64 {
+	if o == nil || IsNil(o.ApplicationId) {
+		var ret int64
+		return ret
+	}
+	return *o.ApplicationId
+}
+
+// GetApplicationIdOk returns a tuple with the ApplicationId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IntegrationHubFlowResponse) GetApplicationIdOk() (*int64, bool) {
+	if o == nil || IsNil(o.ApplicationId) {
+		return nil, false
+	}
+	return o.ApplicationId, true
+}
+
+// HasApplicationId returns a boolean if a field has been set.
+func (o *IntegrationHubFlowResponse) HasApplicationId() bool {
+	if o != nil && !IsNil(o.ApplicationId) {
+		return true
+	}
+
+	return false
+}
+
+// SetApplicationId gets a reference to the given int64 and assigns it to the ApplicationId field.
+func (o *IntegrationHubFlowResponse) SetApplicationId(v int64) {
+	o.ApplicationId = &v
+}
+
+// GetLoyaltyProgramId returns the LoyaltyProgramId field value if set, zero value otherwise.
+func (o *IntegrationHubFlowResponse) GetLoyaltyProgramId() int64 {
+	if o == nil || IsNil(o.LoyaltyProgramId) {
+		var ret int64
+		return ret
+	}
+	return *o.LoyaltyProgramId
+}
+
+// GetLoyaltyProgramIdOk returns a tuple with the LoyaltyProgramId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IntegrationHubFlowResponse) GetLoyaltyProgramIdOk() (*int64, bool) {
+	if o == nil || IsNil(o.LoyaltyProgramId) {
+		return nil, false
+	}
+	return o.LoyaltyProgramId, true
+}
+
+// HasLoyaltyProgramId returns a boolean if a field has been set.
+func (o *IntegrationHubFlowResponse) HasLoyaltyProgramId() bool {
+	if o != nil && !IsNil(o.LoyaltyProgramId) {
+		return true
+	}
+
+	return false
+}
+
+// SetLoyaltyProgramId gets a reference to the given int64 and assigns it to the LoyaltyProgramId field.
+func (o *IntegrationHubFlowResponse) SetLoyaltyProgramId(v int64) {
+	o.LoyaltyProgramId = &v
 }
 
 // GetEventType returns the EventType field value
@@ -193,13 +368,26 @@ func (o IntegrationHubFlowResponse) MarshalJSON() ([]byte, error) {
 
 func (o IntegrationHubFlowResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["Id"] = o.Id
-	if !IsNil(o.ApplicationID) {
-		toSerialize["ApplicationID"] = o.ApplicationID
+	toSerialize["id"] = o.Id
+	if !IsNil(o.IntegrationName) {
+		toSerialize["integrationName"] = o.IntegrationName
 	}
-	toSerialize["EventType"] = o.EventType
-	toSerialize["IntegrationHubFlowUrl"] = o.IntegrationHubFlowUrl
-	toSerialize["Config"] = o.Config
+	if !IsNil(o.InstanceName) {
+		toSerialize["instanceName"] = o.InstanceName
+	}
+	toSerialize["createdAt"] = o.CreatedAt
+	if o.DisabledUntil.IsSet() {
+		toSerialize["disabledUntil"] = o.DisabledUntil.Get()
+	}
+	if !IsNil(o.ApplicationId) {
+		toSerialize["applicationId"] = o.ApplicationId
+	}
+	if !IsNil(o.LoyaltyProgramId) {
+		toSerialize["loyaltyProgramId"] = o.LoyaltyProgramId
+	}
+	toSerialize["eventType"] = o.EventType
+	toSerialize["integrationHubFlowUrl"] = o.IntegrationHubFlowUrl
+	toSerialize["config"] = o.Config
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value
@@ -213,10 +401,11 @@ func (o *IntegrationHubFlowResponse) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"Id",
-		"EventType",
-		"IntegrationHubFlowUrl",
-		"Config",
+		"id",
+		"createdAt",
+		"eventType",
+		"integrationHubFlowUrl",
+		"config",
 	}
 
 	allProperties := make(map[string]interface{})
@@ -246,11 +435,16 @@ func (o *IntegrationHubFlowResponse) UnmarshalJSON(data []byte) (err error) {
 	additionalProperties := make(map[string]interface{})
 
 	if err = json.Unmarshal(data, &additionalProperties); err == nil {
-		delete(additionalProperties, "Id")
-		delete(additionalProperties, "ApplicationID")
-		delete(additionalProperties, "EventType")
-		delete(additionalProperties, "IntegrationHubFlowUrl")
-		delete(additionalProperties, "Config")
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "integrationName")
+		delete(additionalProperties, "instanceName")
+		delete(additionalProperties, "createdAt")
+		delete(additionalProperties, "disabledUntil")
+		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "loyaltyProgramId")
+		delete(additionalProperties, "eventType")
+		delete(additionalProperties, "integrationHubFlowUrl")
+		delete(additionalProperties, "config")
 		o.AdditionalProperties = additionalProperties
 	}
 

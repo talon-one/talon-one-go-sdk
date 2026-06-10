@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Path** | **string** | The exact path of the attribute that was updated. | 
+**Path** | **string** | The entity type and the attribute name. | 
 **Value** | **interface{}** |  | 
 
 ## Methods

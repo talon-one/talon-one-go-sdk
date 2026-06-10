@@ -20,7 +20,7 @@ Name | Type | Description | Notes
 **RecipientIntegrationId** | Pointer to **string** |  | [optional] 
 **ImportId** | Pointer to **int64** |  | [optional] 
 **BatchId** | Pointer to **string** |  | [optional] 
-**Attributes** | Pointer to **map[string]interface{}** |  | [optional] 
+**Attributes** | Pointer to **map[string]interface{}** | Arbitrary properties associated with this campaign. | [optional] 
 **Limits** | Pointer to [**[]IntegrationHubEventPayloadCouponBasedNotificationsLimits**](IntegrationHubEventPayloadCouponBasedNotificationsLimits.md) |  | [optional] 
 **PublishedAt** | **time.Time** | Timestamp when the event was published. | 
 **SourceOfEvent** | **string** |  | 

@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **CampaignId** | **int64** | ID of the campaign from which the referral received the referral code. | 
 **AdvocateProfileIntegrationId** | **string** | The Integration ID of the Advocate&#39;s Profile. | 
 **FriendProfileIntegrationId** | Pointer to **string** | An optional Integration ID of the Friend&#39;s Profile. | [optional] 
-**Attributes** | Pointer to **map[string]interface{}** | Arbitrary properties associated with this item. | [optional] 
+**Attributes** | Pointer to **map[string]interface{}** | Arbitrary properties associated with this campaign. | [optional] 
 
 ## Methods
 

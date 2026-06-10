@@ -6718,6 +6718,8 @@ type ApiExportCustomerSessionsRequest struct {
 	applicationId        int64
 	createdBefore        *time.Time
 	createdAfter         *time.Time
+	updatedBefore        *time.Time
+	updatedAfter         *time.Time
 	profileIntegrationId *string
 	dateFormat           *string
 	customerSessionState *string
@@ -6732,6 +6734,18 @@ func (r ApiExportCustomerSessionsRequest) CreatedBefore(createdBefore time.Time)
 // Filter results comparing the parameter value, expected to be an RFC3339 timestamp string.
 func (r ApiExportCustomerSessionsRequest) CreatedAfter(createdAfter time.Time) ApiExportCustomerSessionsRequest {
 	r.createdAfter = &createdAfter
+	return r
+}
+
+// Filter results comparing the parameter value, expected to be an RFC3339 timestamp string.
+func (r ApiExportCustomerSessionsRequest) UpdatedBefore(updatedBefore time.Time) ApiExportCustomerSessionsRequest {
+	r.updatedBefore = &updatedBefore
+	return r
+}
+
+// Filter results comparing the parameter value, expected to be an RFC3339 timestamp string.
+func (r ApiExportCustomerSessionsRequest) UpdatedAfter(updatedAfter time.Time) ApiExportCustomerSessionsRequest {
+	r.updatedAfter = &updatedAfter
 	return r
 }
 
@@ -6850,6 +6864,12 @@ func (a *ManagementAPIService) ExportCustomerSessionsExecute(r ApiExportCustomer
 	}
 	if r.createdAfter != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "createdAfter", r.createdAfter, "form", "")
+	}
+	if r.updatedBefore != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "updatedBefore", r.updatedBefore, "form", "")
+	}
+	if r.updatedAfter != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "updatedAfter", r.updatedAfter, "form", "")
 	}
 	if r.profileIntegrationId != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "profileIntegrationId", r.profileIntegrationId, "form", "")
@@ -8022,7 +8042,7 @@ The CSV file contains the following columns:
 - `blockreason`: The reason for transferring and blocking the loyalty card.
 - `generated`: An indicator of whether the loyalty card was generated.
 - `batchid`: The ID of the batch the loyalty card is in.
-- `attributes`: The custom attributes of this loyalty card. Currently, this feature is only available upon request.
+- `attributes`: The custom attributes of this loyalty card.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param loyaltyProgramId Identifier of the card-based loyalty program containing the loyalty card. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
@@ -12583,7 +12603,7 @@ type ApiGetAudiencesAnalyticsRequest struct {
 	sort        *string
 }
 
-// The IDs of one or more audiences, separated by commas, by which to filter results.
+// The IDs of one or more audiences, separated by commas, by which to filter results. Do not provide more than 1000 audience IDs.
 func (r ApiGetAudiencesAnalyticsRequest) AudienceIds(audienceIds string) ApiGetAudiencesAnalyticsRequest {
 	r.audienceIds = &audienceIds
 	return r
@@ -21311,14 +21331,17 @@ which must match the regular expression `^[A-Za-z0-9._%+@-]+$`.
 - `customerprofileids` (optional): An array of strings representing the
 identifiers of the customer profiles linked to the loyalty card. The
 identifiers should be separated with a semicolon (;).
+- `attributes` (optional): A JSON object that contains the loyalty card's custom
+attributes and their values. These attributes must be created and connected to this
+loyalty program before they can be assigned to the cards through this endpoint.
 
 > [!note] Your CSV file must contain less than 500,000 rows. Requests time out after 30 seconds.
 
 ## Example
 
 ```csv
-identifier,state,customerprofileids
-123-456-789AT,active,Alexa001;UserA
+identifier,state,customerprofileids,attributes
+123-456-789AT,active,Alexa001;UserA,'{""my_attributes"": ""10_off""}"
 ```
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
@@ -21557,6 +21580,204 @@ func (a *ManagementAPIService) ImportLoyaltyCustomersTiersExecute(r ApiImportLoy
 	}
 
 	localVarPath := localBasePath + "/v1/loyalty_programs/{loyaltyProgramId}/import_customers_tiers"
+	localVarPath = strings.Replace(localVarPath, "{"+"loyaltyProgramId"+"}", url.PathEscape(parameterValueToString(r.loyaltyProgramId, "loyaltyProgramId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"multipart/form-data"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	var upFileLocalVarFormFileName string
+	var upFileLocalVarFileName string
+	var upFileLocalVarFileBytes []byte
+
+	upFileLocalVarFormFileName = "upFile"
+	upFileLocalVarFile := r.upFile
+
+	if upFileLocalVarFile != nil {
+		fbs, _ := io.ReadAll(upFileLocalVarFile)
+
+		upFileLocalVarFileBytes = fbs
+		upFileLocalVarFileName = upFileLocalVarFile.Name()
+		upFileLocalVarFile.Close()
+		formFiles = append(formFiles, formFile{fileBytes: upFileLocalVarFileBytes, fileName: upFileLocalVarFileName, formFileName: upFileLocalVarFormFileName})
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiImportLoyaltyJoinDatesRequest struct {
+	ctx              context.Context
+	ApiService       *ManagementAPIService
+	loyaltyProgramId int64
+	upFile           *os.File
+}
+
+// The CSV file containing the data that is being imported.
+func (r ApiImportLoyaltyJoinDatesRequest) UpFile(upFile *os.File) ApiImportLoyaltyJoinDatesRequest {
+	r.upFile = upFile
+	return r
+}
+
+func (r ApiImportLoyaltyJoinDatesRequest) Execute() (*Import, *http.Response, error) {
+	return r.ApiService.ImportLoyaltyJoinDatesExecute(r)
+}
+
+/*
+ImportLoyaltyJoinDates Import join dates for a loyalty program
+
+Upload a CSV file containing customer profile IDs and their join dates for the
+specified loyalty program. Send the file as multipart data.
+
+> [!important] This endpoint only works with profile-based loyalty programs.
+
+The CSV file **must** contain the following columns:
+
+  - `customerprofileid`: The integration ID of the customer profile whose join
+    date you want to update.
+  - `newjoindate`: The new join date for the customer in RFC3339 format. You
+    can use the time zone of your choice. It is converted to UTC internally
+    by Talon.One.
+
+**Note**:
+- Customer profiles must already exist. If a referenced profile does not exist, the import fails with a `400` error.
+- If a join date already exists for a profile, the uploaded date replaces it.
+
+> [!note] We recommend limiting your file size to 500 MB.
+
+## Example
+
+```csv
+customerprofileid,newjoindate
+customer1,2024-03-21T07:32:14Z
+customer2,2025-04-16T21:12:37Z
+customer3,2026-05-03T11:47:01Z
+```
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param loyaltyProgramId Identifier of the profile-based loyalty program. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
+	@return ApiImportLoyaltyJoinDatesRequest
+*/
+func (a *ManagementAPIService) ImportLoyaltyJoinDates(ctx context.Context, loyaltyProgramId int64) ApiImportLoyaltyJoinDatesRequest {
+	return ApiImportLoyaltyJoinDatesRequest{
+		ApiService:       a,
+		ctx:              ctx,
+		loyaltyProgramId: loyaltyProgramId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return Import
+func (a *ManagementAPIService) ImportLoyaltyJoinDatesExecute(r ApiImportLoyaltyJoinDatesRequest) (*Import, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *Import
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagementAPIService.ImportLoyaltyJoinDates")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v1/loyalty_programs/{loyaltyProgramId}/import_join_dates"
 	localVarPath = strings.Replace(localVarPath, "{"+"loyaltyProgramId"+"}", url.PathEscape(parameterValueToString(r.loyaltyProgramId, "loyaltyProgramId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -22857,7 +23078,7 @@ type ApiListApplicationCartItemFiltersRequest struct {
 	applicationId int64
 	pageSize      *int64
 	skip          *int64
-	title         *string
+	name          *string
 }
 
 // The number of items in the response.
@@ -22872,9 +23093,9 @@ func (r ApiListApplicationCartItemFiltersRequest) Skip(skip int64) ApiListApplic
 	return r
 }
 
-// Filter by the display name of the Application cart item filter in the Application.  **Note**: If no &#x60;title&#x60; is provided, all the Application cart item filters in the Application are returned.
-func (r ApiListApplicationCartItemFiltersRequest) Title(title string) ApiListApplicationCartItemFiltersRequest {
-	r.title = &title
+// Filter by the display name of the Application cart item filter in the Application.  **Note**: If no &#x60;name&#x60; is provided, all the Application cart item filters in the Application are returned.
+func (r ApiListApplicationCartItemFiltersRequest) Name(name string) ApiListApplicationCartItemFiltersRequest {
+	r.name = &name
 	return r
 }
 
@@ -22932,8 +23153,8 @@ func (a *ManagementAPIService) ListApplicationCartItemFiltersExecute(r ApiListAp
 	if r.skip != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "skip", r.skip, "form", "")
 	}
-	if r.title != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "title", r.title, "form", "")
+	if r.name != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "name", r.name, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

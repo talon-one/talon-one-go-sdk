@@ -31,9 +31,9 @@ type Change struct {
 	ApplicationId *int64 `json:"applicationId,omitempty"`
 	// API endpoint on which the change was initiated.
 	Entity string `json:"entity"`
-	// Resource before the change occurred.
+	// Arbitrary properties associated with this campaign.
 	Old map[string]interface{} `json:"old,omitempty"`
-	// Resource after the change occurred.
+	// Arbitrary properties associated with this campaign.
 	New map[string]interface{} `json:"new,omitempty"`
 	// ID of management key used to perform changes.
 	ManagementKeyId      *int64 `json:"managementKeyId,omitempty"`

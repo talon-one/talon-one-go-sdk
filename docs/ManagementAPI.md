@@ -138,6 +138,7 @@ Method | HTTP request | Description
 [**ImportCoupons**](ManagementAPI.md#ImportCoupons) | **Post** /v1/applications/{applicationId}/campaigns/{campaignId}/import_coupons | Import coupons
 [**ImportLoyaltyCards**](ManagementAPI.md#ImportLoyaltyCards) | **Post** /v1/loyalty_programs/{loyaltyProgramId}/import_cards | Import loyalty cards
 [**ImportLoyaltyCustomersTiers**](ManagementAPI.md#ImportLoyaltyCustomersTiers) | **Post** /v1/loyalty_programs/{loyaltyProgramId}/import_customers_tiers | Import customers into loyalty tiers
+[**ImportLoyaltyJoinDates**](ManagementAPI.md#ImportLoyaltyJoinDates) | **Post** /v1/loyalty_programs/{loyaltyProgramId}/import_join_dates | Import join dates for a loyalty program
 [**ImportLoyaltyPoints**](ManagementAPI.md#ImportLoyaltyPoints) | **Post** /v1/loyalty_programs/{loyaltyProgramId}/import_points | Import loyalty points
 [**ImportPoolGiveaways**](ManagementAPI.md#ImportPoolGiveaways) | **Post** /v1/giveaways/pools/{poolId}/import | Import giveaway codes into a giveaway pool
 [**ImportReferrals**](ManagementAPI.md#ImportReferrals) | **Post** /v1/applications/{applicationId}/campaigns/{campaignId}/import_referrals | Import referrals
@@ -3526,7 +3527,7 @@ Name | Type | Description  | Notes
 
 ## ExportCustomerSessions
 
-> string ExportCustomerSessions(ctx, applicationId).CreatedBefore(createdBefore).CreatedAfter(createdAfter).ProfileIntegrationId(profileIntegrationId).DateFormat(dateFormat).CustomerSessionState(customerSessionState).Execute()
+> string ExportCustomerSessions(ctx, applicationId).CreatedBefore(createdBefore).CreatedAfter(createdAfter).UpdatedBefore(updatedBefore).UpdatedAfter(updatedAfter).ProfileIntegrationId(profileIntegrationId).DateFormat(dateFormat).CustomerSessionState(customerSessionState).Execute()
 
 Export customer sessions
 
@@ -3549,13 +3550,15 @@ func main() {
 	applicationId := int64(789) // int64 | The ID of the Application. It is displayed in your Talon.One deployment URL.
 	createdBefore := time.Now() // time.Time | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string. (optional)
 	createdAfter := time.Now() // time.Time | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string. (optional)
+	updatedBefore := time.Now() // time.Time | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string. (optional)
+	updatedAfter := time.Now() // time.Time | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string. (optional)
 	profileIntegrationId := "profileIntegrationId_example" // string | Only return sessions for the customer that matches this customer integration ID. (optional)
 	dateFormat := "dateFormat_example" // string | Determines the format of dates in the export document. (optional)
 	customerSessionState := "customerSessionState_example" // string | Filter results by state. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ManagementAPI.ExportCustomerSessions(context.Background(), applicationId).CreatedBefore(createdBefore).CreatedAfter(createdAfter).ProfileIntegrationId(profileIntegrationId).DateFormat(dateFormat).CustomerSessionState(customerSessionState).Execute()
+	resp, r, err := apiClient.ManagementAPI.ExportCustomerSessions(context.Background(), applicationId).CreatedBefore(createdBefore).CreatedAfter(createdAfter).UpdatedBefore(updatedBefore).UpdatedAfter(updatedAfter).ProfileIntegrationId(profileIntegrationId).DateFormat(dateFormat).CustomerSessionState(customerSessionState).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.ExportCustomerSessions``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -3583,6 +3586,8 @@ Name | Type | Description  | Notes
 
  **createdBefore** | **time.Time** | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string. | 
  **createdAfter** | **time.Time** | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string. | 
+ **updatedBefore** | **time.Time** | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string. | 
+ **updatedAfter** | **time.Time** | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string. | 
  **profileIntegrationId** | **string** | Only return sessions for the customer that matches this customer integration ID. | 
  **dateFormat** | **string** | Determines the format of dates in the export document. | 
  **customerSessionState** | **string** | Filter results by state. | 
@@ -6299,7 +6304,7 @@ import (
 )
 
 func main() {
-	audienceIds := "audienceIds_example" // string | The IDs of one or more audiences, separated by commas, by which to filter results.
+	audienceIds := "audienceIds_example" // string | The IDs of one or more audiences, separated by commas, by which to filter results. Do not provide more than 1000 audience IDs.
 	sort := "sort_example" // string | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with `-`.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  (optional)
 
 	configuration := openapiclient.NewConfiguration()
@@ -6325,7 +6330,7 @@ Other parameters are passed through a pointer to a apiGetAudiencesAnalyticsReque
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **audienceIds** | **string** | The IDs of one or more audiences, separated by commas, by which to filter results. | 
+ **audienceIds** | **string** | The IDs of one or more audiences, separated by commas, by which to filter results. Do not provide more than 1000 audience IDs. | 
  **sort** | **string** | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with &#x60;-&#x60;.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  | 
 
 ### Return type
@@ -10308,6 +10313,78 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## ImportLoyaltyJoinDates
+
+> Import ImportLoyaltyJoinDates(ctx, loyaltyProgramId).UpFile(upFile).Execute()
+
+Import join dates for a loyalty program
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	loyaltyProgramId := int64(789) // int64 | Identifier of the profile-based loyalty program. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint. 
+	upFile := os.NewFile(1234, "some_file") // *os.File | The CSV file containing the data that is being imported. (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ManagementAPI.ImportLoyaltyJoinDates(context.Background(), loyaltyProgramId).UpFile(upFile).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.ImportLoyaltyJoinDates``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ImportLoyaltyJoinDates`: Import
+	fmt.Fprintf(os.Stdout, "Response from `ManagementAPI.ImportLoyaltyJoinDates`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**loyaltyProgramId** | **int64** | Identifier of the profile-based loyalty program. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiImportLoyaltyJoinDatesRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **upFile** | ***os.File** | The CSV file containing the data that is being imported. | 
+
+### Return type
+
+[**Import**](Import.md)
+
+### Authorization
+
+[api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: multipart/form-data
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## ImportLoyaltyPoints
 
 > Import ImportLoyaltyPoints(ctx, loyaltyProgramId).NotificationsEnabled(notificationsEnabled).UpFile(upFile).Execute()
@@ -10809,7 +10886,7 @@ Other parameters are passed through a pointer to a apiListAllRolesV2Request stru
 
 ## ListApplicationCartItemFilters
 
-> ListApplicationCartItemFilters200Response ListApplicationCartItemFilters(ctx, applicationId).PageSize(pageSize).Skip(skip).Title(title).Execute()
+> ListApplicationCartItemFilters200Response ListApplicationCartItemFilters(ctx, applicationId).PageSize(pageSize).Skip(skip).Name(name).Execute()
 
 List Application cart item filters
 
@@ -10831,11 +10908,11 @@ func main() {
 	applicationId := int64(789) // int64 | The ID of the Application. It is displayed in your Talon.One deployment URL.
 	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 50)
 	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
-	title := "title_example" // string | Filter by the display name of the Application cart item filter in the Application.  **Note**: If no `title` is provided, all the Application cart item filters in the Application are returned.  (optional)
+	name := "name_example" // string | Filter by the display name of the Application cart item filter in the Application.  **Note**: If no `name` is provided, all the Application cart item filters in the Application are returned.  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ManagementAPI.ListApplicationCartItemFilters(context.Background(), applicationId).PageSize(pageSize).Skip(skip).Title(title).Execute()
+	resp, r, err := apiClient.ManagementAPI.ListApplicationCartItemFilters(context.Background(), applicationId).PageSize(pageSize).Skip(skip).Name(name).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.ListApplicationCartItemFilters``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -10863,7 +10940,7 @@ Name | Type | Description  | Notes
 
  **pageSize** | **int64** | The number of items in the response. | [default to 50]
  **skip** | **int64** | The number of items to skip when paging through large result sets. | 
- **title** | **string** | Filter by the display name of the Application cart item filter in the Application.  **Note**: If no &#x60;title&#x60; is provided, all the Application cart item filters in the Application are returned.  | 
+ **name** | **string** | Filter by the display name of the Application cart item filter in the Application.  **Note**: If no &#x60;name&#x60; is provided, all the Application cart item filters in the Application are returned.  | 
 
 ### Return type
 

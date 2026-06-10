@@ -4,11 +4,11 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**PoolId** | **int64** | The ID of the giveaways pool the code was taken from. | 
-**PoolName** | **string** | The name of the giveaways pool the code was taken from. | 
-**RecipientIntegrationId** | **string** | The integration ID of the profile that was awarded the giveaway. | 
-**GiveawayId** | **int64** | The internal ID for the giveaway that was awarded. | 
-**Code** | **string** | The giveaway code that was awarded. | 
+**PoolId** | **int64** | The internal ID of the giveaway pool. | 
+**PoolName** | **string** | The name of the giveaway pool. | 
+**RecipientIntegrationId** | **string** | The integration ID of the customer that receives the giveaway. | 
+**GiveawayId** | **int64** | The internal ID of the giveaway. | 
+**Code** | **string** | The giveaway code to be rewarded. | 
 
 ## Methods
 

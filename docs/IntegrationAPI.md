@@ -20,6 +20,7 @@ Method | HTTP request | Description
 [**GetCustomerAchievements**](IntegrationAPI.md#GetCustomerAchievements) | **Get** /v1/customer_profiles/{integrationId}/achievements | List customer&#39;s available achievements
 [**GetCustomerInventory**](IntegrationAPI.md#GetCustomerInventory) | **Get** /v1/customer_profiles/{integrationId}/inventory | List customer data
 [**GetCustomerSession**](IntegrationAPI.md#GetCustomerSession) | **Get** /v2/customer_sessions/{customerSessionId} | Get customer session
+[**GetEventV3**](IntegrationAPI.md#GetEventV3) | **Get** /v3/events/{integrationId} | Get advanced event
 [**GetLoyaltyBalances**](IntegrationAPI.md#GetLoyaltyBalances) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/balances | Get customer&#39;s loyalty balances
 [**GetLoyaltyCardBalances**](IntegrationAPI.md#GetLoyaltyCardBalances) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/balances | Get card&#39;s point balances
 [**GetLoyaltyCardPoints**](IntegrationAPI.md#GetLoyaltyCardPoints) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/points | List card&#39;s unused loyalty points
@@ -33,6 +34,7 @@ Method | HTTP request | Description
 [**ReturnCartItems**](IntegrationAPI.md#ReturnCartItems) | **Post** /v2/customer_sessions/{customerSessionId}/returns | Return cart items
 [**SyncCatalog**](IntegrationAPI.md#SyncCatalog) | **Put** /v1/catalogs/{catalogId}/sync | Sync cart item catalog
 [**TrackEventV2**](IntegrationAPI.md#TrackEventV2) | **Post** /v2/events | Track event
+[**TrackEventV3**](IntegrationAPI.md#TrackEventV3) | **Post** /v3/events | Track advanced event
 [**UnlinkLoyaltyCardFromProfile**](IntegrationAPI.md#UnlinkLoyaltyCardFromProfile) | **Post** /v2/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/unlink_profile | Unlink customer profile from a loyalty card
 [**UpdateAudienceCustomersAttributes**](IntegrationAPI.md#UpdateAudienceCustomersAttributes) | **Put** /v2/audience_customers/{audienceId}/attributes | Update profile attributes for all customers in audience
 [**UpdateAudienceV2**](IntegrationAPI.md#UpdateAudienceV2) | **Put** /v2/audiences/{audienceId} | Update audience name
@@ -1191,6 +1193,76 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## GetEventV3
+
+> EventV3 GetEventV3(ctx, integrationId).Execute()
+
+Get advanced event
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	integrationId := "integrationId_example" // string | The unique ID of the advanced event.
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.IntegrationAPI.GetEventV3(context.Background(), integrationId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `IntegrationAPI.GetEventV3``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetEventV3`: EventV3
+	fmt.Fprintf(os.Stdout, "Response from `IntegrationAPI.GetEventV3`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**integrationId** | **string** | The unique ID of the advanced event. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetEventV3Request struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+[**EventV3**](EventV3.md)
+
+### Authorization
+
+[api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## GetLoyaltyBalances
 
 > LoyaltyBalancesWithTiers GetLoyaltyBalances(ctx, loyaltyProgramId, integrationId).EndDate(endDate).SubledgerId(subledgerId).IncludeTiers(includeTiers).IncludeProjectedTier(includeProjectedTier).Execute()
@@ -1554,7 +1626,7 @@ func main() {
 	loyaltyProgramId := int64(789) // int64 | Identifier of the profile-based loyalty program. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint. 
 	integrationId := "integrationId_example" // string | The integration identifier for this customer profile. Must be: - Unique within the deployment. - Stable for the customer. Do not use an ID that the customer can update themselves. For example, you can use a database ID.  Once set, you cannot update this identifier. 
 	status := "status_example" // string | Filter points based on their status. (optional) (default to "active")
-	subledgerId := "subledgerId_example" // string | The ID of the subledger by which we filter the data. (optional)
+	subledgerId := []string{"Inner_example"} // []string | Filter the results by a list of subledger IDs.  To include multiple IDs, repeat the parameter for each one, for example, `?subledgerId=id1&subledgerId=id2`.  The response contains only data associated with the specified subledgers.  (optional)
 	customerSessionIDs := []string{"Inner_example"} // []string | Filter the results by a list of customer session IDs.   To include multiple IDs, repeat the parameter for each one, for example,  `?customerSessionIDs=id1&customerSessionIDs=id2`.  The response contains only data associated with the specified sessions.  (optional)
 	transactionUUIDs := []string{"Inner_example"} // []string | Filter the results by a list of transaction UUIDs.  To include multiple IDs, repeat the parameter for each one, for example,  `?transactionUUIDs=uuid1&transactionUUIDs=uuid2`.  The response contains only data associated with the specified transactions.  (optional)
 	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 50)
@@ -1592,7 +1664,7 @@ Name | Type | Description  | Notes
 
 
  **status** | **string** | Filter points based on their status. | [default to &quot;active&quot;]
- **subledgerId** | **string** | The ID of the subledger by which we filter the data. | 
+ **subledgerId** | **[]string** | Filter the results by a list of subledger IDs.  To include multiple IDs, repeat the parameter for each one, for example, &#x60;?subledgerId&#x3D;id1&amp;subledgerId&#x3D;id2&#x60;.  The response contains only data associated with the specified subledgers.  | 
  **customerSessionIDs** | **[]string** | Filter the results by a list of customer session IDs.   To include multiple IDs, repeat the parameter for each one, for example,  &#x60;?customerSessionIDs&#x3D;id1&amp;customerSessionIDs&#x3D;id2&#x60;.  The response contains only data associated with the specified sessions.  | 
  **transactionUUIDs** | **[]string** | Filter the results by a list of transaction UUIDs.  To include multiple IDs, repeat the parameter for each one, for example,  &#x60;?transactionUUIDs&#x3D;uuid1&amp;transactionUUIDs&#x3D;uuid2&#x60;.  The response contains only data associated with the specified transactions.  | 
  **pageSize** | **int64** | The number of items in the response. | [default to 50]
@@ -2208,6 +2280,78 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**IntegrationEventV2Response**](IntegrationEventV2Response.md)
+
+### Authorization
+
+[api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## TrackEventV3
+
+> IntegrationEventV3Response TrackEventV3(ctx).IntegrationEventV3Request(integrationEventV3Request).Silent(silent).Dry(dry).ForceCompleteEvaluation(forceCompleteEvaluation).Execute()
+
+Track advanced event
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	integrationEventV3Request := *openapiclient.NewIntegrationEventV3Request("URNGV8294NV", "pageViewed", "175KJPS947296") // IntegrationEventV3Request | body
+	silent := "silent_example" // string | Possible values: `yes` or `no`. - `yes`: Increases the performance of the API call by returning a 204 response. - `no`: Returns a 200 response that contains the updated customer profiles.  (optional) (default to "yes")
+	dry := true // bool | Indicates whether to persist the changes. Changes are ignored when `dry=true`.  (optional)
+	forceCompleteEvaluation := true // bool | Forces evaluation for all matching campaigns regardless of the [campaign evaluation mode](https://docs.talon.one/docs/product/applications/managing-campaign-evaluation#setting-campaign-evaluation-mode). Requires `dry=true`.  (optional) (default to false)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.IntegrationAPI.TrackEventV3(context.Background()).IntegrationEventV3Request(integrationEventV3Request).Silent(silent).Dry(dry).ForceCompleteEvaluation(forceCompleteEvaluation).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `IntegrationAPI.TrackEventV3``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `TrackEventV3`: IntegrationEventV3Response
+	fmt.Fprintf(os.Stdout, "Response from `IntegrationAPI.TrackEventV3`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiTrackEventV3Request struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **integrationEventV3Request** | [**IntegrationEventV3Request**](IntegrationEventV3Request.md) | body | 
+ **silent** | **string** | Possible values: &#x60;yes&#x60; or &#x60;no&#x60;. - &#x60;yes&#x60;: Increases the performance of the API call by returning a 204 response. - &#x60;no&#x60;: Returns a 200 response that contains the updated customer profiles.  | [default to &quot;yes&quot;]
+ **dry** | **bool** | Indicates whether to persist the changes. Changes are ignored when &#x60;dry&#x3D;true&#x60;.  | 
+ **forceCompleteEvaluation** | **bool** | Forces evaluation for all matching campaigns regardless of the [campaign evaluation mode](https://docs.talon.one/docs/product/applications/managing-campaign-evaluation#setting-campaign-evaluation-mode). Requires &#x60;dry&#x3D;true&#x60;.  | [default to false]
+
+### Return type
+
+[**IntegrationEventV3Response**](IntegrationEventV3Response.md)
 
 ### Authorization
 

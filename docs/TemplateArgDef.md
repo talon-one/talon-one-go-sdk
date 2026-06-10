@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **Type** | **string** | The type of value this argument expects. | 
 **Description** | Pointer to **string** | A campaigner-friendly description of the argument, this will also be shown in the rule editor. | [optional] 
 **Title** | **string** | A campaigner friendly name for the argument, this will be shown in the rule editor. | 
-**Ui** | **map[string]interface{}** | Arbitrary metadata that may be used to render an input for this argument. | 
+**Ui** | **map[string]interface{}** | Arbitrary properties associated with this campaign. | 
 **Key** | Pointer to **string** | The identifier for the associated value within the JSON object. | [optional] 
 **PicklistID** | Pointer to **int64** | ID of the picklist linked to a template. | [optional] 
 **RestrictedByPicklist** | Pointer to **bool** | Whether or not this attribute&#39;s value is restricted by picklist (&#x60;picklist&#x60; property) | [optional] 
