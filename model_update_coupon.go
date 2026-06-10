@@ -34,7 +34,7 @@ type UpdateCoupon struct {
 	Limits []LimitConfig `json:"limits,omitempty"`
 	// The integration ID for this coupon's beneficiary's profile.
 	RecipientIntegrationId *string `json:"recipientIntegrationId,omitempty"`
-	// Arbitrary properties associated with this item.
+	// Arbitrary properties associated with this campaign.
 	Attributes map[string]interface{} `json:"attributes,omitempty"`
 	// An indication of whether the code can be redeemed only if it has been reserved first.
 	IsReservationMandatory *bool `json:"isReservationMandatory,omitempty"`

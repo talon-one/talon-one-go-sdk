@@ -16,6 +16,7 @@ Name | Type | Description | Notes
 **Features** | **[]string** | The features enabled in this campaign. | 
 **Eligibility** | [**[]CampaignEligibilityDetails**](CampaignEligibilityDetails.md) | The customer&#39;s eligibility for each campaign in the current customer session. | 
 **Rules** | [**[]RuleMetadataEligibility**](RuleMetadataEligibility.md) | A list of rules containing customer-facing details of the rewards defined in the campaign. | 
+**Experiment** | Pointer to [**CampaignEligibilityExperiment**](CampaignEligibilityExperiment.md) |  | [optional] 
 
 ## Methods
 
@@ -295,6 +296,31 @@ and a boolean to check if the value has been set.
 
 SetRules sets Rules field to given value.
 
+
+### GetExperiment
+
+`func (o *CampaignEligibility) GetExperiment() CampaignEligibilityExperiment`
+
+GetExperiment returns the Experiment field if non-nil, zero value otherwise.
+
+### GetExperimentOk
+
+`func (o *CampaignEligibility) GetExperimentOk() (*CampaignEligibilityExperiment, bool)`
+
+GetExperimentOk returns a tuple with the Experiment field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetExperiment
+
+`func (o *CampaignEligibility) SetExperiment(v CampaignEligibilityExperiment)`
+
+SetExperiment sets Experiment field to given value.
+
+### HasExperiment
+
+`func (o *CampaignEligibility) HasExperiment() bool`
+
+HasExperiment returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

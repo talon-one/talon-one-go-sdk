@@ -4,9 +4,9 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**NotificationType** | **string** | The type of notification that should be shown (e.g. error/warning/info). | 
-**Title** | **string** | Title of the notification. | 
-**Body** | **string** | Body of the notification. | 
+**NotificationType** | **string** | The type of notification. | 
+**Title** | **string** | The title of the notification. | 
+**Body** | **string** | The body of the notification. | 
 
 ## Methods
 

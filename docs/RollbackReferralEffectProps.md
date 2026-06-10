@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Value** | **string** | The referral code whose usage has been rolled back. | 
+**Value** | **string** | The referral code to be rolled back. | 
 
 ## Methods
 

@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Value** | **string** | The referral code that was created. | 
+**Value** | **string** | The referral code provided in the session. | 
 
 ## Methods
 

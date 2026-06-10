@@ -31,7 +31,7 @@ type NewReferralsForMultipleAdvocates struct {
 	CampaignId int64 `json:"campaignId"`
 	// An array containing all the respective advocate profiles.
 	AdvocateProfileIntegrationIds []string `json:"advocateProfileIntegrationIds"`
-	// Arbitrary properties associated with this referral code.
+	// Arbitrary properties associated with this campaign.
 	Attributes map[string]interface{} `json:"attributes,omitempty"`
 	// List of characters used to generate the random parts of a code. By default, the list of characters is equivalent to the `[A-Z, 0-9]` regular expression.
 	ValidCharacters []string `json:"validCharacters,omitempty"`

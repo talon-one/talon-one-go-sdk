@@ -44,7 +44,7 @@ type CouponCreationJob struct {
 	// The number of new coupon codes to generate for the campaign.
 	NumberOfCoupons int64                  `json:"numberOfCoupons"`
 	CouponSettings  *CodeGeneratorSettings `json:"couponSettings,omitempty"`
-	// Arbitrary properties associated with coupons.
+	// Arbitrary properties associated with this campaign.
 	Attributes map[string]interface{} `json:"attributes"`
 	// An indication of whether the code can be redeemed only if it has been reserved first.
 	IsReservationMandatory *bool `json:"isReservationMandatory,omitempty"`

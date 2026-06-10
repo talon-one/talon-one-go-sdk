@@ -4,21 +4,23 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **int64** |  | 
-**FlowId** | **int64** |  | 
-**EventType** | **string** |  | 
-**EventData** | **interface{}** |  | 
-**PublishedAt** | **time.Time** |  | 
-**ProcessedAt** | Pointer to **time.Time** |  | [optional] 
-**DeliveredAt** | Pointer to **time.Time** |  | [optional] 
-**ProcessAfter** | **time.Time** |  | 
-**Retry** | **int64** |  | 
+**Id** | **int64** | ID of the event record. | 
+**FlowId** | **int64** | ID of the integration hub flow. | 
+**IntegrationName** | Pointer to **string** | Name of the integration. | [optional] 
+**InstanceName** | Pointer to **string** | Name of the integration instance. | [optional] 
+**EventType** | [**IntegrationHubEventType**](IntegrationHubEventType.md) |  | 
+**PublishedAt** | **time.Time** | Timestamp when the event was published. | 
+**ProcessedAt** | Pointer to **time.Time** | Timestamp when the event was processed. | [optional] 
+**DeliveredAt** | Pointer to **time.Time** | Timestamp when the event was delivered. | [optional] 
+**ScheduledTo** | **time.Time** | Timestamp after which the event is scheduled to be processed. | 
+**Retry** | **int64** | Number of delivery retries attempted. | 
+**Payload** | **string** | The event payload as a formatted JSON string. | 
 
 ## Methods
 
 ### NewIntegrationHubEventRecord
 
-`func NewIntegrationHubEventRecord(id int64, flowId int64, eventType string, eventData interface{}, publishedAt time.Time, processAfter time.Time, retry int64, ) *IntegrationHubEventRecord`
+`func NewIntegrationHubEventRecord(id int64, flowId int64, eventType IntegrationHubEventType, publishedAt time.Time, scheduledTo time.Time, retry int64, payload string, ) *IntegrationHubEventRecord`
 
 NewIntegrationHubEventRecord instantiates a new IntegrationHubEventRecord object
 This constructor will assign default values to properties that have it defined,
@@ -73,56 +75,76 @@ and a boolean to check if the value has been set.
 SetFlowId sets FlowId field to given value.
 
 
+### GetIntegrationName
+
+`func (o *IntegrationHubEventRecord) GetIntegrationName() string`
+
+GetIntegrationName returns the IntegrationName field if non-nil, zero value otherwise.
+
+### GetIntegrationNameOk
+
+`func (o *IntegrationHubEventRecord) GetIntegrationNameOk() (*string, bool)`
+
+GetIntegrationNameOk returns a tuple with the IntegrationName field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetIntegrationName
+
+`func (o *IntegrationHubEventRecord) SetIntegrationName(v string)`
+
+SetIntegrationName sets IntegrationName field to given value.
+
+### HasIntegrationName
+
+`func (o *IntegrationHubEventRecord) HasIntegrationName() bool`
+
+HasIntegrationName returns a boolean if a field has been set.
+
+### GetInstanceName
+
+`func (o *IntegrationHubEventRecord) GetInstanceName() string`
+
+GetInstanceName returns the InstanceName field if non-nil, zero value otherwise.
+
+### GetInstanceNameOk
+
+`func (o *IntegrationHubEventRecord) GetInstanceNameOk() (*string, bool)`
+
+GetInstanceNameOk returns a tuple with the InstanceName field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetInstanceName
+
+`func (o *IntegrationHubEventRecord) SetInstanceName(v string)`
+
+SetInstanceName sets InstanceName field to given value.
+
+### HasInstanceName
+
+`func (o *IntegrationHubEventRecord) HasInstanceName() bool`
+
+HasInstanceName returns a boolean if a field has been set.
+
 ### GetEventType
 
-`func (o *IntegrationHubEventRecord) GetEventType() string`
+`func (o *IntegrationHubEventRecord) GetEventType() IntegrationHubEventType`
 
 GetEventType returns the EventType field if non-nil, zero value otherwise.
 
 ### GetEventTypeOk
 
-`func (o *IntegrationHubEventRecord) GetEventTypeOk() (*string, bool)`
+`func (o *IntegrationHubEventRecord) GetEventTypeOk() (*IntegrationHubEventType, bool)`
 
 GetEventTypeOk returns a tuple with the EventType field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetEventType
 
-`func (o *IntegrationHubEventRecord) SetEventType(v string)`
+`func (o *IntegrationHubEventRecord) SetEventType(v IntegrationHubEventType)`
 
 SetEventType sets EventType field to given value.
 
 
-### GetEventData
-
-`func (o *IntegrationHubEventRecord) GetEventData() interface{}`
-
-GetEventData returns the EventData field if non-nil, zero value otherwise.
-
-### GetEventDataOk
-
-`func (o *IntegrationHubEventRecord) GetEventDataOk() (*interface{}, bool)`
-
-GetEventDataOk returns a tuple with the EventData field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetEventData
-
-`func (o *IntegrationHubEventRecord) SetEventData(v interface{})`
-
-SetEventData sets EventData field to given value.
-
-
-### SetEventDataNil
-
-`func (o *IntegrationHubEventRecord) SetEventDataNil(b bool)`
-
- SetEventDataNil sets the value for EventData to be an explicit nil
-
-### UnsetEventData
-`func (o *IntegrationHubEventRecord) UnsetEventData()`
-
-UnsetEventData ensures that no value is present for EventData, not even an explicit nil
 ### GetPublishedAt
 
 `func (o *IntegrationHubEventRecord) GetPublishedAt() time.Time`
@@ -193,24 +215,24 @@ SetDeliveredAt sets DeliveredAt field to given value.
 
 HasDeliveredAt returns a boolean if a field has been set.
 
-### GetProcessAfter
+### GetScheduledTo
 
-`func (o *IntegrationHubEventRecord) GetProcessAfter() time.Time`
+`func (o *IntegrationHubEventRecord) GetScheduledTo() time.Time`
 
-GetProcessAfter returns the ProcessAfter field if non-nil, zero value otherwise.
+GetScheduledTo returns the ScheduledTo field if non-nil, zero value otherwise.
 
-### GetProcessAfterOk
+### GetScheduledToOk
 
-`func (o *IntegrationHubEventRecord) GetProcessAfterOk() (*time.Time, bool)`
+`func (o *IntegrationHubEventRecord) GetScheduledToOk() (*time.Time, bool)`
 
-GetProcessAfterOk returns a tuple with the ProcessAfter field if it's non-nil, zero value otherwise
+GetScheduledToOk returns a tuple with the ScheduledTo field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetProcessAfter
+### SetScheduledTo
 
-`func (o *IntegrationHubEventRecord) SetProcessAfter(v time.Time)`
+`func (o *IntegrationHubEventRecord) SetScheduledTo(v time.Time)`
 
-SetProcessAfter sets ProcessAfter field to given value.
+SetScheduledTo sets ScheduledTo field to given value.
 
 
 ### GetRetry
@@ -231,6 +253,26 @@ and a boolean to check if the value has been set.
 `func (o *IntegrationHubEventRecord) SetRetry(v int64)`
 
 SetRetry sets Retry field to given value.
+
+
+### GetPayload
+
+`func (o *IntegrationHubEventRecord) GetPayload() string`
+
+GetPayload returns the Payload field if non-nil, zero value otherwise.
+
+### GetPayloadOk
+
+`func (o *IntegrationHubEventRecord) GetPayloadOk() (*string, bool)`
+
+GetPayloadOk returns a tuple with the Payload field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPayload
+
+`func (o *IntegrationHubEventRecord) SetPayload(v string)`
+
+SetPayload sets Payload field to given value.
 
 
 

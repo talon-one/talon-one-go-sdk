@@ -44,7 +44,8 @@ type CampaignEligibility struct {
 	// The customer's eligibility for each campaign in the current customer session.
 	Eligibility []CampaignEligibilityDetails `json:"eligibility"`
 	// A list of rules containing customer-facing details of the rewards defined in the campaign.
-	Rules                []RuleMetadataEligibility `json:"rules"`
+	Rules                []RuleMetadataEligibility      `json:"rules"`
+	Experiment           *CampaignEligibilityExperiment `json:"experiment,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -397,6 +398,38 @@ func (o *CampaignEligibility) SetRules(v []RuleMetadataEligibility) {
 	o.Rules = v
 }
 
+// GetExperiment returns the Experiment field value if set, zero value otherwise.
+func (o *CampaignEligibility) GetExperiment() CampaignEligibilityExperiment {
+	if o == nil || IsNil(o.Experiment) {
+		var ret CampaignEligibilityExperiment
+		return ret
+	}
+	return *o.Experiment
+}
+
+// GetExperimentOk returns a tuple with the Experiment field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CampaignEligibility) GetExperimentOk() (*CampaignEligibilityExperiment, bool) {
+	if o == nil || IsNil(o.Experiment) {
+		return nil, false
+	}
+	return o.Experiment, true
+}
+
+// HasExperiment returns a boolean if a field has been set.
+func (o *CampaignEligibility) HasExperiment() bool {
+	if o != nil && !IsNil(o.Experiment) {
+		return true
+	}
+
+	return false
+}
+
+// SetExperiment gets a reference to the given CampaignEligibilityExperiment and assigns it to the Experiment field.
+func (o *CampaignEligibility) SetExperiment(v CampaignEligibilityExperiment) {
+	o.Experiment = &v
+}
+
 func (o CampaignEligibility) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -427,6 +460,9 @@ func (o CampaignEligibility) ToMap() (map[string]interface{}, error) {
 	toSerialize["features"] = o.Features
 	toSerialize["eligibility"] = o.Eligibility
 	toSerialize["rules"] = o.Rules
+	if !IsNil(o.Experiment) {
+		toSerialize["experiment"] = o.Experiment
+	}
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value
@@ -489,6 +525,7 @@ func (o *CampaignEligibility) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "features")
 		delete(additionalProperties, "eligibility")
 		delete(additionalProperties, "rules")
+		delete(additionalProperties, "experiment")
 		o.AdditionalProperties = additionalProperties
 	}
 

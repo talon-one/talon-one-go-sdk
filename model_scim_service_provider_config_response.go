@@ -22,12 +22,12 @@ type ScimServiceProviderConfigResponse struct {
 	Bulk           *ScimServiceProviderConfigResponseBulk           `json:"bulk,omitempty"`
 	ChangePassword *ScimServiceProviderConfigResponseChangePassword `json:"changePassword,omitempty"`
 	// The URI that points to the SCIM service provider's documentation, providing further details about the service's capabilities and usage.
-	DocumentationUri *string                                  `json:"documentationUri,omitempty"`
-	Filter           *ScimServiceProviderConfigResponseFilter `json:"filter,omitempty"`
-	Patch            *ScimServiceProviderConfigResponsePatch  `json:"patch,omitempty"`
+	DocumentationUri *string                                          `json:"documentationUri,omitempty"`
+	Filter           *ScimServiceProviderConfigResponseFilter         `json:"filter,omitempty"`
+	Patch            *ScimServiceProviderConfigResponseChangePassword `json:"patch,omitempty"`
 	// A list of SCIM schemas that define the structure and data types supported by the service provider.
-	Schemas              []string                               `json:"schemas,omitempty"`
-	Sort                 *ScimServiceProviderConfigResponseSort `json:"sort,omitempty"`
+	Schemas              []string                                         `json:"schemas,omitempty"`
+	Sort                 *ScimServiceProviderConfigResponseChangePassword `json:"sort,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -179,9 +179,9 @@ func (o *ScimServiceProviderConfigResponse) SetFilter(v ScimServiceProviderConfi
 }
 
 // GetPatch returns the Patch field value if set, zero value otherwise.
-func (o *ScimServiceProviderConfigResponse) GetPatch() ScimServiceProviderConfigResponsePatch {
+func (o *ScimServiceProviderConfigResponse) GetPatch() ScimServiceProviderConfigResponseChangePassword {
 	if o == nil || IsNil(o.Patch) {
-		var ret ScimServiceProviderConfigResponsePatch
+		var ret ScimServiceProviderConfigResponseChangePassword
 		return ret
 	}
 	return *o.Patch
@@ -189,7 +189,7 @@ func (o *ScimServiceProviderConfigResponse) GetPatch() ScimServiceProviderConfig
 
 // GetPatchOk returns a tuple with the Patch field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ScimServiceProviderConfigResponse) GetPatchOk() (*ScimServiceProviderConfigResponsePatch, bool) {
+func (o *ScimServiceProviderConfigResponse) GetPatchOk() (*ScimServiceProviderConfigResponseChangePassword, bool) {
 	if o == nil || IsNil(o.Patch) {
 		return nil, false
 	}
@@ -205,8 +205,8 @@ func (o *ScimServiceProviderConfigResponse) HasPatch() bool {
 	return false
 }
 
-// SetPatch gets a reference to the given ScimServiceProviderConfigResponsePatch and assigns it to the Patch field.
-func (o *ScimServiceProviderConfigResponse) SetPatch(v ScimServiceProviderConfigResponsePatch) {
+// SetPatch gets a reference to the given ScimServiceProviderConfigResponseChangePassword and assigns it to the Patch field.
+func (o *ScimServiceProviderConfigResponse) SetPatch(v ScimServiceProviderConfigResponseChangePassword) {
 	o.Patch = &v
 }
 
@@ -243,9 +243,9 @@ func (o *ScimServiceProviderConfigResponse) SetSchemas(v []string) {
 }
 
 // GetSort returns the Sort field value if set, zero value otherwise.
-func (o *ScimServiceProviderConfigResponse) GetSort() ScimServiceProviderConfigResponseSort {
+func (o *ScimServiceProviderConfigResponse) GetSort() ScimServiceProviderConfigResponseChangePassword {
 	if o == nil || IsNil(o.Sort) {
-		var ret ScimServiceProviderConfigResponseSort
+		var ret ScimServiceProviderConfigResponseChangePassword
 		return ret
 	}
 	return *o.Sort
@@ -253,7 +253,7 @@ func (o *ScimServiceProviderConfigResponse) GetSort() ScimServiceProviderConfigR
 
 // GetSortOk returns a tuple with the Sort field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ScimServiceProviderConfigResponse) GetSortOk() (*ScimServiceProviderConfigResponseSort, bool) {
+func (o *ScimServiceProviderConfigResponse) GetSortOk() (*ScimServiceProviderConfigResponseChangePassword, bool) {
 	if o == nil || IsNil(o.Sort) {
 		return nil, false
 	}
@@ -269,8 +269,8 @@ func (o *ScimServiceProviderConfigResponse) HasSort() bool {
 	return false
 }
 
-// SetSort gets a reference to the given ScimServiceProviderConfigResponseSort and assigns it to the Sort field.
-func (o *ScimServiceProviderConfigResponse) SetSort(v ScimServiceProviderConfigResponseSort) {
+// SetSort gets a reference to the given ScimServiceProviderConfigResponseChangePassword and assigns it to the Sort field.
+func (o *ScimServiceProviderConfigResponse) SetSort(v ScimServiceProviderConfigResponseChangePassword) {
 	o.Sort = &v
 }
 

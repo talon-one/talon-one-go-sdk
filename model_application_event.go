@@ -39,7 +39,7 @@ type ApplicationEvent struct {
 	SessionId *int64 `json:"sessionId,omitempty"`
 	// The name of the event. Must be a [custom event](https://docs.talon.one/docs/dev/concepts/entities/events#custom-events), not a built-in event.
 	Type string `json:"type"`
-	// Additional JSON serialized data associated with the event.
+	// Arbitrary properties associated with this campaign.
 	Attributes map[string]interface{} `json:"attributes"`
 	// An array containing the effects that were applied as a result of this event.
 	Effects []Effect `json:"effects"`

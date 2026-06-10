@@ -132,6 +132,7 @@ docs/CampaignEditedNotification.md
 docs/CampaignEditedNotificationItem.md
 docs/CampaignEligibility.md
 docs/CampaignEligibilityDetails.md
+docs/CampaignEligibilityExperiment.md
 docs/CampaignEligibilityFailureDetails.md
 docs/CampaignEntity.md
 docs/CampaignEvaluationGroup.md
@@ -258,6 +259,8 @@ docs/EventV3Entity.md
 docs/EventV3RequestEntity.md
 docs/Experiment.md
 docs/ExperimentCampaignCopy.md
+docs/ExperimentConfidenceTimeline.md
+docs/ExperimentConfidenceTimelineDataPoint.md
 docs/ExperimentCopy.md
 docs/ExperimentCopyExperiment.md
 docs/ExperimentListResults.md
@@ -375,13 +378,13 @@ docs/IntegrationGetAllCampaigns200Response.md
 docs/IntegrationHubConfig.md
 docs/IntegrationHubEventPayloadCouponBasedNotifications.md
 docs/IntegrationHubEventPayloadCouponBasedNotificationsLimits.md
-docs/IntegrationHubEventPayloadLoyaltyProfileBasedNotification.md
 docs/IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification.md
 docs/IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction.md
 docs/IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification.md
 docs/IntegrationHubEventPayloadLoyaltyProfileBasedTierUpgradeNotification.md
 docs/IntegrationHubEventRecord.md
 docs/IntegrationHubEventStatusUpdate.md
+docs/IntegrationHubEventType.md
 docs/IntegrationHubFlow.md
 docs/IntegrationHubFlowConfig.md
 docs/IntegrationHubFlowConfigResponse.md
@@ -641,8 +644,6 @@ docs/ScimServiceProviderConfigResponse.md
 docs/ScimServiceProviderConfigResponseBulk.md
 docs/ScimServiceProviderConfigResponseChangePassword.md
 docs/ScimServiceProviderConfigResponseFilter.md
-docs/ScimServiceProviderConfigResponsePatch.md
-docs/ScimServiceProviderConfigResponseSort.md
 docs/ScimUser.md
 docs/ScimUsersListResponse.md
 docs/SecondaryDeployment.md
@@ -710,7 +711,6 @@ docs/UpdateCoupon.md
 docs/UpdateCouponBatch.md
 docs/UpdateCouponsData.md
 docs/UpdateCustomEffect.md
-docs/UpdateCustomerProfileV2409Response.md
 docs/UpdateCustomerSessionV2409Response.md
 docs/UpdateExperiment.md
 docs/UpdateExperimentVariant.md
@@ -725,6 +725,7 @@ docs/UpdatePriceType.md
 docs/UpdateReferral.md
 docs/UpdateReferralBatch.md
 docs/UpdateReward.md
+docs/UpdateRiskNotification.md
 docs/UpdateRole.md
 docs/UpdateStore.md
 docs/UpdateSupportRequest.md
@@ -855,6 +856,7 @@ model_campaign_edited_notification.go
 model_campaign_edited_notification_item.go
 model_campaign_eligibility.go
 model_campaign_eligibility_details.go
+model_campaign_eligibility_experiment.go
 model_campaign_eligibility_failure_details.go
 model_campaign_entity.go
 model_campaign_evaluation_group.go
@@ -981,6 +983,8 @@ model_event_v3_entity.go
 model_event_v3_request_entity.go
 model_experiment.go
 model_experiment_campaign_copy.go
+model_experiment_confidence_timeline.go
+model_experiment_confidence_timeline_data_point.go
 model_experiment_copy.go
 model_experiment_copy_experiment.go
 model_experiment_list_results.go
@@ -1097,13 +1101,13 @@ model_integration_get_all_campaigns_200_response.go
 model_integration_hub_config.go
 model_integration_hub_event_payload_coupon_based_notifications.go
 model_integration_hub_event_payload_coupon_based_notifications_limits.go
-model_integration_hub_event_payload_loyalty_profile_based_notification.go
 model_integration_hub_event_payload_loyalty_profile_based_points_changed_notification.go
 model_integration_hub_event_payload_loyalty_profile_based_points_changed_notification_action.go
 model_integration_hub_event_payload_loyalty_profile_based_tier_downgrade_notification.go
 model_integration_hub_event_payload_loyalty_profile_based_tier_upgrade_notification.go
 model_integration_hub_event_record.go
 model_integration_hub_event_status_update.go
+model_integration_hub_event_type.go
 model_integration_hub_flow.go
 model_integration_hub_flow_config.go
 model_integration_hub_flow_config_response.go
@@ -1361,8 +1365,6 @@ model_scim_service_provider_config_response.go
 model_scim_service_provider_config_response_bulk.go
 model_scim_service_provider_config_response_change_password.go
 model_scim_service_provider_config_response_filter.go
-model_scim_service_provider_config_response_patch.go
-model_scim_service_provider_config_response_sort.go
 model_scim_user.go
 model_scim_users_list_response.go
 model_secondary_deployment.go
@@ -1431,7 +1433,6 @@ model_update_coupon.go
 model_update_coupon_batch.go
 model_update_coupons_data.go
 model_update_custom_effect.go
-model_update_customer_profile_v2_409_response.go
 model_update_customer_session_v2_409_response.go
 model_update_experiment.go
 model_update_experiment_variant.go
@@ -1446,6 +1447,7 @@ model_update_price_type.go
 model_update_referral.go
 model_update_referral_batch.go
 model_update_reward.go
+model_update_risk_notification.go
 model_update_role.go
 model_update_store.go
 model_update_support_request.go

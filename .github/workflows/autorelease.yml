@@ -2,8 +2,8 @@ name: Auto-release on main
 
 on:
   pull_request:
-    branches: [ main ]
-    types: [ closed ]
+    branches: [main]
+    types: [closed]
   workflow_dispatch:
     inputs:
       SDK_VERSION:
@@ -33,7 +33,7 @@ jobs:
             msg='${{ github.event.pull_request.title }}'
             if [[ "$msg" =~ [Uu]pdate.*[Tt]o[[:space:]]+([0-9]+\.[0-9]+(\.[0-9]+)?) ]]; then
               ver="${BASH_REMATCH[1]}"
-              echo "version=$ver" >> $GITHUB_OUTPUT
+              echo "version=v$ver" >> $GITHUB_OUTPUT
             else
               echo "PR title does not match pattern - skipping release."
               echo "version=" >> $GITHUB_OUTPUT

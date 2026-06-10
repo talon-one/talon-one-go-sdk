@@ -16,7 +16,7 @@ Name | Type | Description | Notes
 **ExpiryDate** | Pointer to **time.Time** | Expiration date of the coupon. Coupon never expires if this is omitted. | [optional] 
 **NumberOfCoupons** | **int64** | The number of new coupon codes to generate for the campaign. | 
 **CouponSettings** | Pointer to [**CodeGeneratorSettings**](CodeGeneratorSettings.md) |  | [optional] 
-**Attributes** | **map[string]interface{}** | Arbitrary properties associated with coupons. | 
+**Attributes** | **map[string]interface{}** | Arbitrary properties associated with this campaign. | 
 **IsReservationMandatory** | Pointer to **bool** | An indication of whether the code can be redeemed only if it has been reserved first. | [optional] [default to false]
 **BatchId** | **string** | The batch ID coupons created by this job will bear. | 
 **Status** | **string** | The current status of this request. Possible values: - &#x60;pending verification&#x60; - &#x60;pending&#x60; - &#x60;completed&#x60; - &#x60;failed&#x60; - &#x60;coupon pattern full&#x60;  | 

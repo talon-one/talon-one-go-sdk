@@ -9,8 +9,8 @@ Name | Type | Description | Notes
 **UserId** | **int64** | The ID of the user associated with this entity. | 
 **ApplicationId** | Pointer to **int64** | ID of application associated with change. | [optional] 
 **Entity** | **string** | API endpoint on which the change was initiated. | 
-**Old** | Pointer to **map[string]interface{}** | Resource before the change occurred. | [optional] 
-**New** | Pointer to **map[string]interface{}** | Resource after the change occurred. | [optional] 
+**Old** | Pointer to **map[string]interface{}** | Arbitrary properties associated with this campaign. | [optional] 
+**New** | Pointer to **map[string]interface{}** | Arbitrary properties associated with this campaign. | [optional] 
 **ManagementKeyId** | Pointer to **int64** | ID of management key used to perform changes. | [optional] 
 
 ## Methods

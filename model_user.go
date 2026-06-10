@@ -45,7 +45,7 @@ type User struct {
 	Roles []int64 `json:"roles,omitempty"`
 	// Authentication method for this user.
 	AuthMethod *string `json:"authMethod,omitempty"`
-	// Application notifications that the user is subscribed to.
+	// Arbitrary properties associated with this campaign.
 	ApplicationNotificationSubscriptions map[string]interface{} `json:"applicationNotificationSubscriptions,omitempty"`
 	// Timestamp when the user last signed in to Talon.One.
 	LastSignedIn *time.Time `json:"lastSignedIn,omitempty"`
@@ -53,7 +53,7 @@ type User struct {
 	LastAccessed *time.Time `json:"lastAccessed,omitempty"`
 	// Timestamp when the user was notified for feed.
 	LatestFeedTimestamp *time.Time `json:"latestFeedTimestamp,omitempty"`
-	// Additional user attributes, created and used by external identity providers.
+	// Arbitrary properties associated with this campaign.
 	AdditionalAttributes map[string]interface{} `json:"additionalAttributes,omitempty"`
 	AdditionalProperties map[string]interface{}
 }

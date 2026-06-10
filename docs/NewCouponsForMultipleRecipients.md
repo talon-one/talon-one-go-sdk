@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **ReservationLimit** | Pointer to **int64** | The number of reservations that can be made with this coupon code.  | [optional] 
 **StartDate** | Pointer to **time.Time** | Timestamp at which point the coupon becomes valid. | [optional] 
 **ExpiryDate** | Pointer to **time.Time** | Expiration date of the coupon. Coupon never expires if this is omitted. | [optional] 
-**Attributes** | Pointer to **map[string]interface{}** | Arbitrary properties associated with this item. | [optional] 
+**Attributes** | Pointer to **map[string]interface{}** | Arbitrary properties associated with this campaign. | [optional] 
 **RecipientsIntegrationIds** | **[]string** | The integration IDs for recipients. | 
 **ValidCharacters** | Pointer to **[]string** | List of characters used to generate the random parts of a code. By default, the list of characters is equivalent to the &#x60;[A-Z, 0-9]&#x60; regular expression.  | [optional] 
 **CouponPattern** | Pointer to **string** | The pattern used to generate coupon codes. The character &#x60;#&#x60; is a placeholder and is replaced by a random character from the &#x60;validCharacters&#x60; set.  | [optional] 

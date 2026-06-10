@@ -18,7 +18,7 @@ Name | Type | Description | Notes
 **Discounts** | **map[string]float32** | **API V1 only.** A map of labeled discount values, in the same currency as the session.  If you are using the V2 endpoints, refer to the &#x60;totalDiscounts&#x60; property instead.  | 
 **TotalDiscounts** | **float32** | The total sum of the discounts applied to this session.  **Note:** If more than one session is returned, this value is displayed as &#x60;0&#x60;.  | 
 **Total** | **float32** | The total sum of the session before any discounts applied. | 
-**Attributes** | Pointer to **map[string]interface{}** | Arbitrary properties associated with this item. | [optional] 
+**Attributes** | Pointer to **map[string]interface{}** | Arbitrary properties associated with this campaign. | [optional] 
 
 ## Methods
 

@@ -33,7 +33,7 @@ type Giveaway struct {
 	StartDate *time.Time `json:"startDate,omitempty"`
 	// Timestamp at which point the giveaway becomes invalid.
 	EndDate *time.Time `json:"endDate,omitempty"`
-	// Arbitrary properties associated with this giveaway.
+	// Arbitrary properties associated with this campaign.
 	Attributes map[string]interface{} `json:"attributes,omitempty"`
 	// Indicates whether this giveaway code was given before.
 	Used *bool `json:"used,omitempty"`

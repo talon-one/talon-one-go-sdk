@@ -33,7 +33,7 @@ type NewReferral struct {
 	AdvocateProfileIntegrationId string `json:"advocateProfileIntegrationId"`
 	// An optional Integration ID of the Friend's Profile.
 	FriendProfileIntegrationId *string `json:"friendProfileIntegrationId,omitempty"`
-	// Arbitrary properties associated with this item.
+	// Arbitrary properties associated with this campaign.
 	Attributes           map[string]interface{} `json:"attributes,omitempty"`
 	AdditionalProperties map[string]interface{}
 }

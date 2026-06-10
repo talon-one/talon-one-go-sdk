@@ -31,7 +31,7 @@ type Export struct {
 	UserId int64 `json:"userId"`
 	// The name of the entity that was exported.
 	Entity string `json:"entity"`
-	// Map of keys and values that were used to filter the exported rows.
+	// Arbitrary properties associated with this campaign.
 	Filter               map[string]interface{} `json:"filter"`
 	AdditionalProperties map[string]interface{}
 }

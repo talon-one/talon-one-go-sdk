@@ -33,7 +33,7 @@ type NewCustomerSession struct {
 	Identifiers []string `json:"identifiers,omitempty"`
 	// The total sum of the cart in one session.
 	Total *float32 `json:"total,omitempty"`
-	// A key-value map of the sessions attributes. The potentially valid attributes are configured in your accounts developer settings.
+	// Arbitrary properties associated with this campaign.
 	Attributes           map[string]interface{} `json:"attributes,omitempty"`
 	AdditionalProperties map[string]interface{}
 }

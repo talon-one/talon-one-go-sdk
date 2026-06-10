@@ -49,7 +49,7 @@ type ApplicationSession struct {
 	TotalDiscounts float32 `json:"totalDiscounts"`
 	// The total sum of the session before any discounts applied.
 	Total float32 `json:"total"`
-	// Arbitrary properties associated with this item.
+	// Arbitrary properties associated with this campaign.
 	Attributes           map[string]interface{} `json:"attributes,omitempty"`
 	AdditionalProperties map[string]interface{}
 }

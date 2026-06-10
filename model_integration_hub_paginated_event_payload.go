@@ -23,9 +23,9 @@ var _ MappedNullable = &IntegrationHubPaginatedEventPayload{}
 type IntegrationHubPaginatedEventPayload struct {
 	TotalResultSize int64 `json:"TotalResultSize"`
 	// Timestamp when the batch was created.
-	BatchedAt            *time.Time    `json:"BatchedAt,omitempty"`
-	EventType            string        `json:"EventType"`
-	Data                 []interface{} `json:"Data"`
+	BatchedAt            *time.Time              `json:"BatchedAt,omitempty"`
+	EventType            IntegrationHubEventType `json:"EventType"`
+	Data                 []interface{}           `json:"Data"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -35,7 +35,7 @@ type _IntegrationHubPaginatedEventPayload IntegrationHubPaginatedEventPayload
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildIntegrationHubPaginatedEventPayload(totalResultSize int64, eventType string, data []interface{}) *IntegrationHubPaginatedEventPayload {
+func BuildIntegrationHubPaginatedEventPayload(totalResultSize int64, eventType IntegrationHubEventType, data []interface{}) *IntegrationHubPaginatedEventPayload {
 	this := IntegrationHubPaginatedEventPayload{}
 	this.TotalResultSize = totalResultSize
 	this.EventType = eventType
@@ -108,9 +108,9 @@ func (o *IntegrationHubPaginatedEventPayload) SetBatchedAt(v time.Time) {
 }
 
 // GetEventType returns the EventType field value
-func (o *IntegrationHubPaginatedEventPayload) GetEventType() string {
+func (o *IntegrationHubPaginatedEventPayload) GetEventType() IntegrationHubEventType {
 	if o == nil {
-		var ret string
+		var ret IntegrationHubEventType
 		return ret
 	}
 
@@ -119,7 +119,7 @@ func (o *IntegrationHubPaginatedEventPayload) GetEventType() string {
 
 // GetEventTypeOk returns a tuple with the EventType field value
 // and a boolean to check if the value has been set.
-func (o *IntegrationHubPaginatedEventPayload) GetEventTypeOk() (*string, bool) {
+func (o *IntegrationHubPaginatedEventPayload) GetEventTypeOk() (*IntegrationHubEventType, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -127,7 +127,7 @@ func (o *IntegrationHubPaginatedEventPayload) GetEventTypeOk() (*string, bool) {
 }
 
 // SetEventType sets field value
-func (o *IntegrationHubPaginatedEventPayload) SetEventType(v string) {
+func (o *IntegrationHubPaginatedEventPayload) SetEventType(v IntegrationHubEventType) {
 	o.EventType = v
 }
 

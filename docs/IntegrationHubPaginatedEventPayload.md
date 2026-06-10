@@ -6,14 +6,14 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **TotalResultSize** | **int64** |  | 
 **BatchedAt** | Pointer to **time.Time** | Timestamp when the batch was created. | [optional] 
-**EventType** | **string** |  | 
+**EventType** | [**IntegrationHubEventType**](IntegrationHubEventType.md) |  | 
 **Data** | **[]interface{}** |  | 
 
 ## Methods
 
 ### NewIntegrationHubPaginatedEventPayload
 
-`func NewIntegrationHubPaginatedEventPayload(totalResultSize int64, eventType string, data []interface{}, ) *IntegrationHubPaginatedEventPayload`
+`func NewIntegrationHubPaginatedEventPayload(totalResultSize int64, eventType IntegrationHubEventType, data []interface{}, ) *IntegrationHubPaginatedEventPayload`
 
 NewIntegrationHubPaginatedEventPayload instantiates a new IntegrationHubPaginatedEventPayload object
 This constructor will assign default values to properties that have it defined,
@@ -75,20 +75,20 @@ HasBatchedAt returns a boolean if a field has been set.
 
 ### GetEventType
 
-`func (o *IntegrationHubPaginatedEventPayload) GetEventType() string`
+`func (o *IntegrationHubPaginatedEventPayload) GetEventType() IntegrationHubEventType`
 
 GetEventType returns the EventType field if non-nil, zero value otherwise.
 
 ### GetEventTypeOk
 
-`func (o *IntegrationHubPaginatedEventPayload) GetEventTypeOk() (*string, bool)`
+`func (o *IntegrationHubPaginatedEventPayload) GetEventTypeOk() (*IntegrationHubEventType, bool)`
 
 GetEventTypeOk returns a tuple with the EventType field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetEventType
 
-`func (o *IntegrationHubPaginatedEventPayload) SetEventType(v string)`
+`func (o *IntegrationHubPaginatedEventPayload) SetEventType(v IntegrationHubEventType)`
 
 SetEventType sets EventType field to given value.
 

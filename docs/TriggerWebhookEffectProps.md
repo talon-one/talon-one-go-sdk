@@ -4,8 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**WebhookId** | **float32** | The ID of the webhook that was triggered. | 
-**WebhookName** | **string** | The name of the webhook that was triggered. | 
+**WebhookId** | **float32** | The internal ID of the webhook. | 
+**WebhookName** | **string** | The name of the webhook. | 
 
 ## Methods
 

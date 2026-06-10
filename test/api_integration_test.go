@@ -235,6 +235,20 @@ func Test_talon_IntegrationAPIService(t *testing.T) {
 
 	})
 
+	t.Run("Test IntegrationAPIService GetEventV3", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var integrationId string
+
+		resp, httpRes, err := apiClient.IntegrationAPI.GetEventV3(context.Background(), integrationId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test IntegrationAPIService GetLoyaltyBalances", func(t *testing.T) {
 
 		t.Skip("skip test")  // remove to run test
@@ -413,6 +427,18 @@ func Test_talon_IntegrationAPIService(t *testing.T) {
 		t.Skip("skip test")  // remove to run test
 
 		resp, httpRes, err := apiClient.IntegrationAPI.TrackEventV2(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test IntegrationAPIService TrackEventV3", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		resp, httpRes, err := apiClient.IntegrationAPI.TrackEventV3(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

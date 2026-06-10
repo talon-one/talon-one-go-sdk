@@ -20,10 +20,11 @@ var _ MappedNullable = &IntegrationHubFlowWithConfig{}
 
 // IntegrationHubFlowWithConfig struct for IntegrationHubFlowWithConfig
 type IntegrationHubFlowWithConfig struct {
-	// ID of application the flow is registered for.
+	// ID of the application the flow is registered for.
 	ApplicationID *int64 `json:"ApplicationID,omitempty"`
-	// The event type we want to register a flow for.
-	EventType string `json:"EventType"`
+	// ID of the loyalty program the flow is registered for.
+	LoyaltyProgramID *int64                  `json:"LoyaltyProgramID,omitempty"`
+	EventType        IntegrationHubEventType `json:"EventType"`
 	// The URL of the integration hub flow that we want to trigger for the event.
 	IntegrationHubFlowUrl string                   `json:"IntegrationHubFlowUrl"`
 	Config                IntegrationHubFlowConfig `json:"Config"`
@@ -36,7 +37,7 @@ type _IntegrationHubFlowWithConfig IntegrationHubFlowWithConfig
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildIntegrationHubFlowWithConfig(eventType string, integrationHubFlowUrl string, config IntegrationHubFlowConfig) *IntegrationHubFlowWithConfig {
+func BuildIntegrationHubFlowWithConfig(eventType IntegrationHubEventType, integrationHubFlowUrl string, config IntegrationHubFlowConfig) *IntegrationHubFlowWithConfig {
 	this := IntegrationHubFlowWithConfig{}
 	this.EventType = eventType
 	this.IntegrationHubFlowUrl = integrationHubFlowUrl
@@ -84,10 +85,42 @@ func (o *IntegrationHubFlowWithConfig) SetApplicationID(v int64) {
 	o.ApplicationID = &v
 }
 
+// GetLoyaltyProgramID returns the LoyaltyProgramID field value if set, zero value otherwise.
+func (o *IntegrationHubFlowWithConfig) GetLoyaltyProgramID() int64 {
+	if o == nil || IsNil(o.LoyaltyProgramID) {
+		var ret int64
+		return ret
+	}
+	return *o.LoyaltyProgramID
+}
+
+// GetLoyaltyProgramIDOk returns a tuple with the LoyaltyProgramID field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IntegrationHubFlowWithConfig) GetLoyaltyProgramIDOk() (*int64, bool) {
+	if o == nil || IsNil(o.LoyaltyProgramID) {
+		return nil, false
+	}
+	return o.LoyaltyProgramID, true
+}
+
+// HasLoyaltyProgramID returns a boolean if a field has been set.
+func (o *IntegrationHubFlowWithConfig) HasLoyaltyProgramID() bool {
+	if o != nil && !IsNil(o.LoyaltyProgramID) {
+		return true
+	}
+
+	return false
+}
+
+// SetLoyaltyProgramID gets a reference to the given int64 and assigns it to the LoyaltyProgramID field.
+func (o *IntegrationHubFlowWithConfig) SetLoyaltyProgramID(v int64) {
+	o.LoyaltyProgramID = &v
+}
+
 // GetEventType returns the EventType field value
-func (o *IntegrationHubFlowWithConfig) GetEventType() string {
+func (o *IntegrationHubFlowWithConfig) GetEventType() IntegrationHubEventType {
 	if o == nil {
-		var ret string
+		var ret IntegrationHubEventType
 		return ret
 	}
 
@@ -96,7 +129,7 @@ func (o *IntegrationHubFlowWithConfig) GetEventType() string {
 
 // GetEventTypeOk returns a tuple with the EventType field value
 // and a boolean to check if the value has been set.
-func (o *IntegrationHubFlowWithConfig) GetEventTypeOk() (*string, bool) {
+func (o *IntegrationHubFlowWithConfig) GetEventTypeOk() (*IntegrationHubEventType, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -104,7 +137,7 @@ func (o *IntegrationHubFlowWithConfig) GetEventTypeOk() (*string, bool) {
 }
 
 // SetEventType sets field value
-func (o *IntegrationHubFlowWithConfig) SetEventType(v string) {
+func (o *IntegrationHubFlowWithConfig) SetEventType(v IntegrationHubEventType) {
 	o.EventType = v
 }
 
@@ -169,6 +202,9 @@ func (o IntegrationHubFlowWithConfig) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ApplicationID) {
 		toSerialize["ApplicationID"] = o.ApplicationID
 	}
+	if !IsNil(o.LoyaltyProgramID) {
+		toSerialize["LoyaltyProgramID"] = o.LoyaltyProgramID
+	}
 	toSerialize["EventType"] = o.EventType
 	toSerialize["IntegrationHubFlowUrl"] = o.IntegrationHubFlowUrl
 	toSerialize["Config"] = o.Config
@@ -218,6 +254,7 @@ func (o *IntegrationHubFlowWithConfig) UnmarshalJSON(data []byte) (err error) {
 
 	if err = json.Unmarshal(data, &additionalProperties); err == nil {
 		delete(additionalProperties, "ApplicationID")
+		delete(additionalProperties, "LoyaltyProgramID")
 		delete(additionalProperties, "EventType")
 		delete(additionalProperties, "IntegrationHubFlowUrl")
 		delete(additionalProperties, "Config")

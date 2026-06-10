@@ -16,11 +16,11 @@ Name | Type | Description | Notes
 **Policy** | **map[string]interface{}** | Access level of the user. | 
 **Roles** | Pointer to **[]int64** | A list of the IDs of the roles assigned to the user. | [optional] 
 **AuthMethod** | Pointer to **string** | Authentication method for this user. | [optional] 
-**ApplicationNotificationSubscriptions** | Pointer to **map[string]interface{}** | Application notifications that the user is subscribed to. | [optional] 
+**ApplicationNotificationSubscriptions** | Pointer to **map[string]interface{}** | Arbitrary properties associated with this campaign. | [optional] 
 **LastSignedIn** | Pointer to **time.Time** | Timestamp when the user last signed in to Talon.One. | [optional] 
 **LastAccessed** | Pointer to **time.Time** | Timestamp of the user&#39;s last activity after signing in to Talon.One. | [optional] 
 **LatestFeedTimestamp** | Pointer to **time.Time** | Timestamp when the user was notified for feed. | [optional] 
-**AdditionalAttributes** | Pointer to **map[string]interface{}** | Additional user attributes, created and used by external identity providers. | [optional] 
+**AdditionalAttributes** | Pointer to **map[string]interface{}** | Arbitrary properties associated with this campaign. | [optional] 
 
 ## Methods
 

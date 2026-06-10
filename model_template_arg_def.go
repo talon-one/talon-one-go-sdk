@@ -26,7 +26,7 @@ type TemplateArgDef struct {
 	Description *string `json:"description,omitempty"`
 	// A campaigner friendly name for the argument, this will be shown in the rule editor.
 	Title string `json:"title"`
-	// Arbitrary metadata that may be used to render an input for this argument.
+	// Arbitrary properties associated with this campaign.
 	Ui map[string]interface{} `json:"ui"`
 	// The identifier for the associated value within the JSON object.
 	Key *string `json:"key,omitempty"`
