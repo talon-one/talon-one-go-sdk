@@ -123,6 +123,7 @@ Method | HTTP request | Description
 [**GetReferralsWithoutTotalCount**](ManagementAPI.md#GetReferralsWithoutTotalCount) | **Get** /v1/applications/{applicationId}/campaigns/{campaignId}/referrals/no_total | List referrals
 [**GetRoleV2**](ManagementAPI.md#GetRoleV2) | **Get** /v2/roles/{roleId} | Get role
 [**GetRuleset**](ManagementAPI.md#GetRuleset) | **Get** /v1/applications/{applicationId}/campaigns/{campaignId}/rulesets/{rulesetId} | Get ruleset
+[**GetRulesetV2**](ManagementAPI.md#GetRulesetV2) | **Get** /v2/applications/{applicationId}/campaigns/{campaignId}/rulesets/{rulesetId} | Get ruleset (V2)
 [**GetRulesets**](ManagementAPI.md#GetRulesets) | **Get** /v1/applications/{applicationId}/campaigns/{campaignId}/rulesets | List campaign rulesets
 [**GetStore**](ManagementAPI.md#GetStore) | **Get** /v1/applications/{applicationId}/stores/{storeId} | Get store
 [**GetUser**](ManagementAPI.md#GetUser) | **Get** /v1/users/{userId} | Get user
@@ -3428,7 +3429,7 @@ Name | Type | Description  | Notes
 
 ## ExportCoupons
 
-> string ExportCoupons(ctx, applicationId).CampaignId(campaignId).Sort(sort).Value(value).CreatedBefore(createdBefore).CreatedAfter(createdAfter).Valid(valid).Usable(usable).ReferralId(referralId).RecipientIntegrationId(recipientIntegrationId).BatchId(batchId).ExactMatch(exactMatch).DateFormat(dateFormat).CampaignState(campaignState).ValuesOnly(valuesOnly).Execute()
+> string ExportCoupons(ctx, applicationId).CampaignId(campaignId).Sort(sort).Value(value).CreatedBefore(createdBefore).CreatedAfter(createdAfter).Valid(valid).Usable(usable).ReferralId(referralId).RecipientIntegrationId(recipientIntegrationId).BatchId(batchId).ExactMatch(exactMatch).DateFormat(dateFormat).CampaignState(campaignState).ValuesOnly(valuesOnly).DeletedBefore(deletedBefore).DeletedAfter(deletedAfter).Execute()
 
 Export coupons
 
@@ -3463,10 +3464,12 @@ func main() {
 	dateFormat := "dateFormat_example" // string | Determines the format of dates in the export document. (optional)
 	campaignState := "campaignState_example" // string | Filter results by the state of the campaign.  - `enabled`: Campaigns that are scheduled, running (activated), or expired. - `running`: Campaigns that are running (activated). - `disabled`: Campaigns that are disabled. - `expired`: Campaigns that are expired. - `archived`: Campaigns that are archived.  (optional)
 	valuesOnly := true // bool | Filter results to only return the coupon codes (`value` column) without the associated coupon data. (optional) (default to false)
+	deletedBefore := time.Now() // time.Time | Timestamp that filters the results to only contain coupons deleted before this date. Must be an RFC3339 timestamp string. You can use any time zone setting. Talon.One will convert to UTC internally.  **Note:** Only coupons deleted in the last 7 days will appear in the results. (optional)
+	deletedAfter := time.Now() // time.Time | Timestamp that filters the results to only contain coupons deleted after this date. Must be an RFC3339 timestamp string. You can use any time zone setting. Talon.One will convert to UTC internally.  **Note:** Only coupons deleted in the last 7 days will appear in the results. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ManagementAPI.ExportCoupons(context.Background(), applicationId).CampaignId(campaignId).Sort(sort).Value(value).CreatedBefore(createdBefore).CreatedAfter(createdAfter).Valid(valid).Usable(usable).ReferralId(referralId).RecipientIntegrationId(recipientIntegrationId).BatchId(batchId).ExactMatch(exactMatch).DateFormat(dateFormat).CampaignState(campaignState).ValuesOnly(valuesOnly).Execute()
+	resp, r, err := apiClient.ManagementAPI.ExportCoupons(context.Background(), applicationId).CampaignId(campaignId).Sort(sort).Value(value).CreatedBefore(createdBefore).CreatedAfter(createdAfter).Valid(valid).Usable(usable).ReferralId(referralId).RecipientIntegrationId(recipientIntegrationId).BatchId(batchId).ExactMatch(exactMatch).DateFormat(dateFormat).CampaignState(campaignState).ValuesOnly(valuesOnly).DeletedBefore(deletedBefore).DeletedAfter(deletedAfter).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.ExportCoupons``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -3506,6 +3509,8 @@ Name | Type | Description  | Notes
  **dateFormat** | **string** | Determines the format of dates in the export document. | 
  **campaignState** | **string** | Filter results by the state of the campaign.  - &#x60;enabled&#x60;: Campaigns that are scheduled, running (activated), or expired. - &#x60;running&#x60;: Campaigns that are running (activated). - &#x60;disabled&#x60;: Campaigns that are disabled. - &#x60;expired&#x60;: Campaigns that are expired. - &#x60;archived&#x60;: Campaigns that are archived.  | 
  **valuesOnly** | **bool** | Filter results to only return the coupon codes (&#x60;value&#x60; column) without the associated coupon data. | [default to false]
+ **deletedBefore** | **time.Time** | Timestamp that filters the results to only contain coupons deleted before this date. Must be an RFC3339 timestamp string. You can use any time zone setting. Talon.One will convert to UTC internally.  **Note:** Only coupons deleted in the last 7 days will appear in the results. | 
+ **deletedAfter** | **time.Time** | Timestamp that filters the results to only contain coupons deleted after this date. Must be an RFC3339 timestamp string. You can use any time zone setting. Talon.One will convert to UTC internally.  **Note:** Only coupons deleted in the last 7 days will appear in the results. | 
 
 ### Return type
 
@@ -6055,7 +6060,7 @@ Name | Type | Description  | Notes
 
 ## GetAttributes
 
-> GetAttributes200Response GetAttributes(ctx).PageSize(pageSize).Skip(skip).Sort(sort).Entity(entity).ApplicationIds(applicationIds).Type_(type_).Kind(kind).Search(search).Execute()
+> GetAttributes200Response GetAttributes(ctx).PageSize(pageSize).Skip(skip).Sort(sort).Entity(entity).ApplicationIds(applicationIds).LoyaltyProgramIds(loyaltyProgramIds).Type_(type_).Kind(kind).Search(search).Execute()
 
 List custom attributes
 
@@ -6079,13 +6084,14 @@ func main() {
 	sort := "sort_example" // string | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with `-`.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  (optional)
 	entity := "entity_example" // string | Returned attributes will be filtered by supplied entity. (optional)
 	applicationIds := "applicationIds_example" // string | Returned attributes will be filtered by supplied application ids (optional)
+	loyaltyProgramIds := "loyaltyProgramIds_example" // string | Returned attributes will be filtered by the specified loyalty program ids, separated by commas. You can only use this parameter when `entity` is `LoyaltyCard`. (optional)
 	type_ := "type__example" // string | Returned attributes will be filtered by supplied type (optional)
 	kind := "kind_example" // string | Returned attributes will be filtered by supplied kind (builtin or custom) (optional)
 	search := "search_example" // string | Returned attributes will be filtered by searching case insensitive through Attribute name, description and type (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ManagementAPI.GetAttributes(context.Background()).PageSize(pageSize).Skip(skip).Sort(sort).Entity(entity).ApplicationIds(applicationIds).Type_(type_).Kind(kind).Search(search).Execute()
+	resp, r, err := apiClient.ManagementAPI.GetAttributes(context.Background()).PageSize(pageSize).Skip(skip).Sort(sort).Entity(entity).ApplicationIds(applicationIds).LoyaltyProgramIds(loyaltyProgramIds).Type_(type_).Kind(kind).Search(search).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.GetAttributes``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -6111,6 +6117,7 @@ Name | Type | Description  | Notes
  **sort** | **string** | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with &#x60;-&#x60;.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  | 
  **entity** | **string** | Returned attributes will be filtered by supplied entity. | 
  **applicationIds** | **string** | Returned attributes will be filtered by supplied application ids | 
+ **loyaltyProgramIds** | **string** | Returned attributes will be filtered by the specified loyalty program ids, separated by commas. You can only use this parameter when &#x60;entity&#x60; is &#x60;LoyaltyCard&#x60;. | 
  **type_** | **string** | Returned attributes will be filtered by supplied type | 
  **kind** | **string** | Returned attributes will be filtered by supplied kind (builtin or custom) | 
  **search** | **string** | Returned attributes will be filtered by searching case insensitive through Attribute name, description and type | 
@@ -9202,6 +9209,82 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## GetRulesetV2
+
+> RulesetV2 GetRulesetV2(ctx, applicationId, campaignId, rulesetId).Execute()
+
+Get ruleset (V2)
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	applicationId := int64(789) // int64 | The ID of the Application. It is displayed in your Talon.One deployment URL.
+	campaignId := int64(789) // int64 | The ID of the campaign. It is displayed in your Talon.One deployment URL.
+	rulesetId := int64(789) // int64 | The ID of the ruleset.
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ManagementAPI.GetRulesetV2(context.Background(), applicationId, campaignId, rulesetId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.GetRulesetV2``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetRulesetV2`: RulesetV2
+	fmt.Fprintf(os.Stdout, "Response from `ManagementAPI.GetRulesetV2`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**applicationId** | **int64** | The ID of the Application. It is displayed in your Talon.One deployment URL. | 
+**campaignId** | **int64** | The ID of the campaign. It is displayed in your Talon.One deployment URL. | 
+**rulesetId** | **int64** | The ID of the ruleset. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetRulesetV2Request struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+
+### Return type
+
+[**RulesetV2**](RulesetV2.md)
+
+### Authorization
+
+[api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## GetRulesets
 
 > GetRulesets200Response GetRulesets(ctx, applicationId, campaignId).PageSize(pageSize).Skip(skip).Sort(sort).Execute()
@@ -11524,7 +11607,7 @@ import (
 
 func main() {
 	applicationId := int64(789) // int64 | The ID of the Application. It is displayed in your Talon.One deployment URL.
-	priceHistoryRequest := *openapiclient.NewPriceHistoryRequest("[sku-124]", time.Now(), time.Now()) // PriceHistoryRequest | body
+	priceHistoryRequest := *openapiclient.NewPriceHistoryRequest("SKU1241028", time.Now(), time.Now()) // PriceHistoryRequest | body
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)

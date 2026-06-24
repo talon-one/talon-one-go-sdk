@@ -27,7 +27,7 @@ type UpdateReward struct {
 	// The status of the reward.
 	Status string `json:"status"`
 	// An optional rule that manages who can see this reward. If not specified, the reward is visible to all customers.  **Note:** Only the `condition` field is evaluated within this rule. The `effects` field must be an empty array, and `bindings` are not supported.
-	VisibilityConditions *Rule `json:"visibilityConditions,omitempty"`
+	EligibilityConditions *Rule `json:"eligibilityConditions,omitempty"`
 	// Rule to apply.  **Note**: The `bindings` field inside the rule must not be used in this endpoint. All bindings should be defined at the reward level via the top-level `bindings` field.
 	Rule *Rule `json:"rule,omitempty"`
 	// A list of named variables created before the reward's rules are evaluated.  Each binding pairs a name with a talang expression. The expression is evaluated once  and its result is available by name in any rule condition or effect. Bindings must be defined outside of individual rules.
@@ -138,36 +138,36 @@ func (o *UpdateReward) SetStatus(v string) {
 	o.Status = v
 }
 
-// GetVisibilityConditions returns the VisibilityConditions field value if set, zero value otherwise.
-func (o *UpdateReward) GetVisibilityConditions() Rule {
-	if o == nil || IsNil(o.VisibilityConditions) {
+// GetEligibilityConditions returns the EligibilityConditions field value if set, zero value otherwise.
+func (o *UpdateReward) GetEligibilityConditions() Rule {
+	if o == nil || IsNil(o.EligibilityConditions) {
 		var ret Rule
 		return ret
 	}
-	return *o.VisibilityConditions
+	return *o.EligibilityConditions
 }
 
-// GetVisibilityConditionsOk returns a tuple with the VisibilityConditions field value if set, nil otherwise
+// GetEligibilityConditionsOk returns a tuple with the EligibilityConditions field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *UpdateReward) GetVisibilityConditionsOk() (*Rule, bool) {
-	if o == nil || IsNil(o.VisibilityConditions) {
+func (o *UpdateReward) GetEligibilityConditionsOk() (*Rule, bool) {
+	if o == nil || IsNil(o.EligibilityConditions) {
 		return nil, false
 	}
-	return o.VisibilityConditions, true
+	return o.EligibilityConditions, true
 }
 
-// HasVisibilityConditions returns a boolean if a field has been set.
-func (o *UpdateReward) HasVisibilityConditions() bool {
-	if o != nil && !IsNil(o.VisibilityConditions) {
+// HasEligibilityConditions returns a boolean if a field has been set.
+func (o *UpdateReward) HasEligibilityConditions() bool {
+	if o != nil && !IsNil(o.EligibilityConditions) {
 		return true
 	}
 
 	return false
 }
 
-// SetVisibilityConditions gets a reference to the given Rule and assigns it to the VisibilityConditions field.
-func (o *UpdateReward) SetVisibilityConditions(v Rule) {
-	o.VisibilityConditions = &v
+// SetEligibilityConditions gets a reference to the given Rule and assigns it to the EligibilityConditions field.
+func (o *UpdateReward) SetEligibilityConditions(v Rule) {
+	o.EligibilityConditions = &v
 }
 
 // GetRule returns the Rule field value if set, zero value otherwise.
@@ -281,8 +281,8 @@ func (o UpdateReward) ToMap() (map[string]interface{}, error) {
 		toSerialize["description"] = o.Description
 	}
 	toSerialize["status"] = o.Status
-	if !IsNil(o.VisibilityConditions) {
-		toSerialize["visibilityConditions"] = o.VisibilityConditions
+	if !IsNil(o.EligibilityConditions) {
+		toSerialize["eligibilityConditions"] = o.EligibilityConditions
 	}
 	if !IsNil(o.Rule) {
 		toSerialize["rule"] = o.Rule
@@ -340,7 +340,7 @@ func (o *UpdateReward) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "name")
 		delete(additionalProperties, "description")
 		delete(additionalProperties, "status")
-		delete(additionalProperties, "visibilityConditions")
+		delete(additionalProperties, "eligibilityConditions")
 		delete(additionalProperties, "rule")
 		delete(additionalProperties, "bindings")
 		delete(additionalProperties, "pointsRequired")

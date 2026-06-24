@@ -24,20 +24,20 @@ security:
 - api_key_v1: []
 tags:
 - description: |
-    Operations for updating account information such as billing email addresses, inviting users, etc.
+    Represents account and user management, including billing email addresses and user invitations.
   name: Accounts and users
 - description: |
-    Achievements allow you to reward a customer profile for performing a number of specific actions or reaching a transactional milestone within a defined period.
+    Represents achievements that reward a customer profile for performing a number of specific actions or reaching a transactional milestone within a defined period.
 
     For example, you can use achievements to award your customers when they purchase five cups of coffee in one week or when they purchase items worth $3000 in three months.
   name: Achievements
 - description: |
-    An extra fee applied to the cart. For example, shipping fees or processing fees.
+    Represents an extra fee applied to the cart, for example, shipping fees or processing fees.
 
     See the [docs](https://docs.talon.one/docs/product/account/dev-tools/managing-additional-costs).
   name: Additional costs
 - description: |
-    Analytics are used to retrieve statistical data about the performance of campaigns within an Application.
+    Represents analytics used to retrieve statistical data about the performance of campaigns within an Application.
   name: Analytics
 - description: |
     Represents an Application in the Campaign Manager.
@@ -51,7 +51,7 @@ tags:
     See the [docs](https://docs.talon.one/docs/product/applications/overview).
   name: Applications
 - description: |
-    Represents a piece of information related to one of the entities avaialbe in the Campaign Manager. Use
+    Represents a piece of information related to one of the entities available in the Campaign Manager. Use
     them to create highly customized rules.
 
     See the [docs](https://docs.talon.one/docs/product/account/dev-tools/managing-attributes).
@@ -87,7 +87,7 @@ tags:
     See the [docs](https://docs.talon.one/docs/product/campaigns/managing-collections).
   name: Collections
 - description: |
-    Coupons are unique codes belonging to a particular campaign. They don't define any behavior on their own.
+    Represents unique codes belonging to a particular campaign. Coupons don't define any behavior on their own.
     Instead the campaign ruleset can include rules that validate coupons and carry out particular effects.
 
     See the [docs](https://docs.talon.one/docs/product/campaigns/coupons/coupon-page-overview).
@@ -122,7 +122,7 @@ tags:
     See the [docs](https://docs.talon.one/docs/product/giveaways/overview).
   name: Giveaways
 - description: |
-    Operations to query the Talon.One logs. They contain all incoming and outgoing requests.
+    Represents the Talon.One logs, which contain all incoming and outgoing requests.
   name: Logs
 - description: |
     Represents loyalty programs or concepts related to them.
@@ -138,7 +138,7 @@ tags:
     [Loyalty cards](https://docs.talon.one/docs/product/loyalty-programs/card-based/card-based-overview) allow your customers to collect and spend loyalty points within a card-based loyalty program.
   name: Loyalty cards
 - description: |
-    A referral is a code shared between a customer and a prospect.
+    Represents a referral code shared between a customer (advocate) and a prospect (friend).
 
     A referral is defined by:
     - an advocate: person who invited their friend via referral program.
@@ -166,7 +166,7 @@ tags:
     ruleset.
   name: Value maps
 - description: |
-    A way to send information from Talon.One to the URI of your choice.
+    Represents webhooks, which send information from Talon.One to the URI of your choice.
 
     See the [docs](https://docs.talon.one/docs/dev/getting-started/webhooks).
   name: Webhooks
@@ -187,6 +187,7 @@ paths:
 
           You can see existing customer session integration IDs in the Campaign Manager's **Sessions** menu, or via the
           [List Application session](https://docs.talon.one/management-api#tag/Customer-data/operation/getApplicationSessions) endpoint.
+          **Notes**: - There is no length limit for this ID. - It must be URL-encoded. For example, replace spaces with `%20`. [Learn more](https://www.w3schools.com/tags/ref_urlencode.asp).
         explode: false
         in: path
         name: customerSessionId
@@ -288,6 +289,7 @@ paths:
 
           You can see existing customer session integration IDs in the Campaign Manager's **Sessions** menu, or via the
           [List Application session](https://docs.talon.one/management-api#tag/Customer-data/operation/getApplicationSessions) endpoint.
+          **Notes**: - There is no length limit for this ID. - It must be URL-encoded. For example, replace spaces with `%20`. [Learn more](https://www.w3schools.com/tags/ref_urlencode.asp).
         explode: false
         in: path
         name: customerSessionId
@@ -636,6 +638,7 @@ paths:
           - Stable for the customer. Do not use an ID that the customer can update themselves. For example, you can use a database ID.
 
           Once set, you cannot update this identifier.
+          **Note**: It must be URL-encoded. For example, replace spaces with `%20`. [Learn more](https://www.w3schools.com/tags/ref_urlencode.asp).
         explode: false
         in: path
         name: integrationId
@@ -1398,6 +1401,25 @@ paths:
         schema:
           format: date-time
           type: string
+        style: form
+      - description: Filter results to campaigns linked to the specified store ID.
+        explode: true
+        in: query
+        name: storeId
+        required: false
+        schema:
+          format: int64
+          type: integer
+        style: form
+      - description: Filter results to campaigns linked to the specified audience
+          ID.
+        explode: true
+        in: query
+        name: audienceId
+        required: false
+        schema:
+          format: int64
+          type: integer
         style: form
       responses:
         "200":
@@ -3113,6 +3135,70 @@ paths:
       summary: Delete customer's transactions from loyalty ledgers
       tags:
       - integration
+  /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/join:
+    post:
+      description: |
+        Join a customer profile to the specified loyalty program.
+
+        If the customer profile does not exist, it will be created first using the
+        provided `integrationId`, then joined to the loyalty program.
+
+        > [!note] This endpoint only works with profile-based loyalty programs.
+
+        **Behavior**:
+        - If the loyalty program does not exist, the request fails.
+        - If the customer profile is already joined to the loyalty program, the request fails.
+        - If the customer profile does not exist, it is created and then joined to the loyalty program.
+      operationId: joinLoyaltyProgram
+      parameters:
+      - description: |
+          Identifier of the profile-based loyalty program. You can get the ID with
+          the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
+        explode: false
+        in: path
+        name: loyaltyProgramId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      - description: |
+          The integration ID of the customer profile. You can get the `integrationId` of a profile using:
+          - A customer session integration ID with the [Update customer session](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2) endpoint.
+          - The Management API with the [List application's customers](https://docs.talon.one/management-api#tag/Customer-data/operation/getApplicationCustomers) endpoint.
+        explode: false
+        in: path
+        name: integrationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Not found
+      security:
+      - api_key_v1: []
+      summary: Join customer profile to loyalty program
+      tags:
+      - integration
   /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/points:
     get:
       description: |
@@ -3801,6 +3887,33 @@ paths:
       summary: Get ruleset
       tags:
       - management
+  /v2/applications/{applicationId}/campaigns/{campaignId}/rulesets/{rulesetId}:
+    get:
+      description: Retrieve the specified ruleset as a JSON object.
+      operationId: getRulesetV2
+      parameters:
+      - $ref: "#/components/parameters/applicationId"
+      - $ref: "#/components/parameters/campaignId"
+      - description: The ID of the ruleset.
+        explode: false
+        in: path
+        name: rulesetId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RulesetV2"
+          description: OK
+      summary: Get ruleset (V2)
+      tags:
+      - management
+      x-scalar-stability: experimental
   /v1/applications/{applicationId}/campaigns/{campaignId}/coupons:
     delete:
       description: Deletes all the coupons matching the specified criteria.
@@ -9298,6 +9411,16 @@ paths:
         schema:
           type: string
         style: form
+      - description: "Returned attributes will be filtered by the specified loyalty\
+          \ program ids, separated by commas. You can only use this parameter when\
+          \ `entity` is `LoyaltyCard`."
+        explode: true
+        in: query
+        name: loyaltyProgramIds
+        required: false
+        schema:
+          type: string
+        style: form
       - description: Returned attributes will be filtered by supplied type
         explode: true
         in: query
@@ -10507,6 +10630,30 @@ paths:
         schema:
           default: false
           type: boolean
+        style: form
+      - description: |-
+          Timestamp that filters the results to only contain coupons deleted before this date. Must be an RFC3339 timestamp string. You can use any time zone setting. Talon.One will convert to UTC internally.
+
+          **Note:** Only coupons deleted in the last 7 days will appear in the results.
+        explode: true
+        in: query
+        name: deletedBefore
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: |-
+          Timestamp that filters the results to only contain coupons deleted after this date. Must be an RFC3339 timestamp string. You can use any time zone setting. Talon.One will convert to UTC internally.
+
+          **Note:** Only coupons deleted in the last 7 days will appear in the results.
+        explode: true
+        in: query
+        name: deletedAfter
+        required: false
+        schema:
+          format: date-time
+          type: string
         style: form
       responses:
         "200":
@@ -14867,6 +15014,7 @@ components:
       - value
       title: acceptReferral
     RedeemReferralEffectProps:
+      deprecated: true
       description: |
         This effect is **deprecated**. It has been replaced by the `acceptReferral` effect.
         This effect indicates that the referral code is valid and has been redeemed.
@@ -15701,6 +15849,7 @@ components:
       - value
       title: rollbackDeductedLoyaltyPoints
     ShowBundleMetadataEffectProps:
+      deprecated: true
       description: |-
         This effect is **deprecated**.
 
@@ -16533,6 +16682,7 @@ components:
             - ruleFailureReasons
             - previousReturns
             - campaignEligibility
+            - achievements
             type: string
           type: array
           default: null
@@ -16630,6 +16780,7 @@ components:
             title: Total Sales
             type: number
           loyaltyMemberships:
+            deprecated: true
             description: |
               **DEPRECATED. Always returns `null`.** A list of loyalty programs joined by the customer.
             items:
@@ -16760,12 +16911,14 @@ components:
           title: Negative balance
           type: number
         expiredBalance:
+          deprecated: true
           description: |
             **DEPRECATED** Value is shown as 0.
           example: 0
           title: Expired balance
           type: number
         spentBalance:
+          deprecated: true
           description: |
             **DEPRECATED** Value is shown as 0.
           example: 0
@@ -17466,6 +17619,7 @@ components:
           type: array
           default: null
         couponRedemptionCount:
+          deprecated: true
           description: |
             This property is **deprecated**. The count should be available under *budgets* property.
             Number of coupons redeemed in the campaign.
@@ -17473,6 +17627,7 @@ components:
           format: int64
           type: integer
         referralRedemptionCount:
+          deprecated: true
           description: |
             This property is **deprecated**. The count should be available under *budgets* property.
             Number of referral codes redeemed in the campaign.
@@ -17480,12 +17635,14 @@ components:
           format: int64
           type: integer
         discountCount:
+          deprecated: true
           description: |
             This property is **deprecated**. The count should be available under *budgets* property.
             Total amount of discounts redeemed in the campaign.
           example: 288
           type: number
         discountEffectCount:
+          deprecated: true
           description: |
             This property is **deprecated**. The count should be available under *budgets* property.
             Total number of times discounts were redeemed in this campaign.
@@ -17493,6 +17650,7 @@ components:
           format: int64
           type: integer
         couponCreationCount:
+          deprecated: true
           description: |
             This property is **deprecated**. The count should be available under *budgets* property.
             Total number of coupons created by rules in this campaign.
@@ -17500,6 +17658,7 @@ components:
           format: int64
           type: integer
         customEffectCount:
+          deprecated: true
           description: |
             This property is **deprecated**. The count should be available under *budgets* property.
             Total number of custom effects triggered by rules in this campaign.
@@ -17507,6 +17666,7 @@ components:
           format: int64
           type: integer
         referralCreationCount:
+          deprecated: true
           description: |
             This property is **deprecated**. The count should be available under *budgets* property.
             Total number of referrals created by rules in this campaign.
@@ -17514,6 +17674,7 @@ components:
           format: int64
           type: integer
         addFreeItemEffectCount:
+          deprecated: true
           description: |
             This property is **deprecated**. The count should be available under *budgets* property.
             Total number of times the [add free item effect](https://docs.talon.one/docs/dev/integration-api/api-effects#addfreeitem) can be triggered in this campaign.
@@ -17521,6 +17682,7 @@ components:
           format: int64
           type: integer
         awardedGiveawaysCount:
+          deprecated: true
           description: |
             This property is **deprecated**. The count should be available under *budgets* property.
             Total number of giveaways awarded by rules in this campaign.
@@ -17528,12 +17690,14 @@ components:
           format: int64
           type: integer
         createdLoyaltyPointsCount:
+          deprecated: true
           description: |
             This property is **deprecated**. The count should be available under *budgets* property.
             Total number of loyalty points created by rules in this campaign.
           example: 9
           type: number
         createdLoyaltyPointsEffectCount:
+          deprecated: true
           description: |
             This property is **deprecated**. The count should be available under *budgets* property.
             Total number of loyalty point creation effects triggered by rules in this campaign.
@@ -17541,12 +17705,14 @@ components:
           format: int64
           type: integer
         redeemedLoyaltyPointsCount:
+          deprecated: true
           description: |
             This property is **deprecated**. The count should be available under *budgets* property.
             Total number of loyalty points redeemed by rules in this campaign.
           example: 8
           type: number
         redeemedLoyaltyPointsEffectCount:
+          deprecated: true
           description: |
             This property is **deprecated**. The count should be available under *budgets* property.
             Total number of loyalty point redemption effects triggered by rules in this campaign.
@@ -17554,6 +17720,7 @@ components:
           format: int64
           type: integer
         callApiEffectCount:
+          deprecated: true
           description: |
             This property is **deprecated**. The count should be available under *budgets* property.
             Total number of webhooks triggered by rules in this campaign.
@@ -17561,6 +17728,7 @@ components:
           format: int64
           type: integer
         reservecouponEffectCount:
+          deprecated: true
           description: |
             This property is **deprecated**. The count should be available under *budgets* property.
             Total number of reserve coupon effects triggered by rules in this campaign.
@@ -18613,6 +18781,149 @@ components:
         importId: 4
         profileIntegrationId: R195412
         profileId: 1
+    AchievementProgress:
+      description: The current progress of the customer in the achievement.
+      example:
+        status: completed
+        progress: 10
+        startDate: 2024-01-01T15:04:05Z07:00
+        completionDate: 2024-01-15T15:04:05Z07:00
+        endDate: 2024-02-01T15:04:05Z07:00
+      properties:
+        status:
+          description: The status of the achievement.
+          enum:
+          - inprogress
+          - completed
+          - expired
+          - not_started
+          example: completed
+          type: string
+        progress:
+          description: The current progress of the customer in the achievement.
+          example: 10
+          type: number
+        startDate:
+          description: Timestamp at which the customer started the achievement.
+          example: 2024-01-01T15:04:05Z07:00
+          format: date-time
+          type: string
+        completionDate:
+          description: Timestamp at which point the customer completed the achievement.
+          example: 2024-01-15T15:04:05Z07:00
+          format: date-time
+          type: string
+        endDate:
+          description: Timestamp at which point the achievement ends and resets for
+            the customer.
+          example: 2024-02-01T15:04:05Z07:00
+          format: date-time
+          type: string
+      required:
+      - progress
+      - status
+    CustomerAchievement:
+      description: "A customer's progress in an achievement, together with the achievement\
+        \ definition."
+      example:
+        id: 3
+        name: FreeCoffee10Orders
+        title: 50% off on 50th purchase.
+        description: 50% off for every 50th purchase in a year.
+        target: 10
+        recurrencePolicy: no_recurrence
+        activationPolicy: fixed_schedule
+        fixedStartDate: 2024-01-15T15:04:05Z07:00
+        endDate: 2024-02-15T15:04:05Z07:00
+        allowRollbackAfterCompletion: false
+        currentProgress:
+          status: completed
+          progress: 10
+          startDate: 2024-01-01T15:04:05Z07:00
+          completionDate: 2024-01-15T15:04:05Z07:00
+          endDate: 2024-02-01T15:04:05Z07:00
+      properties:
+        id:
+          description: The internal ID of the achievement.
+          example: 3
+          format: int64
+          type: integer
+        name:
+          description: |
+            The internal name of the achievement used in API requests.
+          example: FreeCoffee10Orders
+          maxLength: 1000
+          minLength: 1
+          pattern: "^[a-zA-Z]\\w+$"
+          type: string
+        title:
+          description: The display name of the achievement in the Campaign Manager.
+          example: 50% off on 50th purchase.
+          type: string
+        description:
+          description: The description of the achievement in the Campaign Manager.
+          example: 50% off for every 50th purchase in a year.
+          format: string
+          type: string
+        target:
+          description: The required number of actions or the transactional milestone
+            to complete the achievement.
+          example: 10
+          type: number
+        recurrencePolicy:
+          description: |
+            The policy that determines if and how the achievement recurs.
+            - `no_recurrence`: The achievement can be completed only once.
+            - `on_expiration`: The achievement resets after it expires and becomes available again.
+            - `on_completion`: When the customer progress status reaches `completed`, the achievement resets and becomes available again.
+          enum:
+          - no_recurrence
+          - on_expiration
+          - on_completion
+          example: no_recurrence
+          type: string
+        activationPolicy:
+          description: |
+            The policy that determines how the achievement starts, ends, or resets.
+            - `user_action`: The achievement ends or resets relative to when the customer started the achievement.
+            - `fixed_schedule`: The achievement starts, ends, or resets for all customers following a fixed schedule.
+          enum:
+          - user_action
+          - fixed_schedule
+          example: fixed_schedule
+          type: string
+        fixedStartDate:
+          description: |
+            The achievement's start date when `activationPolicy` is equal to `fixed_schedule`.
+
+            **Note:** It is an RFC3339 timestamp string.
+          example: 2024-01-15T15:04:05Z07:00
+          format: date-time
+          type: string
+        endDate:
+          description: |
+            The achievement's end date. If defined, customers cannot participate in the achievement after this date.
+
+            **Note:** It is an RFC3339 timestamp string.
+          example: 2024-02-15T15:04:05Z07:00
+          format: date-time
+          type: string
+        allowRollbackAfterCompletion:
+          description: "When `true`, customer progress can be rolled back in completed\
+            \ achievements."
+          example: false
+          type: boolean
+        currentProgress:
+          $ref: "#/components/schemas/AchievementProgress"
+      required:
+      - activationPolicy
+      - allowRollbackAfterCompletion
+      - description
+      - id
+      - name
+      - recurrencePolicy
+      - target
+      - title
     IntegrationResponse:
       description: |
         Contains entities that might be valuable in Talon.One integrations.
@@ -18673,6 +18984,12 @@ components:
           description: The giveaways that were awarded during the event processing.
           items:
             $ref: "#/components/schemas/Giveaway"
+          type: array
+          default: null
+        achievements:
+          description: The achievements progress of the customer.
+          items:
+            $ref: "#/components/schemas/CustomerAchievement"
           type: array
           default: null
       required:
@@ -19792,6 +20109,39 @@ components:
           importId: 4
           profileIntegrationId: R195412
           profileId: 1
+        achievements:
+        - id: 3
+          name: FreeCoffee10Orders
+          title: 50% off on 50th purchase.
+          description: 50% off for every 50th purchase in a year.
+          target: 10
+          recurrencePolicy: no_recurrence
+          activationPolicy: fixed_schedule
+          fixedStartDate: 2024-01-15T15:04:05Z07:00
+          endDate: 2024-02-15T15:04:05Z07:00
+          allowRollbackAfterCompletion: false
+          currentProgress:
+            status: completed
+            progress: 10
+            startDate: 2024-01-01T15:04:05Z07:00
+            completionDate: 2024-01-15T15:04:05Z07:00
+            endDate: 2024-02-01T15:04:05Z07:00
+        - id: 3
+          name: FreeCoffee10Orders
+          title: 50% off on 50th purchase.
+          description: 50% off for every 50th purchase in a year.
+          target: 10
+          recurrencePolicy: no_recurrence
+          activationPolicy: fixed_schedule
+          fixedStartDate: 2024-01-15T15:04:05Z07:00
+          endDate: 2024-02-15T15:04:05Z07:00
+          allowRollbackAfterCompletion: false
+          currentProgress:
+            status: completed
+            progress: 10
+            startDate: 2024-01-01T15:04:05Z07:00
+            completionDate: 2024-01-15T15:04:05Z07:00
+            endDate: 2024-02-01T15:04:05Z07:00
         referral: ""
         coupons:
         - id: 6
@@ -20001,6 +20351,7 @@ components:
             - awardedGiveaways
             - ruleFailureReasons
             - campaignEligibility
+            - achievements
             type: string
           type: array
           default: null
@@ -21201,6 +21552,26 @@ components:
               $ref: "#/components/schemas/RuleMetadata"
             type: array
             default: null
+          linkedStoreIds:
+            description: A list of store IDs linked to this campaign.
+            example:
+            - 1
+            - 2
+            items:
+              format: int64
+              type: integer
+            type: array
+            default: null
+          linkedAudienceIds:
+            description: A list of audience IDs linked to this campaign.
+            example:
+            - 3
+            - 4
+            items:
+              format: int64
+              type: integer
+            type: array
+            default: null
         required:
         - rules
       example:
@@ -21228,6 +21599,12 @@ components:
           displayDescription: Get a 20% discount on all shoes during Thanksgiving!
             Offer valid till Dec 5 only.
           relatedData: https://example.com/discounts/20-off-shoes.png
+        linkedStoreIds:
+        - 1
+        - 2
+        linkedAudienceIds:
+        - 3
+        - 4
     NewAttribute:
       allOf:
       - properties:
@@ -23144,6 +23521,39 @@ components:
           importId: 4
           profileIntegrationId: R195412
           profileId: 1
+        achievements:
+        - id: 3
+          name: FreeCoffee10Orders
+          title: 50% off on 50th purchase.
+          description: 50% off for every 50th purchase in a year.
+          target: 10
+          recurrencePolicy: no_recurrence
+          activationPolicy: fixed_schedule
+          fixedStartDate: 2024-01-15T15:04:05Z07:00
+          endDate: 2024-02-15T15:04:05Z07:00
+          allowRollbackAfterCompletion: false
+          currentProgress:
+            status: completed
+            progress: 10
+            startDate: 2024-01-01T15:04:05Z07:00
+            completionDate: 2024-01-15T15:04:05Z07:00
+            endDate: 2024-02-01T15:04:05Z07:00
+        - id: 3
+          name: FreeCoffee10Orders
+          title: 50% off on 50th purchase.
+          description: 50% off for every 50th purchase in a year.
+          target: 10
+          recurrencePolicy: no_recurrence
+          activationPolicy: fixed_schedule
+          fixedStartDate: 2024-01-15T15:04:05Z07:00
+          endDate: 2024-02-15T15:04:05Z07:00
+          allowRollbackAfterCompletion: false
+          currentProgress:
+            status: completed
+            progress: 10
+            startDate: 2024-01-01T15:04:05Z07:00
+            completionDate: 2024-01-15T15:04:05Z07:00
+            endDate: 2024-02-01T15:04:05Z07:00
         event: ""
     NewReferralsForMultipleAdvocates:
       allOf:
@@ -23270,47 +23680,6 @@ components:
           default: null
       required:
       - integrationIDs
-    AchievementProgress:
-      description: The current progress of the customer in the achievement.
-      example:
-        status: completed
-        progress: 10
-        startDate: 2024-01-01T15:04:05Z07:00
-        completionDate: 2024-01-15T15:04:05Z07:00
-        endDate: 2024-02-01T15:04:05Z07:00
-      properties:
-        status:
-          description: The status of the achievement.
-          enum:
-          - inprogress
-          - completed
-          - expired
-          - not_started
-          example: completed
-          type: string
-        progress:
-          description: The current progress of the customer in the achievement.
-          example: 10
-          type: number
-        startDate:
-          description: Timestamp at which the customer started the achievement.
-          example: 2024-01-01T15:04:05Z07:00
-          format: date-time
-          type: string
-        completionDate:
-          description: Timestamp at which point the customer completed the achievement.
-          example: 2024-01-15T15:04:05Z07:00
-          format: date-time
-          type: string
-        endDate:
-          description: Timestamp at which point the achievement ends and resets for
-            the customer.
-          example: 2024-02-01T15:04:05Z07:00
-          format: date-time
-          type: string
-      required:
-      - progress
-      - status
     AchievementProgressWithDefinition:
       allOf:
       - $ref: "#/components/schemas/AchievementProgress"
@@ -27070,6 +27439,314 @@ components:
         campaignId: 320
         templateId: 3
         activatedAt: 2000-01-23T04:56:07.000+00:00
+    RuleV2:
+      description: Shared fields common to all V2 rule types.
+      properties:
+        id:
+          description: Unique identifier of the rule.
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+          type: string
+        parentId:
+          description: "ID of the parent rule, if any."
+          type: string
+        title:
+          description: A short description of the rule.
+          example: 10% off for loyalty members
+          type: string
+        description:
+          description: A longer description of the rule.
+          type: string
+      required:
+      - title
+      title: RuleV2
+    BaseBlock:
+      description: Common properties shared by all block types.
+      properties:
+        id:
+          description: Unique identifier for this block.
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+          type: string
+        type:
+          description: Identifies the block variant and determines which additional
+            properties are present in it.
+          type: string
+        tags:
+          description: Semantic labels attached to this block.
+          items:
+            type: string
+          type: array
+          default: null
+      required:
+      - id
+      - type
+      title: BaseBlock
+    PromotionBlock: {}
+    PromotionGroupBlock:
+      allOf:
+      - $ref: "#/components/schemas/BaseBlock"
+      - description: A structural combinator block that groups child promotion blocks
+          using a logical operator. Evaluates to true when its operator condition
+          is satisfied across all child blocks.
+        properties:
+          operator:
+            description: "Logical operator applied across child blocks. `all` requires\
+              \ every child to pass, `atLeastOne` requires at least one, `none` requires\
+              \ all to fail."
+            enum:
+            - all
+            - atLeastOne
+            - none
+            type: string
+          blocks:
+            description: Child blocks evaluated according to the operator.
+            items:
+              $ref: "#/components/schemas/PromotionBlock"
+            type: array
+            default: null
+          onFailure:
+            description: Promotion blocks evaluated when this block fails or returns
+              false.
+            items:
+              $ref: "#/components/schemas/PromotionBlock"
+            type: array
+            default: null
+          onError:
+            additionalProperties:
+              items:
+                $ref: "#/components/schemas/PromotionBlock"
+            description: Named error handlers evaluated when a specific error occurs.
+        required:
+        - blocks
+        - operator
+        title: PromotionGroupBlock
+    PassthroughBlock:
+      description: A block representing a Talang expression that could not be mapped
+        to a typed block. The expression is preserved in its raw Talang array form
+        for diagnostic and round-trip purposes.
+      properties:
+        id:
+          description: Unique identifier for this block.
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+          type: string
+        type:
+          description: The type discriminator for this block.
+          enum:
+          - passthrough
+          type: string
+        expression:
+          description: "The raw Talang expression as an array. The first element is\
+            \ the function name; subsequent elements are its arguments, which may\
+            \ themselves be nested expressions."
+          items: {}
+          type: array
+          default: null
+      required:
+      - expression
+      - id
+      - type
+      title: PassthroughBlock
+    PromotionRuleV2:
+      allOf:
+      - $ref: "#/components/schemas/RuleV2"
+      - description: A single promotion rule in V2 block format.
+        properties:
+          blocks:
+            description: The condition and effect blocks that make up this promotion
+              rule.
+            items:
+              $ref: "#/components/schemas/PromotionBlock"
+            type: array
+            default: null
+        required:
+        - blocks
+        title: PromotionRuleV2
+      example:
+        id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        parentId: parentId
+        title: 10% off for loyalty members
+        description: description
+        blocks:
+        - null
+        - null
+    StrikethroughBlock: {}
+    StrikethroughGroupBlock:
+      allOf:
+      - $ref: "#/components/schemas/BaseBlock"
+      - description: A structural combinator block that groups child strikethrough
+          blocks using a logical operator. Evaluates to true when its operator condition
+          is satisfied across all child blocks.
+        properties:
+          operator:
+            description: "Logical operator applied across child blocks. `all` requires\
+              \ every child to pass, `atLeastOne` requires at least one, `none` requires\
+              \ all to fail."
+            enum:
+            - all
+            - atLeastOne
+            - none
+            type: string
+          blocks:
+            description: Child blocks evaluated according to the operator.
+            items:
+              $ref: "#/components/schemas/StrikethroughBlock"
+            type: array
+            default: null
+          onFailure:
+            description: Strikethrough blocks evaluated when this block fails or returns
+              false.
+            items:
+              $ref: "#/components/schemas/StrikethroughBlock"
+            type: array
+            default: null
+          onError:
+            additionalProperties:
+              items:
+                $ref: "#/components/schemas/StrikethroughBlock"
+            description: Named error handlers evaluated when a specific error occurs.
+        required:
+        - blocks
+        - operator
+        title: StrikethroughGroupBlock
+    StrikethroughRuleV2:
+      allOf:
+      - $ref: "#/components/schemas/RuleV2"
+      - description: A single strikethrough rule.
+        properties:
+          blocks:
+            description: The condition and effect blocks that make up this strikethrough
+              rule.
+            items:
+              $ref: "#/components/schemas/StrikethroughBlock"
+            type: array
+            default: null
+        required:
+        - blocks
+        title: StrikethroughRuleV2
+      example:
+        id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        parentId: parentId
+        title: 10% off for loyalty members
+        description: description
+        blocks:
+        - null
+        - null
+    RulesetV2:
+      description: Ruleset in the V2 JSON block format.
+      example:
+        id: 6
+        created: 2000-01-23T04:56:07.000+00:00
+        userId: 385
+        campaignId: 320
+        templateId: 3
+        activatedAt: 2000-01-23T04:56:07.000+00:00
+        promotionRules:
+        - id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+          parentId: parentId
+          title: 10% off for loyalty members
+          description: description
+          blocks:
+          - null
+          - null
+        - id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+          parentId: parentId
+          title: 10% off for loyalty members
+          description: description
+          blocks:
+          - null
+          - null
+        strikethroughRules:
+        - id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+          parentId: parentId
+          title: 10% off for loyalty members
+          description: description
+          blocks:
+          - null
+          - null
+        - id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+          parentId: parentId
+          title: 10% off for loyalty members
+          description: description
+          blocks:
+          - null
+          - null
+        selectors:
+        - key: ""
+        - key: ""
+        bundles:
+        - key: ""
+        - key: ""
+        parameters:
+        - key: ""
+        - key: ""
+      properties:
+        id:
+          description: Internal ID of this entity.
+          example: 6
+          format: int64
+          type: integer
+        created:
+          description: The time this entity was created.
+          format: date-time
+          type: string
+        userId:
+          description: The ID of the user that created this ruleset.
+          example: 385
+          format: int64
+          type: integer
+        campaignId:
+          description: The ID of the campaign that owns this entity.
+          example: 320
+          format: int64
+          type: integer
+        templateId:
+          description: The ID of the campaign template that owns this entity.
+          example: 3
+          format: int64
+          type: integer
+        activatedAt:
+          description: Timestamp indicating when this ruleset was activated.
+          format: date-time
+          type: string
+        promotionRules:
+          description: Set of promotion rules.
+          items:
+            $ref: "#/components/schemas/PromotionRuleV2"
+          type: array
+          default: null
+        strikethroughRules:
+          description: Set of strikethrough rules.
+          items:
+            $ref: "#/components/schemas/StrikethroughRuleV2"
+          type: array
+          default: null
+        selectors:
+          description: Variable bindings of type selector.
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          default: null
+        bundles:
+          description: Variable bindings of type bundle.
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          default: null
+        parameters:
+          description: Variable bindings of type template parameter.
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          default: null
+      required:
+      - created
+      - id
+      - promotionRules
+      - strikethroughRules
+      - userId
+      title: RulesetV2
     UpdateCouponBatch:
       allOf:
       - $ref: "#/components/schemas/CouponConstraints"
@@ -27100,6 +27777,7 @@ components:
             format: int64
             type: integer
           uniquePrefix:
+            deprecated: true
             description: |
               **DEPRECATED** To create more than 20,000 coupons in one request, use [Create coupons asynchronously](https://docs.talon.one/management-api#tag/Coupons/operation/createCouponsAsync) endpoint.
             example: ""
@@ -30524,6 +31202,7 @@ components:
       description: Ledger of Balance in Loyalty Program for a Customer.
       properties:
         total:
+          deprecated: true
           description: |
             **DEPRECATED** Use `totalActivePoints` property instead. Total amount of currently active and available points in the customer's balance.
           title: Current Balance (Deprecated)
@@ -32948,8 +33627,8 @@ components:
     BestPriorPriceRequest:
       example:
         skus:
-        - comma
-        - period
+        - SKU1241028
+        - SKU7345278
         timeframeEndDate: 2020-11-10T23:00:00Z
         timeframe: "30"
         timeframeEndDateType: sale
@@ -32961,8 +33640,8 @@ components:
           description: List of product SKUs to check when determining the best prior
             price.
           example:
-          - comma
-          - period
+          - SKU1241028
+          - SKU7345278
           items:
             type: string
           minItems: 1
@@ -33058,7 +33737,7 @@ components:
     BestPriorPrice:
       example:
         id: 1
-        sku: NVR-GN-GV-UUP
+        sku: SKU7345278
         observedAt: 2025-11-10T23:00:00Z
         contextIds:
         - SpringSale
@@ -33081,7 +33760,7 @@ components:
           type: integer
         sku:
           description: sku
-          example: NVR-GN-GV-UUP
+          example: SKU7345278
           type: string
         observedAt:
           description: The date and time when the price was observed.
@@ -33100,6 +33779,7 @@ components:
           default: null
         contextId:
           default: ""
+          deprecated: true
           description: |
             This property is **deprecated**. Use `contextIds` instead. Defaults to an empty string.
           example: ""
@@ -33127,16 +33807,14 @@ components:
       default: null
     PriceHistoryRequest:
       example:
-        sku:
-        - sku-124
+        sku: SKU1241028
         startDate: 2020-11-10T23:00:00Z
         endDate: 2020-12-10T23:00:00Z
       properties:
         sku:
           description: The SKU of the item for which the historical prices are being
             retrieved.
-          example:
-          - sku-124
+          example: SKU1241028
           type: string
         startDate:
           description: The start date of the period for which historical prices should
@@ -33194,6 +33872,7 @@ components:
           default: null
         contextId:
           default: ""
+          deprecated: true
           description: |
             This property is **deprecated**. Use `contextIds` instead. Defaults to an empty string.
           example: ""
@@ -33215,8 +33894,7 @@ components:
       - target
     PriceHistoryResponse:
       example:
-        sku:
-        - SKU1241028
+        sku: SKU1241028
         history:
         - id: 1
           observedAt: 2025-11-10T23:00:00Z
@@ -33251,8 +33929,7 @@ components:
       properties:
         sku:
           description: The SKU of the item for which historical prices should be retrieved.
-          example:
-          - SKU1241028
+          example: SKU1241028
           type: string
         history:
           items:
@@ -34813,6 +35490,156 @@ components:
         required:
         - active
       description: Data for updating a risk notification.
+    Risk:
+      allOf:
+      - $ref: "#/components/schemas/Entity"
+      - properties:
+          notificationId:
+            description: The ID of the risk notification rule that flagged this risk.
+            example: 3
+            format: int64
+            type: integer
+          runDate:
+            description: The date of the ML pipeline run that detected this risk.
+            example: 2026-06-05
+            format: date
+            type: string
+          groupKey:
+            description: |
+              The Application group this risk was detected in. Contains the Application ID,
+              or `__GLOBAL__` for metrics that are not grouped by Application.
+            example: "7"
+            type: string
+          applicationId:
+            description: The ID of the Application this risk belongs to. Absent for
+              global metrics.
+            example: 7
+            format: int64
+            type: integer
+          status:
+            description: The triage lifecycle status of this risk.
+            enum:
+            - active
+            - in_review
+            - confirmed
+            - discarded
+            example: active
+            type: string
+          criticality:
+            description: The critical classification bucket of this risk.
+            enum:
+            - critical
+            - not_critical
+            example: critical
+            type: string
+          entity:
+            description: The entity type the risk was detected in.
+            enum:
+            - customer_profile
+            - customer_session
+            example: customer_profile
+            type: string
+          activity:
+            description: The activity metric the risk was detected in.
+            enum:
+            - loyalty_points_earned
+            - discounted_amount
+            - completed_orders
+            - coupon_attempts
+            example: discounted_amount
+            type: string
+          timeFrame:
+            description: The rolling time window of the risk evaluation.
+            enum:
+            - 1_day
+            - 1_week
+            - 1_month
+            example: 1_week
+            type: string
+          reportedDate:
+            description: The time the ML service reported this risk.
+            example: 2026-06-05T06:26:13.698884Z
+            format: date-time
+            type: string
+          affectedEntityCount:
+            description: The total number of entities affected by this risk.
+            example: 4437
+            format: int64
+            type: integer
+          description:
+            description: Human-readable description of the detected anomaly.
+            example: Unusual discount usage detected for 4437 customer profiles.
+            type: string
+          modified:
+            description: Timestamp of the most recent update.
+            example: 2026-06-05T06:26:13.698884Z
+            format: date-time
+            type: string
+        required:
+        - activity
+        - affectedEntityCount
+        - criticality
+        - entity
+        - groupKey
+        - modified
+        - notificationId
+        - reportedDate
+        - runDate
+        - status
+        - timeFrame
+      description: A risk detected by the anomaly detection service for one Application
+        group.
+    RiskAffectedEntityItem:
+      description: A single entity flagged as anomalous within a risk.
+      properties:
+        entityId:
+          description: The integration ID of the affected entity.
+          example: "174165415"
+          type: string
+        activityValue:
+          description: The observed value of the monitored activity metric for this
+            entity.
+          example: 2898.2
+          format: double
+          type: number
+        threshold:
+          description: The anomaly threshold computed for the entity's Application
+            group.
+          example: 60
+          format: double
+          type: number
+        severityRatio:
+          description: The ratio of the observed value to the threshold.
+          example: 48.3
+          format: double
+          type: number
+        criticality:
+          description: The critical classification bucket of this entity.
+          enum:
+          - critical
+          - not_critical
+          example: critical
+          type: string
+      required:
+      - activityValue
+      - criticality
+      - entityId
+      - severityRatio
+      - threshold
+    RiskDetail:
+      allOf:
+      - $ref: "#/components/schemas/Risk"
+      - properties:
+          affectedEntities:
+            description: "The affected entities with the highest severity ratios,\
+              \ in descending order."
+            items:
+              $ref: "#/components/schemas/RiskAffectedEntityItem"
+            type: array
+            default: null
+        required:
+        - affectedEntities
+      description: "Details of a risk, including its most severely affected entities."
     Change:
       allOf:
       - $ref: "#/components/schemas/Entity"
@@ -37903,7 +38730,7 @@ components:
       - $ref: "#/components/schemas/AccountEntity"
       - $ref: "#/components/schemas/NewReward"
       - properties:
-          visibilityConditions:
+          eligibilityConditions:
             allOf:
             - $ref: "#/components/schemas/Rule"
             description: |
@@ -37970,7 +38797,7 @@ components:
           - inactive
           example: active
           type: string
-        visibilityConditions:
+        eligibilityConditions:
           allOf:
           - $ref: "#/components/schemas/Rule"
           description: |
@@ -38690,6 +39517,39 @@ components:
           importId: 4
           profileIntegrationId: R195412
           profileId: 1
+        achievements:
+        - id: 3
+          name: FreeCoffee10Orders
+          title: 50% off on 50th purchase.
+          description: 50% off for every 50th purchase in a year.
+          target: 10
+          recurrencePolicy: no_recurrence
+          activationPolicy: fixed_schedule
+          fixedStartDate: 2024-01-15T15:04:05Z07:00
+          endDate: 2024-02-15T15:04:05Z07:00
+          allowRollbackAfterCompletion: false
+          currentProgress:
+            status: completed
+            progress: 10
+            startDate: 2024-01-01T15:04:05Z07:00
+            completionDate: 2024-01-15T15:04:05Z07:00
+            endDate: 2024-02-01T15:04:05Z07:00
+        - id: 3
+          name: FreeCoffee10Orders
+          title: 50% off on 50th purchase.
+          description: 50% off for every 50th purchase in a year.
+          target: 10
+          recurrencePolicy: no_recurrence
+          activationPolicy: fixed_schedule
+          fixedStartDate: 2024-01-15T15:04:05Z07:00
+          endDate: 2024-02-15T15:04:05Z07:00
+          allowRollbackAfterCompletion: false
+          currentProgress:
+            status: completed
+            progress: 10
+            startDate: 2024-01-01T15:04:05Z07:00
+            completionDate: 2024-01-15T15:04:05Z07:00
+            endDate: 2024-02-01T15:04:05Z07:00
         advancedEvent: ""
     EmbeddedDashboardConfiguration:
       properties:
@@ -40364,6 +41224,11 @@ components:
           CurrentTier:
             description: The name of the customer's current tier.
             type: string
+          SessionIntegrationID:
+            description: The integration ID of the session through which the points
+              were earned or lost. Only set when the change results from a rule engine
+              execution; empty otherwise.
+            type: string
           EmployeeName:
             type: string
           UserID:
@@ -40617,6 +41482,12 @@ components:
             displayDescription: Get a 20% discount on all shoes during Thanksgiving!
               Offer valid till Dec 5 only.
             relatedData: https://example.com/discounts/20-off-shoes.png
+          linkedStoreIds:
+          - 1
+          - 2
+          linkedAudienceIds:
+          - 3
+          - 4
         - applicationId: 322
           id: 4
           name: Summer promotions
@@ -40641,6 +41512,12 @@ components:
             displayDescription: Get a 20% discount on all shoes during Thanksgiving!
               Offer valid till Dec 5 only.
             relatedData: https://example.com/discounts/20-off-shoes.png
+          linkedStoreIds:
+          - 1
+          - 2
+          linkedAudienceIds:
+          - 3
+          - 4
       properties:
         hasMore:
           type: boolean

@@ -30,6 +30,7 @@ type BestPriorPrice struct {
 	// The identifiers of the relevant context at the time the price was observed. Includes the context IDs of any price adjustments and of the campaigns that influenced the final price.
 	ContextIds []string `json:"contextIds"`
 	// This property is **deprecated**. Use `contextIds` instead. Defaults to an empty string.
+	// Deprecated
 	ContextId *string `json:"contextId,omitempty"`
 	// Price of the item.
 	Price                float32                `json:"price"`
@@ -165,6 +166,7 @@ func (o *BestPriorPrice) SetContextIds(v []string) {
 }
 
 // GetContextId returns the ContextId field value if set, zero value otherwise.
+// Deprecated
 func (o *BestPriorPrice) GetContextId() string {
 	if o == nil || IsNil(o.ContextId) {
 		var ret string
@@ -175,6 +177,7 @@ func (o *BestPriorPrice) GetContextId() string {
 
 // GetContextIdOk returns a tuple with the ContextId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *BestPriorPrice) GetContextIdOk() (*string, bool) {
 	if o == nil || IsNil(o.ContextId) {
 		return nil, false
@@ -192,6 +195,7 @@ func (o *BestPriorPrice) HasContextId() bool {
 }
 
 // SetContextId gets a reference to the given string and assigns it to the ContextId field.
+// Deprecated
 func (o *BestPriorPrice) SetContextId(v string) {
 	o.ContextId = &v
 }

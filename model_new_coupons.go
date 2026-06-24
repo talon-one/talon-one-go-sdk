@@ -36,6 +36,7 @@ type NewCoupons struct {
 	// The number of new coupon codes to generate for the campaign. Must be at least 1.
 	NumberOfCoupons int64 `json:"numberOfCoupons"`
 	// **DEPRECATED** To create more than 20,000 coupons in one request, use [Create coupons asynchronously](https://docs.talon.one/management-api#tag/Coupons/operation/createCouponsAsync) endpoint.
+	// Deprecated
 	UniquePrefix *string `json:"uniquePrefix,omitempty"`
 	// Arbitrary properties associated with this campaign.
 	Attributes map[string]interface{} `json:"attributes,omitempty"`
@@ -293,6 +294,7 @@ func (o *NewCoupons) SetNumberOfCoupons(v int64) {
 }
 
 // GetUniquePrefix returns the UniquePrefix field value if set, zero value otherwise.
+// Deprecated
 func (o *NewCoupons) GetUniquePrefix() string {
 	if o == nil || IsNil(o.UniquePrefix) {
 		var ret string
@@ -303,6 +305,7 @@ func (o *NewCoupons) GetUniquePrefix() string {
 
 // GetUniquePrefixOk returns a tuple with the UniquePrefix field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *NewCoupons) GetUniquePrefixOk() (*string, bool) {
 	if o == nil || IsNil(o.UniquePrefix) {
 		return nil, false
@@ -320,6 +323,7 @@ func (o *NewCoupons) HasUniquePrefix() bool {
 }
 
 // SetUniquePrefix gets a reference to the given string and assigns it to the UniquePrefix field.
+// Deprecated
 func (o *NewCoupons) SetUniquePrefix(v string) {
 	o.UniquePrefix = &v
 }

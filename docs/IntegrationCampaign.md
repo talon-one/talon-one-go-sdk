@@ -15,6 +15,8 @@ Name | Type | Description | Notes
 **Tags** | **[]string** | A list of tags for the campaign. | 
 **Features** | **[]string** | The features enabled in this campaign. | 
 **Rules** | [**[]RuleMetadata**](RuleMetadata.md) | A list of rules containing customer-facing details of the rewards defined in the campaign. | 
+**LinkedStoreIds** | Pointer to **[]int64** | A list of store IDs linked to this campaign. | [optional] 
+**LinkedAudienceIds** | Pointer to **[]int64** | A list of audience IDs linked to this campaign. | [optional] 
 
 ## Methods
 
@@ -274,6 +276,56 @@ and a boolean to check if the value has been set.
 
 SetRules sets Rules field to given value.
 
+
+### GetLinkedStoreIds
+
+`func (o *IntegrationCampaign) GetLinkedStoreIds() []int64`
+
+GetLinkedStoreIds returns the LinkedStoreIds field if non-nil, zero value otherwise.
+
+### GetLinkedStoreIdsOk
+
+`func (o *IntegrationCampaign) GetLinkedStoreIdsOk() (*[]int64, bool)`
+
+GetLinkedStoreIdsOk returns a tuple with the LinkedStoreIds field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetLinkedStoreIds
+
+`func (o *IntegrationCampaign) SetLinkedStoreIds(v []int64)`
+
+SetLinkedStoreIds sets LinkedStoreIds field to given value.
+
+### HasLinkedStoreIds
+
+`func (o *IntegrationCampaign) HasLinkedStoreIds() bool`
+
+HasLinkedStoreIds returns a boolean if a field has been set.
+
+### GetLinkedAudienceIds
+
+`func (o *IntegrationCampaign) GetLinkedAudienceIds() []int64`
+
+GetLinkedAudienceIds returns the LinkedAudienceIds field if non-nil, zero value otherwise.
+
+### GetLinkedAudienceIdsOk
+
+`func (o *IntegrationCampaign) GetLinkedAudienceIdsOk() (*[]int64, bool)`
+
+GetLinkedAudienceIdsOk returns a tuple with the LinkedAudienceIds field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetLinkedAudienceIds
+
+`func (o *IntegrationCampaign) SetLinkedAudienceIds(v []int64)`
+
+SetLinkedAudienceIds sets LinkedAudienceIds field to given value.
+
+### HasLinkedAudienceIds
+
+`func (o *IntegrationCampaign) HasLinkedAudienceIds() bool`
+
+HasLinkedAudienceIds returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

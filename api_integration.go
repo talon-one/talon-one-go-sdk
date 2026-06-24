@@ -2537,7 +2537,7 @@ You can get the same data via other endpoints that also apply changes, which can
 - [Update customer profile](#tag/Customer-profiles/operation/updateCustomerProfileV2)
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param customerSessionId The `integration ID` of the customer session. You set this ID when you create a customer session.  You can see existing customer session integration IDs in the Campaign Manager's **Sessions** menu, or via the [List Application session](https://docs.talon.one/management-api#tag/Customer-data/operation/getApplicationSessions) endpoint.
+	@param customerSessionId The `integration ID` of the customer session. You set this ID when you create a customer session.  You can see existing customer session integration IDs in the Campaign Manager's **Sessions** menu, or via the [List Application session](https://docs.talon.one/management-api#tag/Customer-data/operation/getApplicationSessions) endpoint. **Notes**: - There is no length limit for this ID. - It must be URL-encoded. For example, replace spaces with `%20`. [Learn more](https://www.w3schools.com/tags/ref_urlencode.asp).
 	@return ApiGetCustomerSessionRequest
 */
 func (a *IntegrationAPIService) GetCustomerSession(ctx context.Context, customerSessionId string) ApiGetCustomerSessionRequest {
@@ -4433,6 +4433,8 @@ type ApiIntegrationGetAllCampaignsRequest struct {
 	startBefore *time.Time
 	endAfter    *time.Time
 	endBefore   *time.Time
+	storeId     *int64
+	audienceId  *int64
 }
 
 // The number of items in the response.
@@ -4474,6 +4476,18 @@ func (r ApiIntegrationGetAllCampaignsRequest) EndAfter(endAfter time.Time) ApiIn
 // Filter results to only include campaigns that end on or before  the specified timestamp.  **Note:**  - It must be an RFC3339 timestamp string.  - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.
 func (r ApiIntegrationGetAllCampaignsRequest) EndBefore(endBefore time.Time) ApiIntegrationGetAllCampaignsRequest {
 	r.endBefore = &endBefore
+	return r
+}
+
+// Filter results to campaigns linked to the specified store ID.
+func (r ApiIntegrationGetAllCampaignsRequest) StoreId(storeId int64) ApiIntegrationGetAllCampaignsRequest {
+	r.storeId = &storeId
+	return r
+}
+
+// Filter results to campaigns linked to the specified audience ID.
+func (r ApiIntegrationGetAllCampaignsRequest) AudienceId(audienceId int64) ApiIntegrationGetAllCampaignsRequest {
+	r.audienceId = &audienceId
 	return r
 }
 
@@ -4544,6 +4558,12 @@ func (a *IntegrationAPIService) IntegrationGetAllCampaignsExecute(r ApiIntegrati
 	}
 	if r.endBefore != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "endBefore", r.endBefore, "form", "")
+	}
+	if r.storeId != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "storeId", r.storeId, "form", "")
+	}
+	if r.audienceId != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "audienceId", r.audienceId, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -4643,6 +4663,158 @@ func (a *IntegrationAPIService) IntegrationGetAllCampaignsExecute(r ApiIntegrati
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiJoinLoyaltyProgramRequest struct {
+	ctx              context.Context
+	ApiService       *IntegrationAPIService
+	loyaltyProgramId int64
+	integrationId    string
+}
+
+func (r ApiJoinLoyaltyProgramRequest) Execute() (*http.Response, error) {
+	return r.ApiService.JoinLoyaltyProgramExecute(r)
+}
+
+/*
+JoinLoyaltyProgram Join customer profile to loyalty program
+
+Join a customer profile to the specified loyalty program.
+
+If the customer profile does not exist, it will be created first using the
+provided `integrationId`, then joined to the loyalty program.
+
+> [!note] This endpoint only works with profile-based loyalty programs.
+
+**Behavior**:
+- If the loyalty program does not exist, the request fails.
+- If the customer profile is already joined to the loyalty program, the request fails.
+- If the customer profile does not exist, it is created and then joined to the loyalty program.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param loyaltyProgramId Identifier of the profile-based loyalty program. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
+	@param integrationId The integration ID of the customer profile. You can get the `integrationId` of a profile using: - A customer session integration ID with the [Update customer session](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2) endpoint. - The Management API with the [List application's customers](https://docs.talon.one/management-api#tag/Customer-data/operation/getApplicationCustomers) endpoint.
+	@return ApiJoinLoyaltyProgramRequest
+*/
+func (a *IntegrationAPIService) JoinLoyaltyProgram(ctx context.Context, loyaltyProgramId int64, integrationId string) ApiJoinLoyaltyProgramRequest {
+	return ApiJoinLoyaltyProgramRequest{
+		ApiService:       a,
+		ctx:              ctx,
+		loyaltyProgramId: loyaltyProgramId,
+		integrationId:    integrationId,
+	}
+}
+
+// Execute executes the request
+func (a *IntegrationAPIService) JoinLoyaltyProgramExecute(r ApiJoinLoyaltyProgramRequest) (*http.Response, error) {
+	var (
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IntegrationAPIService.JoinLoyaltyProgram")
+	if err != nil {
+		return nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/join"
+	localVarPath = strings.Replace(localVarPath, "{"+"loyaltyProgramId"+"}", url.PathEscape(parameterValueToString(r.loyaltyProgramId, "loyaltyProgramId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"integrationId"+"}", url.PathEscape(parameterValueToString(r.integrationId, "integrationId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
 }
 
 type ApiLinkLoyaltyCardToProfileRequest struct {
@@ -6732,7 +6904,7 @@ You can use this endpoint to:
 > - [Archived campaigns](https://docs.talon.one/docs/product/campaigns/managing-campaigns#archiving-a-campaign) are not considered in rule evaluation when `runRuleEngine` is `true`.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param integrationId The integration identifier for this customer profile. Must be: - Unique within the deployment. - Stable for the customer. Do not use an ID that the customer can update themselves. For example, you can use a database ID.  Once set, you cannot update this identifier.
+	@param integrationId The integration identifier for this customer profile. Must be: - Unique within the deployment. - Stable for the customer. Do not use an ID that the customer can update themselves. For example, you can use a database ID.  Once set, you cannot update this identifier. **Note**: It must be URL-encoded. For example, replace spaces with `%20`. [Learn more](https://www.w3schools.com/tags/ref_urlencode.asp).
 	@return ApiUpdateCustomerProfileV2Request
 */
 func (a *IntegrationAPIService) UpdateCustomerProfileV2(ctx context.Context, integrationId string) ApiUpdateCustomerProfileV2Request {
@@ -7136,7 +7308,7 @@ For more information, see:
 - The [integration tutorial](https://docs.talon.one/docs/dev/tutorials/integrating-talon-one).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param customerSessionId The `integration ID` of the customer session. You set this ID when you create a customer session.  You can see existing customer session integration IDs in the Campaign Manager's **Sessions** menu, or via the [List Application session](https://docs.talon.one/management-api#tag/Customer-data/operation/getApplicationSessions) endpoint.
+	@param customerSessionId The `integration ID` of the customer session. You set this ID when you create a customer session.  You can see existing customer session integration IDs in the Campaign Manager's **Sessions** menu, or via the [List Application session](https://docs.talon.one/management-api#tag/Customer-data/operation/getApplicationSessions) endpoint. **Notes**: - There is no length limit for this ID. - It must be URL-encoded. For example, replace spaces with `%20`. [Learn more](https://www.w3schools.com/tags/ref_urlencode.asp).
 	@return ApiUpdateCustomerSessionV2Request
 */
 func (a *IntegrationAPIService) UpdateCustomerSessionV2(ctx context.Context, customerSessionId string) ApiUpdateCustomerSessionV2Request {

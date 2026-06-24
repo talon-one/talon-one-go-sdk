@@ -38,7 +38,7 @@ type Reward struct {
 	// Indicates if this is a live or sandbox reward. Rewards of a given type can only be connected to Applications of the same type.
 	Sandbox bool `json:"sandbox"`
 	// An optional rule that manages who can see this reward. If not specified, the reward is visible to all customers.  **Note:** Only the `condition` field is evaluated within this rule. The `effects` field must be an empty array, and `bindings` are not supported.
-	VisibilityConditions *Rule `json:"visibilityConditions,omitempty"`
+	EligibilityConditions *Rule `json:"eligibilityConditions,omitempty"`
 	// Rule to apply.  **Note**: The `bindings` field inside the rule must not be used in this endpoint. All bindings should be defined at the reward level via the top-level `bindings` field.
 	Rule *Rule `json:"rule,omitempty"`
 	// A list of named variables created before the reward's rules are evaluated.  Each binding pairs a name with a talang expression. The expression is evaluated once  and its result is available by name in any rule condition or effect. Bindings must be defined outside of individual rules.
@@ -279,36 +279,36 @@ func (o *Reward) SetSandbox(v bool) {
 	o.Sandbox = v
 }
 
-// GetVisibilityConditions returns the VisibilityConditions field value if set, zero value otherwise.
-func (o *Reward) GetVisibilityConditions() Rule {
-	if o == nil || IsNil(o.VisibilityConditions) {
+// GetEligibilityConditions returns the EligibilityConditions field value if set, zero value otherwise.
+func (o *Reward) GetEligibilityConditions() Rule {
+	if o == nil || IsNil(o.EligibilityConditions) {
 		var ret Rule
 		return ret
 	}
-	return *o.VisibilityConditions
+	return *o.EligibilityConditions
 }
 
-// GetVisibilityConditionsOk returns a tuple with the VisibilityConditions field value if set, nil otherwise
+// GetEligibilityConditionsOk returns a tuple with the EligibilityConditions field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Reward) GetVisibilityConditionsOk() (*Rule, bool) {
-	if o == nil || IsNil(o.VisibilityConditions) {
+func (o *Reward) GetEligibilityConditionsOk() (*Rule, bool) {
+	if o == nil || IsNil(o.EligibilityConditions) {
 		return nil, false
 	}
-	return o.VisibilityConditions, true
+	return o.EligibilityConditions, true
 }
 
-// HasVisibilityConditions returns a boolean if a field has been set.
-func (o *Reward) HasVisibilityConditions() bool {
-	if o != nil && !IsNil(o.VisibilityConditions) {
+// HasEligibilityConditions returns a boolean if a field has been set.
+func (o *Reward) HasEligibilityConditions() bool {
+	if o != nil && !IsNil(o.EligibilityConditions) {
 		return true
 	}
 
 	return false
 }
 
-// SetVisibilityConditions gets a reference to the given Rule and assigns it to the VisibilityConditions field.
-func (o *Reward) SetVisibilityConditions(v Rule) {
-	o.VisibilityConditions = &v
+// SetEligibilityConditions gets a reference to the given Rule and assigns it to the EligibilityConditions field.
+func (o *Reward) SetEligibilityConditions(v Rule) {
+	o.EligibilityConditions = &v
 }
 
 // GetRule returns the Rule field value if set, zero value otherwise.
@@ -483,8 +483,8 @@ func (o Reward) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["applicationIds"] = o.ApplicationIds
 	toSerialize["sandbox"] = o.Sandbox
-	if !IsNil(o.VisibilityConditions) {
-		toSerialize["visibilityConditions"] = o.VisibilityConditions
+	if !IsNil(o.EligibilityConditions) {
+		toSerialize["eligibilityConditions"] = o.EligibilityConditions
 	}
 	if !IsNil(o.Rule) {
 		toSerialize["rule"] = o.Rule
@@ -557,7 +557,7 @@ func (o *Reward) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "description")
 		delete(additionalProperties, "applicationIds")
 		delete(additionalProperties, "sandbox")
-		delete(additionalProperties, "visibilityConditions")
+		delete(additionalProperties, "eligibilityConditions")
 		delete(additionalProperties, "rule")
 		delete(additionalProperties, "bindings")
 		delete(additionalProperties, "modified")
