@@ -38,6 +38,8 @@ type IntegrationEventV2Response struct {
 	CreatedReferrals []Referral `json:"createdReferrals"`
 	// The giveaways that were awarded during the event processing.
 	AwardedGiveaways []Giveaway `json:"awardedGiveaways,omitempty"`
+	// The achievements progress of the customer.
+	Achievements []CustomerAchievement `json:"achievements,omitempty"`
 	// The event that was processed.
 	Event                *Event `json:"event,omitempty"`
 	AdditionalProperties map[string]interface{}
@@ -329,6 +331,38 @@ func (o *IntegrationEventV2Response) SetAwardedGiveaways(v []Giveaway) {
 	o.AwardedGiveaways = v
 }
 
+// GetAchievements returns the Achievements field value if set, zero value otherwise.
+func (o *IntegrationEventV2Response) GetAchievements() []CustomerAchievement {
+	if o == nil || IsNil(o.Achievements) {
+		var ret []CustomerAchievement
+		return ret
+	}
+	return o.Achievements
+}
+
+// GetAchievementsOk returns a tuple with the Achievements field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IntegrationEventV2Response) GetAchievementsOk() ([]CustomerAchievement, bool) {
+	if o == nil || IsNil(o.Achievements) {
+		return nil, false
+	}
+	return o.Achievements, true
+}
+
+// HasAchievements returns a boolean if a field has been set.
+func (o *IntegrationEventV2Response) HasAchievements() bool {
+	if o != nil && !IsNil(o.Achievements) {
+		return true
+	}
+
+	return false
+}
+
+// SetAchievements gets a reference to the given []CustomerAchievement and assigns it to the Achievements field.
+func (o *IntegrationEventV2Response) SetAchievements(v []CustomerAchievement) {
+	o.Achievements = v
+}
+
 // GetEvent returns the Event field value if set, zero value otherwise.
 func (o *IntegrationEventV2Response) GetEvent() Event {
 	if o == nil || IsNil(o.Event) {
@@ -392,6 +426,9 @@ func (o IntegrationEventV2Response) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.AwardedGiveaways) {
 		toSerialize["awardedGiveaways"] = o.AwardedGiveaways
 	}
+	if !IsNil(o.Achievements) {
+		toSerialize["achievements"] = o.Achievements
+	}
 	if !IsNil(o.Event) {
 		toSerialize["event"] = o.Event
 	}
@@ -449,6 +486,7 @@ func (o *IntegrationEventV2Response) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "createdCoupons")
 		delete(additionalProperties, "createdReferrals")
 		delete(additionalProperties, "awardedGiveaways")
+		delete(additionalProperties, "achievements")
 		delete(additionalProperties, "event")
 		o.AdditionalProperties = additionalProperties
 	}

@@ -10,6 +10,7 @@ Name | Type | Description | Notes
 **SubledgerID** | **string** |  | 
 **SourceOfEvent** | **string** |  | 
 **CurrentTier** | **string** | The name of the customer&#39;s current tier. | 
+**SessionIntegrationID** | Pointer to **string** | The integration ID of the session through which the points were earned or lost. Only set when the change results from a rule engine execution; empty otherwise. | [optional] 
 **EmployeeName** | Pointer to **string** |  | [optional] 
 **UserID** | Pointer to **int64** |  | [optional] 
 **CurrentPoints** | **float32** |  | 
@@ -154,6 +155,31 @@ and a boolean to check if the value has been set.
 
 SetCurrentTier sets CurrentTier field to given value.
 
+
+### GetSessionIntegrationID
+
+`func (o *IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification) GetSessionIntegrationID() string`
+
+GetSessionIntegrationID returns the SessionIntegrationID field if non-nil, zero value otherwise.
+
+### GetSessionIntegrationIDOk
+
+`func (o *IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification) GetSessionIntegrationIDOk() (*string, bool)`
+
+GetSessionIntegrationIDOk returns a tuple with the SessionIntegrationID field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSessionIntegrationID
+
+`func (o *IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification) SetSessionIntegrationID(v string)`
+
+SetSessionIntegrationID sets SessionIntegrationID field to given value.
+
+### HasSessionIntegrationID
+
+`func (o *IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification) HasSessionIntegrationID() bool`
+
+HasSessionIntegrationID returns a boolean if a field has been set.
 
 ### GetEmployeeName
 

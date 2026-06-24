@@ -13,6 +13,7 @@ Name | Type | Description | Notes
 **CreatedCoupons** | [**[]Coupon**](Coupon.md) | The coupons that were created during the event processing. | 
 **CreatedReferrals** | [**[]Referral**](Referral.md) | The referrals that were created during the event processing. | 
 **AwardedGiveaways** | Pointer to [**[]Giveaway**](Giveaway.md) | The giveaways that were awarded during the event processing. | [optional] 
+**Achievements** | Pointer to [**[]CustomerAchievement**](CustomerAchievement.md) | The achievements progress of the customer. | [optional] 
 **Event** | Pointer to [**Event**](Event.md) | The event that was processed. | [optional] 
 
 ## Methods
@@ -243,6 +244,31 @@ SetAwardedGiveaways sets AwardedGiveaways field to given value.
 `func (o *IntegrationEventV2Response) HasAwardedGiveaways() bool`
 
 HasAwardedGiveaways returns a boolean if a field has been set.
+
+### GetAchievements
+
+`func (o *IntegrationEventV2Response) GetAchievements() []CustomerAchievement`
+
+GetAchievements returns the Achievements field if non-nil, zero value otherwise.
+
+### GetAchievementsOk
+
+`func (o *IntegrationEventV2Response) GetAchievementsOk() (*[]CustomerAchievement, bool)`
+
+GetAchievementsOk returns a tuple with the Achievements field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAchievements
+
+`func (o *IntegrationEventV2Response) SetAchievements(v []CustomerAchievement)`
+
+SetAchievements sets Achievements field to given value.
+
+### HasAchievements
+
+`func (o *IntegrationEventV2Response) HasAchievements() bool`
+
+HasAchievements returns a boolean if a field has been set.
 
 ### GetEvent
 

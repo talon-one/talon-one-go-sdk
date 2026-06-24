@@ -42,7 +42,11 @@ type IntegrationCampaign struct {
 	// The features enabled in this campaign.
 	Features []string `json:"features"`
 	// A list of rules containing customer-facing details of the rewards defined in the campaign.
-	Rules                []RuleMetadata `json:"rules"`
+	Rules []RuleMetadata `json:"rules"`
+	// A list of store IDs linked to this campaign.
+	LinkedStoreIds []int64 `json:"linkedStoreIds,omitempty"`
+	// A list of audience IDs linked to this campaign.
+	LinkedAudienceIds    []int64 `json:"linkedAudienceIds,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -370,6 +374,70 @@ func (o *IntegrationCampaign) SetRules(v []RuleMetadata) {
 	o.Rules = v
 }
 
+// GetLinkedStoreIds returns the LinkedStoreIds field value if set, zero value otherwise.
+func (o *IntegrationCampaign) GetLinkedStoreIds() []int64 {
+	if o == nil || IsNil(o.LinkedStoreIds) {
+		var ret []int64
+		return ret
+	}
+	return o.LinkedStoreIds
+}
+
+// GetLinkedStoreIdsOk returns a tuple with the LinkedStoreIds field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IntegrationCampaign) GetLinkedStoreIdsOk() ([]int64, bool) {
+	if o == nil || IsNil(o.LinkedStoreIds) {
+		return nil, false
+	}
+	return o.LinkedStoreIds, true
+}
+
+// HasLinkedStoreIds returns a boolean if a field has been set.
+func (o *IntegrationCampaign) HasLinkedStoreIds() bool {
+	if o != nil && !IsNil(o.LinkedStoreIds) {
+		return true
+	}
+
+	return false
+}
+
+// SetLinkedStoreIds gets a reference to the given []int64 and assigns it to the LinkedStoreIds field.
+func (o *IntegrationCampaign) SetLinkedStoreIds(v []int64) {
+	o.LinkedStoreIds = v
+}
+
+// GetLinkedAudienceIds returns the LinkedAudienceIds field value if set, zero value otherwise.
+func (o *IntegrationCampaign) GetLinkedAudienceIds() []int64 {
+	if o == nil || IsNil(o.LinkedAudienceIds) {
+		var ret []int64
+		return ret
+	}
+	return o.LinkedAudienceIds
+}
+
+// GetLinkedAudienceIdsOk returns a tuple with the LinkedAudienceIds field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IntegrationCampaign) GetLinkedAudienceIdsOk() ([]int64, bool) {
+	if o == nil || IsNil(o.LinkedAudienceIds) {
+		return nil, false
+	}
+	return o.LinkedAudienceIds, true
+}
+
+// HasLinkedAudienceIds returns a boolean if a field has been set.
+func (o *IntegrationCampaign) HasLinkedAudienceIds() bool {
+	if o != nil && !IsNil(o.LinkedAudienceIds) {
+		return true
+	}
+
+	return false
+}
+
+// SetLinkedAudienceIds gets a reference to the given []int64 and assigns it to the LinkedAudienceIds field.
+func (o *IntegrationCampaign) SetLinkedAudienceIds(v []int64) {
+	o.LinkedAudienceIds = v
+}
+
 func (o IntegrationCampaign) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -399,6 +467,12 @@ func (o IntegrationCampaign) ToMap() (map[string]interface{}, error) {
 	toSerialize["tags"] = o.Tags
 	toSerialize["features"] = o.Features
 	toSerialize["rules"] = o.Rules
+	if !IsNil(o.LinkedStoreIds) {
+		toSerialize["linkedStoreIds"] = o.LinkedStoreIds
+	}
+	if !IsNil(o.LinkedAudienceIds) {
+		toSerialize["linkedAudienceIds"] = o.LinkedAudienceIds
+	}
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value
@@ -459,6 +533,8 @@ func (o *IntegrationCampaign) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "tags")
 		delete(additionalProperties, "features")
 		delete(additionalProperties, "rules")
+		delete(additionalProperties, "linkedStoreIds")
+		delete(additionalProperties, "linkedAudienceIds")
 		o.AdditionalProperties = additionalProperties
 	}
 

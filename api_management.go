@@ -6410,6 +6410,8 @@ type ApiExportCouponsRequest struct {
 	dateFormat             *string
 	campaignState          *string
 	valuesOnly             *bool
+	deletedBefore          *time.Time
+	deletedAfter           *time.Time
 }
 
 // Filter results by campaign ID.
@@ -6493,6 +6495,18 @@ func (r ApiExportCouponsRequest) CampaignState(campaignState string) ApiExportCo
 // Filter results to only return the coupon codes (&#x60;value&#x60; column) without the associated coupon data.
 func (r ApiExportCouponsRequest) ValuesOnly(valuesOnly bool) ApiExportCouponsRequest {
 	r.valuesOnly = &valuesOnly
+	return r
+}
+
+// Timestamp that filters the results to only contain coupons deleted before this date. Must be an RFC3339 timestamp string. You can use any time zone setting. Talon.One will convert to UTC internally.  **Note:** Only coupons deleted in the last 7 days will appear in the results.
+func (r ApiExportCouponsRequest) DeletedBefore(deletedBefore time.Time) ApiExportCouponsRequest {
+	r.deletedBefore = &deletedBefore
+	return r
+}
+
+// Timestamp that filters the results to only contain coupons deleted after this date. Must be an RFC3339 timestamp string. You can use any time zone setting. Talon.One will convert to UTC internally.  **Note:** Only coupons deleted in the last 7 days will appear in the results.
+func (r ApiExportCouponsRequest) DeletedAfter(deletedAfter time.Time) ApiExportCouponsRequest {
+	r.deletedAfter = &deletedAfter
 	return r
 }
 
@@ -6643,6 +6657,12 @@ func (a *ManagementAPIService) ExportCouponsExecute(r ApiExportCouponsRequest) (
 		var defaultValue bool = false
 		parameterAddToHeaderOrQuery(localVarQueryParams, "valuesOnly", defaultValue, "form", "")
 		r.valuesOnly = &defaultValue
+	}
+	if r.deletedBefore != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "deletedBefore", r.deletedBefore, "form", "")
+	}
+	if r.deletedAfter != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "deletedAfter", r.deletedAfter, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -12067,16 +12087,17 @@ func (a *ManagementAPIService) GetAttributeExecute(r ApiGetAttributeRequest) (*A
 }
 
 type ApiGetAttributesRequest struct {
-	ctx            context.Context
-	ApiService     *ManagementAPIService
-	pageSize       *int64
-	skip           *int64
-	sort           *string
-	entity         *string
-	applicationIds *string
-	type_          *string
-	kind           *string
-	search         *string
+	ctx               context.Context
+	ApiService        *ManagementAPIService
+	pageSize          *int64
+	skip              *int64
+	sort              *string
+	entity            *string
+	applicationIds    *string
+	loyaltyProgramIds *string
+	type_             *string
+	kind              *string
+	search            *string
 }
 
 // The number of items in the response.
@@ -12106,6 +12127,12 @@ func (r ApiGetAttributesRequest) Entity(entity string) ApiGetAttributesRequest {
 // Returned attributes will be filtered by supplied application ids
 func (r ApiGetAttributesRequest) ApplicationIds(applicationIds string) ApiGetAttributesRequest {
 	r.applicationIds = &applicationIds
+	return r
+}
+
+// Returned attributes will be filtered by the specified loyalty program ids, separated by commas. You can only use this parameter when &#x60;entity&#x60; is &#x60;LoyaltyCard&#x60;.
+func (r ApiGetAttributesRequest) LoyaltyProgramIds(loyaltyProgramIds string) ApiGetAttributesRequest {
+	r.loyaltyProgramIds = &loyaltyProgramIds
 	return r
 }
 
@@ -12186,6 +12213,9 @@ func (a *ManagementAPIService) GetAttributesExecute(r ApiGetAttributesRequest) (
 	}
 	if r.applicationIds != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "applicationIds", r.applicationIds, "form", "")
+	}
+	if r.loyaltyProgramIds != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "loyaltyProgramIds", r.loyaltyProgramIds, "form", "")
 	}
 	if r.type_ != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "type", r.type_, "form", "")
@@ -19050,6 +19080,132 @@ func (a *ManagementAPIService) GetRulesetExecute(r ApiGetRulesetRequest) (*Rules
 	}
 
 	localVarPath := localBasePath + "/v1/applications/{applicationId}/campaigns/{campaignId}/rulesets/{rulesetId}"
+	localVarPath = strings.Replace(localVarPath, "{"+"applicationId"+"}", url.PathEscape(parameterValueToString(r.applicationId, "applicationId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"campaignId"+"}", url.PathEscape(parameterValueToString(r.campaignId, "campaignId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"rulesetId"+"}", url.PathEscape(parameterValueToString(r.rulesetId, "rulesetId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetRulesetV2Request struct {
+	ctx           context.Context
+	ApiService    *ManagementAPIService
+	applicationId int64
+	campaignId    int64
+	rulesetId     int64
+}
+
+func (r ApiGetRulesetV2Request) Execute() (*RulesetV2, *http.Response, error) {
+	return r.ApiService.GetRulesetV2Execute(r)
+}
+
+/*
+GetRulesetV2 Get ruleset (V2)
+
+Retrieve the specified ruleset as a JSON object.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param applicationId The ID of the Application. It is displayed in your Talon.One deployment URL.
+	@param campaignId The ID of the campaign. It is displayed in your Talon.One deployment URL.
+	@param rulesetId The ID of the ruleset.
+	@return ApiGetRulesetV2Request
+*/
+func (a *ManagementAPIService) GetRulesetV2(ctx context.Context, applicationId int64, campaignId int64, rulesetId int64) ApiGetRulesetV2Request {
+	return ApiGetRulesetV2Request{
+		ApiService:    a,
+		ctx:           ctx,
+		applicationId: applicationId,
+		campaignId:    campaignId,
+		rulesetId:     rulesetId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return RulesetV2
+func (a *ManagementAPIService) GetRulesetV2Execute(r ApiGetRulesetV2Request) (*RulesetV2, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *RulesetV2
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagementAPIService.GetRulesetV2")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v2/applications/{applicationId}/campaigns/{campaignId}/rulesets/{rulesetId}"
 	localVarPath = strings.Replace(localVarPath, "{"+"applicationId"+"}", url.PathEscape(parameterValueToString(r.applicationId, "applicationId")), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"campaignId"+"}", url.PathEscape(parameterValueToString(r.campaignId, "campaignId")), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"rulesetId"+"}", url.PathEscape(parameterValueToString(r.rulesetId, "rulesetId")), -1)

@@ -13,6 +13,7 @@ Name | Type | Description | Notes
 **CreatedCoupons** | [**[]Coupon**](Coupon.md) | The coupons that were created during the event processing. | 
 **CreatedReferrals** | [**[]Referral**](Referral.md) | The referrals that were created during the event processing. | 
 **AwardedGiveaways** | Pointer to [**[]Giveaway**](Giveaway.md) | The giveaways that were awarded during the event processing. | [optional] 
+**Achievements** | Pointer to [**[]CustomerAchievement**](CustomerAchievement.md) | The achievements progress of the customer. | [optional] 
 
 ## Methods
 
@@ -242,6 +243,31 @@ SetAwardedGiveaways sets AwardedGiveaways field to given value.
 `func (o *IntegrationResponse) HasAwardedGiveaways() bool`
 
 HasAwardedGiveaways returns a boolean if a field has been set.
+
+### GetAchievements
+
+`func (o *IntegrationResponse) GetAchievements() []CustomerAchievement`
+
+GetAchievements returns the Achievements field if non-nil, zero value otherwise.
+
+### GetAchievementsOk
+
+`func (o *IntegrationResponse) GetAchievementsOk() (*[]CustomerAchievement, bool)`
+
+GetAchievementsOk returns a tuple with the Achievements field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAchievements
+
+`func (o *IntegrationResponse) SetAchievements(v []CustomerAchievement)`
+
+SetAchievements sets Achievements field to given value.
+
+### HasAchievements
+
+`func (o *IntegrationResponse) HasAchievements() bool`
+
+HasAchievements returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

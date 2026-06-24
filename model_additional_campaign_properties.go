@@ -24,34 +24,49 @@ type AdditionalCampaignProperties struct {
 	// A list of all the budgets that are defined by this campaign and their usage.  **Note:** Budgets that are not defined do not appear in this list and their usage is not counted until they are defined.
 	Budgets []CampaignBudget `json:"budgets,omitempty"`
 	// This property is **deprecated**. The count should be available under *budgets* property. Number of coupons redeemed in the campaign.
+	// Deprecated
 	CouponRedemptionCount *int64 `json:"couponRedemptionCount,omitempty"`
 	// This property is **deprecated**. The count should be available under *budgets* property. Number of referral codes redeemed in the campaign.
+	// Deprecated
 	ReferralRedemptionCount *int64 `json:"referralRedemptionCount,omitempty"`
 	// This property is **deprecated**. The count should be available under *budgets* property. Total amount of discounts redeemed in the campaign.
+	// Deprecated
 	DiscountCount *float32 `json:"discountCount,omitempty"`
 	// This property is **deprecated**. The count should be available under *budgets* property. Total number of times discounts were redeemed in this campaign.
+	// Deprecated
 	DiscountEffectCount *int64 `json:"discountEffectCount,omitempty"`
 	// This property is **deprecated**. The count should be available under *budgets* property. Total number of coupons created by rules in this campaign.
+	// Deprecated
 	CouponCreationCount *int64 `json:"couponCreationCount,omitempty"`
 	// This property is **deprecated**. The count should be available under *budgets* property. Total number of custom effects triggered by rules in this campaign.
+	// Deprecated
 	CustomEffectCount *int64 `json:"customEffectCount,omitempty"`
 	// This property is **deprecated**. The count should be available under *budgets* property. Total number of referrals created by rules in this campaign.
+	// Deprecated
 	ReferralCreationCount *int64 `json:"referralCreationCount,omitempty"`
 	// This property is **deprecated**. The count should be available under *budgets* property. Total number of times the [add free item effect](https://docs.talon.one/docs/dev/integration-api/api-effects#addfreeitem) can be triggered in this campaign.
+	// Deprecated
 	AddFreeItemEffectCount *int64 `json:"addFreeItemEffectCount,omitempty"`
 	// This property is **deprecated**. The count should be available under *budgets* property. Total number of giveaways awarded by rules in this campaign.
+	// Deprecated
 	AwardedGiveawaysCount *int64 `json:"awardedGiveawaysCount,omitempty"`
 	// This property is **deprecated**. The count should be available under *budgets* property. Total number of loyalty points created by rules in this campaign.
+	// Deprecated
 	CreatedLoyaltyPointsCount *float32 `json:"createdLoyaltyPointsCount,omitempty"`
 	// This property is **deprecated**. The count should be available under *budgets* property. Total number of loyalty point creation effects triggered by rules in this campaign.
+	// Deprecated
 	CreatedLoyaltyPointsEffectCount *int64 `json:"createdLoyaltyPointsEffectCount,omitempty"`
 	// This property is **deprecated**. The count should be available under *budgets* property. Total number of loyalty points redeemed by rules in this campaign.
+	// Deprecated
 	RedeemedLoyaltyPointsCount *float32 `json:"redeemedLoyaltyPointsCount,omitempty"`
 	// This property is **deprecated**. The count should be available under *budgets* property. Total number of loyalty point redemption effects triggered by rules in this campaign.
+	// Deprecated
 	RedeemedLoyaltyPointsEffectCount *int64 `json:"redeemedLoyaltyPointsEffectCount,omitempty"`
 	// This property is **deprecated**. The count should be available under *budgets* property. Total number of webhooks triggered by rules in this campaign.
+	// Deprecated
 	CallApiEffectCount *int64 `json:"callApiEffectCount,omitempty"`
 	// This property is **deprecated**. The count should be available under *budgets* property. Total number of reserve coupon effects triggered by rules in this campaign.
+	// Deprecated
 	ReservecouponEffectCount *int64 `json:"reservecouponEffectCount,omitempty"`
 	// Timestamp of the most recent event received by this campaign.
 	LastActivity *time.Time `json:"lastActivity,omitempty"`
@@ -128,6 +143,7 @@ func (o *AdditionalCampaignProperties) SetBudgets(v []CampaignBudget) {
 }
 
 // GetCouponRedemptionCount returns the CouponRedemptionCount field value if set, zero value otherwise.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetCouponRedemptionCount() int64 {
 	if o == nil || IsNil(o.CouponRedemptionCount) {
 		var ret int64
@@ -138,6 +154,7 @@ func (o *AdditionalCampaignProperties) GetCouponRedemptionCount() int64 {
 
 // GetCouponRedemptionCountOk returns a tuple with the CouponRedemptionCount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetCouponRedemptionCountOk() (*int64, bool) {
 	if o == nil || IsNil(o.CouponRedemptionCount) {
 		return nil, false
@@ -155,11 +172,13 @@ func (o *AdditionalCampaignProperties) HasCouponRedemptionCount() bool {
 }
 
 // SetCouponRedemptionCount gets a reference to the given int64 and assigns it to the CouponRedemptionCount field.
+// Deprecated
 func (o *AdditionalCampaignProperties) SetCouponRedemptionCount(v int64) {
 	o.CouponRedemptionCount = &v
 }
 
 // GetReferralRedemptionCount returns the ReferralRedemptionCount field value if set, zero value otherwise.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetReferralRedemptionCount() int64 {
 	if o == nil || IsNil(o.ReferralRedemptionCount) {
 		var ret int64
@@ -170,6 +189,7 @@ func (o *AdditionalCampaignProperties) GetReferralRedemptionCount() int64 {
 
 // GetReferralRedemptionCountOk returns a tuple with the ReferralRedemptionCount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetReferralRedemptionCountOk() (*int64, bool) {
 	if o == nil || IsNil(o.ReferralRedemptionCount) {
 		return nil, false
@@ -187,11 +207,13 @@ func (o *AdditionalCampaignProperties) HasReferralRedemptionCount() bool {
 }
 
 // SetReferralRedemptionCount gets a reference to the given int64 and assigns it to the ReferralRedemptionCount field.
+// Deprecated
 func (o *AdditionalCampaignProperties) SetReferralRedemptionCount(v int64) {
 	o.ReferralRedemptionCount = &v
 }
 
 // GetDiscountCount returns the DiscountCount field value if set, zero value otherwise.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetDiscountCount() float32 {
 	if o == nil || IsNil(o.DiscountCount) {
 		var ret float32
@@ -202,6 +224,7 @@ func (o *AdditionalCampaignProperties) GetDiscountCount() float32 {
 
 // GetDiscountCountOk returns a tuple with the DiscountCount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetDiscountCountOk() (*float32, bool) {
 	if o == nil || IsNil(o.DiscountCount) {
 		return nil, false
@@ -219,11 +242,13 @@ func (o *AdditionalCampaignProperties) HasDiscountCount() bool {
 }
 
 // SetDiscountCount gets a reference to the given float32 and assigns it to the DiscountCount field.
+// Deprecated
 func (o *AdditionalCampaignProperties) SetDiscountCount(v float32) {
 	o.DiscountCount = &v
 }
 
 // GetDiscountEffectCount returns the DiscountEffectCount field value if set, zero value otherwise.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetDiscountEffectCount() int64 {
 	if o == nil || IsNil(o.DiscountEffectCount) {
 		var ret int64
@@ -234,6 +259,7 @@ func (o *AdditionalCampaignProperties) GetDiscountEffectCount() int64 {
 
 // GetDiscountEffectCountOk returns a tuple with the DiscountEffectCount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetDiscountEffectCountOk() (*int64, bool) {
 	if o == nil || IsNil(o.DiscountEffectCount) {
 		return nil, false
@@ -251,11 +277,13 @@ func (o *AdditionalCampaignProperties) HasDiscountEffectCount() bool {
 }
 
 // SetDiscountEffectCount gets a reference to the given int64 and assigns it to the DiscountEffectCount field.
+// Deprecated
 func (o *AdditionalCampaignProperties) SetDiscountEffectCount(v int64) {
 	o.DiscountEffectCount = &v
 }
 
 // GetCouponCreationCount returns the CouponCreationCount field value if set, zero value otherwise.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetCouponCreationCount() int64 {
 	if o == nil || IsNil(o.CouponCreationCount) {
 		var ret int64
@@ -266,6 +294,7 @@ func (o *AdditionalCampaignProperties) GetCouponCreationCount() int64 {
 
 // GetCouponCreationCountOk returns a tuple with the CouponCreationCount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetCouponCreationCountOk() (*int64, bool) {
 	if o == nil || IsNil(o.CouponCreationCount) {
 		return nil, false
@@ -283,11 +312,13 @@ func (o *AdditionalCampaignProperties) HasCouponCreationCount() bool {
 }
 
 // SetCouponCreationCount gets a reference to the given int64 and assigns it to the CouponCreationCount field.
+// Deprecated
 func (o *AdditionalCampaignProperties) SetCouponCreationCount(v int64) {
 	o.CouponCreationCount = &v
 }
 
 // GetCustomEffectCount returns the CustomEffectCount field value if set, zero value otherwise.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetCustomEffectCount() int64 {
 	if o == nil || IsNil(o.CustomEffectCount) {
 		var ret int64
@@ -298,6 +329,7 @@ func (o *AdditionalCampaignProperties) GetCustomEffectCount() int64 {
 
 // GetCustomEffectCountOk returns a tuple with the CustomEffectCount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetCustomEffectCountOk() (*int64, bool) {
 	if o == nil || IsNil(o.CustomEffectCount) {
 		return nil, false
@@ -315,11 +347,13 @@ func (o *AdditionalCampaignProperties) HasCustomEffectCount() bool {
 }
 
 // SetCustomEffectCount gets a reference to the given int64 and assigns it to the CustomEffectCount field.
+// Deprecated
 func (o *AdditionalCampaignProperties) SetCustomEffectCount(v int64) {
 	o.CustomEffectCount = &v
 }
 
 // GetReferralCreationCount returns the ReferralCreationCount field value if set, zero value otherwise.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetReferralCreationCount() int64 {
 	if o == nil || IsNil(o.ReferralCreationCount) {
 		var ret int64
@@ -330,6 +364,7 @@ func (o *AdditionalCampaignProperties) GetReferralCreationCount() int64 {
 
 // GetReferralCreationCountOk returns a tuple with the ReferralCreationCount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetReferralCreationCountOk() (*int64, bool) {
 	if o == nil || IsNil(o.ReferralCreationCount) {
 		return nil, false
@@ -347,11 +382,13 @@ func (o *AdditionalCampaignProperties) HasReferralCreationCount() bool {
 }
 
 // SetReferralCreationCount gets a reference to the given int64 and assigns it to the ReferralCreationCount field.
+// Deprecated
 func (o *AdditionalCampaignProperties) SetReferralCreationCount(v int64) {
 	o.ReferralCreationCount = &v
 }
 
 // GetAddFreeItemEffectCount returns the AddFreeItemEffectCount field value if set, zero value otherwise.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetAddFreeItemEffectCount() int64 {
 	if o == nil || IsNil(o.AddFreeItemEffectCount) {
 		var ret int64
@@ -362,6 +399,7 @@ func (o *AdditionalCampaignProperties) GetAddFreeItemEffectCount() int64 {
 
 // GetAddFreeItemEffectCountOk returns a tuple with the AddFreeItemEffectCount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetAddFreeItemEffectCountOk() (*int64, bool) {
 	if o == nil || IsNil(o.AddFreeItemEffectCount) {
 		return nil, false
@@ -379,11 +417,13 @@ func (o *AdditionalCampaignProperties) HasAddFreeItemEffectCount() bool {
 }
 
 // SetAddFreeItemEffectCount gets a reference to the given int64 and assigns it to the AddFreeItemEffectCount field.
+// Deprecated
 func (o *AdditionalCampaignProperties) SetAddFreeItemEffectCount(v int64) {
 	o.AddFreeItemEffectCount = &v
 }
 
 // GetAwardedGiveawaysCount returns the AwardedGiveawaysCount field value if set, zero value otherwise.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetAwardedGiveawaysCount() int64 {
 	if o == nil || IsNil(o.AwardedGiveawaysCount) {
 		var ret int64
@@ -394,6 +434,7 @@ func (o *AdditionalCampaignProperties) GetAwardedGiveawaysCount() int64 {
 
 // GetAwardedGiveawaysCountOk returns a tuple with the AwardedGiveawaysCount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetAwardedGiveawaysCountOk() (*int64, bool) {
 	if o == nil || IsNil(o.AwardedGiveawaysCount) {
 		return nil, false
@@ -411,11 +452,13 @@ func (o *AdditionalCampaignProperties) HasAwardedGiveawaysCount() bool {
 }
 
 // SetAwardedGiveawaysCount gets a reference to the given int64 and assigns it to the AwardedGiveawaysCount field.
+// Deprecated
 func (o *AdditionalCampaignProperties) SetAwardedGiveawaysCount(v int64) {
 	o.AwardedGiveawaysCount = &v
 }
 
 // GetCreatedLoyaltyPointsCount returns the CreatedLoyaltyPointsCount field value if set, zero value otherwise.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetCreatedLoyaltyPointsCount() float32 {
 	if o == nil || IsNil(o.CreatedLoyaltyPointsCount) {
 		var ret float32
@@ -426,6 +469,7 @@ func (o *AdditionalCampaignProperties) GetCreatedLoyaltyPointsCount() float32 {
 
 // GetCreatedLoyaltyPointsCountOk returns a tuple with the CreatedLoyaltyPointsCount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetCreatedLoyaltyPointsCountOk() (*float32, bool) {
 	if o == nil || IsNil(o.CreatedLoyaltyPointsCount) {
 		return nil, false
@@ -443,11 +487,13 @@ func (o *AdditionalCampaignProperties) HasCreatedLoyaltyPointsCount() bool {
 }
 
 // SetCreatedLoyaltyPointsCount gets a reference to the given float32 and assigns it to the CreatedLoyaltyPointsCount field.
+// Deprecated
 func (o *AdditionalCampaignProperties) SetCreatedLoyaltyPointsCount(v float32) {
 	o.CreatedLoyaltyPointsCount = &v
 }
 
 // GetCreatedLoyaltyPointsEffectCount returns the CreatedLoyaltyPointsEffectCount field value if set, zero value otherwise.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetCreatedLoyaltyPointsEffectCount() int64 {
 	if o == nil || IsNil(o.CreatedLoyaltyPointsEffectCount) {
 		var ret int64
@@ -458,6 +504,7 @@ func (o *AdditionalCampaignProperties) GetCreatedLoyaltyPointsEffectCount() int6
 
 // GetCreatedLoyaltyPointsEffectCountOk returns a tuple with the CreatedLoyaltyPointsEffectCount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetCreatedLoyaltyPointsEffectCountOk() (*int64, bool) {
 	if o == nil || IsNil(o.CreatedLoyaltyPointsEffectCount) {
 		return nil, false
@@ -475,11 +522,13 @@ func (o *AdditionalCampaignProperties) HasCreatedLoyaltyPointsEffectCount() bool
 }
 
 // SetCreatedLoyaltyPointsEffectCount gets a reference to the given int64 and assigns it to the CreatedLoyaltyPointsEffectCount field.
+// Deprecated
 func (o *AdditionalCampaignProperties) SetCreatedLoyaltyPointsEffectCount(v int64) {
 	o.CreatedLoyaltyPointsEffectCount = &v
 }
 
 // GetRedeemedLoyaltyPointsCount returns the RedeemedLoyaltyPointsCount field value if set, zero value otherwise.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetRedeemedLoyaltyPointsCount() float32 {
 	if o == nil || IsNil(o.RedeemedLoyaltyPointsCount) {
 		var ret float32
@@ -490,6 +539,7 @@ func (o *AdditionalCampaignProperties) GetRedeemedLoyaltyPointsCount() float32 {
 
 // GetRedeemedLoyaltyPointsCountOk returns a tuple with the RedeemedLoyaltyPointsCount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetRedeemedLoyaltyPointsCountOk() (*float32, bool) {
 	if o == nil || IsNil(o.RedeemedLoyaltyPointsCount) {
 		return nil, false
@@ -507,11 +557,13 @@ func (o *AdditionalCampaignProperties) HasRedeemedLoyaltyPointsCount() bool {
 }
 
 // SetRedeemedLoyaltyPointsCount gets a reference to the given float32 and assigns it to the RedeemedLoyaltyPointsCount field.
+// Deprecated
 func (o *AdditionalCampaignProperties) SetRedeemedLoyaltyPointsCount(v float32) {
 	o.RedeemedLoyaltyPointsCount = &v
 }
 
 // GetRedeemedLoyaltyPointsEffectCount returns the RedeemedLoyaltyPointsEffectCount field value if set, zero value otherwise.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetRedeemedLoyaltyPointsEffectCount() int64 {
 	if o == nil || IsNil(o.RedeemedLoyaltyPointsEffectCount) {
 		var ret int64
@@ -522,6 +574,7 @@ func (o *AdditionalCampaignProperties) GetRedeemedLoyaltyPointsEffectCount() int
 
 // GetRedeemedLoyaltyPointsEffectCountOk returns a tuple with the RedeemedLoyaltyPointsEffectCount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetRedeemedLoyaltyPointsEffectCountOk() (*int64, bool) {
 	if o == nil || IsNil(o.RedeemedLoyaltyPointsEffectCount) {
 		return nil, false
@@ -539,11 +592,13 @@ func (o *AdditionalCampaignProperties) HasRedeemedLoyaltyPointsEffectCount() boo
 }
 
 // SetRedeemedLoyaltyPointsEffectCount gets a reference to the given int64 and assigns it to the RedeemedLoyaltyPointsEffectCount field.
+// Deprecated
 func (o *AdditionalCampaignProperties) SetRedeemedLoyaltyPointsEffectCount(v int64) {
 	o.RedeemedLoyaltyPointsEffectCount = &v
 }
 
 // GetCallApiEffectCount returns the CallApiEffectCount field value if set, zero value otherwise.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetCallApiEffectCount() int64 {
 	if o == nil || IsNil(o.CallApiEffectCount) {
 		var ret int64
@@ -554,6 +609,7 @@ func (o *AdditionalCampaignProperties) GetCallApiEffectCount() int64 {
 
 // GetCallApiEffectCountOk returns a tuple with the CallApiEffectCount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetCallApiEffectCountOk() (*int64, bool) {
 	if o == nil || IsNil(o.CallApiEffectCount) {
 		return nil, false
@@ -571,11 +627,13 @@ func (o *AdditionalCampaignProperties) HasCallApiEffectCount() bool {
 }
 
 // SetCallApiEffectCount gets a reference to the given int64 and assigns it to the CallApiEffectCount field.
+// Deprecated
 func (o *AdditionalCampaignProperties) SetCallApiEffectCount(v int64) {
 	o.CallApiEffectCount = &v
 }
 
 // GetReservecouponEffectCount returns the ReservecouponEffectCount field value if set, zero value otherwise.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetReservecouponEffectCount() int64 {
 	if o == nil || IsNil(o.ReservecouponEffectCount) {
 		var ret int64
@@ -586,6 +644,7 @@ func (o *AdditionalCampaignProperties) GetReservecouponEffectCount() int64 {
 
 // GetReservecouponEffectCountOk returns a tuple with the ReservecouponEffectCount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *AdditionalCampaignProperties) GetReservecouponEffectCountOk() (*int64, bool) {
 	if o == nil || IsNil(o.ReservecouponEffectCount) {
 		return nil, false
@@ -603,6 +662,7 @@ func (o *AdditionalCampaignProperties) HasReservecouponEffectCount() bool {
 }
 
 // SetReservecouponEffectCount gets a reference to the given int64 and assigns it to the ReservecouponEffectCount field.
+// Deprecated
 func (o *AdditionalCampaignProperties) SetReservecouponEffectCount(v int64) {
 	o.ReservecouponEffectCount = &v
 }

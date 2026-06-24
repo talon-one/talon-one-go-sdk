@@ -36,6 +36,7 @@ type AudienceCustomer struct {
 	// The total amount of money spent by the customer **before** discounts are applied.  The total sales amount excludes the following: - Cancelled or reopened sessions. - Returned items.
 	TotalSales float32 `json:"totalSales"`
 	// **DEPRECATED. Always returns `null`.** A list of loyalty programs joined by the customer.
+	// Deprecated
 	LoyaltyMemberships []LoyaltyMembership `json:"loyaltyMemberships,omitempty"`
 	// The audiences the customer belongs to.
 	AudienceMemberships []AudienceMembership `json:"audienceMemberships,omitempty"`
@@ -253,6 +254,7 @@ func (o *AudienceCustomer) SetTotalSales(v float32) {
 }
 
 // GetLoyaltyMemberships returns the LoyaltyMemberships field value if set, zero value otherwise.
+// Deprecated
 func (o *AudienceCustomer) GetLoyaltyMemberships() []LoyaltyMembership {
 	if o == nil || IsNil(o.LoyaltyMemberships) {
 		var ret []LoyaltyMembership
@@ -263,6 +265,7 @@ func (o *AudienceCustomer) GetLoyaltyMemberships() []LoyaltyMembership {
 
 // GetLoyaltyMembershipsOk returns a tuple with the LoyaltyMemberships field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *AudienceCustomer) GetLoyaltyMembershipsOk() ([]LoyaltyMembership, bool) {
 	if o == nil || IsNil(o.LoyaltyMemberships) {
 		return nil, false
@@ -280,6 +283,7 @@ func (o *AudienceCustomer) HasLoyaltyMemberships() bool {
 }
 
 // SetLoyaltyMemberships gets a reference to the given []LoyaltyMembership and assigns it to the LoyaltyMemberships field.
+// Deprecated
 func (o *AudienceCustomer) SetLoyaltyMemberships(v []LoyaltyMembership) {
 	o.LoyaltyMemberships = v
 }

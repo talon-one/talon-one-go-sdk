@@ -21,6 +21,7 @@ var _ MappedNullable = &LoyaltySubLedger{}
 // LoyaltySubLedger Ledger of Balance in Loyalty Program for a Customer.
 type LoyaltySubLedger struct {
 	// **DEPRECATED** Use `totalActivePoints` property instead. Total amount of currently active and available points in the customer's balance.
+	// Deprecated
 	Total float32 `json:"total"`
 	// Total amount of currently active and available points in the customer's balance.
 	TotalActivePoints float32 `json:"totalActivePoints"`
@@ -73,6 +74,7 @@ func NewLoyaltySubLedgerWithDefaults() *LoyaltySubLedger {
 }
 
 // GetTotal returns the Total field value
+// Deprecated
 func (o *LoyaltySubLedger) GetTotal() float32 {
 	if o == nil {
 		var ret float32
@@ -84,6 +86,7 @@ func (o *LoyaltySubLedger) GetTotal() float32 {
 
 // GetTotalOk returns a tuple with the Total field value
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *LoyaltySubLedger) GetTotalOk() (*float32, bool) {
 	if o == nil {
 		return nil, false
@@ -92,6 +95,7 @@ func (o *LoyaltySubLedger) GetTotalOk() (*float32, bool) {
 }
 
 // SetTotal sets field value
+// Deprecated
 func (o *LoyaltySubLedger) SetTotal(v float32) {
 	o.Total = v
 }

@@ -28,11 +28,13 @@ type IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification stru
 	SubledgerID        string `json:"SubledgerID"`
 	SourceOfEvent      string `json:"SourceOfEvent"`
 	// The name of the customer's current tier.
-	CurrentTier   string                                                                         `json:"CurrentTier"`
-	EmployeeName  *string                                                                        `json:"EmployeeName,omitempty"`
-	UserID        *int64                                                                         `json:"UserID,omitempty"`
-	CurrentPoints float32                                                                        `json:"CurrentPoints"`
-	Actions       []IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction `json:"Actions,omitempty"`
+	CurrentTier string `json:"CurrentTier"`
+	// The integration ID of the session through which the points were earned or lost. Only set when the change results from a rule engine execution; empty otherwise.
+	SessionIntegrationID *string                                                                        `json:"SessionIntegrationID,omitempty"`
+	EmployeeName         *string                                                                        `json:"EmployeeName,omitempty"`
+	UserID               *int64                                                                         `json:"UserID,omitempty"`
+	CurrentPoints        float32                                                                        `json:"CurrentPoints"`
+	Actions              []IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotificationAction `json:"Actions,omitempty"`
 	// Timestamp when the event was published.
 	PublishedAt          time.Time `json:"PublishedAt"`
 	AdditionalProperties map[string]interface{}
@@ -209,6 +211,38 @@ func (o *IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification)
 	o.CurrentTier = v
 }
 
+// GetSessionIntegrationID returns the SessionIntegrationID field value if set, zero value otherwise.
+func (o *IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification) GetSessionIntegrationID() string {
+	if o == nil || IsNil(o.SessionIntegrationID) {
+		var ret string
+		return ret
+	}
+	return *o.SessionIntegrationID
+}
+
+// GetSessionIntegrationIDOk returns a tuple with the SessionIntegrationID field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification) GetSessionIntegrationIDOk() (*string, bool) {
+	if o == nil || IsNil(o.SessionIntegrationID) {
+		return nil, false
+	}
+	return o.SessionIntegrationID, true
+}
+
+// HasSessionIntegrationID returns a boolean if a field has been set.
+func (o *IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification) HasSessionIntegrationID() bool {
+	if o != nil && !IsNil(o.SessionIntegrationID) {
+		return true
+	}
+
+	return false
+}
+
+// SetSessionIntegrationID gets a reference to the given string and assigns it to the SessionIntegrationID field.
+func (o *IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification) SetSessionIntegrationID(v string) {
+	o.SessionIntegrationID = &v
+}
+
 // GetEmployeeName returns the EmployeeName field value if set, zero value otherwise.
 func (o *IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification) GetEmployeeName() string {
 	if o == nil || IsNil(o.EmployeeName) {
@@ -369,6 +403,9 @@ func (o IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification) 
 	toSerialize["SubledgerID"] = o.SubledgerID
 	toSerialize["SourceOfEvent"] = o.SourceOfEvent
 	toSerialize["CurrentTier"] = o.CurrentTier
+	if !IsNil(o.SessionIntegrationID) {
+		toSerialize["SessionIntegrationID"] = o.SessionIntegrationID
+	}
 	if !IsNil(o.EmployeeName) {
 		toSerialize["EmployeeName"] = o.EmployeeName
 	}
@@ -436,6 +473,7 @@ func (o *IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification)
 		delete(additionalProperties, "SubledgerID")
 		delete(additionalProperties, "SourceOfEvent")
 		delete(additionalProperties, "CurrentTier")
+		delete(additionalProperties, "SessionIntegrationID")
 		delete(additionalProperties, "EmployeeName")
 		delete(additionalProperties, "UserID")
 		delete(additionalProperties, "CurrentPoints")

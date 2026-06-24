@@ -98,6 +98,7 @@ docs/AudienceIntegrationID.md
 docs/AudienceMembership.md
 docs/AudienceReference.md
 docs/AwardGiveawayEffectProps.md
+docs/BaseBlock.md
 docs/BaseCampaign.md
 docs/BaseLoyaltyProgram.md
 docs/BaseNotification.md
@@ -215,6 +216,7 @@ docs/CreateTemplateCampaign.md
 docs/CreateTemplateCampaignResponse.md
 docs/CustomEffect.md
 docs/CustomEffectProps.md
+docs/CustomerAchievement.md
 docs/CustomerActivityReport.md
 docs/CustomerAnalytics.md
 docs/CustomerInventory.md
@@ -554,6 +556,7 @@ docs/OutgoingIntegrationTemplateWithConfigurationDetails.md
 docs/OutgoingIntegrationTemplates.md
 docs/OutgoingIntegrationType.md
 docs/OutgoingIntegrationTypes.md
+docs/PassthroughBlock.md
 docs/PatchItemCatalogAction.md
 docs/PatchManyItemsCatalogAction.md
 docs/PendingActivePointsData.md
@@ -575,6 +578,8 @@ docs/ProductUnitAnalyticsTotals.md
 docs/ProfileAudiencesChanges.md
 docs/ProjectedTier.md
 docs/PromoteExperiment.md
+docs/PromotionGroupBlock.md
+docs/PromotionRuleV2.md
 docs/RedeemReferralEffectProps.md
 docs/Referral.md
 docs/ReferralConstraints.md
@@ -597,6 +602,9 @@ docs/RevisionActivationRequest.md
 docs/RevisionVersion.md
 docs/Reward.md
 docs/RewardPointsRequired.md
+docs/Risk.md
+docs/RiskAffectedEntityItem.md
+docs/RiskDetail.md
 docs/RiskNotification.md
 docs/Role.md
 docs/RoleAssign.md
@@ -621,7 +629,9 @@ docs/RuleEligibilityFailureDetails.md
 docs/RuleFailureReason.md
 docs/RuleMetadata.md
 docs/RuleMetadataEligibility.md
+docs/RuleV2.md
 docs/Ruleset.md
+docs/RulesetV2.md
 docs/SSOConfig.md
 docs/SamlConnection.md
 docs/SamlConnectionInternal.md
@@ -663,7 +673,9 @@ docs/StrikethroughChangedItem.md
 docs/StrikethroughCustomEffectPerItemProps.md
 docs/StrikethroughDebugResponse.md
 docs/StrikethroughEffect.md
+docs/StrikethroughGroupBlock.md
 docs/StrikethroughLabelingNotification.md
+docs/StrikethroughRuleV2.md
 docs/StrikethroughSetDiscountPerItemEffectProps.md
 docs/StrikethroughSetDiscountPerItemMemberEffectProps.md
 docs/StrikethroughTrigger.md
@@ -822,6 +834,7 @@ model_audience_integration_id.go
 model_audience_membership.go
 model_audience_reference.go
 model_award_giveaway_effect_props.go
+model_base_block.go
 model_base_campaign.go
 model_base_loyalty_program.go
 model_base_notification.go
@@ -939,6 +952,7 @@ model_create_template_campaign.go
 model_create_template_campaign_response.go
 model_custom_effect.go
 model_custom_effect_props.go
+model_customer_achievement.go
 model_customer_activity_report.go
 model_customer_analytics.go
 model_customer_inventory.go
@@ -1276,6 +1290,7 @@ model_outgoing_integration_template_with_configuration_details.go
 model_outgoing_integration_templates.go
 model_outgoing_integration_type.go
 model_outgoing_integration_types.go
+model_passthrough_block.go
 model_patch_item_catalog_action.go
 model_patch_many_items_catalog_action.go
 model_pending_active_points_data.go
@@ -1297,6 +1312,8 @@ model_product_unit_analytics_totals.go
 model_profile_audiences_changes.go
 model_projected_tier.go
 model_promote_experiment.go
+model_promotion_group_block.go
+model_promotion_rule_v2.go
 model_redeem_referral_effect_props.go
 model_referral.go
 model_referral_constraints.go
@@ -1319,6 +1336,9 @@ model_revision_activation_request.go
 model_revision_version.go
 model_reward.go
 model_reward_points_required.go
+model_risk.go
+model_risk_affected_entity_item.go
+model_risk_detail.go
 model_risk_notification.go
 model_role.go
 model_role_assign.go
@@ -1343,7 +1363,9 @@ model_rule_eligibility_failure_details.go
 model_rule_failure_reason.go
 model_rule_metadata.go
 model_rule_metadata_eligibility.go
+model_rule_v2.go
 model_ruleset.go
+model_ruleset_v2.go
 model_saml_connection.go
 model_saml_connection_internal.go
 model_saml_connection_metadata.go
@@ -1385,7 +1407,9 @@ model_strikethrough_changed_item.go
 model_strikethrough_custom_effect_per_item_props.go
 model_strikethrough_debug_response.go
 model_strikethrough_effect.go
+model_strikethrough_group_block.go
 model_strikethrough_labeling_notification.go
+model_strikethrough_rule_v2.go
 model_strikethrough_set_discount_per_item_effect_props.go
 model_strikethrough_set_discount_per_item_member_effect_props.go
 model_strikethrough_trigger.go

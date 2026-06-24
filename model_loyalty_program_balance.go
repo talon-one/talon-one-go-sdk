@@ -27,8 +27,10 @@ type LoyaltyProgramBalance struct {
 	// Sum of negative points. This implies that `currentBalance` is `0`.
 	NegativeBalance *float32 `json:"negativeBalance,omitempty"`
 	// **DEPRECATED** Value is shown as 0.
+	// Deprecated
 	ExpiredBalance float32 `json:"expiredBalance"`
 	// **DEPRECATED** Value is shown as 0.
+	// Deprecated
 	SpentBalance float32 `json:"spentBalance"`
 	// The tentative points balance, reflecting the `currentBalance` and all point additions and deductions within the current open customer session. When the session is closed, the effects are applied and the `currentBalance` is updated to this value.  **Note:** Tentative balances are specific to the current session and do not take into account other open sessions for the given customer.
 	TentativeCurrentBalance float32 `json:"tentativeCurrentBalance"`
@@ -144,6 +146,7 @@ func (o *LoyaltyProgramBalance) SetNegativeBalance(v float32) {
 }
 
 // GetExpiredBalance returns the ExpiredBalance field value
+// Deprecated
 func (o *LoyaltyProgramBalance) GetExpiredBalance() float32 {
 	if o == nil {
 		var ret float32
@@ -155,6 +158,7 @@ func (o *LoyaltyProgramBalance) GetExpiredBalance() float32 {
 
 // GetExpiredBalanceOk returns a tuple with the ExpiredBalance field value
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *LoyaltyProgramBalance) GetExpiredBalanceOk() (*float32, bool) {
 	if o == nil {
 		return nil, false
@@ -163,11 +167,13 @@ func (o *LoyaltyProgramBalance) GetExpiredBalanceOk() (*float32, bool) {
 }
 
 // SetExpiredBalance sets field value
+// Deprecated
 func (o *LoyaltyProgramBalance) SetExpiredBalance(v float32) {
 	o.ExpiredBalance = v
 }
 
 // GetSpentBalance returns the SpentBalance field value
+// Deprecated
 func (o *LoyaltyProgramBalance) GetSpentBalance() float32 {
 	if o == nil {
 		var ret float32
@@ -179,6 +185,7 @@ func (o *LoyaltyProgramBalance) GetSpentBalance() float32 {
 
 // GetSpentBalanceOk returns a tuple with the SpentBalance field value
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *LoyaltyProgramBalance) GetSpentBalanceOk() (*float32, bool) {
 	if o == nil {
 		return nil, false
@@ -187,6 +194,7 @@ func (o *LoyaltyProgramBalance) GetSpentBalanceOk() (*float32, bool) {
 }
 
 // SetSpentBalance sets field value
+// Deprecated
 func (o *LoyaltyProgramBalance) SetSpentBalance(v float32) {
 	o.SpentBalance = v
 }
