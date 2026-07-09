@@ -27,8 +27,8 @@ type Risk struct {
 	Created time.Time `json:"created"`
 	// The ID of the risk notification rule that flagged this risk.
 	NotificationId int64 `json:"notificationId"`
-	// The date of the ML pipeline run that detected this risk.
-	RunDate string `json:"runDate"`
+	// The date of the activity data in which this risk was detected. The anomaly detection pipeline scores complete 24-hour cycles, so this is always the day before the risk was reported, not the reporting date itself.
+	FeatureDate string `json:"featureDate"`
 	// The Application group this risk was detected in. Contains the Application ID, or `__GLOBAL__` for metrics that are not grouped by Application.
 	GroupKey string `json:"groupKey"`
 	// The ID of the Application this risk belongs to. Absent for global metrics.
@@ -60,12 +60,12 @@ type _Risk Risk
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildRisk(id int64, created time.Time, notificationId int64, runDate string, groupKey string, status string, criticality string, entity string, activity string, timeFrame string, reportedDate time.Time, affectedEntityCount int64, modified time.Time) *Risk {
+func BuildRisk(id int64, created time.Time, notificationId int64, featureDate string, groupKey string, status string, criticality string, entity string, activity string, timeFrame string, reportedDate time.Time, affectedEntityCount int64, modified time.Time) *Risk {
 	this := Risk{}
 	this.Id = id
 	this.Created = created
 	this.NotificationId = notificationId
-	this.RunDate = runDate
+	this.FeatureDate = featureDate
 	this.GroupKey = groupKey
 	this.Status = status
 	this.Criticality = criticality
@@ -158,28 +158,28 @@ func (o *Risk) SetNotificationId(v int64) {
 	o.NotificationId = v
 }
 
-// GetRunDate returns the RunDate field value
-func (o *Risk) GetRunDate() string {
+// GetFeatureDate returns the FeatureDate field value
+func (o *Risk) GetFeatureDate() string {
 	if o == nil {
 		var ret string
 		return ret
 	}
 
-	return o.RunDate
+	return o.FeatureDate
 }
 
-// GetRunDateOk returns a tuple with the RunDate field value
+// GetFeatureDateOk returns a tuple with the FeatureDate field value
 // and a boolean to check if the value has been set.
-func (o *Risk) GetRunDateOk() (*string, bool) {
+func (o *Risk) GetFeatureDateOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.RunDate, true
+	return &o.FeatureDate, true
 }
 
-// SetRunDate sets field value
-func (o *Risk) SetRunDate(v string) {
-	o.RunDate = v
+// SetFeatureDate sets field value
+func (o *Risk) SetFeatureDate(v string) {
+	o.FeatureDate = v
 }
 
 // GetGroupKey returns the GroupKey field value
@@ -475,7 +475,7 @@ func (o Risk) ToMap() (map[string]interface{}, error) {
 	toSerialize["id"] = o.Id
 	toSerialize["created"] = o.Created
 	toSerialize["notificationId"] = o.NotificationId
-	toSerialize["runDate"] = o.RunDate
+	toSerialize["featureDate"] = o.FeatureDate
 	toSerialize["groupKey"] = o.GroupKey
 	if !IsNil(o.ApplicationId) {
 		toSerialize["applicationId"] = o.ApplicationId
@@ -507,7 +507,7 @@ func (o *Risk) UnmarshalJSON(data []byte) (err error) {
 		"id",
 		"created",
 		"notificationId",
-		"runDate",
+		"featureDate",
 		"groupKey",
 		"status",
 		"criticality",
@@ -549,7 +549,7 @@ func (o *Risk) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "id")
 		delete(additionalProperties, "created")
 		delete(additionalProperties, "notificationId")
-		delete(additionalProperties, "runDate")
+		delete(additionalProperties, "featureDate")
 		delete(additionalProperties, "groupKey")
 		delete(additionalProperties, "applicationId")
 		delete(additionalProperties, "status")

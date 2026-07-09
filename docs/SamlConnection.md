@@ -15,6 +15,7 @@ Name | Type | Description | Notes
 **Id** | **int64** | The internal ID of this entity. | 
 **Created** | **time.Time** | The time this entity was created. | 
 **AssertionConsumerServiceURL** | **string** | The location where the SAML assertion is sent with a HTTP POST. | 
+**CertificateExpiry** | Pointer to **time.Time** | The expiry date of the X.509 certificate. | [optional] 
 
 ## Methods
 
@@ -264,6 +265,31 @@ and a boolean to check if the value has been set.
 
 SetAssertionConsumerServiceURL sets AssertionConsumerServiceURL field to given value.
 
+
+### GetCertificateExpiry
+
+`func (o *SamlConnection) GetCertificateExpiry() time.Time`
+
+GetCertificateExpiry returns the CertificateExpiry field if non-nil, zero value otherwise.
+
+### GetCertificateExpiryOk
+
+`func (o *SamlConnection) GetCertificateExpiryOk() (*time.Time, bool)`
+
+GetCertificateExpiryOk returns a tuple with the CertificateExpiry field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCertificateExpiry
+
+`func (o *SamlConnection) SetCertificateExpiry(v time.Time)`
+
+SetCertificateExpiry sets CertificateExpiry field to given value.
+
+### HasCertificateExpiry
+
+`func (o *SamlConnection) HasCertificateExpiry() bool`
+
+HasCertificateExpiry returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

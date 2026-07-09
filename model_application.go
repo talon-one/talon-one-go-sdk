@@ -61,7 +61,8 @@ type Application struct {
 	// The ID of the default Cart-Item-Filter for this application.
 	DefaultCartItemFilterId *int64 `json:"defaultCartItemFilterId,omitempty"`
 	// Indicates whether the campaign staging and revisions feature is enabled for the Application.  **Important:** After this feature is enabled, it cannot be disabled.
-	EnableCampaignStateManagement *bool `json:"enableCampaignStateManagement,omitempty"`
+	EnableCampaignStateManagement *bool                   `json:"enableCampaignStateManagement,omitempty"`
+	BestPriorPriceSettings        *BestPriorPriceSettings `json:"bestPriorPriceSettings,omitempty"`
 	// An array containing all the loyalty programs to which this application is subscribed.
 	LoyaltyPrograms      []LoyaltyProgram `json:"loyaltyPrograms"`
 	AdditionalProperties map[string]interface{}
@@ -710,6 +711,38 @@ func (o *Application) SetEnableCampaignStateManagement(v bool) {
 	o.EnableCampaignStateManagement = &v
 }
 
+// GetBestPriorPriceSettings returns the BestPriorPriceSettings field value if set, zero value otherwise.
+func (o *Application) GetBestPriorPriceSettings() BestPriorPriceSettings {
+	if o == nil || IsNil(o.BestPriorPriceSettings) {
+		var ret BestPriorPriceSettings
+		return ret
+	}
+	return *o.BestPriorPriceSettings
+}
+
+// GetBestPriorPriceSettingsOk returns a tuple with the BestPriorPriceSettings field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Application) GetBestPriorPriceSettingsOk() (*BestPriorPriceSettings, bool) {
+	if o == nil || IsNil(o.BestPriorPriceSettings) {
+		return nil, false
+	}
+	return o.BestPriorPriceSettings, true
+}
+
+// HasBestPriorPriceSettings returns a boolean if a field has been set.
+func (o *Application) HasBestPriorPriceSettings() bool {
+	if o != nil && !IsNil(o.BestPriorPriceSettings) {
+		return true
+	}
+
+	return false
+}
+
+// SetBestPriorPriceSettings gets a reference to the given BestPriorPriceSettings and assigns it to the BestPriorPriceSettings field.
+func (o *Application) SetBestPriorPriceSettings(v BestPriorPriceSettings) {
+	o.BestPriorPriceSettings = &v
+}
+
 // GetLoyaltyPrograms returns the LoyaltyPrograms field value
 func (o *Application) GetLoyaltyPrograms() []LoyaltyProgram {
 	if o == nil {
@@ -793,6 +826,9 @@ func (o Application) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.EnableCampaignStateManagement) {
 		toSerialize["enableCampaignStateManagement"] = o.EnableCampaignStateManagement
 	}
+	if !IsNil(o.BestPriorPriceSettings) {
+		toSerialize["bestPriorPriceSettings"] = o.BestPriorPriceSettings
+	}
 	toSerialize["loyaltyPrograms"] = o.LoyaltyPrograms
 
 	for key, value := range o.AdditionalProperties {
@@ -865,6 +901,7 @@ func (o *Application) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "defaultEvaluationGroupId")
 		delete(additionalProperties, "defaultCartItemFilterId")
 		delete(additionalProperties, "enableCampaignStateManagement")
+		delete(additionalProperties, "bestPriorPriceSettings")
 		delete(additionalProperties, "loyaltyPrograms")
 		o.AdditionalProperties = additionalProperties
 	}

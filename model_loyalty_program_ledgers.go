@@ -31,7 +31,7 @@ type LoyaltyProgramLedgers struct {
 	JoinDate *time.Time `json:"joinDate,omitempty"`
 	// Information about the main ledger in the loyalty program.
 	Ledger LedgerInfo `json:"ledger"`
-	// A map containing information about each loyalty subledger.
+	// A map containing information about each loyalty subledger. Subledgers for which all balances are zero are excluded from the response.
 	SubLedgers           map[string]LedgerInfo `json:"subLedgers,omitempty"`
 	AdditionalProperties map[string]interface{}
 }

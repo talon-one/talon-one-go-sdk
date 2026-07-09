@@ -97,7 +97,10 @@ docs/AudienceCustomer.md
 docs/AudienceIntegrationID.md
 docs/AudienceMembership.md
 docs/AudienceReference.md
+docs/AwardGiveawayBlock.md
+docs/AwardGiveawayBlock1GiveawayPool.md
 docs/AwardGiveawayEffectProps.md
+docs/AwardItemBlock.md
 docs/BaseBlock.md
 docs/BaseCampaign.md
 docs/BaseLoyaltyProgram.md
@@ -109,7 +112,9 @@ docs/BaseSamlConnection.md
 docs/BestPriorPrice.md
 docs/BestPriorPriceMetadata.md
 docs/BestPriorPriceRequest.md
+docs/BestPriorPriceSettings.md
 docs/BestPriorTarget.md
+docs/BetweenCheckAttributeBlock.md
 docs/Binding.md
 docs/Blueprint.md
 docs/BulkApplicationNotification.md
@@ -184,6 +189,11 @@ docs/CatalogsStrikethroughNotificationPolicy.md
 docs/Change.md
 docs/ChangeLoyaltyTierLevelEffectProps.md
 docs/ChangeProfilePassword.md
+docs/CheckAttributeBlock.md
+docs/CheckAudienceBlock.md
+docs/CheckAudienceBlock1Audience.md
+docs/CheckCouponBlock.md
+docs/CheckReferralBlock.md
 docs/CodeGeneratorSettings.md
 docs/Collection.md
 docs/CollectionItem.md
@@ -317,6 +327,7 @@ docs/GetApplicationCustomersByAttributes200Response.md
 docs/GetApplicationEventTypes200Response.md
 docs/GetApplicationEventsWithoutTotalCount200Response.md
 docs/GetApplicationSessions200Response.md
+docs/GetApplicationSessionsByCustomerAttributes200Response.md
 docs/GetApplications200Response.md
 docs/GetAttributes200Response.md
 docs/GetAudienceMemberships200Response.md
@@ -420,8 +431,10 @@ docs/ListCampaignStoreBudgetLimits200Response.md
 docs/ListCampaignStoreBudgets.md
 docs/ListCampaignStoreBudgetsStore.md
 docs/ListCatalogItems200Response.md
+docs/ListCheckAttributeBlock.md
 docs/ListExperiments200Response.md
 docs/ListStores200Response.md
+docs/ListWithCountCheckAttributeBlock.md
 docs/LoginParams.md
 docs/Loyalty.md
 docs/LoyaltyBalance.md
@@ -578,6 +591,7 @@ docs/ProductUnitAnalyticsTotals.md
 docs/ProfileAudiencesChanges.md
 docs/ProjectedTier.md
 docs/PromoteExperiment.md
+docs/PromotionCheckAttributeBlock.md
 docs/PromotionGroupBlock.md
 docs/PromotionRuleV2.md
 docs/RedeemReferralEffectProps.md
@@ -637,6 +651,7 @@ docs/SamlConnection.md
 docs/SamlConnectionInternal.md
 docs/SamlConnectionMetadata.md
 docs/SamlLoginEndpoint.md
+docs/ScalarCheckAttributeBlock.md
 docs/ScimBaseGroup.md
 docs/ScimBaseUser.md
 docs/ScimBaseUserName.md
@@ -664,12 +679,14 @@ docs/SetDiscountPerAdditionalCostPerItemEffectProps.md
 docs/SetDiscountPerItemEffectProps.md
 docs/SetLoyaltyPointsExpiryDateEffectProps.md
 docs/ShowBundleMetadataEffectProps.md
+docs/ShowNotificationBlock.md
 docs/ShowNotificationEffectProps.md
 docs/SkuUnitAnalytics.md
 docs/SkuUnitAnalyticsDataPoint.md
 docs/SlotDef.md
 docs/Store.md
 docs/StrikethroughChangedItem.md
+docs/StrikethroughCheckAttributeBlock.md
 docs/StrikethroughCustomEffectPerItemProps.md
 docs/StrikethroughDebugResponse.md
 docs/StrikethroughEffect.md
@@ -703,6 +720,7 @@ docs/TimePoint.md
 docs/TransferLoyaltyCard.md
 docs/TriggerWebhookEffectProps.md
 docs/TwoFAConfig.md
+docs/UnaryCheckAttributeBlock.md
 docs/UpdateAccount.md
 docs/UpdateAchievement.md
 docs/UpdateAchievementV2.md
@@ -833,7 +851,10 @@ model_audience_customer.go
 model_audience_integration_id.go
 model_audience_membership.go
 model_audience_reference.go
+model_award_giveaway_block.go
+model_award_giveaway_block_1_giveaway_pool.go
 model_award_giveaway_effect_props.go
+model_award_item_block.go
 model_base_block.go
 model_base_campaign.go
 model_base_loyalty_program.go
@@ -845,7 +866,9 @@ model_base_saml_connection.go
 model_best_prior_price.go
 model_best_prior_price_metadata.go
 model_best_prior_price_request.go
+model_best_prior_price_settings.go
 model_best_prior_target.go
+model_between_check_attribute_block.go
 model_binding.go
 model_blueprint.go
 model_bulk_application_notification.go
@@ -920,6 +943,11 @@ model_catalogs_strikethrough_notification_policy.go
 model_change.go
 model_change_loyalty_tier_level_effect_props.go
 model_change_profile_password.go
+model_check_attribute_block.go
+model_check_audience_block.go
+model_check_audience_block_1_audience.go
+model_check_coupon_block.go
+model_check_referral_block.go
 model_code_generator_settings.go
 model_collection.go
 model_collection_item.go
@@ -1053,6 +1081,7 @@ model_get_application_customers_by_attributes_200_response.go
 model_get_application_event_types_200_response.go
 model_get_application_events_without_total_count_200_response.go
 model_get_application_sessions_200_response.go
+model_get_application_sessions_by_customer_attributes_200_response.go
 model_get_applications_200_response.go
 model_get_attributes_200_response.go
 model_get_audience_memberships_200_response.go
@@ -1155,8 +1184,10 @@ model_list_campaign_store_budget_limits_200_response.go
 model_list_campaign_store_budgets.go
 model_list_campaign_store_budgets_store.go
 model_list_catalog_items_200_response.go
+model_list_check_attribute_block.go
 model_list_experiments_200_response.go
 model_list_stores_200_response.go
+model_list_with_count_check_attribute_block.go
 model_login_params.go
 model_loyalty.go
 model_loyalty_balance.go
@@ -1312,6 +1343,7 @@ model_product_unit_analytics_totals.go
 model_profile_audiences_changes.go
 model_projected_tier.go
 model_promote_experiment.go
+model_promotion_check_attribute_block.go
 model_promotion_group_block.go
 model_promotion_rule_v2.go
 model_redeem_referral_effect_props.go
@@ -1370,6 +1402,7 @@ model_saml_connection.go
 model_saml_connection_internal.go
 model_saml_connection_metadata.go
 model_saml_login_endpoint.go
+model_scalar_check_attribute_block.go
 model_scim_base_group.go
 model_scim_base_user.go
 model_scim_base_user_name.go
@@ -1397,6 +1430,7 @@ model_set_discount_per_additional_cost_per_item_effect_props.go
 model_set_discount_per_item_effect_props.go
 model_set_loyalty_points_expiry_date_effect_props.go
 model_show_bundle_metadata_effect_props.go
+model_show_notification_block.go
 model_show_notification_effect_props.go
 model_sku_unit_analytics.go
 model_sku_unit_analytics_data_point.go
@@ -1404,6 +1438,7 @@ model_slot_def.go
 model_sso_config.go
 model_store.go
 model_strikethrough_changed_item.go
+model_strikethrough_check_attribute_block.go
 model_strikethrough_custom_effect_per_item_props.go
 model_strikethrough_debug_response.go
 model_strikethrough_effect.go
@@ -1437,6 +1472,7 @@ model_time_point.go
 model_transfer_loyalty_card.go
 model_trigger_webhook_effect_props.go
 model_two_fa_config.go
+model_unary_check_attribute_block.go
 model_update_account.go
 model_update_achievement.go
 model_update_achievement_v2.go
