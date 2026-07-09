@@ -11820,6 +11820,175 @@ func (a *ManagementAPIService) GetApplicationSessionsExecute(r ApiGetApplication
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiGetApplicationSessionsByCustomerAttributesRequest struct {
+	ctx                        context.Context
+	ApiService                 *ManagementAPIService
+	applicationId              int64
+	customerProfileSearchQuery *CustomerProfileSearchQuery
+	pageSize                   *int64
+	skip                       *int64
+	withTotalResultSize        *bool
+}
+
+// body
+func (r ApiGetApplicationSessionsByCustomerAttributesRequest) CustomerProfileSearchQuery(customerProfileSearchQuery CustomerProfileSearchQuery) ApiGetApplicationSessionsByCustomerAttributesRequest {
+	r.customerProfileSearchQuery = &customerProfileSearchQuery
+	return r
+}
+
+// The number of items in the response.
+func (r ApiGetApplicationSessionsByCustomerAttributesRequest) PageSize(pageSize int64) ApiGetApplicationSessionsByCustomerAttributesRequest {
+	r.pageSize = &pageSize
+	return r
+}
+
+// The number of items to skip when paging through large result sets.
+func (r ApiGetApplicationSessionsByCustomerAttributesRequest) Skip(skip int64) ApiGetApplicationSessionsByCustomerAttributesRequest {
+	r.skip = &skip
+	return r
+}
+
+// When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets. - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query. - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.
+func (r ApiGetApplicationSessionsByCustomerAttributesRequest) WithTotalResultSize(withTotalResultSize bool) ApiGetApplicationSessionsByCustomerAttributesRequest {
+	r.withTotalResultSize = &withTotalResultSize
+	return r
+}
+
+func (r ApiGetApplicationSessionsByCustomerAttributesRequest) Execute() (*GetApplicationSessionsByCustomerAttributes200Response, *http.Response, error) {
+	return r.ApiService.GetApplicationSessionsByCustomerAttributesExecute(r)
+}
+
+/*
+GetApplicationSessionsByCustomerAttributes List Application sessions matching the given customer attributes
+
+Get a list of the Application sessions matching the provided customer profile
+attributes.
+
+The match is successful if all the attributes of the request are found in a
+profile, even if the profile has more attributes that are not present on the
+request.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param applicationId The ID of the Application. It is displayed in your Talon.One deployment URL.
+	@return ApiGetApplicationSessionsByCustomerAttributesRequest
+*/
+func (a *ManagementAPIService) GetApplicationSessionsByCustomerAttributes(ctx context.Context, applicationId int64) ApiGetApplicationSessionsByCustomerAttributesRequest {
+	return ApiGetApplicationSessionsByCustomerAttributesRequest{
+		ApiService:    a,
+		ctx:           ctx,
+		applicationId: applicationId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return GetApplicationSessionsByCustomerAttributes200Response
+func (a *ManagementAPIService) GetApplicationSessionsByCustomerAttributesExecute(r ApiGetApplicationSessionsByCustomerAttributesRequest) (*GetApplicationSessionsByCustomerAttributes200Response, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *GetApplicationSessionsByCustomerAttributes200Response
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagementAPIService.GetApplicationSessionsByCustomerAttributes")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v1/applications/{applicationId}/sessions_search"
+	localVarPath = strings.Replace(localVarPath, "{"+"applicationId"+"}", url.PathEscape(parameterValueToString(r.applicationId, "applicationId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.customerProfileSearchQuery == nil {
+		return localVarReturnValue, nil, reportError("customerProfileSearchQuery is required and must be specified")
+	}
+
+	if r.pageSize != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
+	} else {
+		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
+		r.pageSize = &defaultValue
+	}
+	if r.skip != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "skip", r.skip, "form", "")
+	}
+	if r.withTotalResultSize != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "withTotalResultSize", r.withTotalResultSize, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.customerProfileSearchQuery
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiGetApplicationsRequest struct {
 	ctx        context.Context
 	ApiService *ManagementAPIService
@@ -13674,7 +13843,7 @@ type ApiGetCampaignsRequest struct {
 	sort            *string
 	campaignState   *string
 	name            *string
-	tags            *string
+	tags            *[]string
 	createdBefore   *time.Time
 	createdAfter    *time.Time
 	startBefore     *time.Time
@@ -13716,8 +13885,8 @@ func (r ApiGetCampaignsRequest) Name(name string) ApiGetCampaignsRequest {
 	return r
 }
 
-// Filter results performing case-insensitive matching against the tags of the campaign. When used in conjunction with the \&quot;name\&quot; query parameter, a logical OR will be performed to search both tags and name for the provided values
-func (r ApiGetCampaignsRequest) Tags(tags string) ApiGetCampaignsRequest {
+// Filter results performing case-insensitive matching against the tags of the campaign.
+func (r ApiGetCampaignsRequest) Tags(tags []string) ApiGetCampaignsRequest {
 	r.tags = &tags
 	return r
 }
@@ -13840,7 +14009,15 @@ func (a *ManagementAPIService) GetCampaignsExecute(r ApiGetCampaignsRequest) (*G
 		parameterAddToHeaderOrQuery(localVarQueryParams, "name", r.name, "form", "")
 	}
 	if r.tags != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "tags", r.tags, "form", "")
+		t := *r.tags
+		if reflect.TypeOf(t).Kind() == reflect.Slice {
+			s := reflect.ValueOf(t)
+			for i := 0; i < s.Len(); i++ {
+				parameterAddToHeaderOrQuery(localVarQueryParams, "tags", s.Index(i).Interface(), "form", "multi")
+			}
+		} else {
+			parameterAddToHeaderOrQuery(localVarQueryParams, "tags", t, "form", "multi")
+		}
 	}
 	if r.createdBefore != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "createdBefore", r.createdBefore, "form", "")

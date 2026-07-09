@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **Name** | **string** | Internal name of loyalty program. | 
 **JoinDate** | Pointer to **time.Time** | The date on which the customer joined the loyalty program in RFC3339.  **Note**: This is in the loyalty program&#39;s time zone.  | [optional] 
 **Ledger** | [**LedgerInfo**](LedgerInfo.md) | Information about the main ledger in the loyalty program. | 
-**SubLedgers** | Pointer to [**map[string]LedgerInfo**](LedgerInfo.md) | A map containing information about each loyalty subledger. | [optional] 
+**SubLedgers** | Pointer to [**map[string]LedgerInfo**](LedgerInfo.md) | A map containing information about each loyalty subledger. Subledgers for which all balances are zero are excluded from the response. | [optional] 
 
 ## Methods
 

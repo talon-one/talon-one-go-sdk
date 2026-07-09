@@ -43,7 +43,9 @@ type SamlConnection struct {
 	Created time.Time `json:"created"`
 	// The location where the SAML assertion is sent with a HTTP POST.
 	AssertionConsumerServiceURL string `json:"assertionConsumerServiceURL"`
-	AdditionalProperties        map[string]interface{}
+	// The expiry date of the X.509 certificate.
+	CertificateExpiry    *time.Time `json:"certificateExpiry,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _SamlConnection SamlConnection
@@ -354,6 +356,38 @@ func (o *SamlConnection) SetAssertionConsumerServiceURL(v string) {
 	o.AssertionConsumerServiceURL = v
 }
 
+// GetCertificateExpiry returns the CertificateExpiry field value if set, zero value otherwise.
+func (o *SamlConnection) GetCertificateExpiry() time.Time {
+	if o == nil || IsNil(o.CertificateExpiry) {
+		var ret time.Time
+		return ret
+	}
+	return *o.CertificateExpiry
+}
+
+// GetCertificateExpiryOk returns a tuple with the CertificateExpiry field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SamlConnection) GetCertificateExpiryOk() (*time.Time, bool) {
+	if o == nil || IsNil(o.CertificateExpiry) {
+		return nil, false
+	}
+	return o.CertificateExpiry, true
+}
+
+// HasCertificateExpiry returns a boolean if a field has been set.
+func (o *SamlConnection) HasCertificateExpiry() bool {
+	if o != nil && !IsNil(o.CertificateExpiry) {
+		return true
+	}
+
+	return false
+}
+
+// SetCertificateExpiry gets a reference to the given time.Time and assigns it to the CertificateExpiry field.
+func (o *SamlConnection) SetCertificateExpiry(v time.Time) {
+	o.CertificateExpiry = &v
+}
+
 func (o SamlConnection) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -379,6 +413,9 @@ func (o SamlConnection) ToMap() (map[string]interface{}, error) {
 	toSerialize["id"] = o.Id
 	toSerialize["created"] = o.Created
 	toSerialize["assertionConsumerServiceURL"] = o.AssertionConsumerServiceURL
+	if !IsNil(o.CertificateExpiry) {
+		toSerialize["certificateExpiry"] = o.CertificateExpiry
+	}
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value
@@ -441,6 +478,7 @@ func (o *SamlConnection) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "id")
 		delete(additionalProperties, "created")
 		delete(additionalProperties, "assertionConsumerServiceURL")
+		delete(additionalProperties, "certificateExpiry")
 		o.AdditionalProperties = additionalProperties
 	}
 

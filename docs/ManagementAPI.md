@@ -81,6 +81,7 @@ Method | HTTP request | Description
 [**GetApplicationEventsWithoutTotalCount**](ManagementAPI.md#GetApplicationEventsWithoutTotalCount) | **Get** /v1/applications/{applicationId}/events/no_total | List Applications events
 [**GetApplicationSession**](ManagementAPI.md#GetApplicationSession) | **Get** /v1/applications/{applicationId}/sessions/{sessionId} | Get Application session
 [**GetApplicationSessions**](ManagementAPI.md#GetApplicationSessions) | **Get** /v1/applications/{applicationId}/sessions | List Application sessions
+[**GetApplicationSessionsByCustomerAttributes**](ManagementAPI.md#GetApplicationSessionsByCustomerAttributes) | **Post** /v1/applications/{applicationId}/sessions_search | List Application sessions matching the given customer attributes
 [**GetApplications**](ManagementAPI.md#GetApplications) | **Get** /v1/applications | List Applications
 [**GetAttribute**](ManagementAPI.md#GetAttribute) | **Get** /v1/attributes/{attributeId} | Get custom attribute
 [**GetAttributes**](ManagementAPI.md#GetAttributes) | **Get** /v1/attributes | List custom attributes
@@ -5918,6 +5919,84 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## GetApplicationSessionsByCustomerAttributes
+
+> GetApplicationSessionsByCustomerAttributes200Response GetApplicationSessionsByCustomerAttributes(ctx, applicationId).CustomerProfileSearchQuery(customerProfileSearchQuery).PageSize(pageSize).Skip(skip).WithTotalResultSize(withTotalResultSize).Execute()
+
+List Application sessions matching the given customer attributes
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	applicationId := int64(789) // int64 | The ID of the Application. It is displayed in your Talon.One deployment URL.
+	customerProfileSearchQuery := *openapiclient.NewCustomerProfileSearchQuery() // CustomerProfileSearchQuery | body
+	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 1000)
+	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
+	withTotalResultSize := true // bool | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets. - When `true`: `totalResultSize` contains the total number of results for this query. - When `false`: Only `hasMore` is returned, and it is set to `true` when there are more results than shown on the page.  (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ManagementAPI.GetApplicationSessionsByCustomerAttributes(context.Background(), applicationId).CustomerProfileSearchQuery(customerProfileSearchQuery).PageSize(pageSize).Skip(skip).WithTotalResultSize(withTotalResultSize).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.GetApplicationSessionsByCustomerAttributes``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetApplicationSessionsByCustomerAttributes`: GetApplicationSessionsByCustomerAttributes200Response
+	fmt.Fprintf(os.Stdout, "Response from `ManagementAPI.GetApplicationSessionsByCustomerAttributes`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**applicationId** | **int64** | The ID of the Application. It is displayed in your Talon.One deployment URL. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetApplicationSessionsByCustomerAttributesRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **customerProfileSearchQuery** | [**CustomerProfileSearchQuery**](CustomerProfileSearchQuery.md) | body | 
+ **pageSize** | **int64** | The number of items in the response. | [default to 1000]
+ **skip** | **int64** | The number of items to skip when paging through large result sets. | 
+ **withTotalResultSize** | **bool** | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets. - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query. - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.  | 
+
+### Return type
+
+[**GetApplicationSessionsByCustomerAttributes200Response**](GetApplicationSessionsByCustomerAttributes200Response.md)
+
+### Authorization
+
+[api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## GetApplications
 
 > GetApplications200Response GetApplications(ctx).PageSize(pageSize).Skip(skip).Sort(sort).Execute()
@@ -6837,7 +6916,7 @@ func main() {
 	sort := "sort_example" // string | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with `-`.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  (optional)
 	campaignState := "campaignState_example" // string | Filter results by the state of the campaign.  - `enabled`: Campaigns that are scheduled, running (activated), or expired. - `running`: Campaigns that are running (activated). - `disabled`: Campaigns that are disabled. - `expired`: Campaigns that are expired. - `archived`: Campaigns that are archived.  (optional)
 	name := "name_example" // string | Filter results performing case-insensitive matching against the name of the campaign. (optional)
-	tags := "tags_example" // string | Filter results performing case-insensitive matching against the tags of the campaign. When used in conjunction with the \"name\" query parameter, a logical OR will be performed to search both tags and name for the provided values  (optional)
+	tags := []string{"Inner_example"} // []string | Filter results performing case-insensitive matching against the tags of the campaign.  (optional)
 	createdBefore := time.Now() // time.Time | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the campaign creation timestamp. You can use any time zone setting. Talon.One will convert to UTC internally. (optional)
 	createdAfter := time.Now() // time.Time | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the campaign creation timestamp. You can use any time zone setting. Talon.One will convert to UTC internally. (optional)
 	startBefore := time.Now() // time.Time | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the campaign start time timestamp. You can use any time zone setting. Talon.One will convert to UTC internally. (optional)
@@ -6881,7 +6960,7 @@ Name | Type | Description  | Notes
  **sort** | **string** | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with &#x60;-&#x60;.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  | 
  **campaignState** | **string** | Filter results by the state of the campaign.  - &#x60;enabled&#x60;: Campaigns that are scheduled, running (activated), or expired. - &#x60;running&#x60;: Campaigns that are running (activated). - &#x60;disabled&#x60;: Campaigns that are disabled. - &#x60;expired&#x60;: Campaigns that are expired. - &#x60;archived&#x60;: Campaigns that are archived.  | 
  **name** | **string** | Filter results performing case-insensitive matching against the name of the campaign. | 
- **tags** | **string** | Filter results performing case-insensitive matching against the tags of the campaign. When used in conjunction with the \&quot;name\&quot; query parameter, a logical OR will be performed to search both tags and name for the provided values  | 
+ **tags** | **[]string** | Filter results performing case-insensitive matching against the tags of the campaign.  | 
  **createdBefore** | **time.Time** | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the campaign creation timestamp. You can use any time zone setting. Talon.One will convert to UTC internally. | 
  **createdAfter** | **time.Time** | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the campaign creation timestamp. You can use any time zone setting. Talon.One will convert to UTC internally. | 
  **startBefore** | **time.Time** | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the campaign start time timestamp. You can use any time zone setting. Talon.One will convert to UTC internally. | 

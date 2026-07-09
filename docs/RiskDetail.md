@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **Id** | **int64** | The internal ID of this entity. | 
 **Created** | **time.Time** | The time this entity was created. | 
 **NotificationId** | **int64** | The ID of the risk notification rule that flagged this risk. | 
-**RunDate** | **string** | The date of the ML pipeline run that detected this risk. | 
+**FeatureDate** | **string** | The date of the activity data in which this risk was detected. The anomaly detection pipeline scores complete 24-hour cycles, so this is always the day before the risk was reported, not the reporting date itself.  | 
 **GroupKey** | **string** | The Application group this risk was detected in. Contains the Application ID, or &#x60;__GLOBAL__&#x60; for metrics that are not grouped by Application.  | 
 **ApplicationId** | Pointer to **int64** | The ID of the Application this risk belongs to. Absent for global metrics. | [optional] 
 **Status** | **string** | The triage lifecycle status of this risk. | 
@@ -25,7 +25,7 @@ Name | Type | Description | Notes
 
 ### NewRiskDetail
 
-`func NewRiskDetail(id int64, created time.Time, notificationId int64, runDate string, groupKey string, status string, criticality string, entity string, activity string, timeFrame string, reportedDate time.Time, affectedEntityCount int64, modified time.Time, affectedEntities []RiskAffectedEntityItem, ) *RiskDetail`
+`func NewRiskDetail(id int64, created time.Time, notificationId int64, featureDate string, groupKey string, status string, criticality string, entity string, activity string, timeFrame string, reportedDate time.Time, affectedEntityCount int64, modified time.Time, affectedEntities []RiskAffectedEntityItem, ) *RiskDetail`
 
 NewRiskDetail instantiates a new RiskDetail object
 This constructor will assign default values to properties that have it defined,
@@ -100,24 +100,24 @@ and a boolean to check if the value has been set.
 SetNotificationId sets NotificationId field to given value.
 
 
-### GetRunDate
+### GetFeatureDate
 
-`func (o *RiskDetail) GetRunDate() string`
+`func (o *RiskDetail) GetFeatureDate() string`
 
-GetRunDate returns the RunDate field if non-nil, zero value otherwise.
+GetFeatureDate returns the FeatureDate field if non-nil, zero value otherwise.
 
-### GetRunDateOk
+### GetFeatureDateOk
 
-`func (o *RiskDetail) GetRunDateOk() (*string, bool)`
+`func (o *RiskDetail) GetFeatureDateOk() (*string, bool)`
 
-GetRunDateOk returns a tuple with the RunDate field if it's non-nil, zero value otherwise
+GetFeatureDateOk returns a tuple with the FeatureDate field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetRunDate
+### SetFeatureDate
 
-`func (o *RiskDetail) SetRunDate(v string)`
+`func (o *RiskDetail) SetFeatureDate(v string)`
 
-SetRunDate sets RunDate field to given value.
+SetFeatureDate sets FeatureDate field to given value.
 
 
 ### GetGroupKey

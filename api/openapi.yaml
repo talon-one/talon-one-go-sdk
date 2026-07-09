@@ -325,7 +325,7 @@ paths:
                 description: |
                   Update a customer session with multiple cart items and attributes,
                   including SKUs, prices, and more.
-                summary: "Example: eCommerce"
+                summary: "Example: ecommerce"
                 value:
                   customerSession:
                     profileId: 382370BKDB946
@@ -683,7 +683,7 @@ paths:
               eCommerce:
                 description: Create a new customer with basic information and sign-up
                   date.
-                summary: "Example: eCommerce"
+                summary: "Example: ecommerce"
                 value:
                   attributes:
                     Name: Chris Taylor
@@ -859,7 +859,7 @@ paths:
             examples:
               eCommerce:
                 description: Create an audience for high-value customers.
-                summary: "Example: eCommerce"
+                summary: "Example: ecommerce"
                 value:
                   name: VIP Customers
                   description: Customers with high lifetime value and frequent purchases
@@ -3589,13 +3589,16 @@ paths:
           type: string
         style: form
       - description: |
-          Filter results performing case-insensitive matching against the tags of the campaign. When used in conjunction with the "name" query parameter, a logical OR will be performed to search both tags and name for the provided values
+          Filter results performing case-insensitive matching against the tags of the campaign.
         explode: true
         in: query
         name: tags
         required: false
         schema:
-          type: string
+          items:
+            type: string
+          type: array
+          default: null
         style: form
       - description: "Filter results comparing the parameter value, expected to be\
           \ an RFC3339 timestamp string, to the campaign creation timestamp. You can\
@@ -8907,6 +8910,43 @@ paths:
       summary: List Application sessions
       tags:
       - management
+  /v1/applications/{applicationId}/sessions_search:
+    post:
+      description: |
+        Get a list of the Application sessions matching the provided customer profile
+        attributes.
+
+        The match is successful if all the attributes of the request are found in a
+        profile, even if the profile has more attributes that are not present on the
+        request.
+      operationId: getApplicationSessionsByCustomerAttributes
+      parameters:
+      - $ref: "#/components/parameters/applicationId"
+      - $ref: "#/components/parameters/pageSize"
+      - $ref: "#/components/parameters/skip"
+      - description: |
+          When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.
+          - When `true`: `totalResultSize` contains the total number of results for this query.
+          - When `false`: Only `hasMore` is returned, and it is set to `true` when there are more results than shown on the page.
+        explode: true
+        in: query
+        name: withTotalResultSize
+        required: false
+        schema:
+          type: boolean
+        style: form
+      requestBody:
+        $ref: "#/components/requestBodies/CustomerProfileSearchQuery"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/getApplicationSessionsByCustomerAttributes_200_response"
+          description: OK
+      summary: List Application sessions matching the given customer attributes
+      tags:
+      - management
   /v1/applications/{applicationId}/sessions/{sessionId}:
     get:
       description: |
@@ -13459,7 +13499,7 @@ components:
           examples:
             eCommerce:
               description: Track a custom event such as newsletter sign-up.
-              summary: "Example: eCommerce"
+              summary: "Example: ecommerce"
               value:
                 profileId: customer-123
                 type: newsletter_signup
@@ -13487,7 +13527,7 @@ components:
             Financial services:
               description: |
                 Track when a customer completes identity verification on a cryptocurrency platform
-                to trigger a reward, such as €10 in cryptocurrency.
+                to trigger a reward, such as EUR 10 in cryptocurrency.
               summary: "Example: Financial services"
               value:
                 profileId: customer-789
@@ -14646,13 +14686,13 @@ components:
             description: |
               Indicates the current state of the session. Sessions can be created as `open` or `closed`. The state transitions are:
 
-              1. `open` → `closed`
-              2. `open` → `cancelled`
+              1. `open` -> `closed`
+              2. `open` -> `cancelled`
               3. Either:
-                 - `closed` → `cancelled` (**only** via [Update customer session](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2)) or
-                 - `closed` → `partially_returned` (**only** via [Return cart items](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/returnCartItems))
-                 - `closed` → `open` (**only** via [Reopen customer session](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/reopenCustomerSession))
-              4. `partially_returned` → `cancelled`
+                 - `closed` -> `cancelled` (**only** via [Update customer session](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2)) or
+                 - `closed` -> `partially_returned` (**only** via [Return cart items](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/returnCartItems))
+                 - `closed` -> `open` (**only** via [Reopen customer session](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/reopenCustomerSession))
+              4. `partially_returned` -> `cancelled`
 
               For more information, see [Customer session states](https://docs.talon.one/docs/dev/concepts/entities/customer-sessions).
             enum:
@@ -17161,6 +17201,7 @@ components:
           additionalProperties:
             $ref: "#/components/schemas/LedgerInfo"
           description: A map containing information about each loyalty subledger.
+            Subledgers for which all balances are zero are excluded from the response.
       required:
       - id
       - ledger
@@ -17744,7 +17785,7 @@ components:
           description: |
             Timestamp of the most recent update to the campaign's property. Updates to external entities used in this campaign
             are **not** registered by this property, such as collection or coupon updates.
-          example: 2022-10-97T35:00:00Z
+          example: 2022-10-27T15:00:00Z
           format: date-time
           type: string
         createdBy:
@@ -17989,7 +18030,7 @@ components:
         callApiEffectCount: 0
         reservecouponEffectCount: 9
         lastActivity: 2022-11-10T23:00:00Z
-        updated: 2022-10-97T35:00:00Z
+        updated: 2022-10-27T15:00:00Z
         createdBy: John Doe
         updatedBy: Jane Doe
         templateId: 3
@@ -19661,7 +19702,7 @@ components:
           callApiEffectCount: 0
           reservecouponEffectCount: 9
           lastActivity: 2022-11-10T23:00:00Z
-          updated: 2022-10-97T35:00:00Z
+          updated: 2022-10-27T15:00:00Z
           createdBy: John Doe
           updatedBy: Jane Doe
           templateId: 3
@@ -19816,7 +19857,7 @@ components:
           callApiEffectCount: 0
           reservecouponEffectCount: 9
           lastActivity: 2022-11-10T23:00:00Z
-          updated: 2022-10-97T35:00:00Z
+          updated: 2022-10-27T15:00:00Z
           createdBy: John Doe
           updatedBy: Jane Doe
           templateId: 3
@@ -20702,7 +20743,7 @@ components:
           callApiEffectCount: 0
           reservecouponEffectCount: 9
           lastActivity: 2022-11-10T23:00:00Z
-          updated: 2022-10-97T35:00:00Z
+          updated: 2022-10-27T15:00:00Z
           createdBy: John Doe
           updatedBy: Jane Doe
           templateId: 3
@@ -20857,7 +20898,7 @@ components:
           callApiEffectCount: 0
           reservecouponEffectCount: 9
           lastActivity: 2022-11-10T23:00:00Z
-          updated: 2022-10-97T35:00:00Z
+          updated: 2022-10-27T15:00:00Z
           createdBy: John Doe
           updatedBy: Jane Doe
           templateId: 3
@@ -22083,6 +22124,17 @@ components:
       properties:
         mandatory:
           $ref: "#/components/schemas/AttributesMandatory"
+    BestPriorPriceSettings:
+      description: The best prior price settings for this Application.
+      example:
+        enableBestPriorPrice: true
+      properties:
+        enableBestPriorPrice:
+          description: "When set to `true`, the best prior price feature is enabled\
+            \ in this Application and its [price history](https://docs.talon.one/management-api#tag/Catalogs/operation/priceHistory)\
+            \ is recorded."
+          example: true
+          type: boolean
     UpdateApplication:
       properties:
         name:
@@ -22178,6 +22230,8 @@ components:
             **Important:** After this feature is enabled, it cannot be disabled.
           example: false
           type: boolean
+        bestPriorPriceSettings:
+          $ref: "#/components/schemas/BestPriorPriceSettings"
       required:
       - currency
       - name
@@ -22558,6 +22612,8 @@ components:
         defaultEvaluationGroupId: 3
         defaultCartItemFilterId: 3
         enableCampaignStateManagement: false
+        bestPriorPriceSettings:
+          enableBestPriorPrice: true
         loyaltyPrograms:
         - id: 139
           created: 2020-06-10T09:05:27.993483Z
@@ -22811,10 +22867,10 @@ components:
             description: |
               Indicates the current state of the session. Sessions can be created as `open` or `closed`. The state transitions are:
 
-              1. `open` → `closed`
-              2. `open` → `cancelled`
-              3. `closed` → `cancelled` or `partially_returned`
-              4. `partially_returned` → `cancelled`
+              1. `open` -> `closed`
+              2. `open` -> `cancelled`
+              3. `closed` -> `cancelled` or `partially_returned`
+              4. `partially_returned` -> `cancelled`
 
               For more information, see [Customer session states](https://docs.talon.one/docs/dev/concepts/entities/customer-sessions).
             enum:
@@ -23073,7 +23129,7 @@ components:
           callApiEffectCount: 0
           reservecouponEffectCount: 9
           lastActivity: 2022-11-10T23:00:00Z
-          updated: 2022-10-97T35:00:00Z
+          updated: 2022-10-27T15:00:00Z
           createdBy: John Doe
           updatedBy: Jane Doe
           templateId: 3
@@ -23228,7 +23284,7 @@ components:
           callApiEffectCount: 0
           reservecouponEffectCount: 9
           lastActivity: 2022-11-10T23:00:00Z
-          updated: 2022-10-97T35:00:00Z
+          updated: 2022-10-27T15:00:00Z
           createdBy: John Doe
           updatedBy: Jane Doe
           templateId: 3
@@ -24592,6 +24648,7 @@ components:
         created: 2022-01-02T15:04:05Z07:00
         programId: 324
         customerSessionId: 05c2da0d-48fa-4aa1-b629-898f58f1584d
+        storeIntegrationId: STORE-001
         type: addition
         name: Reward 10% points of a purchase's current total
         startDate: 2022-01-02T15:04:05Z07:00
@@ -24622,6 +24679,14 @@ components:
           description: ID of the customer session where the transaction occurred.
           example: 05c2da0d-48fa-4aa1-b629-898f58f1584d
           maxLength: 255
+          type: string
+        storeIntegrationId:
+          description: The integration ID of the store where the transaction occurred.
+            Only set for transactions created by a customer session or event that
+            referenced a store.
+          example: STORE-001
+          maxLength: 1000
+          minLength: 1
           type: string
         type:
           description: |
@@ -24993,6 +25058,8 @@ components:
             **Important:** After this feature is enabled, it cannot be disabled.
           example: false
           type: boolean
+        bestPriorPriceSettings:
+          $ref: "#/components/schemas/BestPriorPriceSettings"
       required:
       - currency
       - name
@@ -27043,20 +27110,20 @@ components:
       - attributes
     Binding:
       example:
-        name: my property
+        name: Discount percentage
         type: templateParameter
         expression:
-        - string1
-        - string2
-        valueType: string
+        - identity
+        - 10
+        valueType: number
         minValue: 0
         maxValue: 19.9
         attributeId: 100
-        description: This is a template parameter of type `number`.
+        description: The percentage discount applied to the cart total.
       properties:
         name:
           description: A descriptive name for the value to be bound.
-          example: my property
+          example: Discount percentage
           type: string
         type:
           description: |
@@ -27068,21 +27135,26 @@ components:
           example: templateParameter
           type: string
         expression:
-          description: A Talang expression that will be evaluated and its result attached
-            to the name of the binding.
+          description: |
+            A Talang expression that is evaluated, and its result is bound to the name of
+            the binding. The first element must be one of the functions or operators supported
+            by Talang, followed by its arguments. The arguments can be strings, numbers, or
+            nested expressions. For example:
+            - `["list", "10014", "10015"]` calls the `list` function to build a list of strings.
+            - `["+", 2, 0]` uses the `+` operator to add two numbers.
           example:
-          - string1
-          - string2
+          - identity
+          - 10
           items: {}
           type: array
           default: null
         valueType:
           description: |
-            Can be one of the following:
+            The data type of the value. One of the following:
             - `string`
             - `number`
             - `boolean`
-          example: string
+          example: number
           type: string
         minValue:
           description: The minimum value allowed for this placeholder.
@@ -27093,15 +27165,15 @@ components:
           example: 19.9
           type: number
         attributeId:
-          description: Id of the attribute attached to the placeholder.
+          description: Identifier of the attribute attached to the placeholder.
           example: 100
           format: int64
           title: Attribute ID
           type: integer
         description:
-          description: Describes the placeholder field and value in the template.
-            This description can be used when creating campaigns from this template.
-          example: This is a template parameter of type `number`.
+          description: Description of the placeholder field and its value in the template.
+            This text can be shown when creating campaigns from this template.
+          example: The percentage discount applied to the cart total.
           type: string
       required:
       - expression
@@ -27113,26 +27185,26 @@ components:
         title: Give discount via coupon
         description: Creates a discount when a coupon is valid
         bindings:
-        - name: my property
+        - name: Discount percentage
           type: templateParameter
           expression:
-          - string1
-          - string2
-          valueType: string
+          - identity
+          - 10
+          valueType: number
           minValue: 0
           maxValue: 19.9
           attributeId: 100
-          description: This is a template parameter of type `number`.
-        - name: my property
+          description: The percentage discount applied to the cart total.
+        - name: Discount percentage
           type: templateParameter
           expression:
-          - string1
-          - string2
-          valueType: string
+          - identity
+          - 10
+          valueType: number
           minValue: 0
           maxValue: 19.9
           attributeId: 100
-          description: This is a template parameter of type `number`.
+          description: The percentage discount applied to the cart total.
         condition:
         - and
         - - couponValid
@@ -27277,26 +27349,26 @@ components:
           title: Give discount via coupon
           description: Creates a discount when a coupon is valid
           bindings:
-          - name: my property
+          - name: Discount percentage
             type: templateParameter
             expression:
-            - string1
-            - string2
-            valueType: string
+            - identity
+            - 10
+            valueType: number
             minValue: 0
             maxValue: 19.9
             attributeId: 100
-            description: This is a template parameter of type `number`.
-          - name: my property
+            description: The percentage discount applied to the cart total.
+          - name: Discount percentage
             type: templateParameter
             expression:
-            - string1
-            - string2
-            valueType: string
+            - identity
+            - 10
+            valueType: number
             minValue: 0
             maxValue: 19.9
             attributeId: 100
-            description: This is a template parameter of type `number`.
+            description: The percentage discount applied to the cart total.
           condition:
           - and
           - - couponValid
@@ -27317,26 +27389,26 @@ components:
           title: Give discount via coupon
           description: Creates a discount when a coupon is valid
           bindings:
-          - name: my property
+          - name: Discount percentage
             type: templateParameter
             expression:
-            - string1
-            - string2
-            valueType: string
+            - identity
+            - 10
+            valueType: number
             minValue: 0
             maxValue: 19.9
             attributeId: 100
-            description: This is a template parameter of type `number`.
-          - name: my property
+            description: The percentage discount applied to the cart total.
+          - name: Discount percentage
             type: templateParameter
             expression:
-            - string1
-            - string2
-            valueType: string
+            - identity
+            - 10
+            valueType: number
             minValue: 0
             maxValue: 19.9
             attributeId: 100
-            description: This is a template parameter of type `number`.
+            description: The percentage discount applied to the cart total.
           condition:
           - and
           - - couponValid
@@ -27358,26 +27430,26 @@ components:
           title: Give discount via coupon
           description: Creates a discount when a coupon is valid
           bindings:
-          - name: my property
+          - name: Discount percentage
             type: templateParameter
             expression:
-            - string1
-            - string2
-            valueType: string
+            - identity
+            - 10
+            valueType: number
             minValue: 0
             maxValue: 19.9
             attributeId: 100
-            description: This is a template parameter of type `number`.
-          - name: my property
+            description: The percentage discount applied to the cart total.
+          - name: Discount percentage
             type: templateParameter
             expression:
-            - string1
-            - string2
-            valueType: string
+            - identity
+            - 10
+            valueType: number
             minValue: 0
             maxValue: 19.9
             attributeId: 100
-            description: This is a template parameter of type `number`.
+            description: The percentage discount applied to the cart total.
           condition:
           - and
           - - couponValid
@@ -27398,26 +27470,26 @@ components:
           title: Give discount via coupon
           description: Creates a discount when a coupon is valid
           bindings:
-          - name: my property
+          - name: Discount percentage
             type: templateParameter
             expression:
-            - string1
-            - string2
-            valueType: string
+            - identity
+            - 10
+            valueType: number
             minValue: 0
             maxValue: 19.9
             attributeId: 100
-            description: This is a template parameter of type `number`.
-          - name: my property
+            description: The percentage discount applied to the cart total.
+          - name: Discount percentage
             type: templateParameter
             expression:
-            - string1
-            - string2
-            valueType: string
+            - identity
+            - 10
+            valueType: number
             minValue: 0
             maxValue: 19.9
             attributeId: 100
-            description: This is a template parameter of type `number`.
+            description: The percentage discount applied to the cart total.
           condition:
           - and
           - - couponValid
@@ -27545,6 +27617,379 @@ components:
       - id
       - type
       title: PassthroughBlock
+    ShowNotificationBlock:
+      allOf:
+      - $ref: "#/components/schemas/BaseBlock"
+      - description: "A block that displays a notification to the customer with a\
+          \ configurable type, title, and optional body message."
+        properties:
+          notificationType:
+            description: The type of notification to display.
+            example: Info
+            type: string
+          title:
+            description: The notification heading shown to the customer.
+            example: You earned a reward!
+            type: string
+          body:
+            description: "The notification body text. Supports template placeholders\
+              \ (e.g. \"{{$Session.Total}}\") evaluated at rule execution time."
+            example: You saved $10 on your order.
+            type: string
+          onFailure:
+            description: Blocks evaluated when this block fails or returns false.
+            items:
+              $ref: "#/components/schemas/PromotionBlock"
+            type: array
+            default: null
+          onError:
+            additionalProperties:
+              items:
+                $ref: "#/components/schemas/PromotionBlock"
+            description: Named error handlers evaluated when a specific error occurs.
+        required:
+        - notificationType
+        - title
+        title: ShowNotificationBlock
+    AwardItemBlock:
+      allOf:
+      - $ref: "#/components/schemas/BaseBlock"
+      - description: A block that awards a free cart item to the customer. The item
+          is identified by SKU and name and has a configurable quantity.
+        properties:
+          sku:
+            description: The stock keeping unit of the item to award.
+            example: SKU1241028
+            type: string
+          name:
+            description: The display name of the item to award.
+            example: Free Tote Bag
+            type: string
+          quantity:
+            description: "The number of items to award. Supports template placeholders\
+              \ (e.g. \"{{$Session.Total / 2}}\") for dynamic quantities."
+            example: "1"
+            type: string
+          partial:
+            description: "When set to `true`, applies a partial item reward if the\
+              \ remaining budget is insufficient to award the full reward."
+            example: false
+            type: boolean
+          onFailure:
+            description: Blocks evaluated when this block fails or returns false.
+            items:
+              $ref: "#/components/schemas/PromotionBlock"
+            type: array
+            default: null
+          onError:
+            additionalProperties:
+              items:
+                $ref: "#/components/schemas/PromotionBlock"
+            description: Named error handlers evaluated when a specific error occurs.
+        required:
+        - name
+        - quantity
+        - sku
+        title: AwardItemBlock
+    AwardGiveawayBlock:
+      allOf:
+      - $ref: "#/components/schemas/BaseBlock"
+      - description: A block that awards a giveaway item from a configured giveaway
+          pool to the specified customer profile.
+        properties:
+          giveawayPool:
+            $ref: "#/components/schemas/AwardGiveawayBlock_1_giveawayPool"
+          profile:
+            description: The customer profile to award the giveaway to. `Current`
+              targets the customer in the current session; `Advocate` targets the
+              person who invited their friend via referral program.
+            enum:
+            - Current
+            - Advocate
+            example: Current
+            type: string
+          onFailure:
+            description: Blocks evaluated when this block fails or returns false.
+            items:
+              $ref: "#/components/schemas/PromotionBlock"
+            type: array
+            default: null
+          onError:
+            additionalProperties:
+              items:
+                $ref: "#/components/schemas/PromotionBlock"
+            description: Named error handlers evaluated when a specific error occurs.
+        required:
+        - giveawayPool
+        - profile
+        title: AwardGiveawayBlock
+    ScalarCheckAttributeBlock:
+      description: Variant of `CheckAttributeBlock` for operators that compare an
+        attribute against a single value.
+      properties:
+        operator:
+          description: The comparison operator applied to the attribute.
+          enum:
+          - equals
+          - not(equals)
+          - lessThan
+          - lessThanOrEqual
+          - greaterThan
+          - greaterThanOrEqual
+          - contains
+          - not(contains)
+          - matchesRegexp
+          - startsWith
+          - endsWith
+          - oneOf
+          - not(oneOf)
+          - inCollection
+          - not(inCollection)
+          type: string
+        value: {}
+      required:
+      - value
+      title: ScalarCheckAttributeBlock
+    BetweenCheckAttributeBlock:
+      description: "Variant of `CheckAttributeBlock` for the `between` operator, which\
+        \ requires both a minimum and maximum value."
+      properties:
+        operator:
+          description: The range comparison operator. Must be `between`.
+          enum:
+          - between
+          type: string
+        min: {}
+        max: {}
+      required:
+      - max
+      - min
+      title: BetweenCheckAttributeBlock
+    ListCheckAttributeBlock:
+      description: Variant of `CheckAttributeBlock` for operators that test list membership
+        against a set of values.
+      properties:
+        operator:
+          description: The list membership operator applied to the attribute.
+          enum:
+          - containsOneOf
+          - containsNoneOf
+          - containsAllOf
+          type: string
+        values: {}
+      required:
+      - values
+      title: ListCheckAttributeBlock
+    ListWithCountCheckAttributeBlock:
+      description: Variant of `CheckAttributeBlock` for operators that test list membership
+        with a minimum or exact count threshold.
+      properties:
+        operator:
+          description: The list membership operator with a count threshold applied
+            to the attribute.
+          enum:
+          - containsAtLeast
+          - containsExactly
+          type: string
+        values: {}
+        count: {}
+      required:
+      - count
+      - values
+      title: ListWithCountCheckAttributeBlock
+    UnaryCheckAttributeBlock:
+      description: Variant of `CheckAttributeBlock` for operators that test a property
+        of the attribute itself with no comparison value.
+      properties:
+        operator:
+          description: The unary operator applied to the attribute. These operators
+            require no comparison value.
+          enum:
+          - empty
+          - not(empty)
+          - exists
+          - not(exists)
+          - isTrue
+          - isFalse
+          type: string
+      title: UnaryCheckAttributeBlock
+    CheckAttributeBlock:
+      allOf:
+      - $ref: "#/components/schemas/BaseBlock"
+      - description: |-
+          A block that evaluates a single attribute comparison using a named operator.
+          The operator determines which additional fields are required:
+          - `scalar` requires `value`.
+          - `between` requires `min` and `max` values.
+          - `list` requires `values`.
+          - `list-with-count` requires `values` and `count`.
+          - `unary` requires no extra fields.
+        properties:
+          operator:
+            description: The comparison operator applied to the attribute.
+            enum:
+            - equals
+            - not(equals)
+            - lessThan
+            - lessThanOrEqual
+            - greaterThan
+            - greaterThanOrEqual
+            - between
+            - contains
+            - not(contains)
+            - matchesRegexp
+            - startsWith
+            - endsWith
+            - oneOf
+            - not(oneOf)
+            - inCollection
+            - not(inCollection)
+            - empty
+            - not(empty)
+            - exists
+            - not(exists)
+            - isTrue
+            - isFalse
+            - containsAtLeast
+            - containsExactly
+            - containsOneOf
+            - containsNoneOf
+            - containsAllOf
+            example: greaterThan
+            type: string
+          attribute:
+            description: The attribute path identifier (e.g. "$Session.Total").
+            example: $Session.Total
+            type: string
+          value: {}
+          min: {}
+          max: {}
+          values: {}
+          count: {}
+        required:
+        - attribute
+        - operator
+        title: CheckAttributeBlock
+      discriminator:
+        mapping:
+          equals: "#/components/schemas/ScalarCheckAttributeBlock"
+          not(equals): "#/components/schemas/ScalarCheckAttributeBlock"
+          lessThan: "#/components/schemas/ScalarCheckAttributeBlock"
+          lessThanOrEqual: "#/components/schemas/ScalarCheckAttributeBlock"
+          greaterThan: "#/components/schemas/ScalarCheckAttributeBlock"
+          greaterThanOrEqual: "#/components/schemas/ScalarCheckAttributeBlock"
+          contains: "#/components/schemas/ScalarCheckAttributeBlock"
+          not(contains): "#/components/schemas/ScalarCheckAttributeBlock"
+          matchesRegexp: "#/components/schemas/ScalarCheckAttributeBlock"
+          startsWith: "#/components/schemas/ScalarCheckAttributeBlock"
+          endsWith: "#/components/schemas/ScalarCheckAttributeBlock"
+          oneOf: "#/components/schemas/ScalarCheckAttributeBlock"
+          not(oneOf): "#/components/schemas/ScalarCheckAttributeBlock"
+          inCollection: "#/components/schemas/ScalarCheckAttributeBlock"
+          not(inCollection): "#/components/schemas/ScalarCheckAttributeBlock"
+          between: "#/components/schemas/BetweenCheckAttributeBlock"
+          containsOneOf: "#/components/schemas/ListCheckAttributeBlock"
+          containsNoneOf: "#/components/schemas/ListCheckAttributeBlock"
+          containsAllOf: "#/components/schemas/ListCheckAttributeBlock"
+          containsAtLeast: "#/components/schemas/ListWithCountCheckAttributeBlock"
+          containsExactly: "#/components/schemas/ListWithCountCheckAttributeBlock"
+          empty: "#/components/schemas/UnaryCheckAttributeBlock"
+          not(empty): "#/components/schemas/UnaryCheckAttributeBlock"
+          exists: "#/components/schemas/UnaryCheckAttributeBlock"
+          not(exists): "#/components/schemas/UnaryCheckAttributeBlock"
+          isTrue: "#/components/schemas/UnaryCheckAttributeBlock"
+          isFalse: "#/components/schemas/UnaryCheckAttributeBlock"
+        propertyName: operator
+    PromotionCheckAttributeBlock:
+      allOf:
+      - $ref: "#/components/schemas/CheckAttributeBlock"
+      - description: "A `CheckAttributeBlock` valid in a promotion rule, where each\
+          \ `onFailure` block must itself be a valid promotion block."
+        properties:
+          onFailure:
+            description: Promotion blocks evaluated when this block fails or returns
+              false.
+            items:
+              $ref: "#/components/schemas/PromotionBlock"
+            type: array
+            default: null
+        title: PromotionCheckAttributeBlock
+    CheckAudienceBlock:
+      allOf:
+      - $ref: "#/components/schemas/BaseBlock"
+      - description: A block that checks whether a given customer profile is a member
+          of an audience.
+        properties:
+          operator:
+            description: An indicator of how the block compares its elements.
+            enum:
+            - member
+            - not(member)
+            - justJoined
+            - justLeft
+            example: member
+            type: string
+          profile:
+            description: The customer profile to check against the audience. `Current`
+              targets the customer in the current session; `Advocate` targets the
+              person who invited their friend via referral program.
+            enum:
+            - Current
+            - Advocate
+            example: Current
+            type: string
+          audience:
+            $ref: "#/components/schemas/CheckAudienceBlock_1_audience"
+          onFailure:
+            description: Promotion blocks evaluated when this block fails or returns
+              false.
+            items:
+              $ref: "#/components/schemas/PromotionBlock"
+            type: array
+            default: null
+        required:
+        - audience
+        - operator
+        - profile
+        title: CheckAudienceBlock
+    CheckCouponBlock:
+      allOf:
+      - $ref: "#/components/schemas/BaseBlock"
+      - description: A block that validates the coupon code value and date.
+        properties:
+          redeem:
+            description: "When `true`, the coupon code is redeemed."
+            example: true
+            type: boolean
+          onFailure:
+            description: Promotion blocks evaluated when this block fails or returns
+              false.
+            items:
+              $ref: "#/components/schemas/PromotionBlock"
+            type: array
+            default: null
+        required:
+        - redeem
+        title: CheckCouponBlock
+    CheckReferralBlock:
+      allOf:
+      - $ref: "#/components/schemas/BaseBlock"
+      - description: A block that validates the referral code value and date.
+        properties:
+          redeem:
+            description: "When `true`, the referral code is redeemed."
+            example: true
+            type: boolean
+          onFailure:
+            description: Promotion blocks evaluated when this block fails or returns
+              false.
+            items:
+              $ref: "#/components/schemas/PromotionBlock"
+            type: array
+            default: null
+        required:
+        - redeem
+        title: CheckReferralBlock
     PromotionRuleV2:
       allOf:
       - $ref: "#/components/schemas/RuleV2"
@@ -27607,6 +28052,20 @@ components:
         - blocks
         - operator
         title: StrikethroughGroupBlock
+    StrikethroughCheckAttributeBlock:
+      allOf:
+      - $ref: "#/components/schemas/CheckAttributeBlock"
+      - description: "A `CheckAttributeBlock` valid in a strikethrough rule, where\
+          \ each `onFailure` block must itself be a valid strikethrough block."
+        properties:
+          onFailure:
+            description: Strikethrough blocks evaluated when this block fails or returns
+              false.
+            items:
+              $ref: "#/components/schemas/StrikethroughBlock"
+            type: array
+            default: null
+        title: StrikethroughCheckAttributeBlock
     StrikethroughRuleV2:
       allOf:
       - $ref: "#/components/schemas/RuleV2"
@@ -28957,26 +29416,26 @@ components:
             title: Give discount via coupon
             description: Creates a discount when a coupon is valid
             bindings:
-            - name: my property
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
-            - name: my property
+              description: The percentage discount applied to the cart total.
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
+              description: The percentage discount applied to the cart total.
             condition:
             - and
             - - couponValid
@@ -28997,26 +29456,26 @@ components:
             title: Give discount via coupon
             description: Creates a discount when a coupon is valid
             bindings:
-            - name: my property
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
-            - name: my property
+              description: The percentage discount applied to the cart total.
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
+              description: The percentage discount applied to the cart total.
             condition:
             - and
             - - couponValid
@@ -29038,26 +29497,26 @@ components:
             title: Give discount via coupon
             description: Creates a discount when a coupon is valid
             bindings:
-            - name: my property
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
-            - name: my property
+              description: The percentage discount applied to the cart total.
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
+              description: The percentage discount applied to the cart total.
             condition:
             - and
             - - couponValid
@@ -29078,26 +29537,26 @@ components:
             title: Give discount via coupon
             description: Creates a discount when a coupon is valid
             bindings:
-            - name: my property
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
-            - name: my property
+              description: The percentage discount applied to the cart total.
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
+              description: The percentage discount applied to the cart total.
             condition:
             - and
             - - couponValid
@@ -29319,7 +29778,7 @@ components:
           callApiEffectCount: 0
           reservecouponEffectCount: 9
           lastActivity: 2022-11-10T23:00:00Z
-          updated: 2022-10-97T35:00:00Z
+          updated: 2022-10-27T15:00:00Z
           createdBy: John Doe
           updatedBy: Jane Doe
           templateId: 3
@@ -29353,26 +29812,26 @@ components:
               title: Give discount via coupon
               description: Creates a discount when a coupon is valid
               bindings:
-              - name: my property
+              - name: Discount percentage
                 type: templateParameter
                 expression:
-                - string1
-                - string2
-                valueType: string
+                - identity
+                - 10
+                valueType: number
                 minValue: 0
                 maxValue: 19.9
                 attributeId: 100
-                description: This is a template parameter of type `number`.
-              - name: my property
+                description: The percentage discount applied to the cart total.
+              - name: Discount percentage
                 type: templateParameter
                 expression:
-                - string1
-                - string2
-                valueType: string
+                - identity
+                - 10
+                valueType: number
                 minValue: 0
                 maxValue: 19.9
                 attributeId: 100
-                description: This is a template parameter of type `number`.
+                description: The percentage discount applied to the cart total.
               condition:
               - and
               - - couponValid
@@ -29393,26 +29852,26 @@ components:
               title: Give discount via coupon
               description: Creates a discount when a coupon is valid
               bindings:
-              - name: my property
+              - name: Discount percentage
                 type: templateParameter
                 expression:
-                - string1
-                - string2
-                valueType: string
+                - identity
+                - 10
+                valueType: number
                 minValue: 0
                 maxValue: 19.9
                 attributeId: 100
-                description: This is a template parameter of type `number`.
-              - name: my property
+                description: The percentage discount applied to the cart total.
+              - name: Discount percentage
                 type: templateParameter
                 expression:
-                - string1
-                - string2
-                valueType: string
+                - identity
+                - 10
+                valueType: number
                 minValue: 0
                 maxValue: 19.9
                 attributeId: 100
-                description: This is a template parameter of type `number`.
+                description: The percentage discount applied to the cart total.
               condition:
               - and
               - - couponValid
@@ -29434,26 +29893,26 @@ components:
               title: Give discount via coupon
               description: Creates a discount when a coupon is valid
               bindings:
-              - name: my property
+              - name: Discount percentage
                 type: templateParameter
                 expression:
-                - string1
-                - string2
-                valueType: string
+                - identity
+                - 10
+                valueType: number
                 minValue: 0
                 maxValue: 19.9
                 attributeId: 100
-                description: This is a template parameter of type `number`.
-              - name: my property
+                description: The percentage discount applied to the cart total.
+              - name: Discount percentage
                 type: templateParameter
                 expression:
-                - string1
-                - string2
-                valueType: string
+                - identity
+                - 10
+                valueType: number
                 minValue: 0
                 maxValue: 19.9
                 attributeId: 100
-                description: This is a template parameter of type `number`.
+                description: The percentage discount applied to the cart total.
               condition:
               - and
               - - couponValid
@@ -29474,26 +29933,26 @@ components:
               title: Give discount via coupon
               description: Creates a discount when a coupon is valid
               bindings:
-              - name: my property
+              - name: Discount percentage
                 type: templateParameter
                 expression:
-                - string1
-                - string2
-                valueType: string
+                - identity
+                - 10
+                valueType: number
                 minValue: 0
                 maxValue: 19.9
                 attributeId: 100
-                description: This is a template parameter of type `number`.
-              - name: my property
+                description: The percentage discount applied to the cart total.
+              - name: Discount percentage
                 type: templateParameter
                 expression:
-                - string1
-                - string2
-                valueType: string
+                - identity
+                - 10
+                valueType: number
                 minValue: 0
                 maxValue: 19.9
                 attributeId: 100
-                description: This is a template parameter of type `number`.
+                description: The percentage discount applied to the cart total.
               condition:
               - and
               - - couponValid
@@ -29531,26 +29990,26 @@ components:
               title: Give discount via coupon
               description: Creates a discount when a coupon is valid
               bindings:
-              - name: my property
+              - name: Discount percentage
                 type: templateParameter
                 expression:
-                - string1
-                - string2
-                valueType: string
+                - identity
+                - 10
+                valueType: number
                 minValue: 0
                 maxValue: 19.9
                 attributeId: 100
-                description: This is a template parameter of type `number`.
-              - name: my property
+                description: The percentage discount applied to the cart total.
+              - name: Discount percentage
                 type: templateParameter
                 expression:
-                - string1
-                - string2
-                valueType: string
+                - identity
+                - 10
+                valueType: number
                 minValue: 0
                 maxValue: 19.9
                 attributeId: 100
-                description: This is a template parameter of type `number`.
+                description: The percentage discount applied to the cart total.
               condition:
               - and
               - - couponValid
@@ -29571,26 +30030,26 @@ components:
               title: Give discount via coupon
               description: Creates a discount when a coupon is valid
               bindings:
-              - name: my property
+              - name: Discount percentage
                 type: templateParameter
                 expression:
-                - string1
-                - string2
-                valueType: string
+                - identity
+                - 10
+                valueType: number
                 minValue: 0
                 maxValue: 19.9
                 attributeId: 100
-                description: This is a template parameter of type `number`.
-              - name: my property
+                description: The percentage discount applied to the cart total.
+              - name: Discount percentage
                 type: templateParameter
                 expression:
-                - string1
-                - string2
-                valueType: string
+                - identity
+                - 10
+                valueType: number
                 minValue: 0
                 maxValue: 19.9
                 attributeId: 100
-                description: This is a template parameter of type `number`.
+                description: The percentage discount applied to the cart total.
               condition:
               - and
               - - couponValid
@@ -29612,26 +30071,26 @@ components:
               title: Give discount via coupon
               description: Creates a discount when a coupon is valid
               bindings:
-              - name: my property
+              - name: Discount percentage
                 type: templateParameter
                 expression:
-                - string1
-                - string2
-                valueType: string
+                - identity
+                - 10
+                valueType: number
                 minValue: 0
                 maxValue: 19.9
                 attributeId: 100
-                description: This is a template parameter of type `number`.
-              - name: my property
+                description: The percentage discount applied to the cart total.
+              - name: Discount percentage
                 type: templateParameter
                 expression:
-                - string1
-                - string2
-                valueType: string
+                - identity
+                - 10
+                valueType: number
                 minValue: 0
                 maxValue: 19.9
                 attributeId: 100
-                description: This is a template parameter of type `number`.
+                description: The percentage discount applied to the cart total.
               condition:
               - and
               - - couponValid
@@ -29652,26 +30111,26 @@ components:
               title: Give discount via coupon
               description: Creates a discount when a coupon is valid
               bindings:
-              - name: my property
+              - name: Discount percentage
                 type: templateParameter
                 expression:
-                - string1
-                - string2
-                valueType: string
+                - identity
+                - 10
+                valueType: number
                 minValue: 0
                 maxValue: 19.9
                 attributeId: 100
-                description: This is a template parameter of type `number`.
-              - name: my property
+                description: The percentage discount applied to the cart total.
+              - name: Discount percentage
                 type: templateParameter
                 expression:
-                - string1
-                - string2
-                valueType: string
+                - identity
+                - 10
+                valueType: number
                 minValue: 0
                 maxValue: 19.9
                 attributeId: 100
-                description: This is a template parameter of type `number`.
+                description: The percentage discount applied to the cart total.
               condition:
               - and
               - - couponValid
@@ -30221,26 +30680,26 @@ components:
         templateId: 4
         campaignAttributesOverrides: "{}"
         templateParamValues:
-        - name: my property
+        - name: Discount percentage
           type: templateParameter
           expression:
-          - string1
-          - string2
-          valueType: string
+          - identity
+          - 10
+          valueType: number
           minValue: 0
           maxValue: 19.9
           attributeId: 100
-          description: This is a template parameter of type `number`.
-        - name: my property
+          description: The percentage discount applied to the cart total.
+        - name: Discount percentage
           type: templateParameter
           expression:
-          - string1
-          - string2
-          valueType: string
+          - identity
+          - 10
+          valueType: number
           minValue: 0
           maxValue: 19.9
           attributeId: 100
-          description: This is a template parameter of type `number`.
+          description: The percentage discount applied to the cart total.
         limitOverrides:
         - action: createCoupon
           limit: 1000
@@ -30606,7 +31065,7 @@ components:
           callApiEffectCount: 0
           reservecouponEffectCount: 9
           lastActivity: 2022-11-10T23:00:00Z
-          updated: 2022-10-97T35:00:00Z
+          updated: 2022-10-27T15:00:00Z
           createdBy: John Doe
           updatedBy: Jane Doe
           templateId: 3
@@ -30633,26 +31092,26 @@ components:
             title: Give discount via coupon
             description: Creates a discount when a coupon is valid
             bindings:
-            - name: my property
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
-            - name: my property
+              description: The percentage discount applied to the cart total.
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
+              description: The percentage discount applied to the cart total.
             condition:
             - and
             - - couponValid
@@ -30673,26 +31132,26 @@ components:
             title: Give discount via coupon
             description: Creates a discount when a coupon is valid
             bindings:
-            - name: my property
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
-            - name: my property
+              description: The percentage discount applied to the cart total.
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
+              description: The percentage discount applied to the cart total.
             condition:
             - and
             - - couponValid
@@ -30714,26 +31173,26 @@ components:
             title: Give discount via coupon
             description: Creates a discount when a coupon is valid
             bindings:
-            - name: my property
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
-            - name: my property
+              description: The percentage discount applied to the cart total.
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
+              description: The percentage discount applied to the cart total.
             condition:
             - and
             - - couponValid
@@ -30754,26 +31213,26 @@ components:
             title: Give discount via coupon
             description: Creates a discount when a coupon is valid
             bindings:
-            - name: my property
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
-            - name: my property
+              description: The percentage discount applied to the cart total.
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
+              description: The percentage discount applied to the cart total.
             condition:
             - and
             - - couponValid
@@ -32195,6 +32654,11 @@ components:
             description: The location where the SAML assertion is sent with a HTTP
               POST.
             type: string
+          certificateExpiry:
+            description: The expiry date of the X.509 certificate.
+            example: 2021-07-20T21:59:00Z
+            format: date-time
+            type: string
         required:
         - assertionConsumerServiceURL
         - audienceURI
@@ -32835,10 +33299,10 @@ components:
             description: |
               Indicates the current state of the session. Sessions can be created as `open` or `closed`. The state transitions are:
 
-              1. `open` → `closed`
-              2. `open` → `cancelled`
-              3. `closed` → `cancelled` or `partially_returned`
-              4. `partially_returned` → `cancelled`
+              1. `open` -> `closed`
+              2. `open` -> `cancelled`
+              3. `closed` -> `cancelled` or `partially_returned`
+              4. `partially_returned` -> `cancelled`
 
               For more information, see [Customer session states](https://docs.talon.one/docs/dev/concepts/entities/customer-sessions).
             enum:
@@ -35452,10 +35916,10 @@ components:
         timeFrame:
           description: The rolling time window for risk evaluation.
           enum:
-          - 1_day
-          - 1_week
-          - 1_month
-          example: 1_week
+          - 1D
+          - 7D
+          - 30D
+          example: 7D
           type: string
       required:
       - activity
@@ -35499,8 +35963,11 @@ components:
             example: 3
             format: int64
             type: integer
-          runDate:
-            description: The date of the ML pipeline run that detected this risk.
+          featureDate:
+            description: |
+              The date of the activity data in which this risk was detected. The anomaly
+              detection pipeline scores complete 24-hour cycles, so this is always the day
+              before the risk was reported, not the reporting date itself.
             example: 2026-06-05
             format: date
             type: string
@@ -35551,10 +36018,10 @@ components:
           timeFrame:
             description: The rolling time window of the risk evaluation.
             enum:
-            - 1_day
-            - 1_week
-            - 1_month
-            example: 1_week
+            - 1D
+            - 7D
+            - 30D
+            example: 7D
             type: string
           reportedDate:
             description: The time the ML service reported this risk.
@@ -35580,11 +36047,11 @@ components:
         - affectedEntityCount
         - criticality
         - entity
+        - featureDate
         - groupKey
         - modified
         - notificationId
         - reportedDate
-        - runDate
         - status
         - timeFrame
       description: A risk detected by the anomaly detection service for one Application
@@ -37001,7 +37468,7 @@ components:
             - - - Item
               - - catch
                 - false
-                - - =
+                - - contains
                   - - "."
                     - Item
                     - Category
@@ -37035,7 +37502,7 @@ components:
           - - - Item
             - - catch
               - false
-              - - =
+              - - contains
                 - - "."
                   - Item
                   - Category
@@ -37111,7 +37578,7 @@ components:
           - - - Item
             - - catch
               - false
-              - - =
+              - - contains
                 - - "."
                   - Item
                   - Category
@@ -38330,6 +38797,12 @@ components:
           format: int64
           minimum: 0
           type: integer
+        InstanceName:
+          description: Name of the Prismatic instance that registered this flow.
+          type: string
+        IntegrationName:
+          description: Name of the Prismatic integration that registered this flow.
+          type: string
       required:
       - ApiKey
     IntegrationHubFlowWithConfig:
@@ -38654,6 +39127,37 @@ components:
           type: string
       required:
       - requestStatus
+    RewardPointsRequired:
+      description: The loyalty points required to activate a reward.
+      properties:
+        id:
+          description: |
+            The ID of the `pointsRequired` entry. When updating a reward,
+            include this property to update an existing entry. Omit it to create a new one.
+          example: 1
+          format: int64
+          type: integer
+        amount:
+          description: The number of loyalty points required to activate the reward.
+          example: 500
+          minimum: 0
+          type: number
+        loyaltyProgramId:
+          description: The ID of the associated loyalty program.
+          example: 10
+          format: int64
+          type: integer
+        subledgerId:
+          description: |
+            The ID of the subledger within the loyalty program from which points are deducted when activating the reward.
+
+            To specify the main ledger, provide an empty string ("").
+          example: mysubledger
+          type: string
+      required:
+      - amount
+      - loyaltyProgramId
+      - subledgerId
     NewReward:
       properties:
         name:
@@ -38688,77 +39192,57 @@ components:
           example: true
           title: Sandbox
           type: boolean
+        eligibilityConditions:
+          allOf:
+          - $ref: "#/components/schemas/Rule"
+          description: |
+            An optional rule that manages who can see this reward. If not specified, the reward
+            is visible to all customers.
+
+            **Note:** Only the `condition` field is evaluated within this rule. The `effects` field must be an empty array,
+            and `bindings` are not supported.
+        rule:
+          allOf:
+          - $ref: "#/components/schemas/Rule"
+          description: |
+            Rule to apply.
+
+            **Note**: The `bindings` field inside the rule must not be used in this
+            endpoint. All bindings should be defined at the reward level via the
+            top-level `bindings` field.
+        bindings:
+          description: A list of named variables created before the reward's rules
+            are evaluated. Each binding pairs a name with a talang expression. The
+            expression is evaluated once and its result is available by name in any
+            rule condition or effect. Bindings must be defined outside of individual
+            rules.
+          example: []
+          items:
+            $ref: "#/components/schemas/Binding"
+          type: array
+          default: null
+        pointsRequired:
+          description: |
+            The loyalty points required to activate the reward. Each object defines the specific
+            loyalty program and subledger from which points are deducted when activating the reward.
+
+            **Note:** When creating a reward, the `id` of each entry is ignored and a new entry is
+            always created.
+          items:
+            $ref: "#/components/schemas/RewardPointsRequired"
+          type: array
+          default: null
       required:
       - apiName
       - applicationIds
       - name
       - sandbox
-    RewardPointsRequired:
-      description: The loyalty points required to activate a reward.
-      properties:
-        id:
-          description: |
-            The ID of the `pointsRequired` entry. When updating a reward,
-            include this property to update an existing entry. Omit it to create a new one.
-          example: 1
-          format: int64
-          type: integer
-        amount:
-          description: The number of loyalty points required to activate the reward.
-          example: 500
-          minimum: 0
-          type: number
-        loyaltyProgramId:
-          description: The ID of the associated loyalty program.
-          example: 10
-          format: int64
-          type: integer
-        subledgerId:
-          description: |
-            The ID of the subledger within the loyalty program from which points are deducted when activating the reward.
-
-            To specify the main ledger, provide an empty string ("").
-          example: mysubledger
-          type: string
-      required:
-      - amount
-      - loyaltyProgramId
-      - subledgerId
     Reward:
       allOf:
       - $ref: "#/components/schemas/Entity"
       - $ref: "#/components/schemas/AccountEntity"
       - $ref: "#/components/schemas/NewReward"
       - properties:
-          eligibilityConditions:
-            allOf:
-            - $ref: "#/components/schemas/Rule"
-            description: |
-              An optional rule that manages who can see this reward. If not specified, the reward
-              is visible to all customers.
-
-              **Note:** Only the `condition` field is evaluated within this rule. The `effects` field must be an empty array,
-              and `bindings` are not supported.
-          rule:
-            allOf:
-            - $ref: "#/components/schemas/Rule"
-            description: |
-              Rule to apply.
-
-              **Note**: The `bindings` field inside the rule must not be used in this
-              endpoint. All bindings should be defined at the reward level via the
-              top-level `bindings` field.
-          bindings:
-            description: A list of named variables created before the reward's rules
-              are evaluated.  Each binding pairs a name with a talang expression.
-              The expression is evaluated once  and its result is available by name
-              in any rule condition or effect. Bindings must be defined outside of
-              individual rules.
-            example: []
-            items:
-              $ref: "#/components/schemas/Binding"
-            type: array
-            default: null
           modified:
             description: The timestamp when the reward was last updated in RFC3339
               format.
@@ -38771,12 +39255,6 @@ components:
             - inactive
             example: active
             type: string
-          pointsRequired:
-            description: The loyalty points required to activate a reward.
-            items:
-              $ref: "#/components/schemas/RewardPointsRequired"
-            type: array
-            default: null
         required:
         - status
     UpdateReward:
@@ -39069,7 +39547,7 @@ components:
           callApiEffectCount: 0
           reservecouponEffectCount: 9
           lastActivity: 2022-11-10T23:00:00Z
-          updated: 2022-10-97T35:00:00Z
+          updated: 2022-10-27T15:00:00Z
           createdBy: John Doe
           updatedBy: Jane Doe
           templateId: 3
@@ -39224,7 +39702,7 @@ components:
           callApiEffectCount: 0
           reservecouponEffectCount: 9
           lastActivity: 2022-11-10T23:00:00Z
-          updated: 2022-10-97T35:00:00Z
+          updated: 2022-10-27T15:00:00Z
           createdBy: John Doe
           updatedBy: Jane Doe
           templateId: 3
@@ -41771,6 +42249,7 @@ components:
           created: 2022-01-02T15:04:05Z07:00
           programId: 324
           customerSessionId: 05c2da0d-48fa-4aa1-b629-898f58f1584d
+          storeIntegrationId: STORE-001
           type: addition
           name: Reward 10% points of a purchase's current total
           startDate: 2022-01-02T15:04:05Z07:00
@@ -41786,6 +42265,7 @@ components:
           created: 2022-01-02T15:04:05Z07:00
           programId: 324
           customerSessionId: 05c2da0d-48fa-4aa1-b629-898f58f1584d
+          storeIntegrationId: STORE-001
           type: addition
           name: Reward 10% points of a purchase's current total
           startDate: 2022-01-02T15:04:05Z07:00
@@ -41929,6 +42409,8 @@ components:
           defaultEvaluationGroupId: 3
           defaultCartItemFilterId: 3
           enableCampaignStateManagement: false
+          bestPriorPriceSettings:
+            enableBestPriorPrice: true
           loyaltyPrograms:
           - id: 139
             created: 2020-06-10T09:05:27.993483Z
@@ -42130,6 +42612,8 @@ components:
           defaultEvaluationGroupId: 3
           defaultCartItemFilterId: 3
           enableCampaignStateManagement: false
+          bestPriorPriceSettings:
+            enableBestPriorPrice: true
           loyaltyPrograms:
           - id: 139
             created: 2020-06-10T09:05:27.993483Z
@@ -42448,7 +42932,7 @@ components:
           callApiEffectCount: 0
           reservecouponEffectCount: 9
           lastActivity: 2022-11-10T23:00:00Z
-          updated: 2022-10-97T35:00:00Z
+          updated: 2022-10-27T15:00:00Z
           createdBy: John Doe
           updatedBy: Jane Doe
           templateId: 3
@@ -42603,7 +43087,7 @@ components:
           callApiEffectCount: 0
           reservecouponEffectCount: 9
           lastActivity: 2022-11-10T23:00:00Z
-          updated: 2022-10-97T35:00:00Z
+          updated: 2022-10-27T15:00:00Z
           createdBy: John Doe
           updatedBy: Jane Doe
           templateId: 3
@@ -42646,26 +43130,26 @@ components:
             title: Give discount via coupon
             description: Creates a discount when a coupon is valid
             bindings:
-            - name: my property
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
-            - name: my property
+              description: The percentage discount applied to the cart total.
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
+              description: The percentage discount applied to the cart total.
             condition:
             - and
             - - couponValid
@@ -42686,26 +43170,26 @@ components:
             title: Give discount via coupon
             description: Creates a discount when a coupon is valid
             bindings:
-            - name: my property
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
-            - name: my property
+              description: The percentage discount applied to the cart total.
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
+              description: The percentage discount applied to the cart total.
             condition:
             - and
             - - couponValid
@@ -42727,26 +43211,26 @@ components:
             title: Give discount via coupon
             description: Creates a discount when a coupon is valid
             bindings:
-            - name: my property
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
-            - name: my property
+              description: The percentage discount applied to the cart total.
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
+              description: The percentage discount applied to the cart total.
             condition:
             - and
             - - couponValid
@@ -42767,26 +43251,26 @@ components:
             title: Give discount via coupon
             description: Creates a discount when a coupon is valid
             bindings:
-            - name: my property
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
-            - name: my property
+              description: The percentage discount applied to the cart total.
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
+              description: The percentage discount applied to the cart total.
             condition:
             - and
             - - couponValid
@@ -42817,26 +43301,26 @@ components:
             title: Give discount via coupon
             description: Creates a discount when a coupon is valid
             bindings:
-            - name: my property
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
-            - name: my property
+              description: The percentage discount applied to the cart total.
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
+              description: The percentage discount applied to the cart total.
             condition:
             - and
             - - couponValid
@@ -42857,26 +43341,26 @@ components:
             title: Give discount via coupon
             description: Creates a discount when a coupon is valid
             bindings:
-            - name: my property
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
-            - name: my property
+              description: The percentage discount applied to the cart total.
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
+              description: The percentage discount applied to the cart total.
             condition:
             - and
             - - couponValid
@@ -42898,26 +43382,26 @@ components:
             title: Give discount via coupon
             description: Creates a discount when a coupon is valid
             bindings:
-            - name: my property
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
-            - name: my property
+              description: The percentage discount applied to the cart total.
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
+              description: The percentage discount applied to the cart total.
             condition:
             - and
             - - couponValid
@@ -42938,26 +43422,26 @@ components:
             title: Give discount via coupon
             description: Creates a discount when a coupon is valid
             bindings:
-            - name: my property
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
-            - name: my property
+              description: The percentage discount applied to the cart total.
+            - name: Discount percentage
               type: templateParameter
               expression:
-              - string1
-              - string2
-              valueType: string
+              - identity
+              - 10
+              valueType: number
               minValue: 0
               maxValue: 19.9
               attributeId: 100
-              description: This is a template parameter of type `number`.
+              description: The percentage discount applied to the cart total.
             condition:
             - and
             - - couponValid
@@ -43683,7 +44167,7 @@ components:
             callApiEffectCount: 0
             reservecouponEffectCount: 9
             lastActivity: 2022-11-10T23:00:00Z
-            updated: 2022-10-97T35:00:00Z
+            updated: 2022-10-27T15:00:00Z
             createdBy: John Doe
             updatedBy: Jane Doe
             templateId: 3
@@ -43717,26 +44201,26 @@ components:
                 title: Give discount via coupon
                 description: Creates a discount when a coupon is valid
                 bindings:
-                - name: my property
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
-                - name: my property
+                  description: The percentage discount applied to the cart total.
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
+                  description: The percentage discount applied to the cart total.
                 condition:
                 - and
                 - - couponValid
@@ -43757,26 +44241,26 @@ components:
                 title: Give discount via coupon
                 description: Creates a discount when a coupon is valid
                 bindings:
-                - name: my property
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
-                - name: my property
+                  description: The percentage discount applied to the cart total.
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
+                  description: The percentage discount applied to the cart total.
                 condition:
                 - and
                 - - couponValid
@@ -43798,26 +44282,26 @@ components:
                 title: Give discount via coupon
                 description: Creates a discount when a coupon is valid
                 bindings:
-                - name: my property
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
-                - name: my property
+                  description: The percentage discount applied to the cart total.
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
+                  description: The percentage discount applied to the cart total.
                 condition:
                 - and
                 - - couponValid
@@ -43838,26 +44322,26 @@ components:
                 title: Give discount via coupon
                 description: Creates a discount when a coupon is valid
                 bindings:
-                - name: my property
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
-                - name: my property
+                  description: The percentage discount applied to the cart total.
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
+                  description: The percentage discount applied to the cart total.
                 condition:
                 - and
                 - - couponValid
@@ -43895,26 +44379,26 @@ components:
                 title: Give discount via coupon
                 description: Creates a discount when a coupon is valid
                 bindings:
-                - name: my property
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
-                - name: my property
+                  description: The percentage discount applied to the cart total.
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
+                  description: The percentage discount applied to the cart total.
                 condition:
                 - and
                 - - couponValid
@@ -43935,26 +44419,26 @@ components:
                 title: Give discount via coupon
                 description: Creates a discount when a coupon is valid
                 bindings:
-                - name: my property
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
-                - name: my property
+                  description: The percentage discount applied to the cart total.
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
+                  description: The percentage discount applied to the cart total.
                 condition:
                 - and
                 - - couponValid
@@ -43976,26 +44460,26 @@ components:
                 title: Give discount via coupon
                 description: Creates a discount when a coupon is valid
                 bindings:
-                - name: my property
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
-                - name: my property
+                  description: The percentage discount applied to the cart total.
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
+                  description: The percentage discount applied to the cart total.
                 condition:
                 - and
                 - - couponValid
@@ -44016,26 +44500,26 @@ components:
                 title: Give discount via coupon
                 description: Creates a discount when a coupon is valid
                 bindings:
-                - name: my property
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
-                - name: my property
+                  description: The percentage discount applied to the cart total.
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
+                  description: The percentage discount applied to the cart total.
                 condition:
                 - and
                 - - couponValid
@@ -44206,7 +44690,7 @@ components:
             callApiEffectCount: 0
             reservecouponEffectCount: 9
             lastActivity: 2022-11-10T23:00:00Z
-            updated: 2022-10-97T35:00:00Z
+            updated: 2022-10-27T15:00:00Z
             createdBy: John Doe
             updatedBy: Jane Doe
             templateId: 3
@@ -44240,26 +44724,26 @@ components:
                 title: Give discount via coupon
                 description: Creates a discount when a coupon is valid
                 bindings:
-                - name: my property
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
-                - name: my property
+                  description: The percentage discount applied to the cart total.
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
+                  description: The percentage discount applied to the cart total.
                 condition:
                 - and
                 - - couponValid
@@ -44280,26 +44764,26 @@ components:
                 title: Give discount via coupon
                 description: Creates a discount when a coupon is valid
                 bindings:
-                - name: my property
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
-                - name: my property
+                  description: The percentage discount applied to the cart total.
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
+                  description: The percentage discount applied to the cart total.
                 condition:
                 - and
                 - - couponValid
@@ -44321,26 +44805,26 @@ components:
                 title: Give discount via coupon
                 description: Creates a discount when a coupon is valid
                 bindings:
-                - name: my property
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
-                - name: my property
+                  description: The percentage discount applied to the cart total.
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
+                  description: The percentage discount applied to the cart total.
                 condition:
                 - and
                 - - couponValid
@@ -44361,26 +44845,26 @@ components:
                 title: Give discount via coupon
                 description: Creates a discount when a coupon is valid
                 bindings:
-                - name: my property
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
-                - name: my property
+                  description: The percentage discount applied to the cart total.
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
+                  description: The percentage discount applied to the cart total.
                 condition:
                 - and
                 - - couponValid
@@ -44418,26 +44902,26 @@ components:
                 title: Give discount via coupon
                 description: Creates a discount when a coupon is valid
                 bindings:
-                - name: my property
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
-                - name: my property
+                  description: The percentage discount applied to the cart total.
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
+                  description: The percentage discount applied to the cart total.
                 condition:
                 - and
                 - - couponValid
@@ -44458,26 +44942,26 @@ components:
                 title: Give discount via coupon
                 description: Creates a discount when a coupon is valid
                 bindings:
-                - name: my property
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
-                - name: my property
+                  description: The percentage discount applied to the cart total.
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
+                  description: The percentage discount applied to the cart total.
                 condition:
                 - and
                 - - couponValid
@@ -44499,26 +44983,26 @@ components:
                 title: Give discount via coupon
                 description: Creates a discount when a coupon is valid
                 bindings:
-                - name: my property
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
-                - name: my property
+                  description: The percentage discount applied to the cart total.
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
+                  description: The percentage discount applied to the cart total.
                 condition:
                 - and
                 - - couponValid
@@ -44539,26 +45023,26 @@ components:
                 title: Give discount via coupon
                 description: Creates a discount when a coupon is valid
                 bindings:
-                - name: my property
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
-                - name: my property
+                  description: The percentage discount applied to the cart total.
+                - name: Discount percentage
                   type: templateParameter
                   expression:
-                  - string1
-                  - string2
-                  valueType: string
+                  - identity
+                  - 10
+                  valueType: number
                   minValue: 0
                   maxValue: 19.9
                   attributeId: 100
-                  description: This is a template parameter of type `number`.
+                  description: The percentage discount applied to the cart total.
                 condition:
                 - and
                 - - couponValid
@@ -45634,6 +46118,184 @@ components:
           default: null
       required:
       - data
+    getApplicationSessionsByCustomerAttributes_200_response:
+      example:
+        hasMore: true
+        totalResultSize: 0
+        data:
+        - id: 6
+          created: 2020-02-07T08:15:22Z
+          integrationId: URNGV8294NV
+          storeIntegrationId: STORE-001
+          applicationId: 322
+          profileId: 138
+          profileintegrationid: 382370BKDB946
+          coupon: BKDB946
+          referral: BKDB946
+          state: closed
+          cartItems:
+          - name: Air Glide
+            sku: SKU1241028
+            quantity: 1
+            returnedQuantity: 1
+            remainingQuantity: 1
+            price: 99.99
+            category: shoes
+            product: ""
+            weight: 1130
+            height: 0.8008281904610115
+            width: 6.027456183070403
+            length: 1.4658129805029452
+            position: 5.962133916683182
+            attributes:
+              image: 11.jpeg
+              material: leather
+            additionalCosts:
+              shipping:
+                price: 9
+            catalogItemID: 5
+            selectedPriceType: member
+            adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
+            adjustmentEffectiveFrom: 2021-09-12T10:12:42Z
+            adjustmentEffectiveUntil: 2021-09-12T10:12:42Z
+            prices:
+              member:
+                price: 90
+                adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
+                effectiveFrom: 2025-05-25T00:00:00Z
+                effectiveUntil: 2025-05-30T00:00:00Z
+              base:
+                price: 100
+          - name: Air Glide
+            sku: SKU1241028
+            quantity: 1
+            returnedQuantity: 1
+            remainingQuantity: 1
+            price: 99.99
+            category: shoes
+            product: ""
+            weight: 1130
+            height: 0.8008281904610115
+            width: 6.027456183070403
+            length: 1.4658129805029452
+            position: 5.962133916683182
+            attributes:
+              image: 11.jpeg
+              material: leather
+            additionalCosts:
+              shipping:
+                price: 9
+            catalogItemID: 5
+            selectedPriceType: member
+            adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
+            adjustmentEffectiveFrom: 2021-09-12T10:12:42Z
+            adjustmentEffectiveUntil: 2021-09-12T10:12:42Z
+            prices:
+              member:
+                price: 90
+                adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
+                effectiveFrom: 2025-05-25T00:00:00Z
+                effectiveUntil: 2025-05-30T00:00:00Z
+              base:
+                price: 100
+          discounts:
+            key: 0.8008281904610115
+          totalDiscounts: 100
+          total: 200
+          attributes: null
+        - id: 6
+          created: 2020-02-07T08:15:22Z
+          integrationId: URNGV8294NV
+          storeIntegrationId: STORE-001
+          applicationId: 322
+          profileId: 138
+          profileintegrationid: 382370BKDB946
+          coupon: BKDB946
+          referral: BKDB946
+          state: closed
+          cartItems:
+          - name: Air Glide
+            sku: SKU1241028
+            quantity: 1
+            returnedQuantity: 1
+            remainingQuantity: 1
+            price: 99.99
+            category: shoes
+            product: ""
+            weight: 1130
+            height: 0.8008281904610115
+            width: 6.027456183070403
+            length: 1.4658129805029452
+            position: 5.962133916683182
+            attributes:
+              image: 11.jpeg
+              material: leather
+            additionalCosts:
+              shipping:
+                price: 9
+            catalogItemID: 5
+            selectedPriceType: member
+            adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
+            adjustmentEffectiveFrom: 2021-09-12T10:12:42Z
+            adjustmentEffectiveUntil: 2021-09-12T10:12:42Z
+            prices:
+              member:
+                price: 90
+                adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
+                effectiveFrom: 2025-05-25T00:00:00Z
+                effectiveUntil: 2025-05-30T00:00:00Z
+              base:
+                price: 100
+          - name: Air Glide
+            sku: SKU1241028
+            quantity: 1
+            returnedQuantity: 1
+            remainingQuantity: 1
+            price: 99.99
+            category: shoes
+            product: ""
+            weight: 1130
+            height: 0.8008281904610115
+            width: 6.027456183070403
+            length: 1.4658129805029452
+            position: 5.962133916683182
+            attributes:
+              image: 11.jpeg
+              material: leather
+            additionalCosts:
+              shipping:
+                price: 9
+            catalogItemID: 5
+            selectedPriceType: member
+            adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
+            adjustmentEffectiveFrom: 2021-09-12T10:12:42Z
+            adjustmentEffectiveUntil: 2021-09-12T10:12:42Z
+            prices:
+              member:
+                price: 90
+                adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
+                effectiveFrom: 2025-05-25T00:00:00Z
+                effectiveUntil: 2025-05-30T00:00:00Z
+              base:
+                price: 100
+          discounts:
+            key: 0.8008281904610115
+          totalDiscounts: 100
+          total: 200
+          attributes: null
+      properties:
+        hasMore:
+          type: boolean
+        totalResultSize:
+          format: int64
+          type: integer
+        data:
+          items:
+            $ref: "#/components/schemas/ApplicationSession"
+          type: array
+          default: null
+      required:
+      - data
     getApplicationEventsWithoutTotalCount_200_response:
       example:
         hasMore: true
@@ -46657,6 +47319,52 @@ components:
       description: Custom attributes associated with this coupon.
       title: Attributes of coupon
       type: object
+    AwardGiveawayBlock_1_giveawayPool:
+      description: The giveaway pool from which an item is awarded.
+      properties:
+        id:
+          description: The unique identifier of the giveaway pool.
+          example: 42
+          format: int64
+          type: integer
+        name:
+          description: The display name of the giveaway pool.
+          example: Summer Campaign Pool
+          type: string
+      required:
+      - id
+      - name
+    CheckAudienceBlock_1_audience:
+      description: The audience to check the profile against.
+      properties:
+        id:
+          description: The ID of the audience.
+          example: 42
+          format: int64
+          type: integer
+        name:
+          description: The display name of the audience.
+          example: Travel audience
+          type: string
+        integration:
+          description: |
+            The Talon.One-supported [3rd-party platform](https://docs.talon.one/docs/dev/technology-partners/overview) that this audience was created in.
+
+            For example, `mParticle`, `Segment`, `Shopify`, `Braze`, or `Iterable`.
+
+            **Note:** If you do not integrate with any of these platforms, do not use this property.
+          example: mparticle
+          type: string
+        integrationId:
+          description: |
+            The ID of this audience in the third-party integration.
+
+            **Note:** To create an audience that doesn't come from a 3rd party platform, do not use this property.
+          example: 382370BKDB946
+          type: string
+      required:
+      - id
+      - name
     Role_allOf_acl:
       description: The `Access Control List` json defining the role of the user. This
         represents the access control on the user level.
@@ -46693,7 +47401,7 @@ components:
       format: acl
       type: object
     ScimBaseUser_name:
-      description: The components of the user’s real name.
+      description: The components of the user's real name.
       example:
         formatted: Mr. John J Doe
       properties:

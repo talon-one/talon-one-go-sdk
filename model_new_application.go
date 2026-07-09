@@ -50,7 +50,8 @@ type NewApplication struct {
 	// Hex key for HMAC-signing API calls as coming from this application (16 hex digits).
 	Key *string `json:"key,omitempty" validate:"regexp=^[a-fA-F0-9]{16}$"`
 	// Indicates whether the campaign staging and revisions feature is enabled for the Application.  **Important:** After this feature is enabled, it cannot be disabled.
-	EnableCampaignStateManagement *bool `json:"enableCampaignStateManagement,omitempty"`
+	EnableCampaignStateManagement *bool                   `json:"enableCampaignStateManagement,omitempty"`
+	BestPriorPriceSettings        *BestPriorPriceSettings `json:"bestPriorPriceSettings,omitempty"`
 	AdditionalProperties          map[string]interface{}
 }
 
@@ -564,6 +565,38 @@ func (o *NewApplication) SetEnableCampaignStateManagement(v bool) {
 	o.EnableCampaignStateManagement = &v
 }
 
+// GetBestPriorPriceSettings returns the BestPriorPriceSettings field value if set, zero value otherwise.
+func (o *NewApplication) GetBestPriorPriceSettings() BestPriorPriceSettings {
+	if o == nil || IsNil(o.BestPriorPriceSettings) {
+		var ret BestPriorPriceSettings
+		return ret
+	}
+	return *o.BestPriorPriceSettings
+}
+
+// GetBestPriorPriceSettingsOk returns a tuple with the BestPriorPriceSettings field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *NewApplication) GetBestPriorPriceSettingsOk() (*BestPriorPriceSettings, bool) {
+	if o == nil || IsNil(o.BestPriorPriceSettings) {
+		return nil, false
+	}
+	return o.BestPriorPriceSettings, true
+}
+
+// HasBestPriorPriceSettings returns a boolean if a field has been set.
+func (o *NewApplication) HasBestPriorPriceSettings() bool {
+	if o != nil && !IsNil(o.BestPriorPriceSettings) {
+		return true
+	}
+
+	return false
+}
+
+// SetBestPriorPriceSettings gets a reference to the given BestPriorPriceSettings and assigns it to the BestPriorPriceSettings field.
+func (o *NewApplication) SetBestPriorPriceSettings(v BestPriorPriceSettings) {
+	o.BestPriorPriceSettings = &v
+}
+
 func (o NewApplication) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -615,6 +648,9 @@ func (o NewApplication) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.EnableCampaignStateManagement) {
 		toSerialize["enableCampaignStateManagement"] = o.EnableCampaignStateManagement
+	}
+	if !IsNil(o.BestPriorPriceSettings) {
+		toSerialize["bestPriorPriceSettings"] = o.BestPriorPriceSettings
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -677,6 +713,7 @@ func (o *NewApplication) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "defaultDiscountAdditionalCostPerItemScope")
 		delete(additionalProperties, "key")
 		delete(additionalProperties, "enableCampaignStateManagement")
+		delete(additionalProperties, "bestPriorPriceSettings")
 		o.AdditionalProperties = additionalProperties
 	}
 

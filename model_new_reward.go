@@ -29,7 +29,15 @@ type NewReward struct {
 	// The IDs of the Applications this reward is connected to.   **Note**: Currently, a reward can only be connected to one Application.
 	ApplicationIds []int64 `json:"applicationIds"`
 	// Indicates if this is a live or sandbox reward. Rewards of a given type can only be connected to Applications of the same type.
-	Sandbox              bool `json:"sandbox"`
+	Sandbox bool `json:"sandbox"`
+	// An optional rule that manages who can see this reward. If not specified, the reward is visible to all customers.  **Note:** Only the `condition` field is evaluated within this rule. The `effects` field must be an empty array, and `bindings` are not supported.
+	EligibilityConditions *Rule `json:"eligibilityConditions,omitempty"`
+	// Rule to apply.  **Note**: The `bindings` field inside the rule must not be used in this endpoint. All bindings should be defined at the reward level via the top-level `bindings` field.
+	Rule *Rule `json:"rule,omitempty"`
+	// A list of named variables created before the reward's rules are evaluated. Each binding pairs a name with a talang expression. The expression is evaluated once and its result is available by name in any rule condition or effect. Bindings must be defined outside of individual rules.
+	Bindings []Binding `json:"bindings,omitempty"`
+	// The loyalty points required to activate the reward. Each object defines the specific loyalty program and subledger from which points are deducted when activating the reward.  **Note:** When creating a reward, the `id` of each entry is ignored and a new entry is always created.
+	PointsRequired       []RewardPointsRequired `json:"pointsRequired,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -184,6 +192,134 @@ func (o *NewReward) SetSandbox(v bool) {
 	o.Sandbox = v
 }
 
+// GetEligibilityConditions returns the EligibilityConditions field value if set, zero value otherwise.
+func (o *NewReward) GetEligibilityConditions() Rule {
+	if o == nil || IsNil(o.EligibilityConditions) {
+		var ret Rule
+		return ret
+	}
+	return *o.EligibilityConditions
+}
+
+// GetEligibilityConditionsOk returns a tuple with the EligibilityConditions field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *NewReward) GetEligibilityConditionsOk() (*Rule, bool) {
+	if o == nil || IsNil(o.EligibilityConditions) {
+		return nil, false
+	}
+	return o.EligibilityConditions, true
+}
+
+// HasEligibilityConditions returns a boolean if a field has been set.
+func (o *NewReward) HasEligibilityConditions() bool {
+	if o != nil && !IsNil(o.EligibilityConditions) {
+		return true
+	}
+
+	return false
+}
+
+// SetEligibilityConditions gets a reference to the given Rule and assigns it to the EligibilityConditions field.
+func (o *NewReward) SetEligibilityConditions(v Rule) {
+	o.EligibilityConditions = &v
+}
+
+// GetRule returns the Rule field value if set, zero value otherwise.
+func (o *NewReward) GetRule() Rule {
+	if o == nil || IsNil(o.Rule) {
+		var ret Rule
+		return ret
+	}
+	return *o.Rule
+}
+
+// GetRuleOk returns a tuple with the Rule field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *NewReward) GetRuleOk() (*Rule, bool) {
+	if o == nil || IsNil(o.Rule) {
+		return nil, false
+	}
+	return o.Rule, true
+}
+
+// HasRule returns a boolean if a field has been set.
+func (o *NewReward) HasRule() bool {
+	if o != nil && !IsNil(o.Rule) {
+		return true
+	}
+
+	return false
+}
+
+// SetRule gets a reference to the given Rule and assigns it to the Rule field.
+func (o *NewReward) SetRule(v Rule) {
+	o.Rule = &v
+}
+
+// GetBindings returns the Bindings field value if set, zero value otherwise.
+func (o *NewReward) GetBindings() []Binding {
+	if o == nil || IsNil(o.Bindings) {
+		var ret []Binding
+		return ret
+	}
+	return o.Bindings
+}
+
+// GetBindingsOk returns a tuple with the Bindings field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *NewReward) GetBindingsOk() ([]Binding, bool) {
+	if o == nil || IsNil(o.Bindings) {
+		return nil, false
+	}
+	return o.Bindings, true
+}
+
+// HasBindings returns a boolean if a field has been set.
+func (o *NewReward) HasBindings() bool {
+	if o != nil && !IsNil(o.Bindings) {
+		return true
+	}
+
+	return false
+}
+
+// SetBindings gets a reference to the given []Binding and assigns it to the Bindings field.
+func (o *NewReward) SetBindings(v []Binding) {
+	o.Bindings = v
+}
+
+// GetPointsRequired returns the PointsRequired field value if set, zero value otherwise.
+func (o *NewReward) GetPointsRequired() []RewardPointsRequired {
+	if o == nil || IsNil(o.PointsRequired) {
+		var ret []RewardPointsRequired
+		return ret
+	}
+	return o.PointsRequired
+}
+
+// GetPointsRequiredOk returns a tuple with the PointsRequired field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *NewReward) GetPointsRequiredOk() ([]RewardPointsRequired, bool) {
+	if o == nil || IsNil(o.PointsRequired) {
+		return nil, false
+	}
+	return o.PointsRequired, true
+}
+
+// HasPointsRequired returns a boolean if a field has been set.
+func (o *NewReward) HasPointsRequired() bool {
+	if o != nil && !IsNil(o.PointsRequired) {
+		return true
+	}
+
+	return false
+}
+
+// SetPointsRequired gets a reference to the given []RewardPointsRequired and assigns it to the PointsRequired field.
+func (o *NewReward) SetPointsRequired(v []RewardPointsRequired) {
+	o.PointsRequired = v
+}
+
 func (o NewReward) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -201,6 +337,18 @@ func (o NewReward) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["applicationIds"] = o.ApplicationIds
 	toSerialize["sandbox"] = o.Sandbox
+	if !IsNil(o.EligibilityConditions) {
+		toSerialize["eligibilityConditions"] = o.EligibilityConditions
+	}
+	if !IsNil(o.Rule) {
+		toSerialize["rule"] = o.Rule
+	}
+	if !IsNil(o.Bindings) {
+		toSerialize["bindings"] = o.Bindings
+	}
+	if !IsNil(o.PointsRequired) {
+		toSerialize["pointsRequired"] = o.PointsRequired
+	}
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value
@@ -252,6 +400,10 @@ func (o *NewReward) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "description")
 		delete(additionalProperties, "applicationIds")
 		delete(additionalProperties, "sandbox")
+		delete(additionalProperties, "eligibilityConditions")
+		delete(additionalProperties, "rule")
+		delete(additionalProperties, "bindings")
+		delete(additionalProperties, "pointsRequired")
 		o.AdditionalProperties = additionalProperties
 	}
 
