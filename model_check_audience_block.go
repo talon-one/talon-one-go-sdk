@@ -32,7 +32,7 @@ type CheckAudienceBlock struct {
 	Profile  string                      `json:"profile"`
 	Audience CheckAudienceBlock1Audience `json:"audience"`
 	// Promotion blocks evaluated when this block fails or returns false.
-	OnFailure            []interface{} `json:"onFailure,omitempty"`
+	OnFailure            []PromotionBlock `json:"onFailure,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -213,9 +213,9 @@ func (o *CheckAudienceBlock) SetAudience(v CheckAudienceBlock1Audience) {
 }
 
 // GetOnFailure returns the OnFailure field value if set, zero value otherwise.
-func (o *CheckAudienceBlock) GetOnFailure() []interface{} {
+func (o *CheckAudienceBlock) GetOnFailure() []PromotionBlock {
 	if o == nil || IsNil(o.OnFailure) {
-		var ret []interface{}
+		var ret []PromotionBlock
 		return ret
 	}
 	return o.OnFailure
@@ -223,7 +223,7 @@ func (o *CheckAudienceBlock) GetOnFailure() []interface{} {
 
 // GetOnFailureOk returns a tuple with the OnFailure field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *CheckAudienceBlock) GetOnFailureOk() ([]interface{}, bool) {
+func (o *CheckAudienceBlock) GetOnFailureOk() ([]PromotionBlock, bool) {
 	if o == nil || IsNil(o.OnFailure) {
 		return nil, false
 	}
@@ -239,8 +239,8 @@ func (o *CheckAudienceBlock) HasOnFailure() bool {
 	return false
 }
 
-// SetOnFailure gets a reference to the given []interface{} and assigns it to the OnFailure field.
-func (o *CheckAudienceBlock) SetOnFailure(v []interface{}) {
+// SetOnFailure gets a reference to the given []PromotionBlock and assigns it to the OnFailure field.
+func (o *CheckAudienceBlock) SetOnFailure(v []PromotionBlock) {
 	o.OnFailure = v
 }
 

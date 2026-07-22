@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **Type** | **string** | Identifies the block variant and determines which additional properties are present in it. | 
 **Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] 
 **Redeem** | **bool** | When &#x60;true&#x60;, the referral code is redeemed. | 
-**OnFailure** | Pointer to **[]interface{}** | Promotion blocks evaluated when this block fails or returns false. | [optional] 
+**OnFailure** | Pointer to [**[]PromotionBlock**](PromotionBlock.md) | Promotion blocks evaluated when this block fails or returns false. | [optional] 
 
 ## Methods
 
@@ -116,20 +116,20 @@ SetRedeem sets Redeem field to given value.
 
 ### GetOnFailure
 
-`func (o *CheckReferralBlock) GetOnFailure() []interface{}`
+`func (o *CheckReferralBlock) GetOnFailure() []PromotionBlock`
 
 GetOnFailure returns the OnFailure field if non-nil, zero value otherwise.
 
 ### GetOnFailureOk
 
-`func (o *CheckReferralBlock) GetOnFailureOk() (*[]interface{}, bool)`
+`func (o *CheckReferralBlock) GetOnFailureOk() (*[]PromotionBlock, bool)`
 
 GetOnFailureOk returns a tuple with the OnFailure field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetOnFailure
 
-`func (o *CheckReferralBlock) SetOnFailure(v []interface{})`
+`func (o *CheckReferralBlock) SetOnFailure(v []PromotionBlock)`
 
 SetOnFailure sets OnFailure field to given value.
 

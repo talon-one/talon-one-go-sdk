@@ -4,14 +4,14 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Type** | **string** | The type of sync action. | 
-**Payload** | **map[string]interface{}** |  | 
+**Type** | **interface{}** |  | 
+**Payload** | [**AddPriceAdjustmentCatalogAction**](AddPriceAdjustmentCatalogAction.md) |  | 
 
 ## Methods
 
 ### NewCatalogAction
 
-`func NewCatalogAction(type_ string, payload map[string]interface{}, ) *CatalogAction`
+`func NewCatalogAction(type_ interface{}, payload AddPriceAdjustmentCatalogAction, ) *CatalogAction`
 
 NewCatalogAction instantiates a new CatalogAction object
 This constructor will assign default values to properties that have it defined,
@@ -28,40 +28,50 @@ but it doesn't guarantee that properties required by API are set
 
 ### GetType
 
-`func (o *CatalogAction) GetType() string`
+`func (o *CatalogAction) GetType() interface{}`
 
 GetType returns the Type field if non-nil, zero value otherwise.
 
 ### GetTypeOk
 
-`func (o *CatalogAction) GetTypeOk() (*string, bool)`
+`func (o *CatalogAction) GetTypeOk() (*interface{}, bool)`
 
 GetTypeOk returns a tuple with the Type field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetType
 
-`func (o *CatalogAction) SetType(v string)`
+`func (o *CatalogAction) SetType(v interface{})`
 
 SetType sets Type field to given value.
 
 
+### SetTypeNil
+
+`func (o *CatalogAction) SetTypeNil(b bool)`
+
+ SetTypeNil sets the value for Type to be an explicit nil
+
+### UnsetType
+`func (o *CatalogAction) UnsetType()`
+
+UnsetType ensures that no value is present for Type, not even an explicit nil
 ### GetPayload
 
-`func (o *CatalogAction) GetPayload() map[string]interface{}`
+`func (o *CatalogAction) GetPayload() AddPriceAdjustmentCatalogAction`
 
 GetPayload returns the Payload field if non-nil, zero value otherwise.
 
 ### GetPayloadOk
 
-`func (o *CatalogAction) GetPayloadOk() (*map[string]interface{}, bool)`
+`func (o *CatalogAction) GetPayloadOk() (*AddPriceAdjustmentCatalogAction, bool)`
 
 GetPayloadOk returns a tuple with the Payload field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetPayload
 
-`func (o *CatalogAction) SetPayload(v map[string]interface{})`
+`func (o *CatalogAction) SetPayload(v AddPriceAdjustmentCatalogAction)`
 
 SetPayload sets Payload field to given value.
 

@@ -8,15 +8,15 @@ Name | Type | Description | Notes
 **Type** | **string** | Identifies the block variant and determines which additional properties are present in it. | 
 **Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] 
 **Operator** | **string** | Logical operator applied across child blocks. &#x60;all&#x60; requires every child to pass, &#x60;atLeastOne&#x60; requires at least one, &#x60;none&#x60; requires all to fail. | 
-**Blocks** | **[]interface{}** | Child blocks evaluated according to the operator. | 
-**OnFailure** | Pointer to **[]interface{}** | Strikethrough blocks evaluated when this block fails or returns false. | [optional] 
-**OnError** | Pointer to **map[string][]interface{}** | Named error handlers evaluated when a specific error occurs. | [optional] 
+**Blocks** | [**[]StrikethroughBlock**](StrikethroughBlock.md) | Child blocks evaluated according to the operator. | 
+**OnFailure** | Pointer to [**[]StrikethroughBlock**](StrikethroughBlock.md) | Strikethrough blocks evaluated when this block fails or returns false. | [optional] 
+**OnError** | Pointer to [**map[string][]StrikethroughBlock**](array.md) | Named error handlers evaluated when a specific error occurs. | [optional] 
 
 ## Methods
 
 ### NewStrikethroughGroupBlock
 
-`func NewStrikethroughGroupBlock(id string, type_ string, operator string, blocks []interface{}, ) *StrikethroughGroupBlock`
+`func NewStrikethroughGroupBlock(id string, type_ string, operator string, blocks []StrikethroughBlock, ) *StrikethroughGroupBlock`
 
 NewStrikethroughGroupBlock instantiates a new StrikethroughGroupBlock object
 This constructor will assign default values to properties that have it defined,
@@ -118,40 +118,40 @@ SetOperator sets Operator field to given value.
 
 ### GetBlocks
 
-`func (o *StrikethroughGroupBlock) GetBlocks() []interface{}`
+`func (o *StrikethroughGroupBlock) GetBlocks() []StrikethroughBlock`
 
 GetBlocks returns the Blocks field if non-nil, zero value otherwise.
 
 ### GetBlocksOk
 
-`func (o *StrikethroughGroupBlock) GetBlocksOk() (*[]interface{}, bool)`
+`func (o *StrikethroughGroupBlock) GetBlocksOk() (*[]StrikethroughBlock, bool)`
 
 GetBlocksOk returns a tuple with the Blocks field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetBlocks
 
-`func (o *StrikethroughGroupBlock) SetBlocks(v []interface{})`
+`func (o *StrikethroughGroupBlock) SetBlocks(v []StrikethroughBlock)`
 
 SetBlocks sets Blocks field to given value.
 
 
 ### GetOnFailure
 
-`func (o *StrikethroughGroupBlock) GetOnFailure() []interface{}`
+`func (o *StrikethroughGroupBlock) GetOnFailure() []StrikethroughBlock`
 
 GetOnFailure returns the OnFailure field if non-nil, zero value otherwise.
 
 ### GetOnFailureOk
 
-`func (o *StrikethroughGroupBlock) GetOnFailureOk() (*[]interface{}, bool)`
+`func (o *StrikethroughGroupBlock) GetOnFailureOk() (*[]StrikethroughBlock, bool)`
 
 GetOnFailureOk returns a tuple with the OnFailure field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetOnFailure
 
-`func (o *StrikethroughGroupBlock) SetOnFailure(v []interface{})`
+`func (o *StrikethroughGroupBlock) SetOnFailure(v []StrikethroughBlock)`
 
 SetOnFailure sets OnFailure field to given value.
 
@@ -163,20 +163,20 @@ HasOnFailure returns a boolean if a field has been set.
 
 ### GetOnError
 
-`func (o *StrikethroughGroupBlock) GetOnError() map[string][]interface{}`
+`func (o *StrikethroughGroupBlock) GetOnError() map[string][]StrikethroughBlock`
 
 GetOnError returns the OnError field if non-nil, zero value otherwise.
 
 ### GetOnErrorOk
 
-`func (o *StrikethroughGroupBlock) GetOnErrorOk() (*map[string][]interface{}, bool)`
+`func (o *StrikethroughGroupBlock) GetOnErrorOk() (*map[string][]StrikethroughBlock, bool)`
 
 GetOnErrorOk returns a tuple with the OnError field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetOnError
 
-`func (o *StrikethroughGroupBlock) SetOnError(v map[string][]interface{})`
+`func (o *StrikethroughGroupBlock) SetOnError(v map[string][]StrikethroughBlock)`
 
 SetOnError sets OnError field to given value.
 

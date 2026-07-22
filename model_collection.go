@@ -34,7 +34,7 @@ type Collection struct {
 	// A list of the IDs of the Applications where this collection is enabled.
 	SubscribedApplicationsIds []int64 `json:"subscribedApplicationsIds,omitempty"`
 	// The name of this collection.
-	Name string `json:"name" validate:"regexp=^[^[:cntrl:]\\\\s][^[:cntrl:]]*$"`
+	Name string `json:"name" validate:"regexp=^[^[:cntrl:]\\s][^[:cntrl:]]*$"`
 	// ID of the user who last updated this effect if available.
 	ModifiedBy *int64 `json:"modifiedBy,omitempty"`
 	// ID of the user who created this effect.

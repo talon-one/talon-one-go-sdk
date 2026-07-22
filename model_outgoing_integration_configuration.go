@@ -25,9 +25,8 @@ type OutgoingIntegrationConfiguration struct {
 	// The ID of the account to which this configuration belongs.
 	AccountId int64 `json:"accountId"`
 	// The outgoing integration type ID.
-	TypeId int64 `json:"typeId"`
-	// The outgoing integration policy specific to each integration type.
-	Policy               map[string]interface{} `json:"policy"`
+	TypeId               int64                                  `json:"typeId"`
+	Policy               OutgoingIntegrationConfigurationPolicy `json:"policy"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -37,7 +36,7 @@ type _OutgoingIntegrationConfiguration OutgoingIntegrationConfiguration
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildOutgoingIntegrationConfiguration(id int64, accountId int64, typeId int64, policy map[string]interface{}) *OutgoingIntegrationConfiguration {
+func BuildOutgoingIntegrationConfiguration(id int64, accountId int64, typeId int64, policy OutgoingIntegrationConfigurationPolicy) *OutgoingIntegrationConfiguration {
 	this := OutgoingIntegrationConfiguration{}
 	this.Id = id
 	this.AccountId = accountId
@@ -127,9 +126,9 @@ func (o *OutgoingIntegrationConfiguration) SetTypeId(v int64) {
 }
 
 // GetPolicy returns the Policy field value
-func (o *OutgoingIntegrationConfiguration) GetPolicy() map[string]interface{} {
+func (o *OutgoingIntegrationConfiguration) GetPolicy() OutgoingIntegrationConfigurationPolicy {
 	if o == nil {
-		var ret map[string]interface{}
+		var ret OutgoingIntegrationConfigurationPolicy
 		return ret
 	}
 
@@ -138,15 +137,15 @@ func (o *OutgoingIntegrationConfiguration) GetPolicy() map[string]interface{} {
 
 // GetPolicyOk returns a tuple with the Policy field value
 // and a boolean to check if the value has been set.
-func (o *OutgoingIntegrationConfiguration) GetPolicyOk() (map[string]interface{}, bool) {
+func (o *OutgoingIntegrationConfiguration) GetPolicyOk() (*OutgoingIntegrationConfigurationPolicy, bool) {
 	if o == nil {
-		return map[string]interface{}{}, false
+		return nil, false
 	}
-	return o.Policy, true
+	return &o.Policy, true
 }
 
 // SetPolicy sets field value
-func (o *OutgoingIntegrationConfiguration) SetPolicy(v map[string]interface{}) {
+func (o *OutgoingIntegrationConfiguration) SetPolicy(v OutgoingIntegrationConfigurationPolicy) {
 	o.Policy = v
 }
 

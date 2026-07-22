@@ -23,9 +23,9 @@ var _ MappedNullable = &IntegrationHubPaginatedEventPayload{}
 type IntegrationHubPaginatedEventPayload struct {
 	TotalResultSize int64 `json:"TotalResultSize"`
 	// Timestamp when the batch was created.
-	BatchedAt            *time.Time              `json:"BatchedAt,omitempty"`
-	EventType            IntegrationHubEventType `json:"EventType"`
-	Data                 []interface{}           `json:"Data"`
+	BatchedAt            *time.Time                                     `json:"BatchedAt,omitempty"`
+	EventType            IntegrationHubEventType                        `json:"EventType"`
+	Data                 []IntegrationHubPaginatedEventPayloadDataInner `json:"Data"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -35,7 +35,7 @@ type _IntegrationHubPaginatedEventPayload IntegrationHubPaginatedEventPayload
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildIntegrationHubPaginatedEventPayload(totalResultSize int64, eventType IntegrationHubEventType, data []interface{}) *IntegrationHubPaginatedEventPayload {
+func BuildIntegrationHubPaginatedEventPayload(totalResultSize int64, eventType IntegrationHubEventType, data []IntegrationHubPaginatedEventPayloadDataInner) *IntegrationHubPaginatedEventPayload {
 	this := IntegrationHubPaginatedEventPayload{}
 	this.TotalResultSize = totalResultSize
 	this.EventType = eventType
@@ -132,9 +132,9 @@ func (o *IntegrationHubPaginatedEventPayload) SetEventType(v IntegrationHubEvent
 }
 
 // GetData returns the Data field value
-func (o *IntegrationHubPaginatedEventPayload) GetData() []interface{} {
+func (o *IntegrationHubPaginatedEventPayload) GetData() []IntegrationHubPaginatedEventPayloadDataInner {
 	if o == nil {
-		var ret []interface{}
+		var ret []IntegrationHubPaginatedEventPayloadDataInner
 		return ret
 	}
 
@@ -143,7 +143,7 @@ func (o *IntegrationHubPaginatedEventPayload) GetData() []interface{} {
 
 // GetDataOk returns a tuple with the Data field value
 // and a boolean to check if the value has been set.
-func (o *IntegrationHubPaginatedEventPayload) GetDataOk() ([]interface{}, bool) {
+func (o *IntegrationHubPaginatedEventPayload) GetDataOk() ([]IntegrationHubPaginatedEventPayloadDataInner, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -151,7 +151,7 @@ func (o *IntegrationHubPaginatedEventPayload) GetDataOk() ([]interface{}, bool) 
 }
 
 // SetData sets field value
-func (o *IntegrationHubPaginatedEventPayload) SetData(v []interface{}) {
+func (o *IntegrationHubPaginatedEventPayload) SetData(v []IntegrationHubPaginatedEventPayloadDataInner) {
 	o.Data = v
 }
 

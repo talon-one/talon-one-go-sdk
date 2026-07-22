@@ -10,8 +10,8 @@ Name | Type | Description | Notes
 **NotificationType** | **string** | The type of notification to display. | 
 **Title** | **string** | The notification heading shown to the customer. | 
 **Body** | Pointer to **string** | The notification body text. Supports template placeholders (e.g. \&quot;{{$Session.Total}}\&quot;) evaluated at rule execution time. | [optional] 
-**OnFailure** | Pointer to **[]interface{}** | Blocks evaluated when this block fails or returns false. | [optional] 
-**OnError** | Pointer to **map[string][]interface{}** | Named error handlers evaluated when a specific error occurs. | [optional] 
+**OnFailure** | Pointer to [**[]PromotionBlock**](PromotionBlock.md) | Blocks evaluated when this block fails or returns false. | [optional] 
+**OnError** | Pointer to [**map[string][]PromotionBlock**](array.md) | Named error handlers evaluated when a specific error occurs. | [optional] 
 
 ## Methods
 
@@ -164,20 +164,20 @@ HasBody returns a boolean if a field has been set.
 
 ### GetOnFailure
 
-`func (o *ShowNotificationBlock) GetOnFailure() []interface{}`
+`func (o *ShowNotificationBlock) GetOnFailure() []PromotionBlock`
 
 GetOnFailure returns the OnFailure field if non-nil, zero value otherwise.
 
 ### GetOnFailureOk
 
-`func (o *ShowNotificationBlock) GetOnFailureOk() (*[]interface{}, bool)`
+`func (o *ShowNotificationBlock) GetOnFailureOk() (*[]PromotionBlock, bool)`
 
 GetOnFailureOk returns a tuple with the OnFailure field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetOnFailure
 
-`func (o *ShowNotificationBlock) SetOnFailure(v []interface{})`
+`func (o *ShowNotificationBlock) SetOnFailure(v []PromotionBlock)`
 
 SetOnFailure sets OnFailure field to given value.
 
@@ -189,20 +189,20 @@ HasOnFailure returns a boolean if a field has been set.
 
 ### GetOnError
 
-`func (o *ShowNotificationBlock) GetOnError() map[string][]interface{}`
+`func (o *ShowNotificationBlock) GetOnError() map[string][]PromotionBlock`
 
 GetOnError returns the OnError field if non-nil, zero value otherwise.
 
 ### GetOnErrorOk
 
-`func (o *ShowNotificationBlock) GetOnErrorOk() (*map[string][]interface{}, bool)`
+`func (o *ShowNotificationBlock) GetOnErrorOk() (*map[string][]PromotionBlock, bool)`
 
 GetOnErrorOk returns a tuple with the OnError field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetOnError
 
-`func (o *ShowNotificationBlock) SetOnError(v map[string][]interface{})`
+`func (o *ShowNotificationBlock) SetOnError(v map[string][]PromotionBlock)`
 
 SetOnError sets OnError field to given value.
 

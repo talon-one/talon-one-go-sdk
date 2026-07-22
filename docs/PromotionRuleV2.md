@@ -8,13 +8,13 @@ Name | Type | Description | Notes
 **ParentId** | Pointer to **string** | ID of the parent rule, if any. | [optional] 
 **Title** | **string** | A short description of the rule. | 
 **Description** | Pointer to **string** | A longer description of the rule. | [optional] 
-**Blocks** | **[]interface{}** | The condition and effect blocks that make up this promotion rule. | 
+**Blocks** | [**[]PromotionBlock**](PromotionBlock.md) | The condition and effect blocks that make up this promotion rule. | 
 
 ## Methods
 
 ### NewPromotionRuleV2
 
-`func NewPromotionRuleV2(title string, blocks []interface{}, ) *PromotionRuleV2`
+`func NewPromotionRuleV2(title string, blocks []PromotionBlock, ) *PromotionRuleV2`
 
 NewPromotionRuleV2 instantiates a new PromotionRuleV2 object
 This constructor will assign default values to properties that have it defined,
@@ -126,20 +126,20 @@ HasDescription returns a boolean if a field has been set.
 
 ### GetBlocks
 
-`func (o *PromotionRuleV2) GetBlocks() []interface{}`
+`func (o *PromotionRuleV2) GetBlocks() []PromotionBlock`
 
 GetBlocks returns the Blocks field if non-nil, zero value otherwise.
 
 ### GetBlocksOk
 
-`func (o *PromotionRuleV2) GetBlocksOk() (*[]interface{}, bool)`
+`func (o *PromotionRuleV2) GetBlocksOk() (*[]PromotionBlock, bool)`
 
 GetBlocksOk returns a tuple with the Blocks field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetBlocks
 
-`func (o *PromotionRuleV2) SetBlocks(v []interface{})`
+`func (o *PromotionRuleV2) SetBlocks(v []PromotionBlock)`
 
 SetBlocks sets Blocks field to given value.
 

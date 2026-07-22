@@ -24,7 +24,7 @@ type CustomerAchievement struct {
 	// The internal ID of the achievement.
 	Id int64 `json:"id"`
 	// The internal name of the achievement used in API requests.
-	Name string `json:"name" validate:"regexp=^[a-zA-Z]\\\\w+$"`
+	Name string `json:"name" validate:"regexp=^[a-zA-Z]\\w+$"`
 	// The display name of the achievement in the Campaign Manager.
 	Title string `json:"title"`
 	// The description of the achievement in the Campaign Manager.

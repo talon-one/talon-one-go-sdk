@@ -29,11 +29,11 @@ type PromotionGroupBlock struct {
 	// Logical operator applied across child blocks. `all` requires every child to pass, `atLeastOne` requires at least one, `none` requires all to fail.
 	Operator string `json:"operator"`
 	// Child blocks evaluated according to the operator.
-	Blocks []interface{} `json:"blocks"`
+	Blocks []PromotionBlock `json:"blocks"`
 	// Promotion blocks evaluated when this block fails or returns false.
-	OnFailure []interface{} `json:"onFailure,omitempty"`
+	OnFailure []PromotionBlock `json:"onFailure,omitempty"`
 	// Named error handlers evaluated when a specific error occurs.
-	OnError              map[string][]interface{} `json:"onError,omitempty"`
+	OnError              map[string][]PromotionBlock `json:"onError,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -43,7 +43,7 @@ type _PromotionGroupBlock PromotionGroupBlock
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildPromotionGroupBlock(id string, type_ string, operator string, blocks []interface{}) *PromotionGroupBlock {
+func BuildPromotionGroupBlock(id string, type_ string, operator string, blocks []PromotionBlock) *PromotionGroupBlock {
 	this := PromotionGroupBlock{}
 	this.Id = id
 	this.Type = type_
@@ -165,9 +165,9 @@ func (o *PromotionGroupBlock) SetOperator(v string) {
 }
 
 // GetBlocks returns the Blocks field value
-func (o *PromotionGroupBlock) GetBlocks() []interface{} {
+func (o *PromotionGroupBlock) GetBlocks() []PromotionBlock {
 	if o == nil {
-		var ret []interface{}
+		var ret []PromotionBlock
 		return ret
 	}
 
@@ -176,7 +176,7 @@ func (o *PromotionGroupBlock) GetBlocks() []interface{} {
 
 // GetBlocksOk returns a tuple with the Blocks field value
 // and a boolean to check if the value has been set.
-func (o *PromotionGroupBlock) GetBlocksOk() ([]interface{}, bool) {
+func (o *PromotionGroupBlock) GetBlocksOk() ([]PromotionBlock, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -184,14 +184,14 @@ func (o *PromotionGroupBlock) GetBlocksOk() ([]interface{}, bool) {
 }
 
 // SetBlocks sets field value
-func (o *PromotionGroupBlock) SetBlocks(v []interface{}) {
+func (o *PromotionGroupBlock) SetBlocks(v []PromotionBlock) {
 	o.Blocks = v
 }
 
 // GetOnFailure returns the OnFailure field value if set, zero value otherwise.
-func (o *PromotionGroupBlock) GetOnFailure() []interface{} {
+func (o *PromotionGroupBlock) GetOnFailure() []PromotionBlock {
 	if o == nil || IsNil(o.OnFailure) {
-		var ret []interface{}
+		var ret []PromotionBlock
 		return ret
 	}
 	return o.OnFailure
@@ -199,7 +199,7 @@ func (o *PromotionGroupBlock) GetOnFailure() []interface{} {
 
 // GetOnFailureOk returns a tuple with the OnFailure field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *PromotionGroupBlock) GetOnFailureOk() ([]interface{}, bool) {
+func (o *PromotionGroupBlock) GetOnFailureOk() ([]PromotionBlock, bool) {
 	if o == nil || IsNil(o.OnFailure) {
 		return nil, false
 	}
@@ -215,15 +215,15 @@ func (o *PromotionGroupBlock) HasOnFailure() bool {
 	return false
 }
 
-// SetOnFailure gets a reference to the given []interface{} and assigns it to the OnFailure field.
-func (o *PromotionGroupBlock) SetOnFailure(v []interface{}) {
+// SetOnFailure gets a reference to the given []PromotionBlock and assigns it to the OnFailure field.
+func (o *PromotionGroupBlock) SetOnFailure(v []PromotionBlock) {
 	o.OnFailure = v
 }
 
 // GetOnError returns the OnError field value if set, zero value otherwise.
-func (o *PromotionGroupBlock) GetOnError() map[string][]interface{} {
+func (o *PromotionGroupBlock) GetOnError() map[string][]PromotionBlock {
 	if o == nil || IsNil(o.OnError) {
-		var ret map[string][]interface{}
+		var ret map[string][]PromotionBlock
 		return ret
 	}
 	return o.OnError
@@ -231,9 +231,9 @@ func (o *PromotionGroupBlock) GetOnError() map[string][]interface{} {
 
 // GetOnErrorOk returns a tuple with the OnError field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *PromotionGroupBlock) GetOnErrorOk() (map[string][]interface{}, bool) {
+func (o *PromotionGroupBlock) GetOnErrorOk() (map[string][]PromotionBlock, bool) {
 	if o == nil || IsNil(o.OnError) {
-		return map[string][]interface{}{}, false
+		return map[string][]PromotionBlock{}, false
 	}
 	return o.OnError, true
 }
@@ -247,8 +247,8 @@ func (o *PromotionGroupBlock) HasOnError() bool {
 	return false
 }
 
-// SetOnError gets a reference to the given map[string][]interface{} and assigns it to the OnError field.
-func (o *PromotionGroupBlock) SetOnError(v map[string][]interface{}) {
+// SetOnError gets a reference to the given map[string][]PromotionBlock and assigns it to the OnError field.
+func (o *PromotionGroupBlock) SetOnError(v map[string][]PromotionBlock) {
 	o.OnError = v
 }
 

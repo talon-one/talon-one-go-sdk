@@ -51,8 +51,8 @@ type Effect struct {
 	// The value of the selected price type to apply to the SKU targeted by this effect, before any discounts are applied.
 	SelectedPrice *float32 `json:"selectedPrice,omitempty"`
 	// The reference identifier of the selected price adjustment for this SKU. This is only returned if the `selectedPrice` resulted from a price adjustment.
-	AdjustmentReferenceId *string     `json:"adjustmentReferenceId,omitempty"`
-	Props                 interface{} `json:"props"`
+	AdjustmentReferenceId *string          `json:"adjustmentReferenceId,omitempty"`
+	Props                 EffectAllOfProps `json:"props"`
 	AdditionalProperties  map[string]interface{}
 }
 
@@ -62,7 +62,7 @@ type _Effect Effect
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildEffect(campaignId int64, rulesetId int64, ruleIndex int64, ruleName string, effectType string, props interface{}) *Effect {
+func BuildEffect(campaignId int64, rulesetId int64, ruleIndex int64, ruleName string, effectType string, props EffectAllOfProps) *Effect {
 	this := Effect{}
 	this.CampaignId = campaignId
 	this.RulesetId = rulesetId
@@ -554,10 +554,9 @@ func (o *Effect) SetAdjustmentReferenceId(v string) {
 }
 
 // GetProps returns the Props field value
-// If the value is explicit nil, the zero value for interface{} will be returned
-func (o *Effect) GetProps() interface{} {
+func (o *Effect) GetProps() EffectAllOfProps {
 	if o == nil {
-		var ret interface{}
+		var ret EffectAllOfProps
 		return ret
 	}
 
@@ -566,16 +565,15 @@ func (o *Effect) GetProps() interface{} {
 
 // GetPropsOk returns a tuple with the Props field value
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *Effect) GetPropsOk() (*interface{}, bool) {
-	if o == nil || IsNil(o.Props) {
+func (o *Effect) GetPropsOk() (*EffectAllOfProps, bool) {
+	if o == nil {
 		return nil, false
 	}
 	return &o.Props, true
 }
 
 // SetProps sets field value
-func (o *Effect) SetProps(v interface{}) {
+func (o *Effect) SetProps(v EffectAllOfProps) {
 	o.Props = v
 }
 
@@ -627,9 +625,7 @@ func (o Effect) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.AdjustmentReferenceId) {
 		toSerialize["adjustmentReferenceId"] = o.AdjustmentReferenceId
 	}
-	if o.Props != nil {
-		toSerialize["props"] = o.Props
-	}
+	toSerialize["props"] = o.Props
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value

@@ -26,7 +26,7 @@ type IntegrationEvent struct {
 	StoreIntegrationId *string `json:"storeIntegrationId,omitempty"`
 	// The name of the event. Must be a [custom event](https://docs.talon.one/docs/dev/concepts/entities/events#custom-events), not a built-in event.
 	Type string `json:"type"`
-	// Arbitrary properties associated with this campaign.
+	// Arbitrary additional JSON data associated with the event.
 	Attributes           map[string]interface{} `json:"attributes"`
 	AdditionalProperties map[string]interface{}
 }

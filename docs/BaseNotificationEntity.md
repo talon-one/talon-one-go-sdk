@@ -4,14 +4,14 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Policy** | **map[string]interface{}** | Indicates which notification properties to apply. | 
+**Policy** | [**BaseNotificationPolicy**](BaseNotificationPolicy.md) |  | 
 **Enabled** | Pointer to **bool** | Indicates whether the notification is activated. | [optional] [default to true]
 
 ## Methods
 
 ### NewBaseNotificationEntity
 
-`func NewBaseNotificationEntity(policy map[string]interface{}, ) *BaseNotificationEntity`
+`func NewBaseNotificationEntity(policy BaseNotificationPolicy, ) *BaseNotificationEntity`
 
 NewBaseNotificationEntity instantiates a new BaseNotificationEntity object
 This constructor will assign default values to properties that have it defined,
@@ -28,20 +28,20 @@ but it doesn't guarantee that properties required by API are set
 
 ### GetPolicy
 
-`func (o *BaseNotificationEntity) GetPolicy() map[string]interface{}`
+`func (o *BaseNotificationEntity) GetPolicy() BaseNotificationPolicy`
 
 GetPolicy returns the Policy field if non-nil, zero value otherwise.
 
 ### GetPolicyOk
 
-`func (o *BaseNotificationEntity) GetPolicyOk() (*map[string]interface{}, bool)`
+`func (o *BaseNotificationEntity) GetPolicyOk() (*BaseNotificationPolicy, bool)`
 
 GetPolicyOk returns a tuple with the Policy field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetPolicy
 
-`func (o *BaseNotificationEntity) SetPolicy(v map[string]interface{})`
+`func (o *BaseNotificationEntity) SetPolicy(v BaseNotificationPolicy)`
 
 SetPolicy sets Policy field to given value.
 

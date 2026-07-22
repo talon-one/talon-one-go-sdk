@@ -9,8 +9,8 @@ Name | Type | Description | Notes
 **Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] 
 **GiveawayPool** | [**AwardGiveawayBlock1GiveawayPool**](AwardGiveawayBlock1GiveawayPool.md) |  | 
 **Profile** | **string** | The customer profile to award the giveaway to. &#x60;Current&#x60; targets the customer in the current session; &#x60;Advocate&#x60; targets the person who invited their friend via referral program. | 
-**OnFailure** | Pointer to **[]interface{}** | Blocks evaluated when this block fails or returns false. | [optional] 
-**OnError** | Pointer to **map[string][]interface{}** | Named error handlers evaluated when a specific error occurs. | [optional] 
+**OnFailure** | Pointer to [**[]PromotionBlock**](PromotionBlock.md) | Blocks evaluated when this block fails or returns false. | [optional] 
+**OnError** | Pointer to [**map[string][]PromotionBlock**](array.md) | Named error handlers evaluated when a specific error occurs. | [optional] 
 
 ## Methods
 
@@ -138,20 +138,20 @@ SetProfile sets Profile field to given value.
 
 ### GetOnFailure
 
-`func (o *AwardGiveawayBlock) GetOnFailure() []interface{}`
+`func (o *AwardGiveawayBlock) GetOnFailure() []PromotionBlock`
 
 GetOnFailure returns the OnFailure field if non-nil, zero value otherwise.
 
 ### GetOnFailureOk
 
-`func (o *AwardGiveawayBlock) GetOnFailureOk() (*[]interface{}, bool)`
+`func (o *AwardGiveawayBlock) GetOnFailureOk() (*[]PromotionBlock, bool)`
 
 GetOnFailureOk returns a tuple with the OnFailure field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetOnFailure
 
-`func (o *AwardGiveawayBlock) SetOnFailure(v []interface{})`
+`func (o *AwardGiveawayBlock) SetOnFailure(v []PromotionBlock)`
 
 SetOnFailure sets OnFailure field to given value.
 
@@ -163,20 +163,20 @@ HasOnFailure returns a boolean if a field has been set.
 
 ### GetOnError
 
-`func (o *AwardGiveawayBlock) GetOnError() map[string][]interface{}`
+`func (o *AwardGiveawayBlock) GetOnError() map[string][]PromotionBlock`
 
 GetOnError returns the OnError field if non-nil, zero value otherwise.
 
 ### GetOnErrorOk
 
-`func (o *AwardGiveawayBlock) GetOnErrorOk() (*map[string][]interface{}, bool)`
+`func (o *AwardGiveawayBlock) GetOnErrorOk() (*map[string][]PromotionBlock, bool)`
 
 GetOnErrorOk returns a tuple with the OnError field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetOnError
 
-`func (o *AwardGiveawayBlock) SetOnError(v map[string][]interface{})`
+`func (o *AwardGiveawayBlock) SetOnError(v map[string][]PromotionBlock)`
 
 SetOnError sets OnError field to given value.
 

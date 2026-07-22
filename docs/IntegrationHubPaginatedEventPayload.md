@@ -7,13 +7,13 @@ Name | Type | Description | Notes
 **TotalResultSize** | **int64** |  | 
 **BatchedAt** | Pointer to **time.Time** | Timestamp when the batch was created. | [optional] 
 **EventType** | [**IntegrationHubEventType**](IntegrationHubEventType.md) |  | 
-**Data** | **[]interface{}** |  | 
+**Data** | [**[]IntegrationHubPaginatedEventPayloadDataInner**](IntegrationHubPaginatedEventPayloadDataInner.md) |  | 
 
 ## Methods
 
 ### NewIntegrationHubPaginatedEventPayload
 
-`func NewIntegrationHubPaginatedEventPayload(totalResultSize int64, eventType IntegrationHubEventType, data []interface{}, ) *IntegrationHubPaginatedEventPayload`
+`func NewIntegrationHubPaginatedEventPayload(totalResultSize int64, eventType IntegrationHubEventType, data []IntegrationHubPaginatedEventPayloadDataInner, ) *IntegrationHubPaginatedEventPayload`
 
 NewIntegrationHubPaginatedEventPayload instantiates a new IntegrationHubPaginatedEventPayload object
 This constructor will assign default values to properties that have it defined,
@@ -95,20 +95,20 @@ SetEventType sets EventType field to given value.
 
 ### GetData
 
-`func (o *IntegrationHubPaginatedEventPayload) GetData() []interface{}`
+`func (o *IntegrationHubPaginatedEventPayload) GetData() []IntegrationHubPaginatedEventPayloadDataInner`
 
 GetData returns the Data field if non-nil, zero value otherwise.
 
 ### GetDataOk
 
-`func (o *IntegrationHubPaginatedEventPayload) GetDataOk() (*[]interface{}, bool)`
+`func (o *IntegrationHubPaginatedEventPayload) GetDataOk() (*[]IntegrationHubPaginatedEventPayloadDataInner, bool)`
 
 GetDataOk returns a tuple with the Data field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetData
 
-`func (o *IntegrationHubPaginatedEventPayload) SetData(v []interface{})`
+`func (o *IntegrationHubPaginatedEventPayload) SetData(v []IntegrationHubPaginatedEventPayloadDataInner)`
 
 SetData sets Data field to given value.
 

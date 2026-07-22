@@ -11,13 +11,13 @@ Name | Type | Description | Notes
 **ContextId** | Pointer to **string** | This property is **deprecated**. Use &#x60;contextIds&#x60; instead. Defaults to an empty string.  | [optional] [default to ""]
 **Price** | **float32** | Price of the item. | 
 **Metadata** | [**BestPriorPriceMetadata**](BestPriorPriceMetadata.md) |  | 
-**Target** | **map[string]interface{}** |  | 
+**Target** | [**LabelTarget**](LabelTarget.md) |  | 
 
 ## Methods
 
 ### NewBestPriorPrice
 
-`func NewBestPriorPrice(id int64, sku string, observedAt time.Time, contextIds []string, price float32, metadata BestPriorPriceMetadata, target map[string]interface{}, ) *BestPriorPrice`
+`func NewBestPriorPrice(id int64, sku string, observedAt time.Time, contextIds []string, price float32, metadata BestPriorPriceMetadata, target LabelTarget, ) *BestPriorPrice`
 
 NewBestPriorPrice instantiates a new BestPriorPrice object
 This constructor will assign default values to properties that have it defined,
@@ -179,20 +179,20 @@ SetMetadata sets Metadata field to given value.
 
 ### GetTarget
 
-`func (o *BestPriorPrice) GetTarget() map[string]interface{}`
+`func (o *BestPriorPrice) GetTarget() LabelTarget`
 
 GetTarget returns the Target field if non-nil, zero value otherwise.
 
 ### GetTargetOk
 
-`func (o *BestPriorPrice) GetTargetOk() (*map[string]interface{}, bool)`
+`func (o *BestPriorPrice) GetTargetOk() (*LabelTarget, bool)`
 
 GetTargetOk returns a tuple with the Target field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetTarget
 
-`func (o *BestPriorPrice) SetTarget(v map[string]interface{})`
+`func (o *BestPriorPrice) SetTarget(v LabelTarget)`
 
 SetTarget sets Target field to given value.
 

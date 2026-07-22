@@ -10,13 +10,13 @@ Name | Type | Description | Notes
 **ContextId** | Pointer to **string** | This property is **deprecated**. Use &#x60;contextIds&#x60; instead. Defaults to an empty string.  | [optional] [default to ""]
 **Price** | **float32** | Price of the item. | 
 **Metadata** | [**BestPriorPriceMetadata**](BestPriorPriceMetadata.md) |  | 
-**Target** | **map[string]interface{}** |  | 
+**Target** | [**LabelTarget**](LabelTarget.md) |  | 
 
 ## Methods
 
 ### NewHistory
 
-`func NewHistory(id int64, observedAt time.Time, contextIds []string, price float32, metadata BestPriorPriceMetadata, target map[string]interface{}, ) *History`
+`func NewHistory(id int64, observedAt time.Time, contextIds []string, price float32, metadata BestPriorPriceMetadata, target LabelTarget, ) *History`
 
 NewHistory instantiates a new History object
 This constructor will assign default values to properties that have it defined,
@@ -158,20 +158,20 @@ SetMetadata sets Metadata field to given value.
 
 ### GetTarget
 
-`func (o *History) GetTarget() map[string]interface{}`
+`func (o *History) GetTarget() LabelTarget`
 
 GetTarget returns the Target field if non-nil, zero value otherwise.
 
 ### GetTargetOk
 
-`func (o *History) GetTargetOk() (*map[string]interface{}, bool)`
+`func (o *History) GetTargetOk() (*LabelTarget, bool)`
 
 GetTargetOk returns a tuple with the Target field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetTarget
 
-`func (o *History) SetTarget(v map[string]interface{})`
+`func (o *History) SetTarget(v LabelTarget)`
 
 SetTarget sets Target field to given value.
 

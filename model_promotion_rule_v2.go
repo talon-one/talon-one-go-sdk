@@ -29,7 +29,7 @@ type PromotionRuleV2 struct {
 	// A longer description of the rule.
 	Description *string `json:"description,omitempty"`
 	// The condition and effect blocks that make up this promotion rule.
-	Blocks               []interface{} `json:"blocks"`
+	Blocks               []PromotionBlock `json:"blocks"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -39,7 +39,7 @@ type _PromotionRuleV2 PromotionRuleV2
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildPromotionRuleV2(title string, blocks []interface{}) *PromotionRuleV2 {
+func BuildPromotionRuleV2(title string, blocks []PromotionBlock) *PromotionRuleV2 {
 	this := PromotionRuleV2{}
 	this.Title = title
 	this.Blocks = blocks
@@ -175,9 +175,9 @@ func (o *PromotionRuleV2) SetDescription(v string) {
 }
 
 // GetBlocks returns the Blocks field value
-func (o *PromotionRuleV2) GetBlocks() []interface{} {
+func (o *PromotionRuleV2) GetBlocks() []PromotionBlock {
 	if o == nil {
-		var ret []interface{}
+		var ret []PromotionBlock
 		return ret
 	}
 
@@ -186,7 +186,7 @@ func (o *PromotionRuleV2) GetBlocks() []interface{} {
 
 // GetBlocksOk returns a tuple with the Blocks field value
 // and a boolean to check if the value has been set.
-func (o *PromotionRuleV2) GetBlocksOk() ([]interface{}, bool) {
+func (o *PromotionRuleV2) GetBlocksOk() ([]PromotionBlock, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -194,7 +194,7 @@ func (o *PromotionRuleV2) GetBlocksOk() ([]interface{}, bool) {
 }
 
 // SetBlocks sets field value
-func (o *PromotionRuleV2) SetBlocks(v []interface{}) {
+func (o *PromotionRuleV2) SetBlocks(v []PromotionBlock) {
 	o.Blocks = v
 }
 

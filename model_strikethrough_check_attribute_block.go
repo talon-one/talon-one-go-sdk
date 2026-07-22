@@ -13,8 +13,6 @@ package talon
 import (
 	"encoding/json"
 	"fmt"
-	"reflect"
-	"strings"
 )
 
 // checks if the StrikethroughCheckAttributeBlock type satisfies the MappedNullable interface at compile time
@@ -22,9 +20,23 @@ var _ MappedNullable = &StrikethroughCheckAttributeBlock{}
 
 // StrikethroughCheckAttributeBlock struct for StrikethroughCheckAttributeBlock
 type StrikethroughCheckAttributeBlock struct {
-	CheckAttributeBlock
+	// Unique identifier for this block.
+	Id string `json:"id"`
+	// Identifies the block variant and determines which additional properties are present in it.
+	Type string `json:"type"`
+	// Semantic labels attached to this block.
+	Tags []string `json:"tags,omitempty"`
+	// The comparison operator applied to the attribute.
+	Operator string `json:"operator"`
+	// The attribute path identifier (e.g. \"$Session.Total\").
+	Attribute string      `json:"attribute"`
+	Value     interface{} `json:"value,omitempty"`
+	Min       interface{} `json:"min,omitempty"`
+	Max       interface{} `json:"max,omitempty"`
+	Values    interface{} `json:"values,omitempty"`
+	Count     interface{} `json:"count,omitempty"`
 	// Strikethrough blocks evaluated when this block fails or returns false.
-	OnFailure            []interface{} `json:"onFailure,omitempty"`
+	OnFailure            []StrikethroughBlock `json:"onFailure,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -51,10 +63,303 @@ func NewStrikethroughCheckAttributeBlockWithDefaults() *StrikethroughCheckAttrib
 	return &this
 }
 
+// GetId returns the Id field value
+func (o *StrikethroughCheckAttributeBlock) GetId() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value
+// and a boolean to check if the value has been set.
+func (o *StrikethroughCheckAttributeBlock) GetIdOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Id, true
+}
+
+// SetId sets field value
+func (o *StrikethroughCheckAttributeBlock) SetId(v string) {
+	o.Id = v
+}
+
+// GetType returns the Type field value
+func (o *StrikethroughCheckAttributeBlock) GetType() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Type
+}
+
+// GetTypeOk returns a tuple with the Type field value
+// and a boolean to check if the value has been set.
+func (o *StrikethroughCheckAttributeBlock) GetTypeOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Type, true
+}
+
+// SetType sets field value
+func (o *StrikethroughCheckAttributeBlock) SetType(v string) {
+	o.Type = v
+}
+
+// GetTags returns the Tags field value if set, zero value otherwise.
+func (o *StrikethroughCheckAttributeBlock) GetTags() []string {
+	if o == nil || IsNil(o.Tags) {
+		var ret []string
+		return ret
+	}
+	return o.Tags
+}
+
+// GetTagsOk returns a tuple with the Tags field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *StrikethroughCheckAttributeBlock) GetTagsOk() ([]string, bool) {
+	if o == nil || IsNil(o.Tags) {
+		return nil, false
+	}
+	return o.Tags, true
+}
+
+// HasTags returns a boolean if a field has been set.
+func (o *StrikethroughCheckAttributeBlock) HasTags() bool {
+	if o != nil && !IsNil(o.Tags) {
+		return true
+	}
+
+	return false
+}
+
+// SetTags gets a reference to the given []string and assigns it to the Tags field.
+func (o *StrikethroughCheckAttributeBlock) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetOperator returns the Operator field value
+func (o *StrikethroughCheckAttributeBlock) GetOperator() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Operator
+}
+
+// GetOperatorOk returns a tuple with the Operator field value
+// and a boolean to check if the value has been set.
+func (o *StrikethroughCheckAttributeBlock) GetOperatorOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Operator, true
+}
+
+// SetOperator sets field value
+func (o *StrikethroughCheckAttributeBlock) SetOperator(v string) {
+	o.Operator = v
+}
+
+// GetAttribute returns the Attribute field value
+func (o *StrikethroughCheckAttributeBlock) GetAttribute() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Attribute
+}
+
+// GetAttributeOk returns a tuple with the Attribute field value
+// and a boolean to check if the value has been set.
+func (o *StrikethroughCheckAttributeBlock) GetAttributeOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Attribute, true
+}
+
+// SetAttribute sets field value
+func (o *StrikethroughCheckAttributeBlock) SetAttribute(v string) {
+	o.Attribute = v
+}
+
+// GetValue returns the Value field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *StrikethroughCheckAttributeBlock) GetValue() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+	return o.Value
+}
+
+// GetValueOk returns a tuple with the Value field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *StrikethroughCheckAttributeBlock) GetValueOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.Value) {
+		return nil, false
+	}
+	return &o.Value, true
+}
+
+// HasValue returns a boolean if a field has been set.
+func (o *StrikethroughCheckAttributeBlock) HasValue() bool {
+	if o != nil && !IsNil(o.Value) {
+		return true
+	}
+
+	return false
+}
+
+// SetValue gets a reference to the given interface{} and assigns it to the Value field.
+func (o *StrikethroughCheckAttributeBlock) SetValue(v interface{}) {
+	o.Value = v
+}
+
+// GetMin returns the Min field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *StrikethroughCheckAttributeBlock) GetMin() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+	return o.Min
+}
+
+// GetMinOk returns a tuple with the Min field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *StrikethroughCheckAttributeBlock) GetMinOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.Min) {
+		return nil, false
+	}
+	return &o.Min, true
+}
+
+// HasMin returns a boolean if a field has been set.
+func (o *StrikethroughCheckAttributeBlock) HasMin() bool {
+	if o != nil && !IsNil(o.Min) {
+		return true
+	}
+
+	return false
+}
+
+// SetMin gets a reference to the given interface{} and assigns it to the Min field.
+func (o *StrikethroughCheckAttributeBlock) SetMin(v interface{}) {
+	o.Min = v
+}
+
+// GetMax returns the Max field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *StrikethroughCheckAttributeBlock) GetMax() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+	return o.Max
+}
+
+// GetMaxOk returns a tuple with the Max field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *StrikethroughCheckAttributeBlock) GetMaxOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.Max) {
+		return nil, false
+	}
+	return &o.Max, true
+}
+
+// HasMax returns a boolean if a field has been set.
+func (o *StrikethroughCheckAttributeBlock) HasMax() bool {
+	if o != nil && !IsNil(o.Max) {
+		return true
+	}
+
+	return false
+}
+
+// SetMax gets a reference to the given interface{} and assigns it to the Max field.
+func (o *StrikethroughCheckAttributeBlock) SetMax(v interface{}) {
+	o.Max = v
+}
+
+// GetValues returns the Values field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *StrikethroughCheckAttributeBlock) GetValues() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+	return o.Values
+}
+
+// GetValuesOk returns a tuple with the Values field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *StrikethroughCheckAttributeBlock) GetValuesOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.Values) {
+		return nil, false
+	}
+	return &o.Values, true
+}
+
+// HasValues returns a boolean if a field has been set.
+func (o *StrikethroughCheckAttributeBlock) HasValues() bool {
+	if o != nil && !IsNil(o.Values) {
+		return true
+	}
+
+	return false
+}
+
+// SetValues gets a reference to the given interface{} and assigns it to the Values field.
+func (o *StrikethroughCheckAttributeBlock) SetValues(v interface{}) {
+	o.Values = v
+}
+
+// GetCount returns the Count field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *StrikethroughCheckAttributeBlock) GetCount() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+	return o.Count
+}
+
+// GetCountOk returns a tuple with the Count field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *StrikethroughCheckAttributeBlock) GetCountOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.Count) {
+		return nil, false
+	}
+	return &o.Count, true
+}
+
+// HasCount returns a boolean if a field has been set.
+func (o *StrikethroughCheckAttributeBlock) HasCount() bool {
+	if o != nil && !IsNil(o.Count) {
+		return true
+	}
+
+	return false
+}
+
+// SetCount gets a reference to the given interface{} and assigns it to the Count field.
+func (o *StrikethroughCheckAttributeBlock) SetCount(v interface{}) {
+	o.Count = v
+}
+
 // GetOnFailure returns the OnFailure field value if set, zero value otherwise.
-func (o *StrikethroughCheckAttributeBlock) GetOnFailure() []interface{} {
+func (o *StrikethroughCheckAttributeBlock) GetOnFailure() []StrikethroughBlock {
 	if o == nil || IsNil(o.OnFailure) {
-		var ret []interface{}
+		var ret []StrikethroughBlock
 		return ret
 	}
 	return o.OnFailure
@@ -62,7 +367,7 @@ func (o *StrikethroughCheckAttributeBlock) GetOnFailure() []interface{} {
 
 // GetOnFailureOk returns a tuple with the OnFailure field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *StrikethroughCheckAttributeBlock) GetOnFailureOk() ([]interface{}, bool) {
+func (o *StrikethroughCheckAttributeBlock) GetOnFailureOk() ([]StrikethroughBlock, bool) {
 	if o == nil || IsNil(o.OnFailure) {
 		return nil, false
 	}
@@ -78,8 +383,8 @@ func (o *StrikethroughCheckAttributeBlock) HasOnFailure() bool {
 	return false
 }
 
-// SetOnFailure gets a reference to the given []interface{} and assigns it to the OnFailure field.
-func (o *StrikethroughCheckAttributeBlock) SetOnFailure(v []interface{}) {
+// SetOnFailure gets a reference to the given []StrikethroughBlock and assigns it to the OnFailure field.
+func (o *StrikethroughCheckAttributeBlock) SetOnFailure(v []StrikethroughBlock) {
 	o.OnFailure = v
 }
 
@@ -93,13 +398,27 @@ func (o StrikethroughCheckAttributeBlock) MarshalJSON() ([]byte, error) {
 
 func (o StrikethroughCheckAttributeBlock) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	serializedCheckAttributeBlock, errCheckAttributeBlock := json.Marshal(o.CheckAttributeBlock)
-	if errCheckAttributeBlock != nil {
-		return map[string]interface{}{}, errCheckAttributeBlock
+	toSerialize["id"] = o.Id
+	toSerialize["type"] = o.Type
+	if !IsNil(o.Tags) {
+		toSerialize["tags"] = o.Tags
 	}
-	errCheckAttributeBlock = json.Unmarshal([]byte(serializedCheckAttributeBlock), &toSerialize)
-	if errCheckAttributeBlock != nil {
-		return map[string]interface{}{}, errCheckAttributeBlock
+	toSerialize["operator"] = o.Operator
+	toSerialize["attribute"] = o.Attribute
+	if o.Value != nil {
+		toSerialize["value"] = o.Value
+	}
+	if o.Min != nil {
+		toSerialize["min"] = o.Min
+	}
+	if o.Max != nil {
+		toSerialize["max"] = o.Max
+	}
+	if o.Values != nil {
+		toSerialize["values"] = o.Values
+	}
+	if o.Count != nil {
+		toSerialize["count"] = o.Count
 	}
 	if !IsNil(o.OnFailure) {
 		toSerialize["onFailure"] = o.OnFailure
@@ -137,54 +456,30 @@ func (o *StrikethroughCheckAttributeBlock) UnmarshalJSON(data []byte) (err error
 		}
 	}
 
-	type StrikethroughCheckAttributeBlockWithoutEmbeddedStruct struct {
-		// Strikethrough blocks evaluated when this block fails or returns false.
-		OnFailure []interface{} `json:"onFailure,omitempty"`
-	}
-
-	varStrikethroughCheckAttributeBlockWithoutEmbeddedStruct := StrikethroughCheckAttributeBlockWithoutEmbeddedStruct{}
-
-	err = json.Unmarshal(data, &varStrikethroughCheckAttributeBlockWithoutEmbeddedStruct)
-	if err == nil {
-		varStrikethroughCheckAttributeBlock := _StrikethroughCheckAttributeBlock{}
-		varStrikethroughCheckAttributeBlock.OnFailure = varStrikethroughCheckAttributeBlockWithoutEmbeddedStruct.OnFailure
-		*o = StrikethroughCheckAttributeBlock(varStrikethroughCheckAttributeBlock)
-	} else {
-		return err
-	}
-
 	varStrikethroughCheckAttributeBlock := _StrikethroughCheckAttributeBlock{}
 
 	err = json.Unmarshal(data, &varStrikethroughCheckAttributeBlock)
-	if err == nil {
-		o.CheckAttributeBlock = varStrikethroughCheckAttributeBlock.CheckAttributeBlock
-	} else {
+
+	if err != nil {
 		return err
 	}
+
+	*o = StrikethroughCheckAttributeBlock(varStrikethroughCheckAttributeBlock)
 
 	additionalProperties := make(map[string]interface{})
 
 	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "tags")
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "attribute")
+		delete(additionalProperties, "value")
+		delete(additionalProperties, "min")
+		delete(additionalProperties, "max")
+		delete(additionalProperties, "values")
+		delete(additionalProperties, "count")
 		delete(additionalProperties, "onFailure")
-
-		// remove fields from embedded structs
-		reflectCheckAttributeBlock := reflect.ValueOf(o.CheckAttributeBlock)
-		for i := 0; i < reflectCheckAttributeBlock.Type().NumField(); i++ {
-			t := reflectCheckAttributeBlock.Type().Field(i)
-
-			if jsonTag := t.Tag.Get("json"); jsonTag != "" {
-				fieldName := ""
-				if commaIdx := strings.Index(jsonTag, ","); commaIdx > 0 {
-					fieldName = jsonTag[:commaIdx]
-				} else {
-					fieldName = jsonTag
-				}
-				if fieldName != "AdditionalProperties" {
-					delete(additionalProperties, fieldName)
-				}
-			}
-		}
-
 		o.AdditionalProperties = additionalProperties
 	}
 

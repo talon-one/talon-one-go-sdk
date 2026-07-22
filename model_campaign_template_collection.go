@@ -21,7 +21,7 @@ var _ MappedNullable = &CampaignTemplateCollection{}
 // CampaignTemplateCollection struct for CampaignTemplateCollection
 type CampaignTemplateCollection struct {
 	// The name of this collection.
-	Name string `json:"name" validate:"regexp=^[A-Za-z](\\\\w|\\\\s)*$"`
+	Name string `json:"name" validate:"regexp=^[A-Za-z](\\w|\\s)*$"`
 	// A short description of the purpose of this collection.
 	Description          *string `json:"description,omitempty"`
 	AdditionalProperties map[string]interface{}

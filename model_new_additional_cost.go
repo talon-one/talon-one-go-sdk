@@ -21,7 +21,7 @@ var _ MappedNullable = &NewAdditionalCost{}
 // NewAdditionalCost struct for NewAdditionalCost
 type NewAdditionalCost struct {
 	// The internal name used in API requests.
-	Name string `json:"name" validate:"regexp=^[A-Za-z]\\\\w*$"`
+	Name string `json:"name" validate:"regexp=^[A-Za-z]\\w*$"`
 	// The human-readable name for the additional cost that will be shown in the Campaign Manager. Like `name`, the combination of entity and title must also be unique.
 	Title string `json:"title" validate:"regexp=^[A-Za-z][A-Za-z0-9_.!~*'() -]*$"`
 	// A description of this additional cost.

@@ -33,7 +33,7 @@ type History struct {
 	// Price of the item.
 	Price                float32                `json:"price"`
 	Metadata             BestPriorPriceMetadata `json:"metadata"`
-	Target               map[string]interface{} `json:"target"`
+	Target               LabelTarget            `json:"target"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -43,7 +43,7 @@ type _History History
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildHistory(id int64, observedAt time.Time, contextIds []string, price float32, metadata BestPriorPriceMetadata, target map[string]interface{}) *History {
+func BuildHistory(id int64, observedAt time.Time, contextIds []string, price float32, metadata BestPriorPriceMetadata, target LabelTarget) *History {
 	this := History{}
 	this.Id = id
 	this.ObservedAt = observedAt
@@ -222,9 +222,9 @@ func (o *History) SetMetadata(v BestPriorPriceMetadata) {
 }
 
 // GetTarget returns the Target field value
-func (o *History) GetTarget() map[string]interface{} {
+func (o *History) GetTarget() LabelTarget {
 	if o == nil {
-		var ret map[string]interface{}
+		var ret LabelTarget
 		return ret
 	}
 
@@ -233,15 +233,15 @@ func (o *History) GetTarget() map[string]interface{} {
 
 // GetTargetOk returns a tuple with the Target field value
 // and a boolean to check if the value has been set.
-func (o *History) GetTargetOk() (map[string]interface{}, bool) {
+func (o *History) GetTargetOk() (*LabelTarget, bool) {
 	if o == nil {
-		return map[string]interface{}{}, false
+		return nil, false
 	}
-	return o.Target, true
+	return &o.Target, true
 }
 
 // SetTarget sets field value
-func (o *History) SetTarget(v map[string]interface{}) {
+func (o *History) SetTarget(v LabelTarget) {
 	o.Target = v
 }
 

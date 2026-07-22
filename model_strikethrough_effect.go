@@ -32,7 +32,7 @@ type StrikethroughEffect struct {
 	// The type of this effect.
 	Type string `json:"type"`
 	// Arbitrary properties associated with this effect type.
-	Props map[string]interface{} `json:"props"`
+	Props StrikethroughEffectProps `json:"props"`
 	// The start of the time frame where the effect is active in UTC.
 	StartTime *time.Time `json:"startTime,omitempty"`
 	// The end of the time frame where the effect is active in UTC.
@@ -44,7 +44,7 @@ type StrikethroughEffect struct {
 	// The reference identifier of the selected price adjustment for this cart item.
 	AdjustmentReferenceId *string `json:"adjustmentReferenceId,omitempty"`
 	// A list of entities (e.g. audiences) targeted by this effect.
-	Targets              []map[string]interface{} `json:"targets,omitempty"`
+	Targets              []LabelTarget `json:"targets,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -54,7 +54,7 @@ type _StrikethroughEffect StrikethroughEffect
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildStrikethroughEffect(campaignId int64, rulesetId int64, ruleIndex int64, ruleName string, type_ string, props map[string]interface{}) *StrikethroughEffect {
+func BuildStrikethroughEffect(campaignId int64, rulesetId int64, ruleIndex int64, ruleName string, type_ string, props StrikethroughEffectProps) *StrikethroughEffect {
 	this := StrikethroughEffect{}
 	this.CampaignId = campaignId
 	this.RulesetId = rulesetId
@@ -194,9 +194,9 @@ func (o *StrikethroughEffect) SetType(v string) {
 }
 
 // GetProps returns the Props field value
-func (o *StrikethroughEffect) GetProps() map[string]interface{} {
+func (o *StrikethroughEffect) GetProps() StrikethroughEffectProps {
 	if o == nil {
-		var ret map[string]interface{}
+		var ret StrikethroughEffectProps
 		return ret
 	}
 
@@ -205,15 +205,15 @@ func (o *StrikethroughEffect) GetProps() map[string]interface{} {
 
 // GetPropsOk returns a tuple with the Props field value
 // and a boolean to check if the value has been set.
-func (o *StrikethroughEffect) GetPropsOk() (map[string]interface{}, bool) {
+func (o *StrikethroughEffect) GetPropsOk() (*StrikethroughEffectProps, bool) {
 	if o == nil {
-		return map[string]interface{}{}, false
+		return nil, false
 	}
-	return o.Props, true
+	return &o.Props, true
 }
 
 // SetProps sets field value
-func (o *StrikethroughEffect) SetProps(v map[string]interface{}) {
+func (o *StrikethroughEffect) SetProps(v StrikethroughEffectProps) {
 	o.Props = v
 }
 
@@ -378,9 +378,9 @@ func (o *StrikethroughEffect) SetAdjustmentReferenceId(v string) {
 }
 
 // GetTargets returns the Targets field value if set, zero value otherwise.
-func (o *StrikethroughEffect) GetTargets() []map[string]interface{} {
+func (o *StrikethroughEffect) GetTargets() []LabelTarget {
 	if o == nil || IsNil(o.Targets) {
-		var ret []map[string]interface{}
+		var ret []LabelTarget
 		return ret
 	}
 	return o.Targets
@@ -388,7 +388,7 @@ func (o *StrikethroughEffect) GetTargets() []map[string]interface{} {
 
 // GetTargetsOk returns a tuple with the Targets field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *StrikethroughEffect) GetTargetsOk() ([]map[string]interface{}, bool) {
+func (o *StrikethroughEffect) GetTargetsOk() ([]LabelTarget, bool) {
 	if o == nil || IsNil(o.Targets) {
 		return nil, false
 	}
@@ -404,8 +404,8 @@ func (o *StrikethroughEffect) HasTargets() bool {
 	return false
 }
 
-// SetTargets gets a reference to the given []map[string]interface{} and assigns it to the Targets field.
-func (o *StrikethroughEffect) SetTargets(v []map[string]interface{}) {
+// SetTargets gets a reference to the given []LabelTarget and assigns it to the Targets field.
+func (o *StrikethroughEffect) SetTargets(v []LabelTarget) {
 	o.Targets = v
 }
 

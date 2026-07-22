@@ -31,7 +31,7 @@ type Attribute struct {
 	Entity    string  `json:"entity"`
 	EventType *string `json:"eventType,omitempty"`
 	// The attribute name that will be used in API requests and Talang. E.g. if `name == \"region\"` then you would set the region attribute by including an `attributes.region` property in your request payload.
-	Name string `json:"name" validate:"regexp=^[A-Za-z]\\\\w*$"`
+	Name string `json:"name" validate:"regexp=^[A-Za-z]\\w*$"`
 	// The human-readable name for the attribute that will be shown in the Campaign Manager. Like `name`, the combination of entity and title must also be unique.
 	Title string `json:"title" validate:"regexp=^[A-Za-z][A-Za-z0-9_.!~*'() -]*$"`
 	// The data type of the attribute, a `time` attribute must be sent as a string that conforms to the [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) timestamp format.

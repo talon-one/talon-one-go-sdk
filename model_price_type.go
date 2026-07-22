@@ -28,7 +28,7 @@ type PriceType struct {
 	// The ID of the account that owns this price type.
 	AccountId *int64 `json:"accountId,omitempty"`
 	// The API name of the price type. This is an immutable value.
-	Name string `json:"name" validate:"regexp=^[A-Za-z]\\\\w*$"`
+	Name string `json:"name" validate:"regexp=^[A-Za-z]\\w*$"`
 	// The name displayed in the Campaign Manager for the price type.
 	Title string `json:"title"`
 	// A description of the price type.

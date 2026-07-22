@@ -29,7 +29,7 @@ type StrikethroughRuleV2 struct {
 	// A longer description of the rule.
 	Description *string `json:"description,omitempty"`
 	// The condition and effect blocks that make up this strikethrough rule.
-	Blocks               []interface{} `json:"blocks"`
+	Blocks               []StrikethroughBlock `json:"blocks"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -39,7 +39,7 @@ type _StrikethroughRuleV2 StrikethroughRuleV2
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildStrikethroughRuleV2(title string, blocks []interface{}) *StrikethroughRuleV2 {
+func BuildStrikethroughRuleV2(title string, blocks []StrikethroughBlock) *StrikethroughRuleV2 {
 	this := StrikethroughRuleV2{}
 	this.Title = title
 	this.Blocks = blocks
@@ -175,9 +175,9 @@ func (o *StrikethroughRuleV2) SetDescription(v string) {
 }
 
 // GetBlocks returns the Blocks field value
-func (o *StrikethroughRuleV2) GetBlocks() []interface{} {
+func (o *StrikethroughRuleV2) GetBlocks() []StrikethroughBlock {
 	if o == nil {
-		var ret []interface{}
+		var ret []StrikethroughBlock
 		return ret
 	}
 
@@ -186,7 +186,7 @@ func (o *StrikethroughRuleV2) GetBlocks() []interface{} {
 
 // GetBlocksOk returns a tuple with the Blocks field value
 // and a boolean to check if the value has been set.
-func (o *StrikethroughRuleV2) GetBlocksOk() ([]interface{}, bool) {
+func (o *StrikethroughRuleV2) GetBlocksOk() ([]StrikethroughBlock, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -194,7 +194,7 @@ func (o *StrikethroughRuleV2) GetBlocksOk() ([]interface{}, bool) {
 }
 
 // SetBlocks sets field value
-func (o *StrikethroughRuleV2) SetBlocks(v []interface{}) {
+func (o *StrikethroughRuleV2) SetBlocks(v []StrikethroughBlock) {
 	o.Blocks = v
 }
 

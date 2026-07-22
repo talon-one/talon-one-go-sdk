@@ -38,7 +38,7 @@ type NewCoupons struct {
 	// **DEPRECATED** To create more than 20,000 coupons in one request, use [Create coupons asynchronously](https://docs.talon.one/management-api#tag/Coupons/operation/createCouponsAsync) endpoint.
 	// Deprecated
 	UniquePrefix *string `json:"uniquePrefix,omitempty"`
-	// Arbitrary properties associated with this campaign.
+	// Arbitrary properties associated with this item.
 	Attributes map[string]interface{} `json:"attributes,omitempty"`
 	// The integration ID for this coupon's beneficiary's profile.
 	RecipientIntegrationId *string `json:"recipientIntegrationId,omitempty"`
@@ -49,7 +49,11 @@ type NewCoupons struct {
 	// An indication of whether the code can be redeemed only if it has been reserved first.
 	IsReservationMandatory *bool `json:"isReservationMandatory,omitempty"`
 	// An indication of whether the coupon is implicitly reserved for all customers.
-	ImplicitlyReserved   *bool `json:"implicitlyReserved,omitempty"`
+	ImplicitlyReserved *bool `json:"implicitlyReserved,omitempty"`
+	// The identifier of the support request to link to the coupon creation. The request must exist and not yet be processed.
+	SupportRequestId *int64 `json:"supportRequestId,omitempty"`
+	// A note recorded when the linked support request is approved or rejected. Applied when `supportRequestId` is provided.
+	SupportRequestNote   *string `json:"supportRequestNote,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -520,6 +524,70 @@ func (o *NewCoupons) SetImplicitlyReserved(v bool) {
 	o.ImplicitlyReserved = &v
 }
 
+// GetSupportRequestId returns the SupportRequestId field value if set, zero value otherwise.
+func (o *NewCoupons) GetSupportRequestId() int64 {
+	if o == nil || IsNil(o.SupportRequestId) {
+		var ret int64
+		return ret
+	}
+	return *o.SupportRequestId
+}
+
+// GetSupportRequestIdOk returns a tuple with the SupportRequestId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *NewCoupons) GetSupportRequestIdOk() (*int64, bool) {
+	if o == nil || IsNil(o.SupportRequestId) {
+		return nil, false
+	}
+	return o.SupportRequestId, true
+}
+
+// HasSupportRequestId returns a boolean if a field has been set.
+func (o *NewCoupons) HasSupportRequestId() bool {
+	if o != nil && !IsNil(o.SupportRequestId) {
+		return true
+	}
+
+	return false
+}
+
+// SetSupportRequestId gets a reference to the given int64 and assigns it to the SupportRequestId field.
+func (o *NewCoupons) SetSupportRequestId(v int64) {
+	o.SupportRequestId = &v
+}
+
+// GetSupportRequestNote returns the SupportRequestNote field value if set, zero value otherwise.
+func (o *NewCoupons) GetSupportRequestNote() string {
+	if o == nil || IsNil(o.SupportRequestNote) {
+		var ret string
+		return ret
+	}
+	return *o.SupportRequestNote
+}
+
+// GetSupportRequestNoteOk returns a tuple with the SupportRequestNote field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *NewCoupons) GetSupportRequestNoteOk() (*string, bool) {
+	if o == nil || IsNil(o.SupportRequestNote) {
+		return nil, false
+	}
+	return o.SupportRequestNote, true
+}
+
+// HasSupportRequestNote returns a boolean if a field has been set.
+func (o *NewCoupons) HasSupportRequestNote() bool {
+	if o != nil && !IsNil(o.SupportRequestNote) {
+		return true
+	}
+
+	return false
+}
+
+// SetSupportRequestNote gets a reference to the given string and assigns it to the SupportRequestNote field.
+func (o *NewCoupons) SetSupportRequestNote(v string) {
+	o.SupportRequestNote = &v
+}
+
 func (o NewCoupons) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -569,6 +637,12 @@ func (o NewCoupons) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.ImplicitlyReserved) {
 		toSerialize["implicitlyReserved"] = o.ImplicitlyReserved
+	}
+	if !IsNil(o.SupportRequestId) {
+		toSerialize["supportRequestId"] = o.SupportRequestId
+	}
+	if !IsNil(o.SupportRequestNote) {
+		toSerialize["supportRequestNote"] = o.SupportRequestNote
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -627,6 +701,8 @@ func (o *NewCoupons) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "couponPattern")
 		delete(additionalProperties, "isReservationMandatory")
 		delete(additionalProperties, "implicitlyReserved")
+		delete(additionalProperties, "supportRequestId")
+		delete(additionalProperties, "supportRequestNote")
 		o.AdditionalProperties = additionalProperties
 	}
 

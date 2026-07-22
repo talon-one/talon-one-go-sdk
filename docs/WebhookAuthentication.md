@@ -12,13 +12,13 @@ Name | Type | Description | Notes
 **Webhooks** | [**[]WebhookAuthenticationWebhookRef**](WebhookAuthenticationWebhookRef.md) |  | 
 **Name** | **string** | The name of the webhook authentication. | 
 **Type** | **string** |  | 
-**Data** | **interface{}** |  | 
+**Data** | [**WebhookAuthenticationAllOfData**](WebhookAuthenticationAllOfData.md) |  | 
 
 ## Methods
 
 ### NewWebhookAuthentication
 
-`func NewWebhookAuthentication(id int64, created time.Time, modified time.Time, createdBy string, modifiedBy string, webhooks []WebhookAuthenticationWebhookRef, name string, type_ string, data interface{}, ) *WebhookAuthentication`
+`func NewWebhookAuthentication(id int64, created time.Time, modified time.Time, createdBy string, modifiedBy string, webhooks []WebhookAuthenticationWebhookRef, name string, type_ string, data WebhookAuthenticationAllOfData, ) *WebhookAuthentication`
 
 NewWebhookAuthentication instantiates a new WebhookAuthentication object
 This constructor will assign default values to properties that have it defined,
@@ -195,34 +195,24 @@ SetType sets Type field to given value.
 
 ### GetData
 
-`func (o *WebhookAuthentication) GetData() interface{}`
+`func (o *WebhookAuthentication) GetData() WebhookAuthenticationAllOfData`
 
 GetData returns the Data field if non-nil, zero value otherwise.
 
 ### GetDataOk
 
-`func (o *WebhookAuthentication) GetDataOk() (*interface{}, bool)`
+`func (o *WebhookAuthentication) GetDataOk() (*WebhookAuthenticationAllOfData, bool)`
 
 GetDataOk returns a tuple with the Data field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetData
 
-`func (o *WebhookAuthentication) SetData(v interface{})`
+`func (o *WebhookAuthentication) SetData(v WebhookAuthenticationAllOfData)`
 
 SetData sets Data field to given value.
 
 
-### SetDataNil
-
-`func (o *WebhookAuthentication) SetDataNil(b bool)`
-
- SetDataNil sets the value for Data to be an explicit nil
-
-### UnsetData
-`func (o *WebhookAuthentication) UnsetData()`
-
-UnsetData ensures that no value is present for Data, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

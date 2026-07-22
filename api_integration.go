@@ -5063,6 +5063,11 @@ To see an example of a rollback, see the
 > [Update customer session](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2)
 > endpoint to cancel a closed session and create a new one.
 
+> [!note] To make request processing idempotent for this endpoint, include the `Idempotency-Key` header with an idempotency key in requests. Also:
+> - Requests with the `Idempotency-Key` header are logged in the Talon.One access logs.
+> - Responses for idempotent requests are stored in the database and expire 24 hours after the request is sent.
+> - Idempotency keys are typically UUID keys and should not exceed 255 characters in length.
+
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param customerSessionId The `integration ID` of the customer session. You set this ID when you create a customer session.  You can see existing customer session integration IDs in the Campaign Manager's **Sessions** menu, or via the [List Application session](https://docs.talon.one/management-api#tag/Customer-data/operation/getApplicationSessions) endpoint.
 	@return ApiReopenCustomerSessionRequest
@@ -5863,6 +5868,11 @@ link to a product. See our [tutorial](https://docs.talon.one/docs/product/tutori
 > - We recommend sending requests sequentially. See [Managing parallel requests](https://docs.talon.one/docs/dev/getting-started/integration-tutorial#managing-parallel-requests).
 > - [Archived campaigns](https://docs.talon.one/docs/product/campaigns/managing-campaigns#archiving-a-campaign) are not considered in rule evaluation.
 
+> [!note] To make request processing idempotent for this endpoint, include the `Idempotency-Key` header with an idempotency key in requests. Also:
+> - Requests with the `Idempotency-Key` header are logged in the Talon.One access logs.
+> - Responses for idempotent requests are stored in the database and expire 24 hours after the request is sent.
+> - Idempotency keys are typically UUID keys and should not exceed 255 characters in length.
+
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiTrackEventV2Request
 */
@@ -5993,7 +6003,7 @@ func (a *IntegrationAPIService) TrackEventV2Execute(r ApiTrackEventV2Request) (*
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 409 {
-			var v UpdateCustomerSessionV2409Response
+			var v UpdateCustomerProfileV2409Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -6209,7 +6219,7 @@ func (a *IntegrationAPIService) TrackEventV3Execute(r ApiTrackEventV3Request) (*
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 409 {
-			var v UpdateCustomerSessionV2409Response
+			var v UpdateCustomerProfileV2409Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -6903,6 +6913,11 @@ You can use this endpoint to:
 >   See [Managing parallel requests](https://docs.talon.one/docs/dev/getting-started/integration-tutorial#managing-parallel-requests).
 > - [Archived campaigns](https://docs.talon.one/docs/product/campaigns/managing-campaigns#archiving-a-campaign) are not considered in rule evaluation when `runRuleEngine` is `true`.
 
+> [!note] To make request processing idempotent for this endpoint, include the `Idempotency-Key` header with an idempotency key in requests. Also:
+> - Requests with the `Idempotency-Key` header are logged in the Talon.One access logs.
+> - Responses for idempotent requests are stored in the database and expire 24 hours after the request is sent.
+> - Idempotency keys are typically UUID keys and should not exceed 255 characters in length.
+
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param integrationId The integration identifier for this customer profile. Must be: - Unique within the deployment. - Stable for the customer. Do not use an ID that the customer can update themselves. For example, you can use a database ID.  Once set, you cannot update this identifier. **Note**: It must be URL-encoded. For example, replace spaces with `%20`. [Learn more](https://www.w3schools.com/tags/ref_urlencode.asp).
 	@return ApiUpdateCustomerProfileV2Request
@@ -7029,7 +7044,7 @@ func (a *IntegrationAPIService) UpdateCustomerProfileV2Execute(r ApiUpdateCustom
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 409 {
-			var v UpdateCustomerSessionV2409Response
+			var v UpdateCustomerProfileV2409Response
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -7093,6 +7108,11 @@ sessions](https://docs.talon.one/integration-api#tag/Customer-sessions).
 > [!note] This endpoint does not trigger the Rule Engine.
 > To trigger the Rule Engine for customer profile updates,
 > use the [Update customer profile](#tag/Customer-profiles/operation/updateCustomerProfileV2) endpoint.
+
+> [!note] To make request processing idempotent for this endpoint, include the `Idempotency-Key` header with an idempotency key in requests. Also:
+> - Requests with the `Idempotency-Key` header are logged in the Talon.One access logs.
+> - Responses for idempotent requests are stored in the database and expire 24 hours after the request is sent.
+> - Idempotency keys are typically UUID keys and should not exceed 255 characters in length.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiUpdateCustomerProfilesV2Request
@@ -7274,6 +7294,11 @@ with Talon.One.
 > [!note] **Note**
 > - The currency for the session and the cart items in it is the currency set for the Application linked to this session.
 > - [Archived campaigns](https://docs.talon.one/docs/product/campaigns/managing-campaigns#archiving-a-campaign) are not considered for rule evaluation.
+
+> [!note] To make request processing idempotent for this endpoint, include the `Idempotency-Key` header with an idempotency key in requests. Also:
+> - Requests with the `Idempotency-Key` header are logged in the Talon.One access logs.
+> - Responses for idempotent requests are stored in the database and expire 24 hours after the request is sent.
+> - Idempotency keys are typically UUID keys and should not exceed 255 characters in length.
 
 ### Session management
 

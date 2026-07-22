@@ -20,8 +20,7 @@ var _ MappedNullable = &BaseNotificationEntity{}
 
 // BaseNotificationEntity struct for BaseNotificationEntity
 type BaseNotificationEntity struct {
-	// Indicates which notification properties to apply.
-	Policy map[string]interface{} `json:"policy"`
+	Policy BaseNotificationPolicy `json:"policy"`
 	// Indicates whether the notification is activated.
 	Enabled              *bool `json:"enabled,omitempty"`
 	AdditionalProperties map[string]interface{}
@@ -33,7 +32,7 @@ type _BaseNotificationEntity BaseNotificationEntity
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildBaseNotificationEntity(policy map[string]interface{}) *BaseNotificationEntity {
+func BuildBaseNotificationEntity(policy BaseNotificationPolicy) *BaseNotificationEntity {
 	this := BaseNotificationEntity{}
 	this.Policy = policy
 	var enabled bool = true
@@ -52,9 +51,9 @@ func NewBaseNotificationEntityWithDefaults() *BaseNotificationEntity {
 }
 
 // GetPolicy returns the Policy field value
-func (o *BaseNotificationEntity) GetPolicy() map[string]interface{} {
+func (o *BaseNotificationEntity) GetPolicy() BaseNotificationPolicy {
 	if o == nil {
-		var ret map[string]interface{}
+		var ret BaseNotificationPolicy
 		return ret
 	}
 
@@ -63,15 +62,15 @@ func (o *BaseNotificationEntity) GetPolicy() map[string]interface{} {
 
 // GetPolicyOk returns a tuple with the Policy field value
 // and a boolean to check if the value has been set.
-func (o *BaseNotificationEntity) GetPolicyOk() (map[string]interface{}, bool) {
+func (o *BaseNotificationEntity) GetPolicyOk() (*BaseNotificationPolicy, bool) {
 	if o == nil {
-		return map[string]interface{}{}, false
+		return nil, false
 	}
-	return o.Policy, true
+	return &o.Policy, true
 }
 
 // SetPolicy sets field value
-func (o *BaseNotificationEntity) SetPolicy(v map[string]interface{}) {
+func (o *BaseNotificationEntity) SetPolicy(v BaseNotificationPolicy) {
 	o.Policy = v
 }
 

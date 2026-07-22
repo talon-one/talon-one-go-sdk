@@ -20,8 +20,7 @@ var _ MappedNullable = &NewBaseNotification{}
 
 // NewBaseNotification struct for NewBaseNotification
 type NewBaseNotification struct {
-	// Indicates which notification properties to apply.
-	Policy map[string]interface{} `json:"policy"`
+	Policy BaseNotificationPolicy `json:"policy"`
 	// Indicates whether the notification is activated.
 	Enabled              *bool                  `json:"enabled,omitempty"`
 	Webhook              NewNotificationWebhook `json:"webhook"`
@@ -34,7 +33,7 @@ type _NewBaseNotification NewBaseNotification
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildNewBaseNotification(policy map[string]interface{}, webhook NewNotificationWebhook) *NewBaseNotification {
+func BuildNewBaseNotification(policy BaseNotificationPolicy, webhook NewNotificationWebhook) *NewBaseNotification {
 	this := NewBaseNotification{}
 	this.Policy = policy
 	var enabled bool = true
@@ -54,9 +53,9 @@ func NewNewBaseNotificationWithDefaults() *NewBaseNotification {
 }
 
 // GetPolicy returns the Policy field value
-func (o *NewBaseNotification) GetPolicy() map[string]interface{} {
+func (o *NewBaseNotification) GetPolicy() BaseNotificationPolicy {
 	if o == nil {
-		var ret map[string]interface{}
+		var ret BaseNotificationPolicy
 		return ret
 	}
 
@@ -65,15 +64,15 @@ func (o *NewBaseNotification) GetPolicy() map[string]interface{} {
 
 // GetPolicyOk returns a tuple with the Policy field value
 // and a boolean to check if the value has been set.
-func (o *NewBaseNotification) GetPolicyOk() (map[string]interface{}, bool) {
+func (o *NewBaseNotification) GetPolicyOk() (*BaseNotificationPolicy, bool) {
 	if o == nil {
-		return map[string]interface{}{}, false
+		return nil, false
 	}
-	return o.Policy, true
+	return &o.Policy, true
 }
 
 // SetPolicy sets field value
-func (o *NewBaseNotification) SetPolicy(v map[string]interface{}) {
+func (o *NewBaseNotification) SetPolicy(v BaseNotificationPolicy) {
 	o.Policy = v
 }
 

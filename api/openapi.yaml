@@ -235,6 +235,11 @@ paths:
         > - The currency for the session and the cart items in it is the currency set for the Application linked to this session.
         > - [Archived campaigns](https://docs.talon.one/docs/product/campaigns/managing-campaigns#archiving-a-campaign) are not considered for rule evaluation.
 
+        > [!note] To make request processing idempotent for this endpoint, include the `Idempotency-Key` header with an idempotency key in requests. Also:
+        > - Requests with the `Idempotency-Key` header are logged in the Talon.One access logs.
+        > - Responses for idempotent requests are stored in the database and expire 24 hours after the request is sent.
+        > - Idempotency keys are typically UUID keys and should not exceed 255 characters in length.
+
         ### Session management
 
         To use this endpoint, start by learning about [customer
@@ -574,6 +579,11 @@ paths:
         > instead of reopening a session, use the
         > [Update customer session](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2)
         > endpoint to cancel a closed session and create a new one.
+
+        > [!note] To make request processing idempotent for this endpoint, include the `Idempotency-Key` header with an idempotency key in requests. Also:
+        > - Requests with the `Idempotency-Key` header are logged in the Talon.One access logs.
+        > - Responses for idempotent requests are stored in the database and expire 24 hours after the request is sent.
+        > - Idempotency keys are typically UUID keys and should not exceed 255 characters in length.
       operationId: reopenCustomerSession
       parameters:
       - description: |
@@ -630,6 +640,11 @@ paths:
         > - We recommend sending requests sequentially.
         >   See [Managing parallel requests](https://docs.talon.one/docs/dev/getting-started/integration-tutorial#managing-parallel-requests).
         > - [Archived campaigns](https://docs.talon.one/docs/product/campaigns/managing-campaigns#archiving-a-campaign) are not considered in rule evaluation when `runRuleEngine` is `true`.
+
+        > [!note] To make request processing idempotent for this endpoint, include the `Idempotency-Key` header with an idempotency key in requests. Also:
+        > - Requests with the `Idempotency-Key` header are logged in the Talon.One access logs.
+        > - Responses for idempotent requests are stored in the database and expire 24 hours after the request is sent.
+        > - Idempotency keys are typically UUID keys and should not exceed 255 characters in length.
       operationId: updateCustomerProfileV2
       parameters:
       - description: |
@@ -751,7 +766,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/updateCustomerSessionV2_409_response"
+                $ref: "#/components/schemas/updateCustomerProfileV2_409_response"
           description: "Too many requests or limit reached - Avoid parallel requests.\
             \ See the [docs](https://docs.talon.one/docs/dev/tutorials/integrating-talon-one#managing-parallel-requests)."
       security:
@@ -776,6 +791,11 @@ paths:
         > [!note] This endpoint does not trigger the Rule Engine.
         > To trigger the Rule Engine for customer profile updates,
         > use the [Update customer profile](#tag/Customer-profiles/operation/updateCustomerProfileV2) endpoint.
+
+        > [!note] To make request processing idempotent for this endpoint, include the `Idempotency-Key` header with an idempotency key in requests. Also:
+        > - Requests with the `Idempotency-Key` header are logged in the Talon.One access logs.
+        > - Responses for idempotent requests are stored in the database and expire 24 hours after the request is sent.
+        > - Idempotency keys are typically UUID keys and should not exceed 255 characters in length.
       operationId: updateCustomerProfilesV2
       parameters:
       - description: |
@@ -1473,6 +1493,11 @@ paths:
         > - If the customer profile ID is new, a new profile is automatically created but the `customer_profile_created` [built-in event ](https://docs.talon.one/docs/dev/concepts/entities/events) is **not** triggered.
         > - We recommend sending requests sequentially. See [Managing parallel requests](https://docs.talon.one/docs/dev/getting-started/integration-tutorial#managing-parallel-requests).
         > - [Archived campaigns](https://docs.talon.one/docs/product/campaigns/managing-campaigns#archiving-a-campaign) are not considered in rule evaluation.
+
+        > [!note] To make request processing idempotent for this endpoint, include the `Idempotency-Key` header with an idempotency key in requests. Also:
+        > - Requests with the `Idempotency-Key` header are logged in the Talon.One access logs.
+        > - Responses for idempotent requests are stored in the database and expire 24 hours after the request is sent.
+        > - Idempotency keys are typically UUID keys and should not exceed 255 characters in length.
       operationId: trackEventV2
       parameters:
       - description: |
@@ -1537,7 +1562,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/updateCustomerSessionV2_409_response"
+                $ref: "#/components/schemas/updateCustomerProfileV2_409_response"
           description: "Too many requests or limit reached - Avoid parallel requests.\
             \ See the [docs](https://docs.talon.one/docs/dev/tutorials/integrating-talon-one#managing-parallel-requests)."
       security:
@@ -13362,7 +13387,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/updateCustomerSessionV2_409_response"
+                $ref: "#/components/schemas/updateCustomerProfileV2_409_response"
           description: "An advanced event already exists, too many requests, or limit\
             \ reached. Avoid parallel requests. See the [docs](https://docs.talon.one/docs/dev/tutorials/integrating-talon-one#managing-parallel-requests)."
       security:
@@ -13564,6 +13589,13 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/AddLoyaltyPoints"
+      description: body
+      required: true
+    NewDigitalPass:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/NewDigitalPass"
       description: body
       required: true
     CouponReservations:
@@ -13831,13 +13863,7 @@ components:
       required: true
   schemas:
     ApplicationNotification:
-      properties:
-        event:
-          description: |
-            Event type. It can be one of the following: ['campaign_evaluation_tree_changed']
-          type: string
-      required:
-      - event
+      $ref: "#/components/schemas/CampaignEvaluationTreeChangedNotification"
     ApplicationSessionEntity:
       properties:
         sessionId:
@@ -14111,7 +14137,42 @@ components:
         - status
     EffectProps:
       description: "The properties of the effect. See [API effects](https://docs.talon.one/docs/dev/integration-api/api-effects)."
-      type: object
+      oneOf:
+      - $ref: "#/components/schemas/AcceptCouponEffectProps"
+      - $ref: "#/components/schemas/AcceptReferralEffectProps"
+      - $ref: "#/components/schemas/RedeemReferralEffectProps"
+      - $ref: "#/components/schemas/RejectCouponEffectProps"
+      - $ref: "#/components/schemas/RejectReferralEffectProps"
+      - $ref: "#/components/schemas/CouponCreatedEffectProps"
+      - $ref: "#/components/schemas/ReferralCreatedEffectProps"
+      - $ref: "#/components/schemas/SetDiscountEffectProps"
+      - $ref: "#/components/schemas/SetDiscountPerItemEffectProps"
+      - $ref: "#/components/schemas/SetDiscountPerAdditionalCostEffectProps"
+      - $ref: "#/components/schemas/TriggerWebhookEffectProps"
+      - $ref: "#/components/schemas/AddLoyaltyPointsEffectProps"
+      - $ref: "#/components/schemas/DeductLoyaltyPointsEffectProps"
+      - $ref: "#/components/schemas/ChangeLoyaltyTierLevelEffectProps"
+      - $ref: "#/components/schemas/AddFreeItemEffectProps"
+      - $ref: "#/components/schemas/ShowNotificationEffectProps"
+      - $ref: "#/components/schemas/UpdateAttributeEffectProps"
+      - $ref: "#/components/schemas/RollbackCouponEffectProps"
+      - $ref: "#/components/schemas/RollbackReferralEffectProps"
+      - $ref: "#/components/schemas/RollbackDiscountEffectProps"
+      - $ref: "#/components/schemas/RollbackAddedLoyaltyPointsEffectProps"
+      - $ref: "#/components/schemas/RollbackDeductedLoyaltyPointsEffectProps"
+      - $ref: "#/components/schemas/ShowBundleMetadataEffectProps"
+      - $ref: "#/components/schemas/AwardGiveawayEffectProps"
+      - $ref: "#/components/schemas/WillAwardGiveawayEffectProps"
+      - $ref: "#/components/schemas/ErrorEffectProps"
+      - $ref: "#/components/schemas/CustomEffectProps"
+      - $ref: "#/components/schemas/SetDiscountPerAdditionalCostPerItemEffectProps"
+      - $ref: "#/components/schemas/ReserveCouponEffectProps"
+      - $ref: "#/components/schemas/AddToAudienceEffectProps"
+      - $ref: "#/components/schemas/RemoveFromAudienceEffectProps"
+      - $ref: "#/components/schemas/IncreaseAchievementProgressEffectProps"
+      - $ref: "#/components/schemas/RollbackIncreasedAchievementProgressEffectProps"
+      - $ref: "#/components/schemas/ExtendLoyaltyPointsExpiryDateEffectProps"
+      - $ref: "#/components/schemas/SetLoyaltyPointsExpiryDateEffectProps"
     FeaturesFeed:
       allOf:
       - properties:
@@ -14297,15 +14358,7 @@ components:
           $ref: "#/components/schemas/IntegrationHubEventType"
         Data:
           items:
-            discriminator:
-              mapping:
-                LoyaltyPointsChanged: "#/components/schemas/IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification"
-                LoyaltyTierDowngrade: "#/components/schemas/IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification"
-                LoyaltyTierUpgrade: "#/components/schemas/IntegrationHubEventPayloadLoyaltyProfileBasedTierUpgradeNotification"
-                CouponCreated: "#/components/schemas/IntegrationHubEventPayloadCouponBasedNotifications"
-                CouponUpdated: "#/components/schemas/IntegrationHubEventPayloadCouponBasedNotifications"
-                CouponDeleted: "#/components/schemas/IntegrationHubEventPayloadCouponBasedNotifications"
-              propertyName: EventType
+            $ref: "#/components/schemas/IntegrationHubPaginatedEventPayload_Data_inner"
           type: array
           default: null
       required:
@@ -16367,7 +16420,6 @@ components:
           default: null
       required:
       - extensionDuration
-      - previousExpirationDate
       - programId
       - subLedgerId
       title: extendLoyaltyPointsExpiryDate
@@ -16411,7 +16463,8 @@ components:
       - description: A generic effect that is fired by a triggered campaign. The props
           property will contain information specific to the specific effect type.
         properties:
-          props: {}
+          props:
+            $ref: "#/components/schemas/Effect_allOf_props"
         required:
         - props
       example:
@@ -16431,7 +16484,8 @@ components:
         selectedPriceType: member
         selectedPrice: 100
         adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-        props: ""
+        props:
+          value: COUP-XYZ789
     IntegrationCustomerSessionResponse:
       example:
         customerSession:
@@ -16551,7 +16605,8 @@ components:
           selectedPriceType: member
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-          props: ""
+          props:
+            value: COUP-XYZ789
         - experimentId: 12
           campaignId: 244
           rulesetId: 73
@@ -16568,7 +16623,8 @@ components:
           selectedPriceType: member
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-          props: ""
+          props:
+            value: COUP-XYZ789
       properties:
         customerSession:
           $ref: "#/components/schemas/CustomerSessionV2"
@@ -18702,7 +18758,7 @@ components:
             title: Friend's Profile ID
             type: string
           attributes:
-            $ref: "#/components/schemas/IntegrationCampaignBase_allOf_attributes"
+            $ref: "#/components/schemas/NewReferral_allOf_attributes"
         required:
         - advocateProfileIntegrationId
         - campaignId
@@ -18713,7 +18769,7 @@ components:
         campaignId: 78
         advocateProfileIntegrationId: URNGV8294NV
         friendProfileIntegrationId: BZGGC2454PA
-        attributes: null
+        attributes: "{channel=web}"
     ImportEntity:
       properties:
         importId:
@@ -18757,7 +18813,7 @@ components:
         campaignId: 78
         advocateProfileIntegrationId: URNGV8294NV
         friendProfileIntegrationId: BZGGC2454PA
-        attributes: null
+        attributes: "{channel=web}"
         importId: 4
         code: 27G47Y54VH9L
         usageCounter: 1
@@ -18786,7 +18842,7 @@ components:
             format: date-time
             type: string
           attributes:
-            $ref: "#/components/schemas/IntegrationCampaignBase_allOf_attributes"
+            $ref: "#/components/schemas/Giveaway_allOf_attributes"
           used:
             description: Indicates whether this giveaway code was given before.
             example: true
@@ -19058,7 +19114,7 @@ components:
         campaignId: 78
         advocateProfileIntegrationId: URNGV8294NV
         friendProfileIntegrationId: BZGGC2454PA
-        attributes: null
+        attributes: "{channel=web}"
         importId: 4
         code: 27G47Y54VH9L
         usageCounter: 1
@@ -19079,38 +19135,6 @@ components:
         required:
         - profileRedemptionCount
       example:
-        id: 6
-        created: 2020-06-10T09:05:27.993483Z
-        campaignId: 211
-        value: XMAS-20-2021
-        usageLimit: 100
-        discountLimit: 30
-        reservationLimit: 45
-        startDate: 2020-01-24T14:15:22Z
-        expiryDate: 2023-08-24T14:15:22Z
-        limits:
-        - action: createCoupon
-          limit: 1000
-          period: yearly
-          entities:
-          - Coupon
-        - action: createCoupon
-          limit: 1000
-          period: yearly
-          entities:
-          - Coupon
-        usageCounter: 10
-        discountCounter: 10
-        discountRemainder: 5
-        reservationCounter: 1
-        attributes: null
-        referralId: 326632952
-        recipientIntegrationId: URNGV8294NV
-        importId: 4
-        reservation: false
-        batchId: 32535-43255
-        isReservationMandatory: false
-        implicitlyReserved: false
         profileRedemptionCount: 5
     IntegrationEvent:
       allOf:
@@ -19125,7 +19149,7 @@ components:
             title: Event Type
             type: string
           attributes:
-            $ref: "#/components/schemas/IntegrationCampaignBase_allOf_attributes"
+            $ref: "#/components/schemas/IntegrationEvent_allOf_attributes"
         required:
         - attributes
         - type
@@ -19331,7 +19355,7 @@ components:
         profileId: URNGV8294NV
         storeIntegrationId: STORE-001
         type: pageViewed
-        attributes: null
+        attributes: "{myAttribute=myValue}"
         integrationId: 175KJPS947296
         sessionId: 175KJPS947296
         effects:
@@ -19405,7 +19429,7 @@ components:
         profileId: URNGV8294NV
         storeIntegrationId: STORE-001
         type: pageViewed
-        attributes: null
+        attributes: "{myAttribute=myValue}"
         integrationId: 175KJPS947296
         effects:
         - "{}"
@@ -19988,7 +20012,8 @@ components:
           selectedPriceType: member
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-          props: ""
+          props:
+            value: COUP-XYZ789
         - experimentId: 12
           campaignId: 244
           rulesetId: 73
@@ -20005,7 +20030,8 @@ components:
           selectedPriceType: member
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-          props: ""
+          props:
+            value: COUP-XYZ789
         ruleFailureReasons:
         - campaignID: 1
           campaignName: campaignName
@@ -20109,7 +20135,7 @@ components:
           campaignId: 78
           advocateProfileIntegrationId: URNGV8294NV
           friendProfileIntegrationId: BZGGC2454PA
-          attributes: null
+          attributes: "{channel=web}"
           importId: 4
           code: 27G47Y54VH9L
           usageCounter: 1
@@ -20122,7 +20148,7 @@ components:
           campaignId: 78
           advocateProfileIntegrationId: URNGV8294NV
           friendProfileIntegrationId: BZGGC2454PA
-          attributes: null
+          attributes: "{channel=web}"
           importId: 4
           code: 27G47Y54VH9L
           usageCounter: 1
@@ -20185,72 +20211,8 @@ components:
             endDate: 2024-02-01T15:04:05Z07:00
         referral: ""
         coupons:
-        - id: 6
-          created: 2020-06-10T09:05:27.993483Z
-          campaignId: 211
-          value: XMAS-20-2021
-          usageLimit: 100
-          discountLimit: 30
-          reservationLimit: 45
-          startDate: 2020-01-24T14:15:22Z
-          expiryDate: 2023-08-24T14:15:22Z
-          limits:
-          - action: createCoupon
-            limit: 1000
-            period: yearly
-            entities:
-            - Coupon
-          - action: createCoupon
-            limit: 1000
-            period: yearly
-            entities:
-            - Coupon
-          usageCounter: 10
-          discountCounter: 10
-          discountRemainder: 5
-          reservationCounter: 1
-          attributes: null
-          referralId: 326632952
-          recipientIntegrationId: URNGV8294NV
-          importId: 4
-          reservation: false
-          batchId: 32535-43255
-          isReservationMandatory: false
-          implicitlyReserved: false
-          profileRedemptionCount: 5
-        - id: 6
-          created: 2020-06-10T09:05:27.993483Z
-          campaignId: 211
-          value: XMAS-20-2021
-          usageLimit: 100
-          discountLimit: 30
-          reservationLimit: 45
-          startDate: 2020-01-24T14:15:22Z
-          expiryDate: 2023-08-24T14:15:22Z
-          limits:
-          - action: createCoupon
-            limit: 1000
-            period: yearly
-            entities:
-            - Coupon
-          - action: createCoupon
-            limit: 1000
-            period: yearly
-            entities:
-            - Coupon
-          usageCounter: 10
-          discountCounter: 10
-          discountRemainder: 5
-          reservationCounter: 1
-          attributes: null
-          referralId: 326632952
-          recipientIntegrationId: URNGV8294NV
-          importId: 4
-          reservation: false
-          batchId: 32535-43255
-          isReservationMandatory: false
-          implicitlyReserved: false
-          profileRedemptionCount: 5
+        - profileRedemptionCount: 5
+        - profileRedemptionCount: 5
         event: ""
         advancedEvent: ""
         customerSession: ""
@@ -20347,7 +20309,8 @@ components:
           selectedPriceType: member
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-          props: ""
+          props:
+            value: COUP-XYZ789
         - experimentId: 12
           campaignId: 244
           rulesetId: 73
@@ -20364,7 +20327,8 @@ components:
           selectedPriceType: member
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-          props: ""
+          props:
+            value: COUP-XYZ789
       properties:
         effects:
           description: "The effects generated by the rules in your running campaigns.\
@@ -20479,7 +20443,7 @@ components:
           profileId: URNGV8294NV
           storeIntegrationId: STORE-001
           type: pageViewed
-          attributes: null
+          attributes: "{myAttribute=myValue}"
           integrationId: 175KJPS947296
           sessionId: 175KJPS947296
           effects:
@@ -21081,7 +21045,8 @@ components:
           selectedPriceType: member
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-          props: ""
+          props:
+            value: COUP-XYZ789
         - experimentId: 12
           campaignId: 244
           rulesetId: 73
@@ -21098,7 +21063,8 @@ components:
           selectedPriceType: member
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-          props: ""
+          props:
+            value: COUP-XYZ789
         createdCoupons:
         - id: 6
           created: 2020-06-10T09:05:27.993483Z
@@ -21173,7 +21139,7 @@ components:
           campaignId: 78
           advocateProfileIntegrationId: URNGV8294NV
           friendProfileIntegrationId: BZGGC2454PA
-          attributes: null
+          attributes: "{channel=web}"
           importId: 4
           code: 27G47Y54VH9L
           usageCounter: 1
@@ -21186,7 +21152,7 @@ components:
           campaignId: 78
           advocateProfileIntegrationId: URNGV8294NV
           friendProfileIntegrationId: BZGGC2454PA
-          attributes: null
+          attributes: "{channel=web}"
           importId: 4
           code: 27G47Y54VH9L
           usageCounter: 1
@@ -22907,7 +22873,7 @@ components:
             title: Session Total
             type: number
           attributes:
-            $ref: "#/components/schemas/IntegrationCampaignBase_allOf_attributes"
+            $ref: "#/components/schemas/NewCustomerSession_allOf_attributes"
     CustomerSession:
       allOf:
       - $ref: "#/components/schemas/IntegrationEntity"
@@ -22966,6 +22932,85 @@ components:
       - event
       - profile
       - session
+    NewDigitalPass:
+      properties:
+        loyaltyProgramId:
+          description: The ID of the associated loyalty program.
+          example: 42
+          format: int64
+          minimum: 1
+          type: integer
+        passTemplateId:
+          description: |
+            The ID of the digital pass template used to generate the pass.
+          example: tmpl_summer_loyalty
+          minLength: 1
+          type: string
+        profileId:
+          description: The integration ID of the customer profile the pass is issued
+            for.
+          example: "12412412421"
+          minLength: 1
+          type: string
+        loyaltyCardId:
+          description: |
+            The identifier of the loyalty card the pass is issued for.
+
+            **Note**: Only applicable for card-based loyalty programs.
+          example: summer-loyalty-0e2f
+          type: string
+        platform:
+          description: The wallet platform the pass is generated for.
+          enum:
+          - apple
+          - google
+          example: google
+          type: string
+          x-enum-descriptions:
+            apple: The digital pass is generated for Apple Wallet.
+            google: The digital pass is generated for Google Wallet.
+        attributes:
+          additionalProperties:
+            type: string
+          description: |
+            A map of placeholder values that you provide to fill in the pass template.
+            These values are not validated against the template.
+          example:
+            hm_member_name: Jane Doe
+      required:
+      - loyaltyProgramId
+      - passTemplateId
+      - platform
+      - profileId
+    DigitalPass:
+      properties:
+        passId:
+          description: The ID of the generated digital pass.
+          example: pass_9c3f1a2b
+          type: string
+        passTemplateId:
+          description: The ID of the digital pass template used to generate the pass.
+          example: tmpl_summer_loyalty
+          type: string
+        status:
+          description: The status of the digital pass.
+          enum:
+          - created
+          example: created
+          type: string
+          x-enum-descriptions:
+            created: The pass was generated and is ready to be added to a wallet.
+        passUrl:
+          description: The URL you can use to let the customer add the digital pass
+            to their wallet.
+          example: https://wallet.example.com/passes/pass_9c3f1a2b
+          format: uri
+          type: string
+      required:
+      - passId
+      - passTemplateId
+      - passUrl
+      - status
     NewEvent:
       allOf:
       - $ref: "#/components/schemas/IntegrationEvent"
@@ -23415,7 +23460,8 @@ components:
           selectedPriceType: member
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-          props: ""
+          props:
+            value: COUP-XYZ789
         - experimentId: 12
           campaignId: 244
           rulesetId: 73
@@ -23432,7 +23478,8 @@ components:
           selectedPriceType: member
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-          props: ""
+          props:
+            value: COUP-XYZ789
         ruleFailureReasons:
         - campaignID: 1
           campaignName: campaignName
@@ -23536,7 +23583,7 @@ components:
           campaignId: 78
           advocateProfileIntegrationId: URNGV8294NV
           friendProfileIntegrationId: BZGGC2454PA
-          attributes: null
+          attributes: "{channel=web}"
           importId: 4
           code: 27G47Y54VH9L
           usageCounter: 1
@@ -23549,7 +23596,7 @@ components:
           campaignId: 78
           advocateProfileIntegrationId: URNGV8294NV
           friendProfileIntegrationId: BZGGC2454PA
-          attributes: null
+          attributes: "{channel=web}"
           importId: 4
           code: 27G47Y54VH9L
           usageCounter: 1
@@ -23635,7 +23682,7 @@ components:
             type: array
             default: null
           attributes:
-            $ref: "#/components/schemas/IntegrationCampaignBase_allOf_attributes"
+            $ref: "#/components/schemas/NewReferralsForMultipleAdvocates_allOf_attributes"
           validCharacters:
             description: |
               List of characters used to generate the random parts of a code. By default, the list of characters
@@ -23689,7 +23736,7 @@ components:
         advocateProfileIntegrationIds:
         - URNGV8294NV
         - DRPVV9476AF
-        attributes: null
+        attributes: "{channel=web}"
         validCharacters:
         - A
         - B
@@ -23959,7 +24006,7 @@ components:
           campaignId: 78
           advocateProfileIntegrationId: URNGV8294NV
           friendProfileIntegrationId: BZGGC2454PA
-          attributes: null
+          attributes: "{channel=web}"
           importId: 4
           code: 27G47Y54VH9L
           usageCounter: 1
@@ -23975,7 +24022,7 @@ components:
           campaignId: 78
           advocateProfileIntegrationId: URNGV8294NV
           friendProfileIntegrationId: BZGGC2454PA
-          attributes: null
+          attributes: "{channel=web}"
           importId: 4
           code: 27G47Y54VH9L
           usageCounter: 1
@@ -25385,6 +25432,9 @@ components:
       - campaignId
       - type
     CampaignSetNode:
+      oneOf:
+      - $ref: "#/components/schemas/CampaignSetBranchNode"
+      - $ref: "#/components/schemas/CampaignSetLeafNode"
       properties:
         type:
           example: type
@@ -25941,7 +25991,11 @@ components:
       - baseUrl
     OutgoingIntegrationConfigurationPolicy:
       description: The outgoing integration policy specific to each integration type.
-      type: object
+      oneOf:
+      - $ref: "#/components/schemas/OutgoingIntegrationBrazePolicy"
+      - $ref: "#/components/schemas/OutgoingIntegrationCleverTapPolicy"
+      - $ref: "#/components/schemas/OutgoingIntegrationMoEngagePolicy"
+      - $ref: "#/components/schemas/OutgoingIntegrationIterablePolicy"
     OutgoingIntegrationConfiguration:
       properties:
         id:
@@ -25960,9 +26014,7 @@ components:
           format: int64
           type: integer
         policy:
-          description: The outgoing integration policy specific to each integration
-            type.
-          type: object
+          $ref: "#/components/schemas/OutgoingIntegrationConfigurationPolicy"
       required:
       - accountId
       - id
@@ -26099,7 +26151,7 @@ components:
             minLength: 1
             type: string
           ui:
-            $ref: "#/components/schemas/IntegrationCampaignBase_allOf_attributes"
+            $ref: "#/components/schemas/TemplateArgDef_allOf_ui"
           key:
             description: The identifier for the associated value within the JSON object.
             type: string
@@ -26596,12 +26648,25 @@ components:
       - triggers
     BaseNotificationPolicy:
       description: Indicates which notification properties to apply.
-      type: object
+      oneOf:
+      - $ref: "#/components/schemas/ExpiringCouponsNotificationPolicy"
+      - $ref: "#/components/schemas/CardExpiringPointsNotificationPolicy"
+      - $ref: "#/components/schemas/ExpiringPointsNotificationPolicy"
+      - $ref: "#/components/schemas/AddedDeductedPointsNotificationPolicy"
+      - $ref: "#/components/schemas/CardAddedDeductedPointsNotificationPolicy"
+      - $ref: "#/components/schemas/AddedDeductedPointsBalancesNotificationPolicy"
+      - $ref: "#/components/schemas/CardAddedDeductedPointsBalancesNotificationPolicy"
+      - $ref: "#/components/schemas/CouponsNotificationPolicy"
+      - $ref: "#/components/schemas/CatalogsStrikethroughNotificationPolicy"
+      - $ref: "#/components/schemas/PendingPointsNotificationPolicy"
+      - $ref: "#/components/schemas/CampaignNotificationPolicy"
+      - $ref: "#/components/schemas/TierDowngradeNotificationPolicy"
+      - $ref: "#/components/schemas/TierUpgradeNotificationPolicy"
+      - $ref: "#/components/schemas/TierWillDowngradeNotificationPolicy"
     BaseNotificationEntity:
       properties:
         policy:
-          description: Indicates which notification properties to apply.
-          type: object
+          $ref: "#/components/schemas/BaseNotificationPolicy"
         enabled:
           default: true
           description: Indicates whether the notification is activated.
@@ -26741,9 +26806,14 @@ components:
       - name
       - value
     StrikethroughEffectProps:
-      type: object
+      oneOf:
+      - $ref: "#/components/schemas/StrikethroughSetDiscountPerItemEffectProps"
+      - $ref: "#/components/schemas/StrikethroughCustomEffectPerItemProps"
+      - $ref: "#/components/schemas/StrikethroughSetDiscountPerItemMemberEffectProps"
     LabelTargetNone:
       description: Represents the target type when no entity is selected.
+      example:
+        type: NONE
       properties:
         type:
           enum:
@@ -26778,7 +26848,9 @@ components:
       - audience
       - type
     LabelTarget:
-      type: object
+      oneOf:
+      - $ref: "#/components/schemas/LabelTargetNone"
+      - $ref: "#/components/schemas/LabelTargetAudience"
     StrikethroughEffect:
       description: The effect produced for the catalog item.
       properties:
@@ -27552,7 +27624,36 @@ components:
       - id
       - type
       title: BaseBlock
-    PromotionBlock: {}
+    PromotionBlock:
+      description: Describes a part of the logic of the rule.
+      discriminator:
+        mapping:
+          group: "#/components/schemas/PromotionGroupBlock"
+          passthrough: "#/components/schemas/PassthroughBlock"
+          showNotification: "#/components/schemas/ShowNotificationBlock"
+          awardItem: "#/components/schemas/AwardItemBlock"
+          awardGiveaway: "#/components/schemas/AwardGiveawayBlock"
+          checkAttribute: "#/components/schemas/PromotionCheckAttributeBlock"
+          checkAudience: "#/components/schemas/CheckAudienceBlock"
+          checkCoupon: "#/components/schemas/CheckCouponBlock"
+          checkReferral: "#/components/schemas/CheckReferralBlock"
+          updateAudienceMembership: "#/components/schemas/UpdateAudienceMembershipBlock"
+          updateAchievementProgress: "#/components/schemas/UpdateAchievementProgressBlock"
+          updateAttributeValue: "#/components/schemas/UpdateAttributeValueBlock"
+        propertyName: type
+      oneOf:
+      - $ref: "#/components/schemas/PromotionGroupBlock"
+      - $ref: "#/components/schemas/PassthroughBlock"
+      - $ref: "#/components/schemas/ShowNotificationBlock"
+      - $ref: "#/components/schemas/AwardItemBlock"
+      - $ref: "#/components/schemas/AwardGiveawayBlock"
+      - $ref: "#/components/schemas/PromotionCheckAttributeBlock"
+      - $ref: "#/components/schemas/CheckAudienceBlock"
+      - $ref: "#/components/schemas/CheckCouponBlock"
+      - $ref: "#/components/schemas/CheckReferralBlock"
+      - $ref: "#/components/schemas/UpdateAudienceMembershipBlock"
+      - $ref: "#/components/schemas/UpdateAchievementProgressBlock"
+      - $ref: "#/components/schemas/UpdateAttributeValueBlock"
     PromotionGroupBlock:
       allOf:
       - $ref: "#/components/schemas/BaseBlock"
@@ -27586,11 +27687,30 @@ components:
             additionalProperties:
               items:
                 $ref: "#/components/schemas/PromotionBlock"
+              type: array
+              default: null
             description: Named error handlers evaluated when a specific error occurs.
         required:
         - blocks
         - operator
         title: PromotionGroupBlock
+      example:
+        id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        type: type
+        tags:
+        - tags
+        - tags
+        operator: all
+        blocks:
+        - null
+        - null
+        onFailure:
+        - null
+        - null
+        onError:
+          key:
+          - null
+          - null
     PassthroughBlock:
       description: A block representing a Talang expression that could not be mapped
         to a typed block. The expression is preserved in its raw Talang array form
@@ -27606,9 +27726,11 @@ components:
           - passthrough
           type: string
         expression:
-          description: "The raw Talang expression as an array. The first element is\
-            \ the function name; subsequent elements are its arguments, which may\
-            \ themselves be nested expressions."
+          description: "The raw Talang expression as an array. For a function call,\
+            \ the first element is the function name and subsequent elements are its\
+            \ arguments. For any other expression (for example a bare attribute path\
+            \ or a literal value), this is a single-element array containing that\
+            \ value."
           items: {}
           type: array
           default: null
@@ -27646,6 +27768,8 @@ components:
             additionalProperties:
               items:
                 $ref: "#/components/schemas/PromotionBlock"
+              type: array
+              default: null
             description: Named error handlers evaluated when a specific error occurs.
         required:
         - notificationType
@@ -27685,6 +27809,8 @@ components:
             additionalProperties:
               items:
                 $ref: "#/components/schemas/PromotionBlock"
+              type: array
+              default: null
             description: Named error handlers evaluated when a specific error occurs.
         required:
         - name
@@ -27718,106 +27844,18 @@ components:
             additionalProperties:
               items:
                 $ref: "#/components/schemas/PromotionBlock"
+              type: array
+              default: null
             description: Named error handlers evaluated when a specific error occurs.
         required:
         - giveawayPool
         - profile
         title: AwardGiveawayBlock
-    ScalarCheckAttributeBlock:
-      description: Variant of `CheckAttributeBlock` for operators that compare an
-        attribute against a single value.
-      properties:
-        operator:
-          description: The comparison operator applied to the attribute.
-          enum:
-          - equals
-          - not(equals)
-          - lessThan
-          - lessThanOrEqual
-          - greaterThan
-          - greaterThanOrEqual
-          - contains
-          - not(contains)
-          - matchesRegexp
-          - startsWith
-          - endsWith
-          - oneOf
-          - not(oneOf)
-          - inCollection
-          - not(inCollection)
-          type: string
-        value: {}
-      required:
-      - value
-      title: ScalarCheckAttributeBlock
-    BetweenCheckAttributeBlock:
-      description: "Variant of `CheckAttributeBlock` for the `between` operator, which\
-        \ requires both a minimum and maximum value."
-      properties:
-        operator:
-          description: The range comparison operator. Must be `between`.
-          enum:
-          - between
-          type: string
-        min: {}
-        max: {}
-      required:
-      - max
-      - min
-      title: BetweenCheckAttributeBlock
-    ListCheckAttributeBlock:
-      description: Variant of `CheckAttributeBlock` for operators that test list membership
-        against a set of values.
-      properties:
-        operator:
-          description: The list membership operator applied to the attribute.
-          enum:
-          - containsOneOf
-          - containsNoneOf
-          - containsAllOf
-          type: string
-        values: {}
-      required:
-      - values
-      title: ListCheckAttributeBlock
-    ListWithCountCheckAttributeBlock:
-      description: Variant of `CheckAttributeBlock` for operators that test list membership
-        with a minimum or exact count threshold.
-      properties:
-        operator:
-          description: The list membership operator with a count threshold applied
-            to the attribute.
-          enum:
-          - containsAtLeast
-          - containsExactly
-          type: string
-        values: {}
-        count: {}
-      required:
-      - count
-      - values
-      title: ListWithCountCheckAttributeBlock
-    UnaryCheckAttributeBlock:
-      description: Variant of `CheckAttributeBlock` for operators that test a property
-        of the attribute itself with no comparison value.
-      properties:
-        operator:
-          description: The unary operator applied to the attribute. These operators
-            require no comparison value.
-          enum:
-          - empty
-          - not(empty)
-          - exists
-          - not(exists)
-          - isTrue
-          - isFalse
-          type: string
-      title: UnaryCheckAttributeBlock
-    CheckAttributeBlock:
+    CheckAttributeBlockBase:
       allOf:
       - $ref: "#/components/schemas/BaseBlock"
       - description: |-
-          A block that evaluates a single attribute comparison using a named operator.
+          Shared shape for attribute-comparison blocks: a single attribute evaluated by a named operator.
           The operator determines which additional fields are required:
           - `scalar` requires `value`.
           - `between` requires `min` and `max` values.
@@ -27869,40 +27907,10 @@ components:
         required:
         - attribute
         - operator
-        title: CheckAttributeBlock
-      discriminator:
-        mapping:
-          equals: "#/components/schemas/ScalarCheckAttributeBlock"
-          not(equals): "#/components/schemas/ScalarCheckAttributeBlock"
-          lessThan: "#/components/schemas/ScalarCheckAttributeBlock"
-          lessThanOrEqual: "#/components/schemas/ScalarCheckAttributeBlock"
-          greaterThan: "#/components/schemas/ScalarCheckAttributeBlock"
-          greaterThanOrEqual: "#/components/schemas/ScalarCheckAttributeBlock"
-          contains: "#/components/schemas/ScalarCheckAttributeBlock"
-          not(contains): "#/components/schemas/ScalarCheckAttributeBlock"
-          matchesRegexp: "#/components/schemas/ScalarCheckAttributeBlock"
-          startsWith: "#/components/schemas/ScalarCheckAttributeBlock"
-          endsWith: "#/components/schemas/ScalarCheckAttributeBlock"
-          oneOf: "#/components/schemas/ScalarCheckAttributeBlock"
-          not(oneOf): "#/components/schemas/ScalarCheckAttributeBlock"
-          inCollection: "#/components/schemas/ScalarCheckAttributeBlock"
-          not(inCollection): "#/components/schemas/ScalarCheckAttributeBlock"
-          between: "#/components/schemas/BetweenCheckAttributeBlock"
-          containsOneOf: "#/components/schemas/ListCheckAttributeBlock"
-          containsNoneOf: "#/components/schemas/ListCheckAttributeBlock"
-          containsAllOf: "#/components/schemas/ListCheckAttributeBlock"
-          containsAtLeast: "#/components/schemas/ListWithCountCheckAttributeBlock"
-          containsExactly: "#/components/schemas/ListWithCountCheckAttributeBlock"
-          empty: "#/components/schemas/UnaryCheckAttributeBlock"
-          not(empty): "#/components/schemas/UnaryCheckAttributeBlock"
-          exists: "#/components/schemas/UnaryCheckAttributeBlock"
-          not(exists): "#/components/schemas/UnaryCheckAttributeBlock"
-          isTrue: "#/components/schemas/UnaryCheckAttributeBlock"
-          isFalse: "#/components/schemas/UnaryCheckAttributeBlock"
-        propertyName: operator
+        title: CheckAttributeBlockBase
     PromotionCheckAttributeBlock:
       allOf:
-      - $ref: "#/components/schemas/CheckAttributeBlock"
+      - $ref: "#/components/schemas/CheckAttributeBlockBase"
       - description: "A `CheckAttributeBlock` valid in a promotion rule, where each\
           \ `onFailure` block must itself be a valid promotion block."
         properties:
@@ -27990,6 +27998,91 @@ components:
         required:
         - redeem
         title: CheckReferralBlock
+    UpdateAudienceMembershipBlock:
+      allOf:
+      - $ref: "#/components/schemas/BaseBlock"
+      - description: A block that adds a customer to or removes them from an audience.
+        properties:
+          operator:
+            description: The action to perform.
+            enum:
+            - add
+            - remove
+            example: add
+            type: string
+          profile:
+            description: The customer profile to add or remove from the audience.
+              `Current` targets the customer in the current session; `Advocate` targets
+              the person who invited their friend via referral program.
+            enum:
+            - Current
+            - Advocate
+            example: Current
+            type: string
+          audience:
+            $ref: "#/components/schemas/UpdateAudienceMembershipBlock_1_audience"
+        required:
+        - audience
+        - operator
+        - profile
+        title: UpdateAudienceMembershipBlock
+    UpdateAchievementProgressBlock:
+      allOf:
+      - $ref: "#/components/schemas/BaseBlock"
+      - description: A block that updates the progress of a customer in an achievement.
+        properties:
+          operator:
+            enum:
+            - increaseBy
+            example: increaseBy
+            type: string
+          value:
+            description: "The value to update the progress by. Supports template placeholders\
+              \ (e.g. \"{{$Session.Total / 2}}\") for dynamic quantities."
+            example: "10"
+            type: string
+          achievement:
+            $ref: "#/components/schemas/UpdateAchievementProgressBlock_1_achievement"
+        required:
+        - achievement
+        - operator
+        - value
+        title: UpdateAchievementProgressBlock
+    UpdateAttributeValueBlock:
+      allOf:
+      - $ref: "#/components/schemas/BaseBlock"
+      - description: "A block that sets or updates an attribute. The `type` may be\
+          \ empty for [built-in attributes](https://docs.talon.one/docs/dev/concepts/attributes)."
+        properties:
+          operator:
+            description: The update operation applied to the attribute.
+            enum:
+            - setTo
+            - increaseBy
+            - decreaseBy
+            - multiplyBy
+            - divideBy
+            - toggle
+            - laterBy
+            - earlierBy
+            example: setTo
+            type: string
+          attribute:
+            $ref: "#/components/schemas/UpdateAttributeValueBlock_1_attribute"
+          value: {}
+          target:
+            $ref: "#/components/schemas/UpdateAttributeValueBlock_1_target"
+          tags:
+            description: Semantic labels attached to this block.
+            items:
+              type: string
+            type: array
+            default: null
+        required:
+        - attribute
+        - operator
+        - target
+        title: UpdateAttributeValueBlock
     PromotionRuleV2:
       allOf:
       - $ref: "#/components/schemas/RuleV2"
@@ -28011,9 +28104,51 @@ components:
         title: 10% off for loyalty members
         description: description
         blocks:
-        - null
-        - null
-    StrikethroughBlock: {}
+        - id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+          type: type
+          tags:
+          - tags
+          - tags
+          operator: all
+          blocks:
+          - null
+          - null
+          onFailure:
+          - null
+          - null
+          onError:
+            key:
+            - null
+            - null
+        - id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+          type: type
+          tags:
+          - tags
+          - tags
+          operator: all
+          blocks:
+          - null
+          - null
+          onFailure:
+          - null
+          - null
+          onError:
+            key:
+            - null
+            - null
+    StrikethroughBlock:
+      description: A block valid in a strikethrough rule. The `type` field identifies
+        the concrete block type.
+      discriminator:
+        mapping:
+          group: "#/components/schemas/StrikethroughGroupBlock"
+          passthrough: "#/components/schemas/PassthroughBlock"
+          checkAttribute: "#/components/schemas/StrikethroughCheckAttributeBlock"
+        propertyName: type
+      oneOf:
+      - $ref: "#/components/schemas/StrikethroughGroupBlock"
+      - $ref: "#/components/schemas/PassthroughBlock"
+      - $ref: "#/components/schemas/StrikethroughCheckAttributeBlock"
     StrikethroughGroupBlock:
       allOf:
       - $ref: "#/components/schemas/BaseBlock"
@@ -28047,14 +28182,33 @@ components:
             additionalProperties:
               items:
                 $ref: "#/components/schemas/StrikethroughBlock"
+              type: array
+              default: null
             description: Named error handlers evaluated when a specific error occurs.
         required:
         - blocks
         - operator
         title: StrikethroughGroupBlock
+      example:
+        id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        type: type
+        tags:
+        - tags
+        - tags
+        operator: all
+        blocks:
+        - null
+        - null
+        onFailure:
+        - null
+        - null
+        onError:
+          key:
+          - null
+          - null
     StrikethroughCheckAttributeBlock:
       allOf:
-      - $ref: "#/components/schemas/CheckAttributeBlock"
+      - $ref: "#/components/schemas/CheckAttributeBlockBase"
       - description: "A `CheckAttributeBlock` valid in a strikethrough rule, where\
           \ each `onFailure` block must itself be a valid strikethrough block."
         properties:
@@ -28087,8 +28241,38 @@ components:
         title: 10% off for loyalty members
         description: description
         blocks:
-        - null
-        - null
+        - id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+          type: type
+          tags:
+          - tags
+          - tags
+          operator: all
+          blocks:
+          - null
+          - null
+          onFailure:
+          - null
+          - null
+          onError:
+            key:
+            - null
+            - null
+        - id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+          type: type
+          tags:
+          - tags
+          - tags
+          operator: all
+          blocks:
+          - null
+          - null
+          onFailure:
+          - null
+          - null
+          onError:
+            key:
+            - null
+            - null
     RulesetV2:
       description: Ruleset in the V2 JSON block format.
       example:
@@ -28104,30 +28288,150 @@ components:
           title: 10% off for loyalty members
           description: description
           blocks:
-          - null
-          - null
+          - id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+            type: type
+            tags:
+            - tags
+            - tags
+            operator: all
+            blocks:
+            - null
+            - null
+            onFailure:
+            - null
+            - null
+            onError:
+              key:
+              - null
+              - null
+          - id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+            type: type
+            tags:
+            - tags
+            - tags
+            operator: all
+            blocks:
+            - null
+            - null
+            onFailure:
+            - null
+            - null
+            onError:
+              key:
+              - null
+              - null
         - id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
           parentId: parentId
           title: 10% off for loyalty members
           description: description
           blocks:
-          - null
-          - null
+          - id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+            type: type
+            tags:
+            - tags
+            - tags
+            operator: all
+            blocks:
+            - null
+            - null
+            onFailure:
+            - null
+            - null
+            onError:
+              key:
+              - null
+              - null
+          - id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+            type: type
+            tags:
+            - tags
+            - tags
+            operator: all
+            blocks:
+            - null
+            - null
+            onFailure:
+            - null
+            - null
+            onError:
+              key:
+              - null
+              - null
         strikethroughRules:
         - id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
           parentId: parentId
           title: 10% off for loyalty members
           description: description
           blocks:
-          - null
-          - null
+          - id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+            type: type
+            tags:
+            - tags
+            - tags
+            operator: all
+            blocks:
+            - null
+            - null
+            onFailure:
+            - null
+            - null
+            onError:
+              key:
+              - null
+              - null
+          - id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+            type: type
+            tags:
+            - tags
+            - tags
+            operator: all
+            blocks:
+            - null
+            - null
+            onFailure:
+            - null
+            - null
+            onError:
+              key:
+              - null
+              - null
         - id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
           parentId: parentId
           title: 10% off for loyalty members
           description: description
           blocks:
-          - null
-          - null
+          - id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+            type: type
+            tags:
+            - tags
+            - tags
+            operator: all
+            blocks:
+            - null
+            - null
+            onFailure:
+            - null
+            - null
+            onError:
+              key:
+              - null
+              - null
+          - id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+            type: type
+            tags:
+            - tags
+            - tags
+            operator: all
+            blocks:
+            - null
+            - null
+            onFailure:
+            - null
+            - null
+            onError:
+              key:
+              - null
+              - null
         selectors:
         - key: ""
         - key: ""
@@ -28211,7 +28515,7 @@ components:
       - $ref: "#/components/schemas/CouponConstraints"
       - properties:
           attributes:
-            $ref: "#/components/schemas/IntegrationCampaignBase_allOf_attributes"
+            $ref: "#/components/schemas/UpdateCouponBatch_allOf_attributes"
           batchID:
             description: The ID of the batch the coupon(s) belong to.
             title: Batch ID
@@ -28243,7 +28547,7 @@ components:
             title: Coupon code unique prefix
             type: string
           attributes:
-            $ref: "#/components/schemas/IntegrationCampaignBase_allOf_attributes"
+            $ref: "#/components/schemas/NewCoupons_allOf_attributes"
           recipientIntegrationId:
             description: The integration ID for this coupon's beneficiary's profile.
             example: URNGV8294NV
@@ -28284,6 +28588,17 @@ components:
             example: false
             title: Is coupon implicitly reserved for all customers
             type: boolean
+          supportRequestId:
+            description: The identifier of the support request to link to the coupon
+              creation. The request must exist and not yet be processed.
+            example: 42
+            format: int64
+            type: integer
+          supportRequestNote:
+            description: A note recorded when the linked support request is approved
+              or rejected. Applied when `supportRequestId` is provided.
+            example: Approved as compensation for the delayed order.
+            type: string
         required:
         - numberOfCoupons
       example:
@@ -28305,7 +28620,7 @@ components:
           - Coupon
         numberOfCoupons: 1
         uniquePrefix: ""
-        attributes: null
+        attributes: "{venueId=12}"
         recipientIntegrationId: URNGV8294NV
         validCharacters:
         - A
@@ -28315,12 +28630,14 @@ components:
         couponPattern: SUMMER-#####
         isReservationMandatory: false
         implicitlyReserved: false
+        supportRequestId: 42
+        supportRequestNote: Approved as compensation for the delayed order.
     NewCouponsForMultipleRecipients:
       allOf:
       - $ref: "#/components/schemas/CouponConstraints"
       - properties:
           attributes:
-            $ref: "#/components/schemas/IntegrationCampaignBase_allOf_attributes"
+            $ref: "#/components/schemas/NewCoupons_allOf_attributes"
           recipientsIntegrationIds:
             description: The integration IDs for recipients.
             example:
@@ -28383,7 +28700,7 @@ components:
         reservationLimit: 45
         startDate: 2020-01-24T14:15:22Z
         expiryDate: 2023-08-24T14:15:22Z
-        attributes: null
+        attributes: "{venueId=12}"
         recipientsIntegrationIds:
         - URNGV8294NV
         - BZGGC2454PA
@@ -28429,7 +28746,7 @@ components:
           couponSettings:
             $ref: "#/components/schemas/CodeGeneratorSettings"
           attributes:
-            $ref: "#/components/schemas/IntegrationCampaignBase_allOf_attributes"
+            $ref: "#/components/schemas/NewCouponCreationJob_allOf_attributes"
           isReservationMandatory:
             default: false
             description: An indication of whether the code can be redeemed only if
@@ -28646,7 +28963,7 @@ components:
             title: Receiving customer profile integration ID
             type: string
           attributes:
-            $ref: "#/components/schemas/IntegrationCampaignBase_allOf_attributes"
+            $ref: "#/components/schemas/UpdateCoupon_allOf_attributes"
           isReservationMandatory:
             default: false
             description: An indication of whether the code can be redeemed only if
@@ -33266,6 +33583,74 @@ components:
         totalDiscountedOrders: 5
         totalRevenue: 2.3021358869347655
         totalDiscounts: 7.061401241503109
+    CustomerProfileReward:
+      description: A reward instance held by a customer profile.
+      properties:
+        id:
+          description: The ID of the customer reward instance. A customer profile
+            can have multiple instances of the same reward.
+          example: 6
+          format: int64
+          type: integer
+        rewardId:
+          description: The ID of the reward this instance belongs to.
+          example: 12
+          format: int64
+          type: integer
+        rewardName:
+          description: The name of the reward.
+          example: Free coffee
+          type: string
+        status:
+          description: |
+            The status of the customer reward:
+            - `unlocked`: The reward is available for use.
+            - `used`: The reward has been used.
+          enum:
+          - unlocked
+          - used
+          example: unlocked
+          type: string
+        unlockedAt:
+          description: The date and time when the reward was unlocked.
+          example: 2026-07-01T09:00:00Z
+          format: date-time
+          type: string
+        unlockedByIntegrationId:
+          description: "The integration ID of the customer profile that unlocked the\
+            \ reward. \n\nFor rewards unlocked with a loyalty card, this can be any\
+            \ customer profile \nlinked to that loyalty card.\n"
+          example: customer2839
+          type: string
+        usedAt:
+          description: The date and time when the reward was used.
+          example: 2026-07-02T10:30:00Z
+          format: date-time
+          type: string
+        usedByIntegrationId:
+          description: "The integration ID of the customer profile that used the reward.\
+            \ \n\nFor rewards unlocked with a loyalty card, this can be any customer\
+            \ profile \nlinked to that loyalty card. \n\nOnly returned when the reward\
+            \ has been used.\n"
+          example: customer2840
+          type: string
+        loyaltyProgramId:
+          description: The ID of the loyalty program that the loyalty card belongs
+            to. Only returned for rewards unlocked with a loyalty card.
+          example: 9
+          format: int64
+          type: integer
+        loyaltyCardIdentifier:
+          allOf:
+          - $ref: "#/components/schemas/LoyaltyCardIdentifier"
+          description: The identifier of the loyalty card that the reward was unlocked
+            with. Only returned for rewards unlocked with a loyalty card.
+      required:
+      - id
+      - rewardId
+      - rewardName
+      - status
+      - unlockedAt
     ApplicationCustomerEntity:
       properties:
         profileId:
@@ -33337,7 +33722,7 @@ components:
             example: 200
             type: number
           attributes:
-            $ref: "#/components/schemas/IntegrationCampaignBase_allOf_attributes"
+            $ref: "#/components/schemas/UpdateCoupon_allOf_attributes"
         required:
         - cartItems
         - coupon
@@ -33452,7 +33837,7 @@ components:
               \ not a built-in event."
             type: string
           attributes:
-            $ref: "#/components/schemas/IntegrationCampaignBase_allOf_attributes"
+            $ref: "#/components/schemas/ApplicationEvent_allOf_attributes"
           effects:
             description: An array containing the effects that were applied as a result
               of this event.
@@ -33499,7 +33884,8 @@ components:
           selectedPriceType: member
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-          props: ""
+          props:
+            value: COUP-XYZ789
         - experimentId: 12
           campaignId: 244
           rulesetId: 73
@@ -33516,7 +33902,8 @@ components:
           selectedPriceType: member
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-          props: ""
+          props:
+            value: COUP-XYZ789
         ruleFailureReasons:
         - campaignID: 1
           campaignName: campaignName
@@ -34215,7 +34602,8 @@ components:
           - campaignId: 0
             discountValue: 6.027456183070403
           adjustmentDetails: ""
-        target: "{}"
+        target:
+          type: NONE
       properties:
         id:
           description: The ID of the historical price.
@@ -34255,7 +34643,7 @@ components:
         metadata:
           $ref: "#/components/schemas/BestPriorPriceMetadata"
         target:
-          type: object
+          $ref: "#/components/schemas/LabelTarget"
       required:
       - contextIds
       - id
@@ -34312,7 +34700,8 @@ components:
           - campaignId: 0
             discountValue: 6.027456183070403
           adjustmentDetails: ""
-        target: "{}"
+        target:
+          type: NONE
       properties:
         id:
           description: The ID of the historical price.
@@ -34348,7 +34737,7 @@ components:
         metadata:
           $ref: "#/components/schemas/BestPriorPriceMetadata"
         target:
-          type: object
+          $ref: "#/components/schemas/LabelTarget"
       required:
       - contextIds
       - id
@@ -34374,7 +34763,8 @@ components:
             - campaignId: 0
               discountValue: 6.027456183070403
             adjustmentDetails: ""
-          target: "{}"
+          target:
+            type: NONE
         - id: 1
           observedAt: 2025-11-10T23:00:00Z
           contextIds:
@@ -34389,7 +34779,8 @@ components:
             - campaignId: 0
               discountValue: 6.027456183070403
             adjustmentDetails: ""
-          target: "{}"
+          target:
+            type: NONE
       properties:
         sku:
           description: The SKU of the item for which historical prices should be retrieved.
@@ -34801,23 +35192,13 @@ components:
     CatalogAction:
       description: Definition of all the properties that are needed for a single catalog
         sync action.
-      example:
-        type: ADD
-        payload: "{}"
-      properties:
-        type:
-          description: The type of sync action.
-          enum:
-          - ADD
-          - PATCH
-          - PATCH_MANY
-          - REMOVE
-          - REMOVE_MANY
-          - ADD_PRICE_ADJUSTMENT
-          example: ADD
-          type: string
-        payload:
-          type: object
+      oneOf:
+      - $ref: "#/components/schemas/CatalogAction_oneOf"
+      - $ref: "#/components/schemas/CatalogAction_oneOf_1"
+      - $ref: "#/components/schemas/CatalogAction_oneOf_2"
+      - $ref: "#/components/schemas/CatalogAction_oneOf_3"
+      - $ref: "#/components/schemas/CatalogAction_oneOf_4"
+      - $ref: "#/components/schemas/CatalogAction_oneOf_5"
       required:
       - payload
       - type
@@ -34825,15 +35206,40 @@ components:
       example:
         actions:
         - type: ADD
-          payload: "{}"
+          payload:
+            sku: T123
+            attributes:
+              type: shoes
+              color: blue
+            replaceIfExists: true
         - type: ADD
-          payload: "{}"
+          payload:
+            sku: T123
+            attributes:
+              type: shoes
+              color: blue
+            replaceIfExists: true
         - type: ADD
-          payload: "{}"
+          payload:
+            sku: T123
+            attributes:
+              type: shoes
+              color: blue
+            replaceIfExists: true
         - type: ADD
-          payload: "{}"
+          payload:
+            sku: T123
+            attributes:
+              type: shoes
+              color: blue
+            replaceIfExists: true
         - type: ADD
-          payload: "{}"
+          payload:
+            sku: T123
+            attributes:
+              type: shoes
+              color: blue
+            replaceIfExists: true
         version: 244
       properties:
         actions:
@@ -34951,7 +35357,8 @@ components:
             - basic
             - custom
             type: string
-          data: {}
+          data:
+            $ref: "#/components/schemas/WebhookAuthentication_allOf_data"
         required:
         - createdBy
         - data
@@ -34962,11 +35369,13 @@ components:
       - $ref: "#/components/schemas/Entity"
       - $ref: "#/components/schemas/MutableEntity"
     WebhookAuthenticationBase:
+      oneOf:
+      - $ref: "#/components/schemas/WebhookAuthenticationBase_oneOf"
+      - $ref: "#/components/schemas/WebhookAuthenticationBase_oneOf_1"
       required:
       - data
       - name
       - type
-      type: object
     MessageLogRequest:
       description: Details of the request.
       example:
@@ -35255,7 +35664,7 @@ components:
             example: basic_auth
             type: string
           applicationNotificationSubscriptions:
-            $ref: "#/components/schemas/IntegrationCampaignBase_allOf_attributes"
+            $ref: "#/components/schemas/User_allOf_applicationNotificationSubscriptions"
           lastSignedIn:
             description: Timestamp when the user last signed in to Talon.One.
             example: 2021-09-12T10:12:42Z
@@ -35273,7 +35682,7 @@ components:
             format: date-time
             type: string
           additionalAttributes:
-            $ref: "#/components/schemas/IntegrationCampaignBase_allOf_attributes"
+            $ref: "#/components/schemas/User_allOf_additionalAttributes"
         required:
         - inviteToken
         - name
@@ -35293,11 +35702,11 @@ components:
         roles:
         - 71
         authMethod: basic_auth
-        applicationNotificationSubscriptions: null
+        applicationNotificationSubscriptions: "{}"
         lastSignedIn: 2021-09-12T10:12:42Z
         lastAccessed: 2021-09-12T10:14:42Z
         latestFeedTimestamp: 2020-06-01T00:00:00Z
-        additionalAttributes: null
+        additionalAttributes: "{}"
     UpdateUser:
       example:
         name: John Doe
@@ -35711,7 +36120,7 @@ components:
         filter:
           $ref: "#/components/schemas/ScimServiceProviderConfigResponse_filter"
         patch:
-          $ref: "#/components/schemas/ScimServiceProviderConfigResponse_changePassword"
+          $ref: "#/components/schemas/ScimServiceProviderConfigResponse_patch"
         schemas:
           description: A list of SCIM schemas that define the structure and data types
             supported by the service provider.
@@ -35720,7 +36129,7 @@ components:
           type: array
           default: null
         sort:
-          $ref: "#/components/schemas/ScimServiceProviderConfigResponse_changePassword"
+          $ref: "#/components/schemas/ScimServiceProviderConfigResponse_sort"
     ScimSchemaResource:
       description: Resource schema definition for the SCIM provisioning protocol.
       example:
@@ -36037,6 +36446,31 @@ components:
             description: Human-readable description of the detected anomaly.
             example: Unusual discount usage detected for 4437 customer profiles.
             type: string
+          discardReason:
+            description: The reason this risk was discarded. Only present on discarded
+              risks.
+            enum:
+            - expected_behavior
+            - other
+            example: expected_behavior
+            type: string
+          statusComment:
+            description: |
+              The free-text details of the latest reclassification action: the description
+              for resolving confirmed risks, or the details for discarding risks.
+            example: Investigated with the customer and fixed the loyalty rule.
+            type: string
+          statusChangedBy:
+            description: The ID of the user who performed the latest reclassification
+              action.
+            example: 42
+            format: int64
+            type: integer
+          statusChangedAt:
+            description: The time of the latest reclassification action.
+            example: 2026-06-06T09:12:45.000000Z
+            format: date-time
+            type: string
           modified:
             description: Timestamp of the most recent update.
             example: 2026-06-05T06:26:13.698884Z
@@ -36056,6 +36490,103 @@ components:
         - timeFrame
       description: A risk detected by the anomaly detection service for one Application
         group.
+    RiskCriticalityUpdate:
+      properties:
+        riskIds:
+          description: The IDs of the risks to reclassify.
+          example:
+          - 1
+          - 2
+          - 3
+          items:
+            format: int64
+            type: integer
+          maxItems: 1000
+          minItems: 1
+          type: array
+          default: null
+        criticality:
+          description: |
+            The criticality to assign to risks. Only `not_critical` is accepted: critical risks can be
+            reclassified as non-critical, but not the other way around.
+          enum:
+          - not_critical
+          example: not_critical
+          type: string
+      required:
+      - criticality
+      - riskIds
+    ReviewRisksRequest:
+      properties:
+        riskIds:
+          description: The IDs of the risks to move to `In review` status.
+          example:
+          - 1
+          - 2
+          - 3
+          items:
+            format: int64
+            type: integer
+          maxItems: 1000
+          minItems: 1
+          type: array
+          default: null
+      required:
+      - riskIds
+    ConfirmRisksRequest:
+      properties:
+        riskIds:
+          description: The IDs of the risks to confirm.
+          example:
+          - 1
+          - 2
+          - 3
+          items:
+            format: int64
+            type: integer
+          maxItems: 1000
+          minItems: 1
+          type: array
+          default: null
+        comment:
+          description: Free-text description of how the risk was resolved.
+          example: Investigated with the customer and fixed the loyalty rule.
+          minLength: 1
+          type: string
+      required:
+      - comment
+      - riskIds
+    DiscardRisksRequest:
+      properties:
+        riskIds:
+          description: The IDs of the risks to discard.
+          example:
+          - 1
+          - 2
+          - 3
+          items:
+            format: int64
+            type: integer
+          maxItems: 1000
+          minItems: 1
+          type: array
+          default: null
+        reason:
+          description: The reason the risks are being discarded.
+          enum:
+          - expected_behavior
+          - other
+          example: expected_behavior
+          type: string
+        comment:
+          description: |
+            Free-text description of why the risks are being discarded. Required when `reason` is `other`, optional for
+            `expected_behavior`.
+          example: Duplicate of a risk already being handled.
+          type: string
+      required:
+      - reason
+      - riskIds
     RiskAffectedEntityItem:
       description: A single entity flagged as anomalous within a risk.
       properties:
@@ -36122,9 +36653,9 @@ components:
             example: /v1/applications/359/campaigns/6727
             type: string
           old:
-            $ref: "#/components/schemas/IntegrationCampaignBase_allOf_attributes"
+            $ref: "#/components/schemas/Change_allOf_old"
           new:
-            $ref: "#/components/schemas/IntegrationCampaignBase_allOf_attributes"
+            $ref: "#/components/schemas/Change_allOf_new"
           managementKeyId:
             description: ID of management key used to perform changes.
             example: 3
@@ -36138,8 +36669,10 @@ components:
         userId: 388
         applicationId: 359
         entity: /v1/applications/359/campaigns/6727
-        old: null
-        new: null
+        old: "{}"
+        new: "{applicationId\"=359, attributes\"={}, campaignGroups\"=[], created\"\
+          =2022-07-08T13:04:02.972762328Z, description\"=, features\"=[referrals,\
+          \ loyalty], id=6727}"
         managementKeyId: 3
     NewInvitation:
       description: Parameters for inviting a new user.
@@ -36617,7 +37150,7 @@ components:
             - Collection
             type: string
           filter:
-            $ref: "#/components/schemas/IntegrationCampaignBase_allOf_attributes"
+            $ref: "#/components/schemas/Export_allOf_filter"
         required:
         - entity
         - filter
@@ -37277,6 +37810,74 @@ components:
             type: string
         required:
         - key
+    MCPOAuthProtectedResource:
+      properties:
+        resource:
+          description: The URL of the protected resource (the MCP entrypoint).
+          example: https://mycompany.talon.one/v1/mcp/entrypoint
+          type: string
+        authorization_servers:
+          description: List of authorization server base URLs that can issue tokens
+            for this resource.
+          example:
+          - https://mycompany.talon.one/v1/mcp/auth
+          items:
+            type: string
+          type: array
+          default: null
+      required:
+      - authorization_servers
+      - resource
+    MCPOAuthServerMetadata:
+      properties:
+        issuer:
+          description: The authorization server's issuer identifier (its base URL).
+          example: https://mycompany.talon.one
+          type: string
+        authorization_endpoint:
+          description: URL of the authorization endpoint.
+          example: https://mycompany.talon.one/v1/mcp/auth/authorize
+          type: string
+        token_endpoint:
+          description: URL of the token endpoint.
+          example: https://mycompany.talon.one/v1/mcp/auth/token
+          type: string
+        registration_endpoint:
+          description: URL of the client registration endpoint.
+          example: https://mycompany.talon.one/v1/mcp/auth/register
+          type: string
+        response_types_supported:
+          description: List of supported OAuth2 response types.
+          example:
+          - code
+          items:
+            type: string
+          type: array
+          default: null
+        grant_types_supported:
+          description: List of supported OAuth2 grant types.
+          example:
+          - authorization_code
+          items:
+            type: string
+          type: array
+          default: null
+        code_challenge_methods_supported:
+          description: List of supported PKCE code challenge methods.
+          example:
+          - S256
+          items:
+            type: string
+          type: array
+          default: null
+      required:
+      - authorization_endpoint
+      - code_challenge_methods_supported
+      - grant_types_supported
+      - issuer
+      - registration_endpoint
+      - response_types_supported
+      - token_endpoint
     NewValueMap:
       type: object
     ValueMap:
@@ -39087,6 +39688,7 @@ components:
           - pending_approval
           - approved
           - rejected
+          - expired
           example: approved
           type: string
         processedAt:
@@ -39102,6 +39704,10 @@ components:
           description: Email address of the admin who approved or rejected the support
             request.
           example: admin.name@company.com
+          type: string
+        couponCode:
+          description: Coupon code associated with the approved support request.
+          example: SUMMER-2025-XYZ
           type: string
       required:
       - applicationId
@@ -39119,6 +39725,7 @@ components:
           enum:
           - approved
           - rejected
+          - expired
           example: approved
           type: string
         processingNote:
@@ -39833,7 +40440,8 @@ components:
           selectedPriceType: member
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-          props: ""
+          props:
+            value: COUP-XYZ789
         - experimentId: 12
           campaignId: 244
           rulesetId: 73
@@ -39850,7 +40458,8 @@ components:
           selectedPriceType: member
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-          props: ""
+          props:
+            value: COUP-XYZ789
         ruleFailureReasons:
         - campaignID: 1
           campaignName: campaignName
@@ -39954,7 +40563,7 @@ components:
           campaignId: 78
           advocateProfileIntegrationId: URNGV8294NV
           friendProfileIntegrationId: BZGGC2454PA
-          attributes: null
+          attributes: "{channel=web}"
           importId: 4
           code: 27G47Y54VH9L
           usageCounter: 1
@@ -39967,7 +40576,7 @@ components:
           campaignId: 78
           advocateProfileIntegrationId: URNGV8294NV
           friendProfileIntegrationId: BZGGC2454PA
-          attributes: null
+          attributes: "{channel=web}"
           importId: 4
           code: 27G47Y54VH9L
           usageCounter: 1
@@ -41889,7 +42498,7 @@ components:
           BatchId:
             type: string
           Attributes:
-            $ref: "#/components/schemas/IntegrationCampaignBase_allOf_attributes"
+            $ref: "#/components/schemas/IntegrationHubEventPayloadCouponBasedNotifications_allOf_Attributes"
           Limits:
             items:
               $ref: "#/components/schemas/IntegrationHubEventPayloadCouponBasedNotificationsLimits"
@@ -41923,6 +42532,25 @@ components:
       properties:
         message:
           example: Too many requests are updating this session at the same time
+          type: string
+        errors:
+          items: {}
+          type: array
+          default: null
+        StatusCode:
+          example: 409
+          format: int64
+          type: integer
+    updateCustomerProfileV2_409_response:
+      example:
+        message: Too many requests are updating this profile at the same time
+        errors:
+        - ""
+        - ""
+        StatusCode: 409
+      properties:
+        message:
+          example: Too many requests are updating this profile at the same time
           type: string
         errors:
           items: {}
@@ -42019,7 +42647,7 @@ components:
           campaignId: 78
           advocateProfileIntegrationId: URNGV8294NV
           friendProfileIntegrationId: BZGGC2454PA
-          attributes: null
+          attributes: "{channel=web}"
           importId: 4
           code: 27G47Y54VH9L
           usageCounter: 1
@@ -42032,7 +42660,7 @@ components:
           campaignId: 78
           advocateProfileIntegrationId: URNGV8294NV
           friendProfileIntegrationId: BZGGC2454PA
-          attributes: null
+          attributes: "{channel=web}"
           importId: 4
           code: 27G47Y54VH9L
           usageCounter: 1
@@ -43649,7 +44277,7 @@ components:
           campaignId: 78
           advocateProfileIntegrationId: URNGV8294NV
           friendProfileIntegrationId: BZGGC2454PA
-          attributes: null
+          attributes: "{channel=web}"
           importId: 4
           code: 27G47Y54VH9L
           usageCounter: 1
@@ -43662,7 +44290,7 @@ components:
           campaignId: 78
           advocateProfileIntegrationId: URNGV8294NV
           friendProfileIntegrationId: BZGGC2454PA
-          attributes: null
+          attributes: "{channel=web}"
           importId: 4
           code: 27G47Y54VH9L
           usageCounter: 1
@@ -46327,7 +46955,8 @@ components:
             selectedPriceType: member
             selectedPrice: 100
             adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-            props: ""
+            props:
+              value: COUP-XYZ789
           - experimentId: 12
             campaignId: 244
             rulesetId: 73
@@ -46344,7 +46973,8 @@ components:
             selectedPriceType: member
             selectedPrice: 100
             adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-            props: ""
+            props:
+              value: COUP-XYZ789
           ruleFailureReasons:
           - campaignID: 1
             campaignName: campaignName
@@ -46401,7 +47031,8 @@ components:
             selectedPriceType: member
             selectedPrice: 100
             adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-            props: ""
+            props:
+              value: COUP-XYZ789
           - experimentId: 12
             campaignId: 244
             rulesetId: 73
@@ -46418,7 +47049,8 @@ components:
             selectedPriceType: member
             selectedPrice: 100
             adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-            props: ""
+            props:
+              value: COUP-XYZ789
           ruleFailureReasons:
           - campaignID: 1
             campaignName: campaignName
@@ -46892,11 +47524,11 @@ components:
           roles:
           - 71
           authMethod: basic_auth
-          applicationNotificationSubscriptions: null
+          applicationNotificationSubscriptions: "{}"
           lastSignedIn: 2021-09-12T10:12:42Z
           lastAccessed: 2021-09-12T10:14:42Z
           latestFeedTimestamp: 2020-06-01T00:00:00Z
-          additionalAttributes: null
+          additionalAttributes: "{}"
         - id: 6
           created: 2020-06-10T09:05:27.993483Z
           modified: 2021-09-12T10:12:42Z
@@ -46910,11 +47542,11 @@ components:
           roles:
           - 71
           authMethod: basic_auth
-          applicationNotificationSubscriptions: null
+          applicationNotificationSubscriptions: "{}"
           lastSignedIn: 2021-09-12T10:12:42Z
           lastAccessed: 2021-09-12T10:14:42Z
           latestFeedTimestamp: 2020-06-01T00:00:00Z
-          additionalAttributes: null
+          additionalAttributes: "{}"
       properties:
         totalResultSize:
           example: 1
@@ -46938,16 +47570,20 @@ components:
           userId: 388
           applicationId: 359
           entity: /v1/applications/359/campaigns/6727
-          old: null
-          new: null
+          old: "{}"
+          new: "{applicationId\"=359, attributes\"={}, campaignGroups\"=[], created\"\
+            =2022-07-08T13:04:02.972762328Z, description\"=, features\"=[referrals,\
+            \ loyalty], id=6727}"
           managementKeyId: 3
         - id: 6
           created: 2020-06-10T09:05:27.993483Z
           userId: 388
           applicationId: 359
           entity: /v1/applications/359/campaigns/6727
-          old: null
-          new: null
+          old: "{}"
+          new: "{applicationId\"=359, attributes\"={}, campaignGroups\"=[], created\"\
+            =2022-07-08T13:04:02.972762328Z, description\"=, features\"=[referrals,\
+            \ loyalty], id=6727}"
           managementKeyId: 3
       properties:
         totalResultSize:
@@ -47312,12 +47948,87 @@ components:
           minItems: 1
           type: array
           default: null
+    IntegrationHubPaginatedEventPayload_Data_inner:
+      discriminator:
+        mapping:
+          LoyaltyPointsChanged: "#/components/schemas/IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification"
+          LoyaltyTierDowngrade: "#/components/schemas/IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification"
+          LoyaltyTierUpgrade: "#/components/schemas/IntegrationHubEventPayloadLoyaltyProfileBasedTierUpgradeNotification"
+          CouponCreated: "#/components/schemas/IntegrationHubEventPayloadCouponBasedNotifications"
+          CouponUpdated: "#/components/schemas/IntegrationHubEventPayloadCouponBasedNotifications"
+          CouponDeleted: "#/components/schemas/IntegrationHubEventPayloadCouponBasedNotifications"
+        propertyName: EventType
+      oneOf:
+      - $ref: "#/components/schemas/IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification"
+      - $ref: "#/components/schemas/IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification"
+      - $ref: "#/components/schemas/IntegrationHubEventPayloadLoyaltyProfileBasedTierUpgradeNotification"
+      - $ref: "#/components/schemas/IntegrationHubEventPayloadCouponBasedNotifications"
+    Effect_allOf_props:
+      oneOf:
+      - $ref: "#/components/schemas/AcceptCouponEffectProps"
+      - $ref: "#/components/schemas/AcceptReferralEffectProps"
+      - $ref: "#/components/schemas/RedeemReferralEffectProps"
+      - $ref: "#/components/schemas/RejectCouponEffectProps"
+      - $ref: "#/components/schemas/RejectReferralEffectProps"
+      - $ref: "#/components/schemas/CouponCreatedEffectProps"
+      - $ref: "#/components/schemas/ReferralCreatedEffectProps"
+      - $ref: "#/components/schemas/SetDiscountEffectProps"
+      - $ref: "#/components/schemas/SetDiscountPerItemEffectProps"
+      - $ref: "#/components/schemas/SetDiscountPerAdditionalCostEffectProps"
+      - $ref: "#/components/schemas/TriggerWebhookEffectProps"
+      - $ref: "#/components/schemas/AddLoyaltyPointsEffectProps"
+      - $ref: "#/components/schemas/DeductLoyaltyPointsEffectProps"
+      - $ref: "#/components/schemas/ChangeLoyaltyTierLevelEffectProps"
+      - $ref: "#/components/schemas/AddFreeItemEffectProps"
+      - $ref: "#/components/schemas/ShowNotificationEffectProps"
+      - $ref: "#/components/schemas/UpdateAttributeEffectProps"
+      - $ref: "#/components/schemas/RollbackCouponEffectProps"
+      - $ref: "#/components/schemas/RollbackReferralEffectProps"
+      - $ref: "#/components/schemas/RollbackDiscountEffectProps"
+      - $ref: "#/components/schemas/RollbackAddedLoyaltyPointsEffectProps"
+      - $ref: "#/components/schemas/RollbackDeductedLoyaltyPointsEffectProps"
+      - $ref: "#/components/schemas/ShowBundleMetadataEffectProps"
+      - $ref: "#/components/schemas/AwardGiveawayEffectProps"
+      - $ref: "#/components/schemas/WillAwardGiveawayEffectProps"
+      - $ref: "#/components/schemas/ErrorEffectProps"
+      - $ref: "#/components/schemas/CustomEffectProps"
+      - $ref: "#/components/schemas/SetDiscountPerAdditionalCostPerItemEffectProps"
+      - $ref: "#/components/schemas/ReserveCouponEffectProps"
+      - $ref: "#/components/schemas/AddToAudienceEffectProps"
+      - $ref: "#/components/schemas/RemoveFromAudienceEffectProps"
+      - $ref: "#/components/schemas/IncreaseAchievementProgressEffectProps"
+      - $ref: "#/components/schemas/RollbackIncreasedAchievementProgressEffectProps"
+      - $ref: "#/components/schemas/ExtendLoyaltyPointsExpiryDateEffectProps"
+      - $ref: "#/components/schemas/SetLoyaltyPointsExpiryDateEffectProps"
     IntegrationCampaignBase_allOf_attributes:
       description: Arbitrary properties associated with this campaign.
       type: object
     Attributes_of_coupon:
       description: Custom attributes associated with this coupon.
       title: Attributes of coupon
+      type: object
+    NewReferral_allOf_attributes:
+      description: Arbitrary properties associated with this item.
+      example: "{channel=web}"
+      type: object
+    Giveaway_allOf_attributes:
+      description: Arbitrary properties associated with this giveaway.
+      type: object
+    IntegrationEvent_allOf_attributes:
+      description: Arbitrary additional JSON data associated with the event.
+      example: "{myAttribute=myValue}"
+      type: object
+    NewCustomerSession_allOf_attributes:
+      description: |
+        A key-value map of the sessions attributes. The potentially valid attributes are configured in your accounts developer settings.
+      type: object
+    NewReferralsForMultipleAdvocates_allOf_attributes:
+      description: Arbitrary properties associated with this referral code.
+      example: "{channel=web}"
+      type: object
+    TemplateArgDef_allOf_ui:
+      description: Arbitrary metadata that may be used to render an input for this
+        argument.
       type: object
     AwardGiveawayBlock_1_giveawayPool:
       description: The giveaway pool from which an item is awarded.
@@ -47365,6 +48076,131 @@ components:
       required:
       - id
       - name
+    UpdateAudienceMembershipBlock_1_audience:
+      description: The audience to add the customer to or remove them from.
+      properties:
+        id:
+          description: The ID of the audience.
+          example: 42
+          format: int64
+          type: integer
+        name:
+          description: The display name of the audience.
+          example: Travel audience
+          type: string
+        integration:
+          description: |
+            The Talon.One-supported [3rd-party platform](https://docs.talon.one/docs/dev/technology-partners/overview) that this audience was created in.
+
+            For example, `mParticle`, `Segment`, `Shopify`, `Braze`, or `Iterable`.
+
+            **Note:** If you do not integrate with any of these platforms, do not use this property.
+          example: mparticle
+          type: string
+        integrationId:
+          description: |
+            The ID of this audience in the third-party integration.
+
+            **Note:** To create an audience that doesn't come from a 3rd party platform, do not use this property.
+          example: 382370BKDB946
+          type: string
+      required:
+      - id
+      - name
+    UpdateAchievementProgressBlock_1_achievement:
+      description: The achievement to update.
+      properties:
+        id:
+          description: The ID of the achievement.
+          example: 42
+          format: int64
+          type: integer
+        name:
+          description: The internal name of the achievement used in API requests.
+          example: Order50Discount
+          type: string
+        title:
+          description: The display name of the achievement in the Campaign Manager.
+          example: 50% off on 50th purchase.
+          type: string
+        target:
+          description: The required number of actions or the transactional milestone
+            to complete the achievement.
+          example: 50
+          type: number
+      required:
+      - id
+      - name
+      - target
+      - title
+    UpdateAttributeValueBlock_1_attribute:
+      description: The attribute being updated.
+      properties:
+        id:
+          description: The internal ID of the attribute. Reverts to `0` when the attribute
+            is deleted or does not exist.
+          example: 100
+          format: int64
+          type: integer
+        entity:
+          description: The entity type that owns the attribute. Reverts to an empty
+            string when the attribute is deleted or does not exist.
+          example: profile
+          type: string
+        name:
+          description: The attribute name as used in API requests.
+          example: City
+          type: string
+        title:
+          description: The human-readable name of the attribute.
+          example: City
+          type: string
+        type:
+          description: The data type of the attribute.
+          example: string
+          type: string
+      required:
+      - entity
+      - id
+      - name
+      - title
+      - type
+    UpdateAttributeValueBlock_1_target:
+      description: The entity or item scope that this effect operates on.
+      properties:
+        type:
+          description: Identifies the target scope of the attribute update.
+          enum:
+          - session
+          - profile
+          - advocateProfile
+          - coupon
+          - referral
+          - allItems
+          - selector
+          - globalFilter
+          example: profile
+          type: string
+      required:
+      - type
+    UpdateCouponBatch_allOf_attributes:
+      description: |
+        Optional property to set the value of custom coupon attributes. They are defined in the Campaign Manager,
+        see [Managing attributes](https://docs.talon.one/docs/product/account/dev-tools/managing-attributes).
+
+        Coupon attributes can also be set to _mandatory_ in your Application [settings](https://docs.talon.one/docs/product/applications/using-attributes#making-attributes-mandatory).
+        If your Application uses mandatory attributes, you must use this property to set their value.
+      type: object
+    NewCoupons_allOf_attributes:
+      description: Arbitrary properties associated with this item.
+      example: "{venueId=12}"
+      type: object
+    NewCouponCreationJob_allOf_attributes:
+      description: Arbitrary properties associated with coupons.
+      type: object
+    UpdateCoupon_allOf_attributes:
+      description: Arbitrary properties associated with this item.
+      type: object
     Role_allOf_acl:
       description: The `Access Control List` json defining the role of the user. This
         represents the access control on the user level.
@@ -47395,10 +48231,102 @@ components:
       required:
       - campaign
       - isVariantAssignmentExternal
+    ApplicationEvent_allOf_attributes:
+      description: Additional JSON serialized data associated with the event.
+      type: object
+    CatalogAction_oneOf:
+      example:
+        type: ADD
+        payload:
+          sku: T123
+          attributes:
+            type: shoes
+            color: blue
+          replaceIfExists: true
+      properties:
+        type: {}
+        payload:
+          allOf:
+          - $ref: "#/components/schemas/AddItemCatalogAction"
+          description: The payload of sync action.
+      required:
+      - payload
+      - type
+    CatalogAction_oneOf_1:
+      properties:
+        type: {}
+        payload:
+          $ref: "#/components/schemas/PatchItemCatalogAction"
+      required:
+      - payload
+      - type
+    CatalogAction_oneOf_2:
+      properties:
+        type: {}
+        payload:
+          $ref: "#/components/schemas/PatchManyItemsCatalogAction"
+      required:
+      - payload
+      - type
+    CatalogAction_oneOf_3:
+      properties:
+        type: {}
+        payload:
+          $ref: "#/components/schemas/RemoveItemCatalogAction"
+      required:
+      - payload
+      - type
+    CatalogAction_oneOf_4:
+      properties:
+        type: {}
+        payload:
+          $ref: "#/components/schemas/RemoveManyItemsCatalogAction"
+      required:
+      - payload
+      - type
+    CatalogAction_oneOf_5:
+      properties:
+        type: {}
+        payload:
+          $ref: "#/components/schemas/AddPriceAdjustmentCatalogAction"
+      required:
+      - payload
+      - type
+    WebhookAuthentication_allOf_data:
+      oneOf:
+      - $ref: "#/components/schemas/WebhookAuthenticationDataBasic"
+      - $ref: "#/components/schemas/WebhookAuthenticationDataCustom"
+    WebhookAuthenticationBase_oneOf:
+      properties:
+        name:
+          description: The name of the webhook authentication.
+          example: My basic auth
+          type: string
+        type: {}
+        data:
+          $ref: "#/components/schemas/WebhookAuthenticationDataBasic"
+    WebhookAuthenticationBase_oneOf_1:
+      properties:
+        name:
+          description: The name of the webhook authentication.
+          example: My basic auth
+          type: string
+        type: {}
+        data:
+          $ref: "#/components/schemas/WebhookAuthenticationDataCustom"
     User_allOf_policy:
       description: Access level of the user.
       example: "{Role=127}"
       format: acl
+      type: object
+    User_allOf_applicationNotificationSubscriptions:
+      description: Application notifications that the user is subscribed to.
+      example: "{}"
+      type: object
+    User_allOf_additionalAttributes:
+      description: "Additional user attributes, created and used by external identity\
+        \ providers."
+      example: "{}"
       type: object
     ScimBaseUser_name:
       description: The components of the user's real name.
@@ -47447,6 +48375,35 @@ components:
           description: Indicates whether the SCIM service provider supports filtering
             operations.
           type: boolean
+    ScimServiceProviderConfigResponse_patch:
+      description: "Configuration settings related to patch operations, which allow\
+        \ partial updates to SCIM resources."
+      properties:
+        supported:
+          description: Indicates whether the service provider supports patch operations
+            for modifying resources.
+          type: boolean
+    ScimServiceProviderConfigResponse_sort:
+      description: Configuration settings related to sorting SCIM resources in query
+        responses.
+      properties:
+        supported:
+          description: Indicates whether the service provider supports sorting operations
+            for ordered query results.
+          type: boolean
+    Change_allOf_old:
+      description: Resource before the change occurred.
+      example: "{}"
+      type: object
+    Change_allOf_new:
+      description: Resource after the change occurred.
+      example: "{applicationId\"=359, attributes\"={}, campaignGroups\"=[], created\"\
+        =2022-07-08T13:04:02.972762328Z, description\"=, features\"=[referrals, loyalty],\
+        \ id=6727}"
+      type: object
+    Export_allOf_filter:
+      description: Map of keys and values that were used to filter the exported rows.
+      type: object
     ProductUnitAnalytics_totals:
       properties:
         unitsSold:
@@ -47459,6 +48416,8 @@ components:
           allOf:
           - $ref: "#/components/schemas/EmbeddedDashboardConfiguration"
           description: The configuration of the embedded Insights dashboard for campaigns.
+    IntegrationHubEventPayloadCouponBasedNotifications_allOf_Attributes:
+      type: object
   securitySchemes:
     api_key_v1:
       description: |
