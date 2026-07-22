@@ -35,9 +35,9 @@ type AwardItemBlock struct {
 	// When set to `true`, applies a partial item reward if the remaining budget is insufficient to award the full reward.
 	Partial *bool `json:"partial,omitempty"`
 	// Blocks evaluated when this block fails or returns false.
-	OnFailure []interface{} `json:"onFailure,omitempty"`
+	OnFailure []PromotionBlock `json:"onFailure,omitempty"`
 	// Named error handlers evaluated when a specific error occurs.
-	OnError              map[string][]interface{} `json:"onError,omitempty"`
+	OnError              map[string][]PromotionBlock `json:"onError,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -250,9 +250,9 @@ func (o *AwardItemBlock) SetPartial(v bool) {
 }
 
 // GetOnFailure returns the OnFailure field value if set, zero value otherwise.
-func (o *AwardItemBlock) GetOnFailure() []interface{} {
+func (o *AwardItemBlock) GetOnFailure() []PromotionBlock {
 	if o == nil || IsNil(o.OnFailure) {
-		var ret []interface{}
+		var ret []PromotionBlock
 		return ret
 	}
 	return o.OnFailure
@@ -260,7 +260,7 @@ func (o *AwardItemBlock) GetOnFailure() []interface{} {
 
 // GetOnFailureOk returns a tuple with the OnFailure field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *AwardItemBlock) GetOnFailureOk() ([]interface{}, bool) {
+func (o *AwardItemBlock) GetOnFailureOk() ([]PromotionBlock, bool) {
 	if o == nil || IsNil(o.OnFailure) {
 		return nil, false
 	}
@@ -276,15 +276,15 @@ func (o *AwardItemBlock) HasOnFailure() bool {
 	return false
 }
 
-// SetOnFailure gets a reference to the given []interface{} and assigns it to the OnFailure field.
-func (o *AwardItemBlock) SetOnFailure(v []interface{}) {
+// SetOnFailure gets a reference to the given []PromotionBlock and assigns it to the OnFailure field.
+func (o *AwardItemBlock) SetOnFailure(v []PromotionBlock) {
 	o.OnFailure = v
 }
 
 // GetOnError returns the OnError field value if set, zero value otherwise.
-func (o *AwardItemBlock) GetOnError() map[string][]interface{} {
+func (o *AwardItemBlock) GetOnError() map[string][]PromotionBlock {
 	if o == nil || IsNil(o.OnError) {
-		var ret map[string][]interface{}
+		var ret map[string][]PromotionBlock
 		return ret
 	}
 	return o.OnError
@@ -292,9 +292,9 @@ func (o *AwardItemBlock) GetOnError() map[string][]interface{} {
 
 // GetOnErrorOk returns a tuple with the OnError field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *AwardItemBlock) GetOnErrorOk() (map[string][]interface{}, bool) {
+func (o *AwardItemBlock) GetOnErrorOk() (map[string][]PromotionBlock, bool) {
 	if o == nil || IsNil(o.OnError) {
-		return map[string][]interface{}{}, false
+		return map[string][]PromotionBlock{}, false
 	}
 	return o.OnError, true
 }
@@ -308,8 +308,8 @@ func (o *AwardItemBlock) HasOnError() bool {
 	return false
 }
 
-// SetOnError gets a reference to the given map[string][]interface{} and assigns it to the OnError field.
-func (o *AwardItemBlock) SetOnError(v map[string][]interface{}) {
+// SetOnError gets a reference to the given map[string][]PromotionBlock and assigns it to the OnError field.
+func (o *AwardItemBlock) SetOnError(v map[string][]PromotionBlock) {
 	o.OnError = v
 }
 

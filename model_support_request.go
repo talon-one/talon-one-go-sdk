@@ -50,7 +50,9 @@ type SupportRequest struct {
 	// Notes attached by the admin when rejecting or approving a request.
 	ProcessingNote *string `json:"processingNote,omitempty"`
 	// Email address of the admin who approved or rejected the support request.
-	ProcessedByUser      *string `json:"processedByUser,omitempty"`
+	ProcessedByUser *string `json:"processedByUser,omitempty"`
+	// Coupon code associated with the approved support request.
+	CouponCode           *string `json:"couponCode,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -497,6 +499,38 @@ func (o *SupportRequest) SetProcessedByUser(v string) {
 	o.ProcessedByUser = &v
 }
 
+// GetCouponCode returns the CouponCode field value if set, zero value otherwise.
+func (o *SupportRequest) GetCouponCode() string {
+	if o == nil || IsNil(o.CouponCode) {
+		var ret string
+		return ret
+	}
+	return *o.CouponCode
+}
+
+// GetCouponCodeOk returns a tuple with the CouponCode field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SupportRequest) GetCouponCodeOk() (*string, bool) {
+	if o == nil || IsNil(o.CouponCode) {
+		return nil, false
+	}
+	return o.CouponCode, true
+}
+
+// HasCouponCode returns a boolean if a field has been set.
+func (o *SupportRequest) HasCouponCode() bool {
+	if o != nil && !IsNil(o.CouponCode) {
+		return true
+	}
+
+	return false
+}
+
+// SetCouponCode gets a reference to the given string and assigns it to the CouponCode field.
+func (o *SupportRequest) SetCouponCode(v string) {
+	o.CouponCode = &v
+}
+
 func (o SupportRequest) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -535,6 +569,9 @@ func (o SupportRequest) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.ProcessedByUser) {
 		toSerialize["processedByUser"] = o.ProcessedByUser
+	}
+	if !IsNil(o.CouponCode) {
+		toSerialize["couponCode"] = o.CouponCode
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -601,6 +638,7 @@ func (o *SupportRequest) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "processedAt")
 		delete(additionalProperties, "processingNote")
 		delete(additionalProperties, "processedByUser")
+		delete(additionalProperties, "couponCode")
 		o.AdditionalProperties = additionalProperties
 	}
 

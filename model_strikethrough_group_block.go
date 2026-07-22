@@ -29,11 +29,11 @@ type StrikethroughGroupBlock struct {
 	// Logical operator applied across child blocks. `all` requires every child to pass, `atLeastOne` requires at least one, `none` requires all to fail.
 	Operator string `json:"operator"`
 	// Child blocks evaluated according to the operator.
-	Blocks []interface{} `json:"blocks"`
+	Blocks []StrikethroughBlock `json:"blocks"`
 	// Strikethrough blocks evaluated when this block fails or returns false.
-	OnFailure []interface{} `json:"onFailure,omitempty"`
+	OnFailure []StrikethroughBlock `json:"onFailure,omitempty"`
 	// Named error handlers evaluated when a specific error occurs.
-	OnError              map[string][]interface{} `json:"onError,omitempty"`
+	OnError              map[string][]StrikethroughBlock `json:"onError,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -43,7 +43,7 @@ type _StrikethroughGroupBlock StrikethroughGroupBlock
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildStrikethroughGroupBlock(id string, type_ string, operator string, blocks []interface{}) *StrikethroughGroupBlock {
+func BuildStrikethroughGroupBlock(id string, type_ string, operator string, blocks []StrikethroughBlock) *StrikethroughGroupBlock {
 	this := StrikethroughGroupBlock{}
 	this.Id = id
 	this.Type = type_
@@ -165,9 +165,9 @@ func (o *StrikethroughGroupBlock) SetOperator(v string) {
 }
 
 // GetBlocks returns the Blocks field value
-func (o *StrikethroughGroupBlock) GetBlocks() []interface{} {
+func (o *StrikethroughGroupBlock) GetBlocks() []StrikethroughBlock {
 	if o == nil {
-		var ret []interface{}
+		var ret []StrikethroughBlock
 		return ret
 	}
 
@@ -176,7 +176,7 @@ func (o *StrikethroughGroupBlock) GetBlocks() []interface{} {
 
 // GetBlocksOk returns a tuple with the Blocks field value
 // and a boolean to check if the value has been set.
-func (o *StrikethroughGroupBlock) GetBlocksOk() ([]interface{}, bool) {
+func (o *StrikethroughGroupBlock) GetBlocksOk() ([]StrikethroughBlock, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -184,14 +184,14 @@ func (o *StrikethroughGroupBlock) GetBlocksOk() ([]interface{}, bool) {
 }
 
 // SetBlocks sets field value
-func (o *StrikethroughGroupBlock) SetBlocks(v []interface{}) {
+func (o *StrikethroughGroupBlock) SetBlocks(v []StrikethroughBlock) {
 	o.Blocks = v
 }
 
 // GetOnFailure returns the OnFailure field value if set, zero value otherwise.
-func (o *StrikethroughGroupBlock) GetOnFailure() []interface{} {
+func (o *StrikethroughGroupBlock) GetOnFailure() []StrikethroughBlock {
 	if o == nil || IsNil(o.OnFailure) {
-		var ret []interface{}
+		var ret []StrikethroughBlock
 		return ret
 	}
 	return o.OnFailure
@@ -199,7 +199,7 @@ func (o *StrikethroughGroupBlock) GetOnFailure() []interface{} {
 
 // GetOnFailureOk returns a tuple with the OnFailure field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *StrikethroughGroupBlock) GetOnFailureOk() ([]interface{}, bool) {
+func (o *StrikethroughGroupBlock) GetOnFailureOk() ([]StrikethroughBlock, bool) {
 	if o == nil || IsNil(o.OnFailure) {
 		return nil, false
 	}
@@ -215,15 +215,15 @@ func (o *StrikethroughGroupBlock) HasOnFailure() bool {
 	return false
 }
 
-// SetOnFailure gets a reference to the given []interface{} and assigns it to the OnFailure field.
-func (o *StrikethroughGroupBlock) SetOnFailure(v []interface{}) {
+// SetOnFailure gets a reference to the given []StrikethroughBlock and assigns it to the OnFailure field.
+func (o *StrikethroughGroupBlock) SetOnFailure(v []StrikethroughBlock) {
 	o.OnFailure = v
 }
 
 // GetOnError returns the OnError field value if set, zero value otherwise.
-func (o *StrikethroughGroupBlock) GetOnError() map[string][]interface{} {
+func (o *StrikethroughGroupBlock) GetOnError() map[string][]StrikethroughBlock {
 	if o == nil || IsNil(o.OnError) {
-		var ret map[string][]interface{}
+		var ret map[string][]StrikethroughBlock
 		return ret
 	}
 	return o.OnError
@@ -231,9 +231,9 @@ func (o *StrikethroughGroupBlock) GetOnError() map[string][]interface{} {
 
 // GetOnErrorOk returns a tuple with the OnError field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *StrikethroughGroupBlock) GetOnErrorOk() (map[string][]interface{}, bool) {
+func (o *StrikethroughGroupBlock) GetOnErrorOk() (map[string][]StrikethroughBlock, bool) {
 	if o == nil || IsNil(o.OnError) {
-		return map[string][]interface{}{}, false
+		return map[string][]StrikethroughBlock{}, false
 	}
 	return o.OnError, true
 }
@@ -247,8 +247,8 @@ func (o *StrikethroughGroupBlock) HasOnError() bool {
 	return false
 }
 
-// SetOnError gets a reference to the given map[string][]interface{} and assigns it to the OnError field.
-func (o *StrikethroughGroupBlock) SetOnError(v map[string][]interface{}) {
+// SetOnError gets a reference to the given map[string][]StrikethroughBlock and assigns it to the OnError field.
+func (o *StrikethroughGroupBlock) SetOnError(v map[string][]StrikethroughBlock) {
 	o.OnError = v
 }
 

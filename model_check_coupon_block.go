@@ -29,7 +29,7 @@ type CheckCouponBlock struct {
 	// When `true`, the coupon code is redeemed.
 	Redeem bool `json:"redeem"`
 	// Promotion blocks evaluated when this block fails or returns false.
-	OnFailure            []interface{} `json:"onFailure,omitempty"`
+	OnFailure            []PromotionBlock `json:"onFailure,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -160,9 +160,9 @@ func (o *CheckCouponBlock) SetRedeem(v bool) {
 }
 
 // GetOnFailure returns the OnFailure field value if set, zero value otherwise.
-func (o *CheckCouponBlock) GetOnFailure() []interface{} {
+func (o *CheckCouponBlock) GetOnFailure() []PromotionBlock {
 	if o == nil || IsNil(o.OnFailure) {
-		var ret []interface{}
+		var ret []PromotionBlock
 		return ret
 	}
 	return o.OnFailure
@@ -170,7 +170,7 @@ func (o *CheckCouponBlock) GetOnFailure() []interface{} {
 
 // GetOnFailureOk returns a tuple with the OnFailure field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *CheckCouponBlock) GetOnFailureOk() ([]interface{}, bool) {
+func (o *CheckCouponBlock) GetOnFailureOk() ([]PromotionBlock, bool) {
 	if o == nil || IsNil(o.OnFailure) {
 		return nil, false
 	}
@@ -186,8 +186,8 @@ func (o *CheckCouponBlock) HasOnFailure() bool {
 	return false
 }
 
-// SetOnFailure gets a reference to the given []interface{} and assigns it to the OnFailure field.
-func (o *CheckCouponBlock) SetOnFailure(v []interface{}) {
+// SetOnFailure gets a reference to the given []PromotionBlock and assigns it to the OnFailure field.
+func (o *CheckCouponBlock) SetOnFailure(v []PromotionBlock) {
 	o.OnFailure = v
 }
 

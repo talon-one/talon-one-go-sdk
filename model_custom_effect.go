@@ -34,9 +34,9 @@ type CustomEffect struct {
 	// Indicates if this effect is per item or not.
 	IsPerItem *bool `json:"isPerItem,omitempty"`
 	// The name of this effect.
-	Name string `json:"name" validate:"regexp=^[A-Za-z](\\\\w|\\\\s)*$"`
+	Name string `json:"name" validate:"regexp=^[A-Za-z](\\w|\\s)*$"`
 	// The title of this effect.
-	Title string `json:"title" validate:"regexp=^[^[:cntrl:]\\\\s][^[:cntrl:]]*$"`
+	Title string `json:"title" validate:"regexp=^[^[:cntrl:]\\s][^[:cntrl:]]*$"`
 	// The JSON payload of this effect.
 	Payload string `json:"payload"`
 	// The description of this effect.

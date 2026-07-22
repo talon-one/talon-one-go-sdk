@@ -33,9 +33,9 @@ type WebhookAuthentication struct {
 	ModifiedBy string                            `json:"modifiedBy"`
 	Webhooks   []WebhookAuthenticationWebhookRef `json:"webhooks"`
 	// The name of the webhook authentication.
-	Name                 string      `json:"name"`
-	Type                 string      `json:"type"`
-	Data                 interface{} `json:"data"`
+	Name                 string                         `json:"name"`
+	Type                 string                         `json:"type"`
+	Data                 WebhookAuthenticationAllOfData `json:"data"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -45,7 +45,7 @@ type _WebhookAuthentication WebhookAuthentication
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildWebhookAuthentication(id int64, created time.Time, modified time.Time, createdBy string, modifiedBy string, webhooks []WebhookAuthenticationWebhookRef, name string, type_ string, data interface{}) *WebhookAuthentication {
+func BuildWebhookAuthentication(id int64, created time.Time, modified time.Time, createdBy string, modifiedBy string, webhooks []WebhookAuthenticationWebhookRef, name string, type_ string, data WebhookAuthenticationAllOfData) *WebhookAuthentication {
 	this := WebhookAuthentication{}
 	this.Id = id
 	this.Created = created
@@ -260,10 +260,9 @@ func (o *WebhookAuthentication) SetType(v string) {
 }
 
 // GetData returns the Data field value
-// If the value is explicit nil, the zero value for interface{} will be returned
-func (o *WebhookAuthentication) GetData() interface{} {
+func (o *WebhookAuthentication) GetData() WebhookAuthenticationAllOfData {
 	if o == nil {
-		var ret interface{}
+		var ret WebhookAuthenticationAllOfData
 		return ret
 	}
 
@@ -272,16 +271,15 @@ func (o *WebhookAuthentication) GetData() interface{} {
 
 // GetDataOk returns a tuple with the Data field value
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *WebhookAuthentication) GetDataOk() (*interface{}, bool) {
-	if o == nil || IsNil(o.Data) {
+func (o *WebhookAuthentication) GetDataOk() (*WebhookAuthenticationAllOfData, bool) {
+	if o == nil {
 		return nil, false
 	}
 	return &o.Data, true
 }
 
 // SetData sets field value
-func (o *WebhookAuthentication) SetData(v interface{}) {
+func (o *WebhookAuthentication) SetData(v WebhookAuthenticationAllOfData) {
 	o.Data = v
 }
 
@@ -303,9 +301,7 @@ func (o WebhookAuthentication) ToMap() (map[string]interface{}, error) {
 	toSerialize["webhooks"] = o.Webhooks
 	toSerialize["name"] = o.Name
 	toSerialize["type"] = o.Type
-	if o.Data != nil {
-		toSerialize["data"] = o.Data
-	}
+	toSerialize["data"] = o.Data
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value

@@ -7,13 +7,13 @@ Name | Type | Description | Notes
 **Id** | **int64** | Unique ID for this entity. | 
 **AccountId** | **int64** | The ID of the account to which this configuration belongs. | 
 **TypeId** | **int64** | The outgoing integration type ID. | 
-**Policy** | **map[string]interface{}** | The outgoing integration policy specific to each integration type. | 
+**Policy** | [**OutgoingIntegrationConfigurationPolicy**](OutgoingIntegrationConfigurationPolicy.md) |  | 
 
 ## Methods
 
 ### NewOutgoingIntegrationConfiguration
 
-`func NewOutgoingIntegrationConfiguration(id int64, accountId int64, typeId int64, policy map[string]interface{}, ) *OutgoingIntegrationConfiguration`
+`func NewOutgoingIntegrationConfiguration(id int64, accountId int64, typeId int64, policy OutgoingIntegrationConfigurationPolicy, ) *OutgoingIntegrationConfiguration`
 
 NewOutgoingIntegrationConfiguration instantiates a new OutgoingIntegrationConfiguration object
 This constructor will assign default values to properties that have it defined,
@@ -90,20 +90,20 @@ SetTypeId sets TypeId field to given value.
 
 ### GetPolicy
 
-`func (o *OutgoingIntegrationConfiguration) GetPolicy() map[string]interface{}`
+`func (o *OutgoingIntegrationConfiguration) GetPolicy() OutgoingIntegrationConfigurationPolicy`
 
 GetPolicy returns the Policy field if non-nil, zero value otherwise.
 
 ### GetPolicyOk
 
-`func (o *OutgoingIntegrationConfiguration) GetPolicyOk() (*map[string]interface{}, bool)`
+`func (o *OutgoingIntegrationConfiguration) GetPolicyOk() (*OutgoingIntegrationConfigurationPolicy, bool)`
 
 GetPolicyOk returns a tuple with the Policy field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetPolicy
 
-`func (o *OutgoingIntegrationConfiguration) SetPolicy(v map[string]interface{})`
+`func (o *OutgoingIntegrationConfiguration) SetPolicy(v OutgoingIntegrationConfigurationPolicy)`
 
 SetPolicy sets Policy field to given value.
 

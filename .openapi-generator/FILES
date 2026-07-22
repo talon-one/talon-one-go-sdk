@@ -80,7 +80,6 @@ docs/ApplicationCustomer.md
 docs/ApplicationCustomerEntity.md
 docs/ApplicationEntity.md
 docs/ApplicationEvent.md
-docs/ApplicationNotification.md
 docs/ApplicationReferee.md
 docs/ApplicationSession.md
 docs/ApplicationSessionEntity.md
@@ -106,6 +105,7 @@ docs/BaseCampaign.md
 docs/BaseLoyaltyProgram.md
 docs/BaseNotification.md
 docs/BaseNotificationEntity.md
+docs/BaseNotificationPolicy.md
 docs/BaseNotificationWebhook.md
 docs/BaseNotifications.md
 docs/BaseSamlConnection.md
@@ -114,7 +114,6 @@ docs/BestPriorPriceMetadata.md
 docs/BestPriorPriceRequest.md
 docs/BestPriorPriceSettings.md
 docs/BestPriorTarget.md
-docs/BetweenCheckAttributeBlock.md
 docs/Binding.md
 docs/Blueprint.md
 docs/BulkApplicationNotification.md
@@ -182,6 +181,12 @@ docs/CartItemFilterTemplate.md
 docs/Catalog.md
 docs/CatalogAction.md
 docs/CatalogActionFilter.md
+docs/CatalogActionOneOf.md
+docs/CatalogActionOneOf1.md
+docs/CatalogActionOneOf2.md
+docs/CatalogActionOneOf3.md
+docs/CatalogActionOneOf4.md
+docs/CatalogActionOneOf5.md
 docs/CatalogItem.md
 docs/CatalogRule.md
 docs/CatalogSyncRequest.md
@@ -189,7 +194,7 @@ docs/CatalogsStrikethroughNotificationPolicy.md
 docs/Change.md
 docs/ChangeLoyaltyTierLevelEffectProps.md
 docs/ChangeProfilePassword.md
-docs/CheckAttributeBlock.md
+docs/CheckAttributeBlockBase.md
 docs/CheckAudienceBlock.md
 docs/CheckAudienceBlock1Audience.md
 docs/CheckCouponBlock.md
@@ -198,6 +203,7 @@ docs/CodeGeneratorSettings.md
 docs/Collection.md
 docs/CollectionItem.md
 docs/CollectionWithoutPayload.md
+docs/ConfirmRisksRequest.md
 docs/Coupon.md
 docs/CouponConstraints.md
 docs/CouponCreatedEffectProps.md
@@ -236,6 +242,7 @@ docs/CustomerProfileAudienceRequestItem.md
 docs/CustomerProfileEntity.md
 docs/CustomerProfileIntegrationRequestV2.md
 docs/CustomerProfileIntegrationResponseV2.md
+docs/CustomerProfileReward.md
 docs/CustomerProfileSearchQuery.md
 docs/CustomerProfileUpdateV2Response.md
 docs/CustomerSession.md
@@ -246,8 +253,12 @@ docs/DeductLoyaltyPointsEffectProps.md
 docs/DeleteCouponsData.md
 docs/DeleteLoyaltyTransactionsRequest.md
 docs/DeleteUserRequest.md
+docs/DigitalPass.md
+docs/DiscardRisksRequest.md
 docs/Effect.md
+docs/EffectAllOfProps.md
 docs/EffectEntity.md
+docs/EffectProps.md
 docs/EmailEntity.md
 docs/EmbeddedAnalyticsConfiguration.md
 docs/EmbeddedAnalyticsConfigurationDashboards.md
@@ -404,6 +415,7 @@ docs/IntegrationHubFlowConfigResponse.md
 docs/IntegrationHubFlowResponse.md
 docs/IntegrationHubFlowWithConfig.md
 docs/IntegrationHubPaginatedEventPayload.md
+docs/IntegrationHubPaginatedEventPayloadDataInner.md
 docs/IntegrationProfileEntity.md
 docs/IntegrationProfileEntityV3.md
 docs/IntegrationRequest.md
@@ -414,6 +426,7 @@ docs/IntegrationStoreEntity.md
 docs/InventoryCoupon.md
 docs/InventoryReferral.md
 docs/ItemAttribute.md
+docs/LabelTarget.md
 docs/LabelTargetAudience.md
 docs/LabelTargetNone.md
 docs/LedgerEntry.md
@@ -431,10 +444,8 @@ docs/ListCampaignStoreBudgetLimits200Response.md
 docs/ListCampaignStoreBudgets.md
 docs/ListCampaignStoreBudgetsStore.md
 docs/ListCatalogItems200Response.md
-docs/ListCheckAttributeBlock.md
 docs/ListExperiments200Response.md
 docs/ListStores200Response.md
-docs/ListWithCountCheckAttributeBlock.md
 docs/LoginParams.md
 docs/Loyalty.md
 docs/LoyaltyBalance.md
@@ -463,6 +474,8 @@ docs/LoyaltyProgramTransaction.md
 docs/LoyaltySubLedger.md
 docs/LoyaltyTier.md
 docs/MCPKey.md
+docs/MCPOAuthProtectedResource.md
+docs/MCPOAuthServerMetadata.md
 docs/ManagementAPI.md
 docs/ManagementKey.md
 docs/ManagerConfig.md
@@ -512,6 +525,7 @@ docs/NewCustomEffect.md
 docs/NewCustomerProfile.md
 docs/NewCustomerSession.md
 docs/NewCustomerSessionV2.md
+docs/NewDigitalPass.md
 docs/NewEvent.md
 docs/NewEventType.md
 docs/NewEventV3Entity.md
@@ -562,6 +576,7 @@ docs/OneTimeCode.md
 docs/OutgoingIntegrationBrazePolicy.md
 docs/OutgoingIntegrationCleverTapPolicy.md
 docs/OutgoingIntegrationConfiguration.md
+docs/OutgoingIntegrationConfigurationPolicy.md
 docs/OutgoingIntegrationIterablePolicy.md
 docs/OutgoingIntegrationMoEngagePolicy.md
 docs/OutgoingIntegrationTemplate.md
@@ -591,6 +606,7 @@ docs/ProductUnitAnalyticsTotals.md
 docs/ProfileAudiencesChanges.md
 docs/ProjectedTier.md
 docs/PromoteExperiment.md
+docs/PromotionBlock.md
 docs/PromotionCheckAttributeBlock.md
 docs/PromotionGroupBlock.md
 docs/PromotionRuleV2.md
@@ -610,6 +626,7 @@ docs/ResponseContentObject.md
 docs/Return.md
 docs/ReturnIntegrationRequest.md
 docs/ReturnedCartItem.md
+docs/ReviewRisksRequest.md
 docs/Revision.md
 docs/RevisionActivation.md
 docs/RevisionActivationRequest.md
@@ -618,6 +635,7 @@ docs/Reward.md
 docs/RewardPointsRequired.md
 docs/Risk.md
 docs/RiskAffectedEntityItem.md
+docs/RiskCriticalityUpdate.md
 docs/RiskDetail.md
 docs/RiskNotification.md
 docs/Role.md
@@ -651,7 +669,6 @@ docs/SamlConnection.md
 docs/SamlConnectionInternal.md
 docs/SamlConnectionMetadata.md
 docs/SamlLoginEndpoint.md
-docs/ScalarCheckAttributeBlock.md
 docs/ScimBaseGroup.md
 docs/ScimBaseUser.md
 docs/ScimBaseUserName.md
@@ -669,6 +686,8 @@ docs/ScimServiceProviderConfigResponse.md
 docs/ScimServiceProviderConfigResponseBulk.md
 docs/ScimServiceProviderConfigResponseChangePassword.md
 docs/ScimServiceProviderConfigResponseFilter.md
+docs/ScimServiceProviderConfigResponsePatch.md
+docs/ScimServiceProviderConfigResponseSort.md
 docs/ScimUser.md
 docs/ScimUsersListResponse.md
 docs/SecondaryDeployment.md
@@ -685,11 +704,13 @@ docs/SkuUnitAnalytics.md
 docs/SkuUnitAnalyticsDataPoint.md
 docs/SlotDef.md
 docs/Store.md
+docs/StrikethroughBlock.md
 docs/StrikethroughChangedItem.md
 docs/StrikethroughCheckAttributeBlock.md
 docs/StrikethroughCustomEffectPerItemProps.md
 docs/StrikethroughDebugResponse.md
 docs/StrikethroughEffect.md
+docs/StrikethroughEffectProps.md
 docs/StrikethroughGroupBlock.md
 docs/StrikethroughLabelingNotification.md
 docs/StrikethroughRuleV2.md
@@ -720,15 +741,21 @@ docs/TimePoint.md
 docs/TransferLoyaltyCard.md
 docs/TriggerWebhookEffectProps.md
 docs/TwoFAConfig.md
-docs/UnaryCheckAttributeBlock.md
 docs/UpdateAccount.md
 docs/UpdateAchievement.md
+docs/UpdateAchievementProgressBlock.md
+docs/UpdateAchievementProgressBlock1Achievement.md
 docs/UpdateAchievementV2.md
 docs/UpdateApplication.md
 docs/UpdateApplicationAPIKey.md
 docs/UpdateApplicationCIF.md
 docs/UpdateAttributeEffectProps.md
+docs/UpdateAttributeValueBlock.md
+docs/UpdateAttributeValueBlock1Attribute.md
+docs/UpdateAttributeValueBlock1Target.md
 docs/UpdateAudience.md
+docs/UpdateAudienceMembershipBlock.md
+docs/UpdateAudienceMembershipBlock1Audience.md
 docs/UpdateBlueprint.md
 docs/UpdateCampaign.md
 docs/UpdateCampaignCollection.md
@@ -741,6 +768,7 @@ docs/UpdateCoupon.md
 docs/UpdateCouponBatch.md
 docs/UpdateCouponsData.md
 docs/UpdateCustomEffect.md
+docs/UpdateCustomerProfileV2409Response.md
 docs/UpdateCustomerSessionV2409Response.md
 docs/UpdateExperiment.md
 docs/UpdateExperimentVariant.md
@@ -765,6 +793,10 @@ docs/UserEntity.md
 docs/ValueMap.md
 docs/Webhook.md
 docs/WebhookAuthentication.md
+docs/WebhookAuthenticationAllOfData.md
+docs/WebhookAuthenticationBase.md
+docs/WebhookAuthenticationBaseOneOf.md
+docs/WebhookAuthenticationBaseOneOf1.md
 docs/WebhookAuthenticationDataBasic.md
 docs/WebhookAuthenticationDataCustom.md
 docs/WebhookAuthenticationWebhookRef.md
@@ -834,7 +866,6 @@ model_application_customer.go
 model_application_customer_entity.go
 model_application_entity.go
 model_application_event.go
-model_application_notification.go
 model_application_referee.go
 model_application_session.go
 model_application_session_entity.go
@@ -860,6 +891,7 @@ model_base_campaign.go
 model_base_loyalty_program.go
 model_base_notification.go
 model_base_notification_entity.go
+model_base_notification_policy.go
 model_base_notification_webhook.go
 model_base_notifications.go
 model_base_saml_connection.go
@@ -868,7 +900,6 @@ model_best_prior_price_metadata.go
 model_best_prior_price_request.go
 model_best_prior_price_settings.go
 model_best_prior_target.go
-model_between_check_attribute_block.go
 model_binding.go
 model_blueprint.go
 model_bulk_application_notification.go
@@ -936,6 +967,12 @@ model_cart_item_filter_template.go
 model_catalog.go
 model_catalog_action.go
 model_catalog_action_filter.go
+model_catalog_action_one_of.go
+model_catalog_action_one_of_1.go
+model_catalog_action_one_of_2.go
+model_catalog_action_one_of_3.go
+model_catalog_action_one_of_4.go
+model_catalog_action_one_of_5.go
 model_catalog_item.go
 model_catalog_rule.go
 model_catalog_sync_request.go
@@ -943,7 +980,7 @@ model_catalogs_strikethrough_notification_policy.go
 model_change.go
 model_change_loyalty_tier_level_effect_props.go
 model_change_profile_password.go
-model_check_attribute_block.go
+model_check_attribute_block_base.go
 model_check_audience_block.go
 model_check_audience_block_1_audience.go
 model_check_coupon_block.go
@@ -952,6 +989,7 @@ model_code_generator_settings.go
 model_collection.go
 model_collection_item.go
 model_collection_without_payload.go
+model_confirm_risks_request.go
 model_coupon.go
 model_coupon_constraints.go
 model_coupon_created_effect_props.go
@@ -990,6 +1028,7 @@ model_customer_profile_audience_request_item.go
 model_customer_profile_entity.go
 model_customer_profile_integration_request_v2.go
 model_customer_profile_integration_response_v2.go
+model_customer_profile_reward.go
 model_customer_profile_search_query.go
 model_customer_profile_update_v2_response.go
 model_customer_session.go
@@ -1000,8 +1039,12 @@ model_deduct_loyalty_points_effect_props.go
 model_delete_coupons_data.go
 model_delete_loyalty_transactions_request.go
 model_delete_user_request.go
+model_digital_pass.go
+model_discard_risks_request.go
 model_effect.go
+model_effect_all_of_props.go
 model_effect_entity.go
+model_effect_props.go
 model_email_entity.go
 model_embedded_analytics_configuration.go
 model_embedded_analytics_configuration_dashboards.go
@@ -1157,6 +1200,7 @@ model_integration_hub_flow_config_response.go
 model_integration_hub_flow_response.go
 model_integration_hub_flow_with_config.go
 model_integration_hub_paginated_event_payload.go
+model_integration_hub_paginated_event_payload_data_inner.go
 model_integration_profile_entity.go
 model_integration_profile_entity_v3.go
 model_integration_request.go
@@ -1167,6 +1211,7 @@ model_integration_store_entity.go
 model_inventory_coupon.go
 model_inventory_referral.go
 model_item_attribute.go
+model_label_target.go
 model_label_target_audience.go
 model_label_target_none.go
 model_ledger_entry.go
@@ -1184,10 +1229,8 @@ model_list_campaign_store_budget_limits_200_response.go
 model_list_campaign_store_budgets.go
 model_list_campaign_store_budgets_store.go
 model_list_catalog_items_200_response.go
-model_list_check_attribute_block.go
 model_list_experiments_200_response.go
 model_list_stores_200_response.go
-model_list_with_count_check_attribute_block.go
 model_login_params.go
 model_loyalty.go
 model_loyalty_balance.go
@@ -1218,6 +1261,8 @@ model_loyalty_tier.go
 model_management_key.go
 model_manager_config.go
 model_mcp_key.go
+model_mcpo_auth_protected_resource.go
+model_mcpo_auth_server_metadata.go
 model_message_log_entries.go
 model_message_log_entry.go
 model_message_log_request.go
@@ -1264,6 +1309,7 @@ model_new_custom_effect.go
 model_new_customer_profile.go
 model_new_customer_session.go
 model_new_customer_session_v2.go
+model_new_digital_pass.go
 model_new_event.go
 model_new_event_type.go
 model_new_event_v3_entity.go
@@ -1314,6 +1360,7 @@ model_one_time_code.go
 model_outgoing_integration_braze_policy.go
 model_outgoing_integration_clever_tap_policy.go
 model_outgoing_integration_configuration.go
+model_outgoing_integration_configuration_policy.go
 model_outgoing_integration_iterable_policy.go
 model_outgoing_integration_mo_engage_policy.go
 model_outgoing_integration_template.go
@@ -1343,6 +1390,7 @@ model_product_unit_analytics_totals.go
 model_profile_audiences_changes.go
 model_projected_tier.go
 model_promote_experiment.go
+model_promotion_block.go
 model_promotion_check_attribute_block.go
 model_promotion_group_block.go
 model_promotion_rule_v2.go
@@ -1362,6 +1410,7 @@ model_response_content_object.go
 model_return.go
 model_return_integration_request.go
 model_returned_cart_item.go
+model_review_risks_request.go
 model_revision.go
 model_revision_activation.go
 model_revision_activation_request.go
@@ -1370,6 +1419,7 @@ model_reward.go
 model_reward_points_required.go
 model_risk.go
 model_risk_affected_entity_item.go
+model_risk_criticality_update.go
 model_risk_detail.go
 model_risk_notification.go
 model_role.go
@@ -1402,7 +1452,6 @@ model_saml_connection.go
 model_saml_connection_internal.go
 model_saml_connection_metadata.go
 model_saml_login_endpoint.go
-model_scalar_check_attribute_block.go
 model_scim_base_group.go
 model_scim_base_user.go
 model_scim_base_user_name.go
@@ -1420,6 +1469,8 @@ model_scim_service_provider_config_response.go
 model_scim_service_provider_config_response_bulk.go
 model_scim_service_provider_config_response_change_password.go
 model_scim_service_provider_config_response_filter.go
+model_scim_service_provider_config_response_patch.go
+model_scim_service_provider_config_response_sort.go
 model_scim_user.go
 model_scim_users_list_response.go
 model_secondary_deployment.go
@@ -1437,11 +1488,13 @@ model_sku_unit_analytics_data_point.go
 model_slot_def.go
 model_sso_config.go
 model_store.go
+model_strikethrough_block.go
 model_strikethrough_changed_item.go
 model_strikethrough_check_attribute_block.go
 model_strikethrough_custom_effect_per_item_props.go
 model_strikethrough_debug_response.go
 model_strikethrough_effect.go
+model_strikethrough_effect_props.go
 model_strikethrough_group_block.go
 model_strikethrough_labeling_notification.go
 model_strikethrough_rule_v2.go
@@ -1472,15 +1525,21 @@ model_time_point.go
 model_transfer_loyalty_card.go
 model_trigger_webhook_effect_props.go
 model_two_fa_config.go
-model_unary_check_attribute_block.go
 model_update_account.go
 model_update_achievement.go
+model_update_achievement_progress_block.go
+model_update_achievement_progress_block_1_achievement.go
 model_update_achievement_v2.go
 model_update_application.go
 model_update_application_api_key.go
 model_update_application_cif.go
 model_update_attribute_effect_props.go
+model_update_attribute_value_block.go
+model_update_attribute_value_block_1_attribute.go
+model_update_attribute_value_block_1_target.go
 model_update_audience.go
+model_update_audience_membership_block.go
+model_update_audience_membership_block_1_audience.go
 model_update_blueprint.go
 model_update_campaign.go
 model_update_campaign_collection.go
@@ -1493,6 +1552,7 @@ model_update_coupon.go
 model_update_coupon_batch.go
 model_update_coupons_data.go
 model_update_custom_effect.go
+model_update_customer_profile_v2_409_response.go
 model_update_customer_session_v2_409_response.go
 model_update_experiment.go
 model_update_experiment_variant.go
@@ -1517,6 +1577,10 @@ model_user_entity.go
 model_value_map.go
 model_webhook.go
 model_webhook_authentication.go
+model_webhook_authentication_all_of_data.go
+model_webhook_authentication_base.go
+model_webhook_authentication_base_one_of.go
+model_webhook_authentication_base_one_of_1.go
 model_webhook_authentication_data_basic.go
 model_webhook_authentication_data_custom.go
 model_webhook_authentication_webhook_ref.go

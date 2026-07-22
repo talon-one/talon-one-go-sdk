@@ -49,6 +49,14 @@ type Risk struct {
 	AffectedEntityCount int64 `json:"affectedEntityCount"`
 	// Human-readable description of the detected anomaly.
 	Description *string `json:"description,omitempty"`
+	// The reason this risk was discarded. Only present on discarded risks.
+	DiscardReason *string `json:"discardReason,omitempty"`
+	// The free-text details of the latest reclassification action: the description for resolving confirmed risks, or the details for discarding risks.
+	StatusComment *string `json:"statusComment,omitempty"`
+	// The ID of the user who performed the latest reclassification action.
+	StatusChangedBy *int64 `json:"statusChangedBy,omitempty"`
+	// The time of the latest reclassification action.
+	StatusChangedAt *time.Time `json:"statusChangedAt,omitempty"`
 	// Timestamp of the most recent update.
 	Modified             time.Time `json:"modified"`
 	AdditionalProperties map[string]interface{}
@@ -438,6 +446,134 @@ func (o *Risk) SetDescription(v string) {
 	o.Description = &v
 }
 
+// GetDiscardReason returns the DiscardReason field value if set, zero value otherwise.
+func (o *Risk) GetDiscardReason() string {
+	if o == nil || IsNil(o.DiscardReason) {
+		var ret string
+		return ret
+	}
+	return *o.DiscardReason
+}
+
+// GetDiscardReasonOk returns a tuple with the DiscardReason field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Risk) GetDiscardReasonOk() (*string, bool) {
+	if o == nil || IsNil(o.DiscardReason) {
+		return nil, false
+	}
+	return o.DiscardReason, true
+}
+
+// HasDiscardReason returns a boolean if a field has been set.
+func (o *Risk) HasDiscardReason() bool {
+	if o != nil && !IsNil(o.DiscardReason) {
+		return true
+	}
+
+	return false
+}
+
+// SetDiscardReason gets a reference to the given string and assigns it to the DiscardReason field.
+func (o *Risk) SetDiscardReason(v string) {
+	o.DiscardReason = &v
+}
+
+// GetStatusComment returns the StatusComment field value if set, zero value otherwise.
+func (o *Risk) GetStatusComment() string {
+	if o == nil || IsNil(o.StatusComment) {
+		var ret string
+		return ret
+	}
+	return *o.StatusComment
+}
+
+// GetStatusCommentOk returns a tuple with the StatusComment field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Risk) GetStatusCommentOk() (*string, bool) {
+	if o == nil || IsNil(o.StatusComment) {
+		return nil, false
+	}
+	return o.StatusComment, true
+}
+
+// HasStatusComment returns a boolean if a field has been set.
+func (o *Risk) HasStatusComment() bool {
+	if o != nil && !IsNil(o.StatusComment) {
+		return true
+	}
+
+	return false
+}
+
+// SetStatusComment gets a reference to the given string and assigns it to the StatusComment field.
+func (o *Risk) SetStatusComment(v string) {
+	o.StatusComment = &v
+}
+
+// GetStatusChangedBy returns the StatusChangedBy field value if set, zero value otherwise.
+func (o *Risk) GetStatusChangedBy() int64 {
+	if o == nil || IsNil(o.StatusChangedBy) {
+		var ret int64
+		return ret
+	}
+	return *o.StatusChangedBy
+}
+
+// GetStatusChangedByOk returns a tuple with the StatusChangedBy field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Risk) GetStatusChangedByOk() (*int64, bool) {
+	if o == nil || IsNil(o.StatusChangedBy) {
+		return nil, false
+	}
+	return o.StatusChangedBy, true
+}
+
+// HasStatusChangedBy returns a boolean if a field has been set.
+func (o *Risk) HasStatusChangedBy() bool {
+	if o != nil && !IsNil(o.StatusChangedBy) {
+		return true
+	}
+
+	return false
+}
+
+// SetStatusChangedBy gets a reference to the given int64 and assigns it to the StatusChangedBy field.
+func (o *Risk) SetStatusChangedBy(v int64) {
+	o.StatusChangedBy = &v
+}
+
+// GetStatusChangedAt returns the StatusChangedAt field value if set, zero value otherwise.
+func (o *Risk) GetStatusChangedAt() time.Time {
+	if o == nil || IsNil(o.StatusChangedAt) {
+		var ret time.Time
+		return ret
+	}
+	return *o.StatusChangedAt
+}
+
+// GetStatusChangedAtOk returns a tuple with the StatusChangedAt field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Risk) GetStatusChangedAtOk() (*time.Time, bool) {
+	if o == nil || IsNil(o.StatusChangedAt) {
+		return nil, false
+	}
+	return o.StatusChangedAt, true
+}
+
+// HasStatusChangedAt returns a boolean if a field has been set.
+func (o *Risk) HasStatusChangedAt() bool {
+	if o != nil && !IsNil(o.StatusChangedAt) {
+		return true
+	}
+
+	return false
+}
+
+// SetStatusChangedAt gets a reference to the given time.Time and assigns it to the StatusChangedAt field.
+func (o *Risk) SetStatusChangedAt(v time.Time) {
+	o.StatusChangedAt = &v
+}
+
 // GetModified returns the Modified field value
 func (o *Risk) GetModified() time.Time {
 	if o == nil {
@@ -489,6 +625,18 @@ func (o Risk) ToMap() (map[string]interface{}, error) {
 	toSerialize["affectedEntityCount"] = o.AffectedEntityCount
 	if !IsNil(o.Description) {
 		toSerialize["description"] = o.Description
+	}
+	if !IsNil(o.DiscardReason) {
+		toSerialize["discardReason"] = o.DiscardReason
+	}
+	if !IsNil(o.StatusComment) {
+		toSerialize["statusComment"] = o.StatusComment
+	}
+	if !IsNil(o.StatusChangedBy) {
+		toSerialize["statusChangedBy"] = o.StatusChangedBy
+	}
+	if !IsNil(o.StatusChangedAt) {
+		toSerialize["statusChangedAt"] = o.StatusChangedAt
 	}
 	toSerialize["modified"] = o.Modified
 
@@ -560,6 +708,10 @@ func (o *Risk) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "reportedDate")
 		delete(additionalProperties, "affectedEntityCount")
 		delete(additionalProperties, "description")
+		delete(additionalProperties, "discardReason")
+		delete(additionalProperties, "statusComment")
+		delete(additionalProperties, "statusChangedBy")
+		delete(additionalProperties, "statusChangedAt")
 		delete(additionalProperties, "modified")
 		o.AdditionalProperties = additionalProperties
 	}

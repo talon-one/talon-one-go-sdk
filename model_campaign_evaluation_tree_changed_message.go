@@ -25,7 +25,7 @@ type CampaignEvaluationTreeChangedMessage struct {
 	// The total size of the result set.
 	TotalResultSize int64 `json:"TotalResultSize"`
 	// The array of changes.
-	Data                 []ApplicationNotification `json:"Data,omitempty"`
+	Data                 []CampaignEvaluationTreeChangedNotification `json:"Data,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -99,9 +99,9 @@ func (o *CampaignEvaluationTreeChangedMessage) SetTotalResultSize(v int64) {
 }
 
 // GetData returns the Data field value if set, zero value otherwise.
-func (o *CampaignEvaluationTreeChangedMessage) GetData() []ApplicationNotification {
+func (o *CampaignEvaluationTreeChangedMessage) GetData() []CampaignEvaluationTreeChangedNotification {
 	if o == nil || IsNil(o.Data) {
-		var ret []ApplicationNotification
+		var ret []CampaignEvaluationTreeChangedNotification
 		return ret
 	}
 	return o.Data
@@ -109,7 +109,7 @@ func (o *CampaignEvaluationTreeChangedMessage) GetData() []ApplicationNotificati
 
 // GetDataOk returns a tuple with the Data field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *CampaignEvaluationTreeChangedMessage) GetDataOk() ([]ApplicationNotification, bool) {
+func (o *CampaignEvaluationTreeChangedMessage) GetDataOk() ([]CampaignEvaluationTreeChangedNotification, bool) {
 	if o == nil || IsNil(o.Data) {
 		return nil, false
 	}
@@ -125,8 +125,8 @@ func (o *CampaignEvaluationTreeChangedMessage) HasData() bool {
 	return false
 }
 
-// SetData gets a reference to the given []ApplicationNotification and assigns it to the Data field.
-func (o *CampaignEvaluationTreeChangedMessage) SetData(v []ApplicationNotification) {
+// SetData gets a reference to the given []CampaignEvaluationTreeChangedNotification and assigns it to the Data field.
+func (o *CampaignEvaluationTreeChangedMessage) SetData(v []CampaignEvaluationTreeChangedNotification) {
 	o.Data = v
 }
 

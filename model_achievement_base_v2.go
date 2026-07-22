@@ -21,7 +21,7 @@ var _ MappedNullable = &AchievementBaseV2{}
 // AchievementBaseV2 struct for AchievementBaseV2
 type AchievementBaseV2 struct {
 	// The internal name of the achievement used in API requests.  **Note**: The name should start with a letter. This cannot be changed after the achievement has been created.
-	Name *string `json:"name,omitempty" validate:"regexp=^[a-zA-Z]\\\\w+$"`
+	Name *string `json:"name,omitempty" validate:"regexp=^[a-zA-Z]\\w+$"`
 	// The display name for the achievement in the Campaign Manager.
 	Title *string `json:"title,omitempty"`
 	// A description of the achievement.

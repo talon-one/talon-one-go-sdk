@@ -8,15 +8,15 @@ Name | Type | Description | Notes
 **Type** | **string** | Identifies the block variant and determines which additional properties are present in it. | 
 **Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] 
 **Operator** | **string** | Logical operator applied across child blocks. &#x60;all&#x60; requires every child to pass, &#x60;atLeastOne&#x60; requires at least one, &#x60;none&#x60; requires all to fail. | 
-**Blocks** | **[]interface{}** | Child blocks evaluated according to the operator. | 
-**OnFailure** | Pointer to **[]interface{}** | Promotion blocks evaluated when this block fails or returns false. | [optional] 
-**OnError** | Pointer to **map[string][]interface{}** | Named error handlers evaluated when a specific error occurs. | [optional] 
+**Blocks** | [**[]PromotionBlock**](PromotionBlock.md) | Child blocks evaluated according to the operator. | 
+**OnFailure** | Pointer to [**[]PromotionBlock**](PromotionBlock.md) | Promotion blocks evaluated when this block fails or returns false. | [optional] 
+**OnError** | Pointer to [**map[string][]PromotionBlock**](array.md) | Named error handlers evaluated when a specific error occurs. | [optional] 
 
 ## Methods
 
 ### NewPromotionGroupBlock
 
-`func NewPromotionGroupBlock(id string, type_ string, operator string, blocks []interface{}, ) *PromotionGroupBlock`
+`func NewPromotionGroupBlock(id string, type_ string, operator string, blocks []PromotionBlock, ) *PromotionGroupBlock`
 
 NewPromotionGroupBlock instantiates a new PromotionGroupBlock object
 This constructor will assign default values to properties that have it defined,
@@ -118,40 +118,40 @@ SetOperator sets Operator field to given value.
 
 ### GetBlocks
 
-`func (o *PromotionGroupBlock) GetBlocks() []interface{}`
+`func (o *PromotionGroupBlock) GetBlocks() []PromotionBlock`
 
 GetBlocks returns the Blocks field if non-nil, zero value otherwise.
 
 ### GetBlocksOk
 
-`func (o *PromotionGroupBlock) GetBlocksOk() (*[]interface{}, bool)`
+`func (o *PromotionGroupBlock) GetBlocksOk() (*[]PromotionBlock, bool)`
 
 GetBlocksOk returns a tuple with the Blocks field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetBlocks
 
-`func (o *PromotionGroupBlock) SetBlocks(v []interface{})`
+`func (o *PromotionGroupBlock) SetBlocks(v []PromotionBlock)`
 
 SetBlocks sets Blocks field to given value.
 
 
 ### GetOnFailure
 
-`func (o *PromotionGroupBlock) GetOnFailure() []interface{}`
+`func (o *PromotionGroupBlock) GetOnFailure() []PromotionBlock`
 
 GetOnFailure returns the OnFailure field if non-nil, zero value otherwise.
 
 ### GetOnFailureOk
 
-`func (o *PromotionGroupBlock) GetOnFailureOk() (*[]interface{}, bool)`
+`func (o *PromotionGroupBlock) GetOnFailureOk() (*[]PromotionBlock, bool)`
 
 GetOnFailureOk returns a tuple with the OnFailure field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetOnFailure
 
-`func (o *PromotionGroupBlock) SetOnFailure(v []interface{})`
+`func (o *PromotionGroupBlock) SetOnFailure(v []PromotionBlock)`
 
 SetOnFailure sets OnFailure field to given value.
 
@@ -163,20 +163,20 @@ HasOnFailure returns a boolean if a field has been set.
 
 ### GetOnError
 
-`func (o *PromotionGroupBlock) GetOnError() map[string][]interface{}`
+`func (o *PromotionGroupBlock) GetOnError() map[string][]PromotionBlock`
 
 GetOnError returns the OnError field if non-nil, zero value otherwise.
 
 ### GetOnErrorOk
 
-`func (o *PromotionGroupBlock) GetOnErrorOk() (*map[string][]interface{}, bool)`
+`func (o *PromotionGroupBlock) GetOnErrorOk() (*map[string][]PromotionBlock, bool)`
 
 GetOnErrorOk returns a tuple with the OnError field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetOnError
 
-`func (o *PromotionGroupBlock) SetOnError(v map[string][]interface{})`
+`func (o *PromotionGroupBlock) SetOnError(v map[string][]PromotionBlock)`
 
 SetOnError sets OnError field to given value.
 

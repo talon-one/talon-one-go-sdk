@@ -35,7 +35,7 @@ type BestPriorPrice struct {
 	// Price of the item.
 	Price                float32                `json:"price"`
 	Metadata             BestPriorPriceMetadata `json:"metadata"`
-	Target               map[string]interface{} `json:"target"`
+	Target               LabelTarget            `json:"target"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -45,7 +45,7 @@ type _BestPriorPrice BestPriorPrice
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildBestPriorPrice(id int64, sku string, observedAt time.Time, contextIds []string, price float32, metadata BestPriorPriceMetadata, target map[string]interface{}) *BestPriorPrice {
+func BuildBestPriorPrice(id int64, sku string, observedAt time.Time, contextIds []string, price float32, metadata BestPriorPriceMetadata, target LabelTarget) *BestPriorPrice {
 	this := BestPriorPrice{}
 	this.Id = id
 	this.Sku = sku
@@ -249,9 +249,9 @@ func (o *BestPriorPrice) SetMetadata(v BestPriorPriceMetadata) {
 }
 
 // GetTarget returns the Target field value
-func (o *BestPriorPrice) GetTarget() map[string]interface{} {
+func (o *BestPriorPrice) GetTarget() LabelTarget {
 	if o == nil {
-		var ret map[string]interface{}
+		var ret LabelTarget
 		return ret
 	}
 
@@ -260,15 +260,15 @@ func (o *BestPriorPrice) GetTarget() map[string]interface{} {
 
 // GetTargetOk returns a tuple with the Target field value
 // and a boolean to check if the value has been set.
-func (o *BestPriorPrice) GetTargetOk() (map[string]interface{}, bool) {
+func (o *BestPriorPrice) GetTargetOk() (*LabelTarget, bool) {
 	if o == nil {
-		return map[string]interface{}{}, false
+		return nil, false
 	}
-	return o.Target, true
+	return &o.Target, true
 }
 
 // SetTarget sets field value
-func (o *BestPriorPrice) SetTarget(v map[string]interface{}) {
+func (o *BestPriorPrice) SetTarget(v LabelTarget) {
 	o.Target = v
 }
 

@@ -12,13 +12,13 @@ Name | Type | Description | Notes
 **Method** | **string** | API method for this webhook. | 
 **RelativeUrl** | **string** | The relative URL corresponding to each integration template. | 
 **Headers** | **[]string** | The list of HTTP headers for this integration template. | 
-**Policy** | **map[string]interface{}** | The outgoing integration policy specific to each integration type. | 
+**Policy** | [**OutgoingIntegrationConfigurationPolicy**](OutgoingIntegrationConfigurationPolicy.md) |  | 
 
 ## Methods
 
 ### NewOutgoingIntegrationTemplateWithConfigurationDetails
 
-`func NewOutgoingIntegrationTemplateWithConfigurationDetails(id int64, integrationType int64, title string, description string, payload string, method string, relativeUrl string, headers []string, policy map[string]interface{}, ) *OutgoingIntegrationTemplateWithConfigurationDetails`
+`func NewOutgoingIntegrationTemplateWithConfigurationDetails(id int64, integrationType int64, title string, description string, payload string, method string, relativeUrl string, headers []string, policy OutgoingIntegrationConfigurationPolicy, ) *OutgoingIntegrationTemplateWithConfigurationDetails`
 
 NewOutgoingIntegrationTemplateWithConfigurationDetails instantiates a new OutgoingIntegrationTemplateWithConfigurationDetails object
 This constructor will assign default values to properties that have it defined,
@@ -195,20 +195,20 @@ SetHeaders sets Headers field to given value.
 
 ### GetPolicy
 
-`func (o *OutgoingIntegrationTemplateWithConfigurationDetails) GetPolicy() map[string]interface{}`
+`func (o *OutgoingIntegrationTemplateWithConfigurationDetails) GetPolicy() OutgoingIntegrationConfigurationPolicy`
 
 GetPolicy returns the Policy field if non-nil, zero value otherwise.
 
 ### GetPolicyOk
 
-`func (o *OutgoingIntegrationTemplateWithConfigurationDetails) GetPolicyOk() (*map[string]interface{}, bool)`
+`func (o *OutgoingIntegrationTemplateWithConfigurationDetails) GetPolicyOk() (*OutgoingIntegrationConfigurationPolicy, bool)`
 
 GetPolicyOk returns a tuple with the Policy field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetPolicy
 
-`func (o *OutgoingIntegrationTemplateWithConfigurationDetails) SetPolicy(v map[string]interface{})`
+`func (o *OutgoingIntegrationTemplateWithConfigurationDetails) SetPolicy(v OutgoingIntegrationConfigurationPolicy)`
 
 SetPolicy sets Policy field to given value.
 

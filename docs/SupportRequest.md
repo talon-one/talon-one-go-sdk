@@ -19,6 +19,7 @@ Name | Type | Description | Notes
 **ProcessedAt** | Pointer to **time.Time** | Timestamp when the request was approved or rejected. | [optional] 
 **ProcessingNote** | Pointer to **string** | Notes attached by the admin when rejecting or approving a request. | [optional] 
 **ProcessedByUser** | Pointer to **string** | Email address of the admin who approved or rejected the support request. | [optional] 
+**CouponCode** | Pointer to **string** | Coupon code associated with the approved support request. | [optional] 
 
 ## Methods
 
@@ -373,6 +374,31 @@ SetProcessedByUser sets ProcessedByUser field to given value.
 `func (o *SupportRequest) HasProcessedByUser() bool`
 
 HasProcessedByUser returns a boolean if a field has been set.
+
+### GetCouponCode
+
+`func (o *SupportRequest) GetCouponCode() string`
+
+GetCouponCode returns the CouponCode field if non-nil, zero value otherwise.
+
+### GetCouponCodeOk
+
+`func (o *SupportRequest) GetCouponCodeOk() (*string, bool)`
+
+GetCouponCodeOk returns a tuple with the CouponCode field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCouponCode
+
+`func (o *SupportRequest) SetCouponCode(v string)`
+
+SetCouponCode sets CouponCode field to given value.
+
+### HasCouponCode
+
+`func (o *SupportRequest) HasCouponCode() bool`
+
+HasCouponCode returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

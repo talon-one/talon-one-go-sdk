@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **NotificationType** | **string** | The type of the notification | 
 **TotalResultSize** | **int64** | The total size of the result set. | 
-**Data** | Pointer to [**[]ApplicationNotification**](ApplicationNotification.md) | The array of changes. | [optional] 
+**Data** | Pointer to [**[]CampaignEvaluationTreeChangedNotification**](CampaignEvaluationTreeChangedNotification.md) | The array of changes. | [optional] 
 
 ## Methods
 
@@ -69,20 +69,20 @@ SetTotalResultSize sets TotalResultSize field to given value.
 
 ### GetData
 
-`func (o *CampaignEvaluationTreeChangedMessage) GetData() []ApplicationNotification`
+`func (o *CampaignEvaluationTreeChangedMessage) GetData() []CampaignEvaluationTreeChangedNotification`
 
 GetData returns the Data field if non-nil, zero value otherwise.
 
 ### GetDataOk
 
-`func (o *CampaignEvaluationTreeChangedMessage) GetDataOk() (*[]ApplicationNotification, bool)`
+`func (o *CampaignEvaluationTreeChangedMessage) GetDataOk() (*[]CampaignEvaluationTreeChangedNotification, bool)`
 
 GetDataOk returns a tuple with the Data field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetData
 
-`func (o *CampaignEvaluationTreeChangedMessage) SetData(v []ApplicationNotification)`
+`func (o *CampaignEvaluationTreeChangedMessage) SetData(v []CampaignEvaluationTreeChangedNotification)`
 
 SetData sets Data field to given value.
 

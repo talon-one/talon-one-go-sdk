@@ -32,7 +32,7 @@ type CampaignCollection struct {
 	// A short description of the purpose of this collection.
 	Description *string `json:"description,omitempty"`
 	// The name of this collection.
-	Name string `json:"name" validate:"regexp=^[^[:cntrl:]\\\\s][^[:cntrl:]]*$"`
+	Name string `json:"name" validate:"regexp=^[^[:cntrl:]\\s][^[:cntrl:]]*$"`
 	// ID of the user who last updated this effect if available.
 	ModifiedBy *int64 `json:"modifiedBy,omitempty"`
 	// ID of the user who created this effect.

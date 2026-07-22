@@ -13,120 +13,131 @@ package talon
 import (
 	"encoding/json"
 	"fmt"
+	"gopkg.in/validator.v2"
 )
 
-// checks if the CampaignSetNode type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &CampaignSetNode{}
-
-// CampaignSetNode struct for CampaignSetNode
+// CampaignSetNode - struct for CampaignSetNode
 type CampaignSetNode struct {
-	Type                 string `json:"type"`
-	AdditionalProperties map[string]interface{}
+	CampaignSetBranchNode *CampaignSetBranchNode
+	CampaignSetLeafNode   *CampaignSetLeafNode
 }
 
-type _CampaignSetNode CampaignSetNode
-
-// NewCampaignSetNode instantiates a new CampaignSetNode object
-// This constructor will assign default values to properties that have it defined,
-// and makes sure properties required by API are set, but the set of arguments
-// will change when the set of required properties is changed
-func BuildCampaignSetNode(type_ string) *CampaignSetNode {
-	this := CampaignSetNode{}
-	this.Type = type_
-	return &this
+// CampaignSetBranchNodeAsCampaignSetNode is a convenience function that returns CampaignSetBranchNode wrapped in CampaignSetNode
+func CampaignSetBranchNodeAsCampaignSetNode(v *CampaignSetBranchNode) CampaignSetNode {
+	return CampaignSetNode{
+		CampaignSetBranchNode: v,
+	}
 }
 
-// NewCampaignSetNodeWithDefaults instantiates a new CampaignSetNode object
-// This constructor will only assign default values to properties that have it defined,
-// but it doesn't guarantee that properties required by API are set
-func NewCampaignSetNodeWithDefaults() *CampaignSetNode {
-	this := CampaignSetNode{}
-	return &this
+// CampaignSetLeafNodeAsCampaignSetNode is a convenience function that returns CampaignSetLeafNode wrapped in CampaignSetNode
+func CampaignSetLeafNodeAsCampaignSetNode(v *CampaignSetLeafNode) CampaignSetNode {
+	return CampaignSetNode{
+		CampaignSetLeafNode: v,
+	}
 }
 
-// GetType returns the Type field value
-func (o *CampaignSetNode) GetType() string {
-	if o == nil {
-		var ret string
-		return ret
+// Unmarshal JSON data into one of the pointers in the struct
+func (dst *CampaignSetNode) UnmarshalJSON(data []byte) error {
+	var err error
+	match := 0
+	// try to unmarshal data into CampaignSetBranchNode
+	err = newStrictDecoder(data).Decode(&dst.CampaignSetBranchNode)
+	if err == nil {
+		jsonCampaignSetBranchNode, _ := json.Marshal(dst.CampaignSetBranchNode)
+		if string(jsonCampaignSetBranchNode) == "{}" { // empty struct
+			dst.CampaignSetBranchNode = nil
+		} else {
+			if err = validator.Validate(dst.CampaignSetBranchNode); err != nil {
+				dst.CampaignSetBranchNode = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.CampaignSetBranchNode = nil
 	}
 
-	return o.Type
-}
-
-// GetTypeOk returns a tuple with the Type field value
-// and a boolean to check if the value has been set.
-func (o *CampaignSetNode) GetTypeOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Type, true
-}
-
-// SetType sets field value
-func (o *CampaignSetNode) SetType(v string) {
-	o.Type = v
-}
-
-func (o CampaignSetNode) MarshalJSON() ([]byte, error) {
-	toSerialize, err := o.ToMap()
-	if err != nil {
-		return []byte{}, err
-	}
-	return json.Marshal(toSerialize)
-}
-
-func (o CampaignSetNode) ToMap() (map[string]interface{}, error) {
-	toSerialize := map[string]interface{}{}
-	toSerialize["type"] = o.Type
-
-	for key, value := range o.AdditionalProperties {
-		toSerialize[key] = value
+	// try to unmarshal data into CampaignSetLeafNode
+	err = newStrictDecoder(data).Decode(&dst.CampaignSetLeafNode)
+	if err == nil {
+		jsonCampaignSetLeafNode, _ := json.Marshal(dst.CampaignSetLeafNode)
+		if string(jsonCampaignSetLeafNode) == "{}" { // empty struct
+			dst.CampaignSetLeafNode = nil
+		} else {
+			if err = validator.Validate(dst.CampaignSetLeafNode); err != nil {
+				dst.CampaignSetLeafNode = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.CampaignSetLeafNode = nil
 	}
 
-	return toSerialize, nil
-}
+	if match > 1 { // more than 1 match
+		// reset to nil
+		dst.CampaignSetBranchNode = nil
+		dst.CampaignSetLeafNode = nil
 
-func (o *CampaignSetNode) UnmarshalJSON(data []byte) (err error) {
-	// This validates that all required properties are included in the JSON object
-	// by unmarshalling the object into a generic map with string keys and checking
-	// that every required field exists as a key in the generic map.
-	requiredProperties := []string{
-		"type",
-	}
-
-	allProperties := make(map[string]interface{})
-
-	err = json.Unmarshal(data, &allProperties)
-
-	if err != nil {
-		return err
-	}
-
-	for _, requiredProperty := range requiredProperties {
-		if _, exists := allProperties[requiredProperty]; !exists {
-			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		return fmt.Errorf("data matches more than one schema in oneOf(CampaignSetNode)")
+	} else if match == 1 {
+		return nil // exactly one match
+	} else { // no match
+		if err != nil {
+			return fmt.Errorf("data failed to match schemas in oneOf(CampaignSetNode): %v", err)
+		} else {
+			return fmt.Errorf("data failed to match schemas in oneOf(CampaignSetNode)")
+		}
+		if err != nil {
+			return fmt.Errorf("data failed to match schemas in oneOf(CampaignSetNode): %v", err)
+		} else {
+			return fmt.Errorf("data failed to match schemas in oneOf(CampaignSetNode)")
 		}
 	}
+}
 
-	varCampaignSetNode := _CampaignSetNode{}
-
-	err = json.Unmarshal(data, &varCampaignSetNode)
-
-	if err != nil {
-		return err
+// Marshal data from the first non-nil pointers in the struct to JSON
+func (src CampaignSetNode) MarshalJSON() ([]byte, error) {
+	if src.CampaignSetBranchNode != nil {
+		return json.Marshal(&src.CampaignSetBranchNode)
 	}
 
-	*o = CampaignSetNode(varCampaignSetNode)
-
-	additionalProperties := make(map[string]interface{})
-
-	if err = json.Unmarshal(data, &additionalProperties); err == nil {
-		delete(additionalProperties, "type")
-		o.AdditionalProperties = additionalProperties
+	if src.CampaignSetLeafNode != nil {
+		return json.Marshal(&src.CampaignSetLeafNode)
 	}
 
-	return err
+	return nil, nil // no data in oneOf schemas
+}
+
+// Get the actual instance
+func (obj *CampaignSetNode) GetActualInstance() interface{} {
+	if obj == nil {
+		return nil
+	}
+	if obj.CampaignSetBranchNode != nil {
+		return obj.CampaignSetBranchNode
+	}
+
+	if obj.CampaignSetLeafNode != nil {
+		return obj.CampaignSetLeafNode
+	}
+
+	// all schemas are nil
+	return nil
+}
+
+// Get the actual instance value
+func (obj CampaignSetNode) GetActualInstanceValue() interface{} {
+	if obj.CampaignSetBranchNode != nil {
+		return *obj.CampaignSetBranchNode
+	}
+
+	if obj.CampaignSetLeafNode != nil {
+		return *obj.CampaignSetLeafNode
+	}
+
+	// all schemas are nil
+	return nil
 }
 
 type NullableCampaignSetNode struct {

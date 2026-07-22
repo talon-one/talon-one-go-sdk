@@ -8,13 +8,13 @@ Name | Type | Description | Notes
 **ParentId** | Pointer to **string** | ID of the parent rule, if any. | [optional] 
 **Title** | **string** | A short description of the rule. | 
 **Description** | Pointer to **string** | A longer description of the rule. | [optional] 
-**Blocks** | **[]interface{}** | The condition and effect blocks that make up this strikethrough rule. | 
+**Blocks** | [**[]StrikethroughBlock**](StrikethroughBlock.md) | The condition and effect blocks that make up this strikethrough rule. | 
 
 ## Methods
 
 ### NewStrikethroughRuleV2
 
-`func NewStrikethroughRuleV2(title string, blocks []interface{}, ) *StrikethroughRuleV2`
+`func NewStrikethroughRuleV2(title string, blocks []StrikethroughBlock, ) *StrikethroughRuleV2`
 
 NewStrikethroughRuleV2 instantiates a new StrikethroughRuleV2 object
 This constructor will assign default values to properties that have it defined,
@@ -126,20 +126,20 @@ HasDescription returns a boolean if a field has been set.
 
 ### GetBlocks
 
-`func (o *StrikethroughRuleV2) GetBlocks() []interface{}`
+`func (o *StrikethroughRuleV2) GetBlocks() []StrikethroughBlock`
 
 GetBlocks returns the Blocks field if non-nil, zero value otherwise.
 
 ### GetBlocksOk
 
-`func (o *StrikethroughRuleV2) GetBlocksOk() (*[]interface{}, bool)`
+`func (o *StrikethroughRuleV2) GetBlocksOk() (*[]StrikethroughBlock, bool)`
 
 GetBlocksOk returns a tuple with the Blocks field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetBlocks
 
-`func (o *StrikethroughRuleV2) SetBlocks(v []interface{})`
+`func (o *StrikethroughRuleV2) SetBlocks(v []StrikethroughBlock)`
 
 SetBlocks sets Blocks field to given value.
 

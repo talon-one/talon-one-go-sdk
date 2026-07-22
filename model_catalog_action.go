@@ -13,150 +13,303 @@ package talon
 import (
 	"encoding/json"
 	"fmt"
+	"gopkg.in/validator.v2"
 )
 
-// checks if the CatalogAction type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &CatalogAction{}
-
-// CatalogAction Definition of all the properties that are needed for a single catalog sync action.
+// CatalogAction - Definition of all the properties that are needed for a single catalog sync action.
 type CatalogAction struct {
-	// The type of sync action.
-	Type                 string                 `json:"type"`
-	Payload              map[string]interface{} `json:"payload"`
-	AdditionalProperties map[string]interface{}
+	CatalogActionOneOf  *CatalogActionOneOf
+	CatalogActionOneOf1 *CatalogActionOneOf1
+	CatalogActionOneOf2 *CatalogActionOneOf2
+	CatalogActionOneOf3 *CatalogActionOneOf3
+	CatalogActionOneOf4 *CatalogActionOneOf4
+	CatalogActionOneOf5 *CatalogActionOneOf5
 }
 
-type _CatalogAction CatalogAction
-
-// NewCatalogAction instantiates a new CatalogAction object
-// This constructor will assign default values to properties that have it defined,
-// and makes sure properties required by API are set, but the set of arguments
-// will change when the set of required properties is changed
-func BuildCatalogAction(type_ string, payload map[string]interface{}) *CatalogAction {
-	this := CatalogAction{}
-	this.Type = type_
-	this.Payload = payload
-	return &this
+// CatalogActionOneOfAsCatalogAction is a convenience function that returns CatalogActionOneOf wrapped in CatalogAction
+func CatalogActionOneOfAsCatalogAction(v *CatalogActionOneOf) CatalogAction {
+	return CatalogAction{
+		CatalogActionOneOf: v,
+	}
 }
 
-// NewCatalogActionWithDefaults instantiates a new CatalogAction object
-// This constructor will only assign default values to properties that have it defined,
-// but it doesn't guarantee that properties required by API are set
-func NewCatalogActionWithDefaults() *CatalogAction {
-	this := CatalogAction{}
-	return &this
+// CatalogActionOneOf1AsCatalogAction is a convenience function that returns CatalogActionOneOf1 wrapped in CatalogAction
+func CatalogActionOneOf1AsCatalogAction(v *CatalogActionOneOf1) CatalogAction {
+	return CatalogAction{
+		CatalogActionOneOf1: v,
+	}
 }
 
-// GetType returns the Type field value
-func (o *CatalogAction) GetType() string {
-	if o == nil {
-		var ret string
-		return ret
+// CatalogActionOneOf2AsCatalogAction is a convenience function that returns CatalogActionOneOf2 wrapped in CatalogAction
+func CatalogActionOneOf2AsCatalogAction(v *CatalogActionOneOf2) CatalogAction {
+	return CatalogAction{
+		CatalogActionOneOf2: v,
+	}
+}
+
+// CatalogActionOneOf3AsCatalogAction is a convenience function that returns CatalogActionOneOf3 wrapped in CatalogAction
+func CatalogActionOneOf3AsCatalogAction(v *CatalogActionOneOf3) CatalogAction {
+	return CatalogAction{
+		CatalogActionOneOf3: v,
+	}
+}
+
+// CatalogActionOneOf4AsCatalogAction is a convenience function that returns CatalogActionOneOf4 wrapped in CatalogAction
+func CatalogActionOneOf4AsCatalogAction(v *CatalogActionOneOf4) CatalogAction {
+	return CatalogAction{
+		CatalogActionOneOf4: v,
+	}
+}
+
+// CatalogActionOneOf5AsCatalogAction is a convenience function that returns CatalogActionOneOf5 wrapped in CatalogAction
+func CatalogActionOneOf5AsCatalogAction(v *CatalogActionOneOf5) CatalogAction {
+	return CatalogAction{
+		CatalogActionOneOf5: v,
+	}
+}
+
+// Unmarshal JSON data into one of the pointers in the struct
+func (dst *CatalogAction) UnmarshalJSON(data []byte) error {
+	var err error
+	match := 0
+	// try to unmarshal data into CatalogActionOneOf
+	err = newStrictDecoder(data).Decode(&dst.CatalogActionOneOf)
+	if err == nil {
+		jsonCatalogActionOneOf, _ := json.Marshal(dst.CatalogActionOneOf)
+		if string(jsonCatalogActionOneOf) == "{}" { // empty struct
+			dst.CatalogActionOneOf = nil
+		} else {
+			if err = validator.Validate(dst.CatalogActionOneOf); err != nil {
+				dst.CatalogActionOneOf = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.CatalogActionOneOf = nil
 	}
 
-	return o.Type
-}
-
-// GetTypeOk returns a tuple with the Type field value
-// and a boolean to check if the value has been set.
-func (o *CatalogAction) GetTypeOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Type, true
-}
-
-// SetType sets field value
-func (o *CatalogAction) SetType(v string) {
-	o.Type = v
-}
-
-// GetPayload returns the Payload field value
-func (o *CatalogAction) GetPayload() map[string]interface{} {
-	if o == nil {
-		var ret map[string]interface{}
-		return ret
+	// try to unmarshal data into CatalogActionOneOf1
+	err = newStrictDecoder(data).Decode(&dst.CatalogActionOneOf1)
+	if err == nil {
+		jsonCatalogActionOneOf1, _ := json.Marshal(dst.CatalogActionOneOf1)
+		if string(jsonCatalogActionOneOf1) == "{}" { // empty struct
+			dst.CatalogActionOneOf1 = nil
+		} else {
+			if err = validator.Validate(dst.CatalogActionOneOf1); err != nil {
+				dst.CatalogActionOneOf1 = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.CatalogActionOneOf1 = nil
 	}
 
-	return o.Payload
-}
-
-// GetPayloadOk returns a tuple with the Payload field value
-// and a boolean to check if the value has been set.
-func (o *CatalogAction) GetPayloadOk() (map[string]interface{}, bool) {
-	if o == nil {
-		return map[string]interface{}{}, false
-	}
-	return o.Payload, true
-}
-
-// SetPayload sets field value
-func (o *CatalogAction) SetPayload(v map[string]interface{}) {
-	o.Payload = v
-}
-
-func (o CatalogAction) MarshalJSON() ([]byte, error) {
-	toSerialize, err := o.ToMap()
-	if err != nil {
-		return []byte{}, err
-	}
-	return json.Marshal(toSerialize)
-}
-
-func (o CatalogAction) ToMap() (map[string]interface{}, error) {
-	toSerialize := map[string]interface{}{}
-	toSerialize["type"] = o.Type
-	toSerialize["payload"] = o.Payload
-
-	for key, value := range o.AdditionalProperties {
-		toSerialize[key] = value
+	// try to unmarshal data into CatalogActionOneOf2
+	err = newStrictDecoder(data).Decode(&dst.CatalogActionOneOf2)
+	if err == nil {
+		jsonCatalogActionOneOf2, _ := json.Marshal(dst.CatalogActionOneOf2)
+		if string(jsonCatalogActionOneOf2) == "{}" { // empty struct
+			dst.CatalogActionOneOf2 = nil
+		} else {
+			if err = validator.Validate(dst.CatalogActionOneOf2); err != nil {
+				dst.CatalogActionOneOf2 = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.CatalogActionOneOf2 = nil
 	}
 
-	return toSerialize, nil
-}
-
-func (o *CatalogAction) UnmarshalJSON(data []byte) (err error) {
-	// This validates that all required properties are included in the JSON object
-	// by unmarshalling the object into a generic map with string keys and checking
-	// that every required field exists as a key in the generic map.
-	requiredProperties := []string{
-		"type",
-		"payload",
+	// try to unmarshal data into CatalogActionOneOf3
+	err = newStrictDecoder(data).Decode(&dst.CatalogActionOneOf3)
+	if err == nil {
+		jsonCatalogActionOneOf3, _ := json.Marshal(dst.CatalogActionOneOf3)
+		if string(jsonCatalogActionOneOf3) == "{}" { // empty struct
+			dst.CatalogActionOneOf3 = nil
+		} else {
+			if err = validator.Validate(dst.CatalogActionOneOf3); err != nil {
+				dst.CatalogActionOneOf3 = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.CatalogActionOneOf3 = nil
 	}
 
-	allProperties := make(map[string]interface{})
-
-	err = json.Unmarshal(data, &allProperties)
-
-	if err != nil {
-		return err
+	// try to unmarshal data into CatalogActionOneOf4
+	err = newStrictDecoder(data).Decode(&dst.CatalogActionOneOf4)
+	if err == nil {
+		jsonCatalogActionOneOf4, _ := json.Marshal(dst.CatalogActionOneOf4)
+		if string(jsonCatalogActionOneOf4) == "{}" { // empty struct
+			dst.CatalogActionOneOf4 = nil
+		} else {
+			if err = validator.Validate(dst.CatalogActionOneOf4); err != nil {
+				dst.CatalogActionOneOf4 = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.CatalogActionOneOf4 = nil
 	}
 
-	for _, requiredProperty := range requiredProperties {
-		if _, exists := allProperties[requiredProperty]; !exists {
-			return fmt.Errorf("no value given for required property %v", requiredProperty)
+	// try to unmarshal data into CatalogActionOneOf5
+	err = newStrictDecoder(data).Decode(&dst.CatalogActionOneOf5)
+	if err == nil {
+		jsonCatalogActionOneOf5, _ := json.Marshal(dst.CatalogActionOneOf5)
+		if string(jsonCatalogActionOneOf5) == "{}" { // empty struct
+			dst.CatalogActionOneOf5 = nil
+		} else {
+			if err = validator.Validate(dst.CatalogActionOneOf5); err != nil {
+				dst.CatalogActionOneOf5 = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.CatalogActionOneOf5 = nil
+	}
+
+	if match > 1 { // more than 1 match
+		// reset to nil
+		dst.CatalogActionOneOf = nil
+		dst.CatalogActionOneOf1 = nil
+		dst.CatalogActionOneOf2 = nil
+		dst.CatalogActionOneOf3 = nil
+		dst.CatalogActionOneOf4 = nil
+		dst.CatalogActionOneOf5 = nil
+
+		return fmt.Errorf("data matches more than one schema in oneOf(CatalogAction)")
+	} else if match == 1 {
+		return nil // exactly one match
+	} else { // no match
+		if err != nil {
+			return fmt.Errorf("data failed to match schemas in oneOf(CatalogAction): %v", err)
+		} else {
+			return fmt.Errorf("data failed to match schemas in oneOf(CatalogAction)")
+		}
+		if err != nil {
+			return fmt.Errorf("data failed to match schemas in oneOf(CatalogAction): %v", err)
+		} else {
+			return fmt.Errorf("data failed to match schemas in oneOf(CatalogAction)")
+		}
+		if err != nil {
+			return fmt.Errorf("data failed to match schemas in oneOf(CatalogAction): %v", err)
+		} else {
+			return fmt.Errorf("data failed to match schemas in oneOf(CatalogAction)")
+		}
+		if err != nil {
+			return fmt.Errorf("data failed to match schemas in oneOf(CatalogAction): %v", err)
+		} else {
+			return fmt.Errorf("data failed to match schemas in oneOf(CatalogAction)")
+		}
+		if err != nil {
+			return fmt.Errorf("data failed to match schemas in oneOf(CatalogAction): %v", err)
+		} else {
+			return fmt.Errorf("data failed to match schemas in oneOf(CatalogAction)")
+		}
+		if err != nil {
+			return fmt.Errorf("data failed to match schemas in oneOf(CatalogAction): %v", err)
+		} else {
+			return fmt.Errorf("data failed to match schemas in oneOf(CatalogAction)")
 		}
 	}
+}
 
-	varCatalogAction := _CatalogAction{}
-
-	err = json.Unmarshal(data, &varCatalogAction)
-
-	if err != nil {
-		return err
+// Marshal data from the first non-nil pointers in the struct to JSON
+func (src CatalogAction) MarshalJSON() ([]byte, error) {
+	if src.CatalogActionOneOf != nil {
+		return json.Marshal(&src.CatalogActionOneOf)
 	}
 
-	*o = CatalogAction(varCatalogAction)
-
-	additionalProperties := make(map[string]interface{})
-
-	if err = json.Unmarshal(data, &additionalProperties); err == nil {
-		delete(additionalProperties, "type")
-		delete(additionalProperties, "payload")
-		o.AdditionalProperties = additionalProperties
+	if src.CatalogActionOneOf1 != nil {
+		return json.Marshal(&src.CatalogActionOneOf1)
 	}
 
-	return err
+	if src.CatalogActionOneOf2 != nil {
+		return json.Marshal(&src.CatalogActionOneOf2)
+	}
+
+	if src.CatalogActionOneOf3 != nil {
+		return json.Marshal(&src.CatalogActionOneOf3)
+	}
+
+	if src.CatalogActionOneOf4 != nil {
+		return json.Marshal(&src.CatalogActionOneOf4)
+	}
+
+	if src.CatalogActionOneOf5 != nil {
+		return json.Marshal(&src.CatalogActionOneOf5)
+	}
+
+	return nil, nil // no data in oneOf schemas
+}
+
+// Get the actual instance
+func (obj *CatalogAction) GetActualInstance() interface{} {
+	if obj == nil {
+		return nil
+	}
+	if obj.CatalogActionOneOf != nil {
+		return obj.CatalogActionOneOf
+	}
+
+	if obj.CatalogActionOneOf1 != nil {
+		return obj.CatalogActionOneOf1
+	}
+
+	if obj.CatalogActionOneOf2 != nil {
+		return obj.CatalogActionOneOf2
+	}
+
+	if obj.CatalogActionOneOf3 != nil {
+		return obj.CatalogActionOneOf3
+	}
+
+	if obj.CatalogActionOneOf4 != nil {
+		return obj.CatalogActionOneOf4
+	}
+
+	if obj.CatalogActionOneOf5 != nil {
+		return obj.CatalogActionOneOf5
+	}
+
+	// all schemas are nil
+	return nil
+}
+
+// Get the actual instance value
+func (obj CatalogAction) GetActualInstanceValue() interface{} {
+	if obj.CatalogActionOneOf != nil {
+		return *obj.CatalogActionOneOf
+	}
+
+	if obj.CatalogActionOneOf1 != nil {
+		return *obj.CatalogActionOneOf1
+	}
+
+	if obj.CatalogActionOneOf2 != nil {
+		return *obj.CatalogActionOneOf2
+	}
+
+	if obj.CatalogActionOneOf3 != nil {
+		return *obj.CatalogActionOneOf3
+	}
+
+	if obj.CatalogActionOneOf4 != nil {
+		return *obj.CatalogActionOneOf4
+	}
+
+	if obj.CatalogActionOneOf5 != nil {
+		return *obj.CatalogActionOneOf5
+	}
+
+	// all schemas are nil
+	return nil
 }
 
 type NullableCatalogAction struct {

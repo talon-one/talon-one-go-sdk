@@ -18,6 +18,10 @@ Name | Type | Description | Notes
 **ReportedDate** | **time.Time** | The time the ML service reported this risk. | 
 **AffectedEntityCount** | **int64** | The total number of entities affected by this risk. | 
 **Description** | Pointer to **string** | Human-readable description of the detected anomaly. | [optional] 
+**DiscardReason** | Pointer to **string** | The reason this risk was discarded. Only present on discarded risks. | [optional] 
+**StatusComment** | Pointer to **string** | The free-text details of the latest reclassification action: the description for resolving confirmed risks, or the details for discarding risks.  | [optional] 
+**StatusChangedBy** | Pointer to **int64** | The ID of the user who performed the latest reclassification action. | [optional] 
+**StatusChangedAt** | Pointer to **time.Time** | The time of the latest reclassification action. | [optional] 
 **Modified** | **time.Time** | Timestamp of the most recent update. | 
 **AffectedEntities** | [**[]RiskAffectedEntityItem**](RiskAffectedEntityItem.md) | The affected entities with the highest severity ratios, in descending order. | 
 
@@ -329,6 +333,106 @@ SetDescription sets Description field to given value.
 `func (o *RiskDetail) HasDescription() bool`
 
 HasDescription returns a boolean if a field has been set.
+
+### GetDiscardReason
+
+`func (o *RiskDetail) GetDiscardReason() string`
+
+GetDiscardReason returns the DiscardReason field if non-nil, zero value otherwise.
+
+### GetDiscardReasonOk
+
+`func (o *RiskDetail) GetDiscardReasonOk() (*string, bool)`
+
+GetDiscardReasonOk returns a tuple with the DiscardReason field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetDiscardReason
+
+`func (o *RiskDetail) SetDiscardReason(v string)`
+
+SetDiscardReason sets DiscardReason field to given value.
+
+### HasDiscardReason
+
+`func (o *RiskDetail) HasDiscardReason() bool`
+
+HasDiscardReason returns a boolean if a field has been set.
+
+### GetStatusComment
+
+`func (o *RiskDetail) GetStatusComment() string`
+
+GetStatusComment returns the StatusComment field if non-nil, zero value otherwise.
+
+### GetStatusCommentOk
+
+`func (o *RiskDetail) GetStatusCommentOk() (*string, bool)`
+
+GetStatusCommentOk returns a tuple with the StatusComment field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetStatusComment
+
+`func (o *RiskDetail) SetStatusComment(v string)`
+
+SetStatusComment sets StatusComment field to given value.
+
+### HasStatusComment
+
+`func (o *RiskDetail) HasStatusComment() bool`
+
+HasStatusComment returns a boolean if a field has been set.
+
+### GetStatusChangedBy
+
+`func (o *RiskDetail) GetStatusChangedBy() int64`
+
+GetStatusChangedBy returns the StatusChangedBy field if non-nil, zero value otherwise.
+
+### GetStatusChangedByOk
+
+`func (o *RiskDetail) GetStatusChangedByOk() (*int64, bool)`
+
+GetStatusChangedByOk returns a tuple with the StatusChangedBy field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetStatusChangedBy
+
+`func (o *RiskDetail) SetStatusChangedBy(v int64)`
+
+SetStatusChangedBy sets StatusChangedBy field to given value.
+
+### HasStatusChangedBy
+
+`func (o *RiskDetail) HasStatusChangedBy() bool`
+
+HasStatusChangedBy returns a boolean if a field has been set.
+
+### GetStatusChangedAt
+
+`func (o *RiskDetail) GetStatusChangedAt() time.Time`
+
+GetStatusChangedAt returns the StatusChangedAt field if non-nil, zero value otherwise.
+
+### GetStatusChangedAtOk
+
+`func (o *RiskDetail) GetStatusChangedAtOk() (*time.Time, bool)`
+
+GetStatusChangedAtOk returns a tuple with the StatusChangedAt field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetStatusChangedAt
+
+`func (o *RiskDetail) SetStatusChangedAt(v time.Time)`
+
+SetStatusChangedAt sets StatusChangedAt field to given value.
+
+### HasStatusChangedAt
+
+`func (o *RiskDetail) HasStatusChangedAt() bool`
+
+HasStatusChangedAt returns a boolean if a field has been set.
 
 ### GetModified
 

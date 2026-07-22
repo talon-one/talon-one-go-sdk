@@ -35,9 +35,8 @@ type OutgoingIntegrationTemplateWithConfigurationDetails struct {
 	// The relative URL corresponding to each integration template.
 	RelativeUrl string `json:"relativeUrl"`
 	// The list of HTTP headers for this integration template.
-	Headers []string `json:"headers"`
-	// The outgoing integration policy specific to each integration type.
-	Policy               map[string]interface{} `json:"policy"`
+	Headers              []string                               `json:"headers"`
+	Policy               OutgoingIntegrationConfigurationPolicy `json:"policy"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -47,7 +46,7 @@ type _OutgoingIntegrationTemplateWithConfigurationDetails OutgoingIntegrationTem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildOutgoingIntegrationTemplateWithConfigurationDetails(id int64, integrationType int64, title string, description string, payload string, method string, relativeUrl string, headers []string, policy map[string]interface{}) *OutgoingIntegrationTemplateWithConfigurationDetails {
+func BuildOutgoingIntegrationTemplateWithConfigurationDetails(id int64, integrationType int64, title string, description string, payload string, method string, relativeUrl string, headers []string, policy OutgoingIntegrationConfigurationPolicy) *OutgoingIntegrationTemplateWithConfigurationDetails {
 	this := OutgoingIntegrationTemplateWithConfigurationDetails{}
 	this.Id = id
 	this.IntegrationType = integrationType
@@ -262,9 +261,9 @@ func (o *OutgoingIntegrationTemplateWithConfigurationDetails) SetHeaders(v []str
 }
 
 // GetPolicy returns the Policy field value
-func (o *OutgoingIntegrationTemplateWithConfigurationDetails) GetPolicy() map[string]interface{} {
+func (o *OutgoingIntegrationTemplateWithConfigurationDetails) GetPolicy() OutgoingIntegrationConfigurationPolicy {
 	if o == nil {
-		var ret map[string]interface{}
+		var ret OutgoingIntegrationConfigurationPolicy
 		return ret
 	}
 
@@ -273,15 +272,15 @@ func (o *OutgoingIntegrationTemplateWithConfigurationDetails) GetPolicy() map[st
 
 // GetPolicyOk returns a tuple with the Policy field value
 // and a boolean to check if the value has been set.
-func (o *OutgoingIntegrationTemplateWithConfigurationDetails) GetPolicyOk() (map[string]interface{}, bool) {
+func (o *OutgoingIntegrationTemplateWithConfigurationDetails) GetPolicyOk() (*OutgoingIntegrationConfigurationPolicy, bool) {
 	if o == nil {
-		return map[string]interface{}{}, false
+		return nil, false
 	}
-	return o.Policy, true
+	return &o.Policy, true
 }
 
 // SetPolicy sets field value
-func (o *OutgoingIntegrationTemplateWithConfigurationDetails) SetPolicy(v map[string]interface{}) {
+func (o *OutgoingIntegrationTemplateWithConfigurationDetails) SetPolicy(v OutgoingIntegrationConfigurationPolicy) {
 	o.Policy = v
 }
 

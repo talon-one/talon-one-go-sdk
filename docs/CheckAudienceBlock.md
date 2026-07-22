@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **Operator** | **string** | An indicator of how the block compares its elements. | 
 **Profile** | **string** | The customer profile to check against the audience. &#x60;Current&#x60; targets the customer in the current session; &#x60;Advocate&#x60; targets the person who invited their friend via referral program. | 
 **Audience** | [**CheckAudienceBlock1Audience**](CheckAudienceBlock1Audience.md) |  | 
-**OnFailure** | Pointer to **[]interface{}** | Promotion blocks evaluated when this block fails or returns false. | [optional] 
+**OnFailure** | Pointer to [**[]PromotionBlock**](PromotionBlock.md) | Promotion blocks evaluated when this block fails or returns false. | [optional] 
 
 ## Methods
 
@@ -158,20 +158,20 @@ SetAudience sets Audience field to given value.
 
 ### GetOnFailure
 
-`func (o *CheckAudienceBlock) GetOnFailure() []interface{}`
+`func (o *CheckAudienceBlock) GetOnFailure() []PromotionBlock`
 
 GetOnFailure returns the OnFailure field if non-nil, zero value otherwise.
 
 ### GetOnFailureOk
 
-`func (o *CheckAudienceBlock) GetOnFailureOk() (*[]interface{}, bool)`
+`func (o *CheckAudienceBlock) GetOnFailureOk() (*[]PromotionBlock, bool)`
 
 GetOnFailureOk returns a tuple with the OnFailure field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetOnFailure
 
-`func (o *CheckAudienceBlock) SetOnFailure(v []interface{})`
+`func (o *CheckAudienceBlock) SetOnFailure(v []PromotionBlock)`
 
 SetOnFailure sets OnFailure field to given value.
 
