@@ -18,9 +18,17 @@ import (
 
 // StrikethroughBlock - A block valid in a strikethrough rule. The `type` field identifies the concrete block type.
 type StrikethroughBlock struct {
+	AwardDiscountBlock               *AwardDiscountBlock
 	PassthroughBlock                 *PassthroughBlock
 	StrikethroughCheckAttributeBlock *StrikethroughCheckAttributeBlock
 	StrikethroughGroupBlock          *StrikethroughGroupBlock
+}
+
+// AwardDiscountBlockAsStrikethroughBlock is a convenience function that returns AwardDiscountBlock wrapped in StrikethroughBlock
+func AwardDiscountBlockAsStrikethroughBlock(v *AwardDiscountBlock) StrikethroughBlock {
+	return StrikethroughBlock{
+		AwardDiscountBlock: v,
+	}
 }
 
 // PassthroughBlockAsStrikethroughBlock is a convenience function that returns PassthroughBlock wrapped in StrikethroughBlock
@@ -48,6 +56,23 @@ func StrikethroughGroupBlockAsStrikethroughBlock(v *StrikethroughGroupBlock) Str
 func (dst *StrikethroughBlock) UnmarshalJSON(data []byte) error {
 	var err error
 	match := 0
+	// try to unmarshal data into AwardDiscountBlock
+	err = newStrictDecoder(data).Decode(&dst.AwardDiscountBlock)
+	if err == nil {
+		jsonAwardDiscountBlock, _ := json.Marshal(dst.AwardDiscountBlock)
+		if string(jsonAwardDiscountBlock) == "{}" { // empty struct
+			dst.AwardDiscountBlock = nil
+		} else {
+			if err = validator.Validate(dst.AwardDiscountBlock); err != nil {
+				dst.AwardDiscountBlock = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.AwardDiscountBlock = nil
+	}
+
 	// try to unmarshal data into PassthroughBlock
 	err = newStrictDecoder(data).Decode(&dst.PassthroughBlock)
 	if err == nil {
@@ -101,6 +126,7 @@ func (dst *StrikethroughBlock) UnmarshalJSON(data []byte) error {
 
 	if match > 1 { // more than 1 match
 		// reset to nil
+		dst.AwardDiscountBlock = nil
 		dst.PassthroughBlock = nil
 		dst.StrikethroughCheckAttributeBlock = nil
 		dst.StrikethroughGroupBlock = nil
@@ -124,11 +150,20 @@ func (dst *StrikethroughBlock) UnmarshalJSON(data []byte) error {
 		} else {
 			return fmt.Errorf("data failed to match schemas in oneOf(StrikethroughBlock)")
 		}
+		if err != nil {
+			return fmt.Errorf("data failed to match schemas in oneOf(StrikethroughBlock): %v", err)
+		} else {
+			return fmt.Errorf("data failed to match schemas in oneOf(StrikethroughBlock)")
+		}
 	}
 }
 
 // Marshal data from the first non-nil pointers in the struct to JSON
 func (src StrikethroughBlock) MarshalJSON() ([]byte, error) {
+	if src.AwardDiscountBlock != nil {
+		return json.Marshal(&src.AwardDiscountBlock)
+	}
+
 	if src.PassthroughBlock != nil {
 		return json.Marshal(&src.PassthroughBlock)
 	}
@@ -149,6 +184,10 @@ func (obj *StrikethroughBlock) GetActualInstance() interface{} {
 	if obj == nil {
 		return nil
 	}
+	if obj.AwardDiscountBlock != nil {
+		return obj.AwardDiscountBlock
+	}
+
 	if obj.PassthroughBlock != nil {
 		return obj.PassthroughBlock
 	}
@@ -167,6 +206,10 @@ func (obj *StrikethroughBlock) GetActualInstance() interface{} {
 
 // Get the actual instance value
 func (obj StrikethroughBlock) GetActualInstanceValue() interface{} {
+	if obj.AwardDiscountBlock != nil {
+		return *obj.AwardDiscountBlock
+	}
+
 	if obj.PassthroughBlock != nil {
 		return *obj.PassthroughBlock
 	}

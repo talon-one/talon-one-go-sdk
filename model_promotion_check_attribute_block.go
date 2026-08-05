@@ -27,14 +27,21 @@ type PromotionCheckAttributeBlock struct {
 	// Semantic labels attached to this block.
 	Tags []string `json:"tags,omitempty"`
 	// The comparison operator applied to the attribute.
-	Operator string `json:"operator"`
-	// The attribute path identifier (e.g. \"$Session.Total\").
-	Attribute string      `json:"attribute"`
+	Operator  string      `json:"operator"`
+	Attribute interface{} `json:"attribute"`
 	Value     interface{} `json:"value,omitempty"`
 	Min       interface{} `json:"min,omitempty"`
 	Max       interface{} `json:"max,omitempty"`
-	Values    interface{} `json:"values,omitempty"`
-	Count     interface{} `json:"count,omitempty"`
+	Start     interface{} `json:"start,omitempty"`
+	End       interface{} `json:"end,omitempty"`
+	// When `true`, the `start` value is included in the range for the `within` operator.
+	StartInclusive *bool `json:"startInclusive,omitempty"`
+	// When `true`, the `end` value is included in the range for the `within` operator.
+	EndInclusive *bool `json:"endInclusive,omitempty"`
+	// Indicates whether the `within` operator ignores time zones and compares the wall-clock time only. When `false`, time zones are taken into account.
+	TimezoneInsensitive *bool       `json:"timezoneInsensitive,omitempty"`
+	Values              interface{} `json:"values,omitempty"`
+	Count               interface{} `json:"count,omitempty"`
 	// Promotion blocks evaluated when this block fails or returns false.
 	OnFailure            []PromotionBlock `json:"onFailure,omitempty"`
 	AdditionalProperties map[string]interface{}
@@ -46,7 +53,7 @@ type _PromotionCheckAttributeBlock PromotionCheckAttributeBlock
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildPromotionCheckAttributeBlock(id string, type_ string, operator string, attribute string) *PromotionCheckAttributeBlock {
+func BuildPromotionCheckAttributeBlock(id string, type_ string, operator string, attribute interface{}) *PromotionCheckAttributeBlock {
 	this := PromotionCheckAttributeBlock{}
 	this.Id = id
 	this.Type = type_
@@ -168,9 +175,10 @@ func (o *PromotionCheckAttributeBlock) SetOperator(v string) {
 }
 
 // GetAttribute returns the Attribute field value
-func (o *PromotionCheckAttributeBlock) GetAttribute() string {
+// If the value is explicit nil, the zero value for interface{} will be returned
+func (o *PromotionCheckAttributeBlock) GetAttribute() interface{} {
 	if o == nil {
-		var ret string
+		var ret interface{}
 		return ret
 	}
 
@@ -179,15 +187,16 @@ func (o *PromotionCheckAttributeBlock) GetAttribute() string {
 
 // GetAttributeOk returns a tuple with the Attribute field value
 // and a boolean to check if the value has been set.
-func (o *PromotionCheckAttributeBlock) GetAttributeOk() (*string, bool) {
-	if o == nil {
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *PromotionCheckAttributeBlock) GetAttributeOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.Attribute) {
 		return nil, false
 	}
 	return &o.Attribute, true
 }
 
 // SetAttribute sets field value
-func (o *PromotionCheckAttributeBlock) SetAttribute(v string) {
+func (o *PromotionCheckAttributeBlock) SetAttribute(v interface{}) {
 	o.Attribute = v
 }
 
@@ -288,6 +297,168 @@ func (o *PromotionCheckAttributeBlock) HasMax() bool {
 // SetMax gets a reference to the given interface{} and assigns it to the Max field.
 func (o *PromotionCheckAttributeBlock) SetMax(v interface{}) {
 	o.Max = v
+}
+
+// GetStart returns the Start field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *PromotionCheckAttributeBlock) GetStart() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+	return o.Start
+}
+
+// GetStartOk returns a tuple with the Start field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *PromotionCheckAttributeBlock) GetStartOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.Start) {
+		return nil, false
+	}
+	return &o.Start, true
+}
+
+// HasStart returns a boolean if a field has been set.
+func (o *PromotionCheckAttributeBlock) HasStart() bool {
+	if o != nil && !IsNil(o.Start) {
+		return true
+	}
+
+	return false
+}
+
+// SetStart gets a reference to the given interface{} and assigns it to the Start field.
+func (o *PromotionCheckAttributeBlock) SetStart(v interface{}) {
+	o.Start = v
+}
+
+// GetEnd returns the End field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *PromotionCheckAttributeBlock) GetEnd() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+	return o.End
+}
+
+// GetEndOk returns a tuple with the End field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *PromotionCheckAttributeBlock) GetEndOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.End) {
+		return nil, false
+	}
+	return &o.End, true
+}
+
+// HasEnd returns a boolean if a field has been set.
+func (o *PromotionCheckAttributeBlock) HasEnd() bool {
+	if o != nil && !IsNil(o.End) {
+		return true
+	}
+
+	return false
+}
+
+// SetEnd gets a reference to the given interface{} and assigns it to the End field.
+func (o *PromotionCheckAttributeBlock) SetEnd(v interface{}) {
+	o.End = v
+}
+
+// GetStartInclusive returns the StartInclusive field value if set, zero value otherwise.
+func (o *PromotionCheckAttributeBlock) GetStartInclusive() bool {
+	if o == nil || IsNil(o.StartInclusive) {
+		var ret bool
+		return ret
+	}
+	return *o.StartInclusive
+}
+
+// GetStartInclusiveOk returns a tuple with the StartInclusive field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PromotionCheckAttributeBlock) GetStartInclusiveOk() (*bool, bool) {
+	if o == nil || IsNil(o.StartInclusive) {
+		return nil, false
+	}
+	return o.StartInclusive, true
+}
+
+// HasStartInclusive returns a boolean if a field has been set.
+func (o *PromotionCheckAttributeBlock) HasStartInclusive() bool {
+	if o != nil && !IsNil(o.StartInclusive) {
+		return true
+	}
+
+	return false
+}
+
+// SetStartInclusive gets a reference to the given bool and assigns it to the StartInclusive field.
+func (o *PromotionCheckAttributeBlock) SetStartInclusive(v bool) {
+	o.StartInclusive = &v
+}
+
+// GetEndInclusive returns the EndInclusive field value if set, zero value otherwise.
+func (o *PromotionCheckAttributeBlock) GetEndInclusive() bool {
+	if o == nil || IsNil(o.EndInclusive) {
+		var ret bool
+		return ret
+	}
+	return *o.EndInclusive
+}
+
+// GetEndInclusiveOk returns a tuple with the EndInclusive field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PromotionCheckAttributeBlock) GetEndInclusiveOk() (*bool, bool) {
+	if o == nil || IsNil(o.EndInclusive) {
+		return nil, false
+	}
+	return o.EndInclusive, true
+}
+
+// HasEndInclusive returns a boolean if a field has been set.
+func (o *PromotionCheckAttributeBlock) HasEndInclusive() bool {
+	if o != nil && !IsNil(o.EndInclusive) {
+		return true
+	}
+
+	return false
+}
+
+// SetEndInclusive gets a reference to the given bool and assigns it to the EndInclusive field.
+func (o *PromotionCheckAttributeBlock) SetEndInclusive(v bool) {
+	o.EndInclusive = &v
+}
+
+// GetTimezoneInsensitive returns the TimezoneInsensitive field value if set, zero value otherwise.
+func (o *PromotionCheckAttributeBlock) GetTimezoneInsensitive() bool {
+	if o == nil || IsNil(o.TimezoneInsensitive) {
+		var ret bool
+		return ret
+	}
+	return *o.TimezoneInsensitive
+}
+
+// GetTimezoneInsensitiveOk returns a tuple with the TimezoneInsensitive field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PromotionCheckAttributeBlock) GetTimezoneInsensitiveOk() (*bool, bool) {
+	if o == nil || IsNil(o.TimezoneInsensitive) {
+		return nil, false
+	}
+	return o.TimezoneInsensitive, true
+}
+
+// HasTimezoneInsensitive returns a boolean if a field has been set.
+func (o *PromotionCheckAttributeBlock) HasTimezoneInsensitive() bool {
+	if o != nil && !IsNil(o.TimezoneInsensitive) {
+		return true
+	}
+
+	return false
+}
+
+// SetTimezoneInsensitive gets a reference to the given bool and assigns it to the TimezoneInsensitive field.
+func (o *PromotionCheckAttributeBlock) SetTimezoneInsensitive(v bool) {
+	o.TimezoneInsensitive = &v
 }
 
 // GetValues returns the Values field value if set, zero value otherwise (both if not set or set to explicit null).
@@ -404,7 +575,9 @@ func (o PromotionCheckAttributeBlock) ToMap() (map[string]interface{}, error) {
 		toSerialize["tags"] = o.Tags
 	}
 	toSerialize["operator"] = o.Operator
-	toSerialize["attribute"] = o.Attribute
+	if o.Attribute != nil {
+		toSerialize["attribute"] = o.Attribute
+	}
 	if o.Value != nil {
 		toSerialize["value"] = o.Value
 	}
@@ -413,6 +586,21 @@ func (o PromotionCheckAttributeBlock) ToMap() (map[string]interface{}, error) {
 	}
 	if o.Max != nil {
 		toSerialize["max"] = o.Max
+	}
+	if o.Start != nil {
+		toSerialize["start"] = o.Start
+	}
+	if o.End != nil {
+		toSerialize["end"] = o.End
+	}
+	if !IsNil(o.StartInclusive) {
+		toSerialize["startInclusive"] = o.StartInclusive
+	}
+	if !IsNil(o.EndInclusive) {
+		toSerialize["endInclusive"] = o.EndInclusive
+	}
+	if !IsNil(o.TimezoneInsensitive) {
+		toSerialize["timezoneInsensitive"] = o.TimezoneInsensitive
 	}
 	if o.Values != nil {
 		toSerialize["values"] = o.Values
@@ -477,6 +665,11 @@ func (o *PromotionCheckAttributeBlock) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "value")
 		delete(additionalProperties, "min")
 		delete(additionalProperties, "max")
+		delete(additionalProperties, "start")
+		delete(additionalProperties, "end")
+		delete(additionalProperties, "startInclusive")
+		delete(additionalProperties, "endInclusive")
+		delete(additionalProperties, "timezoneInsensitive")
 		delete(additionalProperties, "values")
 		delete(additionalProperties, "count")
 		delete(additionalProperties, "onFailure")

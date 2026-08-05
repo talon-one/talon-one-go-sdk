@@ -31,7 +31,7 @@ Name | Type | Description | Notes
 **ProgramId** | **int64** | ID of the loyalty program that contains these points. | 
 **SubLedgerId** | **string** | API name of the loyalty program subledger that contains these points. | 
 **RecipientIntegrationId** | **string** | The integration ID of the customer that receives the giveaway. | 
-**StartDate** | Pointer to **time.Time** | The date after which the reimbursed points will be valid. | [optional] 
+**StartDate** | **time.Time** | Timestamp at which the customer&#39;s progress started. | 
 **ExpiryDate** | Pointer to **time.Time** | The date after which the reimbursed points will expire. | [optional] 
 **TransactionUUID** | **string** | The identifier of this loyalty point transaction. | 
 **CartItemPosition** | Pointer to **float32** | The index of the item in the cart item list to which the custom effect is applied. | [optional] 
@@ -63,9 +63,9 @@ Name | Type | Description | Notes
 **IsNewReservation** | **bool** | Indicates whether this is a new coupon reservation or not. | 
 **AudienceId** | Pointer to **int64** | The internal ID of the audience. | [optional] 
 **AudienceName** | Pointer to **string** | The name of the audience. | [optional] 
-**AchievementId** | **int64** | The internal ID of the achievement. | 
+**AchievementId** | **int64** | The ID of the achievement. | 
 **AchievementName** | **string** | The name of the achievement. | 
-**ProgressTrackerId** | **int64** | The internal ID of the achievement progress tracker. | 
+**ProgressTrackerId** | **int64** | The ID of the customer&#39;s progress tracker for this achievement.  For [on-completion achievements](https://docs.talon.one/docs/product/campaigns/achievements/achievements-overview#recurring-on-completion-achievements), this effect generates a unique ID for each iteration. | 
 **Delta** | **float32** | The value by which the customer&#39;s current progress in the achievement has increased. | 
 **Target** | **float32** | The target value to complete the achievement. | 
 **IsJustCompleted** | **bool** | Indicates if the customer has completed the achievement in the current session. | 
@@ -74,12 +74,13 @@ Name | Type | Description | Notes
 **ExtensionDuration** | **string** | Time frame by which the expiry date extends.  The time format is either: - immediate, or - an **integer** followed by a letter indicating the time unit.  Examples: &#x60;immediate&#x60;, &#x60;30s&#x60;, &#x60;40m&#x60;, &#x60;1h&#x60;, &#x60;5D&#x60;, &#x60;7W&#x60;, &#x60;10M&#x60;, &#x60;15Y&#x60;.  Available units:  - &#x60;s&#x60;: seconds - &#x60;m&#x60;: minutes - &#x60;h&#x60;: hours - &#x60;D&#x60;: days - &#x60;W&#x60;: weeks - &#x60;M&#x60;: months - &#x60;Y&#x60;: years  You can round certain units up or down: - &#x60;_D&#x60; for rounding down days only. Signifies the start of the day. - &#x60;_U&#x60; for rounding up days, weeks, months and years. Signifies the end of the day, week, month or year.  | 
 **AffectedTransactions** | Pointer to [**[]LoyaltyLedgerEntryExpiryDateChange**](LoyaltyLedgerEntryExpiryDateChange.md) | List of transactions affected by the expiry date update. | [optional] 
 **NewExpiryDate** | **time.Time** | The specified expiry date and time for all active and pending point transactions in the loyalty program subledger. | 
+**EndDate** | Pointer to **time.Time** | Timestamp at which this progress period ends.  Only returned for achievements that have a fixed end date. [On-completion achievements](https://docs.talon.one/docs/product/campaigns/achievements/achievements-overview#recurring-on-completion-achievements) have no end date. | [optional] 
 
 ## Methods
 
 ### NewEffectProps
 
-`func NewEffectProps(value float32, id int64, rejectionReason string, profileId int64, name string, position float32, additionalCostId int64, additionalCost string, webhookId float32, webhookName string, programId int64, subLedgerId string, recipientIntegrationId string, transactionUUID string, ruleTitle string, newTierName string, sku string, notificationType string, title string, body string, path string, description string, bundleAttributes []string, itemsIndices []float32, poolId int64, poolName string, giveawayId int64, code string, message string, effectId int64, payload map[string]interface{}, couponValue string, profileIntegrationId string, isNewReservation bool, achievementId int64, achievementName string, progressTrackerId int64, delta float32, target float32, isJustCompleted bool, decreaseProgressBy float32, currentProgress float32, extensionDuration string, newExpiryDate time.Time, ) *EffectProps`
+`func NewEffectProps(value float32, id int64, rejectionReason string, profileId int64, name string, position float32, additionalCostId int64, additionalCost string, webhookId float32, webhookName string, programId int64, subLedgerId string, recipientIntegrationId string, startDate time.Time, transactionUUID string, ruleTitle string, newTierName string, sku string, notificationType string, title string, body string, path string, description string, bundleAttributes []string, itemsIndices []float32, poolId int64, poolName string, giveawayId int64, code string, message string, effectId int64, payload map[string]interface{}, couponValue string, profileIntegrationId string, isNewReservation bool, achievementId int64, achievementName string, progressTrackerId int64, delta float32, target float32, isJustCompleted bool, decreaseProgressBy float32, currentProgress float32, extensionDuration string, newExpiryDate time.Time, ) *EffectProps`
 
 NewEffectProps instantiates a new EffectProps object
 This constructor will assign default values to properties that have it defined,
@@ -723,11 +724,6 @@ and a boolean to check if the value has been set.
 
 SetStartDate sets StartDate field to given value.
 
-### HasStartDate
-
-`func (o *EffectProps) HasStartDate() bool`
-
-HasStartDate returns a boolean if a field has been set.
 
 ### GetExpiryDate
 
@@ -1623,6 +1619,31 @@ and a boolean to check if the value has been set.
 
 SetNewExpiryDate sets NewExpiryDate field to given value.
 
+
+### GetEndDate
+
+`func (o *EffectProps) GetEndDate() time.Time`
+
+GetEndDate returns the EndDate field if non-nil, zero value otherwise.
+
+### GetEndDateOk
+
+`func (o *EffectProps) GetEndDateOk() (*time.Time, bool)`
+
+GetEndDateOk returns a tuple with the EndDate field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetEndDate
+
+`func (o *EffectProps) SetEndDate(v time.Time)`
+
+SetEndDate sets EndDate field to given value.
+
+### HasEndDate
+
+`func (o *EffectProps) HasEndDate() bool`
+
+HasEndDate returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

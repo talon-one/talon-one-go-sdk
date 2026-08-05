@@ -50,6 +50,7 @@ type EffectAllOfProps struct {
 	SetLoyaltyPointsExpiryDateEffectProps           *SetLoyaltyPointsExpiryDateEffectProps
 	ShowBundleMetadataEffectProps                   *ShowBundleMetadataEffectProps
 	ShowNotificationEffectProps                     *ShowNotificationEffectProps
+	StartAchievementProgressEffectProps             *StartAchievementProgressEffectProps
 	TriggerWebhookEffectProps                       *TriggerWebhookEffectProps
 	UpdateAttributeEffectProps                      *UpdateAttributeEffectProps
 	WillAwardGiveawayEffectProps                    *WillAwardGiveawayEffectProps
@@ -276,6 +277,13 @@ func ShowBundleMetadataEffectPropsAsEffectAllOfProps(v *ShowBundleMetadataEffect
 func ShowNotificationEffectPropsAsEffectAllOfProps(v *ShowNotificationEffectProps) EffectAllOfProps {
 	return EffectAllOfProps{
 		ShowNotificationEffectProps: v,
+	}
+}
+
+// StartAchievementProgressEffectPropsAsEffectAllOfProps is a convenience function that returns StartAchievementProgressEffectProps wrapped in EffectAllOfProps
+func StartAchievementProgressEffectPropsAsEffectAllOfProps(v *StartAchievementProgressEffectProps) EffectAllOfProps {
+	return EffectAllOfProps{
+		StartAchievementProgressEffectProps: v,
 	}
 }
 
@@ -848,6 +856,23 @@ func (dst *EffectAllOfProps) UnmarshalJSON(data []byte) error {
 		dst.ShowNotificationEffectProps = nil
 	}
 
+	// try to unmarshal data into StartAchievementProgressEffectProps
+	err = newStrictDecoder(data).Decode(&dst.StartAchievementProgressEffectProps)
+	if err == nil {
+		jsonStartAchievementProgressEffectProps, _ := json.Marshal(dst.StartAchievementProgressEffectProps)
+		if string(jsonStartAchievementProgressEffectProps) == "{}" { // empty struct
+			dst.StartAchievementProgressEffectProps = nil
+		} else {
+			if err = validator.Validate(dst.StartAchievementProgressEffectProps); err != nil {
+				dst.StartAchievementProgressEffectProps = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.StartAchievementProgressEffectProps = nil
+	}
+
 	// try to unmarshal data into TriggerWebhookEffectProps
 	err = newStrictDecoder(data).Decode(&dst.TriggerWebhookEffectProps)
 	if err == nil {
@@ -933,6 +958,7 @@ func (dst *EffectAllOfProps) UnmarshalJSON(data []byte) error {
 		dst.SetLoyaltyPointsExpiryDateEffectProps = nil
 		dst.ShowBundleMetadataEffectProps = nil
 		dst.ShowNotificationEffectProps = nil
+		dst.StartAchievementProgressEffectProps = nil
 		dst.TriggerWebhookEffectProps = nil
 		dst.UpdateAttributeEffectProps = nil
 		dst.WillAwardGiveawayEffectProps = nil
@@ -941,6 +967,11 @@ func (dst *EffectAllOfProps) UnmarshalJSON(data []byte) error {
 	} else if match == 1 {
 		return nil // exactly one match
 	} else { // no match
+		if err != nil {
+			return fmt.Errorf("data failed to match schemas in oneOf(EffectAllOfProps): %v", err)
+		} else {
+			return fmt.Errorf("data failed to match schemas in oneOf(EffectAllOfProps)")
+		}
 		if err != nil {
 			return fmt.Errorf("data failed to match schemas in oneOf(EffectAllOfProps): %v", err)
 		} else {
@@ -1249,6 +1280,10 @@ func (src EffectAllOfProps) MarshalJSON() ([]byte, error) {
 		return json.Marshal(&src.ShowNotificationEffectProps)
 	}
 
+	if src.StartAchievementProgressEffectProps != nil {
+		return json.Marshal(&src.StartAchievementProgressEffectProps)
+	}
+
 	if src.TriggerWebhookEffectProps != nil {
 		return json.Marshal(&src.TriggerWebhookEffectProps)
 	}
@@ -1397,6 +1432,10 @@ func (obj *EffectAllOfProps) GetActualInstance() interface{} {
 		return obj.ShowNotificationEffectProps
 	}
 
+	if obj.StartAchievementProgressEffectProps != nil {
+		return obj.StartAchievementProgressEffectProps
+	}
+
 	if obj.TriggerWebhookEffectProps != nil {
 		return obj.TriggerWebhookEffectProps
 	}
@@ -1541,6 +1580,10 @@ func (obj EffectAllOfProps) GetActualInstanceValue() interface{} {
 
 	if obj.ShowNotificationEffectProps != nil {
 		return *obj.ShowNotificationEffectProps
+	}
+
+	if obj.StartAchievementProgressEffectProps != nil {
+		return *obj.StartAchievementProgressEffectProps
 	}
 
 	if obj.TriggerWebhookEffectProps != nil {

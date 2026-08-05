@@ -41,6 +41,7 @@ Method | HTTP request | Description
 [**DeleteUserByEmail**](ManagementAPI.md#DeleteUserByEmail) | **Post** /v1/users/delete | Delete user by email address
 [**DestroySession**](ManagementAPI.md#DestroySession) | **Delete** /v1/sessions | Destroy session
 [**DisconnectCampaignStores**](ManagementAPI.md#DisconnectCampaignStores) | **Delete** /v1/applications/{applicationId}/campaigns/{campaignId}/stores | Disconnect stores
+[**ExcludePriceHistory**](ManagementAPI.md#ExcludePriceHistory) | **Post** /v1/applications/{applicationId}/price_history/exclusions | Exclude price records from price history
 [**ExportAccountCollectionItems**](ManagementAPI.md#ExportAccountCollectionItems) | **Get** /v1/collections/{collectionId}/export | Export account-level collection&#39;s items
 [**ExportAchievements**](ManagementAPI.md#ExportAchievements) | **Get** /v1/applications/{applicationId}/campaigns/{campaignId}/achievements/{achievementId}/export | Export achievement customer data
 [**ExportApplicationCampaignAnalytics**](ManagementAPI.md#ExportApplicationCampaignAnalytics) | **Get** /v1/applications/{applicationId}/campaign_analytics/export | Export Application analytics aggregated by campaign
@@ -2827,6 +2828,76 @@ Name | Type | Description  | Notes
 
 - **Content-Type**: Not defined
 - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ExcludePriceHistory
+
+> ExcludePriceHistory(ctx, applicationId).ExcludePriceObservationsRequest(excludePriceObservationsRequest).Execute()
+
+Exclude price records from price history
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	applicationId := int64(789) // int64 | The ID of the Application. It is displayed in your Talon.One deployment URL.
+	excludePriceObservationsRequest := *openapiclient.NewExcludePriceObservationsRequest([]int64{int64(123)}, "Incorrect contextID value.") // ExcludePriceObservationsRequest | body
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	r, err := apiClient.ManagementAPI.ExcludePriceHistory(context.Background(), applicationId).ExcludePriceObservationsRequest(excludePriceObservationsRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.ExcludePriceHistory``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**applicationId** | **int64** | The ID of the Application. It is displayed in your Talon.One deployment URL. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiExcludePriceHistoryRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **excludePriceObservationsRequest** | [**ExcludePriceObservationsRequest**](ExcludePriceObservationsRequest.md) | body | 
+
+### Return type
+
+ (empty response body)
+
+### Authorization
+
+[api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: Not defined
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)

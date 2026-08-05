@@ -9,12 +9,13 @@ Name | Type | Description | Notes
 **ApplicationName** | **string** | The name of the Application associated with the campaign that references this achievement. | 
 **CampaignId** | **int64** | The ID of the campaign that references this achievement. | 
 **CampaignName** | **string** | The name of the campaign that references this achievement. | 
+**CampaignState** | **string** | The state of the campaign that references this achievement. | 
 
 ## Methods
 
 ### NewAchievementReference
 
-`func NewAchievementReference(achievementId int64, applicationId int64, applicationName string, campaignId int64, campaignName string, ) *AchievementReference`
+`func NewAchievementReference(achievementId int64, applicationId int64, applicationName string, campaignId int64, campaignName string, campaignState string, ) *AchievementReference`
 
 NewAchievementReference instantiates a new AchievementReference object
 This constructor will assign default values to properties that have it defined,
@@ -127,6 +128,26 @@ and a boolean to check if the value has been set.
 `func (o *AchievementReference) SetCampaignName(v string)`
 
 SetCampaignName sets CampaignName field to given value.
+
+
+### GetCampaignState
+
+`func (o *AchievementReference) GetCampaignState() string`
+
+GetCampaignState returns the CampaignState field if non-nil, zero value otherwise.
+
+### GetCampaignStateOk
+
+`func (o *AchievementReference) GetCampaignStateOk() (*string, bool)`
+
+GetCampaignStateOk returns a tuple with the CampaignState field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCampaignState
+
+`func (o *AchievementReference) SetCampaignState(v string)`
+
+SetCampaignState sets CampaignState field to given value.
 
 
 

@@ -18,18 +18,35 @@ import (
 
 // PromotionBlock - Describes a part of the logic of the rule.
 type PromotionBlock struct {
+	AwardDiscountBlock             *AwardDiscountBlock
 	AwardGiveawayBlock             *AwardGiveawayBlock
 	AwardItemBlock                 *AwardItemBlock
+	CheckAchievementBlock          *CheckAchievementBlock
 	CheckAudienceBlock             *CheckAudienceBlock
+	CheckBudgetBlock               *CheckBudgetBlock
 	CheckCouponBlock               *CheckCouponBlock
+	CheckEventBlock                *CheckEventBlock
+	CheckLoyaltyBalanceBlock       *CheckLoyaltyBalanceBlock
 	CheckReferralBlock             *CheckReferralBlock
+	CreateCouponBlock              *CreateCouponBlock
+	CreateReferralBlock            *CreateReferralBlock
 	PassthroughBlock               *PassthroughBlock
 	PromotionCheckAttributeBlock   *PromotionCheckAttributeBlock
 	PromotionGroupBlock            *PromotionGroupBlock
+	ReserveCouponBlock             *ReserveCouponBlock
 	ShowNotificationBlock          *ShowNotificationBlock
+	TriggerCustomEffectBlock       *TriggerCustomEffectBlock
+	TriggerWebhookBlock            *TriggerWebhookBlock
 	UpdateAchievementProgressBlock *UpdateAchievementProgressBlock
 	UpdateAttributeValueBlock      *UpdateAttributeValueBlock
 	UpdateAudienceMembershipBlock  *UpdateAudienceMembershipBlock
+}
+
+// AwardDiscountBlockAsPromotionBlock is a convenience function that returns AwardDiscountBlock wrapped in PromotionBlock
+func AwardDiscountBlockAsPromotionBlock(v *AwardDiscountBlock) PromotionBlock {
+	return PromotionBlock{
+		AwardDiscountBlock: v,
+	}
 }
 
 // AwardGiveawayBlockAsPromotionBlock is a convenience function that returns AwardGiveawayBlock wrapped in PromotionBlock
@@ -46,10 +63,24 @@ func AwardItemBlockAsPromotionBlock(v *AwardItemBlock) PromotionBlock {
 	}
 }
 
+// CheckAchievementBlockAsPromotionBlock is a convenience function that returns CheckAchievementBlock wrapped in PromotionBlock
+func CheckAchievementBlockAsPromotionBlock(v *CheckAchievementBlock) PromotionBlock {
+	return PromotionBlock{
+		CheckAchievementBlock: v,
+	}
+}
+
 // CheckAudienceBlockAsPromotionBlock is a convenience function that returns CheckAudienceBlock wrapped in PromotionBlock
 func CheckAudienceBlockAsPromotionBlock(v *CheckAudienceBlock) PromotionBlock {
 	return PromotionBlock{
 		CheckAudienceBlock: v,
+	}
+}
+
+// CheckBudgetBlockAsPromotionBlock is a convenience function that returns CheckBudgetBlock wrapped in PromotionBlock
+func CheckBudgetBlockAsPromotionBlock(v *CheckBudgetBlock) PromotionBlock {
+	return PromotionBlock{
+		CheckBudgetBlock: v,
 	}
 }
 
@@ -60,10 +91,38 @@ func CheckCouponBlockAsPromotionBlock(v *CheckCouponBlock) PromotionBlock {
 	}
 }
 
+// CheckEventBlockAsPromotionBlock is a convenience function that returns CheckEventBlock wrapped in PromotionBlock
+func CheckEventBlockAsPromotionBlock(v *CheckEventBlock) PromotionBlock {
+	return PromotionBlock{
+		CheckEventBlock: v,
+	}
+}
+
+// CheckLoyaltyBalanceBlockAsPromotionBlock is a convenience function that returns CheckLoyaltyBalanceBlock wrapped in PromotionBlock
+func CheckLoyaltyBalanceBlockAsPromotionBlock(v *CheckLoyaltyBalanceBlock) PromotionBlock {
+	return PromotionBlock{
+		CheckLoyaltyBalanceBlock: v,
+	}
+}
+
 // CheckReferralBlockAsPromotionBlock is a convenience function that returns CheckReferralBlock wrapped in PromotionBlock
 func CheckReferralBlockAsPromotionBlock(v *CheckReferralBlock) PromotionBlock {
 	return PromotionBlock{
 		CheckReferralBlock: v,
+	}
+}
+
+// CreateCouponBlockAsPromotionBlock is a convenience function that returns CreateCouponBlock wrapped in PromotionBlock
+func CreateCouponBlockAsPromotionBlock(v *CreateCouponBlock) PromotionBlock {
+	return PromotionBlock{
+		CreateCouponBlock: v,
+	}
+}
+
+// CreateReferralBlockAsPromotionBlock is a convenience function that returns CreateReferralBlock wrapped in PromotionBlock
+func CreateReferralBlockAsPromotionBlock(v *CreateReferralBlock) PromotionBlock {
+	return PromotionBlock{
+		CreateReferralBlock: v,
 	}
 }
 
@@ -88,10 +147,31 @@ func PromotionGroupBlockAsPromotionBlock(v *PromotionGroupBlock) PromotionBlock 
 	}
 }
 
+// ReserveCouponBlockAsPromotionBlock is a convenience function that returns ReserveCouponBlock wrapped in PromotionBlock
+func ReserveCouponBlockAsPromotionBlock(v *ReserveCouponBlock) PromotionBlock {
+	return PromotionBlock{
+		ReserveCouponBlock: v,
+	}
+}
+
 // ShowNotificationBlockAsPromotionBlock is a convenience function that returns ShowNotificationBlock wrapped in PromotionBlock
 func ShowNotificationBlockAsPromotionBlock(v *ShowNotificationBlock) PromotionBlock {
 	return PromotionBlock{
 		ShowNotificationBlock: v,
+	}
+}
+
+// TriggerCustomEffectBlockAsPromotionBlock is a convenience function that returns TriggerCustomEffectBlock wrapped in PromotionBlock
+func TriggerCustomEffectBlockAsPromotionBlock(v *TriggerCustomEffectBlock) PromotionBlock {
+	return PromotionBlock{
+		TriggerCustomEffectBlock: v,
+	}
+}
+
+// TriggerWebhookBlockAsPromotionBlock is a convenience function that returns TriggerWebhookBlock wrapped in PromotionBlock
+func TriggerWebhookBlockAsPromotionBlock(v *TriggerWebhookBlock) PromotionBlock {
+	return PromotionBlock{
+		TriggerWebhookBlock: v,
 	}
 }
 
@@ -120,6 +200,23 @@ func UpdateAudienceMembershipBlockAsPromotionBlock(v *UpdateAudienceMembershipBl
 func (dst *PromotionBlock) UnmarshalJSON(data []byte) error {
 	var err error
 	match := 0
+	// try to unmarshal data into AwardDiscountBlock
+	err = newStrictDecoder(data).Decode(&dst.AwardDiscountBlock)
+	if err == nil {
+		jsonAwardDiscountBlock, _ := json.Marshal(dst.AwardDiscountBlock)
+		if string(jsonAwardDiscountBlock) == "{}" { // empty struct
+			dst.AwardDiscountBlock = nil
+		} else {
+			if err = validator.Validate(dst.AwardDiscountBlock); err != nil {
+				dst.AwardDiscountBlock = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.AwardDiscountBlock = nil
+	}
+
 	// try to unmarshal data into AwardGiveawayBlock
 	err = newStrictDecoder(data).Decode(&dst.AwardGiveawayBlock)
 	if err == nil {
@@ -154,6 +251,23 @@ func (dst *PromotionBlock) UnmarshalJSON(data []byte) error {
 		dst.AwardItemBlock = nil
 	}
 
+	// try to unmarshal data into CheckAchievementBlock
+	err = newStrictDecoder(data).Decode(&dst.CheckAchievementBlock)
+	if err == nil {
+		jsonCheckAchievementBlock, _ := json.Marshal(dst.CheckAchievementBlock)
+		if string(jsonCheckAchievementBlock) == "{}" { // empty struct
+			dst.CheckAchievementBlock = nil
+		} else {
+			if err = validator.Validate(dst.CheckAchievementBlock); err != nil {
+				dst.CheckAchievementBlock = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.CheckAchievementBlock = nil
+	}
+
 	// try to unmarshal data into CheckAudienceBlock
 	err = newStrictDecoder(data).Decode(&dst.CheckAudienceBlock)
 	if err == nil {
@@ -169,6 +283,23 @@ func (dst *PromotionBlock) UnmarshalJSON(data []byte) error {
 		}
 	} else {
 		dst.CheckAudienceBlock = nil
+	}
+
+	// try to unmarshal data into CheckBudgetBlock
+	err = newStrictDecoder(data).Decode(&dst.CheckBudgetBlock)
+	if err == nil {
+		jsonCheckBudgetBlock, _ := json.Marshal(dst.CheckBudgetBlock)
+		if string(jsonCheckBudgetBlock) == "{}" { // empty struct
+			dst.CheckBudgetBlock = nil
+		} else {
+			if err = validator.Validate(dst.CheckBudgetBlock); err != nil {
+				dst.CheckBudgetBlock = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.CheckBudgetBlock = nil
 	}
 
 	// try to unmarshal data into CheckCouponBlock
@@ -188,6 +319,40 @@ func (dst *PromotionBlock) UnmarshalJSON(data []byte) error {
 		dst.CheckCouponBlock = nil
 	}
 
+	// try to unmarshal data into CheckEventBlock
+	err = newStrictDecoder(data).Decode(&dst.CheckEventBlock)
+	if err == nil {
+		jsonCheckEventBlock, _ := json.Marshal(dst.CheckEventBlock)
+		if string(jsonCheckEventBlock) == "{}" { // empty struct
+			dst.CheckEventBlock = nil
+		} else {
+			if err = validator.Validate(dst.CheckEventBlock); err != nil {
+				dst.CheckEventBlock = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.CheckEventBlock = nil
+	}
+
+	// try to unmarshal data into CheckLoyaltyBalanceBlock
+	err = newStrictDecoder(data).Decode(&dst.CheckLoyaltyBalanceBlock)
+	if err == nil {
+		jsonCheckLoyaltyBalanceBlock, _ := json.Marshal(dst.CheckLoyaltyBalanceBlock)
+		if string(jsonCheckLoyaltyBalanceBlock) == "{}" { // empty struct
+			dst.CheckLoyaltyBalanceBlock = nil
+		} else {
+			if err = validator.Validate(dst.CheckLoyaltyBalanceBlock); err != nil {
+				dst.CheckLoyaltyBalanceBlock = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.CheckLoyaltyBalanceBlock = nil
+	}
+
 	// try to unmarshal data into CheckReferralBlock
 	err = newStrictDecoder(data).Decode(&dst.CheckReferralBlock)
 	if err == nil {
@@ -203,6 +368,40 @@ func (dst *PromotionBlock) UnmarshalJSON(data []byte) error {
 		}
 	} else {
 		dst.CheckReferralBlock = nil
+	}
+
+	// try to unmarshal data into CreateCouponBlock
+	err = newStrictDecoder(data).Decode(&dst.CreateCouponBlock)
+	if err == nil {
+		jsonCreateCouponBlock, _ := json.Marshal(dst.CreateCouponBlock)
+		if string(jsonCreateCouponBlock) == "{}" { // empty struct
+			dst.CreateCouponBlock = nil
+		} else {
+			if err = validator.Validate(dst.CreateCouponBlock); err != nil {
+				dst.CreateCouponBlock = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.CreateCouponBlock = nil
+	}
+
+	// try to unmarshal data into CreateReferralBlock
+	err = newStrictDecoder(data).Decode(&dst.CreateReferralBlock)
+	if err == nil {
+		jsonCreateReferralBlock, _ := json.Marshal(dst.CreateReferralBlock)
+		if string(jsonCreateReferralBlock) == "{}" { // empty struct
+			dst.CreateReferralBlock = nil
+		} else {
+			if err = validator.Validate(dst.CreateReferralBlock); err != nil {
+				dst.CreateReferralBlock = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.CreateReferralBlock = nil
 	}
 
 	// try to unmarshal data into PassthroughBlock
@@ -256,6 +455,23 @@ func (dst *PromotionBlock) UnmarshalJSON(data []byte) error {
 		dst.PromotionGroupBlock = nil
 	}
 
+	// try to unmarshal data into ReserveCouponBlock
+	err = newStrictDecoder(data).Decode(&dst.ReserveCouponBlock)
+	if err == nil {
+		jsonReserveCouponBlock, _ := json.Marshal(dst.ReserveCouponBlock)
+		if string(jsonReserveCouponBlock) == "{}" { // empty struct
+			dst.ReserveCouponBlock = nil
+		} else {
+			if err = validator.Validate(dst.ReserveCouponBlock); err != nil {
+				dst.ReserveCouponBlock = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.ReserveCouponBlock = nil
+	}
+
 	// try to unmarshal data into ShowNotificationBlock
 	err = newStrictDecoder(data).Decode(&dst.ShowNotificationBlock)
 	if err == nil {
@@ -271,6 +487,40 @@ func (dst *PromotionBlock) UnmarshalJSON(data []byte) error {
 		}
 	} else {
 		dst.ShowNotificationBlock = nil
+	}
+
+	// try to unmarshal data into TriggerCustomEffectBlock
+	err = newStrictDecoder(data).Decode(&dst.TriggerCustomEffectBlock)
+	if err == nil {
+		jsonTriggerCustomEffectBlock, _ := json.Marshal(dst.TriggerCustomEffectBlock)
+		if string(jsonTriggerCustomEffectBlock) == "{}" { // empty struct
+			dst.TriggerCustomEffectBlock = nil
+		} else {
+			if err = validator.Validate(dst.TriggerCustomEffectBlock); err != nil {
+				dst.TriggerCustomEffectBlock = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.TriggerCustomEffectBlock = nil
+	}
+
+	// try to unmarshal data into TriggerWebhookBlock
+	err = newStrictDecoder(data).Decode(&dst.TriggerWebhookBlock)
+	if err == nil {
+		jsonTriggerWebhookBlock, _ := json.Marshal(dst.TriggerWebhookBlock)
+		if string(jsonTriggerWebhookBlock) == "{}" { // empty struct
+			dst.TriggerWebhookBlock = nil
+		} else {
+			if err = validator.Validate(dst.TriggerWebhookBlock); err != nil {
+				dst.TriggerWebhookBlock = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.TriggerWebhookBlock = nil
 	}
 
 	// try to unmarshal data into UpdateAchievementProgressBlock
@@ -326,15 +576,25 @@ func (dst *PromotionBlock) UnmarshalJSON(data []byte) error {
 
 	if match > 1 { // more than 1 match
 		// reset to nil
+		dst.AwardDiscountBlock = nil
 		dst.AwardGiveawayBlock = nil
 		dst.AwardItemBlock = nil
+		dst.CheckAchievementBlock = nil
 		dst.CheckAudienceBlock = nil
+		dst.CheckBudgetBlock = nil
 		dst.CheckCouponBlock = nil
+		dst.CheckEventBlock = nil
+		dst.CheckLoyaltyBalanceBlock = nil
 		dst.CheckReferralBlock = nil
+		dst.CreateCouponBlock = nil
+		dst.CreateReferralBlock = nil
 		dst.PassthroughBlock = nil
 		dst.PromotionCheckAttributeBlock = nil
 		dst.PromotionGroupBlock = nil
+		dst.ReserveCouponBlock = nil
 		dst.ShowNotificationBlock = nil
+		dst.TriggerCustomEffectBlock = nil
+		dst.TriggerWebhookBlock = nil
 		dst.UpdateAchievementProgressBlock = nil
 		dst.UpdateAttributeValueBlock = nil
 		dst.UpdateAudienceMembershipBlock = nil
@@ -403,11 +663,65 @@ func (dst *PromotionBlock) UnmarshalJSON(data []byte) error {
 		} else {
 			return fmt.Errorf("data failed to match schemas in oneOf(PromotionBlock)")
 		}
+		if err != nil {
+			return fmt.Errorf("data failed to match schemas in oneOf(PromotionBlock): %v", err)
+		} else {
+			return fmt.Errorf("data failed to match schemas in oneOf(PromotionBlock)")
+		}
+		if err != nil {
+			return fmt.Errorf("data failed to match schemas in oneOf(PromotionBlock): %v", err)
+		} else {
+			return fmt.Errorf("data failed to match schemas in oneOf(PromotionBlock)")
+		}
+		if err != nil {
+			return fmt.Errorf("data failed to match schemas in oneOf(PromotionBlock): %v", err)
+		} else {
+			return fmt.Errorf("data failed to match schemas in oneOf(PromotionBlock)")
+		}
+		if err != nil {
+			return fmt.Errorf("data failed to match schemas in oneOf(PromotionBlock): %v", err)
+		} else {
+			return fmt.Errorf("data failed to match schemas in oneOf(PromotionBlock)")
+		}
+		if err != nil {
+			return fmt.Errorf("data failed to match schemas in oneOf(PromotionBlock): %v", err)
+		} else {
+			return fmt.Errorf("data failed to match schemas in oneOf(PromotionBlock)")
+		}
+		if err != nil {
+			return fmt.Errorf("data failed to match schemas in oneOf(PromotionBlock): %v", err)
+		} else {
+			return fmt.Errorf("data failed to match schemas in oneOf(PromotionBlock)")
+		}
+		if err != nil {
+			return fmt.Errorf("data failed to match schemas in oneOf(PromotionBlock): %v", err)
+		} else {
+			return fmt.Errorf("data failed to match schemas in oneOf(PromotionBlock)")
+		}
+		if err != nil {
+			return fmt.Errorf("data failed to match schemas in oneOf(PromotionBlock): %v", err)
+		} else {
+			return fmt.Errorf("data failed to match schemas in oneOf(PromotionBlock)")
+		}
+		if err != nil {
+			return fmt.Errorf("data failed to match schemas in oneOf(PromotionBlock): %v", err)
+		} else {
+			return fmt.Errorf("data failed to match schemas in oneOf(PromotionBlock)")
+		}
+		if err != nil {
+			return fmt.Errorf("data failed to match schemas in oneOf(PromotionBlock): %v", err)
+		} else {
+			return fmt.Errorf("data failed to match schemas in oneOf(PromotionBlock)")
+		}
 	}
 }
 
 // Marshal data from the first non-nil pointers in the struct to JSON
 func (src PromotionBlock) MarshalJSON() ([]byte, error) {
+	if src.AwardDiscountBlock != nil {
+		return json.Marshal(&src.AwardDiscountBlock)
+	}
+
 	if src.AwardGiveawayBlock != nil {
 		return json.Marshal(&src.AwardGiveawayBlock)
 	}
@@ -416,16 +730,40 @@ func (src PromotionBlock) MarshalJSON() ([]byte, error) {
 		return json.Marshal(&src.AwardItemBlock)
 	}
 
+	if src.CheckAchievementBlock != nil {
+		return json.Marshal(&src.CheckAchievementBlock)
+	}
+
 	if src.CheckAudienceBlock != nil {
 		return json.Marshal(&src.CheckAudienceBlock)
+	}
+
+	if src.CheckBudgetBlock != nil {
+		return json.Marshal(&src.CheckBudgetBlock)
 	}
 
 	if src.CheckCouponBlock != nil {
 		return json.Marshal(&src.CheckCouponBlock)
 	}
 
+	if src.CheckEventBlock != nil {
+		return json.Marshal(&src.CheckEventBlock)
+	}
+
+	if src.CheckLoyaltyBalanceBlock != nil {
+		return json.Marshal(&src.CheckLoyaltyBalanceBlock)
+	}
+
 	if src.CheckReferralBlock != nil {
 		return json.Marshal(&src.CheckReferralBlock)
+	}
+
+	if src.CreateCouponBlock != nil {
+		return json.Marshal(&src.CreateCouponBlock)
+	}
+
+	if src.CreateReferralBlock != nil {
+		return json.Marshal(&src.CreateReferralBlock)
 	}
 
 	if src.PassthroughBlock != nil {
@@ -440,8 +778,20 @@ func (src PromotionBlock) MarshalJSON() ([]byte, error) {
 		return json.Marshal(&src.PromotionGroupBlock)
 	}
 
+	if src.ReserveCouponBlock != nil {
+		return json.Marshal(&src.ReserveCouponBlock)
+	}
+
 	if src.ShowNotificationBlock != nil {
 		return json.Marshal(&src.ShowNotificationBlock)
+	}
+
+	if src.TriggerCustomEffectBlock != nil {
+		return json.Marshal(&src.TriggerCustomEffectBlock)
+	}
+
+	if src.TriggerWebhookBlock != nil {
+		return json.Marshal(&src.TriggerWebhookBlock)
 	}
 
 	if src.UpdateAchievementProgressBlock != nil {
@@ -464,6 +814,10 @@ func (obj *PromotionBlock) GetActualInstance() interface{} {
 	if obj == nil {
 		return nil
 	}
+	if obj.AwardDiscountBlock != nil {
+		return obj.AwardDiscountBlock
+	}
+
 	if obj.AwardGiveawayBlock != nil {
 		return obj.AwardGiveawayBlock
 	}
@@ -472,16 +826,40 @@ func (obj *PromotionBlock) GetActualInstance() interface{} {
 		return obj.AwardItemBlock
 	}
 
+	if obj.CheckAchievementBlock != nil {
+		return obj.CheckAchievementBlock
+	}
+
 	if obj.CheckAudienceBlock != nil {
 		return obj.CheckAudienceBlock
+	}
+
+	if obj.CheckBudgetBlock != nil {
+		return obj.CheckBudgetBlock
 	}
 
 	if obj.CheckCouponBlock != nil {
 		return obj.CheckCouponBlock
 	}
 
+	if obj.CheckEventBlock != nil {
+		return obj.CheckEventBlock
+	}
+
+	if obj.CheckLoyaltyBalanceBlock != nil {
+		return obj.CheckLoyaltyBalanceBlock
+	}
+
 	if obj.CheckReferralBlock != nil {
 		return obj.CheckReferralBlock
+	}
+
+	if obj.CreateCouponBlock != nil {
+		return obj.CreateCouponBlock
+	}
+
+	if obj.CreateReferralBlock != nil {
+		return obj.CreateReferralBlock
 	}
 
 	if obj.PassthroughBlock != nil {
@@ -496,8 +874,20 @@ func (obj *PromotionBlock) GetActualInstance() interface{} {
 		return obj.PromotionGroupBlock
 	}
 
+	if obj.ReserveCouponBlock != nil {
+		return obj.ReserveCouponBlock
+	}
+
 	if obj.ShowNotificationBlock != nil {
 		return obj.ShowNotificationBlock
+	}
+
+	if obj.TriggerCustomEffectBlock != nil {
+		return obj.TriggerCustomEffectBlock
+	}
+
+	if obj.TriggerWebhookBlock != nil {
+		return obj.TriggerWebhookBlock
 	}
 
 	if obj.UpdateAchievementProgressBlock != nil {
@@ -518,6 +908,10 @@ func (obj *PromotionBlock) GetActualInstance() interface{} {
 
 // Get the actual instance value
 func (obj PromotionBlock) GetActualInstanceValue() interface{} {
+	if obj.AwardDiscountBlock != nil {
+		return *obj.AwardDiscountBlock
+	}
+
 	if obj.AwardGiveawayBlock != nil {
 		return *obj.AwardGiveawayBlock
 	}
@@ -526,16 +920,40 @@ func (obj PromotionBlock) GetActualInstanceValue() interface{} {
 		return *obj.AwardItemBlock
 	}
 
+	if obj.CheckAchievementBlock != nil {
+		return *obj.CheckAchievementBlock
+	}
+
 	if obj.CheckAudienceBlock != nil {
 		return *obj.CheckAudienceBlock
+	}
+
+	if obj.CheckBudgetBlock != nil {
+		return *obj.CheckBudgetBlock
 	}
 
 	if obj.CheckCouponBlock != nil {
 		return *obj.CheckCouponBlock
 	}
 
+	if obj.CheckEventBlock != nil {
+		return *obj.CheckEventBlock
+	}
+
+	if obj.CheckLoyaltyBalanceBlock != nil {
+		return *obj.CheckLoyaltyBalanceBlock
+	}
+
 	if obj.CheckReferralBlock != nil {
 		return *obj.CheckReferralBlock
+	}
+
+	if obj.CreateCouponBlock != nil {
+		return *obj.CreateCouponBlock
+	}
+
+	if obj.CreateReferralBlock != nil {
+		return *obj.CreateReferralBlock
 	}
 
 	if obj.PassthroughBlock != nil {
@@ -550,8 +968,20 @@ func (obj PromotionBlock) GetActualInstanceValue() interface{} {
 		return *obj.PromotionGroupBlock
 	}
 
+	if obj.ReserveCouponBlock != nil {
+		return *obj.ReserveCouponBlock
+	}
+
 	if obj.ShowNotificationBlock != nil {
 		return *obj.ShowNotificationBlock
+	}
+
+	if obj.TriggerCustomEffectBlock != nil {
+		return *obj.TriggerCustomEffectBlock
+	}
+
+	if obj.TriggerWebhookBlock != nil {
+		return *obj.TriggerWebhookBlock
 	}
 
 	if obj.UpdateAchievementProgressBlock != nil {

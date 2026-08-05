@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **ActivatedAt** | Pointer to **time.Time** | Timestamp indicating when this ruleset was activated. | [optional] 
 **PromotionRules** | [**[]PromotionRuleV2**](PromotionRuleV2.md) | Set of promotion rules. | 
 **StrikethroughRules** | [**[]StrikethroughRuleV2**](StrikethroughRuleV2.md) | Set of strikethrough rules. | 
-**Selectors** | Pointer to **[]map[string]interface{}** | Variable bindings of type selector. | [optional] 
+**Selectors** | Pointer to [**[]Selector**](Selector.md) | Variable bindings of type selector. | [optional] 
 **Bundles** | Pointer to **[]map[string]interface{}** | Variable bindings of type bundle. | [optional] 
 **Parameters** | Pointer to **[]map[string]interface{}** | Variable bindings of type template parameter. | [optional] 
 
@@ -212,20 +212,20 @@ SetStrikethroughRules sets StrikethroughRules field to given value.
 
 ### GetSelectors
 
-`func (o *RulesetV2) GetSelectors() []map[string]interface{}`
+`func (o *RulesetV2) GetSelectors() []Selector`
 
 GetSelectors returns the Selectors field if non-nil, zero value otherwise.
 
 ### GetSelectorsOk
 
-`func (o *RulesetV2) GetSelectorsOk() (*[]map[string]interface{}, bool)`
+`func (o *RulesetV2) GetSelectorsOk() (*[]Selector, bool)`
 
 GetSelectorsOk returns a tuple with the Selectors field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetSelectors
 
-`func (o *RulesetV2) SetSelectors(v []map[string]interface{})`
+`func (o *RulesetV2) SetSelectors(v []Selector)`
 
 SetSelectors sets Selectors field to given value.
 

@@ -38,7 +38,7 @@ type RulesetV2 struct {
 	// Set of strikethrough rules.
 	StrikethroughRules []StrikethroughRuleV2 `json:"strikethroughRules"`
 	// Variable bindings of type selector.
-	Selectors []map[string]interface{} `json:"selectors,omitempty"`
+	Selectors []Selector `json:"selectors,omitempty"`
 	// Variable bindings of type bundle.
 	Bundles []map[string]interface{} `json:"bundles,omitempty"`
 	// Variable bindings of type template parameter.
@@ -287,9 +287,9 @@ func (o *RulesetV2) SetStrikethroughRules(v []StrikethroughRuleV2) {
 }
 
 // GetSelectors returns the Selectors field value if set, zero value otherwise.
-func (o *RulesetV2) GetSelectors() []map[string]interface{} {
+func (o *RulesetV2) GetSelectors() []Selector {
 	if o == nil || IsNil(o.Selectors) {
-		var ret []map[string]interface{}
+		var ret []Selector
 		return ret
 	}
 	return o.Selectors
@@ -297,7 +297,7 @@ func (o *RulesetV2) GetSelectors() []map[string]interface{} {
 
 // GetSelectorsOk returns a tuple with the Selectors field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *RulesetV2) GetSelectorsOk() ([]map[string]interface{}, bool) {
+func (o *RulesetV2) GetSelectorsOk() ([]Selector, bool) {
 	if o == nil || IsNil(o.Selectors) {
 		return nil, false
 	}
@@ -313,8 +313,8 @@ func (o *RulesetV2) HasSelectors() bool {
 	return false
 }
 
-// SetSelectors gets a reference to the given []map[string]interface{} and assigns it to the Selectors field.
-func (o *RulesetV2) SetSelectors(v []map[string]interface{}) {
+// SetSelectors gets a reference to the given []Selector and assigns it to the Selectors field.
+func (o *RulesetV2) SetSelectors(v []Selector) {
 	o.Selectors = v
 }
 
