@@ -7,36 +7,61 @@ Name | Type | Description | Notes
 **Id** | **string** | Unique identifier for this block. | 
 **Type** | **string** | Identifies the block variant and determines which additional properties are present in it. | 
 **Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] 
-**Operator** | **string** | The update operation applied to the attribute. | 
+**Operator** | **string** | The comparison operator applied to the limit. &#x60;available&#x60; checks if there is budget available for a given limitable action; &#x60;enoughFor&#x60; checks if the available budget meets or exceeds a specific value limit. | 
 **Blocks** | [**[]PromotionBlock**](PromotionBlock.md) | Child blocks evaluated according to the operator. | 
 **OnFailure** | Pointer to [**[]PromotionBlock**](PromotionBlock.md) | Promotion blocks evaluated when this block fails or returns false. | [optional] 
 **OnError** | Pointer to [**map[string][]PromotionBlock**](array.md) | Named error handlers evaluated when a specific error occurs. | [optional] 
+**Name** | **string** | The display name of the item to award. | 
+**Value** | **float32** | The value to check against when using the &#x60;enoughFor&#x60; operator. | 
+**Partial** | **bool** | When set to &#x60;true&#x60;, applies a partial item reward if the remaining budget is insufficient to award the full reward. | 
+**Target** | [**TriggerCustomEffectBlock1Target**](TriggerCustomEffectBlock1Target.md) |  | 
 **Expression** | **[]interface{}** | The raw Talang expression as an array. For a function call, the first element is the function name and subsequent elements are its arguments. For any other expression (for example a bare attribute path or a literal value), this is a single-element array containing that value. | 
 **NotificationType** | **string** | The type of notification to display. | 
 **Title** | **string** | The notification heading shown to the customer. | 
 **Body** | Pointer to **string** | The notification body text. Supports template placeholders (e.g. \&quot;{{$Session.Total}}\&quot;) evaluated at rule execution time. | [optional] 
 **Sku** | **string** | The stock keeping unit of the item to award. | 
-**Name** | **string** | The display name of the item to award. | 
 **Quantity** | **string** | The number of items to award. Supports template placeholders (e.g. \&quot;{{$Session.Total / 2}}\&quot;) for dynamic quantities. | 
-**Partial** | Pointer to **bool** | When set to &#x60;true&#x60;, applies a partial item reward if the remaining budget is insufficient to award the full reward. | [optional] 
 **GiveawayPool** | [**AwardGiveawayBlock1GiveawayPool**](AwardGiveawayBlock1GiveawayPool.md) |  | 
 **Profile** | **string** | The customer profile to add or remove from the audience. &#x60;Current&#x60; targets the customer in the current session; &#x60;Advocate&#x60; targets the person who invited their friend via referral program. | 
 **Attribute** | [**UpdateAttributeValueBlock1Attribute**](UpdateAttributeValueBlock1Attribute.md) |  | 
-**Value** | **interface{}** |  | 
 **Min** | Pointer to **interface{}** |  | [optional] 
 **Max** | Pointer to **interface{}** |  | [optional] 
+**Start** | Pointer to **interface{}** |  | [optional] 
+**End** | Pointer to **interface{}** |  | [optional] 
+**StartInclusive** | Pointer to **bool** | When &#x60;true&#x60;, the &#x60;start&#x60; value is included in the range for the &#x60;within&#x60; operator. | [optional] 
+**EndInclusive** | Pointer to **bool** | When &#x60;true&#x60;, the &#x60;end&#x60; value is included in the range for the &#x60;within&#x60; operator. | [optional] 
+**TimezoneInsensitive** | Pointer to **bool** | Indicates whether the &#x60;within&#x60; operator ignores time zones and compares the wall-clock time only. When &#x60;false&#x60;, time zones are taken into account. | [optional] 
 **Values** | Pointer to **interface{}** |  | [optional] 
 **Count** | Pointer to **interface{}** |  | [optional] 
 **Audience** | [**UpdateAudienceMembershipBlock1Audience**](UpdateAudienceMembershipBlock1Audience.md) |  | 
+**Program** | [**CheckLoyaltyBalanceBlock1Program**](CheckLoyaltyBalanceBlock1Program.md) |  | 
+**Subledger** | **string** | The name of the subledger to check the balance of. Can be empty if this block checks the loyalty program&#39;s main ledger balance instead of a subledger. | 
+**Balance** | **string** | The type of balance to check:  - &#x60;current&#x60; is the sum of currently active points  - &#x60;pending&#x60; is the sum of pending points.  - &#x60;negative&#x60; is the sum of negative points.  - &#x60;tentativeCurrent&#x60; is the tentative points balance within the current open customer session. | 
 **Redeem** | **bool** | When &#x60;true&#x60;, the referral code is redeemed. | 
-**Achievement** | [**UpdateAchievementProgressBlock1Achievement**](UpdateAchievementProgressBlock1Achievement.md) |  | 
-**Target** | [**UpdateAttributeValueBlock1Target**](UpdateAttributeValueBlock1Target.md) |  | 
+**Achievement** | [**CheckAchievementBlock1Achievement**](CheckAchievementBlock1Achievement.md) |  | 
+**Webhook** | [**TriggerWebhookBlock1Webhook**](TriggerWebhookBlock1Webhook.md) |  | 
+**Params** | Pointer to **map[string]interface{}** | The custom effect&#39;s parameters, in configured order. Each property name is the parameter&#39;s title, lowercased with spaces replaced by underscores (for example, &#x60;Order ID&#x60; becomes &#x60;order_id&#x60;); falls back to &#x60;param_0&#x60;, &#x60;param_1&#x60;, and so on if a title is blank or collides with another. | [optional] 
+**CustomEffect** | [**TriggerCustomEffectBlock1CustomEffect**](TriggerCustomEffectBlock1CustomEffect.md) |  | 
+**EventType** | **string** | The event type to check against. | 
+**Matchers** | Pointer to [**[]PromotionBlock**](PromotionBlock.md) |  | [optional] 
+**Action** | **string** | The limitable action to check. | 
+**CampaignId** | [**CreateReferralBlock1CampaignId**](CreateReferralBlock1CampaignId.md) |  | 
+**RecipientId** | **string** | The integration ID of the customer that is allowed to redeem this coupon. | 
+**StoreInSession** | **bool** | When &#x60;true&#x60;, the referral code is stored in the session. | 
+**UsageLimit** | Pointer to [**CreateReferralBlock1UsageLimit**](CreateReferralBlock1UsageLimit.md) |  | [optional] 
+**DiscountLimit** | Pointer to [**CreateCouponBlock1DiscountLimit**](CreateCouponBlock1DiscountLimit.md) |  | [optional] 
+**StartDate** | Pointer to **interface{}** |  | [optional] 
+**ExpiryDate** | Pointer to **interface{}** |  | [optional] 
+**Attributes** | Pointer to **interface{}** |  | [optional] 
+**ValidCharacters** | Pointer to **string** | Characters used to generate the random parts of a code. | [optional] 
+**Pattern** | Pointer to **string** | The pattern used to generate codes, such as coupon codes, referral codes, and loyalty cards. The character &#x60;#&#x60; is a placeholder and is replaced by a random character from the &#x60;validCharacters&#x60; set.  | [optional] 
+**FriendId** | **string** | An optional integration ID of the friend&#39;s profile. | 
 
 ## Methods
 
 ### NewPromotionBlock
 
-`func NewPromotionBlock(id string, type_ string, operator string, blocks []PromotionBlock, expression []interface{}, notificationType string, title string, sku string, name string, quantity string, giveawayPool AwardGiveawayBlock1GiveawayPool, profile string, attribute UpdateAttributeValueBlock1Attribute, value interface{}, audience UpdateAudienceMembershipBlock1Audience, redeem bool, achievement UpdateAchievementProgressBlock1Achievement, target UpdateAttributeValueBlock1Target, ) *PromotionBlock`
+`func NewPromotionBlock(id string, type_ string, operator string, blocks []PromotionBlock, name string, value float32, partial bool, target TriggerCustomEffectBlock1Target, expression []interface{}, notificationType string, title string, sku string, quantity string, giveawayPool AwardGiveawayBlock1GiveawayPool, profile string, attribute UpdateAttributeValueBlock1Attribute, audience UpdateAudienceMembershipBlock1Audience, program CheckLoyaltyBalanceBlock1Program, subledger string, balance string, redeem bool, achievement CheckAchievementBlock1Achievement, webhook TriggerWebhookBlock1Webhook, customEffect TriggerCustomEffectBlock1CustomEffect, eventType string, action string, campaignId CreateReferralBlock1CampaignId, recipientId string, storeInSession bool, friendId string, ) *PromotionBlock`
 
 NewPromotionBlock instantiates a new PromotionBlock object
 This constructor will assign default values to properties that have it defined,
@@ -206,6 +231,86 @@ SetOnError sets OnError field to given value.
 
 HasOnError returns a boolean if a field has been set.
 
+### GetName
+
+`func (o *PromotionBlock) GetName() string`
+
+GetName returns the Name field if non-nil, zero value otherwise.
+
+### GetNameOk
+
+`func (o *PromotionBlock) GetNameOk() (*string, bool)`
+
+GetNameOk returns a tuple with the Name field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetName
+
+`func (o *PromotionBlock) SetName(v string)`
+
+SetName sets Name field to given value.
+
+
+### GetValue
+
+`func (o *PromotionBlock) GetValue() float32`
+
+GetValue returns the Value field if non-nil, zero value otherwise.
+
+### GetValueOk
+
+`func (o *PromotionBlock) GetValueOk() (*float32, bool)`
+
+GetValueOk returns a tuple with the Value field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetValue
+
+`func (o *PromotionBlock) SetValue(v float32)`
+
+SetValue sets Value field to given value.
+
+
+### GetPartial
+
+`func (o *PromotionBlock) GetPartial() bool`
+
+GetPartial returns the Partial field if non-nil, zero value otherwise.
+
+### GetPartialOk
+
+`func (o *PromotionBlock) GetPartialOk() (*bool, bool)`
+
+GetPartialOk returns a tuple with the Partial field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPartial
+
+`func (o *PromotionBlock) SetPartial(v bool)`
+
+SetPartial sets Partial field to given value.
+
+
+### GetTarget
+
+`func (o *PromotionBlock) GetTarget() TriggerCustomEffectBlock1Target`
+
+GetTarget returns the Target field if non-nil, zero value otherwise.
+
+### GetTargetOk
+
+`func (o *PromotionBlock) GetTargetOk() (*TriggerCustomEffectBlock1Target, bool)`
+
+GetTargetOk returns a tuple with the Target field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTarget
+
+`func (o *PromotionBlock) SetTarget(v TriggerCustomEffectBlock1Target)`
+
+SetTarget sets Target field to given value.
+
+
 ### GetExpression
 
 `func (o *PromotionBlock) GetExpression() []interface{}`
@@ -311,26 +416,6 @@ and a boolean to check if the value has been set.
 SetSku sets Sku field to given value.
 
 
-### GetName
-
-`func (o *PromotionBlock) GetName() string`
-
-GetName returns the Name field if non-nil, zero value otherwise.
-
-### GetNameOk
-
-`func (o *PromotionBlock) GetNameOk() (*string, bool)`
-
-GetNameOk returns a tuple with the Name field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetName
-
-`func (o *PromotionBlock) SetName(v string)`
-
-SetName sets Name field to given value.
-
-
 ### GetQuantity
 
 `func (o *PromotionBlock) GetQuantity() string`
@@ -350,31 +435,6 @@ and a boolean to check if the value has been set.
 
 SetQuantity sets Quantity field to given value.
 
-
-### GetPartial
-
-`func (o *PromotionBlock) GetPartial() bool`
-
-GetPartial returns the Partial field if non-nil, zero value otherwise.
-
-### GetPartialOk
-
-`func (o *PromotionBlock) GetPartialOk() (*bool, bool)`
-
-GetPartialOk returns a tuple with the Partial field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetPartial
-
-`func (o *PromotionBlock) SetPartial(v bool)`
-
-SetPartial sets Partial field to given value.
-
-### HasPartial
-
-`func (o *PromotionBlock) HasPartial() bool`
-
-HasPartial returns a boolean if a field has been set.
 
 ### GetGiveawayPool
 
@@ -436,36 +496,6 @@ and a boolean to check if the value has been set.
 SetAttribute sets Attribute field to given value.
 
 
-### GetValue
-
-`func (o *PromotionBlock) GetValue() interface{}`
-
-GetValue returns the Value field if non-nil, zero value otherwise.
-
-### GetValueOk
-
-`func (o *PromotionBlock) GetValueOk() (*interface{}, bool)`
-
-GetValueOk returns a tuple with the Value field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetValue
-
-`func (o *PromotionBlock) SetValue(v interface{})`
-
-SetValue sets Value field to given value.
-
-
-### SetValueNil
-
-`func (o *PromotionBlock) SetValueNil(b bool)`
-
- SetValueNil sets the value for Value to be an explicit nil
-
-### UnsetValue
-`func (o *PromotionBlock) UnsetValue()`
-
-UnsetValue ensures that no value is present for Value, not even an explicit nil
 ### GetMin
 
 `func (o *PromotionBlock) GetMin() interface{}`
@@ -536,6 +566,151 @@ HasMax returns a boolean if a field has been set.
 `func (o *PromotionBlock) UnsetMax()`
 
 UnsetMax ensures that no value is present for Max, not even an explicit nil
+### GetStart
+
+`func (o *PromotionBlock) GetStart() interface{}`
+
+GetStart returns the Start field if non-nil, zero value otherwise.
+
+### GetStartOk
+
+`func (o *PromotionBlock) GetStartOk() (*interface{}, bool)`
+
+GetStartOk returns a tuple with the Start field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetStart
+
+`func (o *PromotionBlock) SetStart(v interface{})`
+
+SetStart sets Start field to given value.
+
+### HasStart
+
+`func (o *PromotionBlock) HasStart() bool`
+
+HasStart returns a boolean if a field has been set.
+
+### SetStartNil
+
+`func (o *PromotionBlock) SetStartNil(b bool)`
+
+ SetStartNil sets the value for Start to be an explicit nil
+
+### UnsetStart
+`func (o *PromotionBlock) UnsetStart()`
+
+UnsetStart ensures that no value is present for Start, not even an explicit nil
+### GetEnd
+
+`func (o *PromotionBlock) GetEnd() interface{}`
+
+GetEnd returns the End field if non-nil, zero value otherwise.
+
+### GetEndOk
+
+`func (o *PromotionBlock) GetEndOk() (*interface{}, bool)`
+
+GetEndOk returns a tuple with the End field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetEnd
+
+`func (o *PromotionBlock) SetEnd(v interface{})`
+
+SetEnd sets End field to given value.
+
+### HasEnd
+
+`func (o *PromotionBlock) HasEnd() bool`
+
+HasEnd returns a boolean if a field has been set.
+
+### SetEndNil
+
+`func (o *PromotionBlock) SetEndNil(b bool)`
+
+ SetEndNil sets the value for End to be an explicit nil
+
+### UnsetEnd
+`func (o *PromotionBlock) UnsetEnd()`
+
+UnsetEnd ensures that no value is present for End, not even an explicit nil
+### GetStartInclusive
+
+`func (o *PromotionBlock) GetStartInclusive() bool`
+
+GetStartInclusive returns the StartInclusive field if non-nil, zero value otherwise.
+
+### GetStartInclusiveOk
+
+`func (o *PromotionBlock) GetStartInclusiveOk() (*bool, bool)`
+
+GetStartInclusiveOk returns a tuple with the StartInclusive field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetStartInclusive
+
+`func (o *PromotionBlock) SetStartInclusive(v bool)`
+
+SetStartInclusive sets StartInclusive field to given value.
+
+### HasStartInclusive
+
+`func (o *PromotionBlock) HasStartInclusive() bool`
+
+HasStartInclusive returns a boolean if a field has been set.
+
+### GetEndInclusive
+
+`func (o *PromotionBlock) GetEndInclusive() bool`
+
+GetEndInclusive returns the EndInclusive field if non-nil, zero value otherwise.
+
+### GetEndInclusiveOk
+
+`func (o *PromotionBlock) GetEndInclusiveOk() (*bool, bool)`
+
+GetEndInclusiveOk returns a tuple with the EndInclusive field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetEndInclusive
+
+`func (o *PromotionBlock) SetEndInclusive(v bool)`
+
+SetEndInclusive sets EndInclusive field to given value.
+
+### HasEndInclusive
+
+`func (o *PromotionBlock) HasEndInclusive() bool`
+
+HasEndInclusive returns a boolean if a field has been set.
+
+### GetTimezoneInsensitive
+
+`func (o *PromotionBlock) GetTimezoneInsensitive() bool`
+
+GetTimezoneInsensitive returns the TimezoneInsensitive field if non-nil, zero value otherwise.
+
+### GetTimezoneInsensitiveOk
+
+`func (o *PromotionBlock) GetTimezoneInsensitiveOk() (*bool, bool)`
+
+GetTimezoneInsensitiveOk returns a tuple with the TimezoneInsensitive field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTimezoneInsensitive
+
+`func (o *PromotionBlock) SetTimezoneInsensitive(v bool)`
+
+SetTimezoneInsensitive sets TimezoneInsensitive field to given value.
+
+### HasTimezoneInsensitive
+
+`func (o *PromotionBlock) HasTimezoneInsensitive() bool`
+
+HasTimezoneInsensitive returns a boolean if a field has been set.
+
 ### GetValues
 
 `func (o *PromotionBlock) GetValues() interface{}`
@@ -626,6 +801,66 @@ and a boolean to check if the value has been set.
 SetAudience sets Audience field to given value.
 
 
+### GetProgram
+
+`func (o *PromotionBlock) GetProgram() CheckLoyaltyBalanceBlock1Program`
+
+GetProgram returns the Program field if non-nil, zero value otherwise.
+
+### GetProgramOk
+
+`func (o *PromotionBlock) GetProgramOk() (*CheckLoyaltyBalanceBlock1Program, bool)`
+
+GetProgramOk returns a tuple with the Program field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetProgram
+
+`func (o *PromotionBlock) SetProgram(v CheckLoyaltyBalanceBlock1Program)`
+
+SetProgram sets Program field to given value.
+
+
+### GetSubledger
+
+`func (o *PromotionBlock) GetSubledger() string`
+
+GetSubledger returns the Subledger field if non-nil, zero value otherwise.
+
+### GetSubledgerOk
+
+`func (o *PromotionBlock) GetSubledgerOk() (*string, bool)`
+
+GetSubledgerOk returns a tuple with the Subledger field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSubledger
+
+`func (o *PromotionBlock) SetSubledger(v string)`
+
+SetSubledger sets Subledger field to given value.
+
+
+### GetBalance
+
+`func (o *PromotionBlock) GetBalance() string`
+
+GetBalance returns the Balance field if non-nil, zero value otherwise.
+
+### GetBalanceOk
+
+`func (o *PromotionBlock) GetBalanceOk() (*string, bool)`
+
+GetBalanceOk returns a tuple with the Balance field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetBalance
+
+`func (o *PromotionBlock) SetBalance(v string)`
+
+SetBalance sets Balance field to given value.
+
+
 ### GetRedeem
 
 `func (o *PromotionBlock) GetRedeem() bool`
@@ -648,42 +883,437 @@ SetRedeem sets Redeem field to given value.
 
 ### GetAchievement
 
-`func (o *PromotionBlock) GetAchievement() UpdateAchievementProgressBlock1Achievement`
+`func (o *PromotionBlock) GetAchievement() CheckAchievementBlock1Achievement`
 
 GetAchievement returns the Achievement field if non-nil, zero value otherwise.
 
 ### GetAchievementOk
 
-`func (o *PromotionBlock) GetAchievementOk() (*UpdateAchievementProgressBlock1Achievement, bool)`
+`func (o *PromotionBlock) GetAchievementOk() (*CheckAchievementBlock1Achievement, bool)`
 
 GetAchievementOk returns a tuple with the Achievement field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetAchievement
 
-`func (o *PromotionBlock) SetAchievement(v UpdateAchievementProgressBlock1Achievement)`
+`func (o *PromotionBlock) SetAchievement(v CheckAchievementBlock1Achievement)`
 
 SetAchievement sets Achievement field to given value.
 
 
-### GetTarget
+### GetWebhook
 
-`func (o *PromotionBlock) GetTarget() UpdateAttributeValueBlock1Target`
+`func (o *PromotionBlock) GetWebhook() TriggerWebhookBlock1Webhook`
 
-GetTarget returns the Target field if non-nil, zero value otherwise.
+GetWebhook returns the Webhook field if non-nil, zero value otherwise.
 
-### GetTargetOk
+### GetWebhookOk
 
-`func (o *PromotionBlock) GetTargetOk() (*UpdateAttributeValueBlock1Target, bool)`
+`func (o *PromotionBlock) GetWebhookOk() (*TriggerWebhookBlock1Webhook, bool)`
 
-GetTargetOk returns a tuple with the Target field if it's non-nil, zero value otherwise
+GetWebhookOk returns a tuple with the Webhook field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetTarget
+### SetWebhook
 
-`func (o *PromotionBlock) SetTarget(v UpdateAttributeValueBlock1Target)`
+`func (o *PromotionBlock) SetWebhook(v TriggerWebhookBlock1Webhook)`
 
-SetTarget sets Target field to given value.
+SetWebhook sets Webhook field to given value.
+
+
+### GetParams
+
+`func (o *PromotionBlock) GetParams() map[string]interface{}`
+
+GetParams returns the Params field if non-nil, zero value otherwise.
+
+### GetParamsOk
+
+`func (o *PromotionBlock) GetParamsOk() (*map[string]interface{}, bool)`
+
+GetParamsOk returns a tuple with the Params field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetParams
+
+`func (o *PromotionBlock) SetParams(v map[string]interface{})`
+
+SetParams sets Params field to given value.
+
+### HasParams
+
+`func (o *PromotionBlock) HasParams() bool`
+
+HasParams returns a boolean if a field has been set.
+
+### GetCustomEffect
+
+`func (o *PromotionBlock) GetCustomEffect() TriggerCustomEffectBlock1CustomEffect`
+
+GetCustomEffect returns the CustomEffect field if non-nil, zero value otherwise.
+
+### GetCustomEffectOk
+
+`func (o *PromotionBlock) GetCustomEffectOk() (*TriggerCustomEffectBlock1CustomEffect, bool)`
+
+GetCustomEffectOk returns a tuple with the CustomEffect field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCustomEffect
+
+`func (o *PromotionBlock) SetCustomEffect(v TriggerCustomEffectBlock1CustomEffect)`
+
+SetCustomEffect sets CustomEffect field to given value.
+
+
+### GetEventType
+
+`func (o *PromotionBlock) GetEventType() string`
+
+GetEventType returns the EventType field if non-nil, zero value otherwise.
+
+### GetEventTypeOk
+
+`func (o *PromotionBlock) GetEventTypeOk() (*string, bool)`
+
+GetEventTypeOk returns a tuple with the EventType field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetEventType
+
+`func (o *PromotionBlock) SetEventType(v string)`
+
+SetEventType sets EventType field to given value.
+
+
+### GetMatchers
+
+`func (o *PromotionBlock) GetMatchers() []PromotionBlock`
+
+GetMatchers returns the Matchers field if non-nil, zero value otherwise.
+
+### GetMatchersOk
+
+`func (o *PromotionBlock) GetMatchersOk() (*[]PromotionBlock, bool)`
+
+GetMatchersOk returns a tuple with the Matchers field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetMatchers
+
+`func (o *PromotionBlock) SetMatchers(v []PromotionBlock)`
+
+SetMatchers sets Matchers field to given value.
+
+### HasMatchers
+
+`func (o *PromotionBlock) HasMatchers() bool`
+
+HasMatchers returns a boolean if a field has been set.
+
+### GetAction
+
+`func (o *PromotionBlock) GetAction() string`
+
+GetAction returns the Action field if non-nil, zero value otherwise.
+
+### GetActionOk
+
+`func (o *PromotionBlock) GetActionOk() (*string, bool)`
+
+GetActionOk returns a tuple with the Action field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAction
+
+`func (o *PromotionBlock) SetAction(v string)`
+
+SetAction sets Action field to given value.
+
+
+### GetCampaignId
+
+`func (o *PromotionBlock) GetCampaignId() CreateReferralBlock1CampaignId`
+
+GetCampaignId returns the CampaignId field if non-nil, zero value otherwise.
+
+### GetCampaignIdOk
+
+`func (o *PromotionBlock) GetCampaignIdOk() (*CreateReferralBlock1CampaignId, bool)`
+
+GetCampaignIdOk returns a tuple with the CampaignId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCampaignId
+
+`func (o *PromotionBlock) SetCampaignId(v CreateReferralBlock1CampaignId)`
+
+SetCampaignId sets CampaignId field to given value.
+
+
+### GetRecipientId
+
+`func (o *PromotionBlock) GetRecipientId() string`
+
+GetRecipientId returns the RecipientId field if non-nil, zero value otherwise.
+
+### GetRecipientIdOk
+
+`func (o *PromotionBlock) GetRecipientIdOk() (*string, bool)`
+
+GetRecipientIdOk returns a tuple with the RecipientId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRecipientId
+
+`func (o *PromotionBlock) SetRecipientId(v string)`
+
+SetRecipientId sets RecipientId field to given value.
+
+
+### GetStoreInSession
+
+`func (o *PromotionBlock) GetStoreInSession() bool`
+
+GetStoreInSession returns the StoreInSession field if non-nil, zero value otherwise.
+
+### GetStoreInSessionOk
+
+`func (o *PromotionBlock) GetStoreInSessionOk() (*bool, bool)`
+
+GetStoreInSessionOk returns a tuple with the StoreInSession field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetStoreInSession
+
+`func (o *PromotionBlock) SetStoreInSession(v bool)`
+
+SetStoreInSession sets StoreInSession field to given value.
+
+
+### GetUsageLimit
+
+`func (o *PromotionBlock) GetUsageLimit() CreateReferralBlock1UsageLimit`
+
+GetUsageLimit returns the UsageLimit field if non-nil, zero value otherwise.
+
+### GetUsageLimitOk
+
+`func (o *PromotionBlock) GetUsageLimitOk() (*CreateReferralBlock1UsageLimit, bool)`
+
+GetUsageLimitOk returns a tuple with the UsageLimit field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetUsageLimit
+
+`func (o *PromotionBlock) SetUsageLimit(v CreateReferralBlock1UsageLimit)`
+
+SetUsageLimit sets UsageLimit field to given value.
+
+### HasUsageLimit
+
+`func (o *PromotionBlock) HasUsageLimit() bool`
+
+HasUsageLimit returns a boolean if a field has been set.
+
+### GetDiscountLimit
+
+`func (o *PromotionBlock) GetDiscountLimit() CreateCouponBlock1DiscountLimit`
+
+GetDiscountLimit returns the DiscountLimit field if non-nil, zero value otherwise.
+
+### GetDiscountLimitOk
+
+`func (o *PromotionBlock) GetDiscountLimitOk() (*CreateCouponBlock1DiscountLimit, bool)`
+
+GetDiscountLimitOk returns a tuple with the DiscountLimit field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetDiscountLimit
+
+`func (o *PromotionBlock) SetDiscountLimit(v CreateCouponBlock1DiscountLimit)`
+
+SetDiscountLimit sets DiscountLimit field to given value.
+
+### HasDiscountLimit
+
+`func (o *PromotionBlock) HasDiscountLimit() bool`
+
+HasDiscountLimit returns a boolean if a field has been set.
+
+### GetStartDate
+
+`func (o *PromotionBlock) GetStartDate() interface{}`
+
+GetStartDate returns the StartDate field if non-nil, zero value otherwise.
+
+### GetStartDateOk
+
+`func (o *PromotionBlock) GetStartDateOk() (*interface{}, bool)`
+
+GetStartDateOk returns a tuple with the StartDate field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetStartDate
+
+`func (o *PromotionBlock) SetStartDate(v interface{})`
+
+SetStartDate sets StartDate field to given value.
+
+### HasStartDate
+
+`func (o *PromotionBlock) HasStartDate() bool`
+
+HasStartDate returns a boolean if a field has been set.
+
+### SetStartDateNil
+
+`func (o *PromotionBlock) SetStartDateNil(b bool)`
+
+ SetStartDateNil sets the value for StartDate to be an explicit nil
+
+### UnsetStartDate
+`func (o *PromotionBlock) UnsetStartDate()`
+
+UnsetStartDate ensures that no value is present for StartDate, not even an explicit nil
+### GetExpiryDate
+
+`func (o *PromotionBlock) GetExpiryDate() interface{}`
+
+GetExpiryDate returns the ExpiryDate field if non-nil, zero value otherwise.
+
+### GetExpiryDateOk
+
+`func (o *PromotionBlock) GetExpiryDateOk() (*interface{}, bool)`
+
+GetExpiryDateOk returns a tuple with the ExpiryDate field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetExpiryDate
+
+`func (o *PromotionBlock) SetExpiryDate(v interface{})`
+
+SetExpiryDate sets ExpiryDate field to given value.
+
+### HasExpiryDate
+
+`func (o *PromotionBlock) HasExpiryDate() bool`
+
+HasExpiryDate returns a boolean if a field has been set.
+
+### SetExpiryDateNil
+
+`func (o *PromotionBlock) SetExpiryDateNil(b bool)`
+
+ SetExpiryDateNil sets the value for ExpiryDate to be an explicit nil
+
+### UnsetExpiryDate
+`func (o *PromotionBlock) UnsetExpiryDate()`
+
+UnsetExpiryDate ensures that no value is present for ExpiryDate, not even an explicit nil
+### GetAttributes
+
+`func (o *PromotionBlock) GetAttributes() interface{}`
+
+GetAttributes returns the Attributes field if non-nil, zero value otherwise.
+
+### GetAttributesOk
+
+`func (o *PromotionBlock) GetAttributesOk() (*interface{}, bool)`
+
+GetAttributesOk returns a tuple with the Attributes field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAttributes
+
+`func (o *PromotionBlock) SetAttributes(v interface{})`
+
+SetAttributes sets Attributes field to given value.
+
+### HasAttributes
+
+`func (o *PromotionBlock) HasAttributes() bool`
+
+HasAttributes returns a boolean if a field has been set.
+
+### SetAttributesNil
+
+`func (o *PromotionBlock) SetAttributesNil(b bool)`
+
+ SetAttributesNil sets the value for Attributes to be an explicit nil
+
+### UnsetAttributes
+`func (o *PromotionBlock) UnsetAttributes()`
+
+UnsetAttributes ensures that no value is present for Attributes, not even an explicit nil
+### GetValidCharacters
+
+`func (o *PromotionBlock) GetValidCharacters() string`
+
+GetValidCharacters returns the ValidCharacters field if non-nil, zero value otherwise.
+
+### GetValidCharactersOk
+
+`func (o *PromotionBlock) GetValidCharactersOk() (*string, bool)`
+
+GetValidCharactersOk returns a tuple with the ValidCharacters field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetValidCharacters
+
+`func (o *PromotionBlock) SetValidCharacters(v string)`
+
+SetValidCharacters sets ValidCharacters field to given value.
+
+### HasValidCharacters
+
+`func (o *PromotionBlock) HasValidCharacters() bool`
+
+HasValidCharacters returns a boolean if a field has been set.
+
+### GetPattern
+
+`func (o *PromotionBlock) GetPattern() string`
+
+GetPattern returns the Pattern field if non-nil, zero value otherwise.
+
+### GetPatternOk
+
+`func (o *PromotionBlock) GetPatternOk() (*string, bool)`
+
+GetPatternOk returns a tuple with the Pattern field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPattern
+
+`func (o *PromotionBlock) SetPattern(v string)`
+
+SetPattern sets Pattern field to given value.
+
+### HasPattern
+
+`func (o *PromotionBlock) HasPattern() bool`
+
+HasPattern returns a boolean if a field has been set.
+
+### GetFriendId
+
+`func (o *PromotionBlock) GetFriendId() string`
+
+GetFriendId returns the FriendId field if non-nil, zero value otherwise.
+
+### GetFriendIdOk
+
+`func (o *PromotionBlock) GetFriendIdOk() (*string, bool)`
+
+GetFriendIdOk returns a tuple with the FriendId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetFriendId
+
+`func (o *PromotionBlock) SetFriendId(v string)`
+
+SetFriendId sets FriendId field to given value.
 
 
 

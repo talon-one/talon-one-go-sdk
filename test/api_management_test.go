@@ -523,6 +523,19 @@ func Test_talon_ManagementAPIService(t *testing.T) {
 
 	})
 
+	t.Run("Test ManagementAPIService ExcludePriceHistory", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var applicationId int64
+
+		httpRes, err := apiClient.ManagementAPI.ExcludePriceHistory(context.Background(), applicationId).Execute()
+
+		require.Nil(t, err)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test ManagementAPIService ExportAccountCollectionItems", func(t *testing.T) {
 
 		t.Skip("skip test")  // remove to run test

@@ -21,7 +21,9 @@ var _ MappedNullable = &UpdateAttributeValueBlock1Target{}
 // UpdateAttributeValueBlock1Target The entity or item scope that this effect operates on.
 type UpdateAttributeValueBlock1Target struct {
 	// Identifies the target scope of the attribute update.
-	Type                 string `json:"type"`
+	Type string `json:"type"`
+	// Identifies the name of the target when its type is set to `selector` or `globalFilter`.
+	Name                 *string `json:"name,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -69,6 +71,38 @@ func (o *UpdateAttributeValueBlock1Target) SetType(v string) {
 	o.Type = v
 }
 
+// GetName returns the Name field value if set, zero value otherwise.
+func (o *UpdateAttributeValueBlock1Target) GetName() string {
+	if o == nil || IsNil(o.Name) {
+		var ret string
+		return ret
+	}
+	return *o.Name
+}
+
+// GetNameOk returns a tuple with the Name field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *UpdateAttributeValueBlock1Target) GetNameOk() (*string, bool) {
+	if o == nil || IsNil(o.Name) {
+		return nil, false
+	}
+	return o.Name, true
+}
+
+// HasName returns a boolean if a field has been set.
+func (o *UpdateAttributeValueBlock1Target) HasName() bool {
+	if o != nil && !IsNil(o.Name) {
+		return true
+	}
+
+	return false
+}
+
+// SetName gets a reference to the given string and assigns it to the Name field.
+func (o *UpdateAttributeValueBlock1Target) SetName(v string) {
+	o.Name = &v
+}
+
 func (o UpdateAttributeValueBlock1Target) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -80,6 +114,9 @@ func (o UpdateAttributeValueBlock1Target) MarshalJSON() ([]byte, error) {
 func (o UpdateAttributeValueBlock1Target) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["type"] = o.Type
+	if !IsNil(o.Name) {
+		toSerialize["name"] = o.Name
+	}
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value
@@ -124,6 +161,7 @@ func (o *UpdateAttributeValueBlock1Target) UnmarshalJSON(data []byte) (err error
 
 	if err = json.Unmarshal(data, &additionalProperties); err == nil {
 		delete(additionalProperties, "type")
+		delete(additionalProperties, "name")
 		o.AdditionalProperties = additionalProperties
 	}
 

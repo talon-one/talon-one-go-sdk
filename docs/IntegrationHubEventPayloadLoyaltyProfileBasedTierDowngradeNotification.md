@@ -4,6 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**EventId** | **int64** | The ID of the integration hub event. Return this value in the delivery-status callback to mark the event delivered or failed. | 
 **ProfileIntegrationID** | **string** |  | 
 **LoyaltyProgramID** | **int64** |  | 
 **LoyaltyProgramName** | **string** | The name of the loyalty program. | 
@@ -20,7 +21,7 @@ Name | Type | Description | Notes
 
 ### NewIntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification
 
-`func NewIntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification(profileIntegrationID string, loyaltyProgramID int64, loyaltyProgramName string, subledgerID string, sourceOfEvent string, currentPoints float32, publishedAt time.Time, ) *IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification`
+`func NewIntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification(eventId int64, profileIntegrationID string, loyaltyProgramID int64, loyaltyProgramName string, subledgerID string, sourceOfEvent string, currentPoints float32, publishedAt time.Time, ) *IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification`
 
 NewIntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification instantiates a new IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification object
 This constructor will assign default values to properties that have it defined,
@@ -34,6 +35,26 @@ will change when the set of required properties is changed
 NewIntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotificationWithDefaults instantiates a new IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
+
+### GetEventId
+
+`func (o *IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification) GetEventId() int64`
+
+GetEventId returns the EventId field if non-nil, zero value otherwise.
+
+### GetEventIdOk
+
+`func (o *IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification) GetEventIdOk() (*int64, bool)`
+
+GetEventIdOk returns a tuple with the EventId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetEventId
+
+`func (o *IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification) SetEventId(v int64)`
+
+SetEventId sets EventId field to given value.
+
 
 ### GetProfileIntegrationID
 

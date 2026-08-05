@@ -11,11 +11,19 @@ Name | Type | Description | Notes
 **Blocks** | [**[]StrikethroughBlock**](StrikethroughBlock.md) | Child blocks evaluated according to the operator. | 
 **OnFailure** | Pointer to [**[]StrikethroughBlock**](StrikethroughBlock.md) | Strikethrough blocks evaluated when this block fails or returns false. | [optional] 
 **OnError** | Pointer to [**map[string][]StrikethroughBlock**](array.md) | Named error handlers evaluated when a specific error occurs. | [optional] 
+**Name** | **string** | The human-readable label attached to the discount. | 
+**Value** | **interface{}** |  | 
+**Partial** | **bool** | Whether to apply a partial discount when the requested value exceeds the configured budget. | 
+**Target** | [**AwardDiscountTarget**](AwardDiscountTarget.md) |  | 
 **Expression** | **[]interface{}** | The raw Talang expression as an array. For a function call, the first element is the function name and subsequent elements are its arguments. For any other expression (for example a bare attribute path or a literal value), this is a single-element array containing that value. | 
-**Attribute** | **string** | The attribute path identifier (e.g. \&quot;$Session.Total\&quot;). | 
-**Value** | Pointer to **interface{}** |  | [optional] 
+**Attribute** | **interface{}** |  | 
 **Min** | Pointer to **interface{}** |  | [optional] 
 **Max** | Pointer to **interface{}** |  | [optional] 
+**Start** | Pointer to **interface{}** |  | [optional] 
+**End** | Pointer to **interface{}** |  | [optional] 
+**StartInclusive** | Pointer to **bool** | When &#x60;true&#x60;, the &#x60;start&#x60; value is included in the range for the &#x60;within&#x60; operator. | [optional] 
+**EndInclusive** | Pointer to **bool** | When &#x60;true&#x60;, the &#x60;end&#x60; value is included in the range for the &#x60;within&#x60; operator. | [optional] 
+**TimezoneInsensitive** | Pointer to **bool** | Indicates whether the &#x60;within&#x60; operator ignores time zones and compares the wall-clock time only. When &#x60;false&#x60;, time zones are taken into account. | [optional] 
 **Values** | Pointer to **interface{}** |  | [optional] 
 **Count** | Pointer to **interface{}** |  | [optional] 
 
@@ -23,7 +31,7 @@ Name | Type | Description | Notes
 
 ### NewStrikethroughBlock
 
-`func NewStrikethroughBlock(id string, type_ string, operator string, blocks []StrikethroughBlock, expression []interface{}, attribute string, ) *StrikethroughBlock`
+`func NewStrikethroughBlock(id string, type_ string, operator string, blocks []StrikethroughBlock, name string, value interface{}, partial bool, target AwardDiscountTarget, expression []interface{}, attribute interface{}, ) *StrikethroughBlock`
 
 NewStrikethroughBlock instantiates a new StrikethroughBlock object
 This constructor will assign default values to properties that have it defined,
@@ -193,6 +201,96 @@ SetOnError sets OnError field to given value.
 
 HasOnError returns a boolean if a field has been set.
 
+### GetName
+
+`func (o *StrikethroughBlock) GetName() string`
+
+GetName returns the Name field if non-nil, zero value otherwise.
+
+### GetNameOk
+
+`func (o *StrikethroughBlock) GetNameOk() (*string, bool)`
+
+GetNameOk returns a tuple with the Name field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetName
+
+`func (o *StrikethroughBlock) SetName(v string)`
+
+SetName sets Name field to given value.
+
+
+### GetValue
+
+`func (o *StrikethroughBlock) GetValue() interface{}`
+
+GetValue returns the Value field if non-nil, zero value otherwise.
+
+### GetValueOk
+
+`func (o *StrikethroughBlock) GetValueOk() (*interface{}, bool)`
+
+GetValueOk returns a tuple with the Value field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetValue
+
+`func (o *StrikethroughBlock) SetValue(v interface{})`
+
+SetValue sets Value field to given value.
+
+
+### SetValueNil
+
+`func (o *StrikethroughBlock) SetValueNil(b bool)`
+
+ SetValueNil sets the value for Value to be an explicit nil
+
+### UnsetValue
+`func (o *StrikethroughBlock) UnsetValue()`
+
+UnsetValue ensures that no value is present for Value, not even an explicit nil
+### GetPartial
+
+`func (o *StrikethroughBlock) GetPartial() bool`
+
+GetPartial returns the Partial field if non-nil, zero value otherwise.
+
+### GetPartialOk
+
+`func (o *StrikethroughBlock) GetPartialOk() (*bool, bool)`
+
+GetPartialOk returns a tuple with the Partial field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPartial
+
+`func (o *StrikethroughBlock) SetPartial(v bool)`
+
+SetPartial sets Partial field to given value.
+
+
+### GetTarget
+
+`func (o *StrikethroughBlock) GetTarget() AwardDiscountTarget`
+
+GetTarget returns the Target field if non-nil, zero value otherwise.
+
+### GetTargetOk
+
+`func (o *StrikethroughBlock) GetTargetOk() (*AwardDiscountTarget, bool)`
+
+GetTargetOk returns a tuple with the Target field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTarget
+
+`func (o *StrikethroughBlock) SetTarget(v AwardDiscountTarget)`
+
+SetTarget sets Target field to given value.
+
+
 ### GetExpression
 
 `func (o *StrikethroughBlock) GetExpression() []interface{}`
@@ -215,59 +313,34 @@ SetExpression sets Expression field to given value.
 
 ### GetAttribute
 
-`func (o *StrikethroughBlock) GetAttribute() string`
+`func (o *StrikethroughBlock) GetAttribute() interface{}`
 
 GetAttribute returns the Attribute field if non-nil, zero value otherwise.
 
 ### GetAttributeOk
 
-`func (o *StrikethroughBlock) GetAttributeOk() (*string, bool)`
+`func (o *StrikethroughBlock) GetAttributeOk() (*interface{}, bool)`
 
 GetAttributeOk returns a tuple with the Attribute field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetAttribute
 
-`func (o *StrikethroughBlock) SetAttribute(v string)`
+`func (o *StrikethroughBlock) SetAttribute(v interface{})`
 
 SetAttribute sets Attribute field to given value.
 
 
-### GetValue
+### SetAttributeNil
 
-`func (o *StrikethroughBlock) GetValue() interface{}`
+`func (o *StrikethroughBlock) SetAttributeNil(b bool)`
 
-GetValue returns the Value field if non-nil, zero value otherwise.
+ SetAttributeNil sets the value for Attribute to be an explicit nil
 
-### GetValueOk
+### UnsetAttribute
+`func (o *StrikethroughBlock) UnsetAttribute()`
 
-`func (o *StrikethroughBlock) GetValueOk() (*interface{}, bool)`
-
-GetValueOk returns a tuple with the Value field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetValue
-
-`func (o *StrikethroughBlock) SetValue(v interface{})`
-
-SetValue sets Value field to given value.
-
-### HasValue
-
-`func (o *StrikethroughBlock) HasValue() bool`
-
-HasValue returns a boolean if a field has been set.
-
-### SetValueNil
-
-`func (o *StrikethroughBlock) SetValueNil(b bool)`
-
- SetValueNil sets the value for Value to be an explicit nil
-
-### UnsetValue
-`func (o *StrikethroughBlock) UnsetValue()`
-
-UnsetValue ensures that no value is present for Value, not even an explicit nil
+UnsetAttribute ensures that no value is present for Attribute, not even an explicit nil
 ### GetMin
 
 `func (o *StrikethroughBlock) GetMin() interface{}`
@@ -338,6 +411,151 @@ HasMax returns a boolean if a field has been set.
 `func (o *StrikethroughBlock) UnsetMax()`
 
 UnsetMax ensures that no value is present for Max, not even an explicit nil
+### GetStart
+
+`func (o *StrikethroughBlock) GetStart() interface{}`
+
+GetStart returns the Start field if non-nil, zero value otherwise.
+
+### GetStartOk
+
+`func (o *StrikethroughBlock) GetStartOk() (*interface{}, bool)`
+
+GetStartOk returns a tuple with the Start field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetStart
+
+`func (o *StrikethroughBlock) SetStart(v interface{})`
+
+SetStart sets Start field to given value.
+
+### HasStart
+
+`func (o *StrikethroughBlock) HasStart() bool`
+
+HasStart returns a boolean if a field has been set.
+
+### SetStartNil
+
+`func (o *StrikethroughBlock) SetStartNil(b bool)`
+
+ SetStartNil sets the value for Start to be an explicit nil
+
+### UnsetStart
+`func (o *StrikethroughBlock) UnsetStart()`
+
+UnsetStart ensures that no value is present for Start, not even an explicit nil
+### GetEnd
+
+`func (o *StrikethroughBlock) GetEnd() interface{}`
+
+GetEnd returns the End field if non-nil, zero value otherwise.
+
+### GetEndOk
+
+`func (o *StrikethroughBlock) GetEndOk() (*interface{}, bool)`
+
+GetEndOk returns a tuple with the End field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetEnd
+
+`func (o *StrikethroughBlock) SetEnd(v interface{})`
+
+SetEnd sets End field to given value.
+
+### HasEnd
+
+`func (o *StrikethroughBlock) HasEnd() bool`
+
+HasEnd returns a boolean if a field has been set.
+
+### SetEndNil
+
+`func (o *StrikethroughBlock) SetEndNil(b bool)`
+
+ SetEndNil sets the value for End to be an explicit nil
+
+### UnsetEnd
+`func (o *StrikethroughBlock) UnsetEnd()`
+
+UnsetEnd ensures that no value is present for End, not even an explicit nil
+### GetStartInclusive
+
+`func (o *StrikethroughBlock) GetStartInclusive() bool`
+
+GetStartInclusive returns the StartInclusive field if non-nil, zero value otherwise.
+
+### GetStartInclusiveOk
+
+`func (o *StrikethroughBlock) GetStartInclusiveOk() (*bool, bool)`
+
+GetStartInclusiveOk returns a tuple with the StartInclusive field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetStartInclusive
+
+`func (o *StrikethroughBlock) SetStartInclusive(v bool)`
+
+SetStartInclusive sets StartInclusive field to given value.
+
+### HasStartInclusive
+
+`func (o *StrikethroughBlock) HasStartInclusive() bool`
+
+HasStartInclusive returns a boolean if a field has been set.
+
+### GetEndInclusive
+
+`func (o *StrikethroughBlock) GetEndInclusive() bool`
+
+GetEndInclusive returns the EndInclusive field if non-nil, zero value otherwise.
+
+### GetEndInclusiveOk
+
+`func (o *StrikethroughBlock) GetEndInclusiveOk() (*bool, bool)`
+
+GetEndInclusiveOk returns a tuple with the EndInclusive field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetEndInclusive
+
+`func (o *StrikethroughBlock) SetEndInclusive(v bool)`
+
+SetEndInclusive sets EndInclusive field to given value.
+
+### HasEndInclusive
+
+`func (o *StrikethroughBlock) HasEndInclusive() bool`
+
+HasEndInclusive returns a boolean if a field has been set.
+
+### GetTimezoneInsensitive
+
+`func (o *StrikethroughBlock) GetTimezoneInsensitive() bool`
+
+GetTimezoneInsensitive returns the TimezoneInsensitive field if non-nil, zero value otherwise.
+
+### GetTimezoneInsensitiveOk
+
+`func (o *StrikethroughBlock) GetTimezoneInsensitiveOk() (*bool, bool)`
+
+GetTimezoneInsensitiveOk returns a tuple with the TimezoneInsensitive field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTimezoneInsensitive
+
+`func (o *StrikethroughBlock) SetTimezoneInsensitive(v bool)`
+
+SetTimezoneInsensitive sets TimezoneInsensitive field to given value.
+
+### HasTimezoneInsensitive
+
+`func (o *StrikethroughBlock) HasTimezoneInsensitive() bool`
+
+HasTimezoneInsensitive returns a boolean if a field has been set.
+
 ### GetValues
 
 `func (o *StrikethroughBlock) GetValues() interface{}`

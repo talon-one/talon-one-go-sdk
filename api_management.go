@@ -5088,6 +5088,124 @@ func (a *ManagementAPIService) DisconnectCampaignStoresExecute(r ApiDisconnectCa
 	return localVarHTTPResponse, nil
 }
 
+type ApiExcludePriceHistoryRequest struct {
+	ctx                             context.Context
+	ApiService                      *ManagementAPIService
+	applicationId                   int64
+	excludePriceObservationsRequest *ExcludePriceObservationsRequest
+}
+
+// body
+func (r ApiExcludePriceHistoryRequest) ExcludePriceObservationsRequest(excludePriceObservationsRequest ExcludePriceObservationsRequest) ApiExcludePriceHistoryRequest {
+	r.excludePriceObservationsRequest = &excludePriceObservationsRequest
+	return r
+}
+
+func (r ApiExcludePriceHistoryRequest) Execute() (*http.Response, error) {
+	return r.ApiService.ExcludePriceHistoryExecute(r)
+}
+
+/*
+ExcludePriceHistory Exclude price records from price history
+
+Select a batch of historical price IDs to exclude from [best prior price calculation](https://docs.talon.one/integration-api#tag/Catalogs/operation/bestPriorPrice). All IDs in the batch must be valid `id` values obtained from the [Get summary of price history](https://docs.talon.one/management-api#tag/Catalogs/operation/priceHistory.responses.200.history) endpoint, must belong to the specified Application, must not already be excluded from best prior price calculation, and must not be associated with a scheduled strikethrough pricing notification.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param applicationId The ID of the Application. It is displayed in your Talon.One deployment URL.
+	@return ApiExcludePriceHistoryRequest
+*/
+func (a *ManagementAPIService) ExcludePriceHistory(ctx context.Context, applicationId int64) ApiExcludePriceHistoryRequest {
+	return ApiExcludePriceHistoryRequest{
+		ApiService:    a,
+		ctx:           ctx,
+		applicationId: applicationId,
+	}
+}
+
+// Execute executes the request
+func (a *ManagementAPIService) ExcludePriceHistoryExecute(r ApiExcludePriceHistoryRequest) (*http.Response, error) {
+	var (
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagementAPIService.ExcludePriceHistory")
+	if err != nil {
+		return nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v1/applications/{applicationId}/price_history/exclusions"
+	localVarPath = strings.Replace(localVarPath, "{"+"applicationId"+"}", url.PathEscape(parameterValueToString(r.applicationId, "applicationId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.excludePriceObservationsRequest == nil {
+		return nil, reportError("excludePriceObservationsRequest is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.excludePriceObservationsRequest
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
+}
+
 type ApiExportAccountCollectionItemsRequest struct {
 	ctx          context.Context
 	ApiService   *ManagementAPIService

@@ -11,6 +11,8 @@ Name | Type | Description | Notes
 **Price** | **float32** | Price of the item. | 
 **Metadata** | [**BestPriorPriceMetadata**](BestPriorPriceMetadata.md) |  | 
 **Target** | [**LabelTarget**](LabelTarget.md) |  | 
+**ExcludedAt** | Pointer to **time.Time** | The date and time when the historical price ID was excluded. | [optional] 
+**ExclusionReason** | Pointer to **string** | The reason for excluding this historical price ID. | [optional] 
 
 ## Methods
 
@@ -175,6 +177,56 @@ and a boolean to check if the value has been set.
 
 SetTarget sets Target field to given value.
 
+
+### GetExcludedAt
+
+`func (o *History) GetExcludedAt() time.Time`
+
+GetExcludedAt returns the ExcludedAt field if non-nil, zero value otherwise.
+
+### GetExcludedAtOk
+
+`func (o *History) GetExcludedAtOk() (*time.Time, bool)`
+
+GetExcludedAtOk returns a tuple with the ExcludedAt field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetExcludedAt
+
+`func (o *History) SetExcludedAt(v time.Time)`
+
+SetExcludedAt sets ExcludedAt field to given value.
+
+### HasExcludedAt
+
+`func (o *History) HasExcludedAt() bool`
+
+HasExcludedAt returns a boolean if a field has been set.
+
+### GetExclusionReason
+
+`func (o *History) GetExclusionReason() string`
+
+GetExclusionReason returns the ExclusionReason field if non-nil, zero value otherwise.
+
+### GetExclusionReasonOk
+
+`func (o *History) GetExclusionReasonOk() (*string, bool)`
+
+GetExclusionReasonOk returns a tuple with the ExclusionReason field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetExclusionReason
+
+`func (o *History) SetExclusionReason(v string)`
+
+SetExclusionReason sets ExclusionReason field to given value.
+
+### HasExclusionReason
+
+`func (o *History) HasExclusionReason() bool`
+
+HasExclusionReason returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

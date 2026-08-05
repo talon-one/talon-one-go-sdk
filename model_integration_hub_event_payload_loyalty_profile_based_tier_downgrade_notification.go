@@ -21,6 +21,8 @@ var _ MappedNullable = &IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngra
 
 // IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification struct for IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification
 type IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification struct {
+	// The ID of the integration hub event. Return this value in the delivery-status callback to mark the event delivered or failed.
+	EventId              int64  `json:"EventId"`
 	ProfileIntegrationID string `json:"ProfileIntegrationID"`
 	LoyaltyProgramID     int64  `json:"LoyaltyProgramID"`
 	// The name of the loyalty program.
@@ -44,8 +46,9 @@ type _IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification Int
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildIntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification(profileIntegrationID string, loyaltyProgramID int64, loyaltyProgramName string, subledgerID string, sourceOfEvent string, currentPoints float32, publishedAt time.Time) *IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification {
+func BuildIntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification(eventId int64, profileIntegrationID string, loyaltyProgramID int64, loyaltyProgramName string, subledgerID string, sourceOfEvent string, currentPoints float32, publishedAt time.Time) *IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification {
 	this := IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification{}
+	this.EventId = eventId
 	this.ProfileIntegrationID = profileIntegrationID
 	this.LoyaltyProgramID = loyaltyProgramID
 	this.LoyaltyProgramName = loyaltyProgramName
@@ -62,6 +65,30 @@ func BuildIntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification
 func NewIntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotificationWithDefaults() *IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification {
 	this := IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification{}
 	return &this
+}
+
+// GetEventId returns the EventId field value
+func (o *IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification) GetEventId() int64 {
+	if o == nil {
+		var ret int64
+		return ret
+	}
+
+	return o.EventId
+}
+
+// GetEventIdOk returns a tuple with the EventId field value
+// and a boolean to check if the value has been set.
+func (o *IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification) GetEventIdOk() (*int64, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.EventId, true
+}
+
+// SetEventId sets field value
+func (o *IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification) SetEventId(v int64) {
+	o.EventId = v
 }
 
 // GetProfileIntegrationID returns the ProfileIntegrationID field value
@@ -370,6 +397,7 @@ func (o IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification) 
 
 func (o IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
+	toSerialize["EventId"] = o.EventId
 	toSerialize["ProfileIntegrationID"] = o.ProfileIntegrationID
 	toSerialize["LoyaltyProgramID"] = o.LoyaltyProgramID
 	toSerialize["LoyaltyProgramName"] = o.LoyaltyProgramName
@@ -402,6 +430,7 @@ func (o *IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification)
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
+		"EventId",
 		"ProfileIntegrationID",
 		"LoyaltyProgramID",
 		"LoyaltyProgramName",
@@ -438,6 +467,7 @@ func (o *IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification)
 	additionalProperties := make(map[string]interface{})
 
 	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "EventId")
 		delete(additionalProperties, "ProfileIntegrationID")
 		delete(additionalProperties, "LoyaltyProgramID")
 		delete(additionalProperties, "LoyaltyProgramName")
