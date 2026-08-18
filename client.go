@@ -61,7 +61,9 @@ type service struct {
 // optionally a custom http.Client to allow for advanced features such as caching.
 func NewAPIClient(cfg *Configuration) *APIClient {
 	if cfg.HTTPClient == nil {
-		cfg.HTTPClient = http.DefaultClient
+		cfg.HTTPClient = &http.Client{
+			Timeout: DefaultHTTPTimeout,
+		}
 	}
 
 	c := &APIClient{}
@@ -392,11 +394,14 @@ func (c *APIClient) prepareRequest(
 		return strings.Join(pieces, "=")
 	})
 
-	// Generate a new request
+	// Generate a new request with context for cancellation and timeout propagation.
+	if ctx == nil {
+		ctx = context.Background()
+	}
 	if body != nil {
-		localVarRequest, err = http.NewRequest(method, url.String(), body)
+		localVarRequest, err = http.NewRequestWithContext(ctx, method, url.String(), body)
 	} else {
-		localVarRequest, err = http.NewRequest(method, url.String(), nil)
+		localVarRequest, err = http.NewRequestWithContext(ctx, method, url.String(), nil)
 	}
 	if err != nil {
 		return nil, err
@@ -413,14 +418,6 @@ func (c *APIClient) prepareRequest(
 
 	// Add the user agent to the request.
 	localVarRequest.Header.Add("User-Agent", c.cfg.UserAgent)
-
-	if ctx != nil {
-		// add context to the request
-		localVarRequest = localVarRequest.WithContext(ctx)
-
-		// Walk through any authentication.
-
-	}
 
 	for header, value := range c.cfg.DefaultHeader {
 		localVarRequest.Header.Add(header, value)
