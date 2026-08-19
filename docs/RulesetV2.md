@@ -13,8 +13,8 @@ Name | Type | Description | Notes
 **PromotionRules** | [**[]PromotionRuleV2**](PromotionRuleV2.md) | Set of promotion rules. | 
 **StrikethroughRules** | [**[]StrikethroughRuleV2**](StrikethroughRuleV2.md) | Set of strikethrough rules. | 
 **Selectors** | Pointer to [**[]Selector**](Selector.md) | Variable bindings of type selector. | [optional] 
-**Bundles** | Pointer to **[]map[string]interface{}** | Variable bindings of type bundle. | [optional] 
-**Parameters** | Pointer to **[]map[string]interface{}** | Variable bindings of type template parameter. | [optional] 
+**Bundles** | Pointer to [**[]Bundle**](Bundle.md) | Variable bindings of type bundle. | [optional] 
+**Parameters** | Pointer to [**[]TemplateParameter**](TemplateParameter.md) | Variable bindings of type template parameter. | [optional] 
 
 ## Methods
 
@@ -237,20 +237,20 @@ HasSelectors returns a boolean if a field has been set.
 
 ### GetBundles
 
-`func (o *RulesetV2) GetBundles() []map[string]interface{}`
+`func (o *RulesetV2) GetBundles() []Bundle`
 
 GetBundles returns the Bundles field if non-nil, zero value otherwise.
 
 ### GetBundlesOk
 
-`func (o *RulesetV2) GetBundlesOk() (*[]map[string]interface{}, bool)`
+`func (o *RulesetV2) GetBundlesOk() (*[]Bundle, bool)`
 
 GetBundlesOk returns a tuple with the Bundles field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetBundles
 
-`func (o *RulesetV2) SetBundles(v []map[string]interface{})`
+`func (o *RulesetV2) SetBundles(v []Bundle)`
 
 SetBundles sets Bundles field to given value.
 
@@ -262,20 +262,20 @@ HasBundles returns a boolean if a field has been set.
 
 ### GetParameters
 
-`func (o *RulesetV2) GetParameters() []map[string]interface{}`
+`func (o *RulesetV2) GetParameters() []TemplateParameter`
 
 GetParameters returns the Parameters field if non-nil, zero value otherwise.
 
 ### GetParametersOk
 
-`func (o *RulesetV2) GetParametersOk() (*[]map[string]interface{}, bool)`
+`func (o *RulesetV2) GetParametersOk() (*[]TemplateParameter, bool)`
 
 GetParametersOk returns a tuple with the Parameters field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetParameters
 
-`func (o *RulesetV2) SetParameters(v []map[string]interface{})`
+`func (o *RulesetV2) SetParameters(v []TemplateParameter)`
 
 SetParameters sets Parameters field to given value.
 

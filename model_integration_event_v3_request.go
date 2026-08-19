@@ -34,6 +34,8 @@ type IntegrationEventV3Request struct {
 	IntegrationId string `json:"integrationId"`
 	// The ID of the session to reference. The session must be in `closed` state. Otherwise, the API call will fail.
 	ConnectedSessionId *string `json:"connectedSessionId,omitempty"`
+	// The referral code submitted with the event. The endpoint does not validate the code, and submitting a code does not redeem it. Use the \"Referral code is valid\" condition in the Rule Builder to validate and redeem the code, or \"Referral code is valid (without redemption)\" to validate without redeeming.
+	ReferralCode *string `json:"referralCode,omitempty"`
 	// Identifiers of the loyalty cards used during this event.
 	LoyaltyCards []string `json:"loyaltyCards,omitempty"`
 	// Optional list of requested information to be present on the response related to the tracking custom event.
@@ -263,6 +265,38 @@ func (o *IntegrationEventV3Request) SetConnectedSessionId(v string) {
 	o.ConnectedSessionId = &v
 }
 
+// GetReferralCode returns the ReferralCode field value if set, zero value otherwise.
+func (o *IntegrationEventV3Request) GetReferralCode() string {
+	if o == nil || IsNil(o.ReferralCode) {
+		var ret string
+		return ret
+	}
+	return *o.ReferralCode
+}
+
+// GetReferralCodeOk returns a tuple with the ReferralCode field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IntegrationEventV3Request) GetReferralCodeOk() (*string, bool) {
+	if o == nil || IsNil(o.ReferralCode) {
+		return nil, false
+	}
+	return o.ReferralCode, true
+}
+
+// HasReferralCode returns a boolean if a field has been set.
+func (o *IntegrationEventV3Request) HasReferralCode() bool {
+	if o != nil && !IsNil(o.ReferralCode) {
+		return true
+	}
+
+	return false
+}
+
+// SetReferralCode gets a reference to the given string and assigns it to the ReferralCode field.
+func (o *IntegrationEventV3Request) SetReferralCode(v string) {
+	o.ReferralCode = &v
+}
+
 // GetLoyaltyCards returns the LoyaltyCards field value if set, zero value otherwise.
 func (o *IntegrationEventV3Request) GetLoyaltyCards() []string {
 	if o == nil || IsNil(o.LoyaltyCards) {
@@ -352,6 +386,9 @@ func (o IntegrationEventV3Request) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ConnectedSessionId) {
 		toSerialize["connectedSessionId"] = o.ConnectedSessionId
 	}
+	if !IsNil(o.ReferralCode) {
+		toSerialize["referralCode"] = o.ReferralCode
+	}
 	if !IsNil(o.LoyaltyCards) {
 		toSerialize["loyaltyCards"] = o.LoyaltyCards
 	}
@@ -410,6 +447,7 @@ func (o *IntegrationEventV3Request) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "attributes")
 		delete(additionalProperties, "integrationId")
 		delete(additionalProperties, "connectedSessionId")
+		delete(additionalProperties, "referralCode")
 		delete(additionalProperties, "loyaltyCards")
 		delete(additionalProperties, "responseContent")
 		o.AdditionalProperties = additionalProperties

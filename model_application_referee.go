@@ -25,6 +25,8 @@ type ApplicationReferee struct {
 	ApplicationId int64 `json:"applicationId"`
 	// Integration ID of the session in which the customer redeemed the referral.
 	SessionId string `json:"sessionId"`
+	// The unique ID of the advanced event in which the customer redeemed the referral. Omitted when the referral was redeemed through a customer session rather than an advanced event.
+	AdvancedEventIntegrationId *string `json:"advancedEventIntegrationId,omitempty"`
 	// Integration ID of the Advocate's Profile.
 	AdvocateIntegrationId string `json:"advocateIntegrationId"`
 	// Integration ID of the Friend's Profile.
@@ -107,6 +109,38 @@ func (o *ApplicationReferee) GetSessionIdOk() (*string, bool) {
 // SetSessionId sets field value
 func (o *ApplicationReferee) SetSessionId(v string) {
 	o.SessionId = v
+}
+
+// GetAdvancedEventIntegrationId returns the AdvancedEventIntegrationId field value if set, zero value otherwise.
+func (o *ApplicationReferee) GetAdvancedEventIntegrationId() string {
+	if o == nil || IsNil(o.AdvancedEventIntegrationId) {
+		var ret string
+		return ret
+	}
+	return *o.AdvancedEventIntegrationId
+}
+
+// GetAdvancedEventIntegrationIdOk returns a tuple with the AdvancedEventIntegrationId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ApplicationReferee) GetAdvancedEventIntegrationIdOk() (*string, bool) {
+	if o == nil || IsNil(o.AdvancedEventIntegrationId) {
+		return nil, false
+	}
+	return o.AdvancedEventIntegrationId, true
+}
+
+// HasAdvancedEventIntegrationId returns a boolean if a field has been set.
+func (o *ApplicationReferee) HasAdvancedEventIntegrationId() bool {
+	if o != nil && !IsNil(o.AdvancedEventIntegrationId) {
+		return true
+	}
+
+	return false
+}
+
+// SetAdvancedEventIntegrationId gets a reference to the given string and assigns it to the AdvancedEventIntegrationId field.
+func (o *ApplicationReferee) SetAdvancedEventIntegrationId(v string) {
+	o.AdvancedEventIntegrationId = &v
 }
 
 // GetAdvocateIntegrationId returns the AdvocateIntegrationId field value
@@ -217,6 +251,9 @@ func (o ApplicationReferee) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["applicationId"] = o.ApplicationId
 	toSerialize["sessionId"] = o.SessionId
+	if !IsNil(o.AdvancedEventIntegrationId) {
+		toSerialize["advancedEventIntegrationId"] = o.AdvancedEventIntegrationId
+	}
 	toSerialize["advocateIntegrationId"] = o.AdvocateIntegrationId
 	toSerialize["friendIntegrationId"] = o.FriendIntegrationId
 	toSerialize["code"] = o.Code
@@ -271,6 +308,7 @@ func (o *ApplicationReferee) UnmarshalJSON(data []byte) (err error) {
 	if err = json.Unmarshal(data, &additionalProperties); err == nil {
 		delete(additionalProperties, "applicationId")
 		delete(additionalProperties, "sessionId")
+		delete(additionalProperties, "advancedEventIntegrationId")
 		delete(additionalProperties, "advocateIntegrationId")
 		delete(additionalProperties, "friendIntegrationId")
 		delete(additionalProperties, "code")

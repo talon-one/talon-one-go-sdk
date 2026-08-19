@@ -8,7 +8,6 @@ Name | Type | Description | Notes
 **Sku** | **string** | sku | 
 **ObservedAt** | **time.Time** | The date and time when the price was observed. | 
 **ContextIds** | **[]string** | The identifiers of the relevant context at the time the price was observed. Includes the context IDs of any price adjustments and of the campaigns that influenced the final price.  | 
-**ContextId** | Pointer to **string** | This property is **deprecated**. Use &#x60;contextIds&#x60; instead. Defaults to an empty string.  | [optional] [default to ""]
 **Price** | **float32** | Price of the item. | 
 **Metadata** | [**BestPriorPriceMetadata**](BestPriorPriceMetadata.md) |  | 
 **Target** | [**LabelTarget**](LabelTarget.md) |  | 
@@ -111,31 +110,6 @@ and a boolean to check if the value has been set.
 
 SetContextIds sets ContextIds field to given value.
 
-
-### GetContextId
-
-`func (o *BestPriorPrice) GetContextId() string`
-
-GetContextId returns the ContextId field if non-nil, zero value otherwise.
-
-### GetContextIdOk
-
-`func (o *BestPriorPrice) GetContextIdOk() (*string, bool)`
-
-GetContextIdOk returns a tuple with the ContextId field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetContextId
-
-`func (o *BestPriorPrice) SetContextId(v string)`
-
-SetContextId sets ContextId field to given value.
-
-### HasContextId
-
-`func (o *BestPriorPrice) HasContextId() bool`
-
-HasContextId returns a boolean if a field has been set.
 
 ### GetPrice
 

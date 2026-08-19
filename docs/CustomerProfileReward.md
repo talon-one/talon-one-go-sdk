@@ -5,13 +5,14 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **int64** | The ID of the customer reward instance. A customer profile can have multiple instances of the same reward. | 
+**IntegrationId** | **string** | The integration ID of the reward. | 
 **RewardId** | **int64** | The ID of the reward this instance belongs to. | 
 **RewardName** | **string** | The name of the reward. | 
 **Status** | **string** | The status of the customer reward: - &#x60;unlocked&#x60;: The reward is available for use. - &#x60;used&#x60;: The reward has been used.  | 
 **UnlockedAt** | **time.Time** | The date and time when the reward was unlocked. | 
-**UnlockedByIntegrationId** | Pointer to **string** | The integration ID of the customer profile that unlocked the reward.   For rewards unlocked with a loyalty card, this can be any customer profile  linked to that loyalty card.  | [optional] 
+**UnlockedByProfileIntegrationId** | Pointer to **string** | The integration ID of the customer profile that unlocked the reward.   For rewards unlocked with a loyalty card, this can be any customer profile  linked to that loyalty card.  | [optional] 
 **UsedAt** | Pointer to **time.Time** | The date and time when the reward was used. | [optional] 
-**UsedByIntegrationId** | Pointer to **string** | The integration ID of the customer profile that used the reward.   For rewards unlocked with a loyalty card, this can be any customer profile  linked to that loyalty card.   Only returned when the reward has been used.  | [optional] 
+**UsedByProfileIntegrationId** | Pointer to **string** | The integration ID of the customer profile that used the reward.   For rewards unlocked with a loyalty card, this can be any customer profile  linked to that loyalty card.   Only returned when the reward has been used.  | [optional] 
 **LoyaltyProgramId** | Pointer to **int64** | The ID of the loyalty program that the loyalty card belongs to. Only returned for rewards unlocked with a loyalty card. | [optional] 
 **LoyaltyCardIdentifier** | Pointer to **string** | The identifier of the loyalty card that the reward was unlocked with. Only returned for rewards unlocked with a loyalty card. | [optional] 
 
@@ -19,7 +20,7 @@ Name | Type | Description | Notes
 
 ### NewCustomerProfileReward
 
-`func NewCustomerProfileReward(id int64, rewardId int64, rewardName string, status string, unlockedAt time.Time, ) *CustomerProfileReward`
+`func NewCustomerProfileReward(id int64, integrationId string, rewardId int64, rewardName string, status string, unlockedAt time.Time, ) *CustomerProfileReward`
 
 NewCustomerProfileReward instantiates a new CustomerProfileReward object
 This constructor will assign default values to properties that have it defined,
@@ -52,6 +53,26 @@ and a boolean to check if the value has been set.
 `func (o *CustomerProfileReward) SetId(v int64)`
 
 SetId sets Id field to given value.
+
+
+### GetIntegrationId
+
+`func (o *CustomerProfileReward) GetIntegrationId() string`
+
+GetIntegrationId returns the IntegrationId field if non-nil, zero value otherwise.
+
+### GetIntegrationIdOk
+
+`func (o *CustomerProfileReward) GetIntegrationIdOk() (*string, bool)`
+
+GetIntegrationIdOk returns a tuple with the IntegrationId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetIntegrationId
+
+`func (o *CustomerProfileReward) SetIntegrationId(v string)`
+
+SetIntegrationId sets IntegrationId field to given value.
 
 
 ### GetRewardId
@@ -134,30 +155,30 @@ and a boolean to check if the value has been set.
 SetUnlockedAt sets UnlockedAt field to given value.
 
 
-### GetUnlockedByIntegrationId
+### GetUnlockedByProfileIntegrationId
 
-`func (o *CustomerProfileReward) GetUnlockedByIntegrationId() string`
+`func (o *CustomerProfileReward) GetUnlockedByProfileIntegrationId() string`
 
-GetUnlockedByIntegrationId returns the UnlockedByIntegrationId field if non-nil, zero value otherwise.
+GetUnlockedByProfileIntegrationId returns the UnlockedByProfileIntegrationId field if non-nil, zero value otherwise.
 
-### GetUnlockedByIntegrationIdOk
+### GetUnlockedByProfileIntegrationIdOk
 
-`func (o *CustomerProfileReward) GetUnlockedByIntegrationIdOk() (*string, bool)`
+`func (o *CustomerProfileReward) GetUnlockedByProfileIntegrationIdOk() (*string, bool)`
 
-GetUnlockedByIntegrationIdOk returns a tuple with the UnlockedByIntegrationId field if it's non-nil, zero value otherwise
+GetUnlockedByProfileIntegrationIdOk returns a tuple with the UnlockedByProfileIntegrationId field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetUnlockedByIntegrationId
+### SetUnlockedByProfileIntegrationId
 
-`func (o *CustomerProfileReward) SetUnlockedByIntegrationId(v string)`
+`func (o *CustomerProfileReward) SetUnlockedByProfileIntegrationId(v string)`
 
-SetUnlockedByIntegrationId sets UnlockedByIntegrationId field to given value.
+SetUnlockedByProfileIntegrationId sets UnlockedByProfileIntegrationId field to given value.
 
-### HasUnlockedByIntegrationId
+### HasUnlockedByProfileIntegrationId
 
-`func (o *CustomerProfileReward) HasUnlockedByIntegrationId() bool`
+`func (o *CustomerProfileReward) HasUnlockedByProfileIntegrationId() bool`
 
-HasUnlockedByIntegrationId returns a boolean if a field has been set.
+HasUnlockedByProfileIntegrationId returns a boolean if a field has been set.
 
 ### GetUsedAt
 
@@ -184,30 +205,30 @@ SetUsedAt sets UsedAt field to given value.
 
 HasUsedAt returns a boolean if a field has been set.
 
-### GetUsedByIntegrationId
+### GetUsedByProfileIntegrationId
 
-`func (o *CustomerProfileReward) GetUsedByIntegrationId() string`
+`func (o *CustomerProfileReward) GetUsedByProfileIntegrationId() string`
 
-GetUsedByIntegrationId returns the UsedByIntegrationId field if non-nil, zero value otherwise.
+GetUsedByProfileIntegrationId returns the UsedByProfileIntegrationId field if non-nil, zero value otherwise.
 
-### GetUsedByIntegrationIdOk
+### GetUsedByProfileIntegrationIdOk
 
-`func (o *CustomerProfileReward) GetUsedByIntegrationIdOk() (*string, bool)`
+`func (o *CustomerProfileReward) GetUsedByProfileIntegrationIdOk() (*string, bool)`
 
-GetUsedByIntegrationIdOk returns a tuple with the UsedByIntegrationId field if it's non-nil, zero value otherwise
+GetUsedByProfileIntegrationIdOk returns a tuple with the UsedByProfileIntegrationId field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetUsedByIntegrationId
+### SetUsedByProfileIntegrationId
 
-`func (o *CustomerProfileReward) SetUsedByIntegrationId(v string)`
+`func (o *CustomerProfileReward) SetUsedByProfileIntegrationId(v string)`
 
-SetUsedByIntegrationId sets UsedByIntegrationId field to given value.
+SetUsedByProfileIntegrationId sets UsedByProfileIntegrationId field to given value.
 
-### HasUsedByIntegrationId
+### HasUsedByProfileIntegrationId
 
-`func (o *CustomerProfileReward) HasUsedByIntegrationId() bool`
+`func (o *CustomerProfileReward) HasUsedByProfileIntegrationId() bool`
 
-HasUsedByIntegrationId returns a boolean if a field has been set.
+HasUsedByProfileIntegrationId returns a boolean if a field has been set.
 
 ### GetLoyaltyProgramId
 

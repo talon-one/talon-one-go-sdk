@@ -27,12 +27,15 @@ type PromotionBlock struct {
 	CheckCouponBlock               *CheckCouponBlock
 	CheckEventBlock                *CheckEventBlock
 	CheckLoyaltyBalanceBlock       *CheckLoyaltyBalanceBlock
+	CheckLoyaltyCardBlock          *CheckLoyaltyCardBlock
 	CheckReferralBlock             *CheckReferralBlock
+	CheckTierBlock                 *CheckTierBlock
 	CreateCouponBlock              *CreateCouponBlock
 	CreateReferralBlock            *CreateReferralBlock
 	PassthroughBlock               *PassthroughBlock
 	PromotionCheckAttributeBlock   *PromotionCheckAttributeBlock
 	PromotionGroupBlock            *PromotionGroupBlock
+	RedeemLoyaltyPointsBlock       *RedeemLoyaltyPointsBlock
 	ReserveCouponBlock             *ReserveCouponBlock
 	ShowNotificationBlock          *ShowNotificationBlock
 	TriggerCustomEffectBlock       *TriggerCustomEffectBlock
@@ -105,10 +108,24 @@ func CheckLoyaltyBalanceBlockAsPromotionBlock(v *CheckLoyaltyBalanceBlock) Promo
 	}
 }
 
+// CheckLoyaltyCardBlockAsPromotionBlock is a convenience function that returns CheckLoyaltyCardBlock wrapped in PromotionBlock
+func CheckLoyaltyCardBlockAsPromotionBlock(v *CheckLoyaltyCardBlock) PromotionBlock {
+	return PromotionBlock{
+		CheckLoyaltyCardBlock: v,
+	}
+}
+
 // CheckReferralBlockAsPromotionBlock is a convenience function that returns CheckReferralBlock wrapped in PromotionBlock
 func CheckReferralBlockAsPromotionBlock(v *CheckReferralBlock) PromotionBlock {
 	return PromotionBlock{
 		CheckReferralBlock: v,
+	}
+}
+
+// CheckTierBlockAsPromotionBlock is a convenience function that returns CheckTierBlock wrapped in PromotionBlock
+func CheckTierBlockAsPromotionBlock(v *CheckTierBlock) PromotionBlock {
+	return PromotionBlock{
+		CheckTierBlock: v,
 	}
 }
 
@@ -144,6 +161,13 @@ func PromotionCheckAttributeBlockAsPromotionBlock(v *PromotionCheckAttributeBloc
 func PromotionGroupBlockAsPromotionBlock(v *PromotionGroupBlock) PromotionBlock {
 	return PromotionBlock{
 		PromotionGroupBlock: v,
+	}
+}
+
+// RedeemLoyaltyPointsBlockAsPromotionBlock is a convenience function that returns RedeemLoyaltyPointsBlock wrapped in PromotionBlock
+func RedeemLoyaltyPointsBlockAsPromotionBlock(v *RedeemLoyaltyPointsBlock) PromotionBlock {
+	return PromotionBlock{
+		RedeemLoyaltyPointsBlock: v,
 	}
 }
 
@@ -353,6 +377,23 @@ func (dst *PromotionBlock) UnmarshalJSON(data []byte) error {
 		dst.CheckLoyaltyBalanceBlock = nil
 	}
 
+	// try to unmarshal data into CheckLoyaltyCardBlock
+	err = newStrictDecoder(data).Decode(&dst.CheckLoyaltyCardBlock)
+	if err == nil {
+		jsonCheckLoyaltyCardBlock, _ := json.Marshal(dst.CheckLoyaltyCardBlock)
+		if string(jsonCheckLoyaltyCardBlock) == "{}" { // empty struct
+			dst.CheckLoyaltyCardBlock = nil
+		} else {
+			if err = validator.Validate(dst.CheckLoyaltyCardBlock); err != nil {
+				dst.CheckLoyaltyCardBlock = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.CheckLoyaltyCardBlock = nil
+	}
+
 	// try to unmarshal data into CheckReferralBlock
 	err = newStrictDecoder(data).Decode(&dst.CheckReferralBlock)
 	if err == nil {
@@ -368,6 +409,23 @@ func (dst *PromotionBlock) UnmarshalJSON(data []byte) error {
 		}
 	} else {
 		dst.CheckReferralBlock = nil
+	}
+
+	// try to unmarshal data into CheckTierBlock
+	err = newStrictDecoder(data).Decode(&dst.CheckTierBlock)
+	if err == nil {
+		jsonCheckTierBlock, _ := json.Marshal(dst.CheckTierBlock)
+		if string(jsonCheckTierBlock) == "{}" { // empty struct
+			dst.CheckTierBlock = nil
+		} else {
+			if err = validator.Validate(dst.CheckTierBlock); err != nil {
+				dst.CheckTierBlock = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.CheckTierBlock = nil
 	}
 
 	// try to unmarshal data into CreateCouponBlock
@@ -453,6 +511,23 @@ func (dst *PromotionBlock) UnmarshalJSON(data []byte) error {
 		}
 	} else {
 		dst.PromotionGroupBlock = nil
+	}
+
+	// try to unmarshal data into RedeemLoyaltyPointsBlock
+	err = newStrictDecoder(data).Decode(&dst.RedeemLoyaltyPointsBlock)
+	if err == nil {
+		jsonRedeemLoyaltyPointsBlock, _ := json.Marshal(dst.RedeemLoyaltyPointsBlock)
+		if string(jsonRedeemLoyaltyPointsBlock) == "{}" { // empty struct
+			dst.RedeemLoyaltyPointsBlock = nil
+		} else {
+			if err = validator.Validate(dst.RedeemLoyaltyPointsBlock); err != nil {
+				dst.RedeemLoyaltyPointsBlock = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.RedeemLoyaltyPointsBlock = nil
 	}
 
 	// try to unmarshal data into ReserveCouponBlock
@@ -585,12 +660,15 @@ func (dst *PromotionBlock) UnmarshalJSON(data []byte) error {
 		dst.CheckCouponBlock = nil
 		dst.CheckEventBlock = nil
 		dst.CheckLoyaltyBalanceBlock = nil
+		dst.CheckLoyaltyCardBlock = nil
 		dst.CheckReferralBlock = nil
+		dst.CheckTierBlock = nil
 		dst.CreateCouponBlock = nil
 		dst.CreateReferralBlock = nil
 		dst.PassthroughBlock = nil
 		dst.PromotionCheckAttributeBlock = nil
 		dst.PromotionGroupBlock = nil
+		dst.RedeemLoyaltyPointsBlock = nil
 		dst.ReserveCouponBlock = nil
 		dst.ShowNotificationBlock = nil
 		dst.TriggerCustomEffectBlock = nil
@@ -603,6 +681,21 @@ func (dst *PromotionBlock) UnmarshalJSON(data []byte) error {
 	} else if match == 1 {
 		return nil // exactly one match
 	} else { // no match
+		if err != nil {
+			return fmt.Errorf("data failed to match schemas in oneOf(PromotionBlock): %v", err)
+		} else {
+			return fmt.Errorf("data failed to match schemas in oneOf(PromotionBlock)")
+		}
+		if err != nil {
+			return fmt.Errorf("data failed to match schemas in oneOf(PromotionBlock): %v", err)
+		} else {
+			return fmt.Errorf("data failed to match schemas in oneOf(PromotionBlock)")
+		}
+		if err != nil {
+			return fmt.Errorf("data failed to match schemas in oneOf(PromotionBlock): %v", err)
+		} else {
+			return fmt.Errorf("data failed to match schemas in oneOf(PromotionBlock)")
+		}
 		if err != nil {
 			return fmt.Errorf("data failed to match schemas in oneOf(PromotionBlock): %v", err)
 		} else {
@@ -754,8 +847,16 @@ func (src PromotionBlock) MarshalJSON() ([]byte, error) {
 		return json.Marshal(&src.CheckLoyaltyBalanceBlock)
 	}
 
+	if src.CheckLoyaltyCardBlock != nil {
+		return json.Marshal(&src.CheckLoyaltyCardBlock)
+	}
+
 	if src.CheckReferralBlock != nil {
 		return json.Marshal(&src.CheckReferralBlock)
+	}
+
+	if src.CheckTierBlock != nil {
+		return json.Marshal(&src.CheckTierBlock)
 	}
 
 	if src.CreateCouponBlock != nil {
@@ -776,6 +877,10 @@ func (src PromotionBlock) MarshalJSON() ([]byte, error) {
 
 	if src.PromotionGroupBlock != nil {
 		return json.Marshal(&src.PromotionGroupBlock)
+	}
+
+	if src.RedeemLoyaltyPointsBlock != nil {
+		return json.Marshal(&src.RedeemLoyaltyPointsBlock)
 	}
 
 	if src.ReserveCouponBlock != nil {
@@ -850,8 +955,16 @@ func (obj *PromotionBlock) GetActualInstance() interface{} {
 		return obj.CheckLoyaltyBalanceBlock
 	}
 
+	if obj.CheckLoyaltyCardBlock != nil {
+		return obj.CheckLoyaltyCardBlock
+	}
+
 	if obj.CheckReferralBlock != nil {
 		return obj.CheckReferralBlock
+	}
+
+	if obj.CheckTierBlock != nil {
+		return obj.CheckTierBlock
 	}
 
 	if obj.CreateCouponBlock != nil {
@@ -872,6 +985,10 @@ func (obj *PromotionBlock) GetActualInstance() interface{} {
 
 	if obj.PromotionGroupBlock != nil {
 		return obj.PromotionGroupBlock
+	}
+
+	if obj.RedeemLoyaltyPointsBlock != nil {
+		return obj.RedeemLoyaltyPointsBlock
 	}
 
 	if obj.ReserveCouponBlock != nil {
@@ -944,8 +1061,16 @@ func (obj PromotionBlock) GetActualInstanceValue() interface{} {
 		return *obj.CheckLoyaltyBalanceBlock
 	}
 
+	if obj.CheckLoyaltyCardBlock != nil {
+		return *obj.CheckLoyaltyCardBlock
+	}
+
 	if obj.CheckReferralBlock != nil {
 		return *obj.CheckReferralBlock
+	}
+
+	if obj.CheckTierBlock != nil {
+		return *obj.CheckTierBlock
 	}
 
 	if obj.CreateCouponBlock != nil {
@@ -966,6 +1091,10 @@ func (obj PromotionBlock) GetActualInstanceValue() interface{} {
 
 	if obj.PromotionGroupBlock != nil {
 		return *obj.PromotionGroupBlock
+	}
+
+	if obj.RedeemLoyaltyPointsBlock != nil {
+		return *obj.RedeemLoyaltyPointsBlock
 	}
 
 	if obj.ReserveCouponBlock != nil {

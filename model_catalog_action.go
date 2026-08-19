@@ -16,55 +16,55 @@ import (
 	"gopkg.in/validator.v2"
 )
 
-// CatalogAction - Definition of all the properties that are needed for a single catalog sync action.
+// CatalogAction - Definition of all the properties that are needed for a single catalog sync action. The `type` field selects the concrete action variant.
 type CatalogAction struct {
-	CatalogActionOneOf  *CatalogActionOneOf
-	CatalogActionOneOf1 *CatalogActionOneOf1
-	CatalogActionOneOf2 *CatalogActionOneOf2
-	CatalogActionOneOf3 *CatalogActionOneOf3
-	CatalogActionOneOf4 *CatalogActionOneOf4
-	CatalogActionOneOf5 *CatalogActionOneOf5
+	CatalogActionAdd                *CatalogActionAdd
+	CatalogActionAddPriceAdjustment *CatalogActionAddPriceAdjustment
+	CatalogActionPatch              *CatalogActionPatch
+	CatalogActionPatchMany          *CatalogActionPatchMany
+	CatalogActionRemove             *CatalogActionRemove
+	CatalogActionRemoveMany         *CatalogActionRemoveMany
 }
 
-// CatalogActionOneOfAsCatalogAction is a convenience function that returns CatalogActionOneOf wrapped in CatalogAction
-func CatalogActionOneOfAsCatalogAction(v *CatalogActionOneOf) CatalogAction {
+// CatalogActionAddAsCatalogAction is a convenience function that returns CatalogActionAdd wrapped in CatalogAction
+func CatalogActionAddAsCatalogAction(v *CatalogActionAdd) CatalogAction {
 	return CatalogAction{
-		CatalogActionOneOf: v,
+		CatalogActionAdd: v,
 	}
 }
 
-// CatalogActionOneOf1AsCatalogAction is a convenience function that returns CatalogActionOneOf1 wrapped in CatalogAction
-func CatalogActionOneOf1AsCatalogAction(v *CatalogActionOneOf1) CatalogAction {
+// CatalogActionAddPriceAdjustmentAsCatalogAction is a convenience function that returns CatalogActionAddPriceAdjustment wrapped in CatalogAction
+func CatalogActionAddPriceAdjustmentAsCatalogAction(v *CatalogActionAddPriceAdjustment) CatalogAction {
 	return CatalogAction{
-		CatalogActionOneOf1: v,
+		CatalogActionAddPriceAdjustment: v,
 	}
 }
 
-// CatalogActionOneOf2AsCatalogAction is a convenience function that returns CatalogActionOneOf2 wrapped in CatalogAction
-func CatalogActionOneOf2AsCatalogAction(v *CatalogActionOneOf2) CatalogAction {
+// CatalogActionPatchAsCatalogAction is a convenience function that returns CatalogActionPatch wrapped in CatalogAction
+func CatalogActionPatchAsCatalogAction(v *CatalogActionPatch) CatalogAction {
 	return CatalogAction{
-		CatalogActionOneOf2: v,
+		CatalogActionPatch: v,
 	}
 }
 
-// CatalogActionOneOf3AsCatalogAction is a convenience function that returns CatalogActionOneOf3 wrapped in CatalogAction
-func CatalogActionOneOf3AsCatalogAction(v *CatalogActionOneOf3) CatalogAction {
+// CatalogActionPatchManyAsCatalogAction is a convenience function that returns CatalogActionPatchMany wrapped in CatalogAction
+func CatalogActionPatchManyAsCatalogAction(v *CatalogActionPatchMany) CatalogAction {
 	return CatalogAction{
-		CatalogActionOneOf3: v,
+		CatalogActionPatchMany: v,
 	}
 }
 
-// CatalogActionOneOf4AsCatalogAction is a convenience function that returns CatalogActionOneOf4 wrapped in CatalogAction
-func CatalogActionOneOf4AsCatalogAction(v *CatalogActionOneOf4) CatalogAction {
+// CatalogActionRemoveAsCatalogAction is a convenience function that returns CatalogActionRemove wrapped in CatalogAction
+func CatalogActionRemoveAsCatalogAction(v *CatalogActionRemove) CatalogAction {
 	return CatalogAction{
-		CatalogActionOneOf4: v,
+		CatalogActionRemove: v,
 	}
 }
 
-// CatalogActionOneOf5AsCatalogAction is a convenience function that returns CatalogActionOneOf5 wrapped in CatalogAction
-func CatalogActionOneOf5AsCatalogAction(v *CatalogActionOneOf5) CatalogAction {
+// CatalogActionRemoveManyAsCatalogAction is a convenience function that returns CatalogActionRemoveMany wrapped in CatalogAction
+func CatalogActionRemoveManyAsCatalogAction(v *CatalogActionRemoveMany) CatalogAction {
 	return CatalogAction{
-		CatalogActionOneOf5: v,
+		CatalogActionRemoveMany: v,
 	}
 }
 
@@ -72,116 +72,116 @@ func CatalogActionOneOf5AsCatalogAction(v *CatalogActionOneOf5) CatalogAction {
 func (dst *CatalogAction) UnmarshalJSON(data []byte) error {
 	var err error
 	match := 0
-	// try to unmarshal data into CatalogActionOneOf
-	err = newStrictDecoder(data).Decode(&dst.CatalogActionOneOf)
+	// try to unmarshal data into CatalogActionAdd
+	err = newStrictDecoder(data).Decode(&dst.CatalogActionAdd)
 	if err == nil {
-		jsonCatalogActionOneOf, _ := json.Marshal(dst.CatalogActionOneOf)
-		if string(jsonCatalogActionOneOf) == "{}" { // empty struct
-			dst.CatalogActionOneOf = nil
+		jsonCatalogActionAdd, _ := json.Marshal(dst.CatalogActionAdd)
+		if string(jsonCatalogActionAdd) == "{}" { // empty struct
+			dst.CatalogActionAdd = nil
 		} else {
-			if err = validator.Validate(dst.CatalogActionOneOf); err != nil {
-				dst.CatalogActionOneOf = nil
+			if err = validator.Validate(dst.CatalogActionAdd); err != nil {
+				dst.CatalogActionAdd = nil
 			} else {
 				match++
 			}
 		}
 	} else {
-		dst.CatalogActionOneOf = nil
+		dst.CatalogActionAdd = nil
 	}
 
-	// try to unmarshal data into CatalogActionOneOf1
-	err = newStrictDecoder(data).Decode(&dst.CatalogActionOneOf1)
+	// try to unmarshal data into CatalogActionAddPriceAdjustment
+	err = newStrictDecoder(data).Decode(&dst.CatalogActionAddPriceAdjustment)
 	if err == nil {
-		jsonCatalogActionOneOf1, _ := json.Marshal(dst.CatalogActionOneOf1)
-		if string(jsonCatalogActionOneOf1) == "{}" { // empty struct
-			dst.CatalogActionOneOf1 = nil
+		jsonCatalogActionAddPriceAdjustment, _ := json.Marshal(dst.CatalogActionAddPriceAdjustment)
+		if string(jsonCatalogActionAddPriceAdjustment) == "{}" { // empty struct
+			dst.CatalogActionAddPriceAdjustment = nil
 		} else {
-			if err = validator.Validate(dst.CatalogActionOneOf1); err != nil {
-				dst.CatalogActionOneOf1 = nil
+			if err = validator.Validate(dst.CatalogActionAddPriceAdjustment); err != nil {
+				dst.CatalogActionAddPriceAdjustment = nil
 			} else {
 				match++
 			}
 		}
 	} else {
-		dst.CatalogActionOneOf1 = nil
+		dst.CatalogActionAddPriceAdjustment = nil
 	}
 
-	// try to unmarshal data into CatalogActionOneOf2
-	err = newStrictDecoder(data).Decode(&dst.CatalogActionOneOf2)
+	// try to unmarshal data into CatalogActionPatch
+	err = newStrictDecoder(data).Decode(&dst.CatalogActionPatch)
 	if err == nil {
-		jsonCatalogActionOneOf2, _ := json.Marshal(dst.CatalogActionOneOf2)
-		if string(jsonCatalogActionOneOf2) == "{}" { // empty struct
-			dst.CatalogActionOneOf2 = nil
+		jsonCatalogActionPatch, _ := json.Marshal(dst.CatalogActionPatch)
+		if string(jsonCatalogActionPatch) == "{}" { // empty struct
+			dst.CatalogActionPatch = nil
 		} else {
-			if err = validator.Validate(dst.CatalogActionOneOf2); err != nil {
-				dst.CatalogActionOneOf2 = nil
+			if err = validator.Validate(dst.CatalogActionPatch); err != nil {
+				dst.CatalogActionPatch = nil
 			} else {
 				match++
 			}
 		}
 	} else {
-		dst.CatalogActionOneOf2 = nil
+		dst.CatalogActionPatch = nil
 	}
 
-	// try to unmarshal data into CatalogActionOneOf3
-	err = newStrictDecoder(data).Decode(&dst.CatalogActionOneOf3)
+	// try to unmarshal data into CatalogActionPatchMany
+	err = newStrictDecoder(data).Decode(&dst.CatalogActionPatchMany)
 	if err == nil {
-		jsonCatalogActionOneOf3, _ := json.Marshal(dst.CatalogActionOneOf3)
-		if string(jsonCatalogActionOneOf3) == "{}" { // empty struct
-			dst.CatalogActionOneOf3 = nil
+		jsonCatalogActionPatchMany, _ := json.Marshal(dst.CatalogActionPatchMany)
+		if string(jsonCatalogActionPatchMany) == "{}" { // empty struct
+			dst.CatalogActionPatchMany = nil
 		} else {
-			if err = validator.Validate(dst.CatalogActionOneOf3); err != nil {
-				dst.CatalogActionOneOf3 = nil
+			if err = validator.Validate(dst.CatalogActionPatchMany); err != nil {
+				dst.CatalogActionPatchMany = nil
 			} else {
 				match++
 			}
 		}
 	} else {
-		dst.CatalogActionOneOf3 = nil
+		dst.CatalogActionPatchMany = nil
 	}
 
-	// try to unmarshal data into CatalogActionOneOf4
-	err = newStrictDecoder(data).Decode(&dst.CatalogActionOneOf4)
+	// try to unmarshal data into CatalogActionRemove
+	err = newStrictDecoder(data).Decode(&dst.CatalogActionRemove)
 	if err == nil {
-		jsonCatalogActionOneOf4, _ := json.Marshal(dst.CatalogActionOneOf4)
-		if string(jsonCatalogActionOneOf4) == "{}" { // empty struct
-			dst.CatalogActionOneOf4 = nil
+		jsonCatalogActionRemove, _ := json.Marshal(dst.CatalogActionRemove)
+		if string(jsonCatalogActionRemove) == "{}" { // empty struct
+			dst.CatalogActionRemove = nil
 		} else {
-			if err = validator.Validate(dst.CatalogActionOneOf4); err != nil {
-				dst.CatalogActionOneOf4 = nil
+			if err = validator.Validate(dst.CatalogActionRemove); err != nil {
+				dst.CatalogActionRemove = nil
 			} else {
 				match++
 			}
 		}
 	} else {
-		dst.CatalogActionOneOf4 = nil
+		dst.CatalogActionRemove = nil
 	}
 
-	// try to unmarshal data into CatalogActionOneOf5
-	err = newStrictDecoder(data).Decode(&dst.CatalogActionOneOf5)
+	// try to unmarshal data into CatalogActionRemoveMany
+	err = newStrictDecoder(data).Decode(&dst.CatalogActionRemoveMany)
 	if err == nil {
-		jsonCatalogActionOneOf5, _ := json.Marshal(dst.CatalogActionOneOf5)
-		if string(jsonCatalogActionOneOf5) == "{}" { // empty struct
-			dst.CatalogActionOneOf5 = nil
+		jsonCatalogActionRemoveMany, _ := json.Marshal(dst.CatalogActionRemoveMany)
+		if string(jsonCatalogActionRemoveMany) == "{}" { // empty struct
+			dst.CatalogActionRemoveMany = nil
 		} else {
-			if err = validator.Validate(dst.CatalogActionOneOf5); err != nil {
-				dst.CatalogActionOneOf5 = nil
+			if err = validator.Validate(dst.CatalogActionRemoveMany); err != nil {
+				dst.CatalogActionRemoveMany = nil
 			} else {
 				match++
 			}
 		}
 	} else {
-		dst.CatalogActionOneOf5 = nil
+		dst.CatalogActionRemoveMany = nil
 	}
 
 	if match > 1 { // more than 1 match
 		// reset to nil
-		dst.CatalogActionOneOf = nil
-		dst.CatalogActionOneOf1 = nil
-		dst.CatalogActionOneOf2 = nil
-		dst.CatalogActionOneOf3 = nil
-		dst.CatalogActionOneOf4 = nil
-		dst.CatalogActionOneOf5 = nil
+		dst.CatalogActionAdd = nil
+		dst.CatalogActionAddPriceAdjustment = nil
+		dst.CatalogActionPatch = nil
+		dst.CatalogActionPatchMany = nil
+		dst.CatalogActionRemove = nil
+		dst.CatalogActionRemoveMany = nil
 
 		return fmt.Errorf("data matches more than one schema in oneOf(CatalogAction)")
 	} else if match == 1 {
@@ -222,28 +222,28 @@ func (dst *CatalogAction) UnmarshalJSON(data []byte) error {
 
 // Marshal data from the first non-nil pointers in the struct to JSON
 func (src CatalogAction) MarshalJSON() ([]byte, error) {
-	if src.CatalogActionOneOf != nil {
-		return json.Marshal(&src.CatalogActionOneOf)
+	if src.CatalogActionAdd != nil {
+		return json.Marshal(&src.CatalogActionAdd)
 	}
 
-	if src.CatalogActionOneOf1 != nil {
-		return json.Marshal(&src.CatalogActionOneOf1)
+	if src.CatalogActionAddPriceAdjustment != nil {
+		return json.Marshal(&src.CatalogActionAddPriceAdjustment)
 	}
 
-	if src.CatalogActionOneOf2 != nil {
-		return json.Marshal(&src.CatalogActionOneOf2)
+	if src.CatalogActionPatch != nil {
+		return json.Marshal(&src.CatalogActionPatch)
 	}
 
-	if src.CatalogActionOneOf3 != nil {
-		return json.Marshal(&src.CatalogActionOneOf3)
+	if src.CatalogActionPatchMany != nil {
+		return json.Marshal(&src.CatalogActionPatchMany)
 	}
 
-	if src.CatalogActionOneOf4 != nil {
-		return json.Marshal(&src.CatalogActionOneOf4)
+	if src.CatalogActionRemove != nil {
+		return json.Marshal(&src.CatalogActionRemove)
 	}
 
-	if src.CatalogActionOneOf5 != nil {
-		return json.Marshal(&src.CatalogActionOneOf5)
+	if src.CatalogActionRemoveMany != nil {
+		return json.Marshal(&src.CatalogActionRemoveMany)
 	}
 
 	return nil, nil // no data in oneOf schemas
@@ -254,28 +254,28 @@ func (obj *CatalogAction) GetActualInstance() interface{} {
 	if obj == nil {
 		return nil
 	}
-	if obj.CatalogActionOneOf != nil {
-		return obj.CatalogActionOneOf
+	if obj.CatalogActionAdd != nil {
+		return obj.CatalogActionAdd
 	}
 
-	if obj.CatalogActionOneOf1 != nil {
-		return obj.CatalogActionOneOf1
+	if obj.CatalogActionAddPriceAdjustment != nil {
+		return obj.CatalogActionAddPriceAdjustment
 	}
 
-	if obj.CatalogActionOneOf2 != nil {
-		return obj.CatalogActionOneOf2
+	if obj.CatalogActionPatch != nil {
+		return obj.CatalogActionPatch
 	}
 
-	if obj.CatalogActionOneOf3 != nil {
-		return obj.CatalogActionOneOf3
+	if obj.CatalogActionPatchMany != nil {
+		return obj.CatalogActionPatchMany
 	}
 
-	if obj.CatalogActionOneOf4 != nil {
-		return obj.CatalogActionOneOf4
+	if obj.CatalogActionRemove != nil {
+		return obj.CatalogActionRemove
 	}
 
-	if obj.CatalogActionOneOf5 != nil {
-		return obj.CatalogActionOneOf5
+	if obj.CatalogActionRemoveMany != nil {
+		return obj.CatalogActionRemoveMany
 	}
 
 	// all schemas are nil
@@ -284,28 +284,28 @@ func (obj *CatalogAction) GetActualInstance() interface{} {
 
 // Get the actual instance value
 func (obj CatalogAction) GetActualInstanceValue() interface{} {
-	if obj.CatalogActionOneOf != nil {
-		return *obj.CatalogActionOneOf
+	if obj.CatalogActionAdd != nil {
+		return *obj.CatalogActionAdd
 	}
 
-	if obj.CatalogActionOneOf1 != nil {
-		return *obj.CatalogActionOneOf1
+	if obj.CatalogActionAddPriceAdjustment != nil {
+		return *obj.CatalogActionAddPriceAdjustment
 	}
 
-	if obj.CatalogActionOneOf2 != nil {
-		return *obj.CatalogActionOneOf2
+	if obj.CatalogActionPatch != nil {
+		return *obj.CatalogActionPatch
 	}
 
-	if obj.CatalogActionOneOf3 != nil {
-		return *obj.CatalogActionOneOf3
+	if obj.CatalogActionPatchMany != nil {
+		return *obj.CatalogActionPatchMany
 	}
 
-	if obj.CatalogActionOneOf4 != nil {
-		return *obj.CatalogActionOneOf4
+	if obj.CatalogActionRemove != nil {
+		return *obj.CatalogActionRemove
 	}
 
-	if obj.CatalogActionOneOf5 != nil {
-		return *obj.CatalogActionOneOf5
+	if obj.CatalogActionRemoveMany != nil {
+		return *obj.CatalogActionRemoveMany
 	}
 
 	// all schemas are nil

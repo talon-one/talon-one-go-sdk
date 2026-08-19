@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **Attributes** | Pointer to **map[string]interface{}** | Arbitrary additional JSON properties associated with the event. They must be created in the Campaign Manager before setting them with this property. See [creating custom attributes](https://docs.talon.one/docs/product/account/dev-tools/managing-attributes#creating-a-custom-attribute). | [optional] 
 **IntegrationId** | **string** | The unique ID of the event. Only one event with this ID can be registered.  | 
 **ConnectedSessionId** | Pointer to **string** | The ID of the session to reference. The session must be in &#x60;closed&#x60; state. Otherwise, the API call will fail. | [optional] 
+**ReferralCode** | Pointer to **string** | The referral code submitted with the event. The endpoint does not validate the code, and submitting a code does not redeem it. Use the \&quot;Referral code is valid\&quot; condition in the Rule Builder to validate and redeem the code, or \&quot;Referral code is valid (without redemption)\&quot; to validate without redeeming.  | [optional] 
 **LoyaltyCards** | Pointer to **[]string** | Identifiers of the loyalty cards used during this event. | [optional] 
 **ResponseContent** | Pointer to **[]string** | Optional list of requested information to be present on the response related to the tracking custom event.  | [optional] 
 
@@ -192,6 +193,31 @@ SetConnectedSessionId sets ConnectedSessionId field to given value.
 `func (o *IntegrationEventV3Request) HasConnectedSessionId() bool`
 
 HasConnectedSessionId returns a boolean if a field has been set.
+
+### GetReferralCode
+
+`func (o *IntegrationEventV3Request) GetReferralCode() string`
+
+GetReferralCode returns the ReferralCode field if non-nil, zero value otherwise.
+
+### GetReferralCodeOk
+
+`func (o *IntegrationEventV3Request) GetReferralCodeOk() (*string, bool)`
+
+GetReferralCodeOk returns a tuple with the ReferralCode field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetReferralCode
+
+`func (o *IntegrationEventV3Request) SetReferralCode(v string)`
+
+SetReferralCode sets ReferralCode field to given value.
+
+### HasReferralCode
+
+`func (o *IntegrationEventV3Request) HasReferralCode() bool`
+
+HasReferralCode returns a boolean if a field has been set.
 
 ### GetLoyaltyCards
 

@@ -10,6 +10,7 @@ Method | HTTP request | Description
 [**CopyCampaignToApplications**](ManagementAPI.md#CopyCampaignToApplications) | **Post** /v1/applications/{applicationId}/campaigns/{campaignId}/copy | Copy the campaign into the specified Application
 [**CreateAccountCollection**](ManagementAPI.md#CreateAccountCollection) | **Post** /v1/collections | Create account-level collection
 [**CreateAchievement**](ManagementAPI.md#CreateAchievement) | **Post** /v1/applications/{applicationId}/campaigns/{campaignId}/achievements | Create achievement
+[**CreateAchievementV2**](ManagementAPI.md#CreateAchievementV2) | **Post** /v2/achievements | Create achievement
 [**CreateAdditionalCost**](ManagementAPI.md#CreateAdditionalCost) | **Post** /v1/additional_costs | Create additional cost
 [**CreateAttribute**](ManagementAPI.md#CreateAttribute) | **Post** /v1/attributes | Create custom attribute
 [**CreateBatchLoyaltyCards**](ManagementAPI.md#CreateBatchLoyaltyCards) | **Post** /v1/loyalty_programs/{loyaltyProgramId}/cards/batch | Create loyalty cards
@@ -29,6 +30,7 @@ Method | HTTP request | Description
 [**DeductLoyaltyCardPoints**](ManagementAPI.md#DeductLoyaltyCardPoints) | **Put** /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/deduct_points | Deduct points from card
 [**DeleteAccountCollection**](ManagementAPI.md#DeleteAccountCollection) | **Delete** /v1/collections/{collectionId} | Delete account-level collection
 [**DeleteAchievement**](ManagementAPI.md#DeleteAchievement) | **Delete** /v1/applications/{applicationId}/campaigns/{campaignId}/achievements/{achievementId} | Delete achievement
+[**DeleteAchievementV2**](ManagementAPI.md#DeleteAchievementV2) | **Delete** /v2/achievements/{achievementId} | Delete achievement
 [**DeleteCampaign**](ManagementAPI.md#DeleteCampaign) | **Delete** /v1/applications/{applicationId}/campaigns/{campaignId} | Delete campaign
 [**DeleteCampaignStoreBudgets**](ManagementAPI.md#DeleteCampaignStoreBudgets) | **Delete** /v1/applications/{applicationId}/campaigns/{campaignId}/stores/budgets | Delete campaign store budgets
 [**DeleteCollection**](ManagementAPI.md#DeleteCollection) | **Delete** /v1/applications/{applicationId}/campaigns/{campaignId}/collections/{collectionId} | Delete campaign-level collection
@@ -43,6 +45,7 @@ Method | HTTP request | Description
 [**DisconnectCampaignStores**](ManagementAPI.md#DisconnectCampaignStores) | **Delete** /v1/applications/{applicationId}/campaigns/{campaignId}/stores | Disconnect stores
 [**ExcludePriceHistory**](ManagementAPI.md#ExcludePriceHistory) | **Post** /v1/applications/{applicationId}/price_history/exclusions | Exclude price records from price history
 [**ExportAccountCollectionItems**](ManagementAPI.md#ExportAccountCollectionItems) | **Get** /v1/collections/{collectionId}/export | Export account-level collection&#39;s items
+[**ExportAchievementV2**](ManagementAPI.md#ExportAchievementV2) | **Get** /v2/achievements/{achievementId}/export | Export achievement customer data
 [**ExportAchievements**](ManagementAPI.md#ExportAchievements) | **Get** /v1/applications/{applicationId}/campaigns/{campaignId}/achievements/{achievementId}/export | Export achievement customer data
 [**ExportApplicationCampaignAnalytics**](ManagementAPI.md#ExportApplicationCampaignAnalytics) | **Get** /v1/applications/{applicationId}/campaign_analytics/export | Export Application analytics aggregated by campaign
 [**ExportAudiencesMemberships**](ManagementAPI.md#ExportAudiencesMemberships) | **Get** /v1/audiences/{audienceId}/memberships/export | Export audience members
@@ -69,6 +72,7 @@ Method | HTTP request | Description
 [**GetAccountAnalytics**](ManagementAPI.md#GetAccountAnalytics) | **Get** /v1/accounts/{accountId}/analytics | Get account analytics
 [**GetAccountCollection**](ManagementAPI.md#GetAccountCollection) | **Get** /v1/collections/{collectionId} | Get account-level collection
 [**GetAchievement**](ManagementAPI.md#GetAchievement) | **Get** /v1/applications/{applicationId}/campaigns/{campaignId}/achievements/{achievementId} | Get achievement
+[**GetAchievementV2**](ManagementAPI.md#GetAchievementV2) | **Get** /v2/achievements/{achievementId} | Get achievement
 [**GetAdditionalCost**](ManagementAPI.md#GetAdditionalCost) | **Get** /v1/additional_costs/{additionalCostId} | Get additional cost
 [**GetAdditionalCosts**](ManagementAPI.md#GetAdditionalCosts) | **Get** /v1/additional_costs | List additional costs
 [**GetApplication**](ManagementAPI.md#GetApplication) | **Get** /v1/applications/{applicationId} | Get Application
@@ -148,6 +152,7 @@ Method | HTTP request | Description
 [**InviteUserExternal**](ManagementAPI.md#InviteUserExternal) | **Post** /v1/users/invite | Invite user from identity provider
 [**ListAccountCollections**](ManagementAPI.md#ListAccountCollections) | **Get** /v1/collections | List collections in account
 [**ListAchievements**](ManagementAPI.md#ListAchievements) | **Get** /v1/applications/{applicationId}/campaigns/{campaignId}/achievements | List achievements
+[**ListAchievementsV2**](ManagementAPI.md#ListAchievementsV2) | **Get** /v2/achievements | List achievements
 [**ListAllRolesV2**](ManagementAPI.md#ListAllRolesV2) | **Get** /v2/roles | List roles
 [**ListApplicationCartItemFilters**](ManagementAPI.md#ListApplicationCartItemFilters) | **Get** /v1/applications/{applicationId}/cart_item_filters | List Application cart item filters
 [**ListCampaignStoreBudgetLimits**](ManagementAPI.md#ListCampaignStoreBudgetLimits) | **Get** /v1/applications/{applicationId}/campaigns/{campaignId}/stores/budgets | List campaign store budget limits
@@ -181,6 +186,7 @@ Method | HTTP request | Description
 [**TransferLoyaltyCard**](ManagementAPI.md#TransferLoyaltyCard) | **Put** /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/transfer | Transfer card data
 [**UpdateAccountCollection**](ManagementAPI.md#UpdateAccountCollection) | **Put** /v1/collections/{collectionId} | Update account-level collection
 [**UpdateAchievement**](ManagementAPI.md#UpdateAchievement) | **Put** /v1/applications/{applicationId}/campaigns/{campaignId}/achievements/{achievementId} | Update achievement
+[**UpdateAchievementV2**](ManagementAPI.md#UpdateAchievementV2) | **Put** /v2/achievements/{achievementId} | Update achievement
 [**UpdateAdditionalCost**](ManagementAPI.md#UpdateAdditionalCost) | **Put** /v1/additional_costs/{additionalCostId} | Update additional cost
 [**UpdateAttribute**](ManagementAPI.md#UpdateAttribute) | **Put** /v1/attributes/{attributeId} | Update custom attribute
 [**UpdateCampaign**](ManagementAPI.md#UpdateCampaign) | **Put** /v1/applications/{applicationId}/campaigns/{campaignId} | Update campaign
@@ -606,6 +612,72 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**Achievement**](Achievement.md)
+
+### Authorization
+
+[api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## CreateAchievementV2
+
+> AchievementV2 CreateAchievementV2(ctx).CreateAchievementV2(createAchievementV2).Execute()
+
+Create achievement
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	createAchievementV2 := *openapiclient.NewCreateAchievementV2(true, "Europe/Berlin") // CreateAchievementV2 | body
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ManagementAPI.CreateAchievementV2(context.Background()).CreateAchievementV2(createAchievementV2).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.CreateAchievementV2``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `CreateAchievementV2`: AchievementV2
+	fmt.Fprintf(os.Stdout, "Response from `ManagementAPI.CreateAchievementV2`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiCreateAchievementV2Request struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **createAchievementV2** | [**CreateAchievementV2**](CreateAchievementV2.md) | body | 
+
+### Return type
+
+[**AchievementV2**](AchievementV2.md)
 
 ### Authorization
 
@@ -1964,6 +2036,74 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## DeleteAchievementV2
+
+> DeleteAchievementV2(ctx, achievementId).Execute()
+
+Delete achievement
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	achievementId := int64(789) // int64 | The ID of the achievement. You can get this ID with the [List achievement](https://docs.talon.one/management-api#tag/Achievements/operation/listAchievementsV2) endpoint.
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	r, err := apiClient.ManagementAPI.DeleteAchievementV2(context.Background(), achievementId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.DeleteAchievementV2``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**achievementId** | **int64** | The ID of the achievement. You can get this ID with the [List achievement](https://docs.talon.one/management-api#tag/Achievements/operation/listAchievementsV2) endpoint. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiDeleteAchievementV2Request struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+ (empty response body)
+
+### Authorization
+
+[api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## DeleteCampaign
 
 > DeleteCampaign(ctx, applicationId, campaignId).Execute()
@@ -2950,6 +3090,76 @@ Name | Type | Description  | Notes
 ### Other Parameters
 
 Other parameters are passed through a pointer to a apiExportAccountCollectionItemsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+**string**
+
+### Authorization
+
+[api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/csv
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ExportAchievementV2
+
+> string ExportAchievementV2(ctx, achievementId).Execute()
+
+Export achievement customer data
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	achievementId := int64(789) // int64 | The ID of the achievement. You can get this ID with the [List achievements](https://docs.talon.one/management-api#tag/Achievements/operation/listAchievementsV2) endpoint.
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ManagementAPI.ExportAchievementV2(context.Background(), achievementId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.ExportAchievementV2``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ExportAchievementV2`: string
+	fmt.Fprintf(os.Stdout, "Response from `ManagementAPI.ExportAchievementV2`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**achievementId** | **int64** | The ID of the achievement. You can get this ID with the [List achievements](https://docs.talon.one/management-api#tag/Achievements/operation/listAchievementsV2) endpoint. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiExportAchievementV2Request struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -4964,6 +5174,76 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**Achievement**](Achievement.md)
+
+### Authorization
+
+[api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetAchievementV2
+
+> AchievementV2 GetAchievementV2(ctx, achievementId).Execute()
+
+Get achievement
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	achievementId := int64(789) // int64 | The ID of the achievement.  You can get this ID with the [List achievement](https://docs.talon.one/management-api#tag/Achievements/operation/listAchievementsV2) endpoint. 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ManagementAPI.GetAchievementV2(context.Background(), achievementId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.GetAchievementV2``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetAchievementV2`: AchievementV2
+	fmt.Fprintf(os.Stdout, "Response from `ManagementAPI.GetAchievementV2`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**achievementId** | **int64** | The ID of the achievement.  You can get this ID with the [List achievement](https://docs.talon.one/management-api#tag/Achievements/operation/listAchievementsV2) endpoint.  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetAchievementV2Request struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+[**AchievementV2**](AchievementV2.md)
 
 ### Authorization
 
@@ -11056,6 +11336,80 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## ListAchievementsV2
+
+> ListAchievementsV2200Response ListAchievementsV2(ctx).PageSize(pageSize).Skip(skip).Sort(sort).Title(title).ApplicationId(applicationId).Execute()
+
+List achievements
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 50)
+	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
+	sort := "sort_example" // string | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with `-`.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  (optional)
+	title := "title_example" // string | Filter by the display name of the achievement. (optional)
+	applicationId := int64(789) // int64 | Filter by the ID of an Application connected to the achievement. (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ManagementAPI.ListAchievementsV2(context.Background()).PageSize(pageSize).Skip(skip).Sort(sort).Title(title).ApplicationId(applicationId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.ListAchievementsV2``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ListAchievementsV2`: ListAchievementsV2200Response
+	fmt.Fprintf(os.Stdout, "Response from `ManagementAPI.ListAchievementsV2`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiListAchievementsV2Request struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **pageSize** | **int64** | The number of items in the response. | [default to 50]
+ **skip** | **int64** | The number of items to skip when paging through large result sets. | 
+ **sort** | **string** | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with &#x60;-&#x60;.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  | 
+ **title** | **string** | Filter by the display name of the achievement. | 
+ **applicationId** | **int64** | Filter by the ID of an Application connected to the achievement. | 
+
+### Return type
+
+[**ListAchievementsV2200Response**](ListAchievementsV2200Response.md)
+
+### Authorization
+
+[api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## ListAllRolesV2
 
 > ListAllRolesV2200Response ListAllRolesV2(ctx).Execute()
@@ -13427,6 +13781,78 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**Achievement**](Achievement.md)
+
+### Authorization
+
+[api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## UpdateAchievementV2
+
+> AchievementV2 UpdateAchievementV2(ctx, achievementId).UpdateAchievementV2(updateAchievementV2).Execute()
+
+Update achievement
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	achievementId := int64(789) // int64 | The ID of the achievement. You can get this ID with the [List achievement](https://docs.talon.one/management-api#tag/Achievements/operation/listAchievementsV2) endpoint.
+	updateAchievementV2 := *openapiclient.NewUpdateAchievementV2("Order50Discount", "50% off on 50th purchase.", "50% off for every 50th purchase in a year.", float32(50), []int64{int64(123)}) // UpdateAchievementV2 | body
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ManagementAPI.UpdateAchievementV2(context.Background(), achievementId).UpdateAchievementV2(updateAchievementV2).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.UpdateAchievementV2``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `UpdateAchievementV2`: AchievementV2
+	fmt.Fprintf(os.Stdout, "Response from `ManagementAPI.UpdateAchievementV2`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**achievementId** | **int64** | The ID of the achievement. You can get this ID with the [List achievement](https://docs.talon.one/management-api#tag/Achievements/operation/listAchievementsV2) endpoint. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiUpdateAchievementV2Request struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **updateAchievementV2** | [**UpdateAchievementV2**](UpdateAchievementV2.md) | body | 
+
+### Return type
+
+[**AchievementV2**](AchievementV2.md)
 
 ### Authorization
 

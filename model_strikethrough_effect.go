@@ -32,7 +32,7 @@ type StrikethroughEffect struct {
 	// The type of this effect.
 	Type string `json:"type"`
 	// Arbitrary properties associated with this effect type.
-	Props StrikethroughEffectProps `json:"props"`
+	Props map[string]interface{} `json:"props"`
 	// The start of the time frame where the effect is active in UTC.
 	StartTime *time.Time `json:"startTime,omitempty"`
 	// The end of the time frame where the effect is active in UTC.
@@ -54,7 +54,7 @@ type _StrikethroughEffect StrikethroughEffect
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildStrikethroughEffect(campaignId int64, rulesetId int64, ruleIndex int64, ruleName string, type_ string, props StrikethroughEffectProps) *StrikethroughEffect {
+func BuildStrikethroughEffect(campaignId int64, rulesetId int64, ruleIndex int64, ruleName string, type_ string, props map[string]interface{}) *StrikethroughEffect {
 	this := StrikethroughEffect{}
 	this.CampaignId = campaignId
 	this.RulesetId = rulesetId
@@ -194,9 +194,9 @@ func (o *StrikethroughEffect) SetType(v string) {
 }
 
 // GetProps returns the Props field value
-func (o *StrikethroughEffect) GetProps() StrikethroughEffectProps {
+func (o *StrikethroughEffect) GetProps() map[string]interface{} {
 	if o == nil {
-		var ret StrikethroughEffectProps
+		var ret map[string]interface{}
 		return ret
 	}
 
@@ -205,15 +205,15 @@ func (o *StrikethroughEffect) GetProps() StrikethroughEffectProps {
 
 // GetPropsOk returns a tuple with the Props field value
 // and a boolean to check if the value has been set.
-func (o *StrikethroughEffect) GetPropsOk() (*StrikethroughEffectProps, bool) {
+func (o *StrikethroughEffect) GetPropsOk() (map[string]interface{}, bool) {
 	if o == nil {
-		return nil, false
+		return map[string]interface{}{}, false
 	}
-	return &o.Props, true
+	return o.Props, true
 }
 
 // SetProps sets field value
-func (o *StrikethroughEffect) SetProps(v StrikethroughEffectProps) {
+func (o *StrikethroughEffect) SetProps(v map[string]interface{}) {
 	o.Props = v
 }
 

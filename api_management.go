@@ -775,6 +775,8 @@ Create a new achievement in a specific campaign.
 	@param applicationId The ID of the Application. It is displayed in your Talon.One deployment URL.
 	@param campaignId The ID of the campaign. It is displayed in your Talon.One deployment URL.
 	@return ApiCreateAchievementRequest
+
+Deprecated
 */
 func (a *ManagementAPIService) CreateAchievement(ctx context.Context, applicationId int64, campaignId int64) ApiCreateAchievementRequest {
 	return ApiCreateAchievementRequest{
@@ -788,6 +790,8 @@ func (a *ManagementAPIService) CreateAchievement(ctx context.Context, applicatio
 // Execute executes the request
 //
 //	@return Achievement
+//
+// Deprecated
 func (a *ManagementAPIService) CreateAchievementExecute(r ApiCreateAchievementRequest) (*Achievement, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
@@ -831,6 +835,154 @@ func (a *ManagementAPIService) CreateAchievementExecute(r ApiCreateAchievementRe
 	}
 	// body params
 	localVarPostBody = r.createAchievement
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiCreateAchievementV2Request struct {
+	ctx                 context.Context
+	ApiService          *ManagementAPIService
+	createAchievementV2 *CreateAchievementV2
+}
+
+// body
+func (r ApiCreateAchievementV2Request) CreateAchievementV2(createAchievementV2 CreateAchievementV2) ApiCreateAchievementV2Request {
+	r.createAchievementV2 = &createAchievementV2
+	return r
+}
+
+func (r ApiCreateAchievementV2Request) Execute() (*AchievementV2, *http.Response, error) {
+	return r.ApiService.CreateAchievementV2Execute(r)
+}
+
+/*
+CreateAchievementV2 Create achievement
+
+Create a new account-level achievement.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiCreateAchievementV2Request
+*/
+func (a *ManagementAPIService) CreateAchievementV2(ctx context.Context) ApiCreateAchievementV2Request {
+	return ApiCreateAchievementV2Request{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return AchievementV2
+func (a *ManagementAPIService) CreateAchievementV2Execute(r ApiCreateAchievementV2Request) (*AchievementV2, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *AchievementV2
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagementAPIService.CreateAchievementV2")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v2/achievements"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.createAchievementV2 == nil {
+		return localVarReturnValue, nil, reportError("createAchievementV2 is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.createAchievementV2
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -3408,6 +3560,8 @@ Delete the specified achievement.
 	@param campaignId The ID of the campaign. It is displayed in your Talon.One deployment URL.
 	@param achievementId The ID of the achievement. You can get this ID with the [List achievement](https://docs.talon.one/management-api#tag/Achievements/operation/listAchievements) endpoint.
 	@return ApiDeleteAchievementRequest
+
+Deprecated
 */
 func (a *ManagementAPIService) DeleteAchievement(ctx context.Context, applicationId int64, campaignId int64, achievementId int64) ApiDeleteAchievementRequest {
 	return ApiDeleteAchievementRequest{
@@ -3420,6 +3574,7 @@ func (a *ManagementAPIService) DeleteAchievement(ctx context.Context, applicatio
 }
 
 // Execute executes the request
+// Deprecated
 func (a *ManagementAPIService) DeleteAchievementExecute(r ApiDeleteAchievementRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod = http.MethodDelete
@@ -3435,6 +3590,133 @@ func (a *ManagementAPIService) DeleteAchievementExecute(r ApiDeleteAchievementRe
 	localVarPath := localBasePath + "/v1/applications/{applicationId}/campaigns/{campaignId}/achievements/{achievementId}"
 	localVarPath = strings.Replace(localVarPath, "{"+"applicationId"+"}", url.PathEscape(parameterValueToString(r.applicationId, "applicationId")), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"campaignId"+"}", url.PathEscape(parameterValueToString(r.campaignId, "campaignId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"achievementId"+"}", url.PathEscape(parameterValueToString(r.achievementId, "achievementId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
+}
+
+type ApiDeleteAchievementV2Request struct {
+	ctx           context.Context
+	ApiService    *ManagementAPIService
+	achievementId int64
+}
+
+func (r ApiDeleteAchievementV2Request) Execute() (*http.Response, error) {
+	return r.ApiService.DeleteAchievementV2Execute(r)
+}
+
+/*
+DeleteAchievementV2 Delete achievement
+
+Delete a specific achievement.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param achievementId The ID of the achievement. You can get this ID with the [List achievement](https://docs.talon.one/management-api#tag/Achievements/operation/listAchievementsV2) endpoint.
+	@return ApiDeleteAchievementV2Request
+*/
+func (a *ManagementAPIService) DeleteAchievementV2(ctx context.Context, achievementId int64) ApiDeleteAchievementV2Request {
+	return ApiDeleteAchievementV2Request{
+		ApiService:    a,
+		ctx:           ctx,
+		achievementId: achievementId,
+	}
+}
+
+// Execute executes the request
+func (a *ManagementAPIService) DeleteAchievementV2Execute(r ApiDeleteAchievementV2Request) (*http.Response, error) {
+	var (
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagementAPIService.DeleteAchievementV2")
+	if err != nil {
+		return nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v2/achievements/{achievementId}"
 	localVarPath = strings.Replace(localVarPath, "{"+"achievementId"+"}", url.PathEscape(parameterValueToString(r.achievementId, "achievementId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -5348,6 +5630,166 @@ func (a *ManagementAPIService) ExportAccountCollectionItemsExecute(r ApiExportAc
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiExportAchievementV2Request struct {
+	ctx           context.Context
+	ApiService    *ManagementAPIService
+	achievementId int64
+}
+
+func (r ApiExportAchievementV2Request) Execute() (string, *http.Response, error) {
+	return r.ApiService.ExportAchievementV2Execute(r)
+}
+
+/*
+ExportAchievementV2 Export achievement customer data
+
+Download a CSV file containing a list of all the customers who have participated in and are currently participating in the given achievement.
+
+The CSV file contains the following columns:
+- `profileIntegrationID`: The integration ID of the customer profile participating in the achievement.
+- `title`: The display name of the achievement in the Campaign Manager.
+- `target`: The required number of actions or the transactional milestone to complete the achievement.
+- `progress`: The current progress of the customer in the achievement.
+- `status`: The status of the achievement. Can be one of: ['inprogress', 'completed', 'expired'].
+- `startDate`: The date on which the customer profile started the achievement in RFC3339.
+- `endDate`: The date on which the achievement ends and resets for the customer profile in RFC3339.
+- `completionDate`: The date on which the customer profile completed the achievement in RFC3339.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param achievementId The ID of the achievement. You can get this ID with the [List achievements](https://docs.talon.one/management-api#tag/Achievements/operation/listAchievementsV2) endpoint.
+	@return ApiExportAchievementV2Request
+*/
+func (a *ManagementAPIService) ExportAchievementV2(ctx context.Context, achievementId int64) ApiExportAchievementV2Request {
+	return ApiExportAchievementV2Request{
+		ApiService:    a,
+		ctx:           ctx,
+		achievementId: achievementId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return string
+func (a *ManagementAPIService) ExportAchievementV2Execute(r ApiExportAchievementV2Request) (string, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue string
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagementAPIService.ExportAchievementV2")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v2/achievements/{achievementId}/export"
+	localVarPath = strings.Replace(localVarPath, "{"+"achievementId"+"}", url.PathEscape(parameterValueToString(r.achievementId, "achievementId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/csv"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiExportAchievementsRequest struct {
 	ctx           context.Context
 	ApiService    *ManagementAPIService
@@ -5380,6 +5822,8 @@ The CSV file contains the following columns:
 	@param campaignId The ID of the campaign. It is displayed in your Talon.One deployment URL.
 	@param achievementId The ID of the achievement. You can get this ID with the [List achievement](https://docs.talon.one/management-api#tag/Achievements/operation/listAchievements) endpoint.
 	@return ApiExportAchievementsRequest
+
+Deprecated
 */
 func (a *ManagementAPIService) ExportAchievements(ctx context.Context, applicationId int64, campaignId int64, achievementId int64) ApiExportAchievementsRequest {
 	return ApiExportAchievementsRequest{
@@ -5394,6 +5838,8 @@ func (a *ManagementAPIService) ExportAchievements(ctx context.Context, applicati
 // Execute executes the request
 //
 //	@return string
+//
+// Deprecated
 func (a *ManagementAPIService) ExportAchievementsExecute(r ApiExportAchievementsRequest) (string, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
@@ -9770,6 +10216,8 @@ Get the details of a specific achievement.
 	@param campaignId The ID of the campaign. It is displayed in your Talon.One deployment URL.
 	@param achievementId The ID of the achievement. You can get this ID with the [List achievement](https://docs.talon.one/management-api#tag/Achievements/operation/listAchievements) endpoint.
 	@return ApiGetAchievementRequest
+
+Deprecated
 */
 func (a *ManagementAPIService) GetAchievement(ctx context.Context, applicationId int64, campaignId int64, achievementId int64) ApiGetAchievementRequest {
 	return ApiGetAchievementRequest{
@@ -9784,6 +10232,8 @@ func (a *ManagementAPIService) GetAchievement(ctx context.Context, applicationId
 // Execute executes the request
 //
 //	@return Achievement
+//
+// Deprecated
 func (a *ManagementAPIService) GetAchievementExecute(r ApiGetAchievementRequest) (*Achievement, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
@@ -9800,6 +10250,145 @@ func (a *ManagementAPIService) GetAchievementExecute(r ApiGetAchievementRequest)
 	localVarPath := localBasePath + "/v1/applications/{applicationId}/campaigns/{campaignId}/achievements/{achievementId}"
 	localVarPath = strings.Replace(localVarPath, "{"+"applicationId"+"}", url.PathEscape(parameterValueToString(r.applicationId, "applicationId")), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"campaignId"+"}", url.PathEscape(parameterValueToString(r.campaignId, "campaignId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"achievementId"+"}", url.PathEscape(parameterValueToString(r.achievementId, "achievementId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetAchievementV2Request struct {
+	ctx           context.Context
+	ApiService    *ManagementAPIService
+	achievementId int64
+}
+
+func (r ApiGetAchievementV2Request) Execute() (*AchievementV2, *http.Response, error) {
+	return r.ApiService.GetAchievementV2Execute(r)
+}
+
+/*
+GetAchievementV2 Get achievement
+
+Retrieve the details of a specific achievement.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param achievementId The ID of the achievement.  You can get this ID with the [List achievement](https://docs.talon.one/management-api#tag/Achievements/operation/listAchievementsV2) endpoint.
+	@return ApiGetAchievementV2Request
+*/
+func (a *ManagementAPIService) GetAchievementV2(ctx context.Context, achievementId int64) ApiGetAchievementV2Request {
+	return ApiGetAchievementV2Request{
+		ApiService:    a,
+		ctx:           ctx,
+		achievementId: achievementId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return AchievementV2
+func (a *ManagementAPIService) GetAchievementV2Execute(r ApiGetAchievementV2Request) (*AchievementV2, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *AchievementV2
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagementAPIService.GetAchievementV2")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v2/achievements/{achievementId}"
 	localVarPath = strings.Replace(localVarPath, "{"+"achievementId"+"}", url.PathEscape(parameterValueToString(r.achievementId, "achievementId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -18620,7 +19209,7 @@ func (r ApiGetLoyaltyStatisticsRequest) Execute() (*LoyaltyDashboardData, *http.
 /*
 GetLoyaltyStatistics Get loyalty program statistics
 
-> [warning] This endpoint is deprecated.
+> [!warning] This endpoint is deprecated.
 
 To retrieve statistics for a loyalty program, use the
 [Get statistics for loyalty dashboard](/management-api#tag/Loyalty/operation/getDashboardStatistics)
@@ -23294,6 +23883,8 @@ List all the achievements for a specific campaign.
 	@param applicationId The ID of the Application. It is displayed in your Talon.One deployment URL.
 	@param campaignId The ID of the campaign. It is displayed in your Talon.One deployment URL.
 	@return ApiListAchievementsRequest
+
+Deprecated
 */
 func (a *ManagementAPIService) ListAchievements(ctx context.Context, applicationId int64, campaignId int64) ApiListAchievementsRequest {
 	return ApiListAchievementsRequest{
@@ -23307,6 +23898,8 @@ func (a *ManagementAPIService) ListAchievements(ctx context.Context, application
 // Execute executes the request
 //
 //	@return ListAchievements200Response
+//
+// Deprecated
 func (a *ManagementAPIService) ListAchievementsExecute(r ApiListAchievementsRequest) (*ListAchievements200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
@@ -23393,6 +23986,195 @@ func (a *ManagementAPIService) ListAchievementsExecute(r ApiListAchievementsRequ
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiListAchievementsV2Request struct {
+	ctx           context.Context
+	ApiService    *ManagementAPIService
+	pageSize      *int64
+	skip          *int64
+	sort          *string
+	title         *string
+	applicationId *int64
+}
+
+// The number of items in the response.
+func (r ApiListAchievementsV2Request) PageSize(pageSize int64) ApiListAchievementsV2Request {
+	r.pageSize = &pageSize
+	return r
+}
+
+// The number of items to skip when paging through large result sets.
+func (r ApiListAchievementsV2Request) Skip(skip int64) ApiListAchievementsV2Request {
+	r.skip = &skip
+	return r
+}
+
+// The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with &#x60;-&#x60;.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.
+func (r ApiListAchievementsV2Request) Sort(sort string) ApiListAchievementsV2Request {
+	r.sort = &sort
+	return r
+}
+
+// Filter by the display name of the achievement.
+func (r ApiListAchievementsV2Request) Title(title string) ApiListAchievementsV2Request {
+	r.title = &title
+	return r
+}
+
+// Filter by the ID of an Application connected to the achievement.
+func (r ApiListAchievementsV2Request) ApplicationId(applicationId int64) ApiListAchievementsV2Request {
+	r.applicationId = &applicationId
+	return r
+}
+
+func (r ApiListAchievementsV2Request) Execute() (*ListAchievementsV2200Response, *http.Response, error) {
+	return r.ApiService.ListAchievementsV2Execute(r)
+}
+
+/*
+ListAchievementsV2 List achievements
+
+List all achievements.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiListAchievementsV2Request
+*/
+func (a *ManagementAPIService) ListAchievementsV2(ctx context.Context) ApiListAchievementsV2Request {
+	return ApiListAchievementsV2Request{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ListAchievementsV2200Response
+func (a *ManagementAPIService) ListAchievementsV2Execute(r ApiListAchievementsV2Request) (*ListAchievementsV2200Response, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ListAchievementsV2200Response
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagementAPIService.ListAchievementsV2")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v2/achievements"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.pageSize != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
+	} else {
+		var defaultValue int64 = 50
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
+		r.pageSize = &defaultValue
+	}
+	if r.skip != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "skip", r.skip, "form", "")
+	}
+	if r.sort != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "sort", r.sort, "form", "")
+	}
+	if r.title != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "title", r.title, "form", "")
+	}
+	if r.applicationId != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "applicationId", r.applicationId, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -28143,6 +28925,8 @@ Update the details of a specific achievement.
 	@param campaignId The ID of the campaign. It is displayed in your Talon.One deployment URL.
 	@param achievementId The ID of the achievement. You can get this ID with the [List achievement](https://docs.talon.one/management-api#tag/Achievements/operation/listAchievements) endpoint.
 	@return ApiUpdateAchievementRequest
+
+Deprecated
 */
 func (a *ManagementAPIService) UpdateAchievement(ctx context.Context, applicationId int64, campaignId int64, achievementId int64) ApiUpdateAchievementRequest {
 	return ApiUpdateAchievementRequest{
@@ -28157,6 +28941,8 @@ func (a *ManagementAPIService) UpdateAchievement(ctx context.Context, applicatio
 // Execute executes the request
 //
 //	@return Achievement
+//
+// Deprecated
 func (a *ManagementAPIService) UpdateAchievementExecute(r ApiUpdateAchievementRequest) (*Achievement, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPut
@@ -28201,6 +28987,168 @@ func (a *ManagementAPIService) UpdateAchievementExecute(r ApiUpdateAchievementRe
 	}
 	// body params
 	localVarPostBody = r.updateAchievement
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiUpdateAchievementV2Request struct {
+	ctx                 context.Context
+	ApiService          *ManagementAPIService
+	achievementId       int64
+	updateAchievementV2 *UpdateAchievementV2
+}
+
+// body
+func (r ApiUpdateAchievementV2Request) UpdateAchievementV2(updateAchievementV2 UpdateAchievementV2) ApiUpdateAchievementV2Request {
+	r.updateAchievementV2 = &updateAchievementV2
+	return r
+}
+
+func (r ApiUpdateAchievementV2Request) Execute() (*AchievementV2, *http.Response, error) {
+	return r.ApiService.UpdateAchievementV2Execute(r)
+}
+
+/*
+UpdateAchievementV2 Update achievement
+
+Update the details of a specific achievement.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param achievementId The ID of the achievement. You can get this ID with the [List achievement](https://docs.talon.one/management-api#tag/Achievements/operation/listAchievementsV2) endpoint.
+	@return ApiUpdateAchievementV2Request
+*/
+func (a *ManagementAPIService) UpdateAchievementV2(ctx context.Context, achievementId int64) ApiUpdateAchievementV2Request {
+	return ApiUpdateAchievementV2Request{
+		ApiService:    a,
+		ctx:           ctx,
+		achievementId: achievementId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return AchievementV2
+func (a *ManagementAPIService) UpdateAchievementV2Execute(r ApiUpdateAchievementV2Request) (*AchievementV2, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPut
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *AchievementV2
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagementAPIService.UpdateAchievementV2")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v2/achievements/{achievementId}"
+	localVarPath = strings.Replace(localVarPath, "{"+"achievementId"+"}", url.PathEscape(parameterValueToString(r.achievementId, "achievementId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.updateAchievementV2 == nil {
+		return localVarReturnValue, nil, reportError("updateAchievementV2 is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.updateAchievementV2
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {

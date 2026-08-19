@@ -47,8 +47,11 @@ type AchievementStatusEntry struct {
 	EndDate *time.Time `json:"endDate,omitempty"`
 	// When `true`, customer progress can be rolled back in completed achievements.
 	AllowRollbackAfterCompletion *bool `json:"allowRollbackAfterCompletion,omitempty"`
-	// The ID of the campaign the achievement belongs to.
+	// This property is **deprecated**. Use `campaignIds` instead. The first campaign ID in `campaignIds`. Only returned when `campaignIds` is not empty.
+	// Deprecated
 	CampaignId *int64 `json:"campaignId,omitempty"`
+	// The IDs of the campaigns that reference this achievement, in ascending order.
+	CampaignIds []int64 `json:"campaignIds"`
 	// The status of the achievement.
 	Status               *string              `json:"status,omitempty"`
 	CurrentProgress      *AchievementProgress `json:"currentProgress,omitempty"`
@@ -61,7 +64,7 @@ type _AchievementStatusEntry AchievementStatusEntry
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildAchievementStatusEntry(id int64, created time.Time, name string, title string, description string, target float32) *AchievementStatusEntry {
+func BuildAchievementStatusEntry(id int64, created time.Time, name string, title string, description string, target float32, campaignIds []int64) *AchievementStatusEntry {
 	this := AchievementStatusEntry{}
 	this.Id = id
 	this.Created = created
@@ -69,6 +72,7 @@ func BuildAchievementStatusEntry(id int64, created time.Time, name string, title
 	this.Title = title
 	this.Description = description
 	this.Target = target
+	this.CampaignIds = campaignIds
 	return &this
 }
 
@@ -452,6 +456,7 @@ func (o *AchievementStatusEntry) SetAllowRollbackAfterCompletion(v bool) {
 }
 
 // GetCampaignId returns the CampaignId field value if set, zero value otherwise.
+// Deprecated
 func (o *AchievementStatusEntry) GetCampaignId() int64 {
 	if o == nil || IsNil(o.CampaignId) {
 		var ret int64
@@ -462,6 +467,7 @@ func (o *AchievementStatusEntry) GetCampaignId() int64 {
 
 // GetCampaignIdOk returns a tuple with the CampaignId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *AchievementStatusEntry) GetCampaignIdOk() (*int64, bool) {
 	if o == nil || IsNil(o.CampaignId) {
 		return nil, false
@@ -479,8 +485,33 @@ func (o *AchievementStatusEntry) HasCampaignId() bool {
 }
 
 // SetCampaignId gets a reference to the given int64 and assigns it to the CampaignId field.
+// Deprecated
 func (o *AchievementStatusEntry) SetCampaignId(v int64) {
 	o.CampaignId = &v
+}
+
+// GetCampaignIds returns the CampaignIds field value
+func (o *AchievementStatusEntry) GetCampaignIds() []int64 {
+	if o == nil {
+		var ret []int64
+		return ret
+	}
+
+	return o.CampaignIds
+}
+
+// GetCampaignIdsOk returns a tuple with the CampaignIds field value
+// and a boolean to check if the value has been set.
+func (o *AchievementStatusEntry) GetCampaignIdsOk() ([]int64, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.CampaignIds, true
+}
+
+// SetCampaignIds sets field value
+func (o *AchievementStatusEntry) SetCampaignIds(v []int64) {
+	o.CampaignIds = v
 }
 
 // GetStatus returns the Status field value if set, zero value otherwise.
@@ -587,6 +618,7 @@ func (o AchievementStatusEntry) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CampaignId) {
 		toSerialize["campaignId"] = o.CampaignId
 	}
+	toSerialize["campaignIds"] = o.CampaignIds
 	if !IsNil(o.Status) {
 		toSerialize["status"] = o.Status
 	}
@@ -612,6 +644,7 @@ func (o *AchievementStatusEntry) UnmarshalJSON(data []byte) (err error) {
 		"title",
 		"description",
 		"target",
+		"campaignIds",
 	}
 
 	allProperties := make(map[string]interface{})
@@ -655,6 +688,7 @@ func (o *AchievementStatusEntry) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "endDate")
 		delete(additionalProperties, "allowRollbackAfterCompletion")
 		delete(additionalProperties, "campaignId")
+		delete(additionalProperties, "campaignIds")
 		delete(additionalProperties, "status")
 		delete(additionalProperties, "currentProgress")
 		o.AdditionalProperties = additionalProperties

@@ -40,9 +40,16 @@ type CustomerAchievement struct {
 	// The achievement's end date. If defined, customers cannot participate in the achievement after this date.  **Note:** It is an RFC3339 timestamp string.
 	EndDate *time.Time `json:"endDate,omitempty"`
 	// When `true`, customer progress can be rolled back in completed achievements.
-	AllowRollbackAfterCompletion bool                 `json:"allowRollbackAfterCompletion"`
-	CurrentProgress              *AchievementProgress `json:"currentProgress,omitempty"`
-	AdditionalProperties         map[string]interface{}
+	AllowRollbackAfterCompletion bool `json:"allowRollbackAfterCompletion"`
+	// This property is **deprecated**. Use `campaignIds` (Integration API) or `referencedByCampaigns` (Management API) instead. The first campaign ID in `campaignIds`. Only returned when `campaignIds` is not empty.
+	// Deprecated
+	CampaignId *int64 `json:"campaignId,omitempty"`
+	// The IDs of the campaigns that reference this achievement, in ascending order.
+	CampaignIds []int64 `json:"campaignIds"`
+	// The campaigns that reference this achievement. They are sorted in ascending order by their `id`.
+	ReferencedByCampaigns []CampaignReference  `json:"referencedByCampaigns"`
+	CurrentProgress       *AchievementProgress `json:"currentProgress,omitempty"`
+	AdditionalProperties  map[string]interface{}
 }
 
 type _CustomerAchievement CustomerAchievement
@@ -51,7 +58,7 @@ type _CustomerAchievement CustomerAchievement
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCustomerAchievement(id int64, name string, title string, description string, target float32, recurrencePolicy string, activationPolicy string, allowRollbackAfterCompletion bool) *CustomerAchievement {
+func BuildCustomerAchievement(id int64, name string, title string, description string, target float32, recurrencePolicy string, activationPolicy string, allowRollbackAfterCompletion bool, campaignIds []int64, referencedByCampaigns []CampaignReference) *CustomerAchievement {
 	this := CustomerAchievement{}
 	this.Id = id
 	this.Name = name
@@ -61,6 +68,8 @@ func BuildCustomerAchievement(id int64, name string, title string, description s
 	this.RecurrencePolicy = recurrencePolicy
 	this.ActivationPolicy = activationPolicy
 	this.AllowRollbackAfterCompletion = allowRollbackAfterCompletion
+	this.CampaignIds = campaignIds
+	this.ReferencedByCampaigns = referencedByCampaigns
 	return &this
 }
 
@@ -328,6 +337,89 @@ func (o *CustomerAchievement) SetAllowRollbackAfterCompletion(v bool) {
 	o.AllowRollbackAfterCompletion = v
 }
 
+// GetCampaignId returns the CampaignId field value if set, zero value otherwise.
+// Deprecated
+func (o *CustomerAchievement) GetCampaignId() int64 {
+	if o == nil || IsNil(o.CampaignId) {
+		var ret int64
+		return ret
+	}
+	return *o.CampaignId
+}
+
+// GetCampaignIdOk returns a tuple with the CampaignId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// Deprecated
+func (o *CustomerAchievement) GetCampaignIdOk() (*int64, bool) {
+	if o == nil || IsNil(o.CampaignId) {
+		return nil, false
+	}
+	return o.CampaignId, true
+}
+
+// HasCampaignId returns a boolean if a field has been set.
+func (o *CustomerAchievement) HasCampaignId() bool {
+	if o != nil && !IsNil(o.CampaignId) {
+		return true
+	}
+
+	return false
+}
+
+// SetCampaignId gets a reference to the given int64 and assigns it to the CampaignId field.
+// Deprecated
+func (o *CustomerAchievement) SetCampaignId(v int64) {
+	o.CampaignId = &v
+}
+
+// GetCampaignIds returns the CampaignIds field value
+func (o *CustomerAchievement) GetCampaignIds() []int64 {
+	if o == nil {
+		var ret []int64
+		return ret
+	}
+
+	return o.CampaignIds
+}
+
+// GetCampaignIdsOk returns a tuple with the CampaignIds field value
+// and a boolean to check if the value has been set.
+func (o *CustomerAchievement) GetCampaignIdsOk() ([]int64, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.CampaignIds, true
+}
+
+// SetCampaignIds sets field value
+func (o *CustomerAchievement) SetCampaignIds(v []int64) {
+	o.CampaignIds = v
+}
+
+// GetReferencedByCampaigns returns the ReferencedByCampaigns field value
+func (o *CustomerAchievement) GetReferencedByCampaigns() []CampaignReference {
+	if o == nil {
+		var ret []CampaignReference
+		return ret
+	}
+
+	return o.ReferencedByCampaigns
+}
+
+// GetReferencedByCampaignsOk returns a tuple with the ReferencedByCampaigns field value
+// and a boolean to check if the value has been set.
+func (o *CustomerAchievement) GetReferencedByCampaignsOk() ([]CampaignReference, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.ReferencedByCampaigns, true
+}
+
+// SetReferencedByCampaigns sets field value
+func (o *CustomerAchievement) SetReferencedByCampaigns(v []CampaignReference) {
+	o.ReferencedByCampaigns = v
+}
+
 // GetCurrentProgress returns the CurrentProgress field value if set, zero value otherwise.
 func (o *CustomerAchievement) GetCurrentProgress() AchievementProgress {
 	if o == nil || IsNil(o.CurrentProgress) {
@@ -384,6 +476,11 @@ func (o CustomerAchievement) ToMap() (map[string]interface{}, error) {
 		toSerialize["endDate"] = o.EndDate
 	}
 	toSerialize["allowRollbackAfterCompletion"] = o.AllowRollbackAfterCompletion
+	if !IsNil(o.CampaignId) {
+		toSerialize["campaignId"] = o.CampaignId
+	}
+	toSerialize["campaignIds"] = o.CampaignIds
+	toSerialize["referencedByCampaigns"] = o.ReferencedByCampaigns
 	if !IsNil(o.CurrentProgress) {
 		toSerialize["currentProgress"] = o.CurrentProgress
 	}
@@ -408,6 +505,8 @@ func (o *CustomerAchievement) UnmarshalJSON(data []byte) (err error) {
 		"recurrencePolicy",
 		"activationPolicy",
 		"allowRollbackAfterCompletion",
+		"campaignIds",
+		"referencedByCampaigns",
 	}
 
 	allProperties := make(map[string]interface{})
@@ -447,6 +546,9 @@ func (o *CustomerAchievement) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "fixedStartDate")
 		delete(additionalProperties, "endDate")
 		delete(additionalProperties, "allowRollbackAfterCompletion")
+		delete(additionalProperties, "campaignId")
+		delete(additionalProperties, "campaignIds")
+		delete(additionalProperties, "referencedByCampaigns")
 		delete(additionalProperties, "currentProgress")
 		o.AdditionalProperties = additionalProperties
 	}

@@ -4,14 +4,14 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Type** | **interface{}** |  | 
-**Payload** | [**AddPriceAdjustmentCatalogAction**](AddPriceAdjustmentCatalogAction.md) |  | 
+**Type** | **string** | A catalog sync action discriminator of type &#x60;ADD&#x60;. | 
+**Payload** | [**AddPriceAdjustmentCatalogAction**](AddPriceAdjustmentCatalogAction.md) | The payload of sync action. | 
 
 ## Methods
 
 ### NewCatalogAction
 
-`func NewCatalogAction(type_ interface{}, payload AddPriceAdjustmentCatalogAction, ) *CatalogAction`
+`func NewCatalogAction(type_ string, payload AddPriceAdjustmentCatalogAction, ) *CatalogAction`
 
 NewCatalogAction instantiates a new CatalogAction object
 This constructor will assign default values to properties that have it defined,
@@ -28,34 +28,24 @@ but it doesn't guarantee that properties required by API are set
 
 ### GetType
 
-`func (o *CatalogAction) GetType() interface{}`
+`func (o *CatalogAction) GetType() string`
 
 GetType returns the Type field if non-nil, zero value otherwise.
 
 ### GetTypeOk
 
-`func (o *CatalogAction) GetTypeOk() (*interface{}, bool)`
+`func (o *CatalogAction) GetTypeOk() (*string, bool)`
 
 GetTypeOk returns a tuple with the Type field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetType
 
-`func (o *CatalogAction) SetType(v interface{})`
+`func (o *CatalogAction) SetType(v string)`
 
 SetType sets Type field to given value.
 
 
-### SetTypeNil
-
-`func (o *CatalogAction) SetTypeNil(b bool)`
-
- SetTypeNil sets the value for Type to be an explicit nil
-
-### UnsetType
-`func (o *CatalogAction) UnsetType()`
-
-UnsetType ensures that no value is present for Type, not even an explicit nil
 ### GetPayload
 
 `func (o *CatalogAction) GetPayload() AddPriceAdjustmentCatalogAction`

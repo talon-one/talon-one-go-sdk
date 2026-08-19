@@ -33,7 +33,9 @@ type EventV3RequestEntity struct {
 	// The unique ID of the event. Only one event with this ID can be registered.
 	IntegrationId string `json:"integrationId"`
 	// The ID of the session to reference. The session must be in `closed` state. Otherwise, the API call will fail.
-	ConnectedSessionId   *string `json:"connectedSessionId,omitempty"`
+	ConnectedSessionId *string `json:"connectedSessionId,omitempty"`
+	// The referral code submitted with the event. The endpoint does not validate the code, and submitting a code does not redeem it. Use the \"Referral code is valid\" condition in the Rule Builder to validate and redeem the code, or \"Referral code is valid (without redemption)\" to validate without redeeming.
+	ReferralCode         *string `json:"referralCode,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -259,6 +261,38 @@ func (o *EventV3RequestEntity) SetConnectedSessionId(v string) {
 	o.ConnectedSessionId = &v
 }
 
+// GetReferralCode returns the ReferralCode field value if set, zero value otherwise.
+func (o *EventV3RequestEntity) GetReferralCode() string {
+	if o == nil || IsNil(o.ReferralCode) {
+		var ret string
+		return ret
+	}
+	return *o.ReferralCode
+}
+
+// GetReferralCodeOk returns a tuple with the ReferralCode field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *EventV3RequestEntity) GetReferralCodeOk() (*string, bool) {
+	if o == nil || IsNil(o.ReferralCode) {
+		return nil, false
+	}
+	return o.ReferralCode, true
+}
+
+// HasReferralCode returns a boolean if a field has been set.
+func (o *EventV3RequestEntity) HasReferralCode() bool {
+	if o != nil && !IsNil(o.ReferralCode) {
+		return true
+	}
+
+	return false
+}
+
+// SetReferralCode gets a reference to the given string and assigns it to the ReferralCode field.
+func (o *EventV3RequestEntity) SetReferralCode(v string) {
+	o.ReferralCode = &v
+}
+
 func (o EventV3RequestEntity) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -283,6 +317,9 @@ func (o EventV3RequestEntity) ToMap() (map[string]interface{}, error) {
 	toSerialize["integrationId"] = o.IntegrationId
 	if !IsNil(o.ConnectedSessionId) {
 		toSerialize["connectedSessionId"] = o.ConnectedSessionId
+	}
+	if !IsNil(o.ReferralCode) {
+		toSerialize["referralCode"] = o.ReferralCode
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -336,6 +373,7 @@ func (o *EventV3RequestEntity) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "attributes")
 		delete(additionalProperties, "integrationId")
 		delete(additionalProperties, "connectedSessionId")
+		delete(additionalProperties, "referralCode")
 		o.AdditionalProperties = additionalProperties
 	}
 

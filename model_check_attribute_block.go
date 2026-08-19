@@ -19,12 +19,20 @@ import (
 // CheckAttributeBlock - struct for CheckAttributeBlock
 type CheckAttributeBlock struct {
 	CheckAttributeBlockBase *CheckAttributeBlockBase
+	MapmapOfStringAny       *map[string]interface{}
 }
 
 // CheckAttributeBlockBaseAsCheckAttributeBlock is a convenience function that returns CheckAttributeBlockBase wrapped in CheckAttributeBlock
 func CheckAttributeBlockBaseAsCheckAttributeBlock(v *CheckAttributeBlockBase) CheckAttributeBlock {
 	return CheckAttributeBlock{
 		CheckAttributeBlockBase: v,
+	}
+}
+
+// map[string]interface{}AsCheckAttributeBlock is a convenience function that returns map[string]interface{} wrapped in CheckAttributeBlock
+func MapmapOfStringAnyAsCheckAttributeBlock(v *map[string]interface{}) CheckAttributeBlock {
+	return CheckAttributeBlock{
+		MapmapOfStringAny: v,
 	}
 }
 
@@ -49,14 +57,37 @@ func (dst *CheckAttributeBlock) UnmarshalJSON(data []byte) error {
 		dst.CheckAttributeBlockBase = nil
 	}
 
+	// try to unmarshal data into MapmapOfStringAny
+	err = newStrictDecoder(data).Decode(&dst.MapmapOfStringAny)
+	if err == nil {
+		jsonMapmapOfStringAny, _ := json.Marshal(dst.MapmapOfStringAny)
+		if string(jsonMapmapOfStringAny) == "{}" { // empty struct
+			dst.MapmapOfStringAny = nil
+		} else {
+			if err = validator.Validate(dst.MapmapOfStringAny); err != nil {
+				dst.MapmapOfStringAny = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.MapmapOfStringAny = nil
+	}
+
 	if match > 1 { // more than 1 match
 		// reset to nil
 		dst.CheckAttributeBlockBase = nil
+		dst.MapmapOfStringAny = nil
 
 		return fmt.Errorf("data matches more than one schema in oneOf(CheckAttributeBlock)")
 	} else if match == 1 {
 		return nil // exactly one match
 	} else { // no match
+		if err != nil {
+			return fmt.Errorf("data failed to match schemas in oneOf(CheckAttributeBlock): %v", err)
+		} else {
+			return fmt.Errorf("data failed to match schemas in oneOf(CheckAttributeBlock)")
+		}
 		if err != nil {
 			return fmt.Errorf("data failed to match schemas in oneOf(CheckAttributeBlock): %v", err)
 		} else {
@@ -71,6 +102,10 @@ func (src CheckAttributeBlock) MarshalJSON() ([]byte, error) {
 		return json.Marshal(&src.CheckAttributeBlockBase)
 	}
 
+	if src.MapmapOfStringAny != nil {
+		return json.Marshal(&src.MapmapOfStringAny)
+	}
+
 	return nil, nil // no data in oneOf schemas
 }
 
@@ -83,6 +118,10 @@ func (obj *CheckAttributeBlock) GetActualInstance() interface{} {
 		return obj.CheckAttributeBlockBase
 	}
 
+	if obj.MapmapOfStringAny != nil {
+		return obj.MapmapOfStringAny
+	}
+
 	// all schemas are nil
 	return nil
 }
@@ -91,6 +130,10 @@ func (obj *CheckAttributeBlock) GetActualInstance() interface{} {
 func (obj CheckAttributeBlock) GetActualInstanceValue() interface{} {
 	if obj.CheckAttributeBlockBase != nil {
 		return *obj.CheckAttributeBlockBase
+	}
+
+	if obj.MapmapOfStringAny != nil {
+		return *obj.MapmapOfStringAny
 	}
 
 	// all schemas are nil

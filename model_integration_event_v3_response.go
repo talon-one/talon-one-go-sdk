@@ -41,7 +41,9 @@ type IntegrationEventV3Response struct {
 	// The achievements progress of the customer.
 	Achievements []CustomerAchievement `json:"achievements,omitempty"`
 	// The advanced event that was processed.
-	AdvancedEvent        *EventV3 `json:"advancedEvent,omitempty"`
+	AdvancedEvent *EventV3 `json:"advancedEvent,omitempty"`
+	// The referral that was processed.
+	Referral             *InventoryReferral `json:"referral,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -395,6 +397,38 @@ func (o *IntegrationEventV3Response) SetAdvancedEvent(v EventV3) {
 	o.AdvancedEvent = &v
 }
 
+// GetReferral returns the Referral field value if set, zero value otherwise.
+func (o *IntegrationEventV3Response) GetReferral() InventoryReferral {
+	if o == nil || IsNil(o.Referral) {
+		var ret InventoryReferral
+		return ret
+	}
+	return *o.Referral
+}
+
+// GetReferralOk returns a tuple with the Referral field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IntegrationEventV3Response) GetReferralOk() (*InventoryReferral, bool) {
+	if o == nil || IsNil(o.Referral) {
+		return nil, false
+	}
+	return o.Referral, true
+}
+
+// HasReferral returns a boolean if a field has been set.
+func (o *IntegrationEventV3Response) HasReferral() bool {
+	if o != nil && !IsNil(o.Referral) {
+		return true
+	}
+
+	return false
+}
+
+// SetReferral gets a reference to the given InventoryReferral and assigns it to the Referral field.
+func (o *IntegrationEventV3Response) SetReferral(v InventoryReferral) {
+	o.Referral = &v
+}
+
 func (o IntegrationEventV3Response) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -431,6 +465,9 @@ func (o IntegrationEventV3Response) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.AdvancedEvent) {
 		toSerialize["advancedEvent"] = o.AdvancedEvent
+	}
+	if !IsNil(o.Referral) {
+		toSerialize["referral"] = o.Referral
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -488,6 +525,7 @@ func (o *IntegrationEventV3Response) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "awardedGiveaways")
 		delete(additionalProperties, "achievements")
 		delete(additionalProperties, "advancedEvent")
+		delete(additionalProperties, "referral")
 		o.AdditionalProperties = additionalProperties
 	}
 
