@@ -14,13 +14,16 @@ Name | Type | Description | Notes
 **FixedStartDate** | Pointer to **time.Time** | The achievement&#39;s start date when &#x60;activationPolicy&#x60; is equal to &#x60;fixed_schedule&#x60;.  **Note:** It is an RFC3339 timestamp string.  | [optional] 
 **EndDate** | Pointer to **time.Time** | The achievement&#39;s end date. If defined, customers cannot participate in the achievement after this date.  **Note:** It is an RFC3339 timestamp string.  | [optional] 
 **AllowRollbackAfterCompletion** | **bool** | When &#x60;true&#x60;, customer progress can be rolled back in completed achievements. | 
+**CampaignId** | Pointer to **int64** | This property is **deprecated**. Use &#x60;campaignIds&#x60; (Integration API) or &#x60;referencedByCampaigns&#x60; (Management API) instead. The first campaign ID in &#x60;campaignIds&#x60;. Only returned when &#x60;campaignIds&#x60; is not empty. | [optional] 
+**CampaignIds** | **[]int64** | The IDs of the campaigns that reference this achievement, in ascending order. | 
+**ReferencedByCampaigns** | [**[]CampaignReference**](CampaignReference.md) | The campaigns that reference this achievement. They are sorted in ascending order by their &#x60;id&#x60;. | 
 **CurrentProgress** | Pointer to [**AchievementProgress**](AchievementProgress.md) |  | [optional] 
 
 ## Methods
 
 ### NewCustomerAchievement
 
-`func NewCustomerAchievement(id int64, name string, title string, description string, target float32, recurrencePolicy string, activationPolicy string, allowRollbackAfterCompletion bool, ) *CustomerAchievement`
+`func NewCustomerAchievement(id int64, name string, title string, description string, target float32, recurrencePolicy string, activationPolicy string, allowRollbackAfterCompletion bool, campaignIds []int64, referencedByCampaigns []CampaignReference, ) *CustomerAchievement`
 
 NewCustomerAchievement instantiates a new CustomerAchievement object
 This constructor will assign default values to properties that have it defined,
@@ -243,6 +246,71 @@ and a boolean to check if the value has been set.
 `func (o *CustomerAchievement) SetAllowRollbackAfterCompletion(v bool)`
 
 SetAllowRollbackAfterCompletion sets AllowRollbackAfterCompletion field to given value.
+
+
+### GetCampaignId
+
+`func (o *CustomerAchievement) GetCampaignId() int64`
+
+GetCampaignId returns the CampaignId field if non-nil, zero value otherwise.
+
+### GetCampaignIdOk
+
+`func (o *CustomerAchievement) GetCampaignIdOk() (*int64, bool)`
+
+GetCampaignIdOk returns a tuple with the CampaignId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCampaignId
+
+`func (o *CustomerAchievement) SetCampaignId(v int64)`
+
+SetCampaignId sets CampaignId field to given value.
+
+### HasCampaignId
+
+`func (o *CustomerAchievement) HasCampaignId() bool`
+
+HasCampaignId returns a boolean if a field has been set.
+
+### GetCampaignIds
+
+`func (o *CustomerAchievement) GetCampaignIds() []int64`
+
+GetCampaignIds returns the CampaignIds field if non-nil, zero value otherwise.
+
+### GetCampaignIdsOk
+
+`func (o *CustomerAchievement) GetCampaignIdsOk() (*[]int64, bool)`
+
+GetCampaignIdsOk returns a tuple with the CampaignIds field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCampaignIds
+
+`func (o *CustomerAchievement) SetCampaignIds(v []int64)`
+
+SetCampaignIds sets CampaignIds field to given value.
+
+
+### GetReferencedByCampaigns
+
+`func (o *CustomerAchievement) GetReferencedByCampaigns() []CampaignReference`
+
+GetReferencedByCampaigns returns the ReferencedByCampaigns field if non-nil, zero value otherwise.
+
+### GetReferencedByCampaignsOk
+
+`func (o *CustomerAchievement) GetReferencedByCampaignsOk() (*[]CampaignReference, bool)`
+
+GetReferencedByCampaignsOk returns a tuple with the ReferencedByCampaigns field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetReferencedByCampaigns
+
+`func (o *CustomerAchievement) SetReferencedByCampaigns(v []CampaignReference)`
+
+SetReferencedByCampaigns sets ReferencedByCampaigns field to given value.
 
 
 ### GetCurrentProgress

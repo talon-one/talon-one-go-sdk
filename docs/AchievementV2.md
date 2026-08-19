@@ -6,17 +6,17 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **int64** | The internal ID of this entity. | 
 **Created** | **time.Time** | The time this entity was created. | 
-**Name** | **string** | The internal name of the achievement used in API requests.  **Note**: The name should start with a letter. This cannot be changed after the achievement has been created.  | 
-**Title** | **string** | The display name for the achievement in the Campaign Manager. | 
-**Description** | **string** | A description of the achievement. | 
-**Target** | **float32** | The required number of actions or the transactional milestone to complete the achievement. | 
+**Name** | Pointer to **string** | The internal name of the achievement used in API requests.  **Note**: The name should start with a letter. This cannot be changed after the achievement has been created.  | [optional] 
+**Title** | Pointer to **string** | The display name for the achievement in the Campaign Manager. | [optional] 
+**Description** | Pointer to **string** | A description of the achievement. | [optional] 
+**Target** | Pointer to **float32** | The required number of actions or the transactional milestone to complete the achievement. | [optional] 
 **Period** | Pointer to **string** | The relative duration after which the achievement ends and resets for a particular customer profile.  **Note**: The &#x60;period&#x60; does not start when the achievement is created.  The period is a **positive real number** followed by one letter indicating the time unit.  Examples: &#x60;30s&#x60;, &#x60;40m&#x60;, &#x60;1h&#x60;, &#x60;5D&#x60;, &#x60;7W&#x60;, &#x60;10M&#x60;, &#x60;15Y&#x60;.  Available units:  - &#x60;s&#x60;: seconds - &#x60;m&#x60;: minutes - &#x60;h&#x60;: hours - &#x60;D&#x60;: days - &#x60;W&#x60;: weeks - &#x60;M&#x60;: months - &#x60;Y&#x60;: years  You can also round certain units down to the beginning of period and up to the end of period.: - &#x60;_D&#x60; for rounding down days only. Signifies the start of the day. Example: &#x60;30D_D&#x60; - &#x60;_U&#x60; for rounding up days, weeks, months and years. Signifies the end of the day, week, month or year. Example: &#x60;23W_U&#x60;  **Note**: You can either use the round down and round up option or set an absolute period.  | [optional] 
-**RecurrencePolicy** | **string** | The policy that determines if and how the achievement recurs. - &#x60;no_recurrence&#x60;: The achievement can be completed only once. - &#x60;on_expiration&#x60;: The achievement resets after it expires and becomes available again. - &#x60;on_completion&#x60;: When the customer progress status reaches &#x60;completed&#x60;, the achievement resets and becomes available again.  | 
-**ActivationPolicy** | **string** | The policy that determines how the achievement starts, ends, or resets. - &#x60;user_action&#x60;: The achievement ends or resets relative to when the customer started the achievement. - &#x60;fixed_schedule&#x60;: The achievement starts, ends, or resets for all customers following a fixed schedule.  | 
+**RecurrencePolicy** | Pointer to **string** | The policy that determines if and how the achievement recurs. - &#x60;no_recurrence&#x60;: The achievement can be completed only once. - &#x60;on_expiration&#x60;: The achievement resets after it expires and becomes available again. - &#x60;on_completion&#x60;: When the customer progress status reaches &#x60;completed&#x60;, the achievement resets and becomes available again.  | [optional] 
+**ActivationPolicy** | Pointer to **string** | The policy that determines how the achievement starts, ends, or resets. - &#x60;user_action&#x60;: The achievement ends or resets relative to when the customer started the achievement. - &#x60;fixed_schedule&#x60;: The achievement starts, ends, or resets for all customers following a fixed schedule.  | [optional] 
 **FixedStartDate** | Pointer to **time.Time** | The achievement&#39;s start date when &#x60;activationPolicy&#x60; is set to &#x60;fixed_schedule&#x60;.  **Note:** It must be an RFC3339 timestamp string.  | [optional] 
 **EndDate** | Pointer to **time.Time** | The achievement&#39;s end date. If defined, customers cannot participate in the achievement after this date.  **Note:** It must be an RFC3339 timestamp string.  | [optional] 
 **AllowRollbackAfterCompletion** | Pointer to **bool** | When &#x60;true&#x60;, customer progress can be rolled back in completed achievements. | [optional] 
-**SubscribedApplications** | **[]int64** | A list containing the IDs of all applications that are subscribed to A list containing the IDs of all Applications that are connected to this achievement. | 
+**SubscribedApplications** | Pointer to **[]int64** | A list containing the IDs of all applications that are subscribed to A list containing the IDs of all Applications that are connected to this achievement. | [optional] 
 **UserId** | **int64** | The ID of the user that created this achievement. | 
 **CreatedBy** | Pointer to **string** | Name of the user that created the achievement.  **Note**: This is not available if the user has been deleted.  | [optional] 
 **PeriodEndOverride** | Pointer to [**TimePoint**](TimePoint.md) |  | [optional] 
@@ -24,12 +24,14 @@ Name | Type | Description | Notes
 **Status** | Pointer to **string** | The status of the achievement.                                                                                               - &#x60;active&#x60;: The achievement is available to customers. - &#x60;scheduled&#x60;: The achievement has a &#x60;fixedStartDate&#x60; set in the future. - &#x60;expired&#x60;: The achievement&#39;s &#x60;endDate&#x60; is in the past.  | [optional] 
 **Sandbox** | **bool** | Indicates if this achievement is a live or sandbox achievement. Achievements of a given type can only be connected to Applications of the same type. | 
 **Timezone** | **string** | A string containing an IANA timezone descriptor. | 
+**CampaignId** | Pointer to **int64** | This property is **deprecated**. Use &#x60;referencedByCampaigns&#x60; instead. The ID of the first campaign in &#x60;referencedByCampaigns&#x60;. Only returned when &#x60;referencedByCampaigns&#x60; is not empty. | [optional] 
+**ReferencedByCampaigns** | [**[]CampaignReference**](CampaignReference.md) | The campaigns that reference this achievement. They are sorted in ascending order by their id. | 
 
 ## Methods
 
 ### NewAchievementV2
 
-`func NewAchievementV2(id int64, created time.Time, name string, title string, description string, target float32, recurrencePolicy string, activationPolicy string, subscribedApplications []int64, userId int64, sandbox bool, timezone string, ) *AchievementV2`
+`func NewAchievementV2(id int64, created time.Time, userId int64, sandbox bool, timezone string, referencedByCampaigns []CampaignReference, ) *AchievementV2`
 
 NewAchievementV2 instantiates a new AchievementV2 object
 This constructor will assign default values to properties that have it defined,
@@ -103,6 +105,11 @@ and a boolean to check if the value has been set.
 
 SetName sets Name field to given value.
 
+### HasName
+
+`func (o *AchievementV2) HasName() bool`
+
+HasName returns a boolean if a field has been set.
 
 ### GetTitle
 
@@ -123,6 +130,11 @@ and a boolean to check if the value has been set.
 
 SetTitle sets Title field to given value.
 
+### HasTitle
+
+`func (o *AchievementV2) HasTitle() bool`
+
+HasTitle returns a boolean if a field has been set.
 
 ### GetDescription
 
@@ -143,6 +155,11 @@ and a boolean to check if the value has been set.
 
 SetDescription sets Description field to given value.
 
+### HasDescription
+
+`func (o *AchievementV2) HasDescription() bool`
+
+HasDescription returns a boolean if a field has been set.
 
 ### GetTarget
 
@@ -163,6 +180,11 @@ and a boolean to check if the value has been set.
 
 SetTarget sets Target field to given value.
 
+### HasTarget
+
+`func (o *AchievementV2) HasTarget() bool`
+
+HasTarget returns a boolean if a field has been set.
 
 ### GetPeriod
 
@@ -208,6 +230,11 @@ and a boolean to check if the value has been set.
 
 SetRecurrencePolicy sets RecurrencePolicy field to given value.
 
+### HasRecurrencePolicy
+
+`func (o *AchievementV2) HasRecurrencePolicy() bool`
+
+HasRecurrencePolicy returns a boolean if a field has been set.
 
 ### GetActivationPolicy
 
@@ -228,6 +255,11 @@ and a boolean to check if the value has been set.
 
 SetActivationPolicy sets ActivationPolicy field to given value.
 
+### HasActivationPolicy
+
+`func (o *AchievementV2) HasActivationPolicy() bool`
+
+HasActivationPolicy returns a boolean if a field has been set.
 
 ### GetFixedStartDate
 
@@ -323,6 +355,11 @@ and a boolean to check if the value has been set.
 
 SetSubscribedApplications sets SubscribedApplications field to given value.
 
+### HasSubscribedApplications
+
+`func (o *AchievementV2) HasSubscribedApplications() bool`
+
+HasSubscribedApplications returns a boolean if a field has been set.
 
 ### GetUserId
 
@@ -482,6 +519,51 @@ and a boolean to check if the value has been set.
 `func (o *AchievementV2) SetTimezone(v string)`
 
 SetTimezone sets Timezone field to given value.
+
+
+### GetCampaignId
+
+`func (o *AchievementV2) GetCampaignId() int64`
+
+GetCampaignId returns the CampaignId field if non-nil, zero value otherwise.
+
+### GetCampaignIdOk
+
+`func (o *AchievementV2) GetCampaignIdOk() (*int64, bool)`
+
+GetCampaignIdOk returns a tuple with the CampaignId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCampaignId
+
+`func (o *AchievementV2) SetCampaignId(v int64)`
+
+SetCampaignId sets CampaignId field to given value.
+
+### HasCampaignId
+
+`func (o *AchievementV2) HasCampaignId() bool`
+
+HasCampaignId returns a boolean if a field has been set.
+
+### GetReferencedByCampaigns
+
+`func (o *AchievementV2) GetReferencedByCampaigns() []CampaignReference`
+
+GetReferencedByCampaigns returns the ReferencedByCampaigns field if non-nil, zero value otherwise.
+
+### GetReferencedByCampaignsOk
+
+`func (o *AchievementV2) GetReferencedByCampaignsOk() (*[]CampaignReference, bool)`
+
+GetReferencedByCampaignsOk returns a tuple with the ReferencedByCampaigns field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetReferencedByCampaigns
+
+`func (o *AchievementV2) SetReferencedByCampaigns(v []CampaignReference)`
+
+SetReferencedByCampaigns sets ReferencedByCampaigns field to given value.
 
 
 

@@ -51,7 +51,7 @@ type LedgerTransactionLogEntryIntegrationAPI struct {
 	RuleName *string `json:"ruleName,omitempty"`
 	// The flags of the transaction, when applicable. The `createsNegativeBalance`  flag indicates whether the transaction results in a negative balance.
 	Flags *LoyaltyLedgerEntryFlags `json:"flags,omitempty"`
-	// The duration for which the points remain active, relative to the  activation date.  **Note**: This only applies to points for which `awaitsActivation` is `true` and `expiryDate` is not set.
+	// The duration for which the points remain active, relative to the activation date.  **Note**: This only applies to points for which `awaitsActivation` is `true` and `expiryDate` is not set.
 	ValidityDuration     *string `json:"validityDuration,omitempty"`
 	AdditionalProperties map[string]interface{}
 }

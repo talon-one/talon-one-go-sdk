@@ -23,6 +23,8 @@ var _ MappedNullable = &CustomerProfileReward{}
 type CustomerProfileReward struct {
 	// The ID of the customer reward instance. A customer profile can have multiple instances of the same reward.
 	Id int64 `json:"id"`
+	// The integration ID of the reward.
+	IntegrationId string `json:"integrationId"`
 	// The ID of the reward this instance belongs to.
 	RewardId int64 `json:"rewardId"`
 	// The name of the reward.
@@ -32,11 +34,11 @@ type CustomerProfileReward struct {
 	// The date and time when the reward was unlocked.
 	UnlockedAt time.Time `json:"unlockedAt"`
 	// The integration ID of the customer profile that unlocked the reward.   For rewards unlocked with a loyalty card, this can be any customer profile  linked to that loyalty card.
-	UnlockedByIntegrationId *string `json:"unlockedByIntegrationId,omitempty"`
+	UnlockedByProfileIntegrationId *string `json:"unlockedByProfileIntegrationId,omitempty"`
 	// The date and time when the reward was used.
 	UsedAt *time.Time `json:"usedAt,omitempty"`
 	// The integration ID of the customer profile that used the reward.   For rewards unlocked with a loyalty card, this can be any customer profile  linked to that loyalty card.   Only returned when the reward has been used.
-	UsedByIntegrationId *string `json:"usedByIntegrationId,omitempty"`
+	UsedByProfileIntegrationId *string `json:"usedByProfileIntegrationId,omitempty"`
 	// The ID of the loyalty program that the loyalty card belongs to. Only returned for rewards unlocked with a loyalty card.
 	LoyaltyProgramId *int64 `json:"loyaltyProgramId,omitempty"`
 	// The identifier of the loyalty card that the reward was unlocked with. Only returned for rewards unlocked with a loyalty card.
@@ -50,9 +52,10 @@ type _CustomerProfileReward CustomerProfileReward
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCustomerProfileReward(id int64, rewardId int64, rewardName string, status string, unlockedAt time.Time) *CustomerProfileReward {
+func BuildCustomerProfileReward(id int64, integrationId string, rewardId int64, rewardName string, status string, unlockedAt time.Time) *CustomerProfileReward {
 	this := CustomerProfileReward{}
 	this.Id = id
+	this.IntegrationId = integrationId
 	this.RewardId = rewardId
 	this.RewardName = rewardName
 	this.Status = status
@@ -90,6 +93,30 @@ func (o *CustomerProfileReward) GetIdOk() (*int64, bool) {
 // SetId sets field value
 func (o *CustomerProfileReward) SetId(v int64) {
 	o.Id = v
+}
+
+// GetIntegrationId returns the IntegrationId field value
+func (o *CustomerProfileReward) GetIntegrationId() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.IntegrationId
+}
+
+// GetIntegrationIdOk returns a tuple with the IntegrationId field value
+// and a boolean to check if the value has been set.
+func (o *CustomerProfileReward) GetIntegrationIdOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.IntegrationId, true
+}
+
+// SetIntegrationId sets field value
+func (o *CustomerProfileReward) SetIntegrationId(v string) {
+	o.IntegrationId = v
 }
 
 // GetRewardId returns the RewardId field value
@@ -188,36 +215,36 @@ func (o *CustomerProfileReward) SetUnlockedAt(v time.Time) {
 	o.UnlockedAt = v
 }
 
-// GetUnlockedByIntegrationId returns the UnlockedByIntegrationId field value if set, zero value otherwise.
-func (o *CustomerProfileReward) GetUnlockedByIntegrationId() string {
-	if o == nil || IsNil(o.UnlockedByIntegrationId) {
+// GetUnlockedByProfileIntegrationId returns the UnlockedByProfileIntegrationId field value if set, zero value otherwise.
+func (o *CustomerProfileReward) GetUnlockedByProfileIntegrationId() string {
+	if o == nil || IsNil(o.UnlockedByProfileIntegrationId) {
 		var ret string
 		return ret
 	}
-	return *o.UnlockedByIntegrationId
+	return *o.UnlockedByProfileIntegrationId
 }
 
-// GetUnlockedByIntegrationIdOk returns a tuple with the UnlockedByIntegrationId field value if set, nil otherwise
+// GetUnlockedByProfileIntegrationIdOk returns a tuple with the UnlockedByProfileIntegrationId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *CustomerProfileReward) GetUnlockedByIntegrationIdOk() (*string, bool) {
-	if o == nil || IsNil(o.UnlockedByIntegrationId) {
+func (o *CustomerProfileReward) GetUnlockedByProfileIntegrationIdOk() (*string, bool) {
+	if o == nil || IsNil(o.UnlockedByProfileIntegrationId) {
 		return nil, false
 	}
-	return o.UnlockedByIntegrationId, true
+	return o.UnlockedByProfileIntegrationId, true
 }
 
-// HasUnlockedByIntegrationId returns a boolean if a field has been set.
-func (o *CustomerProfileReward) HasUnlockedByIntegrationId() bool {
-	if o != nil && !IsNil(o.UnlockedByIntegrationId) {
+// HasUnlockedByProfileIntegrationId returns a boolean if a field has been set.
+func (o *CustomerProfileReward) HasUnlockedByProfileIntegrationId() bool {
+	if o != nil && !IsNil(o.UnlockedByProfileIntegrationId) {
 		return true
 	}
 
 	return false
 }
 
-// SetUnlockedByIntegrationId gets a reference to the given string and assigns it to the UnlockedByIntegrationId field.
-func (o *CustomerProfileReward) SetUnlockedByIntegrationId(v string) {
-	o.UnlockedByIntegrationId = &v
+// SetUnlockedByProfileIntegrationId gets a reference to the given string and assigns it to the UnlockedByProfileIntegrationId field.
+func (o *CustomerProfileReward) SetUnlockedByProfileIntegrationId(v string) {
+	o.UnlockedByProfileIntegrationId = &v
 }
 
 // GetUsedAt returns the UsedAt field value if set, zero value otherwise.
@@ -252,36 +279,36 @@ func (o *CustomerProfileReward) SetUsedAt(v time.Time) {
 	o.UsedAt = &v
 }
 
-// GetUsedByIntegrationId returns the UsedByIntegrationId field value if set, zero value otherwise.
-func (o *CustomerProfileReward) GetUsedByIntegrationId() string {
-	if o == nil || IsNil(o.UsedByIntegrationId) {
+// GetUsedByProfileIntegrationId returns the UsedByProfileIntegrationId field value if set, zero value otherwise.
+func (o *CustomerProfileReward) GetUsedByProfileIntegrationId() string {
+	if o == nil || IsNil(o.UsedByProfileIntegrationId) {
 		var ret string
 		return ret
 	}
-	return *o.UsedByIntegrationId
+	return *o.UsedByProfileIntegrationId
 }
 
-// GetUsedByIntegrationIdOk returns a tuple with the UsedByIntegrationId field value if set, nil otherwise
+// GetUsedByProfileIntegrationIdOk returns a tuple with the UsedByProfileIntegrationId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *CustomerProfileReward) GetUsedByIntegrationIdOk() (*string, bool) {
-	if o == nil || IsNil(o.UsedByIntegrationId) {
+func (o *CustomerProfileReward) GetUsedByProfileIntegrationIdOk() (*string, bool) {
+	if o == nil || IsNil(o.UsedByProfileIntegrationId) {
 		return nil, false
 	}
-	return o.UsedByIntegrationId, true
+	return o.UsedByProfileIntegrationId, true
 }
 
-// HasUsedByIntegrationId returns a boolean if a field has been set.
-func (o *CustomerProfileReward) HasUsedByIntegrationId() bool {
-	if o != nil && !IsNil(o.UsedByIntegrationId) {
+// HasUsedByProfileIntegrationId returns a boolean if a field has been set.
+func (o *CustomerProfileReward) HasUsedByProfileIntegrationId() bool {
+	if o != nil && !IsNil(o.UsedByProfileIntegrationId) {
 		return true
 	}
 
 	return false
 }
 
-// SetUsedByIntegrationId gets a reference to the given string and assigns it to the UsedByIntegrationId field.
-func (o *CustomerProfileReward) SetUsedByIntegrationId(v string) {
-	o.UsedByIntegrationId = &v
+// SetUsedByProfileIntegrationId gets a reference to the given string and assigns it to the UsedByProfileIntegrationId field.
+func (o *CustomerProfileReward) SetUsedByProfileIntegrationId(v string) {
+	o.UsedByProfileIntegrationId = &v
 }
 
 // GetLoyaltyProgramId returns the LoyaltyProgramId field value if set, zero value otherwise.
@@ -359,18 +386,19 @@ func (o CustomerProfileReward) MarshalJSON() ([]byte, error) {
 func (o CustomerProfileReward) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["id"] = o.Id
+	toSerialize["integrationId"] = o.IntegrationId
 	toSerialize["rewardId"] = o.RewardId
 	toSerialize["rewardName"] = o.RewardName
 	toSerialize["status"] = o.Status
 	toSerialize["unlockedAt"] = o.UnlockedAt
-	if !IsNil(o.UnlockedByIntegrationId) {
-		toSerialize["unlockedByIntegrationId"] = o.UnlockedByIntegrationId
+	if !IsNil(o.UnlockedByProfileIntegrationId) {
+		toSerialize["unlockedByProfileIntegrationId"] = o.UnlockedByProfileIntegrationId
 	}
 	if !IsNil(o.UsedAt) {
 		toSerialize["usedAt"] = o.UsedAt
 	}
-	if !IsNil(o.UsedByIntegrationId) {
-		toSerialize["usedByIntegrationId"] = o.UsedByIntegrationId
+	if !IsNil(o.UsedByProfileIntegrationId) {
+		toSerialize["usedByProfileIntegrationId"] = o.UsedByProfileIntegrationId
 	}
 	if !IsNil(o.LoyaltyProgramId) {
 		toSerialize["loyaltyProgramId"] = o.LoyaltyProgramId
@@ -392,6 +420,7 @@ func (o *CustomerProfileReward) UnmarshalJSON(data []byte) (err error) {
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
 		"id",
+		"integrationId",
 		"rewardId",
 		"rewardName",
 		"status",
@@ -426,13 +455,14 @@ func (o *CustomerProfileReward) UnmarshalJSON(data []byte) (err error) {
 
 	if err = json.Unmarshal(data, &additionalProperties); err == nil {
 		delete(additionalProperties, "id")
+		delete(additionalProperties, "integrationId")
 		delete(additionalProperties, "rewardId")
 		delete(additionalProperties, "rewardName")
 		delete(additionalProperties, "status")
 		delete(additionalProperties, "unlockedAt")
-		delete(additionalProperties, "unlockedByIntegrationId")
+		delete(additionalProperties, "unlockedByProfileIntegrationId")
 		delete(additionalProperties, "usedAt")
-		delete(additionalProperties, "usedByIntegrationId")
+		delete(additionalProperties, "usedByProfileIntegrationId")
 		delete(additionalProperties, "loyaltyProgramId")
 		delete(additionalProperties, "loyaltyCardIdentifier")
 		o.AdditionalProperties = additionalProperties

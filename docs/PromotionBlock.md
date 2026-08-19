@@ -7,12 +7,12 @@ Name | Type | Description | Notes
 **Id** | **string** | Unique identifier for this block. | 
 **Type** | **string** | Identifies the block variant and determines which additional properties are present in it. | 
 **Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] 
-**Operator** | **string** | The comparison operator applied to the limit. &#x60;available&#x60; checks if there is budget available for a given limitable action; &#x60;enoughFor&#x60; checks if the available budget meets or exceeds a specific value limit. | 
+**Operator** | **string** | An indicator of how the block compares its elements. | 
 **Blocks** | [**[]PromotionBlock**](PromotionBlock.md) | Child blocks evaluated according to the operator. | 
 **OnFailure** | Pointer to [**[]PromotionBlock**](PromotionBlock.md) | Promotion blocks evaluated when this block fails or returns false. | [optional] 
 **OnError** | Pointer to [**map[string][]PromotionBlock**](array.md) | Named error handlers evaluated when a specific error occurs. | [optional] 
-**Name** | **string** | The display name of the item to award. | 
-**Value** | **float32** | The value to check against when using the &#x60;enoughFor&#x60; operator. | 
+**Name** | **string** | A custom description recorded as the reason for the point deduction. | 
+**Value** | [**RedeemLoyaltyPointsBlock1Value**](RedeemLoyaltyPointsBlock1Value.md) |  | 
 **Partial** | **bool** | When set to &#x60;true&#x60;, applies a partial item reward if the remaining budget is insufficient to award the full reward. | 
 **Target** | [**TriggerCustomEffectBlock1Target**](TriggerCustomEffectBlock1Target.md) |  | 
 **Expression** | **[]interface{}** | The raw Talang expression as an array. For a function call, the first element is the function name and subsequent elements are its arguments. For any other expression (for example a bare attribute path or a literal value), this is a single-element array containing that value. | 
@@ -34,8 +34,8 @@ Name | Type | Description | Notes
 **Values** | Pointer to **interface{}** |  | [optional] 
 **Count** | Pointer to **interface{}** |  | [optional] 
 **Audience** | [**UpdateAudienceMembershipBlock1Audience**](UpdateAudienceMembershipBlock1Audience.md) |  | 
-**Program** | [**CheckLoyaltyBalanceBlock1Program**](CheckLoyaltyBalanceBlock1Program.md) |  | 
-**Subledger** | **string** | The name of the subledger to check the balance of. Can be empty if this block checks the loyalty program&#39;s main ledger balance instead of a subledger. | 
+**Program** | [**RedeemLoyaltyPointsBlock1Program**](RedeemLoyaltyPointsBlock1Program.md) |  | 
+**Subledger** | **string** | The name of the subledger to deduct points from. Can be empty if this block deducts from the loyalty program&#39;s main ledger instead of a subledger. | 
 **Balance** | **string** | The type of balance to check:  - &#x60;current&#x60; is the sum of currently active points  - &#x60;pending&#x60; is the sum of pending points.  - &#x60;negative&#x60; is the sum of negative points.  - &#x60;tentativeCurrent&#x60; is the tentative points balance within the current open customer session. | 
 **Redeem** | **bool** | When &#x60;true&#x60;, the referral code is redeemed. | 
 **Achievement** | [**CheckAchievementBlock1Achievement**](CheckAchievementBlock1Achievement.md) |  | 
@@ -56,12 +56,13 @@ Name | Type | Description | Notes
 **ValidCharacters** | Pointer to **string** | Characters used to generate the random parts of a code. | [optional] 
 **Pattern** | Pointer to **string** | The pattern used to generate codes, such as coupon codes, referral codes, and loyalty cards. The character &#x60;#&#x60; is a placeholder and is replaced by a random character from the &#x60;validCharacters&#x60; set.  | [optional] 
 **FriendId** | **string** | An optional integration ID of the friend&#39;s profile. | 
+**Tier** | [**CheckTierBlock1Tier**](CheckTierBlock1Tier.md) |  | 
 
 ## Methods
 
 ### NewPromotionBlock
 
-`func NewPromotionBlock(id string, type_ string, operator string, blocks []PromotionBlock, name string, value float32, partial bool, target TriggerCustomEffectBlock1Target, expression []interface{}, notificationType string, title string, sku string, quantity string, giveawayPool AwardGiveawayBlock1GiveawayPool, profile string, attribute UpdateAttributeValueBlock1Attribute, audience UpdateAudienceMembershipBlock1Audience, program CheckLoyaltyBalanceBlock1Program, subledger string, balance string, redeem bool, achievement CheckAchievementBlock1Achievement, webhook TriggerWebhookBlock1Webhook, customEffect TriggerCustomEffectBlock1CustomEffect, eventType string, action string, campaignId CreateReferralBlock1CampaignId, recipientId string, storeInSession bool, friendId string, ) *PromotionBlock`
+`func NewPromotionBlock(id string, type_ string, operator string, blocks []PromotionBlock, name string, value RedeemLoyaltyPointsBlock1Value, partial bool, target TriggerCustomEffectBlock1Target, expression []interface{}, notificationType string, title string, sku string, quantity string, giveawayPool AwardGiveawayBlock1GiveawayPool, profile string, attribute UpdateAttributeValueBlock1Attribute, audience UpdateAudienceMembershipBlock1Audience, program RedeemLoyaltyPointsBlock1Program, subledger string, balance string, redeem bool, achievement CheckAchievementBlock1Achievement, webhook TriggerWebhookBlock1Webhook, customEffect TriggerCustomEffectBlock1CustomEffect, eventType string, action string, campaignId CreateReferralBlock1CampaignId, recipientId string, storeInSession bool, friendId string, tier CheckTierBlock1Tier, ) *PromotionBlock`
 
 NewPromotionBlock instantiates a new PromotionBlock object
 This constructor will assign default values to properties that have it defined,
@@ -253,20 +254,20 @@ SetName sets Name field to given value.
 
 ### GetValue
 
-`func (o *PromotionBlock) GetValue() float32`
+`func (o *PromotionBlock) GetValue() RedeemLoyaltyPointsBlock1Value`
 
 GetValue returns the Value field if non-nil, zero value otherwise.
 
 ### GetValueOk
 
-`func (o *PromotionBlock) GetValueOk() (*float32, bool)`
+`func (o *PromotionBlock) GetValueOk() (*RedeemLoyaltyPointsBlock1Value, bool)`
 
 GetValueOk returns a tuple with the Value field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetValue
 
-`func (o *PromotionBlock) SetValue(v float32)`
+`func (o *PromotionBlock) SetValue(v RedeemLoyaltyPointsBlock1Value)`
 
 SetValue sets Value field to given value.
 
@@ -803,20 +804,20 @@ SetAudience sets Audience field to given value.
 
 ### GetProgram
 
-`func (o *PromotionBlock) GetProgram() CheckLoyaltyBalanceBlock1Program`
+`func (o *PromotionBlock) GetProgram() RedeemLoyaltyPointsBlock1Program`
 
 GetProgram returns the Program field if non-nil, zero value otherwise.
 
 ### GetProgramOk
 
-`func (o *PromotionBlock) GetProgramOk() (*CheckLoyaltyBalanceBlock1Program, bool)`
+`func (o *PromotionBlock) GetProgramOk() (*RedeemLoyaltyPointsBlock1Program, bool)`
 
 GetProgramOk returns a tuple with the Program field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetProgram
 
-`func (o *PromotionBlock) SetProgram(v CheckLoyaltyBalanceBlock1Program)`
+`func (o *PromotionBlock) SetProgram(v RedeemLoyaltyPointsBlock1Program)`
 
 SetProgram sets Program field to given value.
 
@@ -1314,6 +1315,26 @@ and a boolean to check if the value has been set.
 `func (o *PromotionBlock) SetFriendId(v string)`
 
 SetFriendId sets FriendId field to given value.
+
+
+### GetTier
+
+`func (o *PromotionBlock) GetTier() CheckTierBlock1Tier`
+
+GetTier returns the Tier field if non-nil, zero value otherwise.
+
+### GetTierOk
+
+`func (o *PromotionBlock) GetTierOk() (*CheckTierBlock1Tier, bool)`
+
+GetTierOk returns a tuple with the Tier field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTier
+
+`func (o *PromotionBlock) SetTier(v CheckTierBlock1Tier)`
+
+SetTier sets Tier field to given value.
 
 
 

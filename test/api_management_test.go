@@ -103,6 +103,18 @@ func Test_talon_ManagementAPIService(t *testing.T) {
 
 	})
 
+	t.Run("Test ManagementAPIService CreateAchievementV2", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		resp, httpRes, err := apiClient.ManagementAPI.CreateAchievementV2(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test ManagementAPIService CreateAdditionalCost", func(t *testing.T) {
 
 		t.Skip("skip test")  // remove to run test
@@ -359,6 +371,19 @@ func Test_talon_ManagementAPIService(t *testing.T) {
 
 	})
 
+	t.Run("Test ManagementAPIService DeleteAchievementV2", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var achievementId int64
+
+		httpRes, err := apiClient.ManagementAPI.DeleteAchievementV2(context.Background(), achievementId).Execute()
+
+		require.Nil(t, err)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test ManagementAPIService DeleteCampaign", func(t *testing.T) {
 
 		t.Skip("skip test")  // remove to run test
@@ -543,6 +568,20 @@ func Test_talon_ManagementAPIService(t *testing.T) {
 		var collectionId int64
 
 		resp, httpRes, err := apiClient.ManagementAPI.ExportAccountCollectionItems(context.Background(), collectionId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test ManagementAPIService ExportAchievementV2", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var achievementId int64
+
+		resp, httpRes, err := apiClient.ManagementAPI.ExportAchievementV2(context.Background(), achievementId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -917,6 +956,20 @@ func Test_talon_ManagementAPIService(t *testing.T) {
 		var achievementId int64
 
 		resp, httpRes, err := apiClient.ManagementAPI.GetAchievement(context.Background(), applicationId, campaignId, achievementId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test ManagementAPIService GetAchievementV2", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var achievementId int64
+
+		resp, httpRes, err := apiClient.ManagementAPI.GetAchievementV2(context.Background(), achievementId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -2026,6 +2079,18 @@ func Test_talon_ManagementAPIService(t *testing.T) {
 
 	})
 
+	t.Run("Test ManagementAPIService ListAchievementsV2", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		resp, httpRes, err := apiClient.ManagementAPI.ListAchievementsV2(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test ManagementAPIService ListAllRolesV2", func(t *testing.T) {
 
 		t.Skip("skip test")  // remove to run test
@@ -2464,6 +2529,20 @@ func Test_talon_ManagementAPIService(t *testing.T) {
 		var achievementId int64
 
 		resp, httpRes, err := apiClient.ManagementAPI.UpdateAchievement(context.Background(), applicationId, campaignId, achievementId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test ManagementAPIService UpdateAchievementV2", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var achievementId int64
+
+		resp, httpRes, err := apiClient.ManagementAPI.UpdateAchievementV2(context.Background(), achievementId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

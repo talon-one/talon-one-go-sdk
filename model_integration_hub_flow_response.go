@@ -36,11 +36,9 @@ type IntegrationHubFlowResponse struct {
 	// ID of the loyalty program the flow is registered for.
 	LoyaltyProgramId *int64 `json:"loyaltyProgramId,omitempty"`
 	// The event type we want to register a flow for.
-	EventType string `json:"eventType"`
-	// The URL of the integration hub flow that we want to trigger for the event.
-	IntegrationHubFlowUrl string                           `json:"integrationHubFlowUrl"`
-	Config                IntegrationHubFlowConfigResponse `json:"config"`
-	AdditionalProperties  map[string]interface{}
+	EventType            string                           `json:"eventType"`
+	Config               IntegrationHubFlowConfigResponse `json:"config"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _IntegrationHubFlowResponse IntegrationHubFlowResponse
@@ -49,12 +47,11 @@ type _IntegrationHubFlowResponse IntegrationHubFlowResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildIntegrationHubFlowResponse(id int64, createdAt time.Time, eventType string, integrationHubFlowUrl string, config IntegrationHubFlowConfigResponse) *IntegrationHubFlowResponse {
+func BuildIntegrationHubFlowResponse(id int64, createdAt time.Time, eventType string, config IntegrationHubFlowConfigResponse) *IntegrationHubFlowResponse {
 	this := IntegrationHubFlowResponse{}
 	this.Id = id
 	this.CreatedAt = createdAt
 	this.EventType = eventType
-	this.IntegrationHubFlowUrl = integrationHubFlowUrl
 	this.Config = config
 	return &this
 }
@@ -310,30 +307,6 @@ func (o *IntegrationHubFlowResponse) SetEventType(v string) {
 	o.EventType = v
 }
 
-// GetIntegrationHubFlowUrl returns the IntegrationHubFlowUrl field value
-func (o *IntegrationHubFlowResponse) GetIntegrationHubFlowUrl() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.IntegrationHubFlowUrl
-}
-
-// GetIntegrationHubFlowUrlOk returns a tuple with the IntegrationHubFlowUrl field value
-// and a boolean to check if the value has been set.
-func (o *IntegrationHubFlowResponse) GetIntegrationHubFlowUrlOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.IntegrationHubFlowUrl, true
-}
-
-// SetIntegrationHubFlowUrl sets field value
-func (o *IntegrationHubFlowResponse) SetIntegrationHubFlowUrl(v string) {
-	o.IntegrationHubFlowUrl = v
-}
-
 // GetConfig returns the Config field value
 func (o *IntegrationHubFlowResponse) GetConfig() IntegrationHubFlowConfigResponse {
 	if o == nil {
@@ -386,7 +359,6 @@ func (o IntegrationHubFlowResponse) ToMap() (map[string]interface{}, error) {
 		toSerialize["loyaltyProgramId"] = o.LoyaltyProgramId
 	}
 	toSerialize["eventType"] = o.EventType
-	toSerialize["integrationHubFlowUrl"] = o.IntegrationHubFlowUrl
 	toSerialize["config"] = o.Config
 
 	for key, value := range o.AdditionalProperties {
@@ -404,7 +376,6 @@ func (o *IntegrationHubFlowResponse) UnmarshalJSON(data []byte) (err error) {
 		"id",
 		"createdAt",
 		"eventType",
-		"integrationHubFlowUrl",
 		"config",
 	}
 
@@ -443,7 +414,6 @@ func (o *IntegrationHubFlowResponse) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "applicationId")
 		delete(additionalProperties, "loyaltyProgramId")
 		delete(additionalProperties, "eventType")
-		delete(additionalProperties, "integrationHubFlowUrl")
 		delete(additionalProperties, "config")
 		o.AdditionalProperties = additionalProperties
 	}

@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **RuleIndex** | **int64** | The position of the rule that triggered this effect within the ruleset. | 
 **RuleName** | **string** | The name of the rule that triggered this effect. | 
 **Type** | **string** | The type of this effect. | 
-**Props** | [**StrikethroughEffectProps**](StrikethroughEffectProps.md) | Arbitrary properties associated with this effect type. | 
+**Props** | **map[string]interface{}** | Arbitrary properties associated with this effect type. | 
 **StartTime** | Pointer to **time.Time** | The start of the time frame where the effect is active in UTC. | [optional] 
 **EndTime** | Pointer to **time.Time** | The end of the time frame where the effect is active in UTC. | [optional] 
 **SelectedPriceType** | Pointer to **string** | The selected price type for this cart item (e.g. the price for members only). | [optional] 
@@ -21,7 +21,7 @@ Name | Type | Description | Notes
 
 ### NewStrikethroughEffect
 
-`func NewStrikethroughEffect(campaignId int64, rulesetId int64, ruleIndex int64, ruleName string, type_ string, props StrikethroughEffectProps, ) *StrikethroughEffect`
+`func NewStrikethroughEffect(campaignId int64, rulesetId int64, ruleIndex int64, ruleName string, type_ string, props map[string]interface{}, ) *StrikethroughEffect`
 
 NewStrikethroughEffect instantiates a new StrikethroughEffect object
 This constructor will assign default values to properties that have it defined,
@@ -138,20 +138,20 @@ SetType sets Type field to given value.
 
 ### GetProps
 
-`func (o *StrikethroughEffect) GetProps() StrikethroughEffectProps`
+`func (o *StrikethroughEffect) GetProps() map[string]interface{}`
 
 GetProps returns the Props field if non-nil, zero value otherwise.
 
 ### GetPropsOk
 
-`func (o *StrikethroughEffect) GetPropsOk() (*StrikethroughEffectProps, bool)`
+`func (o *StrikethroughEffect) GetPropsOk() (*map[string]interface{}, bool)`
 
 GetPropsOk returns a tuple with the Props field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetProps
 
-`func (o *StrikethroughEffect) SetProps(v StrikethroughEffectProps)`
+`func (o *StrikethroughEffect) SetProps(v map[string]interface{})`
 
 SetProps sets Props field to given value.
 

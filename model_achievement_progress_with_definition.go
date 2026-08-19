@@ -39,8 +39,13 @@ type AchievementProgressWithDefinition struct {
 	Title string `json:"title"`
 	// The description of the achievement in the Campaign Manager.
 	Description string `json:"description"`
-	// The ID of the campaign the achievement belongs to.
+	// This property is **deprecated**. Use `campaignIds` (Integration API) or `referencedByCampaigns` (Management API) instead. The first campaign ID in `campaignIds`. Only returned when `campaignIds` is not empty.
+	// Deprecated
 	CampaignId int64 `json:"campaignId"`
+	// The IDs of the campaigns that reference this achievement, in ascending order.
+	CampaignIds []int64 `json:"campaignIds"`
+	// The campaigns that reference this achievement, in ascending order of their `id`.
+	ReferencedByCampaigns []CampaignReference `json:"referencedByCampaigns"`
 	// The required number of actions or the transactional milestone to complete the achievement.
 	Target *float32 `json:"target,omitempty"`
 	// The policy that determines if and how the achievement recurs. - `no_recurrence`: The achievement can be completed only once. - `on_expiration`: The achievement resets after it expires and becomes available again. - `on_completion`: When the customer progress status reaches `completed`, the achievement resets and becomes available again.
@@ -62,7 +67,7 @@ type _AchievementProgressWithDefinition AchievementProgressWithDefinition
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildAchievementProgressWithDefinition(status string, progress float32, achievementId int64, name string, title string, description string, campaignId int64, achievementRecurrencePolicy string, achievementActivationPolicy string) *AchievementProgressWithDefinition {
+func BuildAchievementProgressWithDefinition(status string, progress float32, achievementId int64, name string, title string, description string, campaignId int64, campaignIds []int64, referencedByCampaigns []CampaignReference, achievementRecurrencePolicy string, achievementActivationPolicy string) *AchievementProgressWithDefinition {
 	this := AchievementProgressWithDefinition{}
 	this.Status = status
 	this.Progress = progress
@@ -71,6 +76,8 @@ func BuildAchievementProgressWithDefinition(status string, progress float32, ach
 	this.Title = title
 	this.Description = description
 	this.CampaignId = campaignId
+	this.CampaignIds = campaignIds
+	this.ReferencedByCampaigns = referencedByCampaigns
 	this.AchievementRecurrencePolicy = achievementRecurrencePolicy
 	this.AchievementActivationPolicy = achievementActivationPolicy
 	return &this
@@ -325,6 +332,7 @@ func (o *AchievementProgressWithDefinition) SetDescription(v string) {
 }
 
 // GetCampaignId returns the CampaignId field value
+// Deprecated
 func (o *AchievementProgressWithDefinition) GetCampaignId() int64 {
 	if o == nil {
 		var ret int64
@@ -336,6 +344,7 @@ func (o *AchievementProgressWithDefinition) GetCampaignId() int64 {
 
 // GetCampaignIdOk returns a tuple with the CampaignId field value
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *AchievementProgressWithDefinition) GetCampaignIdOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
@@ -344,8 +353,57 @@ func (o *AchievementProgressWithDefinition) GetCampaignIdOk() (*int64, bool) {
 }
 
 // SetCampaignId sets field value
+// Deprecated
 func (o *AchievementProgressWithDefinition) SetCampaignId(v int64) {
 	o.CampaignId = v
+}
+
+// GetCampaignIds returns the CampaignIds field value
+func (o *AchievementProgressWithDefinition) GetCampaignIds() []int64 {
+	if o == nil {
+		var ret []int64
+		return ret
+	}
+
+	return o.CampaignIds
+}
+
+// GetCampaignIdsOk returns a tuple with the CampaignIds field value
+// and a boolean to check if the value has been set.
+func (o *AchievementProgressWithDefinition) GetCampaignIdsOk() ([]int64, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.CampaignIds, true
+}
+
+// SetCampaignIds sets field value
+func (o *AchievementProgressWithDefinition) SetCampaignIds(v []int64) {
+	o.CampaignIds = v
+}
+
+// GetReferencedByCampaigns returns the ReferencedByCampaigns field value
+func (o *AchievementProgressWithDefinition) GetReferencedByCampaigns() []CampaignReference {
+	if o == nil {
+		var ret []CampaignReference
+		return ret
+	}
+
+	return o.ReferencedByCampaigns
+}
+
+// GetReferencedByCampaignsOk returns a tuple with the ReferencedByCampaigns field value
+// and a boolean to check if the value has been set.
+func (o *AchievementProgressWithDefinition) GetReferencedByCampaignsOk() ([]CampaignReference, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.ReferencedByCampaigns, true
+}
+
+// SetReferencedByCampaigns sets field value
+func (o *AchievementProgressWithDefinition) SetReferencedByCampaigns(v []CampaignReference) {
+	o.ReferencedByCampaigns = v
 }
 
 // GetTarget returns the Target field value if set, zero value otherwise.
@@ -550,6 +608,8 @@ func (o AchievementProgressWithDefinition) ToMap() (map[string]interface{}, erro
 	toSerialize["title"] = o.Title
 	toSerialize["description"] = o.Description
 	toSerialize["campaignId"] = o.CampaignId
+	toSerialize["campaignIds"] = o.CampaignIds
+	toSerialize["referencedByCampaigns"] = o.ReferencedByCampaigns
 	if !IsNil(o.Target) {
 		toSerialize["target"] = o.Target
 	}
@@ -584,6 +644,8 @@ func (o *AchievementProgressWithDefinition) UnmarshalJSON(data []byte) (err erro
 		"title",
 		"description",
 		"campaignId",
+		"campaignIds",
+		"referencedByCampaigns",
 		"achievementRecurrencePolicy",
 		"achievementActivationPolicy",
 	}
@@ -625,6 +687,8 @@ func (o *AchievementProgressWithDefinition) UnmarshalJSON(data []byte) (err erro
 		delete(additionalProperties, "title")
 		delete(additionalProperties, "description")
 		delete(additionalProperties, "campaignId")
+		delete(additionalProperties, "campaignIds")
+		delete(additionalProperties, "referencedByCampaigns")
 		delete(additionalProperties, "target")
 		delete(additionalProperties, "achievementRecurrencePolicy")
 		delete(additionalProperties, "achievementActivationPolicy")

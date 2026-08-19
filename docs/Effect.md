@@ -20,13 +20,13 @@ Name | Type | Description | Notes
 **SelectedPriceType** | Pointer to **string** | The selected price type for the SKU targeted by this effect. | [optional] 
 **SelectedPrice** | Pointer to **float32** | The value of the selected price type to apply to the SKU targeted by this effect, before any discounts are applied. | [optional] 
 **AdjustmentReferenceId** | Pointer to **string** | The reference identifier of the selected price adjustment for this SKU. This is only returned if the &#x60;selectedPrice&#x60; resulted from a price adjustment. | [optional] 
-**Props** | [**EffectAllOfProps**](EffectAllOfProps.md) |  | 
+**Props** | **interface{}** |  | 
 
 ## Methods
 
 ### NewEffect
 
-`func NewEffect(campaignId int64, rulesetId int64, ruleIndex int64, ruleName string, effectType string, props EffectAllOfProps, ) *Effect`
+`func NewEffect(campaignId int64, rulesetId int64, ruleIndex int64, ruleName string, effectType string, props interface{}, ) *Effect`
 
 NewEffect instantiates a new Effect object
 This constructor will assign default values to properties that have it defined,
@@ -418,24 +418,34 @@ HasAdjustmentReferenceId returns a boolean if a field has been set.
 
 ### GetProps
 
-`func (o *Effect) GetProps() EffectAllOfProps`
+`func (o *Effect) GetProps() interface{}`
 
 GetProps returns the Props field if non-nil, zero value otherwise.
 
 ### GetPropsOk
 
-`func (o *Effect) GetPropsOk() (*EffectAllOfProps, bool)`
+`func (o *Effect) GetPropsOk() (*interface{}, bool)`
 
 GetPropsOk returns a tuple with the Props field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetProps
 
-`func (o *Effect) SetProps(v EffectAllOfProps)`
+`func (o *Effect) SetProps(v interface{})`
 
 SetProps sets Props field to given value.
 
 
+### SetPropsNil
+
+`func (o *Effect) SetPropsNil(b bool)`
+
+ SetPropsNil sets the value for Props to be an explicit nil
+
+### UnsetProps
+`func (o *Effect) UnsetProps()`
+
+UnsetProps ensures that no value is present for Props, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

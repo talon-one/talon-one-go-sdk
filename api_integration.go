@@ -5063,10 +5063,7 @@ To see an example of a rollback, see the
 > [Update customer session](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2)
 > endpoint to cancel a closed session and create a new one.
 
-> [!note] To make request processing idempotent for this endpoint, include the `Idempotency-Key` header with an idempotency key in requests. Also:
-> - Requests with the `Idempotency-Key` header are logged in the Talon.One access logs.
-> - Responses for idempotent requests are stored in the database and expire 24 hours after the request is sent.
-> - Idempotency keys are typically UUID keys and should not exceed 255 characters in length.
+> [!note] To make request processing idempotent for this endpoint, include the `Idempotency-Key` header with an idempotency key in requests. Learn more about [idempotency](https://docs.talon.one/integration-api#description/idempotency).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param customerSessionId The `integration ID` of the customer session. You set this ID when you create a customer session.  You can see existing customer session integration IDs in the Campaign Manager's **Sessions** menu, or via the [List Application session](https://docs.talon.one/management-api#tag/Customer-data/operation/getApplicationSessions) endpoint.
@@ -5236,10 +5233,7 @@ This endpoint automatically changes the session state from `closed` to
 > states](https://docs.talon.one/docs/dev/concepts/entities/customer-sessions#customer-session-states)
 > and [this tutorial](https://docs.talon.one/docs/dev/tutorials/partially-returning-a-session).
 
-> [!note] To make request processing idempotent for this endpoint, include the `Idempotency-Key` header with an idempotency key in requests. Also:
-> - Requests with the `Idempotency-Key` header are logged in the Talon.One access logs.
-> - Responses for idempotent requests are stored in the database and expire 24 hours after the request is sent.
-> - Idempotency keys are typically UUID keys and should not exceed 255 characters in length.
+> [!note] To make request processing idempotent for this endpoint, include the `Idempotency-Key` header with an idempotency key in requests. Learn more about [idempotency](https://docs.talon.one/integration-api#description/idempotency).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param customerSessionId The `integration ID` of the customer session. You set this ID when you create a customer session.  You can see existing customer session integration IDs in the Campaign Manager's **Sessions** menu, or via the [List Application session](https://docs.talon.one/management-api#tag/Customer-data/operation/getApplicationSessions) endpoint.
@@ -5448,225 +5442,7 @@ The `filters` array contains an object with the following properties:
 
 - `value`: The value of the attribute selected in `attr`.
 
-### Payload examples
-
-Synchronization actions are sent as `PUT` requests. See the structure for
-each action:
-
-<details>
-
-	<summary><strong>Adding an item to the catalog</strong></summary>
-	<div>
-
-	```json
-	{
-	  "actions": [
-	    {
-	      "payload": {
-	        "attributes": {
-	          "color": "Navy blue",
-	          "type": "shoes"
-	        },
-	        "replaceIfExists": true,
-	        "sku": "SKU1241028",
-	        "price": 100,
-	        "product": {
-	          "name": "sneakers"
-	        }
-	      },
-	      "type": "ADD"
-	    }
-	  ]
-	}
-	```
-	</div>
-
-</details>
-
-<details>
-
-	<summary><strong>Adding multiple items to the catalog</strong></summary>
-	<div>
-
-	```json
-	{
-	  "actions": [
-	    {
-	      "payload": {
-	        "attributes": {
-	          "color": "Navy blue",
-	          "type": "shoes"
-	        },
-	        "replaceIfExists": true,
-	        "sku": "SKU1241027",
-	        "price": 100,
-	        "product": {
-	          "name": "sneakers"
-	        }
-	      },
-	      "type": "ADD"
-	    },
-	    {
-	      "payload": {
-	        "attributes": {
-	          "color": "Navy blue",
-	          "type": "shoes"
-	        },
-	        "replaceIfExists": true,
-	        "sku": "SKU1241028",
-	        "price": 100,
-	        "product": {
-	          "name": "sneakers"
-	        }
-	      },
-	      "type": "ADD"
-	    }
-	  ]
-	}
-	```
-	</div>
-
-</details>
-
-<details>
-
-	<summary><strong>Updating the attributes of an item in the catalog</strong></summary>
-	<div>
-
-	```json
-	{
-	  "actions": [
-	    {
-	      "payload": {
-	        "attributes": {
-	          "age": 11,
-	          "origin": "germany"
-	        },
-	        "createIfNotExists": false,
-	        "sku": "SKU1241028",
-	        "product": {
-	          "name": "sneakers"
-	        }
-	      },
-	      "type": "PATCH"
-	    }
-	  ]
-	}
-	```
-	</div>
-
-</details>
-
-<details>
-
-	<summary><strong>Updating the attributes of multiple items in the catalog</strong></summary>
-	<div>
-
-	```json
-	{
-	  "actions": [
-	    {
-	      "payload": {
-	        "attributes": {
-	          "color": "red"
-	        },
-	        "filters": [
-	          {
-	            "attr": "color",
-	            "op": "EQ",
-	            "value": "blue"
-	          }
-	        ]
-	      },
-	      "type": "PATCH_MANY"
-	    }
-	  ]
-	}
-	```
-
-	</div>
-
-</details>
-
-<details>
-
-	<summary><strong>Removing an item from the catalog</strong></summary>
-	<div>
-
-	```json
-	{
-	  "actions": [
-	    {
-	      "payload": {
-	        "sku": "SKU1241028"
-	      },
-	      "type": "REMOVE"
-	    }
-	  ]
-	}
-	```
-
-	</div>
-
-</details>
-
-<details>
-
-	<summary><strong>Removing multiple items from the catalog</strong></summary>
-	<div>
-
-	```json
-	{
-	  "actions": [
-	    {
-	      "payload": {
-	        "filters": [
-	          {
-	            "attr": "color",
-	            "op": "EQ",
-	            "value": "blue"
-	          }
-	        ]
-	      },
-	      "type": "REMOVE_MANY"
-	    }
-	  ]
-	}
-	```
-	</div>
-
-</details>
-
-<details>
-
-	<summary><strong>Removing shoes of sizes above 45 from the catalog</strong></summary>
-	<div>
-	<p>
-	Let's imagine that we have a shoe store and we have decided to stop selling
-	shoes larger than size 45. We can remove from the catalog all the shoes of sizes above 45
-	with a single action:</p>
-
-	```json
-	{
-	  "actions": [
-	    {
-	      "payload": {
-	        "filters": [
-	          {
-	            "attr": "size",
-	            "op": "GT",
-	            "value": "45"
-	          }
-	        ]
-	      },
-	      "type": "REMOVE_MANY"
-	    }
-	  ]
-	}
-	```
-	</div>
-
-</details>
+For request examples of each action, see the **Request Body** examples.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param catalogId The ID of the catalog. You can find the ID in the Campaign Manager in **Account** > **Tools** > **Cart item catalogs**.
@@ -5848,12 +5624,11 @@ func (r ApiTrackEventV2Request) Execute() (*IntegrationEventV2Response, *http.Re
 /*
 TrackEventV2 Track event
 
-Trigger a custom event.
+Trigger a [custom event](https://docs.talon.one/docs/dev/concepts/entities/events#custom-events).
 
 To use this endpoint:
 
-1. [Create a custom event](https://docs.talon.one/docs/dev/concepts/entities/events#creating-a-custom-event)
-in the Campaign Manager.
+1. [Create](https://docs.talon.one/docs/dev/concepts/entities/events#create-an-event) an event in the Campaign Manager.
 1. In a rule, add the **Check for event types** [condition](https://docs.talon.one/docs/dev/concepts/entities/events#use-an-event-in-a-rule) and select the event you created.
 1. Trigger the event with this endpoint.
 
@@ -5865,13 +5640,10 @@ link to a product. See our [tutorial](https://docs.talon.one/docs/product/tutori
 > [!note] **Note**
 > - `profileId` is required even though the schema does not specify it.
 > - If the customer profile ID is new, a new profile is automatically created but the `customer_profile_created` [built-in event ](https://docs.talon.one/docs/dev/concepts/entities/events) is **not** triggered.
-> - We recommend sending requests sequentially. See [Managing parallel requests](https://docs.talon.one/docs/dev/getting-started/integration-tutorial#managing-parallel-requests).
-> - [Archived campaigns](https://docs.talon.one/docs/product/campaigns/managing-campaigns#archiving-a-campaign) are not considered in rule evaluation.
+> - We recommend sending requests sequentially. See [Manage parallel requests](https://docs.talon.one/docs/dev/getting-started/integration-tutorial#manage-parallel-requests).
+> - [Archived campaigns](https://docs.talon.one/docs/product/campaigns/managing-campaigns#archive-a-campaign) are not considered in rule evaluation.
 
-> [!note] To make request processing idempotent for this endpoint, include the `Idempotency-Key` header with an idempotency key in requests. Also:
-> - Requests with the `Idempotency-Key` header are logged in the Talon.One access logs.
-> - Responses for idempotent requests are stored in the database and expire 24 hours after the request is sent.
-> - Idempotency keys are typically UUID keys and should not exceed 255 characters in length.
+> [!note] To make request processing idempotent for this endpoint, include the `Idempotency-Key` header with an idempotency key in requests. Learn more about [idempotency](https://docs.talon.one/integration-api#description/idempotency).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiTrackEventV2Request
@@ -6067,27 +5839,26 @@ func (r ApiTrackEventV3Request) Execute() (*IntegrationEventV3Response, *http.Re
 /*
 TrackEventV3 Track advanced event
 
-Trigger an advanced event.
+Trigger an [advanced event](https://docs.talon.one/docs/dev/concepts/entities/events#advanced-events).
 
 Advanced events are idempotent, uniquely identifiable events. They can also
 reference a previously closed session to add more context for rule evaluation.
 
 To use this endpoint:
 
-1. [Create a custom event](https://docs.talon.one/docs/dev/concepts/entities/events#creating-a-custom-event)
-in the Campaign Manager.
+1. [Create](https://docs.talon.one/docs/dev/concepts/entities/events#create-an-event) an event in the Campaign Manager.
 1. In a rule, add the **Check for event types** [condition](https://docs.talon.one/docs/dev/concepts/entities/events#use-an-event-in-a-rule) and select the event you created.
 1. Trigger the event with this endpoint.
 
 You can [list](https://docs.talon.one/docs/product/applications/display-events#list-events) the received events in the **Events** view of the Campaign Manager.
 
-For example, you can use this endpoint to trigger an event when a customer shares a
-link to a product. See our [tutorial](https://docs.talon.one/docs/product/tutorials/referrals/incentivizing-product-link-sharing).
+For example, you can use this endpoint to award loyalty points after an order is delivered.
+See our [tutorial](https://docs.talon.one/docs/dev/tutorials/award-loyalty-points-after-delivery).
 
 > [!note] **Note**
-> - If the customer profile does not exist, it will be created. However, the `customer_profile_created` [built-in event](https://docs.talon.one/docs/dev/concepts/entities/events) is **not** triggered.
-> - We recommend sending requests sequentially. See [Managing parallel requests](https://docs.talon.one/docs/dev/getting-started/integration-tutorial#managing-parallel-requests).
-> - [Archived campaigns](https://docs.talon.one/docs/product/campaigns/managing-campaigns#archiving-a-campaign) are not considered in rule evaluation.
+> - If the customer profile does not exist, it will be created. However, the `customer_profile_created` [built-in event](https://docs.talon.one/docs/dev/concepts/entities/events#built-in-events) is **not** triggered.
+> - We recommend sending requests sequentially. See [Manage parallel requests](https://docs.talon.one/docs/dev/getting-started/integration-tutorial#manage-parallel-requests).
+> - [Archived campaigns](https://docs.talon.one/docs/product/campaigns/managing-campaigns#archive-a-campaign) are not considered in rule evaluation.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiTrackEventV3Request
@@ -6907,16 +6678,16 @@ You can use this endpoint to:
 
 > [!note] **Note**
 > - Updating a customer profile returns a response with the requested integration state.
+> - The [Has joined an audience](https://docs.talon.one/docs/product/rules/conditions/available-conditions#audience-conditions) and
+>   [Has left an audience](https://docs.talon.one/docs/product/rules/conditions/available-conditions#audience-conditions) conditions
+>   only trigger through this endpoint.
 > - You can use the `responseContent` property to save yourself extra API calls. For example, you can get
 >   the customer profile details directly without extra requests.
 > - We recommend sending requests sequentially.
 >   See [Managing parallel requests](https://docs.talon.one/docs/dev/getting-started/integration-tutorial#managing-parallel-requests).
 > - [Archived campaigns](https://docs.talon.one/docs/product/campaigns/managing-campaigns#archiving-a-campaign) are not considered in rule evaluation when `runRuleEngine` is `true`.
 
-> [!note] To make request processing idempotent for this endpoint, include the `Idempotency-Key` header with an idempotency key in requests. Also:
-> - Requests with the `Idempotency-Key` header are logged in the Talon.One access logs.
-> - Responses for idempotent requests are stored in the database and expire 24 hours after the request is sent.
-> - Idempotency keys are typically UUID keys and should not exceed 255 characters in length.
+> [!note] To make request processing idempotent for this endpoint, include the `Idempotency-Key` header with an idempotency key in requests. Learn more about [idempotency](https://docs.talon.one/integration-api#description/idempotency).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param integrationId The integration identifier for this customer profile. Must be: - Unique within the deployment. - Stable for the customer. Do not use an ID that the customer can update themselves. For example, you can use a database ID.  Once set, you cannot update this identifier. **Note**: It must be URL-encoded. For example, replace spaces with `%20`. [Learn more](https://www.w3schools.com/tags/ref_urlencode.asp).
@@ -7109,10 +6880,7 @@ sessions](https://docs.talon.one/integration-api#tag/Customer-sessions).
 > To trigger the Rule Engine for customer profile updates,
 > use the [Update customer profile](#tag/Customer-profiles/operation/updateCustomerProfileV2) endpoint.
 
-> [!note] To make request processing idempotent for this endpoint, include the `Idempotency-Key` header with an idempotency key in requests. Also:
-> - Requests with the `Idempotency-Key` header are logged in the Talon.One access logs.
-> - Responses for idempotent requests are stored in the database and expire 24 hours after the request is sent.
-> - Idempotency keys are typically UUID keys and should not exceed 255 characters in length.
+> [!note] To make request processing idempotent for this endpoint, include the `Idempotency-Key` header with an idempotency key in requests. Learn more about [idempotency](https://docs.talon.one/integration-api#description/idempotency).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiUpdateCustomerProfilesV2Request
@@ -7295,10 +7063,7 @@ with Talon.One.
 > - The currency for the session and the cart items in it is the currency set for the Application linked to this session.
 > - [Archived campaigns](https://docs.talon.one/docs/product/campaigns/managing-campaigns#archiving-a-campaign) are not considered for rule evaluation.
 
-> [!note] To make request processing idempotent for this endpoint, include the `Idempotency-Key` header with an idempotency key in requests. Also:
-> - Requests with the `Idempotency-Key` header are logged in the Talon.One access logs.
-> - Responses for idempotent requests are stored in the database and expire 24 hours after the request is sent.
-> - Idempotency keys are typically UUID keys and should not exceed 255 characters in length.
+> [!note] To make request processing idempotent for this endpoint, include the `Idempotency-Key` header with an idempotency key in requests. Learn more about [idempotency](https://docs.talon.one/integration-api#description/idempotency).
 
 ### Session management
 

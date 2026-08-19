@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **Attributes** | Pointer to **map[string]interface{}** | Arbitrary additional JSON properties associated with the event. They must be created in the Campaign Manager before setting them with this property. See [creating custom attributes](https://docs.talon.one/docs/product/account/dev-tools/managing-attributes#creating-a-custom-attribute). | [optional] 
 **IntegrationId** | **string** | The unique ID of the event. Only one event with this ID can be registered.  | 
 **ConnectedSessionId** | Pointer to **string** | The ID of the session to reference. The session must be in &#x60;closed&#x60; state. Otherwise, the API call will fail. | [optional] 
+**ReferralCode** | Pointer to **string** | The referral code submitted with the event. The endpoint does not validate the code, and submitting a code does not redeem it. Use the \&quot;Referral code is valid\&quot; condition in the Rule Builder to validate and redeem the code, or \&quot;Referral code is valid (without redemption)\&quot; to validate without redeeming.  | [optional] 
 
 ## Methods
 
@@ -190,6 +191,31 @@ SetConnectedSessionId sets ConnectedSessionId field to given value.
 `func (o *EventV3RequestEntity) HasConnectedSessionId() bool`
 
 HasConnectedSessionId returns a boolean if a field has been set.
+
+### GetReferralCode
+
+`func (o *EventV3RequestEntity) GetReferralCode() string`
+
+GetReferralCode returns the ReferralCode field if non-nil, zero value otherwise.
+
+### GetReferralCodeOk
+
+`func (o *EventV3RequestEntity) GetReferralCodeOk() (*string, bool)`
+
+GetReferralCodeOk returns a tuple with the ReferralCode field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetReferralCode
+
+`func (o *EventV3RequestEntity) SetReferralCode(v string)`
+
+SetReferralCode sets ReferralCode field to given value.
+
+### HasReferralCode
+
+`func (o *EventV3RequestEntity) HasReferralCode() bool`
+
+HasReferralCode returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

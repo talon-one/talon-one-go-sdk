@@ -40,9 +40,9 @@ type RulesetV2 struct {
 	// Variable bindings of type selector.
 	Selectors []Selector `json:"selectors,omitempty"`
 	// Variable bindings of type bundle.
-	Bundles []map[string]interface{} `json:"bundles,omitempty"`
+	Bundles []Bundle `json:"bundles,omitempty"`
 	// Variable bindings of type template parameter.
-	Parameters           []map[string]interface{} `json:"parameters,omitempty"`
+	Parameters           []TemplateParameter `json:"parameters,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -319,9 +319,9 @@ func (o *RulesetV2) SetSelectors(v []Selector) {
 }
 
 // GetBundles returns the Bundles field value if set, zero value otherwise.
-func (o *RulesetV2) GetBundles() []map[string]interface{} {
+func (o *RulesetV2) GetBundles() []Bundle {
 	if o == nil || IsNil(o.Bundles) {
-		var ret []map[string]interface{}
+		var ret []Bundle
 		return ret
 	}
 	return o.Bundles
@@ -329,7 +329,7 @@ func (o *RulesetV2) GetBundles() []map[string]interface{} {
 
 // GetBundlesOk returns a tuple with the Bundles field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *RulesetV2) GetBundlesOk() ([]map[string]interface{}, bool) {
+func (o *RulesetV2) GetBundlesOk() ([]Bundle, bool) {
 	if o == nil || IsNil(o.Bundles) {
 		return nil, false
 	}
@@ -345,15 +345,15 @@ func (o *RulesetV2) HasBundles() bool {
 	return false
 }
 
-// SetBundles gets a reference to the given []map[string]interface{} and assigns it to the Bundles field.
-func (o *RulesetV2) SetBundles(v []map[string]interface{}) {
+// SetBundles gets a reference to the given []Bundle and assigns it to the Bundles field.
+func (o *RulesetV2) SetBundles(v []Bundle) {
 	o.Bundles = v
 }
 
 // GetParameters returns the Parameters field value if set, zero value otherwise.
-func (o *RulesetV2) GetParameters() []map[string]interface{} {
+func (o *RulesetV2) GetParameters() []TemplateParameter {
 	if o == nil || IsNil(o.Parameters) {
-		var ret []map[string]interface{}
+		var ret []TemplateParameter
 		return ret
 	}
 	return o.Parameters
@@ -361,7 +361,7 @@ func (o *RulesetV2) GetParameters() []map[string]interface{} {
 
 // GetParametersOk returns a tuple with the Parameters field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *RulesetV2) GetParametersOk() ([]map[string]interface{}, bool) {
+func (o *RulesetV2) GetParametersOk() ([]TemplateParameter, bool) {
 	if o == nil || IsNil(o.Parameters) {
 		return nil, false
 	}
@@ -377,8 +377,8 @@ func (o *RulesetV2) HasParameters() bool {
 	return false
 }
 
-// SetParameters gets a reference to the given []map[string]interface{} and assigns it to the Parameters field.
-func (o *RulesetV2) SetParameters(v []map[string]interface{}) {
+// SetParameters gets a reference to the given []TemplateParameter and assigns it to the Parameters field.
+func (o *RulesetV2) SetParameters(v []TemplateParameter) {
 	o.Parameters = v
 }
 

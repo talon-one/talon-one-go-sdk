@@ -23,9 +23,11 @@ type CustomerInventory struct {
 	Loyalty   *Loyalty            `json:"loyalty,omitempty"`
 	Referrals []InventoryReferral `json:"referrals,omitempty"`
 	// The coupons reserved by this profile. This array includes hard and soft reservations.
-	Coupons              []InventoryCoupon                   `json:"coupons,omitempty"`
-	Giveaways            []Giveaway                          `json:"giveaways,omitempty"`
-	Achievements         []AchievementProgressWithDefinition `json:"achievements,omitempty"`
+	Coupons      []InventoryCoupon                   `json:"coupons,omitempty"`
+	Giveaways    []Giveaway                          `json:"giveaways,omitempty"`
+	Achievements []AchievementProgressWithDefinition `json:"achievements,omitempty"`
+	// The customer rewards that are `unlocked` and not yet `used`.
+	Rewards              []interface{} `json:"rewards,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -240,6 +242,38 @@ func (o *CustomerInventory) SetAchievements(v []AchievementProgressWithDefinitio
 	o.Achievements = v
 }
 
+// GetRewards returns the Rewards field value if set, zero value otherwise.
+func (o *CustomerInventory) GetRewards() []interface{} {
+	if o == nil || IsNil(o.Rewards) {
+		var ret []interface{}
+		return ret
+	}
+	return o.Rewards
+}
+
+// GetRewardsOk returns a tuple with the Rewards field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustomerInventory) GetRewardsOk() ([]interface{}, bool) {
+	if o == nil || IsNil(o.Rewards) {
+		return nil, false
+	}
+	return o.Rewards, true
+}
+
+// HasRewards returns a boolean if a field has been set.
+func (o *CustomerInventory) HasRewards() bool {
+	if o != nil && !IsNil(o.Rewards) {
+		return true
+	}
+
+	return false
+}
+
+// SetRewards gets a reference to the given []interface{} and assigns it to the Rewards field.
+func (o *CustomerInventory) SetRewards(v []interface{}) {
+	o.Rewards = v
+}
+
 func (o CustomerInventory) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -267,6 +301,9 @@ func (o CustomerInventory) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Achievements) {
 		toSerialize["achievements"] = o.Achievements
+	}
+	if !IsNil(o.Rewards) {
+		toSerialize["rewards"] = o.Rewards
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -296,6 +333,7 @@ func (o *CustomerInventory) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "coupons")
 		delete(additionalProperties, "giveaways")
 		delete(additionalProperties, "achievements")
+		delete(additionalProperties, "rewards")
 		o.AdditionalProperties = additionalProperties
 	}
 

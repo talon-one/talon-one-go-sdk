@@ -12,14 +12,13 @@ Name | Type | Description | Notes
 **ApplicationId** | Pointer to **int64** | ID of the application the flow is registered for. | [optional] 
 **LoyaltyProgramId** | Pointer to **int64** | ID of the loyalty program the flow is registered for. | [optional] 
 **EventType** | **string** | The event type we want to register a flow for. | 
-**IntegrationHubFlowUrl** | **string** | The URL of the integration hub flow that we want to trigger for the event. | 
 **Config** | [**IntegrationHubFlowConfigResponse**](IntegrationHubFlowConfigResponse.md) |  | 
 
 ## Methods
 
 ### NewIntegrationHubFlowResponse
 
-`func NewIntegrationHubFlowResponse(id int64, createdAt time.Time, eventType string, integrationHubFlowUrl string, config IntegrationHubFlowConfigResponse, ) *IntegrationHubFlowResponse`
+`func NewIntegrationHubFlowResponse(id int64, createdAt time.Time, eventType string, config IntegrationHubFlowConfigResponse, ) *IntegrationHubFlowResponse`
 
 NewIntegrationHubFlowResponse instantiates a new IntegrationHubFlowResponse object
 This constructor will assign default values to properties that have it defined,
@@ -227,26 +226,6 @@ and a boolean to check if the value has been set.
 `func (o *IntegrationHubFlowResponse) SetEventType(v string)`
 
 SetEventType sets EventType field to given value.
-
-
-### GetIntegrationHubFlowUrl
-
-`func (o *IntegrationHubFlowResponse) GetIntegrationHubFlowUrl() string`
-
-GetIntegrationHubFlowUrl returns the IntegrationHubFlowUrl field if non-nil, zero value otherwise.
-
-### GetIntegrationHubFlowUrlOk
-
-`func (o *IntegrationHubFlowResponse) GetIntegrationHubFlowUrlOk() (*string, bool)`
-
-GetIntegrationHubFlowUrlOk returns a tuple with the IntegrationHubFlowUrl field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetIntegrationHubFlowUrl
-
-`func (o *IntegrationHubFlowResponse) SetIntegrationHubFlowUrl(v string)`
-
-SetIntegrationHubFlowUrl sets IntegrationHubFlowUrl field to given value.
 
 
 ### GetConfig

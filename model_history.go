@@ -27,9 +27,6 @@ type History struct {
 	ObservedAt time.Time `json:"observedAt"`
 	// The identifiers of the relevant context at the time the price was observed. Includes the context IDs of any price adjustments and of the campaigns that influenced the final price.
 	ContextIds []string `json:"contextIds"`
-	// This property is **deprecated**. Use `contextIds` instead. Defaults to an empty string.
-	// Deprecated
-	ContextId *string `json:"contextId,omitempty"`
 	// Price of the item.
 	Price    float32                `json:"price"`
 	Metadata BestPriorPriceMetadata `json:"metadata"`
@@ -52,8 +49,6 @@ func BuildHistory(id int64, observedAt time.Time, contextIds []string, price flo
 	this.Id = id
 	this.ObservedAt = observedAt
 	this.ContextIds = contextIds
-	var contextId string = ""
-	this.ContextId = &contextId
 	this.Price = price
 	this.Metadata = metadata
 	this.Target = target
@@ -65,8 +60,6 @@ func BuildHistory(id int64, observedAt time.Time, contextIds []string, price flo
 // but it doesn't guarantee that properties required by API are set
 func NewHistoryWithDefaults() *History {
 	this := History{}
-	var contextId string = ""
-	this.ContextId = &contextId
 	return &this
 }
 
@@ -140,41 +133,6 @@ func (o *History) GetContextIdsOk() ([]string, bool) {
 // SetContextIds sets field value
 func (o *History) SetContextIds(v []string) {
 	o.ContextIds = v
-}
-
-// GetContextId returns the ContextId field value if set, zero value otherwise.
-// Deprecated
-func (o *History) GetContextId() string {
-	if o == nil || IsNil(o.ContextId) {
-		var ret string
-		return ret
-	}
-	return *o.ContextId
-}
-
-// GetContextIdOk returns a tuple with the ContextId field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-// Deprecated
-func (o *History) GetContextIdOk() (*string, bool) {
-	if o == nil || IsNil(o.ContextId) {
-		return nil, false
-	}
-	return o.ContextId, true
-}
-
-// HasContextId returns a boolean if a field has been set.
-func (o *History) HasContextId() bool {
-	if o != nil && !IsNil(o.ContextId) {
-		return true
-	}
-
-	return false
-}
-
-// SetContextId gets a reference to the given string and assigns it to the ContextId field.
-// Deprecated
-func (o *History) SetContextId(v string) {
-	o.ContextId = &v
 }
 
 // GetPrice returns the Price field value
@@ -326,9 +284,6 @@ func (o History) ToMap() (map[string]interface{}, error) {
 	toSerialize["id"] = o.Id
 	toSerialize["observedAt"] = o.ObservedAt
 	toSerialize["contextIds"] = o.ContextIds
-	if !IsNil(o.ContextId) {
-		toSerialize["contextId"] = o.ContextId
-	}
 	toSerialize["price"] = o.Price
 	toSerialize["metadata"] = o.Metadata
 	toSerialize["target"] = o.Target
@@ -389,7 +344,6 @@ func (o *History) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "id")
 		delete(additionalProperties, "observedAt")
 		delete(additionalProperties, "contextIds")
-		delete(additionalProperties, "contextId")
 		delete(additionalProperties, "price")
 		delete(additionalProperties, "metadata")
 		delete(additionalProperties, "target")
