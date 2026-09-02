@@ -61,7 +61,7 @@ type AchievementV2 struct {
 	Sandbox bool `json:"sandbox"`
 	// A string containing an IANA timezone descriptor.
 	Timezone string `json:"timezone"`
-	// This property is **deprecated**. Use `referencedByCampaigns` instead. The ID of the first campaign in `referencedByCampaigns`. Only returned when `referencedByCampaigns` is not empty.
+	// This property is **deprecated**. Use `referencedByCampaigns` instead. This field contains the first campaign ID from the related `referencedByCampaigns`, and is omitted when `referencedByCampaigns` is empty.
 	// Deprecated
 	CampaignId *int64 `json:"campaignId,omitempty"`
 	// The campaigns that reference this achievement. They are sorted in ascending order by their id.

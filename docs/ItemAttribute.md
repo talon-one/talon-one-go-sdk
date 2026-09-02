@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Attributeid** | **int64** | The ID of the attribute of the item. | 
 **Name** | **string** | The name of the attribute. | 
-**Value** | **interface{}** |  | 
+**Value** | **interface{}** | The value of the attribute. | 
 
 ## Methods
 

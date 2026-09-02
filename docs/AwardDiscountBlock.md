@@ -4,9 +4,9 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** | Unique identifier for this block. | 
+**Id** | Pointer to **string** | Unique identifier for this block. | [optional] [readonly] 
 **Type** | **string** | Identifies the block variant and determines which additional properties are present in it. | 
-**Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] 
+**Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] [readonly] 
 **Name** | **string** | The human-readable label attached to the discount. | 
 **Value** | [**AwardDiscountBlock1Value**](AwardDiscountBlock1Value.md) |  | 
 **Partial** | **bool** | Whether to apply a partial discount when the requested value exceeds the configured budget. | 
@@ -16,7 +16,7 @@ Name | Type | Description | Notes
 
 ### NewAwardDiscountBlock
 
-`func NewAwardDiscountBlock(id string, type_ string, name string, value AwardDiscountBlock1Value, partial bool, target AwardDiscountTarget, ) *AwardDiscountBlock`
+`func NewAwardDiscountBlock(type_ string, name string, value AwardDiscountBlock1Value, partial bool, target AwardDiscountTarget, ) *AwardDiscountBlock`
 
 NewAwardDiscountBlock instantiates a new AwardDiscountBlock object
 This constructor will assign default values to properties that have it defined,
@@ -50,6 +50,11 @@ and a boolean to check if the value has been set.
 
 SetId sets Id field to given value.
 
+### HasId
+
+`func (o *AwardDiscountBlock) HasId() bool`
+
+HasId returns a boolean if a field has been set.
 
 ### GetType
 

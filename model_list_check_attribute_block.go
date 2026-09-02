@@ -21,7 +21,8 @@ var _ MappedNullable = &ListCheckAttributeBlock{}
 // ListCheckAttributeBlock Variant of `CheckAttributeBlock` for operators that test list membership against a set of values.
 type ListCheckAttributeBlock struct {
 	// The list membership operator applied to the attribute.
-	Operator             *string     `json:"operator,omitempty"`
+	Operator *string `json:"operator,omitempty"`
+	// The set of values to match against.
 	Values               interface{} `json:"values"`
 	AdditionalProperties map[string]interface{}
 }

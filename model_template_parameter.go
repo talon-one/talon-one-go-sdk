@@ -21,7 +21,8 @@ var _ MappedNullable = &TemplateParameter{}
 // TemplateParameter A named parameter definition that exposes a configurable value in a campaign template. Replaces `templateParameter` [bindings](https://docs.talon.one/management-api#tag/Campaigns/operation/getRuleset.responses.200.bindings) in V1 rulesets.
 type TemplateParameter struct {
 	// The name of the template parameter.
-	Name  string      `json:"name"`
+	Name string `json:"name"`
+	// The parameter's bound value. Its type depends on the `valueType`.
 	Value interface{} `json:"value"`
 	// The data type of the value, derived from the bound expression (for example `number`, `string`, `boolean`, `percent`, `time`, `(list string)`, or `(list number)`).
 	ValueType string `json:"valueType"`

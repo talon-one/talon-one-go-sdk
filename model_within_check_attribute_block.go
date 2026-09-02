@@ -21,9 +21,11 @@ var _ MappedNullable = &WithinCheckAttributeBlock{}
 // WithinCheckAttributeBlock Variant of `CheckAttributeBlock` for the `within` and `not(within)` operators, which require both a start and end value.
 type WithinCheckAttributeBlock struct {
 	// The range comparison operator. Must be `within` or `not(within)`.
-	Operator *string     `json:"operator,omitempty"`
-	Start    interface{} `json:"start"`
-	End      interface{} `json:"end"`
+	Operator *string `json:"operator,omitempty"`
+	// The start value for the `within` operator.
+	Start interface{} `json:"start"`
+	// The end value for the `within` operator.
+	End interface{} `json:"end"`
 	// When `true`, the `start` value is included in the range for the `within` operator.
 	StartInclusive *bool `json:"startInclusive,omitempty"`
 	// When `true`, the `end` value is included in the range for the `within` operator.

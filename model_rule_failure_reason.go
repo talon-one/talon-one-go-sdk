@@ -34,6 +34,10 @@ type RuleFailureReason struct {
 	ReferralID *int64 `json:"referralID,omitempty"`
 	// The code of the referral that was being evaluated at the time of the rule failure.
 	ReferralValue *string `json:"referralValue,omitempty"`
+	// The ID of the reward that was being evaluated at the time of the rule failure.
+	RewardId *int64 `json:"rewardId,omitempty"`
+	// The integration ID of the reward that was being evaluated at the time of the rule failure.
+	RewardIntegrationId *string `json:"rewardIntegrationId,omitempty"`
 	// The index of the rule that failed within the ruleset.
 	RuleIndex int64 `json:"ruleIndex"`
 	// The name of the rule that failed within the ruleset.
@@ -275,6 +279,70 @@ func (o *RuleFailureReason) SetReferralValue(v string) {
 	o.ReferralValue = &v
 }
 
+// GetRewardId returns the RewardId field value if set, zero value otherwise.
+func (o *RuleFailureReason) GetRewardId() int64 {
+	if o == nil || IsNil(o.RewardId) {
+		var ret int64
+		return ret
+	}
+	return *o.RewardId
+}
+
+// GetRewardIdOk returns a tuple with the RewardId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *RuleFailureReason) GetRewardIdOk() (*int64, bool) {
+	if o == nil || IsNil(o.RewardId) {
+		return nil, false
+	}
+	return o.RewardId, true
+}
+
+// HasRewardId returns a boolean if a field has been set.
+func (o *RuleFailureReason) HasRewardId() bool {
+	if o != nil && !IsNil(o.RewardId) {
+		return true
+	}
+
+	return false
+}
+
+// SetRewardId gets a reference to the given int64 and assigns it to the RewardId field.
+func (o *RuleFailureReason) SetRewardId(v int64) {
+	o.RewardId = &v
+}
+
+// GetRewardIntegrationId returns the RewardIntegrationId field value if set, zero value otherwise.
+func (o *RuleFailureReason) GetRewardIntegrationId() string {
+	if o == nil || IsNil(o.RewardIntegrationId) {
+		var ret string
+		return ret
+	}
+	return *o.RewardIntegrationId
+}
+
+// GetRewardIntegrationIdOk returns a tuple with the RewardIntegrationId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *RuleFailureReason) GetRewardIntegrationIdOk() (*string, bool) {
+	if o == nil || IsNil(o.RewardIntegrationId) {
+		return nil, false
+	}
+	return o.RewardIntegrationId, true
+}
+
+// HasRewardIntegrationId returns a boolean if a field has been set.
+func (o *RuleFailureReason) HasRewardIntegrationId() bool {
+	if o != nil && !IsNil(o.RewardIntegrationId) {
+		return true
+	}
+
+	return false
+}
+
+// SetRewardIntegrationId gets a reference to the given string and assigns it to the RewardIntegrationId field.
+func (o *RuleFailureReason) SetRewardIntegrationId(v string) {
+	o.RewardIntegrationId = &v
+}
+
 // GetRuleIndex returns the RuleIndex field value
 func (o *RuleFailureReason) GetRuleIndex() int64 {
 	if o == nil {
@@ -508,6 +576,12 @@ func (o RuleFailureReason) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ReferralValue) {
 		toSerialize["referralValue"] = o.ReferralValue
 	}
+	if !IsNil(o.RewardId) {
+		toSerialize["rewardId"] = o.RewardId
+	}
+	if !IsNil(o.RewardIntegrationId) {
+		toSerialize["rewardIntegrationId"] = o.RewardIntegrationId
+	}
 	toSerialize["ruleIndex"] = o.RuleIndex
 	toSerialize["ruleName"] = o.RuleName
 	if !IsNil(o.ConditionIndex) {
@@ -579,6 +653,8 @@ func (o *RuleFailureReason) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "couponValue")
 		delete(additionalProperties, "referralID")
 		delete(additionalProperties, "referralValue")
+		delete(additionalProperties, "rewardId")
+		delete(additionalProperties, "rewardIntegrationId")
 		delete(additionalProperties, "ruleIndex")
 		delete(additionalProperties, "ruleName")
 		delete(additionalProperties, "conditionIndex")

@@ -137,24 +137,9 @@ func (dst *IntegrationHubPaginatedEventPayloadDataInner) UnmarshalJSON(data []by
 	} else { // no match
 		if err != nil {
 			return fmt.Errorf("data failed to match schemas in oneOf(IntegrationHubPaginatedEventPayloadDataInner): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(IntegrationHubPaginatedEventPayloadDataInner)")
 		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(IntegrationHubPaginatedEventPayloadDataInner): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(IntegrationHubPaginatedEventPayloadDataInner)")
-		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(IntegrationHubPaginatedEventPayloadDataInner): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(IntegrationHubPaginatedEventPayloadDataInner)")
-		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(IntegrationHubPaginatedEventPayloadDataInner): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(IntegrationHubPaginatedEventPayloadDataInner)")
-		}
+
+		return fmt.Errorf("data failed to match schemas in oneOf(IntegrationHubPaginatedEventPayloadDataInner)")
 	}
 }
 

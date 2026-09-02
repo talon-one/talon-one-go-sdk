@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Name** | **string** | The effect name. | 
-**Value** | **interface{}** |  | 
+**Value** | **interface{}** | The discount value. | 
 
 ## Methods
 

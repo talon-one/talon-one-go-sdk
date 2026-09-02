@@ -4,23 +4,23 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **int64** | Internal ID of this entity. | 
-**Created** | **time.Time** | The time this entity was created. | 
-**UserId** | **int64** | The ID of the user that created this ruleset. | 
-**CampaignId** | Pointer to **int64** | The ID of the campaign that owns this entity. | [optional] 
-**TemplateId** | Pointer to **int64** | The ID of the campaign template that owns this entity. | [optional] 
-**ActivatedAt** | Pointer to **time.Time** | Timestamp indicating when this ruleset was activated. | [optional] 
-**PromotionRules** | [**[]PromotionRuleV2**](PromotionRuleV2.md) | Set of promotion rules. | 
-**StrikethroughRules** | [**[]StrikethroughRuleV2**](StrikethroughRuleV2.md) | Set of strikethrough rules. | 
-**Selectors** | Pointer to [**[]Selector**](Selector.md) | Variable bindings of type selector. | [optional] 
-**Bundles** | Pointer to [**[]Bundle**](Bundle.md) | Variable bindings of type bundle. | [optional] 
-**Parameters** | Pointer to [**[]TemplateParameter**](TemplateParameter.md) | Variable bindings of type template parameter. | [optional] 
+**Id** | Pointer to **int64** | Internal ID of this entity. | [optional] [readonly] 
+**Created** | Pointer to **time.Time** | The time this entity was created. | [optional] [readonly] 
+**UserId** | Pointer to **int64** | The ID of the user that created this ruleset. | [optional] [readonly] 
+**CampaignId** | Pointer to **int64** | The ID of the campaign that owns this entity. | [optional] [readonly] 
+**TemplateId** | Pointer to **int64** | The ID of the campaign template that owns this entity. | [optional] [readonly] 
+**ActivatedAt** | Pointer to **time.Time** | Timestamp indicating when this ruleset was activated. | [optional] [readonly] 
+**PromotionRules** | [**[]RuleV2**](RuleV2.md) | Set of promotion rules. | 
+**StrikethroughRules** | Pointer to [**[]RuleV2**](RuleV2.md) | Set of strikethrough rules. | [optional] 
+**Selectors** | Pointer to [**[]Selector**](Selector.md) | Variable bindings of type selector. | [optional] [readonly] 
+**Bundles** | Pointer to [**[]Bundle**](Bundle.md) | Variable bindings of type bundle. | [optional] [readonly] 
+**Parameters** | Pointer to [**[]TemplateParameter**](TemplateParameter.md) | Variable bindings of type template parameter. | [optional] [readonly] 
 
 ## Methods
 
 ### NewRulesetV2
 
-`func NewRulesetV2(id int64, created time.Time, userId int64, promotionRules []PromotionRuleV2, strikethroughRules []StrikethroughRuleV2, ) *RulesetV2`
+`func NewRulesetV2(promotionRules []RuleV2, ) *RulesetV2`
 
 NewRulesetV2 instantiates a new RulesetV2 object
 This constructor will assign default values to properties that have it defined,
@@ -54,6 +54,11 @@ and a boolean to check if the value has been set.
 
 SetId sets Id field to given value.
 
+### HasId
+
+`func (o *RulesetV2) HasId() bool`
+
+HasId returns a boolean if a field has been set.
 
 ### GetCreated
 
@@ -74,6 +79,11 @@ and a boolean to check if the value has been set.
 
 SetCreated sets Created field to given value.
 
+### HasCreated
+
+`func (o *RulesetV2) HasCreated() bool`
+
+HasCreated returns a boolean if a field has been set.
 
 ### GetUserId
 
@@ -94,6 +104,11 @@ and a boolean to check if the value has been set.
 
 SetUserId sets UserId field to given value.
 
+### HasUserId
+
+`func (o *RulesetV2) HasUserId() bool`
+
+HasUserId returns a boolean if a field has been set.
 
 ### GetCampaignId
 
@@ -172,43 +187,48 @@ HasActivatedAt returns a boolean if a field has been set.
 
 ### GetPromotionRules
 
-`func (o *RulesetV2) GetPromotionRules() []PromotionRuleV2`
+`func (o *RulesetV2) GetPromotionRules() []RuleV2`
 
 GetPromotionRules returns the PromotionRules field if non-nil, zero value otherwise.
 
 ### GetPromotionRulesOk
 
-`func (o *RulesetV2) GetPromotionRulesOk() (*[]PromotionRuleV2, bool)`
+`func (o *RulesetV2) GetPromotionRulesOk() (*[]RuleV2, bool)`
 
 GetPromotionRulesOk returns a tuple with the PromotionRules field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetPromotionRules
 
-`func (o *RulesetV2) SetPromotionRules(v []PromotionRuleV2)`
+`func (o *RulesetV2) SetPromotionRules(v []RuleV2)`
 
 SetPromotionRules sets PromotionRules field to given value.
 
 
 ### GetStrikethroughRules
 
-`func (o *RulesetV2) GetStrikethroughRules() []StrikethroughRuleV2`
+`func (o *RulesetV2) GetStrikethroughRules() []RuleV2`
 
 GetStrikethroughRules returns the StrikethroughRules field if non-nil, zero value otherwise.
 
 ### GetStrikethroughRulesOk
 
-`func (o *RulesetV2) GetStrikethroughRulesOk() (*[]StrikethroughRuleV2, bool)`
+`func (o *RulesetV2) GetStrikethroughRulesOk() (*[]RuleV2, bool)`
 
 GetStrikethroughRulesOk returns a tuple with the StrikethroughRules field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetStrikethroughRules
 
-`func (o *RulesetV2) SetStrikethroughRules(v []StrikethroughRuleV2)`
+`func (o *RulesetV2) SetStrikethroughRules(v []RuleV2)`
 
 SetStrikethroughRules sets StrikethroughRules field to given value.
 
+### HasStrikethroughRules
+
+`func (o *RulesetV2) HasStrikethroughRules() bool`
+
+HasStrikethroughRules returns a boolean if a field has been set.
 
 ### GetSelectors
 

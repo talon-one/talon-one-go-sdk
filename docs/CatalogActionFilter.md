@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Attr** | **string** | The name of the attribute to filter on. | 
 **Op** | **string** | The filtering operator. | 
-**Value** | **interface{}** |  | 
+**Value** | **interface{}** | The value to filter for. | 
 
 ## Methods
 

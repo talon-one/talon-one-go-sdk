@@ -29,6 +29,7 @@ Method | HTTP request | Description
 [**GetLoyaltyProgramProfileTransactions**](IntegrationAPI.md#GetLoyaltyProgramProfileTransactions) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/transactions | List customer&#39;s loyalty transactions
 [**GetReservedCustomers**](IntegrationAPI.md#GetReservedCustomers) | **Get** /v1/coupon_reservations/customerprofiles/{couponValue} | List customers that have this coupon reserved
 [**IntegrationGetAllCampaigns**](IntegrationAPI.md#IntegrationGetAllCampaigns) | **Get** /v1/integration/campaigns | List all running campaigns
+[**IntegrationRewardsCatalog**](IntegrationAPI.md#IntegrationRewardsCatalog) | **Get** /v1/rewards/catalog | List rewards in the catalog
 [**JoinLoyaltyProgram**](IntegrationAPI.md#JoinLoyaltyProgram) | **Post** /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/join | Join customer profile to loyalty program
 [**LinkLoyaltyCardToProfile**](IntegrationAPI.md#LinkLoyaltyCardToProfile) | **Post** /v2/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/link_profile | Link customer profile to card
 [**ReopenCustomerSession**](IntegrationAPI.md#ReopenCustomerSession) | **Put** /v2/customer_sessions/{customerSessionId}/reopen | Reopen customer session
@@ -37,6 +38,7 @@ Method | HTTP request | Description
 [**TrackEventV2**](IntegrationAPI.md#TrackEventV2) | **Post** /v2/events | Track event
 [**TrackEventV3**](IntegrationAPI.md#TrackEventV3) | **Post** /v3/events | Track advanced event
 [**UnlinkLoyaltyCardFromProfile**](IntegrationAPI.md#UnlinkLoyaltyCardFromProfile) | **Post** /v2/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/unlink_profile | Unlink customer profile from a loyalty card
+[**UnlockReward**](IntegrationAPI.md#UnlockReward) | **Post** /v1/rewards/{rewardId}/unlock | Unlock a reward
 [**UpdateAudienceCustomersAttributes**](IntegrationAPI.md#UpdateAudienceCustomersAttributes) | **Put** /v2/audience_customers/{audienceId}/attributes | Update profile attributes for all customers in audience
 [**UpdateAudienceV2**](IntegrationAPI.md#UpdateAudienceV2) | **Put** /v2/audiences/{audienceId} | Update audience name
 [**UpdateCustomerProfileAudiences**](IntegrationAPI.md#UpdateCustomerProfileAudiences) | **Post** /v2/customer_audiences | Update multiple customer profiles&#39; audiences
@@ -1044,7 +1046,7 @@ Name | Type | Description  | Notes
 
 ## GetCustomerInventory
 
-> CustomerInventory GetCustomerInventory(ctx, integrationId).Profile(profile).Referrals(referrals).Coupons(coupons).Loyalty(loyalty).Giveaways(giveaways).Achievements(achievements).Execute()
+> CustomerInventory GetCustomerInventory(ctx, integrationId).Profile(profile).Referrals(referrals).Coupons(coupons).Loyalty(loyalty).Giveaways(giveaways).Achievements(achievements).UnlockedRewards(unlockedRewards).Execute()
 
 List customer data
 
@@ -1070,10 +1072,11 @@ func main() {
 	loyalty := true // bool | Set to `true` to include loyalty information in the response. (optional)
 	giveaways := true // bool | Set to `true` to include giveaways information in the response. (optional)
 	achievements := true // bool | Set to `true` to include achievement information in the response. (optional)
+	unlockedRewards := true // bool | Set to `true` to include `unlocked` rewards that have not been `used` in the response. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.IntegrationAPI.GetCustomerInventory(context.Background(), integrationId).Profile(profile).Referrals(referrals).Coupons(coupons).Loyalty(loyalty).Giveaways(giveaways).Achievements(achievements).Execute()
+	resp, r, err := apiClient.IntegrationAPI.GetCustomerInventory(context.Background(), integrationId).Profile(profile).Referrals(referrals).Coupons(coupons).Loyalty(loyalty).Giveaways(giveaways).Achievements(achievements).UnlockedRewards(unlockedRewards).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `IntegrationAPI.GetCustomerInventory``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -1105,6 +1108,7 @@ Name | Type | Description  | Notes
  **loyalty** | **bool** | Set to &#x60;true&#x60; to include loyalty information in the response. | 
  **giveaways** | **bool** | Set to &#x60;true&#x60; to include giveaways information in the response. | 
  **achievements** | **bool** | Set to &#x60;true&#x60; to include achievement information in the response. | 
+ **unlockedRewards** | **bool** | Set to &#x60;true&#x60; to include &#x60;unlocked&#x60; rewards that have not been &#x60;used&#x60; in the response. | 
 
 ### Return type
 
@@ -1628,11 +1632,11 @@ func main() {
 	integrationId := "integrationId_example" // string | The integration identifier for this customer profile. Must be: - Unique within the deployment. - Stable for the customer. Do not use an ID that the customer can update themselves. For example, you can use a database ID.  Once set, you cannot update this identifier. 
 	status := "status_example" // string | Filter points based on their status. (optional) (default to "active")
 	subledgerId := []string{"Inner_example"} // []string | Filter the results by a list of subledger IDs.  To include multiple IDs, repeat the parameter for each one, for example, `?subledgerId=id1&subledgerId=id2`.  The response contains only data associated with the specified subledgers.  (optional)
-	customerSessionIDs := []string{"Inner_example"} // []string | Filter the results by a list of customer session IDs.   To include multiple IDs, repeat the parameter for each one, for example,  `?customerSessionIDs=id1&customerSessionIDs=id2`.  The response contains only data associated with the specified sessions.  (optional)
-	transactionUUIDs := []string{"Inner_example"} // []string | Filter the results by a list of transaction UUIDs.  To include multiple IDs, repeat the parameter for each one, for example,  `?transactionUUIDs=uuid1&transactionUUIDs=uuid2`.  The response contains only data associated with the specified transactions.  (optional)
+	customerSessionIDs := []string{"Inner_example"} // []string | Filter the results by a list of customer session IDs.  To include multiple IDs, repeat the parameter for each one, for example, `?customerSessionIDs=id1&customerSessionIDs=id2`.  The response contains only data associated with the specified sessions.  (optional)
+	transactionUUIDs := []string{"Inner_example"} // []string | Filter the results by a list of transaction UUIDs.  To include multiple IDs, repeat the parameter for each one, for example, `?transactionUUIDs=uuid1&transactionUUIDs=uuid2`.  The response contains only data associated with the specified transactions.  (optional)
 	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 50)
 	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
-	sort := "sort_example" // string | The field by which results should be sorted. You can enter one of the following values:  - `startDate`: Sorts the results by the start date of the points. - `expiryDate`: Sorts the results by the expiry date of the points.  By default, results are sorted in ascending order.  To sort them in descending order, prefix the field name with `-`.  **Note:** You can only sort by one field at a time.  (optional)
+	sort := "sort_example" // string | The field by which results should be sorted. You can enter one of the following values:  - `startDate`: Sorts the results by the start date of the points. - `expiryDate`: Sorts the results by the expiry date of the points.  By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with `-`.  **Note:** You can only sort by one field at a time.  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1666,11 +1670,11 @@ Name | Type | Description  | Notes
 
  **status** | **string** | Filter points based on their status. | [default to &quot;active&quot;]
  **subledgerId** | **[]string** | Filter the results by a list of subledger IDs.  To include multiple IDs, repeat the parameter for each one, for example, &#x60;?subledgerId&#x3D;id1&amp;subledgerId&#x3D;id2&#x60;.  The response contains only data associated with the specified subledgers.  | 
- **customerSessionIDs** | **[]string** | Filter the results by a list of customer session IDs.   To include multiple IDs, repeat the parameter for each one, for example,  &#x60;?customerSessionIDs&#x3D;id1&amp;customerSessionIDs&#x3D;id2&#x60;.  The response contains only data associated with the specified sessions.  | 
- **transactionUUIDs** | **[]string** | Filter the results by a list of transaction UUIDs.  To include multiple IDs, repeat the parameter for each one, for example,  &#x60;?transactionUUIDs&#x3D;uuid1&amp;transactionUUIDs&#x3D;uuid2&#x60;.  The response contains only data associated with the specified transactions.  | 
+ **customerSessionIDs** | **[]string** | Filter the results by a list of customer session IDs.  To include multiple IDs, repeat the parameter for each one, for example, &#x60;?customerSessionIDs&#x3D;id1&amp;customerSessionIDs&#x3D;id2&#x60;.  The response contains only data associated with the specified sessions.  | 
+ **transactionUUIDs** | **[]string** | Filter the results by a list of transaction UUIDs.  To include multiple IDs, repeat the parameter for each one, for example, &#x60;?transactionUUIDs&#x3D;uuid1&amp;transactionUUIDs&#x3D;uuid2&#x60;.  The response contains only data associated with the specified transactions.  | 
  **pageSize** | **int64** | The number of items in the response. | [default to 50]
  **skip** | **int64** | The number of items to skip when paging through large result sets. | 
- **sort** | **string** | The field by which results should be sorted. You can enter one of the following values:  - &#x60;startDate&#x60;: Sorts the results by the start date of the points. - &#x60;expiryDate&#x60;: Sorts the results by the expiry date of the points.  By default, results are sorted in ascending order.  To sort them in descending order, prefix the field name with &#x60;-&#x60;.  **Note:** You can only sort by one field at a time.  | 
+ **sort** | **string** | The field by which results should be sorted. You can enter one of the following values:  - &#x60;startDate&#x60;: Sorts the results by the start date of the points. - &#x60;expiryDate&#x60;: Sorts the results by the expiry date of the points.  By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with &#x60;-&#x60;.  **Note:** You can only sort by one field at a time.  | 
 
 ### Return type
 
@@ -1716,7 +1720,7 @@ func main() {
 	integrationId := "integrationId_example" // string | The integration identifier for this customer profile. Must be: - Unique within the deployment. - Stable for the customer. Do not use an ID that the customer can update themselves. For example, you can use a database ID.  Once set, you cannot update this identifier. 
 	customerSessionIDs := []string{"Inner_example"} // []string | Filter the results by a list of customer session IDs.  To include multiple IDs, repeat the parameter for each one, for example, `?customerSessionIDs=id1&customerSessionIDs=id2`.  The response contains only data associated with the specified sessions.  (optional)
 	transactionUUIDs := []string{"Inner_example"} // []string | Filter the results by a list of transaction UUIDs.  To include multiple IDs, repeat the parameter for each one, for example, `?transactionUUIDs=uuid1&transactionUUIDs=uuid2`.  The response contains only data associated with the specified transactions.  (optional)
-	subledgerId := "subledgerId_example" // string | The ID of the subledger by which we filter the data. (optional)
+	subledgerId := []string{"Inner_example"} // []string | Filter the results by a list of subledger IDs.  To include multiple IDs, repeat the parameter for each one, for example, `?subledgerId=id1&subledgerId=id2`.  The response contains only data associated with the specified subledgers.  (optional)
 	loyaltyTransactionType := "loyaltyTransactionType_example" // string | Filter results by loyalty transaction type: - `manual`: Loyalty transaction that was done manually. - `session`: Loyalty transaction that resulted from a customer session. - `import`: Loyalty transaction that was imported from a CSV file.  (optional)
 	startDate := time.Now() // time.Time | Date and time from which results are returned. Results are filtered by transaction creation date.  > [!note] **Note** > - This must be an RFC3339 timestamp string. > - You can include a time component in your string, for example, `T23:59:59` to specify the end of the day. The time zone setting >   considered is `UTC`. If you do not include a time component, a default time value of `T00:00:00` (midnight) in `UTC` is considered.  (optional)
 	endDate := time.Now() // time.Time | Date and time by which results are returned. Results are filtered by transaction creation date.  > [!note] **Note** > - This must be an RFC3339 timestamp string. > - You can include a time component in your string, for example, `T23:59:59` to specify the end of the day. The time zone setting >   considered is `UTC`. If you do not include a time component, a default time value of `T00:00:00` (midnight) in `UTC` is considered.  (optional)
@@ -1756,7 +1760,7 @@ Name | Type | Description  | Notes
 
  **customerSessionIDs** | **[]string** | Filter the results by a list of customer session IDs.  To include multiple IDs, repeat the parameter for each one, for example, &#x60;?customerSessionIDs&#x3D;id1&amp;customerSessionIDs&#x3D;id2&#x60;.  The response contains only data associated with the specified sessions.  | 
  **transactionUUIDs** | **[]string** | Filter the results by a list of transaction UUIDs.  To include multiple IDs, repeat the parameter for each one, for example, &#x60;?transactionUUIDs&#x3D;uuid1&amp;transactionUUIDs&#x3D;uuid2&#x60;.  The response contains only data associated with the specified transactions.  | 
- **subledgerId** | **string** | The ID of the subledger by which we filter the data. | 
+ **subledgerId** | **[]string** | Filter the results by a list of subledger IDs.  To include multiple IDs, repeat the parameter for each one, for example, &#x60;?subledgerId&#x3D;id1&amp;subledgerId&#x3D;id2&#x60;.  The response contains only data associated with the specified subledgers.  | 
  **loyaltyTransactionType** | **string** | Filter results by loyalty transaction type: - &#x60;manual&#x60;: Loyalty transaction that was done manually. - &#x60;session&#x60;: Loyalty transaction that resulted from a customer session. - &#x60;import&#x60;: Loyalty transaction that was imported from a CSV file.  | 
  **startDate** | **time.Time** | Date and time from which results are returned. Results are filtered by transaction creation date.  &gt; [!note] **Note** &gt; - This must be an RFC3339 timestamp string. &gt; - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting &gt;   considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.  | 
  **endDate** | **time.Time** | Date and time by which results are returned. Results are filtered by transaction creation date.  &gt; [!note] **Note** &gt; - This must be an RFC3339 timestamp string. &gt; - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting &gt;   considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.  | 
@@ -1803,7 +1807,7 @@ import (
 )
 
 func main() {
-	couponValue := "couponValue_example" // string | The code of the coupon.  **Important:** The coupon code requires [URL encoding](https://www.w3schools.com/tags//ref_urlencode.asp)  if it contains special characters. For example, you must encode `SUMMER25%OFF` as `SUMMER25%25OFF`. 
+	couponValue := "couponValue_example" // string | The code of the coupon.  **Important:** The coupon code requires [URL encoding](https://www.w3schools.com/tags//ref_urlencode.asp) if it contains special characters. For example, you must encode `SUMMER25%OFF` as `SUMMER25%25OFF`. 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1823,7 +1827,7 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**couponValue** | **string** | The code of the coupon.  **Important:** The coupon code requires [URL encoding](https://www.w3schools.com/tags//ref_urlencode.asp)  if it contains special characters. For example, you must encode &#x60;SUMMER25%OFF&#x60; as &#x60;SUMMER25%25OFF&#x60;.  | 
+**couponValue** | **string** | The code of the coupon.  **Important:** The coupon code requires [URL encoding](https://www.w3schools.com/tags//ref_urlencode.asp) if it contains special characters. For example, you must encode &#x60;SUMMER25%OFF&#x60; as &#x60;SUMMER25%25OFF&#x60;.  | 
 
 ### Other Parameters
 
@@ -1920,6 +1924,88 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**IntegrationGetAllCampaigns200Response**](IntegrationGetAllCampaigns200Response.md)
+
+### Authorization
+
+[api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## IntegrationRewardsCatalog
+
+> IntegrationRewardsCatalog200Response IntegrationRewardsCatalog(ctx).PageSize(pageSize).Skip(skip).PointsFrom(pointsFrom).PointsTo(pointsTo).IncludeFree(includeFree).LoyaltyProgramId(loyaltyProgramId).SubledgerId(subledgerId).ProfileIntegrationId(profileIntegrationId).LoyaltyCardId(loyaltyCardId).Execute()
+
+List rewards in the catalog
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 1000)
+	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
+	pointsFrom := float32(8.14) // float32 | Return only rewards whose points required is greater than or equal to this value. (optional)
+	pointsTo := float32(8.14) // float32 | Return only rewards whose points required is less than or equal to this value. (optional)
+	includeFree := true // bool | Whether to include rewards that have no `pointsRequired`. These rewards are treated as free and available to all customers.  (optional) (default to true)
+	loyaltyProgramId := int64(789) // int64 | Return only rewards available in this loyalty program.  (optional)
+	subledgerId := "subledgerId_example" // string | Return only rewards available in this subledger. Must be combined with `loyaltyProgramId`. To specify the main ledger, provide an empty string (\"\").  (optional)
+	profileIntegrationId := "profileIntegrationId_example" // string | The integration ID of the customer profile whose loyalty balances to include in the response. Balances are returned only when `loyaltyProgramId` is also provided.  **Note:** `profileIntegrationId` and `loyaltyCardId` are mutually exclusive. Do not send both in the same request.  (optional)
+	loyaltyCardId := "loyaltyCardId_example" // string | The identifier of the loyalty card whose loyalty balances to include in the response. Balances are returned only when `loyaltyProgramId` is also provided.  **Note:** `profileIntegrationId` and `loyaltyCardId` are mutually exclusive. Do not send both in the same request.  (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.IntegrationAPI.IntegrationRewardsCatalog(context.Background()).PageSize(pageSize).Skip(skip).PointsFrom(pointsFrom).PointsTo(pointsTo).IncludeFree(includeFree).LoyaltyProgramId(loyaltyProgramId).SubledgerId(subledgerId).ProfileIntegrationId(profileIntegrationId).LoyaltyCardId(loyaltyCardId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `IntegrationAPI.IntegrationRewardsCatalog``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `IntegrationRewardsCatalog`: IntegrationRewardsCatalog200Response
+	fmt.Fprintf(os.Stdout, "Response from `IntegrationAPI.IntegrationRewardsCatalog`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiIntegrationRewardsCatalogRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **pageSize** | **int64** | The number of items in the response. | [default to 1000]
+ **skip** | **int64** | The number of items to skip when paging through large result sets. | 
+ **pointsFrom** | **float32** | Return only rewards whose points required is greater than or equal to this value. | 
+ **pointsTo** | **float32** | Return only rewards whose points required is less than or equal to this value. | 
+ **includeFree** | **bool** | Whether to include rewards that have no &#x60;pointsRequired&#x60;. These rewards are treated as free and available to all customers.  | [default to true]
+ **loyaltyProgramId** | **int64** | Return only rewards available in this loyalty program.  | 
+ **subledgerId** | **string** | Return only rewards available in this subledger. Must be combined with &#x60;loyaltyProgramId&#x60;. To specify the main ledger, provide an empty string (\&quot;\&quot;).  | 
+ **profileIntegrationId** | **string** | The integration ID of the customer profile whose loyalty balances to include in the response. Balances are returned only when &#x60;loyaltyProgramId&#x60; is also provided.  **Note:** &#x60;profileIntegrationId&#x60; and &#x60;loyaltyCardId&#x60; are mutually exclusive. Do not send both in the same request.  | 
+ **loyaltyCardId** | **string** | The identifier of the loyalty card whose loyalty balances to include in the response. Balances are returned only when &#x60;loyaltyProgramId&#x60; is also provided.  **Note:** &#x60;profileIntegrationId&#x60; and &#x60;loyaltyCardId&#x60; are mutually exclusive. Do not send both in the same request.  | 
+
+### Return type
+
+[**IntegrationRewardsCatalog200Response**](IntegrationRewardsCatalog200Response.md)
 
 ### Authorization
 
@@ -2083,7 +2169,7 @@ Name | Type | Description  | Notes
 
 ## ReopenCustomerSession
 
-> ReopenSessionResponse ReopenCustomerSession(ctx, customerSessionId).Execute()
+> ReopenSessionResponse ReopenCustomerSession(ctx, customerSessionId).IdempotencyKey(idempotencyKey).Execute()
 
 Reopen customer session
 
@@ -2103,10 +2189,11 @@ import (
 
 func main() {
 	customerSessionId := "customerSessionId_example" // string | The `integration ID` of the customer session. You set this ID when you create a customer session.  You can see existing customer session integration IDs in the Campaign Manager's **Sessions** menu, or via the [List Application session](https://docs.talon.one/management-api#tag/Customer-data/operation/getApplicationSessions) endpoint. 
+	idempotencyKey := "idempotencyKey_example" // string | A unique identifier that enables idempotent processing. Include it to ensure that the request is processed only once, even if you send it several times. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.IntegrationAPI.ReopenCustomerSession(context.Background(), customerSessionId).Execute()
+	resp, r, err := apiClient.IntegrationAPI.ReopenCustomerSession(context.Background(), customerSessionId).IdempotencyKey(idempotencyKey).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `IntegrationAPI.ReopenCustomerSession``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -2132,6 +2219,7 @@ Other parameters are passed through a pointer to a apiReopenCustomerSessionReque
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
+ **idempotencyKey** | **string** | A unique identifier that enables idempotent processing. Include it to ensure that the request is processed only once, even if you send it several times. | 
 
 ### Return type
 
@@ -2153,7 +2241,7 @@ Name | Type | Description  | Notes
 
 ## ReturnCartItems
 
-> IntegrationStateV2 ReturnCartItems(ctx, customerSessionId).ReturnIntegrationRequest(returnIntegrationRequest).Dry(dry).RunRuleEngine(runRuleEngine).Execute()
+> IntegrationStateV2 ReturnCartItems(ctx, customerSessionId).ReturnIntegrationRequest(returnIntegrationRequest).Dry(dry).RunRuleEngine(runRuleEngine).IdempotencyKey(idempotencyKey).Execute()
 
 Return cart items
 
@@ -2176,10 +2264,11 @@ func main() {
 	returnIntegrationRequest := *openapiclient.NewReturnIntegrationRequest(*openapiclient.NewNewReturn([]openapiclient.ReturnedCartItem{*openapiclient.NewReturnedCartItem()})) // ReturnIntegrationRequest | body
 	dry := true // bool | Indicates whether to persist the changes. Changes are ignored when `dry=true`.  (optional)
 	runRuleEngine := true // bool | When set to `true`, reevaluates the updated session after items are returned. Only reevaluates campaigns where `reevaluateOnReturn` is set to `true` and which produced an effect when the session was closed.  (optional)
+	idempotencyKey := "idempotencyKey_example" // string | A unique identifier that enables idempotent processing. Include it to ensure that the request is processed only once, even if you send it several times. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.IntegrationAPI.ReturnCartItems(context.Background(), customerSessionId).ReturnIntegrationRequest(returnIntegrationRequest).Dry(dry).RunRuleEngine(runRuleEngine).Execute()
+	resp, r, err := apiClient.IntegrationAPI.ReturnCartItems(context.Background(), customerSessionId).ReturnIntegrationRequest(returnIntegrationRequest).Dry(dry).RunRuleEngine(runRuleEngine).IdempotencyKey(idempotencyKey).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `IntegrationAPI.ReturnCartItems``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -2208,6 +2297,7 @@ Name | Type | Description  | Notes
  **returnIntegrationRequest** | [**ReturnIntegrationRequest**](ReturnIntegrationRequest.md) | body | 
  **dry** | **bool** | Indicates whether to persist the changes. Changes are ignored when &#x60;dry&#x3D;true&#x60;.  | 
  **runRuleEngine** | **bool** | When set to &#x60;true&#x60;, reevaluates the updated session after items are returned. Only reevaluates campaigns where &#x60;reevaluateOnReturn&#x60; is set to &#x60;true&#x60; and which produced an effect when the session was closed.  | 
+ **idempotencyKey** | **string** | A unique identifier that enables idempotent processing. Include it to ensure that the request is processed only once, even if you send it several times. | 
 
 ### Return type
 
@@ -2301,7 +2391,7 @@ Name | Type | Description  | Notes
 
 ## TrackEventV2
 
-> IntegrationEventV2Response TrackEventV2(ctx).IntegrationEventV2Request(integrationEventV2Request).Silent(silent).Dry(dry).ForceCompleteEvaluation(forceCompleteEvaluation).Execute()
+> IntegrationEventV2Response TrackEventV2(ctx).IntegrationEventV2Request(integrationEventV2Request).Silent(silent).Dry(dry).ForceCompleteEvaluation(forceCompleteEvaluation).IdempotencyKey(idempotencyKey).Execute()
 
 Track event
 
@@ -2324,10 +2414,11 @@ func main() {
 	silent := "silent_example" // string | Possible values: `yes` or `no`. - `yes`: Increases the performance of the API call by returning a 204 response. - `no`: Returns a 200 response that contains the updated customer profiles.  (optional) (default to "yes")
 	dry := true // bool | Indicates whether to persist the changes. Changes are ignored when `dry=true`.  (optional)
 	forceCompleteEvaluation := true // bool | Forces evaluation for all matching campaigns regardless of the [campaign evaluation mode](https://docs.talon.one/docs/product/applications/managing-campaign-evaluation#setting-campaign-evaluation-mode). Requires `dry=true`.  (optional) (default to false)
+	idempotencyKey := "idempotencyKey_example" // string | A unique identifier that enables idempotent processing. Include it to ensure that the request is processed only once, even if you send it several times. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.IntegrationAPI.TrackEventV2(context.Background()).IntegrationEventV2Request(integrationEventV2Request).Silent(silent).Dry(dry).ForceCompleteEvaluation(forceCompleteEvaluation).Execute()
+	resp, r, err := apiClient.IntegrationAPI.TrackEventV2(context.Background()).IntegrationEventV2Request(integrationEventV2Request).Silent(silent).Dry(dry).ForceCompleteEvaluation(forceCompleteEvaluation).IdempotencyKey(idempotencyKey).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `IntegrationAPI.TrackEventV2``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -2352,6 +2443,7 @@ Name | Type | Description  | Notes
  **silent** | **string** | Possible values: &#x60;yes&#x60; or &#x60;no&#x60;. - &#x60;yes&#x60;: Increases the performance of the API call by returning a 204 response. - &#x60;no&#x60;: Returns a 200 response that contains the updated customer profiles.  | [default to &quot;yes&quot;]
  **dry** | **bool** | Indicates whether to persist the changes. Changes are ignored when &#x60;dry&#x3D;true&#x60;.  | 
  **forceCompleteEvaluation** | **bool** | Forces evaluation for all matching campaigns regardless of the [campaign evaluation mode](https://docs.talon.one/docs/product/applications/managing-campaign-evaluation#setting-campaign-evaluation-mode). Requires &#x60;dry&#x3D;true&#x60;.  | [default to false]
+ **idempotencyKey** | **string** | A unique identifier that enables idempotent processing. Include it to ensure that the request is processed only once, even if you send it several times. | 
 
 ### Return type
 
@@ -2503,6 +2595,80 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**LoyaltyCard**](LoyaltyCard.md)
+
+### Authorization
+
+[api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## UnlockReward
+
+> IntegrationStateV2 UnlockReward(ctx, rewardId).IntegrationUnlockRewardRequest(integrationUnlockRewardRequest).Dry(dry).Execute()
+
+Unlock a reward
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	rewardId := int64(789) // int64 | The ID of the reward. You can get the ID with the [List rewards](#tag/Rewards/operation/listRewards) endpoint.
+	integrationUnlockRewardRequest := *openapiclient.NewIntegrationUnlockRewardRequest("reward-unlock-123", "customer1") // IntegrationUnlockRewardRequest | 
+	dry := true // bool | When set to `true`, the rule evaluation is performed but no changes are persisted. Use this to preview the outcome of an unlocking. (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.IntegrationAPI.UnlockReward(context.Background(), rewardId).IntegrationUnlockRewardRequest(integrationUnlockRewardRequest).Dry(dry).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `IntegrationAPI.UnlockReward``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `UnlockReward`: IntegrationStateV2
+	fmt.Fprintf(os.Stdout, "Response from `IntegrationAPI.UnlockReward`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**rewardId** | **int64** | The ID of the reward. You can get the ID with the [List rewards](#tag/Rewards/operation/listRewards) endpoint. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiUnlockRewardRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **integrationUnlockRewardRequest** | [**IntegrationUnlockRewardRequest**](IntegrationUnlockRewardRequest.md) |  | 
+ **dry** | **bool** | When set to &#x60;true&#x60;, the rule evaluation is performed but no changes are persisted. Use this to preview the outcome of an unlocking. | 
+
+### Return type
+
+[**IntegrationStateV2**](IntegrationStateV2.md)
 
 ### Authorization
 
@@ -2726,7 +2892,7 @@ Name | Type | Description  | Notes
 
 ## UpdateCustomerProfileV2
 
-> CustomerProfileIntegrationResponseV2 UpdateCustomerProfileV2(ctx, integrationId).CustomerProfileIntegrationRequestV2(customerProfileIntegrationRequestV2).RunRuleEngine(runRuleEngine).Dry(dry).Execute()
+> CustomerProfileIntegrationResponseV2 UpdateCustomerProfileV2(ctx, integrationId).CustomerProfileIntegrationRequestV2(customerProfileIntegrationRequestV2).RunRuleEngine(runRuleEngine).Dry(dry).IdempotencyKey(idempotencyKey).Execute()
 
 Update customer profile
 
@@ -2749,10 +2915,11 @@ func main() {
 	customerProfileIntegrationRequestV2 := *openapiclient.NewCustomerProfileIntegrationRequestV2() // CustomerProfileIntegrationRequestV2 | body
 	runRuleEngine := true // bool | Indicates whether to run the Rule Engine.  If `true`, the response includes: - The effects generated by the triggered campaigns are returned in the `effects` property. - The created coupons and referral objects.  If `false`: - The rules are not executed and the `effects` property is always empty. - The response time improves. - You cannot use `responseContent` in the body.  (optional) (default to false)
 	dry := true // bool | (Only works when `runRuleEngine=true`) Indicates whether to persist the changes. Changes are ignored when `dry=true`.  When set to `true`, you can use the `evaluableCampaignIds` body property to select specific campaigns to run.  (optional)
+	idempotencyKey := "idempotencyKey_example" // string | A unique identifier that enables idempotent processing. Include it to ensure that the request is processed only once, even if you send it several times. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.IntegrationAPI.UpdateCustomerProfileV2(context.Background(), integrationId).CustomerProfileIntegrationRequestV2(customerProfileIntegrationRequestV2).RunRuleEngine(runRuleEngine).Dry(dry).Execute()
+	resp, r, err := apiClient.IntegrationAPI.UpdateCustomerProfileV2(context.Background(), integrationId).CustomerProfileIntegrationRequestV2(customerProfileIntegrationRequestV2).RunRuleEngine(runRuleEngine).Dry(dry).IdempotencyKey(idempotencyKey).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `IntegrationAPI.UpdateCustomerProfileV2``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -2781,6 +2948,7 @@ Name | Type | Description  | Notes
  **customerProfileIntegrationRequestV2** | [**CustomerProfileIntegrationRequestV2**](CustomerProfileIntegrationRequestV2.md) | body | 
  **runRuleEngine** | **bool** | Indicates whether to run the Rule Engine.  If &#x60;true&#x60;, the response includes: - The effects generated by the triggered campaigns are returned in the &#x60;effects&#x60; property. - The created coupons and referral objects.  If &#x60;false&#x60;: - The rules are not executed and the &#x60;effects&#x60; property is always empty. - The response time improves. - You cannot use &#x60;responseContent&#x60; in the body.  | [default to false]
  **dry** | **bool** | (Only works when &#x60;runRuleEngine&#x3D;true&#x60;) Indicates whether to persist the changes. Changes are ignored when &#x60;dry&#x3D;true&#x60;.  When set to &#x60;true&#x60;, you can use the &#x60;evaluableCampaignIds&#x60; body property to select specific campaigns to run.  | 
+ **idempotencyKey** | **string** | A unique identifier that enables idempotent processing. Include it to ensure that the request is processed only once, even if you send it several times. | 
 
 ### Return type
 
@@ -2802,7 +2970,7 @@ Name | Type | Description  | Notes
 
 ## UpdateCustomerProfilesV2
 
-> MultipleCustomerProfileIntegrationResponseV2 UpdateCustomerProfilesV2(ctx).MultipleCustomerProfileIntegrationRequest(multipleCustomerProfileIntegrationRequest).Silent(silent).Execute()
+> MultipleCustomerProfileIntegrationResponseV2 UpdateCustomerProfilesV2(ctx).MultipleCustomerProfileIntegrationRequest(multipleCustomerProfileIntegrationRequest).Silent(silent).IdempotencyKey(idempotencyKey).Execute()
 
 Update multiple customer profiles
 
@@ -2823,10 +2991,11 @@ import (
 func main() {
 	multipleCustomerProfileIntegrationRequest := *openapiclient.NewMultipleCustomerProfileIntegrationRequest() // MultipleCustomerProfileIntegrationRequest | body
 	silent := "silent_example" // string | Possible values: `yes` or `no`. - `yes`: Increases the performance of the API call by returning a 204 response. - `no`: Returns a 200 response that contains the updated customer profiles.  (optional) (default to "yes")
+	idempotencyKey := "idempotencyKey_example" // string | A unique identifier that enables idempotent processing. Include it to ensure that the request is processed only once, even if you send it several times. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.IntegrationAPI.UpdateCustomerProfilesV2(context.Background()).MultipleCustomerProfileIntegrationRequest(multipleCustomerProfileIntegrationRequest).Silent(silent).Execute()
+	resp, r, err := apiClient.IntegrationAPI.UpdateCustomerProfilesV2(context.Background()).MultipleCustomerProfileIntegrationRequest(multipleCustomerProfileIntegrationRequest).Silent(silent).IdempotencyKey(idempotencyKey).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `IntegrationAPI.UpdateCustomerProfilesV2``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -2849,6 +3018,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **multipleCustomerProfileIntegrationRequest** | [**MultipleCustomerProfileIntegrationRequest**](MultipleCustomerProfileIntegrationRequest.md) | body | 
  **silent** | **string** | Possible values: &#x60;yes&#x60; or &#x60;no&#x60;. - &#x60;yes&#x60;: Increases the performance of the API call by returning a 204 response. - &#x60;no&#x60;: Returns a 200 response that contains the updated customer profiles.  | [default to &quot;yes&quot;]
+ **idempotencyKey** | **string** | A unique identifier that enables idempotent processing. Include it to ensure that the request is processed only once, even if you send it several times. | 
 
 ### Return type
 
@@ -2870,7 +3040,7 @@ Name | Type | Description  | Notes
 
 ## UpdateCustomerSessionV2
 
-> IntegrationStateV2 UpdateCustomerSessionV2(ctx, customerSessionId).IntegrationRequest(integrationRequest).Dry(dry).Now(now).Execute()
+> IntegrationStateV2 UpdateCustomerSessionV2(ctx, customerSessionId).IntegrationRequest(integrationRequest).Dry(dry).Now(now).IdempotencyKey(idempotencyKey).Execute()
 
 Update customer session
 
@@ -2894,10 +3064,11 @@ func main() {
 	integrationRequest := *openapiclient.NewIntegrationRequest(*openapiclient.NewNewCustomerSessionV2()) // IntegrationRequest | body
 	dry := true // bool | Indicates whether to persist the changes. Changes are ignored when `dry=true`.  When set to `true`: - The endpoint considers **only** the payload that you pass when **closing** the session.   When you do not use the `dry` parameter, the endpoint behaves as a typical PUT endpoint. Each update builds upon the previous ones. - You can use the `evaluableCampaignIds` body property to select specific campaigns to run.  [See the docs](https://docs.talon.one/docs/dev/integration-api/dry-requests).  (optional)
 	now := time.Now() // time.Time | A timestamp value of a future date that acts as a current date when included in the query.  Use this parameter, for example, to test campaigns that would be evaluated for this customer session in the future (say, [scheduled campaigns](https://docs.talon.one/docs/product/campaigns/settings/managing-campaign-schedule)).  > [!note] **Note** > - It must be an RFC3339 timestamp string. > - It can **only** be a date in the future. > - It can **only** be used if the `dry` parameter in the query is set to `true`.  (optional)
+	idempotencyKey := "idempotencyKey_example" // string | A unique identifier that enables idempotent processing. Include it to ensure that the request is processed only once, even if you send it several times. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.IntegrationAPI.UpdateCustomerSessionV2(context.Background(), customerSessionId).IntegrationRequest(integrationRequest).Dry(dry).Now(now).Execute()
+	resp, r, err := apiClient.IntegrationAPI.UpdateCustomerSessionV2(context.Background(), customerSessionId).IntegrationRequest(integrationRequest).Dry(dry).Now(now).IdempotencyKey(idempotencyKey).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `IntegrationAPI.UpdateCustomerSessionV2``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -2926,6 +3097,7 @@ Name | Type | Description  | Notes
  **integrationRequest** | [**IntegrationRequest**](IntegrationRequest.md) | body | 
  **dry** | **bool** | Indicates whether to persist the changes. Changes are ignored when &#x60;dry&#x3D;true&#x60;.  When set to &#x60;true&#x60;: - The endpoint considers **only** the payload that you pass when **closing** the session.   When you do not use the &#x60;dry&#x60; parameter, the endpoint behaves as a typical PUT endpoint. Each update builds upon the previous ones. - You can use the &#x60;evaluableCampaignIds&#x60; body property to select specific campaigns to run.  [See the docs](https://docs.talon.one/docs/dev/integration-api/dry-requests).  | 
  **now** | **time.Time** | A timestamp value of a future date that acts as a current date when included in the query.  Use this parameter, for example, to test campaigns that would be evaluated for this customer session in the future (say, [scheduled campaigns](https://docs.talon.one/docs/product/campaigns/settings/managing-campaign-schedule)).  &gt; [!note] **Note** &gt; - It must be an RFC3339 timestamp string. &gt; - It can **only** be a date in the future. &gt; - It can **only** be used if the &#x60;dry&#x60; parameter in the query is set to &#x60;true&#x60;.  | 
+ **idempotencyKey** | **string** | A unique identifier that enables idempotent processing. Include it to ensure that the request is processed only once, even if you send it several times. | 
 
 ### Return type
 

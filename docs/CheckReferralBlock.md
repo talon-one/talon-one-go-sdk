@@ -4,17 +4,17 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** | Unique identifier for this block. | 
+**Id** | Pointer to **string** | Unique identifier for this block. | [optional] [readonly] 
 **Type** | **string** | Identifies the block variant and determines which additional properties are present in it. | 
-**Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] 
+**Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] [readonly] 
 **Redeem** | **bool** | When &#x60;true&#x60;, the referral code is redeemed. | 
-**OnFailure** | Pointer to [**[]PromotionBlock**](PromotionBlock.md) | Promotion blocks evaluated when this block fails or returns false. | [optional] 
+**OnFailure** | Pointer to [**[]Block**](Block.md) | Promotion blocks evaluated when this block fails or returns false. | [optional] 
 
 ## Methods
 
 ### NewCheckReferralBlock
 
-`func NewCheckReferralBlock(id string, type_ string, redeem bool, ) *CheckReferralBlock`
+`func NewCheckReferralBlock(type_ string, redeem bool, ) *CheckReferralBlock`
 
 NewCheckReferralBlock instantiates a new CheckReferralBlock object
 This constructor will assign default values to properties that have it defined,
@@ -48,6 +48,11 @@ and a boolean to check if the value has been set.
 
 SetId sets Id field to given value.
 
+### HasId
+
+`func (o *CheckReferralBlock) HasId() bool`
+
+HasId returns a boolean if a field has been set.
 
 ### GetType
 
@@ -116,20 +121,20 @@ SetRedeem sets Redeem field to given value.
 
 ### GetOnFailure
 
-`func (o *CheckReferralBlock) GetOnFailure() []PromotionBlock`
+`func (o *CheckReferralBlock) GetOnFailure() []Block`
 
 GetOnFailure returns the OnFailure field if non-nil, zero value otherwise.
 
 ### GetOnFailureOk
 
-`func (o *CheckReferralBlock) GetOnFailureOk() (*[]PromotionBlock, bool)`
+`func (o *CheckReferralBlock) GetOnFailureOk() (*[]Block, bool)`
 
 GetOnFailureOk returns a tuple with the OnFailure field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetOnFailure
 
-`func (o *CheckReferralBlock) SetOnFailure(v []PromotionBlock)`
+`func (o *CheckReferralBlock) SetOnFailure(v []Block)`
 
 SetOnFailure sets OnFailure field to given value.
 

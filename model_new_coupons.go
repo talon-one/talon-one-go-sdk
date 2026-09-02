@@ -35,6 +35,8 @@ type NewCoupons struct {
 	Limits []LimitConfig `json:"limits,omitempty"`
 	// The number of new coupon codes to generate for the campaign. Must be at least 1.
 	NumberOfCoupons int64 `json:"numberOfCoupons"`
+	// The batch ID that all coupons created by the request will bear. If omitted, a batch ID is generated automatically.
+	BatchId *string `json:"batchId,omitempty"`
 	// **DEPRECATED** To create more than 20,000 coupons in one request, use [Create coupons asynchronously](https://docs.talon.one/management-api#tag/Coupons/operation/createCouponsAsync) endpoint.
 	// Deprecated
 	UniquePrefix *string `json:"uniquePrefix,omitempty"`
@@ -295,6 +297,38 @@ func (o *NewCoupons) GetNumberOfCouponsOk() (*int64, bool) {
 // SetNumberOfCoupons sets field value
 func (o *NewCoupons) SetNumberOfCoupons(v int64) {
 	o.NumberOfCoupons = v
+}
+
+// GetBatchId returns the BatchId field value if set, zero value otherwise.
+func (o *NewCoupons) GetBatchId() string {
+	if o == nil || IsNil(o.BatchId) {
+		var ret string
+		return ret
+	}
+	return *o.BatchId
+}
+
+// GetBatchIdOk returns a tuple with the BatchId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *NewCoupons) GetBatchIdOk() (*string, bool) {
+	if o == nil || IsNil(o.BatchId) {
+		return nil, false
+	}
+	return o.BatchId, true
+}
+
+// HasBatchId returns a boolean if a field has been set.
+func (o *NewCoupons) HasBatchId() bool {
+	if o != nil && !IsNil(o.BatchId) {
+		return true
+	}
+
+	return false
+}
+
+// SetBatchId gets a reference to the given string and assigns it to the BatchId field.
+func (o *NewCoupons) SetBatchId(v string) {
+	o.BatchId = &v
 }
 
 // GetUniquePrefix returns the UniquePrefix field value if set, zero value otherwise.
@@ -617,6 +651,9 @@ func (o NewCoupons) ToMap() (map[string]interface{}, error) {
 		toSerialize["limits"] = o.Limits
 	}
 	toSerialize["numberOfCoupons"] = o.NumberOfCoupons
+	if !IsNil(o.BatchId) {
+		toSerialize["batchId"] = o.BatchId
+	}
 	if !IsNil(o.UniquePrefix) {
 		toSerialize["uniquePrefix"] = o.UniquePrefix
 	}
@@ -694,6 +731,7 @@ func (o *NewCoupons) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "expiryDate")
 		delete(additionalProperties, "limits")
 		delete(additionalProperties, "numberOfCoupons")
+		delete(additionalProperties, "batchId")
 		delete(additionalProperties, "uniquePrefix")
 		delete(additionalProperties, "attributes")
 		delete(additionalProperties, "recipientIntegrationId")

@@ -4,19 +4,19 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** | Unique identifier for this block. | 
+**Id** | Pointer to **string** | Unique identifier for this block. | [optional] [readonly] 
 **Type** | **string** | Identifies the block variant and determines which additional properties are present in it. | 
-**Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] 
-**GiveawayPool** | [**AwardGiveawayBlock1GiveawayPool**](AwardGiveawayBlock1GiveawayPool.md) |  | 
+**Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] [readonly] 
+**GiveawayPool** | [**GiveawayPoolReference**](GiveawayPoolReference.md) | The giveaway pool from which an item is awarded. | 
 **Profile** | **string** | The customer profile to award the giveaway to. &#x60;Current&#x60; targets the customer in the current session; &#x60;Advocate&#x60; targets the person who invited their friend via referral program. | 
-**OnFailure** | Pointer to [**[]PromotionBlock**](PromotionBlock.md) | Blocks evaluated when this block fails or returns false. | [optional] 
-**OnError** | Pointer to [**map[string][]PromotionBlock**](array.md) | Named error handlers evaluated when a specific error occurs. | [optional] 
+**OnFailure** | Pointer to [**[]Block**](Block.md) | Blocks evaluated when this block fails or returns false. | [optional] 
+**OnError** | Pointer to [**map[string][]Block**](array.md) | Named error handlers evaluated when a specific error occurs. | [optional] 
 
 ## Methods
 
 ### NewAwardGiveawayBlock
 
-`func NewAwardGiveawayBlock(id string, type_ string, giveawayPool AwardGiveawayBlock1GiveawayPool, profile string, ) *AwardGiveawayBlock`
+`func NewAwardGiveawayBlock(type_ string, giveawayPool GiveawayPoolReference, profile string, ) *AwardGiveawayBlock`
 
 NewAwardGiveawayBlock instantiates a new AwardGiveawayBlock object
 This constructor will assign default values to properties that have it defined,
@@ -50,6 +50,11 @@ and a boolean to check if the value has been set.
 
 SetId sets Id field to given value.
 
+### HasId
+
+`func (o *AwardGiveawayBlock) HasId() bool`
+
+HasId returns a boolean if a field has been set.
 
 ### GetType
 
@@ -98,20 +103,20 @@ HasTags returns a boolean if a field has been set.
 
 ### GetGiveawayPool
 
-`func (o *AwardGiveawayBlock) GetGiveawayPool() AwardGiveawayBlock1GiveawayPool`
+`func (o *AwardGiveawayBlock) GetGiveawayPool() GiveawayPoolReference`
 
 GetGiveawayPool returns the GiveawayPool field if non-nil, zero value otherwise.
 
 ### GetGiveawayPoolOk
 
-`func (o *AwardGiveawayBlock) GetGiveawayPoolOk() (*AwardGiveawayBlock1GiveawayPool, bool)`
+`func (o *AwardGiveawayBlock) GetGiveawayPoolOk() (*GiveawayPoolReference, bool)`
 
 GetGiveawayPoolOk returns a tuple with the GiveawayPool field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetGiveawayPool
 
-`func (o *AwardGiveawayBlock) SetGiveawayPool(v AwardGiveawayBlock1GiveawayPool)`
+`func (o *AwardGiveawayBlock) SetGiveawayPool(v GiveawayPoolReference)`
 
 SetGiveawayPool sets GiveawayPool field to given value.
 
@@ -138,20 +143,20 @@ SetProfile sets Profile field to given value.
 
 ### GetOnFailure
 
-`func (o *AwardGiveawayBlock) GetOnFailure() []PromotionBlock`
+`func (o *AwardGiveawayBlock) GetOnFailure() []Block`
 
 GetOnFailure returns the OnFailure field if non-nil, zero value otherwise.
 
 ### GetOnFailureOk
 
-`func (o *AwardGiveawayBlock) GetOnFailureOk() (*[]PromotionBlock, bool)`
+`func (o *AwardGiveawayBlock) GetOnFailureOk() (*[]Block, bool)`
 
 GetOnFailureOk returns a tuple with the OnFailure field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetOnFailure
 
-`func (o *AwardGiveawayBlock) SetOnFailure(v []PromotionBlock)`
+`func (o *AwardGiveawayBlock) SetOnFailure(v []Block)`
 
 SetOnFailure sets OnFailure field to given value.
 
@@ -163,20 +168,20 @@ HasOnFailure returns a boolean if a field has been set.
 
 ### GetOnError
 
-`func (o *AwardGiveawayBlock) GetOnError() map[string][]PromotionBlock`
+`func (o *AwardGiveawayBlock) GetOnError() map[string][]Block`
 
 GetOnError returns the OnError field if non-nil, zero value otherwise.
 
 ### GetOnErrorOk
 
-`func (o *AwardGiveawayBlock) GetOnErrorOk() (*map[string][]PromotionBlock, bool)`
+`func (o *AwardGiveawayBlock) GetOnErrorOk() (*map[string][]Block, bool)`
 
 GetOnErrorOk returns a tuple with the OnError field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetOnError
 
-`func (o *AwardGiveawayBlock) SetOnError(v map[string][]PromotionBlock)`
+`func (o *AwardGiveawayBlock) SetOnError(v map[string][]Block)`
 
 SetOnError sets OnError field to given value.
 

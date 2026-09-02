@@ -5,13 +5,13 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Type** | **string** | A step discriminator of type &#x60;filter&#x60;. | 
-**Predicate** | [**SelectorBlock**](SelectorBlock.md) |  | 
+**Predicate** | [**Block**](Block.md) |  | 
 
 ## Methods
 
 ### NewFilterSelectorStep
 
-`func NewFilterSelectorStep(type_ string, predicate SelectorBlock, ) *FilterSelectorStep`
+`func NewFilterSelectorStep(type_ string, predicate Block, ) *FilterSelectorStep`
 
 NewFilterSelectorStep instantiates a new FilterSelectorStep object
 This constructor will assign default values to properties that have it defined,
@@ -48,20 +48,20 @@ SetType sets Type field to given value.
 
 ### GetPredicate
 
-`func (o *FilterSelectorStep) GetPredicate() SelectorBlock`
+`func (o *FilterSelectorStep) GetPredicate() Block`
 
 GetPredicate returns the Predicate field if non-nil, zero value otherwise.
 
 ### GetPredicateOk
 
-`func (o *FilterSelectorStep) GetPredicateOk() (*SelectorBlock, bool)`
+`func (o *FilterSelectorStep) GetPredicateOk() (*Block, bool)`
 
 GetPredicateOk returns a tuple with the Predicate field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetPredicate
 
-`func (o *FilterSelectorStep) SetPredicate(v SelectorBlock)`
+`func (o *FilterSelectorStep) SetPredicate(v Block)`
 
 SetPredicate sets Predicate field to given value.
 

@@ -19,19 +19,19 @@ import (
 // checks if the StartAchievementProgressEffectProps type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &StartAchievementProgressEffectProps{}
 
-// StartAchievementProgressEffectProps This effect indicates that the customer's progress in an achievement was started during the current session. The progress value is set to 0. It is triggered when a rule using the [Start achievement progress](https://docs.talon.one/docs/product/rules/effects/use-effects#start-achievement-progress) effect is successfully validated.  This effect only marks the start of progress tracking. It can fire together with `increaseAchievementProgress` when progress starts and increases at the same time. In that case, both effects share the same `progressTrackerId`, `startDate`, and `endDate`.  For [on-completion achievements](https://docs.talon.one/docs/product/campaigns/achievements/achievements-overview#recurring-on-completion-achievements), each iteration also gets its own `startDate` and `endDate`.
+// StartAchievementProgressEffectProps This effect indicates that the customer's progress in an achievement was started during the current session. The progress value is set to 0. It is triggered when a rule using the [Start achievement progress](https://docs.talon.one/docs/product/rules/effects/use-effects#start-achievement-progress) effect is successfully validated.  This effect only marks the start of progress tracking. It can fire together with `increaseAchievementProgress` when progress starts and increases at the same time. In that case, both effects share the same `progressTrackerId`, `startDate`, and `endDate`.  For [on-completion achievements](https://docs.talon.one/docs/product/campaigns/achievements/overview#recurring-on-completion-achievements), each iteration also gets its own `startDate` and `endDate`.
 type StartAchievementProgressEffectProps struct {
 	// The ID of the achievement.
 	AchievementId int64 `json:"achievementId"`
 	// The name of the achievement.
 	AchievementName string `json:"achievementName"`
-	// The ID of the customer's progress tracker for this achievement.  For [on-completion achievements](https://docs.talon.one/docs/product/campaigns/achievements/achievements-overview#recurring-on-completion-achievements), this effect generates a unique ID for each iteration.
-	ProgressTrackerId int64 `json:"progressTrackerId"`
+	// The ID of the customer's progress tracker for this achievement.  For [on-completion achievements](https://docs.talon.one/docs/product/campaigns/achievements/overview#recurring-on-completion-achievements), this effect generates a unique ID for each iteration.
+	ProgressTrackerId *int64 `json:"progressTrackerId,omitempty"`
 	// The target value to complete the achievement.
 	Target float32 `json:"target"`
 	// Timestamp at which the customer's progress started.
 	StartDate time.Time `json:"startDate"`
-	// Timestamp at which this progress period ends.  Only returned for achievements that have a fixed end date. [On-completion achievements](https://docs.talon.one/docs/product/campaigns/achievements/achievements-overview#recurring-on-completion-achievements) have no end date.
+	// Timestamp at which this progress period ends.  Only returned for achievements that have a fixed end date. [On-completion achievements](https://docs.talon.one/docs/product/campaigns/achievements/overview#recurring-on-completion-achievements) have no end date.
 	EndDate              *time.Time `json:"endDate,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
@@ -42,11 +42,10 @@ type _StartAchievementProgressEffectProps StartAchievementProgressEffectProps
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildStartAchievementProgressEffectProps(achievementId int64, achievementName string, progressTrackerId int64, target float32, startDate time.Time) *StartAchievementProgressEffectProps {
+func BuildStartAchievementProgressEffectProps(achievementId int64, achievementName string, target float32, startDate time.Time) *StartAchievementProgressEffectProps {
 	this := StartAchievementProgressEffectProps{}
 	this.AchievementId = achievementId
 	this.AchievementName = achievementName
-	this.ProgressTrackerId = progressTrackerId
 	this.Target = target
 	this.StartDate = startDate
 	return &this
@@ -108,28 +107,36 @@ func (o *StartAchievementProgressEffectProps) SetAchievementName(v string) {
 	o.AchievementName = v
 }
 
-// GetProgressTrackerId returns the ProgressTrackerId field value
+// GetProgressTrackerId returns the ProgressTrackerId field value if set, zero value otherwise.
 func (o *StartAchievementProgressEffectProps) GetProgressTrackerId() int64 {
-	if o == nil {
+	if o == nil || IsNil(o.ProgressTrackerId) {
 		var ret int64
 		return ret
 	}
-
-	return o.ProgressTrackerId
+	return *o.ProgressTrackerId
 }
 
-// GetProgressTrackerIdOk returns a tuple with the ProgressTrackerId field value
+// GetProgressTrackerIdOk returns a tuple with the ProgressTrackerId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *StartAchievementProgressEffectProps) GetProgressTrackerIdOk() (*int64, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.ProgressTrackerId) {
 		return nil, false
 	}
-	return &o.ProgressTrackerId, true
+	return o.ProgressTrackerId, true
 }
 
-// SetProgressTrackerId sets field value
+// HasProgressTrackerId returns a boolean if a field has been set.
+func (o *StartAchievementProgressEffectProps) HasProgressTrackerId() bool {
+	if o != nil && !IsNil(o.ProgressTrackerId) {
+		return true
+	}
+
+	return false
+}
+
+// SetProgressTrackerId gets a reference to the given int64 and assigns it to the ProgressTrackerId field.
 func (o *StartAchievementProgressEffectProps) SetProgressTrackerId(v int64) {
-	o.ProgressTrackerId = v
+	o.ProgressTrackerId = &v
 }
 
 // GetTarget returns the Target field value
@@ -224,7 +231,9 @@ func (o StartAchievementProgressEffectProps) ToMap() (map[string]interface{}, er
 	toSerialize := map[string]interface{}{}
 	toSerialize["achievementId"] = o.AchievementId
 	toSerialize["achievementName"] = o.AchievementName
-	toSerialize["progressTrackerId"] = o.ProgressTrackerId
+	if !IsNil(o.ProgressTrackerId) {
+		toSerialize["progressTrackerId"] = o.ProgressTrackerId
+	}
 	toSerialize["target"] = o.Target
 	toSerialize["startDate"] = o.StartDate
 	if !IsNil(o.EndDate) {
@@ -245,7 +254,6 @@ func (o *StartAchievementProgressEffectProps) UnmarshalJSON(data []byte) (err er
 	requiredProperties := []string{
 		"achievementId",
 		"achievementName",
-		"progressTrackerId",
 		"target",
 		"startDate",
 	}

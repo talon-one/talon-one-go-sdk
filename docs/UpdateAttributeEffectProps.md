@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Path** | **string** | The entity type and the attribute name. | 
-**Value** | **interface{}** |  | 
+**Value** | **interface{}** | The new value of the attribute. | 
 
 ## Methods
 

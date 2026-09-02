@@ -17,8 +17,8 @@ Name | Type | Description | Notes
 **FixedStartDate** | Pointer to **time.Time** | The achievement&#39;s start date when &#x60;activationPolicy&#x60; is set to &#x60;fixed_schedule&#x60;.  **Note:** It must be an RFC3339 timestamp string.  | [optional] 
 **EndDate** | Pointer to **time.Time** | The achievement&#39;s end date. If defined, customers cannot participate in the achievement after this date.  **Note:** It must be an RFC3339 timestamp string.  | [optional] 
 **AllowRollbackAfterCompletion** | Pointer to **bool** | When &#x60;true&#x60;, customer progress can be rolled back in completed achievements. | [optional] 
-**CampaignId** | Pointer to **int64** | This property is **deprecated**. Use &#x60;campaignIds&#x60; instead. The first campaign ID in &#x60;campaignIds&#x60;. Only returned when &#x60;campaignIds&#x60; is not empty. | [optional] 
-**CampaignIds** | **[]int64** | The IDs of the campaigns that reference this achievement, in ascending order. | 
+**CampaignId** | Pointer to **int64** | This property is **deprecated**. Use &#x60;referencedByCampaigns&#x60; instead. This field contains the first campaign ID from the related &#x60;referencedByCampaigns&#x60;, and is omitted when &#x60;referencedByCampaigns&#x60; is empty. | [optional] 
+**CampaignIds** | Pointer to **[]int64** | The IDs of the campaigns that reference this achievement, in ascending order. | [optional] 
 **Status** | Pointer to **string** | The status of the achievement. | [optional] 
 **CurrentProgress** | Pointer to [**AchievementProgress**](AchievementProgress.md) |  | [optional] 
 
@@ -26,7 +26,7 @@ Name | Type | Description | Notes
 
 ### NewAchievementStatusEntry
 
-`func NewAchievementStatusEntry(id int64, created time.Time, name string, title string, description string, target float32, campaignIds []int64, ) *AchievementStatusEntry`
+`func NewAchievementStatusEntry(id int64, created time.Time, name string, title string, description string, target float32, ) *AchievementStatusEntry`
 
 NewAchievementStatusEntry instantiates a new AchievementStatusEntry object
 This constructor will assign default values to properties that have it defined,
@@ -380,6 +380,11 @@ and a boolean to check if the value has been set.
 
 SetCampaignIds sets CampaignIds field to given value.
 
+### HasCampaignIds
+
+`func (o *AchievementStatusEntry) HasCampaignIds() bool`
+
+HasCampaignIds returns a boolean if a field has been set.
 
 ### GetStatus
 

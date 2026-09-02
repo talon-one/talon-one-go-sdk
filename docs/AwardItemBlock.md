@@ -4,21 +4,21 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** | Unique identifier for this block. | 
+**Id** | Pointer to **string** | Unique identifier for this block. | [optional] [readonly] 
 **Type** | **string** | Identifies the block variant and determines which additional properties are present in it. | 
-**Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] 
+**Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] [readonly] 
 **Sku** | **string** | The stock keeping unit of the item to award. | 
 **Name** | **string** | The display name of the item to award. | 
 **Quantity** | **string** | The number of items to award. Supports template placeholders (e.g. \&quot;{{$Session.Total / 2}}\&quot;) for dynamic quantities. | 
 **Partial** | Pointer to **bool** | When set to &#x60;true&#x60;, applies a partial item reward if the remaining budget is insufficient to award the full reward. | [optional] 
-**OnFailure** | Pointer to [**[]PromotionBlock**](PromotionBlock.md) | Blocks evaluated when this block fails or returns false. | [optional] 
-**OnError** | Pointer to [**map[string][]PromotionBlock**](array.md) | Named error handlers evaluated when a specific error occurs. | [optional] 
+**OnFailure** | Pointer to [**[]Block**](Block.md) | Blocks evaluated when this block fails or returns false. | [optional] 
+**OnError** | Pointer to [**map[string][]Block**](array.md) | Named error handlers evaluated when a specific error occurs. | [optional] 
 
 ## Methods
 
 ### NewAwardItemBlock
 
-`func NewAwardItemBlock(id string, type_ string, sku string, name string, quantity string, ) *AwardItemBlock`
+`func NewAwardItemBlock(type_ string, sku string, name string, quantity string, ) *AwardItemBlock`
 
 NewAwardItemBlock instantiates a new AwardItemBlock object
 This constructor will assign default values to properties that have it defined,
@@ -52,6 +52,11 @@ and a boolean to check if the value has been set.
 
 SetId sets Id field to given value.
 
+### HasId
+
+`func (o *AwardItemBlock) HasId() bool`
+
+HasId returns a boolean if a field has been set.
 
 ### GetType
 
@@ -185,20 +190,20 @@ HasPartial returns a boolean if a field has been set.
 
 ### GetOnFailure
 
-`func (o *AwardItemBlock) GetOnFailure() []PromotionBlock`
+`func (o *AwardItemBlock) GetOnFailure() []Block`
 
 GetOnFailure returns the OnFailure field if non-nil, zero value otherwise.
 
 ### GetOnFailureOk
 
-`func (o *AwardItemBlock) GetOnFailureOk() (*[]PromotionBlock, bool)`
+`func (o *AwardItemBlock) GetOnFailureOk() (*[]Block, bool)`
 
 GetOnFailureOk returns a tuple with the OnFailure field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetOnFailure
 
-`func (o *AwardItemBlock) SetOnFailure(v []PromotionBlock)`
+`func (o *AwardItemBlock) SetOnFailure(v []Block)`
 
 SetOnFailure sets OnFailure field to given value.
 
@@ -210,20 +215,20 @@ HasOnFailure returns a boolean if a field has been set.
 
 ### GetOnError
 
-`func (o *AwardItemBlock) GetOnError() map[string][]PromotionBlock`
+`func (o *AwardItemBlock) GetOnError() map[string][]Block`
 
 GetOnError returns the OnError field if non-nil, zero value otherwise.
 
 ### GetOnErrorOk
 
-`func (o *AwardItemBlock) GetOnErrorOk() (*map[string][]PromotionBlock, bool)`
+`func (o *AwardItemBlock) GetOnErrorOk() (*map[string][]Block, bool)`
 
 GetOnErrorOk returns a tuple with the OnError field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetOnError
 
-`func (o *AwardItemBlock) SetOnError(v map[string][]PromotionBlock)`
+`func (o *AwardItemBlock) SetOnError(v map[string][]Block)`
 
 SetOnError sets OnError field to given value.
 

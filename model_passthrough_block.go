@@ -21,7 +21,7 @@ var _ MappedNullable = &PassthroughBlock{}
 // PassthroughBlock A block representing a Talang expression that could not be mapped to a typed block. The expression is preserved in its raw Talang array form for diagnostic and round-trip purposes.
 type PassthroughBlock struct {
 	// Unique identifier for this block.
-	Id string `json:"id"`
+	Id *string `json:"id,omitempty"`
 	// The type discriminator for this block.
 	Type string `json:"type"`
 	// The raw Talang expression as an array. For a function call, the first element is the function name and subsequent elements are its arguments. For any other expression (for example a bare attribute path or a literal value), this is a single-element array containing that value.
@@ -35,9 +35,8 @@ type _PassthroughBlock PassthroughBlock
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildPassthroughBlock(id string, type_ string, expression []interface{}) *PassthroughBlock {
+func BuildPassthroughBlock(type_ string, expression []interface{}) *PassthroughBlock {
 	this := PassthroughBlock{}
-	this.Id = id
 	this.Type = type_
 	this.Expression = expression
 	return &this
@@ -51,28 +50,36 @@ func NewPassthroughBlockWithDefaults() *PassthroughBlock {
 	return &this
 }
 
-// GetId returns the Id field value
+// GetId returns the Id field value if set, zero value otherwise.
 func (o *PassthroughBlock) GetId() string {
-	if o == nil {
+	if o == nil || IsNil(o.Id) {
 		var ret string
 		return ret
 	}
-
-	return o.Id
+	return *o.Id
 }
 
-// GetIdOk returns a tuple with the Id field value
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PassthroughBlock) GetIdOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Id) {
 		return nil, false
 	}
-	return &o.Id, true
+	return o.Id, true
 }
 
-// SetId sets field value
+// HasId returns a boolean if a field has been set.
+func (o *PassthroughBlock) HasId() bool {
+	if o != nil && !IsNil(o.Id) {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
 func (o *PassthroughBlock) SetId(v string) {
-	o.Id = v
+	o.Id = &v
 }
 
 // GetType returns the Type field value
@@ -133,7 +140,9 @@ func (o PassthroughBlock) MarshalJSON() ([]byte, error) {
 
 func (o PassthroughBlock) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["id"] = o.Id
+	if !IsNil(o.Id) {
+		toSerialize["id"] = o.Id
+	}
 	toSerialize["type"] = o.Type
 	toSerialize["expression"] = o.Expression
 
@@ -149,7 +158,6 @@ func (o *PassthroughBlock) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"id",
 		"type",
 		"expression",
 	}

@@ -30,7 +30,9 @@ type UnlockRewardEffectProps struct {
 	// The integration ID of the customer profile that unlocked the reward.
 	ProfileIntegrationId string `json:"profileIntegrationId"`
 	// The time the reward was unlocked.
-	UnlockedAt           time.Time `json:"unlockedAt"`
+	UnlockedAt time.Time `json:"unlockedAt"`
+	// The identifier of the loyalty card that unlocked the reward. Only returned when the reward was unlocked with a loyalty card, in which case the reward belongs to the card and is available to all customer profiles linked to it.
+	CardIdentifier       *string `json:"cardIdentifier,omitempty" validate:"regexp=^[A-Za-z0-9._%+@-]+$"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -178,6 +180,38 @@ func (o *UnlockRewardEffectProps) SetUnlockedAt(v time.Time) {
 	o.UnlockedAt = v
 }
 
+// GetCardIdentifier returns the CardIdentifier field value if set, zero value otherwise.
+func (o *UnlockRewardEffectProps) GetCardIdentifier() string {
+	if o == nil || IsNil(o.CardIdentifier) {
+		var ret string
+		return ret
+	}
+	return *o.CardIdentifier
+}
+
+// GetCardIdentifierOk returns a tuple with the CardIdentifier field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *UnlockRewardEffectProps) GetCardIdentifierOk() (*string, bool) {
+	if o == nil || IsNil(o.CardIdentifier) {
+		return nil, false
+	}
+	return o.CardIdentifier, true
+}
+
+// HasCardIdentifier returns a boolean if a field has been set.
+func (o *UnlockRewardEffectProps) HasCardIdentifier() bool {
+	if o != nil && !IsNil(o.CardIdentifier) {
+		return true
+	}
+
+	return false
+}
+
+// SetCardIdentifier gets a reference to the given string and assigns it to the CardIdentifier field.
+func (o *UnlockRewardEffectProps) SetCardIdentifier(v string) {
+	o.CardIdentifier = &v
+}
+
 func (o UnlockRewardEffectProps) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -193,6 +227,9 @@ func (o UnlockRewardEffectProps) ToMap() (map[string]interface{}, error) {
 	toSerialize["applicationId"] = o.ApplicationId
 	toSerialize["profileIntegrationId"] = o.ProfileIntegrationId
 	toSerialize["unlockedAt"] = o.UnlockedAt
+	if !IsNil(o.CardIdentifier) {
+		toSerialize["cardIdentifier"] = o.CardIdentifier
+	}
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value
@@ -245,6 +282,7 @@ func (o *UnlockRewardEffectProps) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "applicationId")
 		delete(additionalProperties, "profileIntegrationId")
 		delete(additionalProperties, "unlockedAt")
+		delete(additionalProperties, "cardIdentifier")
 		o.AdditionalProperties = additionalProperties
 	}
 

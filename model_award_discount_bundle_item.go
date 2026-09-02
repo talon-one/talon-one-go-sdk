@@ -85,14 +85,9 @@ func (dst *AwardDiscountBundleItem) UnmarshalJSON(data []byte) error {
 	} else { // no match
 		if err != nil {
 			return fmt.Errorf("data failed to match schemas in oneOf(AwardDiscountBundleItem): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(AwardDiscountBundleItem)")
 		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(AwardDiscountBundleItem): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(AwardDiscountBundleItem)")
-		}
+
+		return fmt.Errorf("data failed to match schemas in oneOf(AwardDiscountBundleItem)")
 	}
 }
 

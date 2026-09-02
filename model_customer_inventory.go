@@ -27,7 +27,7 @@ type CustomerInventory struct {
 	Giveaways    []Giveaway                          `json:"giveaways,omitempty"`
 	Achievements []AchievementProgressWithDefinition `json:"achievements,omitempty"`
 	// The customer rewards that are `unlocked` and not yet `used`.
-	Rewards              []interface{} `json:"rewards,omitempty"`
+	Rewards              []RewardWithUnlocks `json:"rewards,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -243,9 +243,9 @@ func (o *CustomerInventory) SetAchievements(v []AchievementProgressWithDefinitio
 }
 
 // GetRewards returns the Rewards field value if set, zero value otherwise.
-func (o *CustomerInventory) GetRewards() []interface{} {
+func (o *CustomerInventory) GetRewards() []RewardWithUnlocks {
 	if o == nil || IsNil(o.Rewards) {
-		var ret []interface{}
+		var ret []RewardWithUnlocks
 		return ret
 	}
 	return o.Rewards
@@ -253,7 +253,7 @@ func (o *CustomerInventory) GetRewards() []interface{} {
 
 // GetRewardsOk returns a tuple with the Rewards field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *CustomerInventory) GetRewardsOk() ([]interface{}, bool) {
+func (o *CustomerInventory) GetRewardsOk() ([]RewardWithUnlocks, bool) {
 	if o == nil || IsNil(o.Rewards) {
 		return nil, false
 	}
@@ -269,8 +269,8 @@ func (o *CustomerInventory) HasRewards() bool {
 	return false
 }
 
-// SetRewards gets a reference to the given []interface{} and assigns it to the Rewards field.
-func (o *CustomerInventory) SetRewards(v []interface{}) {
+// SetRewards gets a reference to the given []RewardWithUnlocks and assigns it to the Rewards field.
+func (o *CustomerInventory) SetRewards(v []RewardWithUnlocks) {
 	o.Rewards = v
 }
 

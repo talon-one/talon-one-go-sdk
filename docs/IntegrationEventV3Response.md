@@ -14,6 +14,7 @@ Name | Type | Description | Notes
 **CreatedReferrals** | [**[]Referral**](Referral.md) | The referrals that were created during the event processing. | 
 **AwardedGiveaways** | Pointer to [**[]Giveaway**](Giveaway.md) | The giveaways that were awarded during the event processing. | [optional] 
 **Achievements** | Pointer to [**[]CustomerAchievement**](CustomerAchievement.md) | The achievements progress of the customer. | [optional] 
+**Rewards** | Pointer to [**[]RewardWithUnlocks**](RewardWithUnlocks.md) | The unlocked rewards for the customer profile. | [optional] 
 **AdvancedEvent** | Pointer to [**EventV3**](EventV3.md) | The advanced event that was processed. | [optional] 
 **Referral** | Pointer to [**InventoryReferral**](InventoryReferral.md) | The referral that was processed. | [optional] 
 
@@ -270,6 +271,31 @@ SetAchievements sets Achievements field to given value.
 `func (o *IntegrationEventV3Response) HasAchievements() bool`
 
 HasAchievements returns a boolean if a field has been set.
+
+### GetRewards
+
+`func (o *IntegrationEventV3Response) GetRewards() []RewardWithUnlocks`
+
+GetRewards returns the Rewards field if non-nil, zero value otherwise.
+
+### GetRewardsOk
+
+`func (o *IntegrationEventV3Response) GetRewardsOk() (*[]RewardWithUnlocks, bool)`
+
+GetRewardsOk returns a tuple with the Rewards field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRewards
+
+`func (o *IntegrationEventV3Response) SetRewards(v []RewardWithUnlocks)`
+
+SetRewards sets Rewards field to given value.
+
+### HasRewards
+
+`func (o *IntegrationEventV3Response) HasRewards() bool`
+
+HasRewards returns a boolean if a field has been set.
 
 ### GetAdvancedEvent
 

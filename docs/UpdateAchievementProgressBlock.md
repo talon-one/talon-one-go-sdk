@@ -4,9 +4,9 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** | Unique identifier for this block. | 
+**Id** | Pointer to **string** | Unique identifier for this block. | [optional] [readonly] 
 **Type** | **string** | Identifies the block variant and determines which additional properties are present in it. | 
-**Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] 
+**Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] [readonly] 
 **Operator** | **string** |  | 
 **Value** | **string** | The value to update the progress by. Supports template placeholders (e.g. \&quot;{{$Session.Total / 2}}\&quot;) for dynamic quantities. | 
 **Achievement** | [**UpdateAchievementProgressBlock1Achievement**](UpdateAchievementProgressBlock1Achievement.md) |  | 
@@ -15,7 +15,7 @@ Name | Type | Description | Notes
 
 ### NewUpdateAchievementProgressBlock
 
-`func NewUpdateAchievementProgressBlock(id string, type_ string, operator string, value string, achievement UpdateAchievementProgressBlock1Achievement, ) *UpdateAchievementProgressBlock`
+`func NewUpdateAchievementProgressBlock(type_ string, operator string, value string, achievement UpdateAchievementProgressBlock1Achievement, ) *UpdateAchievementProgressBlock`
 
 NewUpdateAchievementProgressBlock instantiates a new UpdateAchievementProgressBlock object
 This constructor will assign default values to properties that have it defined,
@@ -49,6 +49,11 @@ and a boolean to check if the value has been set.
 
 SetId sets Id field to given value.
 
+### HasId
+
+`func (o *UpdateAchievementProgressBlock) HasId() bool`
+
+HasId returns a boolean if a field has been set.
 
 ### GetType
 

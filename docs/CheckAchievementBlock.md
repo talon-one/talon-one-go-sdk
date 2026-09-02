@@ -4,18 +4,18 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** | Unique identifier for this block. | 
+**Id** | Pointer to **string** | Unique identifier for this block. | [optional] [readonly] 
 **Type** | **string** | Identifies the block variant and determines which additional properties are present in it. | 
-**Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] 
+**Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] [readonly] 
 **Operator** | **string** | The comparison operator applied to the achievement. | 
 **Achievement** | [**CheckAchievementBlock1Achievement**](CheckAchievementBlock1Achievement.md) |  | 
-**OnFailure** | Pointer to [**[]PromotionBlock**](PromotionBlock.md) | Promotion blocks evaluated when this block fails or returns false. | [optional] 
+**OnFailure** | Pointer to [**[]Block**](Block.md) | Promotion blocks evaluated when this block fails or returns false. | [optional] 
 
 ## Methods
 
 ### NewCheckAchievementBlock
 
-`func NewCheckAchievementBlock(id string, type_ string, operator string, achievement CheckAchievementBlock1Achievement, ) *CheckAchievementBlock`
+`func NewCheckAchievementBlock(type_ string, operator string, achievement CheckAchievementBlock1Achievement, ) *CheckAchievementBlock`
 
 NewCheckAchievementBlock instantiates a new CheckAchievementBlock object
 This constructor will assign default values to properties that have it defined,
@@ -49,6 +49,11 @@ and a boolean to check if the value has been set.
 
 SetId sets Id field to given value.
 
+### HasId
+
+`func (o *CheckAchievementBlock) HasId() bool`
+
+HasId returns a boolean if a field has been set.
 
 ### GetType
 
@@ -137,20 +142,20 @@ SetAchievement sets Achievement field to given value.
 
 ### GetOnFailure
 
-`func (o *CheckAchievementBlock) GetOnFailure() []PromotionBlock`
+`func (o *CheckAchievementBlock) GetOnFailure() []Block`
 
 GetOnFailure returns the OnFailure field if non-nil, zero value otherwise.
 
 ### GetOnFailureOk
 
-`func (o *CheckAchievementBlock) GetOnFailureOk() (*[]PromotionBlock, bool)`
+`func (o *CheckAchievementBlock) GetOnFailureOk() (*[]Block, bool)`
 
 GetOnFailureOk returns a tuple with the OnFailure field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetOnFailure
 
-`func (o *CheckAchievementBlock) SetOnFailure(v []PromotionBlock)`
+`func (o *CheckAchievementBlock) SetOnFailure(v []Block)`
 
 SetOnFailure sets OnFailure field to given value.
 

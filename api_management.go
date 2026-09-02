@@ -2858,6 +2858,152 @@ func (a *ManagementAPIService) CreatePasswordRecoveryEmailExecute(r ApiCreatePas
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiCreateRulesetV2Request struct {
+	ctx           context.Context
+	ApiService    *ManagementAPIService
+	applicationId int64
+	campaignId    int64
+	rulesetV2     *RulesetV2
+}
+
+// body
+func (r ApiCreateRulesetV2Request) RulesetV2(rulesetV2 RulesetV2) ApiCreateRulesetV2Request {
+	r.rulesetV2 = &rulesetV2
+	return r
+}
+
+func (r ApiCreateRulesetV2Request) Execute() (*RulesetV2, *http.Response, error) {
+	return r.ApiService.CreateRulesetV2Execute(r)
+}
+
+/*
+CreateRulesetV2 Create ruleset (V2)
+
+Create a ruleset from promotion and strikethrough rules in the V2 JSON block format. A ruleset is a revision of all the rules of a campaign.
+
+Only `group` and `passthrough` blocks are currently writable, with optional `onFailure` blocks. A payload containing any other block type is rejected. Each rule's `blocks` array may contain at most one block.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param applicationId The ID of the Application. It is displayed in your Talon.One deployment URL.
+	@param campaignId The ID of the campaign. It is displayed in your Talon.One deployment URL.
+	@return ApiCreateRulesetV2Request
+*/
+func (a *ManagementAPIService) CreateRulesetV2(ctx context.Context, applicationId int64, campaignId int64) ApiCreateRulesetV2Request {
+	return ApiCreateRulesetV2Request{
+		ApiService:    a,
+		ctx:           ctx,
+		applicationId: applicationId,
+		campaignId:    campaignId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return RulesetV2
+func (a *ManagementAPIService) CreateRulesetV2Execute(r ApiCreateRulesetV2Request) (*RulesetV2, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *RulesetV2
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagementAPIService.CreateRulesetV2")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v2/applications/{applicationId}/campaigns/{campaignId}/rulesets"
+	localVarPath = strings.Replace(localVarPath, "{"+"applicationId"+"}", url.PathEscape(parameterValueToString(r.applicationId, "applicationId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"campaignId"+"}", url.PathEscape(parameterValueToString(r.campaignId, "campaignId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.rulesetV2 == nil {
+		return localVarReturnValue, nil, reportError("rulesetV2 is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.rulesetV2
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiCreateSessionRequest struct {
 	ctx         context.Context
 	ApiService  *ManagementAPIService
@@ -19335,6 +19481,7 @@ type ApiGetMessageLogsRequest struct {
 	createdBefore    *time.Time
 	createdAfter     *time.Time
 	cursor           *string
+	pageSize         *int64
 	period           *string
 	isSuccessful     *bool
 	applicationId    *float32
@@ -19383,6 +19530,12 @@ func (r ApiGetMessageLogsRequest) CreatedAfter(createdAfter time.Time) ApiGetMes
 // A specific unique value in the database. If this value is not given, the server fetches results starting with the first record.
 func (r ApiGetMessageLogsRequest) Cursor(cursor string) ApiGetMessageLogsRequest {
 	r.cursor = &cursor
+	return r
+}
+
+// The maximum number of message log entries to return.
+func (r ApiGetMessageLogsRequest) PageSize(pageSize int64) ApiGetMessageLogsRequest {
+	r.pageSize = &pageSize
 	return r
 }
 
@@ -19489,6 +19642,13 @@ func (a *ManagementAPIService) GetMessageLogsExecute(r ApiGetMessageLogsRequest)
 	}
 	if r.cursor != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "cursor", r.cursor, "form", "")
+	}
+	if r.pageSize != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
+	} else {
+		var defaultValue int64 = 50
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
+		r.pageSize = &defaultValue
 	}
 	if r.period != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "period", r.period, "form", "")

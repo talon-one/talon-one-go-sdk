@@ -21,27 +21,37 @@ var _ MappedNullable = &CheckAttributeBlockBase{}
 // CheckAttributeBlockBase struct for CheckAttributeBlockBase
 type CheckAttributeBlockBase struct {
 	// Unique identifier for this block.
-	Id string `json:"id"`
+	Id *string `json:"id,omitempty"`
 	// Identifies the block variant and determines which additional properties are present in it.
 	Type string `json:"type"`
 	// Semantic labels attached to this block.
 	Tags []string `json:"tags,omitempty"`
 	// The comparison operator applied to the attribute.
-	Operator  string      `json:"operator"`
+	Operator string `json:"operator"`
+	// The attribute path identifier (e.g. \"$Session.Total\").
 	Attribute interface{} `json:"attribute"`
-	Value     interface{} `json:"value,omitempty"`
-	Min       interface{} `json:"min,omitempty"`
-	Max       interface{} `json:"max,omitempty"`
-	Start     interface{} `json:"start,omitempty"`
-	End       interface{} `json:"end,omitempty"`
+	// The comparison value for scalar operators.
+	Value interface{} `json:"value,omitempty"`
+	// The minimum value allowed for the `between` operator.
+	Min interface{} `json:"min,omitempty"`
+	// The maximum value allowed for the `between` operator.
+	Max interface{} `json:"max,omitempty"`
+	// The start value for the `within` operator.
+	Start interface{} `json:"start,omitempty"`
+	// The end value for the `within` operator.
+	End interface{} `json:"end,omitempty"`
 	// When `true`, the `start` value is included in the range for the `within` operator.
 	StartInclusive *bool `json:"startInclusive,omitempty"`
 	// When `true`, the `end` value is included in the range for the `within` operator.
 	EndInclusive *bool `json:"endInclusive,omitempty"`
 	// Indicates whether the `within` operator ignores time zones and compares the wall-clock time only. When `false`, time zones are taken into account.
-	TimezoneInsensitive  *bool       `json:"timezoneInsensitive,omitempty"`
-	Values               interface{} `json:"values,omitempty"`
-	Count                interface{} `json:"count,omitempty"`
+	TimezoneInsensitive *bool `json:"timezoneInsensitive,omitempty"`
+	// The set of values to match against for list operators. For location operators (`in`, `not(in)`), an array of objects with a `geometry` (see `GeoJSONGeometry`) and an optional `name`, or a string reference to a list attribute.
+	Values interface{} `json:"values,omitempty"`
+	// The count threshold for `containsAtLeast` and `containsExactly` operators.
+	Count interface{} `json:"count,omitempty"`
+	// Promotion blocks evaluated when this block fails or returns false.
+	OnFailure            []Block `json:"onFailure,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -51,9 +61,8 @@ type _CheckAttributeBlockBase CheckAttributeBlockBase
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCheckAttributeBlockBase(id string, type_ string, operator string, attribute interface{}) *CheckAttributeBlockBase {
+func BuildCheckAttributeBlockBase(type_ string, operator string, attribute interface{}) *CheckAttributeBlockBase {
 	this := CheckAttributeBlockBase{}
-	this.Id = id
 	this.Type = type_
 	this.Operator = operator
 	this.Attribute = attribute
@@ -68,28 +77,36 @@ func NewCheckAttributeBlockBaseWithDefaults() *CheckAttributeBlockBase {
 	return &this
 }
 
-// GetId returns the Id field value
+// GetId returns the Id field value if set, zero value otherwise.
 func (o *CheckAttributeBlockBase) GetId() string {
-	if o == nil {
+	if o == nil || IsNil(o.Id) {
 		var ret string
 		return ret
 	}
-
-	return o.Id
+	return *o.Id
 }
 
-// GetIdOk returns a tuple with the Id field value
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CheckAttributeBlockBase) GetIdOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Id) {
 		return nil, false
 	}
-	return &o.Id, true
+	return o.Id, true
 }
 
-// SetId sets field value
+// HasId returns a boolean if a field has been set.
+func (o *CheckAttributeBlockBase) HasId() bool {
+	if o != nil && !IsNil(o.Id) {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
 func (o *CheckAttributeBlockBase) SetId(v string) {
-	o.Id = v
+	o.Id = &v
 }
 
 // GetType returns the Type field value
@@ -525,6 +542,38 @@ func (o *CheckAttributeBlockBase) SetCount(v interface{}) {
 	o.Count = v
 }
 
+// GetOnFailure returns the OnFailure field value if set, zero value otherwise.
+func (o *CheckAttributeBlockBase) GetOnFailure() []Block {
+	if o == nil || IsNil(o.OnFailure) {
+		var ret []Block
+		return ret
+	}
+	return o.OnFailure
+}
+
+// GetOnFailureOk returns a tuple with the OnFailure field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CheckAttributeBlockBase) GetOnFailureOk() ([]Block, bool) {
+	if o == nil || IsNil(o.OnFailure) {
+		return nil, false
+	}
+	return o.OnFailure, true
+}
+
+// HasOnFailure returns a boolean if a field has been set.
+func (o *CheckAttributeBlockBase) HasOnFailure() bool {
+	if o != nil && !IsNil(o.OnFailure) {
+		return true
+	}
+
+	return false
+}
+
+// SetOnFailure gets a reference to the given []Block and assigns it to the OnFailure field.
+func (o *CheckAttributeBlockBase) SetOnFailure(v []Block) {
+	o.OnFailure = v
+}
+
 func (o CheckAttributeBlockBase) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -535,7 +584,9 @@ func (o CheckAttributeBlockBase) MarshalJSON() ([]byte, error) {
 
 func (o CheckAttributeBlockBase) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["id"] = o.Id
+	if !IsNil(o.Id) {
+		toSerialize["id"] = o.Id
+	}
 	toSerialize["type"] = o.Type
 	if !IsNil(o.Tags) {
 		toSerialize["tags"] = o.Tags
@@ -574,6 +625,9 @@ func (o CheckAttributeBlockBase) ToMap() (map[string]interface{}, error) {
 	if o.Count != nil {
 		toSerialize["count"] = o.Count
 	}
+	if !IsNil(o.OnFailure) {
+		toSerialize["onFailure"] = o.OnFailure
+	}
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value
@@ -587,7 +641,6 @@ func (o *CheckAttributeBlockBase) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"id",
 		"type",
 		"operator",
 		"attribute",
@@ -635,6 +688,7 @@ func (o *CheckAttributeBlockBase) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "timezoneInsensitive")
 		delete(additionalProperties, "values")
 		delete(additionalProperties, "count")
+		delete(additionalProperties, "onFailure")
 		o.AdditionalProperties = additionalProperties
 	}
 

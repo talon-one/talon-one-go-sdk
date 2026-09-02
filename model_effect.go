@@ -51,9 +51,11 @@ type Effect struct {
 	// The value of the selected price type to apply to the SKU targeted by this effect, before any discounts are applied.
 	SelectedPrice *float32 `json:"selectedPrice,omitempty"`
 	// The reference identifier of the selected price adjustment for this SKU. This is only returned if the `selectedPrice` resulted from a price adjustment.
-	AdjustmentReferenceId *string     `json:"adjustmentReferenceId,omitempty"`
-	Props                 interface{} `json:"props"`
-	AdditionalProperties  map[string]interface{}
+	AdjustmentReferenceId *string `json:"adjustmentReferenceId,omitempty"`
+	// The ID of the reward that was being evaluated when this effect was triggered.
+	RewardId             *int64      `json:"rewardId,omitempty"`
+	Props                interface{} `json:"props"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Effect Effect
@@ -553,6 +555,38 @@ func (o *Effect) SetAdjustmentReferenceId(v string) {
 	o.AdjustmentReferenceId = &v
 }
 
+// GetRewardId returns the RewardId field value if set, zero value otherwise.
+func (o *Effect) GetRewardId() int64 {
+	if o == nil || IsNil(o.RewardId) {
+		var ret int64
+		return ret
+	}
+	return *o.RewardId
+}
+
+// GetRewardIdOk returns a tuple with the RewardId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Effect) GetRewardIdOk() (*int64, bool) {
+	if o == nil || IsNil(o.RewardId) {
+		return nil, false
+	}
+	return o.RewardId, true
+}
+
+// HasRewardId returns a boolean if a field has been set.
+func (o *Effect) HasRewardId() bool {
+	if o != nil && !IsNil(o.RewardId) {
+		return true
+	}
+
+	return false
+}
+
+// SetRewardId gets a reference to the given int64 and assigns it to the RewardId field.
+func (o *Effect) SetRewardId(v int64) {
+	o.RewardId = &v
+}
+
 // GetProps returns the Props field value
 // If the value is explicit nil, the zero value for interface{} will be returned
 func (o *Effect) GetProps() interface{} {
@@ -627,6 +661,9 @@ func (o Effect) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.AdjustmentReferenceId) {
 		toSerialize["adjustmentReferenceId"] = o.AdjustmentReferenceId
 	}
+	if !IsNil(o.RewardId) {
+		toSerialize["rewardId"] = o.RewardId
+	}
 	if o.Props != nil {
 		toSerialize["props"] = o.Props
 	}
@@ -694,6 +731,7 @@ func (o *Effect) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "selectedPriceType")
 		delete(additionalProperties, "selectedPrice")
 		delete(additionalProperties, "adjustmentReferenceId")
+		delete(additionalProperties, "rewardId")
 		delete(additionalProperties, "props")
 		o.AdditionalProperties = additionalProperties
 	}

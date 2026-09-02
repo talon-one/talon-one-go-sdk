@@ -24,6 +24,7 @@ Method | HTTP request | Description
 [**CreateInviteEmail**](ManagementAPI.md#CreateInviteEmail) | **Post** /v1/invite_emails | Resend invitation email
 [**CreateInviteV2**](ManagementAPI.md#CreateInviteV2) | **Post** /v2/invites | Invite user
 [**CreatePasswordRecoveryEmail**](ManagementAPI.md#CreatePasswordRecoveryEmail) | **Post** /v1/password_recovery_emails | Request a password reset
+[**CreateRulesetV2**](ManagementAPI.md#CreateRulesetV2) | **Post** /v2/applications/{applicationId}/campaigns/{campaignId}/rulesets | Create ruleset (V2)
 [**CreateSession**](ManagementAPI.md#CreateSession) | **Post** /v1/sessions | Create session
 [**CreateStore**](ManagementAPI.md#CreateStore) | **Post** /v1/applications/{applicationId}/stores | Create store
 [**DeactivateUserByEmail**](ManagementAPI.md#DeactivateUserByEmail) | **Post** /v1/users/deactivate | Disable user by email address
@@ -1604,6 +1605,81 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**NewPasswordEmail**](NewPasswordEmail.md)
+
+### Authorization
+
+[api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## CreateRulesetV2
+
+> RulesetV2 CreateRulesetV2(ctx, applicationId, campaignId).RulesetV2(rulesetV2).Execute()
+
+Create ruleset (V2)
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	applicationId := int64(789) // int64 | The ID of the Application. It is displayed in your Talon.One deployment URL.
+	campaignId := int64(789) // int64 | The ID of the campaign. It is displayed in your Talon.One deployment URL.
+	rulesetV2 := *openapiclient.NewRulesetV2([]openapiclient.RuleV2{*openapiclient.NewRuleV2("10% off for loyalty members", []openapiclient.Block{openapiclient.Block{AwardDiscountBlock: openapiclient.NewAwardDiscountBlock("Type_example", "10% Off", openapiclient.AwardDiscountBlock_1_value{Float32: new(float32)}, false, openapiclient.AwardDiscountTarget{AwardDiscountAdditionalCostTarget: openapiclient.NewAwardDiscountAdditionalCostTarget("Type_example", *openapiclient.NewAdditionalCostReference(int64(42), "shipping"), openapiclient.AwardDiscountAdditionalCostTarget_target{AwardDiscountAllItemsTarget: openapiclient.NewAwardDiscountAllItemsTarget("Type_example")})})}})}) // RulesetV2 | body
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ManagementAPI.CreateRulesetV2(context.Background(), applicationId, campaignId).RulesetV2(rulesetV2).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.CreateRulesetV2``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `CreateRulesetV2`: RulesetV2
+	fmt.Fprintf(os.Stdout, "Response from `ManagementAPI.CreateRulesetV2`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**applicationId** | **int64** | The ID of the Application. It is displayed in your Talon.One deployment URL. | 
+**campaignId** | **int64** | The ID of the campaign. It is displayed in your Talon.One deployment URL. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiCreateRulesetV2Request struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+ **rulesetV2** | [**RulesetV2**](RulesetV2.md) | body | 
+
+### Return type
+
+[**RulesetV2**](RulesetV2.md)
 
 ### Authorization
 
@@ -9310,7 +9386,7 @@ Name | Type | Description  | Notes
 
 ## GetMessageLogs
 
-> MessageLogEntries GetMessageLogs(ctx).EntityType(entityType).MessageID(messageID).ChangeType(changeType).NotificationIDs(notificationIDs).CreatedBefore(createdBefore).CreatedAfter(createdAfter).Cursor(cursor).Period(period).IsSuccessful(isSuccessful).ApplicationId(applicationId).CampaignId(campaignId).LoyaltyProgramId(loyaltyProgramId).ResponseCode(responseCode).WebhookIDs(webhookIDs).Execute()
+> MessageLogEntries GetMessageLogs(ctx).EntityType(entityType).MessageID(messageID).ChangeType(changeType).NotificationIDs(notificationIDs).CreatedBefore(createdBefore).CreatedAfter(createdAfter).Cursor(cursor).PageSize(pageSize).Period(period).IsSuccessful(isSuccessful).ApplicationId(applicationId).CampaignId(campaignId).LoyaltyProgramId(loyaltyProgramId).ResponseCode(responseCode).WebhookIDs(webhookIDs).Execute()
 
 List message log entries
 
@@ -9337,6 +9413,7 @@ func main() {
 	createdBefore := time.Now() // time.Time | Filter results where request and response times to return entries before parameter value, expected to be an RFC3339 timestamp string. Use UTC time. (optional)
 	createdAfter := time.Now() // time.Time | Filter results where request and response times to return entries after parameter value, expected to be an RFC3339 timestamp string. Use UTC time. (optional)
 	cursor := string(BYTE_ARRAY_DATA_HERE) // string | A specific unique value in the database. If this value is not given, the server fetches results starting with the first record.  (optional)
+	pageSize := int64(789) // int64 | The maximum number of message log entries to return. (optional) (default to 50)
 	period := "period_example" // string | Filter results by time period. Choose between the available relative time frames.  (optional)
 	isSuccessful := true // bool | Indicates whether to return log entries with either successful or unsuccessful HTTP response codes. When set to`true`, only log entries with `2xx` response codes are returned. When set to `false`, only log entries with `4xx` and `5xx` response codes are returned.  (optional)
 	applicationId := float32(8.14) // float32 | Filter results by Application ID. (optional)
@@ -9347,7 +9424,7 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ManagementAPI.GetMessageLogs(context.Background()).EntityType(entityType).MessageID(messageID).ChangeType(changeType).NotificationIDs(notificationIDs).CreatedBefore(createdBefore).CreatedAfter(createdAfter).Cursor(cursor).Period(period).IsSuccessful(isSuccessful).ApplicationId(applicationId).CampaignId(campaignId).LoyaltyProgramId(loyaltyProgramId).ResponseCode(responseCode).WebhookIDs(webhookIDs).Execute()
+	resp, r, err := apiClient.ManagementAPI.GetMessageLogs(context.Background()).EntityType(entityType).MessageID(messageID).ChangeType(changeType).NotificationIDs(notificationIDs).CreatedBefore(createdBefore).CreatedAfter(createdAfter).Cursor(cursor).PageSize(pageSize).Period(period).IsSuccessful(isSuccessful).ApplicationId(applicationId).CampaignId(campaignId).LoyaltyProgramId(loyaltyProgramId).ResponseCode(responseCode).WebhookIDs(webhookIDs).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.GetMessageLogs``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -9375,6 +9452,7 @@ Name | Type | Description  | Notes
  **createdBefore** | **time.Time** | Filter results where request and response times to return entries before parameter value, expected to be an RFC3339 timestamp string. Use UTC time. | 
  **createdAfter** | **time.Time** | Filter results where request and response times to return entries after parameter value, expected to be an RFC3339 timestamp string. Use UTC time. | 
  **cursor** | **string** | A specific unique value in the database. If this value is not given, the server fetches results starting with the first record.  | 
+ **pageSize** | **int64** | The maximum number of message log entries to return. | [default to 50]
  **period** | **string** | Filter results by time period. Choose between the available relative time frames.  | 
  **isSuccessful** | **bool** | Indicates whether to return log entries with either successful or unsuccessful HTTP response codes. When set to&#x60;true&#x60;, only log entries with &#x60;2xx&#x60; response codes are returned. When set to &#x60;false&#x60;, only log entries with &#x60;4xx&#x60; and &#x60;5xx&#x60; response codes are returned.  | 
  **applicationId** | **float32** | Filter results by Application ID. | 

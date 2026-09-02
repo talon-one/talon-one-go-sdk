@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** | Unique identifier for this block. | 
+**Id** | Pointer to **string** | Unique identifier for this block. | [optional] [readonly] 
 **Type** | **string** | The type discriminator for this block. | 
 **Expression** | **[]interface{}** | The raw Talang expression as an array. For a function call, the first element is the function name and subsequent elements are its arguments. For any other expression (for example a bare attribute path or a literal value), this is a single-element array containing that value. | 
 
@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 
 ### NewPassthroughBlock
 
-`func NewPassthroughBlock(id string, type_ string, expression []interface{}, ) *PassthroughBlock`
+`func NewPassthroughBlock(type_ string, expression []interface{}, ) *PassthroughBlock`
 
 NewPassthroughBlock instantiates a new PassthroughBlock object
 This constructor will assign default values to properties that have it defined,
@@ -46,6 +46,11 @@ and a boolean to check if the value has been set.
 
 SetId sets Id field to given value.
 
+### HasId
+
+`func (o *PassthroughBlock) HasId() bool`
+
+HasId returns a boolean if a field has been set.
 
 ### GetType
 

@@ -21,7 +21,7 @@ var _ MappedNullable = &TriggerWebhookBlock{}
 // TriggerWebhookBlock struct for TriggerWebhookBlock
 type TriggerWebhookBlock struct {
 	// Unique identifier for this block.
-	Id string `json:"id"`
+	Id *string `json:"id,omitempty"`
 	// Identifies the block variant and determines which additional properties are present in it.
 	Type string `json:"type"`
 	// Semantic labels attached to this block.
@@ -30,7 +30,7 @@ type TriggerWebhookBlock struct {
 	// The webhook's parameters, in configured order. Each property name is the parameter's title, lowercased with spaces replaced by underscores (for example, `Order ID` becomes `order_id`); falls back to `param_0`, `param_1`, and so on if a title is blank or collides with another.
 	Params map[string]interface{} `json:"params,omitempty"`
 	// Named error handlers evaluated when a specific error occurs.
-	OnError              map[string][]PromotionBlock `json:"onError,omitempty"`
+	OnError              map[string][]Block `json:"onError,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -40,9 +40,8 @@ type _TriggerWebhookBlock TriggerWebhookBlock
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildTriggerWebhookBlock(id string, type_ string, webhook TriggerWebhookBlock1Webhook) *TriggerWebhookBlock {
+func BuildTriggerWebhookBlock(type_ string, webhook TriggerWebhookBlock1Webhook) *TriggerWebhookBlock {
 	this := TriggerWebhookBlock{}
-	this.Id = id
 	this.Type = type_
 	this.Webhook = webhook
 	return &this
@@ -56,28 +55,36 @@ func NewTriggerWebhookBlockWithDefaults() *TriggerWebhookBlock {
 	return &this
 }
 
-// GetId returns the Id field value
+// GetId returns the Id field value if set, zero value otherwise.
 func (o *TriggerWebhookBlock) GetId() string {
-	if o == nil {
+	if o == nil || IsNil(o.Id) {
 		var ret string
 		return ret
 	}
-
-	return o.Id
+	return *o.Id
 }
 
-// GetIdOk returns a tuple with the Id field value
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *TriggerWebhookBlock) GetIdOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Id) {
 		return nil, false
 	}
-	return &o.Id, true
+	return o.Id, true
 }
 
-// SetId sets field value
+// HasId returns a boolean if a field has been set.
+func (o *TriggerWebhookBlock) HasId() bool {
+	if o != nil && !IsNil(o.Id) {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
 func (o *TriggerWebhookBlock) SetId(v string) {
-	o.Id = v
+	o.Id = &v
 }
 
 // GetType returns the Type field value
@@ -193,9 +200,9 @@ func (o *TriggerWebhookBlock) SetParams(v map[string]interface{}) {
 }
 
 // GetOnError returns the OnError field value if set, zero value otherwise.
-func (o *TriggerWebhookBlock) GetOnError() map[string][]PromotionBlock {
+func (o *TriggerWebhookBlock) GetOnError() map[string][]Block {
 	if o == nil || IsNil(o.OnError) {
-		var ret map[string][]PromotionBlock
+		var ret map[string][]Block
 		return ret
 	}
 	return o.OnError
@@ -203,9 +210,9 @@ func (o *TriggerWebhookBlock) GetOnError() map[string][]PromotionBlock {
 
 // GetOnErrorOk returns a tuple with the OnError field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *TriggerWebhookBlock) GetOnErrorOk() (map[string][]PromotionBlock, bool) {
+func (o *TriggerWebhookBlock) GetOnErrorOk() (map[string][]Block, bool) {
 	if o == nil || IsNil(o.OnError) {
-		return map[string][]PromotionBlock{}, false
+		return map[string][]Block{}, false
 	}
 	return o.OnError, true
 }
@@ -219,8 +226,8 @@ func (o *TriggerWebhookBlock) HasOnError() bool {
 	return false
 }
 
-// SetOnError gets a reference to the given map[string][]PromotionBlock and assigns it to the OnError field.
-func (o *TriggerWebhookBlock) SetOnError(v map[string][]PromotionBlock) {
+// SetOnError gets a reference to the given map[string][]Block and assigns it to the OnError field.
+func (o *TriggerWebhookBlock) SetOnError(v map[string][]Block) {
 	o.OnError = v
 }
 
@@ -234,7 +241,9 @@ func (o TriggerWebhookBlock) MarshalJSON() ([]byte, error) {
 
 func (o TriggerWebhookBlock) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["id"] = o.Id
+	if !IsNil(o.Id) {
+		toSerialize["id"] = o.Id
+	}
 	toSerialize["type"] = o.Type
 	if !IsNil(o.Tags) {
 		toSerialize["tags"] = o.Tags
@@ -259,7 +268,6 @@ func (o *TriggerWebhookBlock) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"id",
 		"type",
 		"webhook",
 	}

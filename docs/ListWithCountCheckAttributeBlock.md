@@ -5,8 +5,8 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Operator** | Pointer to **string** | The list membership operator with a count threshold applied to the attribute. | [optional] 
-**Values** | **interface{}** |  | 
-**Count** | **interface{}** |  | 
+**Values** | **interface{}** | The set of values to match against. | 
+**Count** | **interface{}** | The count threshold for this operator. | 
 
 ## Methods
 

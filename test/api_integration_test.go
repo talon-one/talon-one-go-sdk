@@ -365,6 +365,18 @@ func Test_talon_IntegrationAPIService(t *testing.T) {
 
 	})
 
+	t.Run("Test IntegrationAPIService IntegrationRewardsCatalog", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		resp, httpRes, err := apiClient.IntegrationAPI.IntegrationRewardsCatalog(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test IntegrationAPIService JoinLoyaltyProgram", func(t *testing.T) {
 
 		t.Skip("skip test")  // remove to run test
@@ -468,6 +480,20 @@ func Test_talon_IntegrationAPIService(t *testing.T) {
 		var loyaltyCardId string
 
 		resp, httpRes, err := apiClient.IntegrationAPI.UnlinkLoyaltyCardFromProfile(context.Background(), loyaltyProgramId, loyaltyCardId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test IntegrationAPIService UnlockReward", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var rewardId int64
+
+		resp, httpRes, err := apiClient.IntegrationAPI.UnlockReward(context.Background(), rewardId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

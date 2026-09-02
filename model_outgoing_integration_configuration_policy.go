@@ -137,24 +137,9 @@ func (dst *OutgoingIntegrationConfigurationPolicy) UnmarshalJSON(data []byte) er
 	} else { // no match
 		if err != nil {
 			return fmt.Errorf("data failed to match schemas in oneOf(OutgoingIntegrationConfigurationPolicy): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(OutgoingIntegrationConfigurationPolicy)")
 		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(OutgoingIntegrationConfigurationPolicy): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(OutgoingIntegrationConfigurationPolicy)")
-		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(OutgoingIntegrationConfigurationPolicy): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(OutgoingIntegrationConfigurationPolicy)")
-		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(OutgoingIntegrationConfigurationPolicy): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(OutgoingIntegrationConfigurationPolicy)")
-		}
+
+		return fmt.Errorf("data failed to match schemas in oneOf(OutgoingIntegrationConfigurationPolicy)")
 	}
 }
 

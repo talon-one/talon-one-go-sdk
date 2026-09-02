@@ -4,15 +4,15 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** | Unique identifier for this block. | 
+**Id** | Pointer to **string** | Unique identifier for this block. | [optional] [readonly] 
 **Type** | **string** | Identifies the block variant and determines which additional properties are present in it. | 
-**Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] 
+**Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] [readonly] 
 
 ## Methods
 
 ### NewBaseBlock
 
-`func NewBaseBlock(id string, type_ string, ) *BaseBlock`
+`func NewBaseBlock(type_ string, ) *BaseBlock`
 
 NewBaseBlock instantiates a new BaseBlock object
 This constructor will assign default values to properties that have it defined,
@@ -46,6 +46,11 @@ and a boolean to check if the value has been set.
 
 SetId sets Id field to given value.
 
+### HasId
+
+`func (o *BaseBlock) HasId() bool`
+
+HasId returns a boolean if a field has been set.
 
 ### GetType
 

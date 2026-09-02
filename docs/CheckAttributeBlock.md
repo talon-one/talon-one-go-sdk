@@ -4,27 +4,28 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** | Unique identifier for this block. | 
+**Id** | Pointer to **string** | Unique identifier for this block. | [optional] [readonly] 
 **Type** | **string** | A block discriminator of type &#x60;checkAttribute&#x60;. | 
-**Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] 
+**Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] [readonly] 
 **Operator** | **string** | The comparison operator applied to the attribute. | 
-**Attribute** | **interface{}** |  | 
-**Value** | Pointer to **interface{}** |  | [optional] 
-**Min** | Pointer to **interface{}** |  | [optional] 
-**Max** | Pointer to **interface{}** |  | [optional] 
-**Start** | Pointer to **interface{}** |  | [optional] 
-**End** | Pointer to **interface{}** |  | [optional] 
+**Attribute** | **interface{}** | The attribute path identifier (e.g. \&quot;$Session.Total\&quot;). | 
+**Value** | Pointer to **interface{}** | The comparison value for scalar operators. | [optional] 
+**Min** | Pointer to **interface{}** | The minimum value allowed for the &#x60;between&#x60; operator. | [optional] 
+**Max** | Pointer to **interface{}** | The maximum value allowed for the &#x60;between&#x60; operator. | [optional] 
+**Start** | Pointer to **interface{}** | The start value for the &#x60;within&#x60; operator. | [optional] 
+**End** | Pointer to **interface{}** | The end value for the &#x60;within&#x60; operator. | [optional] 
 **StartInclusive** | Pointer to **bool** | When &#x60;true&#x60;, the &#x60;start&#x60; value is included in the range for the &#x60;within&#x60; operator. | [optional] 
 **EndInclusive** | Pointer to **bool** | When &#x60;true&#x60;, the &#x60;end&#x60; value is included in the range for the &#x60;within&#x60; operator. | [optional] 
 **TimezoneInsensitive** | Pointer to **bool** | Indicates whether the &#x60;within&#x60; operator ignores time zones and compares the wall-clock time only. When &#x60;false&#x60;, time zones are taken into account. | [optional] 
-**Values** | Pointer to **interface{}** |  | [optional] 
-**Count** | Pointer to **interface{}** |  | [optional] 
+**Values** | Pointer to **interface{}** | The set of values to match against for list operators. For location operators (&#x60;in&#x60;, &#x60;not(in)&#x60;), an array of objects with a &#x60;geometry&#x60; (see &#x60;GeoJSONGeometry&#x60;) and an optional &#x60;name&#x60;, or a string reference to a list attribute. | [optional] 
+**Count** | Pointer to **interface{}** | The count threshold for &#x60;containsAtLeast&#x60; and &#x60;containsExactly&#x60; operators. | [optional] 
+**OnFailure** | Pointer to [**[]Block**](Block.md) | Promotion blocks evaluated when this block fails or returns false. | [optional] 
 
 ## Methods
 
 ### NewCheckAttributeBlock
 
-`func NewCheckAttributeBlock(id string, type_ string, operator string, attribute interface{}, ) *CheckAttributeBlock`
+`func NewCheckAttributeBlock(type_ string, operator string, attribute interface{}, ) *CheckAttributeBlock`
 
 NewCheckAttributeBlock instantiates a new CheckAttributeBlock object
 This constructor will assign default values to properties that have it defined,
@@ -58,6 +59,11 @@ and a boolean to check if the value has been set.
 
 SetId sets Id field to given value.
 
+### HasId
+
+`func (o *CheckAttributeBlock) HasId() bool`
+
+HasId returns a boolean if a field has been set.
 
 ### GetType
 
@@ -474,6 +480,31 @@ HasCount returns a boolean if a field has been set.
 `func (o *CheckAttributeBlock) UnsetCount()`
 
 UnsetCount ensures that no value is present for Count, not even an explicit nil
+### GetOnFailure
+
+`func (o *CheckAttributeBlock) GetOnFailure() []Block`
+
+GetOnFailure returns the OnFailure field if non-nil, zero value otherwise.
+
+### GetOnFailureOk
+
+`func (o *CheckAttributeBlock) GetOnFailureOk() (*[]Block, bool)`
+
+GetOnFailureOk returns a tuple with the OnFailure field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetOnFailure
+
+`func (o *CheckAttributeBlock) SetOnFailure(v []Block)`
+
+SetOnFailure sets OnFailure field to given value.
+
+### HasOnFailure
+
+`func (o *CheckAttributeBlock) HasOnFailure() bool`
+
+HasOnFailure returns a boolean if a field has been set.
+
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

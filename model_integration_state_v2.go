@@ -40,6 +40,8 @@ type IntegrationStateV2 struct {
 	AwardedGiveaways []Giveaway `json:"awardedGiveaways,omitempty"`
 	// The achievements progress of the customer.
 	Achievements []CustomerAchievement `json:"achievements,omitempty"`
+	// The unlocked rewards for the customer profile.
+	Rewards []RewardWithUnlocks `json:"rewards,omitempty"`
 	// The referral that was processed.
 	Referral *InventoryReferral `json:"referral,omitempty"`
 	// The coupons that were processed.
@@ -375,6 +377,38 @@ func (o *IntegrationStateV2) SetAchievements(v []CustomerAchievement) {
 	o.Achievements = v
 }
 
+// GetRewards returns the Rewards field value if set, zero value otherwise.
+func (o *IntegrationStateV2) GetRewards() []RewardWithUnlocks {
+	if o == nil || IsNil(o.Rewards) {
+		var ret []RewardWithUnlocks
+		return ret
+	}
+	return o.Rewards
+}
+
+// GetRewardsOk returns a tuple with the Rewards field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IntegrationStateV2) GetRewardsOk() ([]RewardWithUnlocks, bool) {
+	if o == nil || IsNil(o.Rewards) {
+		return nil, false
+	}
+	return o.Rewards, true
+}
+
+// HasRewards returns a boolean if a field has been set.
+func (o *IntegrationStateV2) HasRewards() bool {
+	if o != nil && !IsNil(o.Rewards) {
+		return true
+	}
+
+	return false
+}
+
+// SetRewards gets a reference to the given []RewardWithUnlocks and assigns it to the Rewards field.
+func (o *IntegrationStateV2) SetRewards(v []RewardWithUnlocks) {
+	o.Rewards = v
+}
+
 // GetReferral returns the Referral field value if set, zero value otherwise.
 func (o *IntegrationStateV2) GetReferral() InventoryReferral {
 	if o == nil || IsNil(o.Referral) {
@@ -633,6 +667,9 @@ func (o IntegrationStateV2) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Achievements) {
 		toSerialize["achievements"] = o.Achievements
 	}
+	if !IsNil(o.Rewards) {
+		toSerialize["rewards"] = o.Rewards
+	}
 	if !IsNil(o.Referral) {
 		toSerialize["referral"] = o.Referral
 	}
@@ -709,6 +746,7 @@ func (o *IntegrationStateV2) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "createdReferrals")
 		delete(additionalProperties, "awardedGiveaways")
 		delete(additionalProperties, "achievements")
+		delete(additionalProperties, "rewards")
 		delete(additionalProperties, "referral")
 		delete(additionalProperties, "coupons")
 		delete(additionalProperties, "event")

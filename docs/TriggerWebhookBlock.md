@@ -4,18 +4,18 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** | Unique identifier for this block. | 
+**Id** | Pointer to **string** | Unique identifier for this block. | [optional] [readonly] 
 **Type** | **string** | Identifies the block variant and determines which additional properties are present in it. | 
-**Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] 
+**Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] [readonly] 
 **Webhook** | [**TriggerWebhookBlock1Webhook**](TriggerWebhookBlock1Webhook.md) |  | 
 **Params** | Pointer to **map[string]interface{}** | The webhook&#39;s parameters, in configured order. Each property name is the parameter&#39;s title, lowercased with spaces replaced by underscores (for example, &#x60;Order ID&#x60; becomes &#x60;order_id&#x60;); falls back to &#x60;param_0&#x60;, &#x60;param_1&#x60;, and so on if a title is blank or collides with another. | [optional] 
-**OnError** | Pointer to [**map[string][]PromotionBlock**](array.md) | Named error handlers evaluated when a specific error occurs. | [optional] 
+**OnError** | Pointer to [**map[string][]Block**](array.md) | Named error handlers evaluated when a specific error occurs. | [optional] 
 
 ## Methods
 
 ### NewTriggerWebhookBlock
 
-`func NewTriggerWebhookBlock(id string, type_ string, webhook TriggerWebhookBlock1Webhook, ) *TriggerWebhookBlock`
+`func NewTriggerWebhookBlock(type_ string, webhook TriggerWebhookBlock1Webhook, ) *TriggerWebhookBlock`
 
 NewTriggerWebhookBlock instantiates a new TriggerWebhookBlock object
 This constructor will assign default values to properties that have it defined,
@@ -49,6 +49,11 @@ and a boolean to check if the value has been set.
 
 SetId sets Id field to given value.
 
+### HasId
+
+`func (o *TriggerWebhookBlock) HasId() bool`
+
+HasId returns a boolean if a field has been set.
 
 ### GetType
 
@@ -142,20 +147,20 @@ HasParams returns a boolean if a field has been set.
 
 ### GetOnError
 
-`func (o *TriggerWebhookBlock) GetOnError() map[string][]PromotionBlock`
+`func (o *TriggerWebhookBlock) GetOnError() map[string][]Block`
 
 GetOnError returns the OnError field if non-nil, zero value otherwise.
 
 ### GetOnErrorOk
 
-`func (o *TriggerWebhookBlock) GetOnErrorOk() (*map[string][]PromotionBlock, bool)`
+`func (o *TriggerWebhookBlock) GetOnErrorOk() (*map[string][]Block, bool)`
 
 GetOnErrorOk returns a tuple with the OnError field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetOnError
 
-`func (o *TriggerWebhookBlock) SetOnError(v map[string][]PromotionBlock)`
+`func (o *TriggerWebhookBlock) SetOnError(v map[string][]Block)`
 
 SetOnError sets OnError field to given value.
 

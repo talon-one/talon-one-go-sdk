@@ -21,7 +21,7 @@ var _ MappedNullable = &ShowNotificationBlock{}
 // ShowNotificationBlock struct for ShowNotificationBlock
 type ShowNotificationBlock struct {
 	// Unique identifier for this block.
-	Id string `json:"id"`
+	Id *string `json:"id,omitempty"`
 	// Identifies the block variant and determines which additional properties are present in it.
 	Type string `json:"type"`
 	// Semantic labels attached to this block.
@@ -33,9 +33,9 @@ type ShowNotificationBlock struct {
 	// The notification body text. Supports template placeholders (e.g. \"{{$Session.Total}}\") evaluated at rule execution time.
 	Body *string `json:"body,omitempty"`
 	// Blocks evaluated when this block fails or returns false.
-	OnFailure []PromotionBlock `json:"onFailure,omitempty"`
+	OnFailure []Block `json:"onFailure,omitempty"`
 	// Named error handlers evaluated when a specific error occurs.
-	OnError              map[string][]PromotionBlock `json:"onError,omitempty"`
+	OnError              map[string][]Block `json:"onError,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -45,9 +45,8 @@ type _ShowNotificationBlock ShowNotificationBlock
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildShowNotificationBlock(id string, type_ string, notificationType string, title string) *ShowNotificationBlock {
+func BuildShowNotificationBlock(type_ string, notificationType string, title string) *ShowNotificationBlock {
 	this := ShowNotificationBlock{}
-	this.Id = id
 	this.Type = type_
 	this.NotificationType = notificationType
 	this.Title = title
@@ -62,28 +61,36 @@ func NewShowNotificationBlockWithDefaults() *ShowNotificationBlock {
 	return &this
 }
 
-// GetId returns the Id field value
+// GetId returns the Id field value if set, zero value otherwise.
 func (o *ShowNotificationBlock) GetId() string {
-	if o == nil {
+	if o == nil || IsNil(o.Id) {
 		var ret string
 		return ret
 	}
-
-	return o.Id
+	return *o.Id
 }
 
-// GetIdOk returns a tuple with the Id field value
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ShowNotificationBlock) GetIdOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Id) {
 		return nil, false
 	}
-	return &o.Id, true
+	return o.Id, true
 }
 
-// SetId sets field value
+// HasId returns a boolean if a field has been set.
+func (o *ShowNotificationBlock) HasId() bool {
+	if o != nil && !IsNil(o.Id) {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
 func (o *ShowNotificationBlock) SetId(v string) {
-	o.Id = v
+	o.Id = &v
 }
 
 // GetType returns the Type field value
@@ -223,9 +230,9 @@ func (o *ShowNotificationBlock) SetBody(v string) {
 }
 
 // GetOnFailure returns the OnFailure field value if set, zero value otherwise.
-func (o *ShowNotificationBlock) GetOnFailure() []PromotionBlock {
+func (o *ShowNotificationBlock) GetOnFailure() []Block {
 	if o == nil || IsNil(o.OnFailure) {
-		var ret []PromotionBlock
+		var ret []Block
 		return ret
 	}
 	return o.OnFailure
@@ -233,7 +240,7 @@ func (o *ShowNotificationBlock) GetOnFailure() []PromotionBlock {
 
 // GetOnFailureOk returns a tuple with the OnFailure field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ShowNotificationBlock) GetOnFailureOk() ([]PromotionBlock, bool) {
+func (o *ShowNotificationBlock) GetOnFailureOk() ([]Block, bool) {
 	if o == nil || IsNil(o.OnFailure) {
 		return nil, false
 	}
@@ -249,15 +256,15 @@ func (o *ShowNotificationBlock) HasOnFailure() bool {
 	return false
 }
 
-// SetOnFailure gets a reference to the given []PromotionBlock and assigns it to the OnFailure field.
-func (o *ShowNotificationBlock) SetOnFailure(v []PromotionBlock) {
+// SetOnFailure gets a reference to the given []Block and assigns it to the OnFailure field.
+func (o *ShowNotificationBlock) SetOnFailure(v []Block) {
 	o.OnFailure = v
 }
 
 // GetOnError returns the OnError field value if set, zero value otherwise.
-func (o *ShowNotificationBlock) GetOnError() map[string][]PromotionBlock {
+func (o *ShowNotificationBlock) GetOnError() map[string][]Block {
 	if o == nil || IsNil(o.OnError) {
-		var ret map[string][]PromotionBlock
+		var ret map[string][]Block
 		return ret
 	}
 	return o.OnError
@@ -265,9 +272,9 @@ func (o *ShowNotificationBlock) GetOnError() map[string][]PromotionBlock {
 
 // GetOnErrorOk returns a tuple with the OnError field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ShowNotificationBlock) GetOnErrorOk() (map[string][]PromotionBlock, bool) {
+func (o *ShowNotificationBlock) GetOnErrorOk() (map[string][]Block, bool) {
 	if o == nil || IsNil(o.OnError) {
-		return map[string][]PromotionBlock{}, false
+		return map[string][]Block{}, false
 	}
 	return o.OnError, true
 }
@@ -281,8 +288,8 @@ func (o *ShowNotificationBlock) HasOnError() bool {
 	return false
 }
 
-// SetOnError gets a reference to the given map[string][]PromotionBlock and assigns it to the OnError field.
-func (o *ShowNotificationBlock) SetOnError(v map[string][]PromotionBlock) {
+// SetOnError gets a reference to the given map[string][]Block and assigns it to the OnError field.
+func (o *ShowNotificationBlock) SetOnError(v map[string][]Block) {
 	o.OnError = v
 }
 
@@ -296,7 +303,9 @@ func (o ShowNotificationBlock) MarshalJSON() ([]byte, error) {
 
 func (o ShowNotificationBlock) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["id"] = o.Id
+	if !IsNil(o.Id) {
+		toSerialize["id"] = o.Id
+	}
 	toSerialize["type"] = o.Type
 	if !IsNil(o.Tags) {
 		toSerialize["tags"] = o.Tags
@@ -325,7 +334,6 @@ func (o *ShowNotificationBlock) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"id",
 		"type",
 		"notificationType",
 		"title",

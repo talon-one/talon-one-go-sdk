@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **FailureCode** | **string** | A code identifying why the customer is not eligible for the reward. | 
-**ConditionIndex** | Pointer to **int64** | The index of the eligibility condition that the customer did not meet. | [optional] 
+**ConditionIndex** | Pointer to **int64** | The index of the eligibility condition that the customer did not meet. Only applicable when &#x60;failureCode&#x60; is &#x60;CONDITION_NOT_MET&#x60;. | [optional] 
 
 ## Methods
 

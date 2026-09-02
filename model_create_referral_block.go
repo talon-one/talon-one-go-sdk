@@ -21,7 +21,7 @@ var _ MappedNullable = &CreateReferralBlock{}
 // CreateReferralBlock struct for CreateReferralBlock
 type CreateReferralBlock struct {
 	// Unique identifier for this block.
-	Id string `json:"id"`
+	Id *string `json:"id,omitempty"`
 	// Identifies the block variant and determines which additional properties are present in it.
 	Type string `json:"type"`
 	// Semantic labels attached to this block.
@@ -32,9 +32,12 @@ type CreateReferralBlock struct {
 	// When `true`, the referral code is stored in the session.
 	StoreInSession bool                            `json:"storeInSession"`
 	UsageLimit     *CreateReferralBlock1UsageLimit `json:"usageLimit,omitempty"`
-	StartDate      interface{}                     `json:"startDate,omitempty"`
-	ExpiryDate     interface{}                     `json:"expiryDate,omitempty"`
-	Attributes     interface{}                     `json:"attributes,omitempty"`
+	// Timestamp at which point the referral code becomes valid.
+	StartDate interface{} `json:"startDate,omitempty"`
+	// Expiration date of the referral code. Referral code never expires if this is omitted.
+	ExpiryDate interface{} `json:"expiryDate,omitempty"`
+	// Custom attributes associated with this referral code.
+	Attributes interface{} `json:"attributes,omitempty"`
 	// Characters used to generate the random parts of a code.
 	ValidCharacters *string `json:"validCharacters,omitempty"`
 	// The pattern used to generate codes, such as coupon codes, referral codes, and loyalty cards. The character `#` is a placeholder and is replaced by a random character from the `validCharacters` set.
@@ -48,9 +51,8 @@ type _CreateReferralBlock CreateReferralBlock
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCreateReferralBlock(id string, type_ string, campaignId CreateReferralBlock1CampaignId, friendId string, storeInSession bool) *CreateReferralBlock {
+func BuildCreateReferralBlock(type_ string, campaignId CreateReferralBlock1CampaignId, friendId string, storeInSession bool) *CreateReferralBlock {
 	this := CreateReferralBlock{}
-	this.Id = id
 	this.Type = type_
 	this.CampaignId = campaignId
 	this.FriendId = friendId
@@ -66,28 +68,36 @@ func NewCreateReferralBlockWithDefaults() *CreateReferralBlock {
 	return &this
 }
 
-// GetId returns the Id field value
+// GetId returns the Id field value if set, zero value otherwise.
 func (o *CreateReferralBlock) GetId() string {
-	if o == nil {
+	if o == nil || IsNil(o.Id) {
 		var ret string
 		return ret
 	}
-
-	return o.Id
+	return *o.Id
 }
 
-// GetIdOk returns a tuple with the Id field value
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateReferralBlock) GetIdOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Id) {
 		return nil, false
 	}
-	return &o.Id, true
+	return o.Id, true
 }
 
-// SetId sets field value
+// HasId returns a boolean if a field has been set.
+func (o *CreateReferralBlock) HasId() bool {
+	if o != nil && !IsNil(o.Id) {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
 func (o *CreateReferralBlock) SetId(v string) {
-	o.Id = v
+	o.Id = &v
 }
 
 // GetType returns the Type field value
@@ -423,7 +433,9 @@ func (o CreateReferralBlock) MarshalJSON() ([]byte, error) {
 
 func (o CreateReferralBlock) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["id"] = o.Id
+	if !IsNil(o.Id) {
+		toSerialize["id"] = o.Id
+	}
 	toSerialize["type"] = o.Type
 	if !IsNil(o.Tags) {
 		toSerialize["tags"] = o.Tags
@@ -462,7 +474,6 @@ func (o *CreateReferralBlock) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"id",
 		"type",
 		"campaignId",
 		"friendId",

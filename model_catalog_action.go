@@ -189,34 +189,9 @@ func (dst *CatalogAction) UnmarshalJSON(data []byte) error {
 	} else { // no match
 		if err != nil {
 			return fmt.Errorf("data failed to match schemas in oneOf(CatalogAction): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(CatalogAction)")
 		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(CatalogAction): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(CatalogAction)")
-		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(CatalogAction): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(CatalogAction)")
-		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(CatalogAction): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(CatalogAction)")
-		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(CatalogAction): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(CatalogAction)")
-		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(CatalogAction): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(CatalogAction)")
-		}
+
+		return fmt.Errorf("data failed to match schemas in oneOf(CatalogAction)")
 	}
 }
 

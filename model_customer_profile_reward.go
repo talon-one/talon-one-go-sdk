@@ -23,12 +23,18 @@ var _ MappedNullable = &CustomerProfileReward{}
 type CustomerProfileReward struct {
 	// The ID of the customer reward instance. A customer profile can have multiple instances of the same reward.
 	Id int64 `json:"id"`
-	// The integration ID of the reward.
+	// The integration ID of the customer reward instance.
 	IntegrationId string `json:"integrationId"`
 	// The ID of the reward this instance belongs to.
 	RewardId int64 `json:"rewardId"`
+	// The integration ID of the reward this instance belongs to.
+	RewardIntegrationId string `json:"rewardIntegrationId"`
 	// The name of the reward.
 	RewardName string `json:"rewardName"`
+	// The customer-facing description of the reward.
+	Description *string `json:"description,omitempty"`
+	// Customer-facing rule metadata for the reward. Only returned when the reward defines a rule.
+	Rule *RuleMetadata `json:"rule,omitempty"`
 	// The status of the customer reward: - `unlocked`: The reward is available for use. - `used`: The reward has been used.
 	Status string `json:"status"`
 	// The date and time when the reward was unlocked.
@@ -52,11 +58,12 @@ type _CustomerProfileReward CustomerProfileReward
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCustomerProfileReward(id int64, integrationId string, rewardId int64, rewardName string, status string, unlockedAt time.Time) *CustomerProfileReward {
+func BuildCustomerProfileReward(id int64, integrationId string, rewardId int64, rewardIntegrationId string, rewardName string, status string, unlockedAt time.Time) *CustomerProfileReward {
 	this := CustomerProfileReward{}
 	this.Id = id
 	this.IntegrationId = integrationId
 	this.RewardId = rewardId
+	this.RewardIntegrationId = rewardIntegrationId
 	this.RewardName = rewardName
 	this.Status = status
 	this.UnlockedAt = unlockedAt
@@ -143,6 +150,30 @@ func (o *CustomerProfileReward) SetRewardId(v int64) {
 	o.RewardId = v
 }
 
+// GetRewardIntegrationId returns the RewardIntegrationId field value
+func (o *CustomerProfileReward) GetRewardIntegrationId() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.RewardIntegrationId
+}
+
+// GetRewardIntegrationIdOk returns a tuple with the RewardIntegrationId field value
+// and a boolean to check if the value has been set.
+func (o *CustomerProfileReward) GetRewardIntegrationIdOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.RewardIntegrationId, true
+}
+
+// SetRewardIntegrationId sets field value
+func (o *CustomerProfileReward) SetRewardIntegrationId(v string) {
+	o.RewardIntegrationId = v
+}
+
 // GetRewardName returns the RewardName field value
 func (o *CustomerProfileReward) GetRewardName() string {
 	if o == nil {
@@ -165,6 +196,70 @@ func (o *CustomerProfileReward) GetRewardNameOk() (*string, bool) {
 // SetRewardName sets field value
 func (o *CustomerProfileReward) SetRewardName(v string) {
 	o.RewardName = v
+}
+
+// GetDescription returns the Description field value if set, zero value otherwise.
+func (o *CustomerProfileReward) GetDescription() string {
+	if o == nil || IsNil(o.Description) {
+		var ret string
+		return ret
+	}
+	return *o.Description
+}
+
+// GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustomerProfileReward) GetDescriptionOk() (*string, bool) {
+	if o == nil || IsNil(o.Description) {
+		return nil, false
+	}
+	return o.Description, true
+}
+
+// HasDescription returns a boolean if a field has been set.
+func (o *CustomerProfileReward) HasDescription() bool {
+	if o != nil && !IsNil(o.Description) {
+		return true
+	}
+
+	return false
+}
+
+// SetDescription gets a reference to the given string and assigns it to the Description field.
+func (o *CustomerProfileReward) SetDescription(v string) {
+	o.Description = &v
+}
+
+// GetRule returns the Rule field value if set, zero value otherwise.
+func (o *CustomerProfileReward) GetRule() RuleMetadata {
+	if o == nil || IsNil(o.Rule) {
+		var ret RuleMetadata
+		return ret
+	}
+	return *o.Rule
+}
+
+// GetRuleOk returns a tuple with the Rule field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustomerProfileReward) GetRuleOk() (*RuleMetadata, bool) {
+	if o == nil || IsNil(o.Rule) {
+		return nil, false
+	}
+	return o.Rule, true
+}
+
+// HasRule returns a boolean if a field has been set.
+func (o *CustomerProfileReward) HasRule() bool {
+	if o != nil && !IsNil(o.Rule) {
+		return true
+	}
+
+	return false
+}
+
+// SetRule gets a reference to the given RuleMetadata and assigns it to the Rule field.
+func (o *CustomerProfileReward) SetRule(v RuleMetadata) {
+	o.Rule = &v
 }
 
 // GetStatus returns the Status field value
@@ -388,7 +483,14 @@ func (o CustomerProfileReward) ToMap() (map[string]interface{}, error) {
 	toSerialize["id"] = o.Id
 	toSerialize["integrationId"] = o.IntegrationId
 	toSerialize["rewardId"] = o.RewardId
+	toSerialize["rewardIntegrationId"] = o.RewardIntegrationId
 	toSerialize["rewardName"] = o.RewardName
+	if !IsNil(o.Description) {
+		toSerialize["description"] = o.Description
+	}
+	if !IsNil(o.Rule) {
+		toSerialize["rule"] = o.Rule
+	}
 	toSerialize["status"] = o.Status
 	toSerialize["unlockedAt"] = o.UnlockedAt
 	if !IsNil(o.UnlockedByProfileIntegrationId) {
@@ -422,6 +524,7 @@ func (o *CustomerProfileReward) UnmarshalJSON(data []byte) (err error) {
 		"id",
 		"integrationId",
 		"rewardId",
+		"rewardIntegrationId",
 		"rewardName",
 		"status",
 		"unlockedAt",
@@ -457,7 +560,10 @@ func (o *CustomerProfileReward) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "id")
 		delete(additionalProperties, "integrationId")
 		delete(additionalProperties, "rewardId")
+		delete(additionalProperties, "rewardIntegrationId")
 		delete(additionalProperties, "rewardName")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "rule")
 		delete(additionalProperties, "status")
 		delete(additionalProperties, "unlockedAt")
 		delete(additionalProperties, "unlockedByProfileIntegrationId")

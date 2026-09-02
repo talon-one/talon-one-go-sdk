@@ -85,14 +85,9 @@ func (dst *WebhookAuthenticationAllOfData) UnmarshalJSON(data []byte) error {
 	} else { // no match
 		if err != nil {
 			return fmt.Errorf("data failed to match schemas in oneOf(WebhookAuthenticationAllOfData): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(WebhookAuthenticationAllOfData)")
 		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(WebhookAuthenticationAllOfData): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(WebhookAuthenticationAllOfData)")
-		}
+
+		return fmt.Errorf("data failed to match schemas in oneOf(WebhookAuthenticationAllOfData)")
 	}
 }
 

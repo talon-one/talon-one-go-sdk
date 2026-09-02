@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Operator** | Pointer to **string** | The list membership operator applied to the attribute. | [optional] 
-**Values** | **interface{}** |  | 
+**Values** | **interface{}** | The set of values to match against. | 
 
 ## Methods
 

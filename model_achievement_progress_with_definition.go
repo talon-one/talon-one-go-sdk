@@ -39,9 +39,9 @@ type AchievementProgressWithDefinition struct {
 	Title string `json:"title"`
 	// The description of the achievement in the Campaign Manager.
 	Description string `json:"description"`
-	// This property is **deprecated**. Use `campaignIds` (Integration API) or `referencedByCampaigns` (Management API) instead. The first campaign ID in `campaignIds`. Only returned when `campaignIds` is not empty.
+	// This property is **deprecated**. Use `campaignIds` (Integration API) or `referencedByCampaigns` (Management API) instead. This field contains the first campaign ID from the related `campaignIds`, and is omitted when `campaignIds` is empty.
 	// Deprecated
-	CampaignId int64 `json:"campaignId"`
+	CampaignId *int64 `json:"campaignId,omitempty"`
 	// The IDs of the campaigns that reference this achievement, in ascending order.
 	CampaignIds []int64 `json:"campaignIds"`
 	// The campaigns that reference this achievement, in ascending order of their `id`.
@@ -67,7 +67,7 @@ type _AchievementProgressWithDefinition AchievementProgressWithDefinition
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildAchievementProgressWithDefinition(status string, progress float32, achievementId int64, name string, title string, description string, campaignId int64, campaignIds []int64, referencedByCampaigns []CampaignReference, achievementRecurrencePolicy string, achievementActivationPolicy string) *AchievementProgressWithDefinition {
+func BuildAchievementProgressWithDefinition(status string, progress float32, achievementId int64, name string, title string, description string, campaignIds []int64, referencedByCampaigns []CampaignReference, achievementRecurrencePolicy string, achievementActivationPolicy string) *AchievementProgressWithDefinition {
 	this := AchievementProgressWithDefinition{}
 	this.Status = status
 	this.Progress = progress
@@ -75,7 +75,6 @@ func BuildAchievementProgressWithDefinition(status string, progress float32, ach
 	this.Name = name
 	this.Title = title
 	this.Description = description
-	this.CampaignId = campaignId
 	this.CampaignIds = campaignIds
 	this.ReferencedByCampaigns = referencedByCampaigns
 	this.AchievementRecurrencePolicy = achievementRecurrencePolicy
@@ -331,31 +330,39 @@ func (o *AchievementProgressWithDefinition) SetDescription(v string) {
 	o.Description = v
 }
 
-// GetCampaignId returns the CampaignId field value
+// GetCampaignId returns the CampaignId field value if set, zero value otherwise.
 // Deprecated
 func (o *AchievementProgressWithDefinition) GetCampaignId() int64 {
-	if o == nil {
+	if o == nil || IsNil(o.CampaignId) {
 		var ret int64
 		return ret
 	}
-
-	return o.CampaignId
+	return *o.CampaignId
 }
 
-// GetCampaignIdOk returns a tuple with the CampaignId field value
+// GetCampaignIdOk returns a tuple with the CampaignId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 // Deprecated
 func (o *AchievementProgressWithDefinition) GetCampaignIdOk() (*int64, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.CampaignId) {
 		return nil, false
 	}
-	return &o.CampaignId, true
+	return o.CampaignId, true
 }
 
-// SetCampaignId sets field value
+// HasCampaignId returns a boolean if a field has been set.
+func (o *AchievementProgressWithDefinition) HasCampaignId() bool {
+	if o != nil && !IsNil(o.CampaignId) {
+		return true
+	}
+
+	return false
+}
+
+// SetCampaignId gets a reference to the given int64 and assigns it to the CampaignId field.
 // Deprecated
 func (o *AchievementProgressWithDefinition) SetCampaignId(v int64) {
-	o.CampaignId = v
+	o.CampaignId = &v
 }
 
 // GetCampaignIds returns the CampaignIds field value
@@ -607,7 +614,9 @@ func (o AchievementProgressWithDefinition) ToMap() (map[string]interface{}, erro
 	toSerialize["name"] = o.Name
 	toSerialize["title"] = o.Title
 	toSerialize["description"] = o.Description
-	toSerialize["campaignId"] = o.CampaignId
+	if !IsNil(o.CampaignId) {
+		toSerialize["campaignId"] = o.CampaignId
+	}
 	toSerialize["campaignIds"] = o.CampaignIds
 	toSerialize["referencedByCampaigns"] = o.ReferencedByCampaigns
 	if !IsNil(o.Target) {
@@ -643,7 +652,6 @@ func (o *AchievementProgressWithDefinition) UnmarshalJSON(data []byte) (err erro
 		"name",
 		"title",
 		"description",
-		"campaignId",
 		"campaignIds",
 		"referencedByCampaigns",
 		"achievementRecurrencePolicy",

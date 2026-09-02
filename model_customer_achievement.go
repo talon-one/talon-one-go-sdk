@@ -41,7 +41,7 @@ type CustomerAchievement struct {
 	EndDate *time.Time `json:"endDate,omitempty"`
 	// When `true`, customer progress can be rolled back in completed achievements.
 	AllowRollbackAfterCompletion bool `json:"allowRollbackAfterCompletion"`
-	// This property is **deprecated**. Use `campaignIds` (Integration API) or `referencedByCampaigns` (Management API) instead. The first campaign ID in `campaignIds`. Only returned when `campaignIds` is not empty.
+	// This property is **deprecated**. Use `referencedByCampaigns` instead. This field contains the first campaign ID from the related `referencedByCampaigns`, and is omitted when `referencedByCampaigns` is empty.
 	// Deprecated
 	CampaignId *int64 `json:"campaignId,omitempty"`
 	// The IDs of the campaigns that reference this achievement, in ascending order.

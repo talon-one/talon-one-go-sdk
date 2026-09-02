@@ -215,39 +215,9 @@ func (dst *SelectorStep) UnmarshalJSON(data []byte) error {
 	} else { // no match
 		if err != nil {
 			return fmt.Errorf("data failed to match schemas in oneOf(SelectorStep): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(SelectorStep)")
 		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(SelectorStep): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(SelectorStep)")
-		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(SelectorStep): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(SelectorStep)")
-		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(SelectorStep): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(SelectorStep)")
-		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(SelectorStep): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(SelectorStep)")
-		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(SelectorStep): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(SelectorStep)")
-		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(SelectorStep): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(SelectorStep)")
-		}
+
+		return fmt.Errorf("data failed to match schemas in oneOf(SelectorStep)")
 	}
 }
 

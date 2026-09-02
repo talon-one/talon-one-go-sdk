@@ -4,21 +4,21 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** | Unique identifier for this block. | 
+**Id** | Pointer to **string** | Unique identifier for this block. | [optional] [readonly] 
 **Type** | **string** | Identifies the block variant and determines which additional properties are present in it. | 
-**Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] 
+**Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] [readonly] 
 **Operator** | **string** | An indicator of how the block compares the balance to the value. | 
 **Program** | [**CheckLoyaltyBalanceBlock1Program**](CheckLoyaltyBalanceBlock1Program.md) |  | 
 **Subledger** | **string** | The name of the subledger to check the balance of. Can be empty if this block checks the loyalty program&#39;s main ledger balance instead of a subledger. | 
 **Balance** | **string** | The type of balance to check:  - &#x60;current&#x60; is the sum of currently active points  - &#x60;pending&#x60; is the sum of pending points.  - &#x60;negative&#x60; is the sum of negative points.  - &#x60;tentativeCurrent&#x60; is the tentative points balance within the current open customer session. | 
 **Value** | **float32** | The numeric value to compare the balance against. | 
-**OnFailure** | Pointer to [**[]PromotionBlock**](PromotionBlock.md) | Promotion blocks evaluated when this block fails or returns false. | [optional] 
+**OnFailure** | Pointer to [**[]Block**](Block.md) | Promotion blocks evaluated when this block fails or returns false. | [optional] 
 
 ## Methods
 
 ### NewCheckLoyaltyBalanceBlock
 
-`func NewCheckLoyaltyBalanceBlock(id string, type_ string, operator string, program CheckLoyaltyBalanceBlock1Program, subledger string, balance string, value float32, ) *CheckLoyaltyBalanceBlock`
+`func NewCheckLoyaltyBalanceBlock(type_ string, operator string, program CheckLoyaltyBalanceBlock1Program, subledger string, balance string, value float32, ) *CheckLoyaltyBalanceBlock`
 
 NewCheckLoyaltyBalanceBlock instantiates a new CheckLoyaltyBalanceBlock object
 This constructor will assign default values to properties that have it defined,
@@ -52,6 +52,11 @@ and a boolean to check if the value has been set.
 
 SetId sets Id field to given value.
 
+### HasId
+
+`func (o *CheckLoyaltyBalanceBlock) HasId() bool`
+
+HasId returns a boolean if a field has been set.
 
 ### GetType
 
@@ -200,20 +205,20 @@ SetValue sets Value field to given value.
 
 ### GetOnFailure
 
-`func (o *CheckLoyaltyBalanceBlock) GetOnFailure() []PromotionBlock`
+`func (o *CheckLoyaltyBalanceBlock) GetOnFailure() []Block`
 
 GetOnFailure returns the OnFailure field if non-nil, zero value otherwise.
 
 ### GetOnFailureOk
 
-`func (o *CheckLoyaltyBalanceBlock) GetOnFailureOk() (*[]PromotionBlock, bool)`
+`func (o *CheckLoyaltyBalanceBlock) GetOnFailureOk() (*[]Block, bool)`
 
 GetOnFailureOk returns a tuple with the OnFailure field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetOnFailure
 
-`func (o *CheckLoyaltyBalanceBlock) SetOnFailure(v []PromotionBlock)`
+`func (o *CheckLoyaltyBalanceBlock) SetOnFailure(v []Block)`
 
 SetOnFailure sets OnFailure field to given value.
 
