@@ -85,14 +85,9 @@ func (dst *RedeemLoyaltyPointsBlock1Value) UnmarshalJSON(data []byte) error {
 	} else { // no match
 		if err != nil {
 			return fmt.Errorf("data failed to match schemas in oneOf(RedeemLoyaltyPointsBlock1Value): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(RedeemLoyaltyPointsBlock1Value)")
 		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(RedeemLoyaltyPointsBlock1Value): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(RedeemLoyaltyPointsBlock1Value)")
-		}
+
+		return fmt.Errorf("data failed to match schemas in oneOf(RedeemLoyaltyPointsBlock1Value)")
 	}
 }
 

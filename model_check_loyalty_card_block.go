@@ -21,7 +21,7 @@ var _ MappedNullable = &CheckLoyaltyCardBlock{}
 // CheckLoyaltyCardBlock struct for CheckLoyaltyCardBlock
 type CheckLoyaltyCardBlock struct {
 	// Unique identifier for this block.
-	Id string `json:"id"`
+	Id *string `json:"id,omitempty"`
 	// Identifies the block variant and determines which additional properties are present in it.
 	Type string `json:"type"`
 	// Semantic labels attached to this block.
@@ -29,7 +29,7 @@ type CheckLoyaltyCardBlock struct {
 	// An indicator of how the block compares its elements.
 	Operator string `json:"operator"`
 	// Promotion blocks evaluated when this block fails or returns false.
-	OnFailure            []PromotionBlock `json:"onFailure,omitempty"`
+	OnFailure            []Block `json:"onFailure,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -39,9 +39,8 @@ type _CheckLoyaltyCardBlock CheckLoyaltyCardBlock
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCheckLoyaltyCardBlock(id string, type_ string, operator string) *CheckLoyaltyCardBlock {
+func BuildCheckLoyaltyCardBlock(type_ string, operator string) *CheckLoyaltyCardBlock {
 	this := CheckLoyaltyCardBlock{}
-	this.Id = id
 	this.Type = type_
 	this.Operator = operator
 	return &this
@@ -55,28 +54,36 @@ func NewCheckLoyaltyCardBlockWithDefaults() *CheckLoyaltyCardBlock {
 	return &this
 }
 
-// GetId returns the Id field value
+// GetId returns the Id field value if set, zero value otherwise.
 func (o *CheckLoyaltyCardBlock) GetId() string {
-	if o == nil {
+	if o == nil || IsNil(o.Id) {
 		var ret string
 		return ret
 	}
-
-	return o.Id
+	return *o.Id
 }
 
-// GetIdOk returns a tuple with the Id field value
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CheckLoyaltyCardBlock) GetIdOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Id) {
 		return nil, false
 	}
-	return &o.Id, true
+	return o.Id, true
 }
 
-// SetId sets field value
+// HasId returns a boolean if a field has been set.
+func (o *CheckLoyaltyCardBlock) HasId() bool {
+	if o != nil && !IsNil(o.Id) {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
 func (o *CheckLoyaltyCardBlock) SetId(v string) {
-	o.Id = v
+	o.Id = &v
 }
 
 // GetType returns the Type field value
@@ -160,9 +167,9 @@ func (o *CheckLoyaltyCardBlock) SetOperator(v string) {
 }
 
 // GetOnFailure returns the OnFailure field value if set, zero value otherwise.
-func (o *CheckLoyaltyCardBlock) GetOnFailure() []PromotionBlock {
+func (o *CheckLoyaltyCardBlock) GetOnFailure() []Block {
 	if o == nil || IsNil(o.OnFailure) {
-		var ret []PromotionBlock
+		var ret []Block
 		return ret
 	}
 	return o.OnFailure
@@ -170,7 +177,7 @@ func (o *CheckLoyaltyCardBlock) GetOnFailure() []PromotionBlock {
 
 // GetOnFailureOk returns a tuple with the OnFailure field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *CheckLoyaltyCardBlock) GetOnFailureOk() ([]PromotionBlock, bool) {
+func (o *CheckLoyaltyCardBlock) GetOnFailureOk() ([]Block, bool) {
 	if o == nil || IsNil(o.OnFailure) {
 		return nil, false
 	}
@@ -186,8 +193,8 @@ func (o *CheckLoyaltyCardBlock) HasOnFailure() bool {
 	return false
 }
 
-// SetOnFailure gets a reference to the given []PromotionBlock and assigns it to the OnFailure field.
-func (o *CheckLoyaltyCardBlock) SetOnFailure(v []PromotionBlock) {
+// SetOnFailure gets a reference to the given []Block and assigns it to the OnFailure field.
+func (o *CheckLoyaltyCardBlock) SetOnFailure(v []Block) {
 	o.OnFailure = v
 }
 
@@ -201,7 +208,9 @@ func (o CheckLoyaltyCardBlock) MarshalJSON() ([]byte, error) {
 
 func (o CheckLoyaltyCardBlock) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["id"] = o.Id
+	if !IsNil(o.Id) {
+		toSerialize["id"] = o.Id
+	}
 	toSerialize["type"] = o.Type
 	if !IsNil(o.Tags) {
 		toSerialize["tags"] = o.Tags
@@ -223,7 +232,6 @@ func (o *CheckLoyaltyCardBlock) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"id",
 		"type",
 		"operator",
 	}

@@ -4,19 +4,19 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** | Unique identifier for this block. | 
+**Id** | Pointer to **string** | Unique identifier for this block. | [optional] [readonly] 
 **Type** | **string** | Identifies the block variant and determines which additional properties are present in it. | 
-**Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] 
+**Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] [readonly] 
 **Operator** | **string** | An indicator of how the block compares its elements. | 
 **Subledger** | **string** | The name of the subledger to check the balance of. Can be empty if this block checks the loyalty program&#39;s main ledger balance instead of a subledger. | 
 **Tier** | [**CheckTierBlock1Tier**](CheckTierBlock1Tier.md) |  | 
-**OnFailure** | Pointer to [**[]PromotionBlock**](PromotionBlock.md) | Promotion blocks evaluated when this block fails or returns false. | [optional] 
+**OnFailure** | Pointer to [**[]Block**](Block.md) | Promotion blocks evaluated when this block fails or returns false. | [optional] 
 
 ## Methods
 
 ### NewCheckTierBlock
 
-`func NewCheckTierBlock(id string, type_ string, operator string, subledger string, tier CheckTierBlock1Tier, ) *CheckTierBlock`
+`func NewCheckTierBlock(type_ string, operator string, subledger string, tier CheckTierBlock1Tier, ) *CheckTierBlock`
 
 NewCheckTierBlock instantiates a new CheckTierBlock object
 This constructor will assign default values to properties that have it defined,
@@ -50,6 +50,11 @@ and a boolean to check if the value has been set.
 
 SetId sets Id field to given value.
 
+### HasId
+
+`func (o *CheckTierBlock) HasId() bool`
+
+HasId returns a boolean if a field has been set.
 
 ### GetType
 
@@ -158,20 +163,20 @@ SetTier sets Tier field to given value.
 
 ### GetOnFailure
 
-`func (o *CheckTierBlock) GetOnFailure() []PromotionBlock`
+`func (o *CheckTierBlock) GetOnFailure() []Block`
 
 GetOnFailure returns the OnFailure field if non-nil, zero value otherwise.
 
 ### GetOnFailureOk
 
-`func (o *CheckTierBlock) GetOnFailureOk() (*[]PromotionBlock, bool)`
+`func (o *CheckTierBlock) GetOnFailureOk() (*[]Block, bool)`
 
 GetOnFailureOk returns a tuple with the OnFailure field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetOnFailure
 
-`func (o *CheckTierBlock) SetOnFailure(v []PromotionBlock)`
+`func (o *CheckTierBlock) SetOnFailure(v []Block)`
 
 SetOnFailure sets OnFailure field to given value.
 

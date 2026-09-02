@@ -39,7 +39,9 @@ type IntegrationResponse struct {
 	// The giveaways that were awarded during the event processing.
 	AwardedGiveaways []Giveaway `json:"awardedGiveaways,omitempty"`
 	// The achievements progress of the customer.
-	Achievements         []CustomerAchievement `json:"achievements,omitempty"`
+	Achievements []CustomerAchievement `json:"achievements,omitempty"`
+	// The unlocked rewards for the customer profile.
+	Rewards              []RewardWithUnlocks `json:"rewards,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -361,6 +363,38 @@ func (o *IntegrationResponse) SetAchievements(v []CustomerAchievement) {
 	o.Achievements = v
 }
 
+// GetRewards returns the Rewards field value if set, zero value otherwise.
+func (o *IntegrationResponse) GetRewards() []RewardWithUnlocks {
+	if o == nil || IsNil(o.Rewards) {
+		var ret []RewardWithUnlocks
+		return ret
+	}
+	return o.Rewards
+}
+
+// GetRewardsOk returns a tuple with the Rewards field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IntegrationResponse) GetRewardsOk() ([]RewardWithUnlocks, bool) {
+	if o == nil || IsNil(o.Rewards) {
+		return nil, false
+	}
+	return o.Rewards, true
+}
+
+// HasRewards returns a boolean if a field has been set.
+func (o *IntegrationResponse) HasRewards() bool {
+	if o != nil && !IsNil(o.Rewards) {
+		return true
+	}
+
+	return false
+}
+
+// SetRewards gets a reference to the given []RewardWithUnlocks and assigns it to the Rewards field.
+func (o *IntegrationResponse) SetRewards(v []RewardWithUnlocks) {
+	o.Rewards = v
+}
+
 func (o IntegrationResponse) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -394,6 +428,9 @@ func (o IntegrationResponse) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Achievements) {
 		toSerialize["achievements"] = o.Achievements
+	}
+	if !IsNil(o.Rewards) {
+		toSerialize["rewards"] = o.Rewards
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -450,6 +487,7 @@ func (o *IntegrationResponse) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "createdReferrals")
 		delete(additionalProperties, "awardedGiveaways")
 		delete(additionalProperties, "achievements")
+		delete(additionalProperties, "rewards")
 		o.AdditionalProperties = additionalProperties
 	}
 

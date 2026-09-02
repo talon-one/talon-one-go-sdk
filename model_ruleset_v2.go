@@ -22,11 +22,11 @@ var _ MappedNullable = &RulesetV2{}
 // RulesetV2 Ruleset in the V2 JSON block format.
 type RulesetV2 struct {
 	// Internal ID of this entity.
-	Id int64 `json:"id"`
+	Id *int64 `json:"id,omitempty"`
 	// The time this entity was created.
-	Created time.Time `json:"created"`
+	Created *time.Time `json:"created,omitempty"`
 	// The ID of the user that created this ruleset.
-	UserId int64 `json:"userId"`
+	UserId *int64 `json:"userId,omitempty"`
 	// The ID of the campaign that owns this entity.
 	CampaignId *int64 `json:"campaignId,omitempty"`
 	// The ID of the campaign template that owns this entity.
@@ -34,9 +34,9 @@ type RulesetV2 struct {
 	// Timestamp indicating when this ruleset was activated.
 	ActivatedAt *time.Time `json:"activatedAt,omitempty"`
 	// Set of promotion rules.
-	PromotionRules []PromotionRuleV2 `json:"promotionRules"`
+	PromotionRules []RuleV2 `json:"promotionRules"`
 	// Set of strikethrough rules.
-	StrikethroughRules []StrikethroughRuleV2 `json:"strikethroughRules"`
+	StrikethroughRules []RuleV2 `json:"strikethroughRules,omitempty"`
 	// Variable bindings of type selector.
 	Selectors []Selector `json:"selectors,omitempty"`
 	// Variable bindings of type bundle.
@@ -52,13 +52,9 @@ type _RulesetV2 RulesetV2
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildRulesetV2(id int64, created time.Time, userId int64, promotionRules []PromotionRuleV2, strikethroughRules []StrikethroughRuleV2) *RulesetV2 {
+func BuildRulesetV2(promotionRules []RuleV2) *RulesetV2 {
 	this := RulesetV2{}
-	this.Id = id
-	this.Created = created
-	this.UserId = userId
 	this.PromotionRules = promotionRules
-	this.StrikethroughRules = strikethroughRules
 	return &this
 }
 
@@ -70,76 +66,100 @@ func NewRulesetV2WithDefaults() *RulesetV2 {
 	return &this
 }
 
-// GetId returns the Id field value
+// GetId returns the Id field value if set, zero value otherwise.
 func (o *RulesetV2) GetId() int64 {
-	if o == nil {
+	if o == nil || IsNil(o.Id) {
 		var ret int64
 		return ret
 	}
-
-	return o.Id
+	return *o.Id
 }
 
-// GetIdOk returns a tuple with the Id field value
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *RulesetV2) GetIdOk() (*int64, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Id) {
 		return nil, false
 	}
-	return &o.Id, true
+	return o.Id, true
 }
 
-// SetId sets field value
+// HasId returns a boolean if a field has been set.
+func (o *RulesetV2) HasId() bool {
+	if o != nil && !IsNil(o.Id) {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given int64 and assigns it to the Id field.
 func (o *RulesetV2) SetId(v int64) {
-	o.Id = v
+	o.Id = &v
 }
 
-// GetCreated returns the Created field value
+// GetCreated returns the Created field value if set, zero value otherwise.
 func (o *RulesetV2) GetCreated() time.Time {
-	if o == nil {
+	if o == nil || IsNil(o.Created) {
 		var ret time.Time
 		return ret
 	}
-
-	return o.Created
+	return *o.Created
 }
 
-// GetCreatedOk returns a tuple with the Created field value
+// GetCreatedOk returns a tuple with the Created field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *RulesetV2) GetCreatedOk() (*time.Time, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Created) {
 		return nil, false
 	}
-	return &o.Created, true
+	return o.Created, true
 }
 
-// SetCreated sets field value
+// HasCreated returns a boolean if a field has been set.
+func (o *RulesetV2) HasCreated() bool {
+	if o != nil && !IsNil(o.Created) {
+		return true
+	}
+
+	return false
+}
+
+// SetCreated gets a reference to the given time.Time and assigns it to the Created field.
 func (o *RulesetV2) SetCreated(v time.Time) {
-	o.Created = v
+	o.Created = &v
 }
 
-// GetUserId returns the UserId field value
+// GetUserId returns the UserId field value if set, zero value otherwise.
 func (o *RulesetV2) GetUserId() int64 {
-	if o == nil {
+	if o == nil || IsNil(o.UserId) {
 		var ret int64
 		return ret
 	}
-
-	return o.UserId
+	return *o.UserId
 }
 
-// GetUserIdOk returns a tuple with the UserId field value
+// GetUserIdOk returns a tuple with the UserId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *RulesetV2) GetUserIdOk() (*int64, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.UserId) {
 		return nil, false
 	}
-	return &o.UserId, true
+	return o.UserId, true
 }
 
-// SetUserId sets field value
+// HasUserId returns a boolean if a field has been set.
+func (o *RulesetV2) HasUserId() bool {
+	if o != nil && !IsNil(o.UserId) {
+		return true
+	}
+
+	return false
+}
+
+// SetUserId gets a reference to the given int64 and assigns it to the UserId field.
 func (o *RulesetV2) SetUserId(v int64) {
-	o.UserId = v
+	o.UserId = &v
 }
 
 // GetCampaignId returns the CampaignId field value if set, zero value otherwise.
@@ -239,9 +259,9 @@ func (o *RulesetV2) SetActivatedAt(v time.Time) {
 }
 
 // GetPromotionRules returns the PromotionRules field value
-func (o *RulesetV2) GetPromotionRules() []PromotionRuleV2 {
+func (o *RulesetV2) GetPromotionRules() []RuleV2 {
 	if o == nil {
-		var ret []PromotionRuleV2
+		var ret []RuleV2
 		return ret
 	}
 
@@ -250,7 +270,7 @@ func (o *RulesetV2) GetPromotionRules() []PromotionRuleV2 {
 
 // GetPromotionRulesOk returns a tuple with the PromotionRules field value
 // and a boolean to check if the value has been set.
-func (o *RulesetV2) GetPromotionRulesOk() ([]PromotionRuleV2, bool) {
+func (o *RulesetV2) GetPromotionRulesOk() ([]RuleV2, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -258,31 +278,39 @@ func (o *RulesetV2) GetPromotionRulesOk() ([]PromotionRuleV2, bool) {
 }
 
 // SetPromotionRules sets field value
-func (o *RulesetV2) SetPromotionRules(v []PromotionRuleV2) {
+func (o *RulesetV2) SetPromotionRules(v []RuleV2) {
 	o.PromotionRules = v
 }
 
-// GetStrikethroughRules returns the StrikethroughRules field value
-func (o *RulesetV2) GetStrikethroughRules() []StrikethroughRuleV2 {
-	if o == nil {
-		var ret []StrikethroughRuleV2
+// GetStrikethroughRules returns the StrikethroughRules field value if set, zero value otherwise.
+func (o *RulesetV2) GetStrikethroughRules() []RuleV2 {
+	if o == nil || IsNil(o.StrikethroughRules) {
+		var ret []RuleV2
 		return ret
 	}
-
 	return o.StrikethroughRules
 }
 
-// GetStrikethroughRulesOk returns a tuple with the StrikethroughRules field value
+// GetStrikethroughRulesOk returns a tuple with the StrikethroughRules field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *RulesetV2) GetStrikethroughRulesOk() ([]StrikethroughRuleV2, bool) {
-	if o == nil {
+func (o *RulesetV2) GetStrikethroughRulesOk() ([]RuleV2, bool) {
+	if o == nil || IsNil(o.StrikethroughRules) {
 		return nil, false
 	}
 	return o.StrikethroughRules, true
 }
 
-// SetStrikethroughRules sets field value
-func (o *RulesetV2) SetStrikethroughRules(v []StrikethroughRuleV2) {
+// HasStrikethroughRules returns a boolean if a field has been set.
+func (o *RulesetV2) HasStrikethroughRules() bool {
+	if o != nil && !IsNil(o.StrikethroughRules) {
+		return true
+	}
+
+	return false
+}
+
+// SetStrikethroughRules gets a reference to the given []RuleV2 and assigns it to the StrikethroughRules field.
+func (o *RulesetV2) SetStrikethroughRules(v []RuleV2) {
 	o.StrikethroughRules = v
 }
 
@@ -392,9 +420,15 @@ func (o RulesetV2) MarshalJSON() ([]byte, error) {
 
 func (o RulesetV2) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["id"] = o.Id
-	toSerialize["created"] = o.Created
-	toSerialize["userId"] = o.UserId
+	if !IsNil(o.Id) {
+		toSerialize["id"] = o.Id
+	}
+	if !IsNil(o.Created) {
+		toSerialize["created"] = o.Created
+	}
+	if !IsNil(o.UserId) {
+		toSerialize["userId"] = o.UserId
+	}
 	if !IsNil(o.CampaignId) {
 		toSerialize["campaignId"] = o.CampaignId
 	}
@@ -405,7 +439,9 @@ func (o RulesetV2) ToMap() (map[string]interface{}, error) {
 		toSerialize["activatedAt"] = o.ActivatedAt
 	}
 	toSerialize["promotionRules"] = o.PromotionRules
-	toSerialize["strikethroughRules"] = o.StrikethroughRules
+	if !IsNil(o.StrikethroughRules) {
+		toSerialize["strikethroughRules"] = o.StrikethroughRules
+	}
 	if !IsNil(o.Selectors) {
 		toSerialize["selectors"] = o.Selectors
 	}
@@ -428,11 +464,7 @@ func (o *RulesetV2) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"id",
-		"created",
-		"userId",
 		"promotionRules",
-		"strikethroughRules",
 	}
 
 	allProperties := make(map[string]interface{})

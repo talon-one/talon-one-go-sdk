@@ -21,16 +21,17 @@ var _ MappedNullable = &UpdateAttributeValueBlock{}
 // UpdateAttributeValueBlock struct for UpdateAttributeValueBlock
 type UpdateAttributeValueBlock struct {
 	// Unique identifier for this block.
-	Id string `json:"id"`
+	Id *string `json:"id,omitempty"`
 	// Identifies the block variant and determines which additional properties are present in it.
 	Type string `json:"type"`
 	// Semantic labels attached to this block.
 	Tags []string `json:"tags,omitempty"`
 	// The update operation applied to the attribute.
-	Operator             string                              `json:"operator"`
-	Attribute            UpdateAttributeValueBlock1Attribute `json:"attribute"`
-	Value                interface{}                         `json:"value,omitempty"`
-	Target               UpdateAttributeValueBlock1Target    `json:"target"`
+	Operator  string                              `json:"operator"`
+	Attribute UpdateAttributeValueBlock1Attribute `json:"attribute"`
+	// The value of the attribute. Omitted when operator is set to `toggle`.
+	Value                interface{}                      `json:"value,omitempty"`
+	Target               UpdateAttributeValueBlock1Target `json:"target"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -40,9 +41,8 @@ type _UpdateAttributeValueBlock UpdateAttributeValueBlock
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildUpdateAttributeValueBlock(id string, type_ string, operator string, attribute UpdateAttributeValueBlock1Attribute, target UpdateAttributeValueBlock1Target) *UpdateAttributeValueBlock {
+func BuildUpdateAttributeValueBlock(type_ string, operator string, attribute UpdateAttributeValueBlock1Attribute, target UpdateAttributeValueBlock1Target) *UpdateAttributeValueBlock {
 	this := UpdateAttributeValueBlock{}
-	this.Id = id
 	this.Type = type_
 	this.Operator = operator
 	this.Attribute = attribute
@@ -58,28 +58,36 @@ func NewUpdateAttributeValueBlockWithDefaults() *UpdateAttributeValueBlock {
 	return &this
 }
 
-// GetId returns the Id field value
+// GetId returns the Id field value if set, zero value otherwise.
 func (o *UpdateAttributeValueBlock) GetId() string {
-	if o == nil {
+	if o == nil || IsNil(o.Id) {
 		var ret string
 		return ret
 	}
-
-	return o.Id
+	return *o.Id
 }
 
-// GetIdOk returns a tuple with the Id field value
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *UpdateAttributeValueBlock) GetIdOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Id) {
 		return nil, false
 	}
-	return &o.Id, true
+	return o.Id, true
 }
 
-// SetId sets field value
+// HasId returns a boolean if a field has been set.
+func (o *UpdateAttributeValueBlock) HasId() bool {
+	if o != nil && !IsNil(o.Id) {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
 func (o *UpdateAttributeValueBlock) SetId(v string) {
-	o.Id = v
+	o.Id = &v
 }
 
 // GetType returns the Type field value
@@ -253,7 +261,9 @@ func (o UpdateAttributeValueBlock) MarshalJSON() ([]byte, error) {
 
 func (o UpdateAttributeValueBlock) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["id"] = o.Id
+	if !IsNil(o.Id) {
+		toSerialize["id"] = o.Id
+	}
 	toSerialize["type"] = o.Type
 	if !IsNil(o.Tags) {
 		toSerialize["tags"] = o.Tags
@@ -277,7 +287,6 @@ func (o *UpdateAttributeValueBlock) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"id",
 		"type",
 		"operator",
 		"attribute",

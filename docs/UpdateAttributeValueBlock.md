@@ -4,19 +4,19 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** | Unique identifier for this block. | 
+**Id** | Pointer to **string** | Unique identifier for this block. | [optional] [readonly] 
 **Type** | **string** | Identifies the block variant and determines which additional properties are present in it. | 
 **Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] 
 **Operator** | **string** | The update operation applied to the attribute. | 
 **Attribute** | [**UpdateAttributeValueBlock1Attribute**](UpdateAttributeValueBlock1Attribute.md) |  | 
-**Value** | Pointer to **interface{}** |  | [optional] 
+**Value** | Pointer to **interface{}** | The value of the attribute. Omitted when operator is set to &#x60;toggle&#x60;. | [optional] 
 **Target** | [**UpdateAttributeValueBlock1Target**](UpdateAttributeValueBlock1Target.md) |  | 
 
 ## Methods
 
 ### NewUpdateAttributeValueBlock
 
-`func NewUpdateAttributeValueBlock(id string, type_ string, operator string, attribute UpdateAttributeValueBlock1Attribute, target UpdateAttributeValueBlock1Target, ) *UpdateAttributeValueBlock`
+`func NewUpdateAttributeValueBlock(type_ string, operator string, attribute UpdateAttributeValueBlock1Attribute, target UpdateAttributeValueBlock1Target, ) *UpdateAttributeValueBlock`
 
 NewUpdateAttributeValueBlock instantiates a new UpdateAttributeValueBlock object
 This constructor will assign default values to properties that have it defined,
@@ -50,6 +50,11 @@ and a boolean to check if the value has been set.
 
 SetId sets Id field to given value.
 
+### HasId
+
+`func (o *UpdateAttributeValueBlock) HasId() bool`
+
+HasId returns a boolean if a field has been set.
 
 ### GetType
 

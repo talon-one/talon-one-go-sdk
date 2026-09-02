@@ -21,7 +21,8 @@ var _ MappedNullable = &ScalarCheckAttributeBlock{}
 // ScalarCheckAttributeBlock Variant of `CheckAttributeBlock` for operators that compare an attribute against a single value.
 type ScalarCheckAttributeBlock struct {
 	// The comparison operator applied to the attribute.
-	Operator             *string     `json:"operator,omitempty"`
+	Operator *string `json:"operator,omitempty"`
+	// The comparison value for this operator.
 	Value                interface{} `json:"value"`
 	AdditionalProperties map[string]interface{}
 }

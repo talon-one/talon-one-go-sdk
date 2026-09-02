@@ -85,14 +85,9 @@ func (dst *CreateCouponBlock1CampaignId) UnmarshalJSON(data []byte) error {
 	} else { // no match
 		if err != nil {
 			return fmt.Errorf("data failed to match schemas in oneOf(CreateCouponBlock1CampaignId): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(CreateCouponBlock1CampaignId)")
 		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(CreateCouponBlock1CampaignId): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(CreateCouponBlock1CampaignId)")
-		}
+
+		return fmt.Errorf("data failed to match schemas in oneOf(CreateCouponBlock1CampaignId)")
 	}
 }
 

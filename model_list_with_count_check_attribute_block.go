@@ -21,8 +21,10 @@ var _ MappedNullable = &ListWithCountCheckAttributeBlock{}
 // ListWithCountCheckAttributeBlock Variant of `CheckAttributeBlock` for operators that test list membership with a minimum or exact count threshold.
 type ListWithCountCheckAttributeBlock struct {
 	// The list membership operator with a count threshold applied to the attribute.
-	Operator             *string     `json:"operator,omitempty"`
-	Values               interface{} `json:"values"`
+	Operator *string `json:"operator,omitempty"`
+	// The set of values to match against.
+	Values interface{} `json:"values"`
+	// The count threshold for this operator.
 	Count                interface{} `json:"count"`
 	AdditionalProperties map[string]interface{}
 }

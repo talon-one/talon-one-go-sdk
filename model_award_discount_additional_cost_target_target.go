@@ -137,24 +137,9 @@ func (dst *AwardDiscountAdditionalCostTargetTarget) UnmarshalJSON(data []byte) e
 	} else { // no match
 		if err != nil {
 			return fmt.Errorf("data failed to match schemas in oneOf(AwardDiscountAdditionalCostTargetTarget): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(AwardDiscountAdditionalCostTargetTarget)")
 		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(AwardDiscountAdditionalCostTargetTarget): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(AwardDiscountAdditionalCostTargetTarget)")
-		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(AwardDiscountAdditionalCostTargetTarget): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(AwardDiscountAdditionalCostTargetTarget)")
-		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(AwardDiscountAdditionalCostTargetTarget): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(AwardDiscountAdditionalCostTargetTarget)")
-		}
+
+		return fmt.Errorf("data failed to match schemas in oneOf(AwardDiscountAdditionalCostTargetTarget)")
 	}
 }
 

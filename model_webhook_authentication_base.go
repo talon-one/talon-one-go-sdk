@@ -16,23 +16,23 @@ import (
 	"gopkg.in/validator.v2"
 )
 
-// WebhookAuthenticationBase - struct for WebhookAuthenticationBase
+// WebhookAuthenticationBase - Definition of all the properties that are needed to create or update a webhook authentication. The `type` field selects the concrete authentication variant.
 type WebhookAuthenticationBase struct {
-	WebhookAuthenticationBaseOneOf  *WebhookAuthenticationBaseOneOf
-	WebhookAuthenticationBaseOneOf1 *WebhookAuthenticationBaseOneOf1
+	WebhookAuthenticationBaseBasic  *WebhookAuthenticationBaseBasic
+	WebhookAuthenticationBaseCustom *WebhookAuthenticationBaseCustom
 }
 
-// WebhookAuthenticationBaseOneOfAsWebhookAuthenticationBase is a convenience function that returns WebhookAuthenticationBaseOneOf wrapped in WebhookAuthenticationBase
-func WebhookAuthenticationBaseOneOfAsWebhookAuthenticationBase(v *WebhookAuthenticationBaseOneOf) WebhookAuthenticationBase {
+// WebhookAuthenticationBaseBasicAsWebhookAuthenticationBase is a convenience function that returns WebhookAuthenticationBaseBasic wrapped in WebhookAuthenticationBase
+func WebhookAuthenticationBaseBasicAsWebhookAuthenticationBase(v *WebhookAuthenticationBaseBasic) WebhookAuthenticationBase {
 	return WebhookAuthenticationBase{
-		WebhookAuthenticationBaseOneOf: v,
+		WebhookAuthenticationBaseBasic: v,
 	}
 }
 
-// WebhookAuthenticationBaseOneOf1AsWebhookAuthenticationBase is a convenience function that returns WebhookAuthenticationBaseOneOf1 wrapped in WebhookAuthenticationBase
-func WebhookAuthenticationBaseOneOf1AsWebhookAuthenticationBase(v *WebhookAuthenticationBaseOneOf1) WebhookAuthenticationBase {
+// WebhookAuthenticationBaseCustomAsWebhookAuthenticationBase is a convenience function that returns WebhookAuthenticationBaseCustom wrapped in WebhookAuthenticationBase
+func WebhookAuthenticationBaseCustomAsWebhookAuthenticationBase(v *WebhookAuthenticationBaseCustom) WebhookAuthenticationBase {
 	return WebhookAuthenticationBase{
-		WebhookAuthenticationBaseOneOf1: v,
+		WebhookAuthenticationBaseCustom: v,
 	}
 }
 
@@ -40,44 +40,44 @@ func WebhookAuthenticationBaseOneOf1AsWebhookAuthenticationBase(v *WebhookAuthen
 func (dst *WebhookAuthenticationBase) UnmarshalJSON(data []byte) error {
 	var err error
 	match := 0
-	// try to unmarshal data into WebhookAuthenticationBaseOneOf
-	err = newStrictDecoder(data).Decode(&dst.WebhookAuthenticationBaseOneOf)
+	// try to unmarshal data into WebhookAuthenticationBaseBasic
+	err = newStrictDecoder(data).Decode(&dst.WebhookAuthenticationBaseBasic)
 	if err == nil {
-		jsonWebhookAuthenticationBaseOneOf, _ := json.Marshal(dst.WebhookAuthenticationBaseOneOf)
-		if string(jsonWebhookAuthenticationBaseOneOf) == "{}" { // empty struct
-			dst.WebhookAuthenticationBaseOneOf = nil
+		jsonWebhookAuthenticationBaseBasic, _ := json.Marshal(dst.WebhookAuthenticationBaseBasic)
+		if string(jsonWebhookAuthenticationBaseBasic) == "{}" { // empty struct
+			dst.WebhookAuthenticationBaseBasic = nil
 		} else {
-			if err = validator.Validate(dst.WebhookAuthenticationBaseOneOf); err != nil {
-				dst.WebhookAuthenticationBaseOneOf = nil
+			if err = validator.Validate(dst.WebhookAuthenticationBaseBasic); err != nil {
+				dst.WebhookAuthenticationBaseBasic = nil
 			} else {
 				match++
 			}
 		}
 	} else {
-		dst.WebhookAuthenticationBaseOneOf = nil
+		dst.WebhookAuthenticationBaseBasic = nil
 	}
 
-	// try to unmarshal data into WebhookAuthenticationBaseOneOf1
-	err = newStrictDecoder(data).Decode(&dst.WebhookAuthenticationBaseOneOf1)
+	// try to unmarshal data into WebhookAuthenticationBaseCustom
+	err = newStrictDecoder(data).Decode(&dst.WebhookAuthenticationBaseCustom)
 	if err == nil {
-		jsonWebhookAuthenticationBaseOneOf1, _ := json.Marshal(dst.WebhookAuthenticationBaseOneOf1)
-		if string(jsonWebhookAuthenticationBaseOneOf1) == "{}" { // empty struct
-			dst.WebhookAuthenticationBaseOneOf1 = nil
+		jsonWebhookAuthenticationBaseCustom, _ := json.Marshal(dst.WebhookAuthenticationBaseCustom)
+		if string(jsonWebhookAuthenticationBaseCustom) == "{}" { // empty struct
+			dst.WebhookAuthenticationBaseCustom = nil
 		} else {
-			if err = validator.Validate(dst.WebhookAuthenticationBaseOneOf1); err != nil {
-				dst.WebhookAuthenticationBaseOneOf1 = nil
+			if err = validator.Validate(dst.WebhookAuthenticationBaseCustom); err != nil {
+				dst.WebhookAuthenticationBaseCustom = nil
 			} else {
 				match++
 			}
 		}
 	} else {
-		dst.WebhookAuthenticationBaseOneOf1 = nil
+		dst.WebhookAuthenticationBaseCustom = nil
 	}
 
 	if match > 1 { // more than 1 match
 		// reset to nil
-		dst.WebhookAuthenticationBaseOneOf = nil
-		dst.WebhookAuthenticationBaseOneOf1 = nil
+		dst.WebhookAuthenticationBaseBasic = nil
+		dst.WebhookAuthenticationBaseCustom = nil
 
 		return fmt.Errorf("data matches more than one schema in oneOf(WebhookAuthenticationBase)")
 	} else if match == 1 {
@@ -85,25 +85,20 @@ func (dst *WebhookAuthenticationBase) UnmarshalJSON(data []byte) error {
 	} else { // no match
 		if err != nil {
 			return fmt.Errorf("data failed to match schemas in oneOf(WebhookAuthenticationBase): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(WebhookAuthenticationBase)")
 		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(WebhookAuthenticationBase): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(WebhookAuthenticationBase)")
-		}
+
+		return fmt.Errorf("data failed to match schemas in oneOf(WebhookAuthenticationBase)")
 	}
 }
 
 // Marshal data from the first non-nil pointers in the struct to JSON
 func (src WebhookAuthenticationBase) MarshalJSON() ([]byte, error) {
-	if src.WebhookAuthenticationBaseOneOf != nil {
-		return json.Marshal(&src.WebhookAuthenticationBaseOneOf)
+	if src.WebhookAuthenticationBaseBasic != nil {
+		return json.Marshal(&src.WebhookAuthenticationBaseBasic)
 	}
 
-	if src.WebhookAuthenticationBaseOneOf1 != nil {
-		return json.Marshal(&src.WebhookAuthenticationBaseOneOf1)
+	if src.WebhookAuthenticationBaseCustom != nil {
+		return json.Marshal(&src.WebhookAuthenticationBaseCustom)
 	}
 
 	return nil, nil // no data in oneOf schemas
@@ -114,12 +109,12 @@ func (obj *WebhookAuthenticationBase) GetActualInstance() interface{} {
 	if obj == nil {
 		return nil
 	}
-	if obj.WebhookAuthenticationBaseOneOf != nil {
-		return obj.WebhookAuthenticationBaseOneOf
+	if obj.WebhookAuthenticationBaseBasic != nil {
+		return obj.WebhookAuthenticationBaseBasic
 	}
 
-	if obj.WebhookAuthenticationBaseOneOf1 != nil {
-		return obj.WebhookAuthenticationBaseOneOf1
+	if obj.WebhookAuthenticationBaseCustom != nil {
+		return obj.WebhookAuthenticationBaseCustom
 	}
 
 	// all schemas are nil
@@ -128,12 +123,12 @@ func (obj *WebhookAuthenticationBase) GetActualInstance() interface{} {
 
 // Get the actual instance value
 func (obj WebhookAuthenticationBase) GetActualInstanceValue() interface{} {
-	if obj.WebhookAuthenticationBaseOneOf != nil {
-		return *obj.WebhookAuthenticationBaseOneOf
+	if obj.WebhookAuthenticationBaseBasic != nil {
+		return *obj.WebhookAuthenticationBaseBasic
 	}
 
-	if obj.WebhookAuthenticationBaseOneOf1 != nil {
-		return *obj.WebhookAuthenticationBaseOneOf1
+	if obj.WebhookAuthenticationBaseCustom != nil {
+		return *obj.WebhookAuthenticationBaseCustom
 	}
 
 	// all schemas are nil

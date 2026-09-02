@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 **Name** | **string** | The internal name of the achievement used in API requests.  | 
 **Title** | **string** | The display name of the achievement in the Campaign Manager. | 
 **Description** | **string** | The description of the achievement in the Campaign Manager. | 
-**CampaignId** | **int64** | This property is **deprecated**. Use &#x60;campaignIds&#x60; (Integration API) or &#x60;referencedByCampaigns&#x60; (Management API) instead. The first campaign ID in &#x60;campaignIds&#x60;. Only returned when &#x60;campaignIds&#x60; is not empty. | 
+**CampaignId** | Pointer to **int64** | This property is **deprecated**. Use &#x60;campaignIds&#x60; (Integration API) or &#x60;referencedByCampaigns&#x60; (Management API) instead. This field contains the first campaign ID from the related &#x60;campaignIds&#x60;, and is omitted when &#x60;campaignIds&#x60; is empty. | [optional] 
 **CampaignIds** | **[]int64** | The IDs of the campaigns that reference this achievement, in ascending order. | 
 **ReferencedByCampaigns** | [**[]CampaignReference**](CampaignReference.md) | The campaigns that reference this achievement, in ascending order of their &#x60;id&#x60;. | 
 **Target** | Pointer to **float32** | The required number of actions or the transactional milestone to complete the achievement. | [optional] 
@@ -27,7 +27,7 @@ Name | Type | Description | Notes
 
 ### NewAchievementProgressWithDefinition
 
-`func NewAchievementProgressWithDefinition(status string, progress float32, achievementId int64, name string, title string, description string, campaignId int64, campaignIds []int64, referencedByCampaigns []CampaignReference, achievementRecurrencePolicy string, achievementActivationPolicy string, ) *AchievementProgressWithDefinition`
+`func NewAchievementProgressWithDefinition(status string, progress float32, achievementId int64, name string, title string, description string, campaignIds []int64, referencedByCampaigns []CampaignReference, achievementRecurrencePolicy string, achievementActivationPolicy string, ) *AchievementProgressWithDefinition`
 
 NewAchievementProgressWithDefinition instantiates a new AchievementProgressWithDefinition object
 This constructor will assign default values to properties that have it defined,
@@ -256,6 +256,11 @@ and a boolean to check if the value has been set.
 
 SetCampaignId sets CampaignId field to given value.
 
+### HasCampaignId
+
+`func (o *AchievementProgressWithDefinition) HasCampaignId() bool`
+
+HasCampaignId returns a boolean if a field has been set.
 
 ### GetCampaignIds
 

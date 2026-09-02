@@ -21,7 +21,7 @@ var _ MappedNullable = &BaseBlock{}
 // BaseBlock Common properties shared by all block types.
 type BaseBlock struct {
 	// Unique identifier for this block.
-	Id string `json:"id"`
+	Id *string `json:"id,omitempty"`
 	// Identifies the block variant and determines which additional properties are present in it.
 	Type string `json:"type"`
 	// Semantic labels attached to this block.
@@ -35,9 +35,8 @@ type _BaseBlock BaseBlock
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildBaseBlock(id string, type_ string) *BaseBlock {
+func BuildBaseBlock(type_ string) *BaseBlock {
 	this := BaseBlock{}
-	this.Id = id
 	this.Type = type_
 	return &this
 }
@@ -50,28 +49,36 @@ func NewBaseBlockWithDefaults() *BaseBlock {
 	return &this
 }
 
-// GetId returns the Id field value
+// GetId returns the Id field value if set, zero value otherwise.
 func (o *BaseBlock) GetId() string {
-	if o == nil {
+	if o == nil || IsNil(o.Id) {
 		var ret string
 		return ret
 	}
-
-	return o.Id
+	return *o.Id
 }
 
-// GetIdOk returns a tuple with the Id field value
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *BaseBlock) GetIdOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Id) {
 		return nil, false
 	}
-	return &o.Id, true
+	return o.Id, true
 }
 
-// SetId sets field value
+// HasId returns a boolean if a field has been set.
+func (o *BaseBlock) HasId() bool {
+	if o != nil && !IsNil(o.Id) {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
 func (o *BaseBlock) SetId(v string) {
-	o.Id = v
+	o.Id = &v
 }
 
 // GetType returns the Type field value
@@ -140,7 +147,9 @@ func (o BaseBlock) MarshalJSON() ([]byte, error) {
 
 func (o BaseBlock) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["id"] = o.Id
+	if !IsNil(o.Id) {
+		toSerialize["id"] = o.Id
+	}
 	toSerialize["type"] = o.Type
 	if !IsNil(o.Tags) {
 		toSerialize["tags"] = o.Tags
@@ -158,7 +167,6 @@ func (o *BaseBlock) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"id",
 		"type",
 	}
 

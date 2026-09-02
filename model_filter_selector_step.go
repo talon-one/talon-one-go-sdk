@@ -21,8 +21,8 @@ var _ MappedNullable = &FilterSelectorStep{}
 // FilterSelectorStep Filters only items that match a predicate block.
 type FilterSelectorStep struct {
 	// A step discriminator of type `filter`.
-	Type                 string        `json:"type"`
-	Predicate            SelectorBlock `json:"predicate"`
+	Type                 string `json:"type"`
+	Predicate            Block  `json:"predicate"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -32,7 +32,7 @@ type _FilterSelectorStep FilterSelectorStep
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildFilterSelectorStep(type_ string, predicate SelectorBlock) *FilterSelectorStep {
+func BuildFilterSelectorStep(type_ string, predicate Block) *FilterSelectorStep {
 	this := FilterSelectorStep{}
 	this.Type = type_
 	this.Predicate = predicate
@@ -72,9 +72,9 @@ func (o *FilterSelectorStep) SetType(v string) {
 }
 
 // GetPredicate returns the Predicate field value
-func (o *FilterSelectorStep) GetPredicate() SelectorBlock {
+func (o *FilterSelectorStep) GetPredicate() Block {
 	if o == nil {
-		var ret SelectorBlock
+		var ret Block
 		return ret
 	}
 
@@ -83,7 +83,7 @@ func (o *FilterSelectorStep) GetPredicate() SelectorBlock {
 
 // GetPredicateOk returns a tuple with the Predicate field value
 // and a boolean to check if the value has been set.
-func (o *FilterSelectorStep) GetPredicateOk() (*SelectorBlock, bool) {
+func (o *FilterSelectorStep) GetPredicateOk() (*Block, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -91,7 +91,7 @@ func (o *FilterSelectorStep) GetPredicateOk() (*SelectorBlock, bool) {
 }
 
 // SetPredicate sets field value
-func (o *FilterSelectorStep) SetPredicate(v SelectorBlock) {
+func (o *FilterSelectorStep) SetPredicate(v Block) {
 	o.Predicate = v
 }
 

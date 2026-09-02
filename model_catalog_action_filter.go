@@ -23,7 +23,8 @@ type CatalogActionFilter struct {
 	// The name of the attribute to filter on.
 	Attr string `json:"attr"`
 	// The filtering operator.
-	Op                   string      `json:"op"`
+	Op string `json:"op"`
+	// The value to filter for.
 	Value                interface{} `json:"value"`
 	AdditionalProperties map[string]interface{}
 }

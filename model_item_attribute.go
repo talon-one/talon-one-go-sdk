@@ -23,7 +23,8 @@ type ItemAttribute struct {
 	// The ID of the attribute of the item.
 	Attributeid int64 `json:"attributeid"`
 	// The name of the attribute.
-	Name                 string      `json:"name"`
+	Name string `json:"name"`
+	// The value of the attribute.
 	Value                interface{} `json:"value"`
 	AdditionalProperties map[string]interface{}
 }

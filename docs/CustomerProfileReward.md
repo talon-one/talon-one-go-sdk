@@ -5,9 +5,12 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **int64** | The ID of the customer reward instance. A customer profile can have multiple instances of the same reward. | 
-**IntegrationId** | **string** | The integration ID of the reward. | 
+**IntegrationId** | **string** | The integration ID of the customer reward instance. | 
 **RewardId** | **int64** | The ID of the reward this instance belongs to. | 
+**RewardIntegrationId** | **string** | The integration ID of the reward this instance belongs to. | 
 **RewardName** | **string** | The name of the reward. | 
+**Description** | Pointer to **string** | The customer-facing description of the reward. | [optional] 
+**Rule** | Pointer to [**RuleMetadata**](RuleMetadata.md) | Customer-facing rule metadata for the reward. Only returned when the reward defines a rule. | [optional] 
 **Status** | **string** | The status of the customer reward: - &#x60;unlocked&#x60;: The reward is available for use. - &#x60;used&#x60;: The reward has been used.  | 
 **UnlockedAt** | **time.Time** | The date and time when the reward was unlocked. | 
 **UnlockedByProfileIntegrationId** | Pointer to **string** | The integration ID of the customer profile that unlocked the reward.   For rewards unlocked with a loyalty card, this can be any customer profile  linked to that loyalty card.  | [optional] 
@@ -20,7 +23,7 @@ Name | Type | Description | Notes
 
 ### NewCustomerProfileReward
 
-`func NewCustomerProfileReward(id int64, integrationId string, rewardId int64, rewardName string, status string, unlockedAt time.Time, ) *CustomerProfileReward`
+`func NewCustomerProfileReward(id int64, integrationId string, rewardId int64, rewardIntegrationId string, rewardName string, status string, unlockedAt time.Time, ) *CustomerProfileReward`
 
 NewCustomerProfileReward instantiates a new CustomerProfileReward object
 This constructor will assign default values to properties that have it defined,
@@ -95,6 +98,26 @@ and a boolean to check if the value has been set.
 SetRewardId sets RewardId field to given value.
 
 
+### GetRewardIntegrationId
+
+`func (o *CustomerProfileReward) GetRewardIntegrationId() string`
+
+GetRewardIntegrationId returns the RewardIntegrationId field if non-nil, zero value otherwise.
+
+### GetRewardIntegrationIdOk
+
+`func (o *CustomerProfileReward) GetRewardIntegrationIdOk() (*string, bool)`
+
+GetRewardIntegrationIdOk returns a tuple with the RewardIntegrationId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRewardIntegrationId
+
+`func (o *CustomerProfileReward) SetRewardIntegrationId(v string)`
+
+SetRewardIntegrationId sets RewardIntegrationId field to given value.
+
+
 ### GetRewardName
 
 `func (o *CustomerProfileReward) GetRewardName() string`
@@ -114,6 +137,56 @@ and a boolean to check if the value has been set.
 
 SetRewardName sets RewardName field to given value.
 
+
+### GetDescription
+
+`func (o *CustomerProfileReward) GetDescription() string`
+
+GetDescription returns the Description field if non-nil, zero value otherwise.
+
+### GetDescriptionOk
+
+`func (o *CustomerProfileReward) GetDescriptionOk() (*string, bool)`
+
+GetDescriptionOk returns a tuple with the Description field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetDescription
+
+`func (o *CustomerProfileReward) SetDescription(v string)`
+
+SetDescription sets Description field to given value.
+
+### HasDescription
+
+`func (o *CustomerProfileReward) HasDescription() bool`
+
+HasDescription returns a boolean if a field has been set.
+
+### GetRule
+
+`func (o *CustomerProfileReward) GetRule() RuleMetadata`
+
+GetRule returns the Rule field if non-nil, zero value otherwise.
+
+### GetRuleOk
+
+`func (o *CustomerProfileReward) GetRuleOk() (*RuleMetadata, bool)`
+
+GetRuleOk returns a tuple with the Rule field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRule
+
+`func (o *CustomerProfileReward) SetRule(v RuleMetadata)`
+
+SetRule sets Rule field to given value.
+
+### HasRule
+
+`func (o *CustomerProfileReward) HasRule() bool`
+
+HasRule returns a boolean if a field has been set.
 
 ### GetStatus
 

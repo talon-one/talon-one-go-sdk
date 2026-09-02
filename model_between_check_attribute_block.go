@@ -21,8 +21,10 @@ var _ MappedNullable = &BetweenCheckAttributeBlock{}
 // BetweenCheckAttributeBlock Variant of `CheckAttributeBlock` for the `between` operator, which requires both a minimum and maximum value.
 type BetweenCheckAttributeBlock struct {
 	// The range comparison operator. Must be `between`.
-	Operator             *string     `json:"operator,omitempty"`
-	Min                  interface{} `json:"min"`
+	Operator *string `json:"operator,omitempty"`
+	// The minimum value allowed for the `between` operator.
+	Min interface{} `json:"min"`
+	// The maximum value allowed for the `between` operator.
 	Max                  interface{} `json:"max"`
 	AdditionalProperties map[string]interface{}
 }

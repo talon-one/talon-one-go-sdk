@@ -21,7 +21,7 @@ var _ MappedNullable = &CheckAudienceBlock{}
 // CheckAudienceBlock struct for CheckAudienceBlock
 type CheckAudienceBlock struct {
 	// Unique identifier for this block.
-	Id string `json:"id"`
+	Id *string `json:"id,omitempty"`
 	// Identifies the block variant and determines which additional properties are present in it.
 	Type string `json:"type"`
 	// Semantic labels attached to this block.
@@ -32,7 +32,7 @@ type CheckAudienceBlock struct {
 	Profile  string                      `json:"profile"`
 	Audience CheckAudienceBlock1Audience `json:"audience"`
 	// Promotion blocks evaluated when this block fails or returns false.
-	OnFailure            []PromotionBlock `json:"onFailure,omitempty"`
+	OnFailure            []Block `json:"onFailure,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -42,9 +42,8 @@ type _CheckAudienceBlock CheckAudienceBlock
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCheckAudienceBlock(id string, type_ string, operator string, profile string, audience CheckAudienceBlock1Audience) *CheckAudienceBlock {
+func BuildCheckAudienceBlock(type_ string, operator string, profile string, audience CheckAudienceBlock1Audience) *CheckAudienceBlock {
 	this := CheckAudienceBlock{}
-	this.Id = id
 	this.Type = type_
 	this.Operator = operator
 	this.Profile = profile
@@ -60,28 +59,36 @@ func NewCheckAudienceBlockWithDefaults() *CheckAudienceBlock {
 	return &this
 }
 
-// GetId returns the Id field value
+// GetId returns the Id field value if set, zero value otherwise.
 func (o *CheckAudienceBlock) GetId() string {
-	if o == nil {
+	if o == nil || IsNil(o.Id) {
 		var ret string
 		return ret
 	}
-
-	return o.Id
+	return *o.Id
 }
 
-// GetIdOk returns a tuple with the Id field value
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CheckAudienceBlock) GetIdOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Id) {
 		return nil, false
 	}
-	return &o.Id, true
+	return o.Id, true
 }
 
-// SetId sets field value
+// HasId returns a boolean if a field has been set.
+func (o *CheckAudienceBlock) HasId() bool {
+	if o != nil && !IsNil(o.Id) {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
 func (o *CheckAudienceBlock) SetId(v string) {
-	o.Id = v
+	o.Id = &v
 }
 
 // GetType returns the Type field value
@@ -213,9 +220,9 @@ func (o *CheckAudienceBlock) SetAudience(v CheckAudienceBlock1Audience) {
 }
 
 // GetOnFailure returns the OnFailure field value if set, zero value otherwise.
-func (o *CheckAudienceBlock) GetOnFailure() []PromotionBlock {
+func (o *CheckAudienceBlock) GetOnFailure() []Block {
 	if o == nil || IsNil(o.OnFailure) {
-		var ret []PromotionBlock
+		var ret []Block
 		return ret
 	}
 	return o.OnFailure
@@ -223,7 +230,7 @@ func (o *CheckAudienceBlock) GetOnFailure() []PromotionBlock {
 
 // GetOnFailureOk returns a tuple with the OnFailure field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *CheckAudienceBlock) GetOnFailureOk() ([]PromotionBlock, bool) {
+func (o *CheckAudienceBlock) GetOnFailureOk() ([]Block, bool) {
 	if o == nil || IsNil(o.OnFailure) {
 		return nil, false
 	}
@@ -239,8 +246,8 @@ func (o *CheckAudienceBlock) HasOnFailure() bool {
 	return false
 }
 
-// SetOnFailure gets a reference to the given []PromotionBlock and assigns it to the OnFailure field.
-func (o *CheckAudienceBlock) SetOnFailure(v []PromotionBlock) {
+// SetOnFailure gets a reference to the given []Block and assigns it to the OnFailure field.
+func (o *CheckAudienceBlock) SetOnFailure(v []Block) {
 	o.OnFailure = v
 }
 
@@ -254,7 +261,9 @@ func (o CheckAudienceBlock) MarshalJSON() ([]byte, error) {
 
 func (o CheckAudienceBlock) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["id"] = o.Id
+	if !IsNil(o.Id) {
+		toSerialize["id"] = o.Id
+	}
 	toSerialize["type"] = o.Type
 	if !IsNil(o.Tags) {
 		toSerialize["tags"] = o.Tags
@@ -278,7 +287,6 @@ func (o *CheckAudienceBlock) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"id",
 		"type",
 		"operator",
 		"profile",

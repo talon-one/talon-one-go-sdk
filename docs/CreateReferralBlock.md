@@ -4,16 +4,16 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** | Unique identifier for this block. | 
+**Id** | Pointer to **string** | Unique identifier for this block. | [optional] [readonly] 
 **Type** | **string** | Identifies the block variant and determines which additional properties are present in it. | 
-**Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] 
+**Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] [readonly] 
 **CampaignId** | [**CreateReferralBlock1CampaignId**](CreateReferralBlock1CampaignId.md) |  | 
 **FriendId** | **string** | An optional integration ID of the friend&#39;s profile. | 
 **StoreInSession** | **bool** | When &#x60;true&#x60;, the referral code is stored in the session. | 
 **UsageLimit** | Pointer to [**CreateReferralBlock1UsageLimit**](CreateReferralBlock1UsageLimit.md) |  | [optional] 
-**StartDate** | Pointer to **interface{}** |  | [optional] 
-**ExpiryDate** | Pointer to **interface{}** |  | [optional] 
-**Attributes** | Pointer to **interface{}** |  | [optional] 
+**StartDate** | Pointer to **interface{}** | Timestamp at which point the referral code becomes valid. | [optional] 
+**ExpiryDate** | Pointer to **interface{}** | Expiration date of the referral code. Referral code never expires if this is omitted. | [optional] 
+**Attributes** | Pointer to **interface{}** | Custom attributes associated with this referral code. | [optional] 
 **ValidCharacters** | Pointer to **string** | Characters used to generate the random parts of a code. | [optional] 
 **Pattern** | Pointer to **string** | The pattern used to generate codes, such as coupon codes, referral codes, and loyalty cards. The character &#x60;#&#x60; is a placeholder and is replaced by a random character from the &#x60;validCharacters&#x60; set.  | [optional] 
 
@@ -21,7 +21,7 @@ Name | Type | Description | Notes
 
 ### NewCreateReferralBlock
 
-`func NewCreateReferralBlock(id string, type_ string, campaignId CreateReferralBlock1CampaignId, friendId string, storeInSession bool, ) *CreateReferralBlock`
+`func NewCreateReferralBlock(type_ string, campaignId CreateReferralBlock1CampaignId, friendId string, storeInSession bool, ) *CreateReferralBlock`
 
 NewCreateReferralBlock instantiates a new CreateReferralBlock object
 This constructor will assign default values to properties that have it defined,
@@ -55,6 +55,11 @@ and a boolean to check if the value has been set.
 
 SetId sets Id field to given value.
 
+### HasId
+
+`func (o *CreateReferralBlock) HasId() bool`
+
+HasId returns a boolean if a field has been set.
 
 ### GetType
 

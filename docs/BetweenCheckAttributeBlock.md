@@ -5,8 +5,8 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Operator** | Pointer to **string** | The range comparison operator. Must be &#x60;between&#x60;. | [optional] 
-**Min** | **interface{}** |  | 
-**Max** | **interface{}** |  | 
+**Min** | **interface{}** | The minimum value allowed for the &#x60;between&#x60; operator. | 
+**Max** | **interface{}** | The maximum value allowed for the &#x60;between&#x60; operator. | 
 
 ## Methods
 

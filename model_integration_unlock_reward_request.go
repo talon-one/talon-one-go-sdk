@@ -18,17 +18,19 @@ import (
 // checks if the IntegrationUnlockRewardRequest type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &IntegrationUnlockRewardRequest{}
 
-// IntegrationUnlockRewardRequest The request body for unlocking a reward for a customer profile.
+// IntegrationUnlockRewardRequest The request body for unlocking a reward for a customer profile, optionally using the balance of one of the customer's loyalty cards.
 type IntegrationUnlockRewardRequest struct {
 	// The integration ID to assign to the created customer reward unlock.
 	IntegrationId string `json:"integrationId"`
 	// The integration ID of the customer profile unlocking the reward.
 	ProfileIntegrationId string `json:"profileIntegrationId"`
+	// The identifier of the loyalty card unlocking the reward. When provided, the required points are deducted from the card's balance and the unlocked reward belongs to the card, which makes it available to all customer profiles linked to that card. The customer profile given in `profileIntegrationId` must be linked to the card, and the card must be active.
+	CardIdentifier *string `json:"cardIdentifier,omitempty" validate:"regexp=^[A-Za-z0-9._%+@-]+$"`
 	// The ID of the loyalty program from which points will be deducted. Required when the reward has `pointsRequired` configured.
 	LoyaltyProgramId *int64 `json:"loyaltyProgramId,omitempty"`
 	// The ID of the subledger from which points will be deducted. Required when the reward has `pointsRequired` configured.  To specify the main ledger, provide an empty string (\"\").
 	SubledgerId *string `json:"subledgerId,omitempty"`
-	// Determines which data is included in the response. Add any of the following optional values to the array to get that data in the response: `customerProfile`, `effects`, `ruleFailureReasons`, `loyalty`.
+	// Determines which data is included in the response. Add any of the following optional values to the array to get that data in the response: `customerProfile`, `ruleFailureReasons`, `loyalty`. `effects` is always returned regardless of whether it is included here.
 	ResponseContent      []string `json:"responseContent,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
@@ -100,6 +102,38 @@ func (o *IntegrationUnlockRewardRequest) GetProfileIntegrationIdOk() (*string, b
 // SetProfileIntegrationId sets field value
 func (o *IntegrationUnlockRewardRequest) SetProfileIntegrationId(v string) {
 	o.ProfileIntegrationId = v
+}
+
+// GetCardIdentifier returns the CardIdentifier field value if set, zero value otherwise.
+func (o *IntegrationUnlockRewardRequest) GetCardIdentifier() string {
+	if o == nil || IsNil(o.CardIdentifier) {
+		var ret string
+		return ret
+	}
+	return *o.CardIdentifier
+}
+
+// GetCardIdentifierOk returns a tuple with the CardIdentifier field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IntegrationUnlockRewardRequest) GetCardIdentifierOk() (*string, bool) {
+	if o == nil || IsNil(o.CardIdentifier) {
+		return nil, false
+	}
+	return o.CardIdentifier, true
+}
+
+// HasCardIdentifier returns a boolean if a field has been set.
+func (o *IntegrationUnlockRewardRequest) HasCardIdentifier() bool {
+	if o != nil && !IsNil(o.CardIdentifier) {
+		return true
+	}
+
+	return false
+}
+
+// SetCardIdentifier gets a reference to the given string and assigns it to the CardIdentifier field.
+func (o *IntegrationUnlockRewardRequest) SetCardIdentifier(v string) {
+	o.CardIdentifier = &v
 }
 
 // GetLoyaltyProgramId returns the LoyaltyProgramId field value if set, zero value otherwise.
@@ -210,6 +244,9 @@ func (o IntegrationUnlockRewardRequest) ToMap() (map[string]interface{}, error) 
 	toSerialize := map[string]interface{}{}
 	toSerialize["integrationId"] = o.IntegrationId
 	toSerialize["profileIntegrationId"] = o.ProfileIntegrationId
+	if !IsNil(o.CardIdentifier) {
+		toSerialize["cardIdentifier"] = o.CardIdentifier
+	}
 	if !IsNil(o.LoyaltyProgramId) {
 		toSerialize["loyaltyProgramId"] = o.LoyaltyProgramId
 	}
@@ -265,6 +302,7 @@ func (o *IntegrationUnlockRewardRequest) UnmarshalJSON(data []byte) (err error) 
 	if err = json.Unmarshal(data, &additionalProperties); err == nil {
 		delete(additionalProperties, "integrationId")
 		delete(additionalProperties, "profileIntegrationId")
+		delete(additionalProperties, "cardIdentifier")
 		delete(additionalProperties, "loyaltyProgramId")
 		delete(additionalProperties, "subledgerId")
 		delete(additionalProperties, "responseContent")

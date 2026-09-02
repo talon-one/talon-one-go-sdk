@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Operator** | Pointer to **string** | The comparison operator applied to the attribute. | [optional] 
-**Value** | **interface{}** |  | 
+**Value** | **interface{}** | The comparison value for this operator. | 
 
 ## Methods
 

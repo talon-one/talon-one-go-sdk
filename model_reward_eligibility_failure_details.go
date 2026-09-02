@@ -22,7 +22,7 @@ var _ MappedNullable = &RewardEligibilityFailureDetails{}
 type RewardEligibilityFailureDetails struct {
 	// A code identifying why the customer is not eligible for the reward.
 	FailureCode string `json:"failureCode"`
-	// The index of the eligibility condition that the customer did not meet.
+	// The index of the eligibility condition that the customer did not meet. Only applicable when `failureCode` is `CONDITION_NOT_MET`.
 	ConditionIndex       *int64 `json:"conditionIndex,omitempty"`
 	AdditionalProperties map[string]interface{}
 }

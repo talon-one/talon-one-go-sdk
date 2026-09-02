@@ -85,14 +85,9 @@ func (dst *CheckAttributeBlock) UnmarshalJSON(data []byte) error {
 	} else { // no match
 		if err != nil {
 			return fmt.Errorf("data failed to match schemas in oneOf(CheckAttributeBlock): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(CheckAttributeBlock)")
 		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(CheckAttributeBlock): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(CheckAttributeBlock)")
-		}
+
+		return fmt.Errorf("data failed to match schemas in oneOf(CheckAttributeBlock)")
 	}
 }
 

@@ -21,7 +21,7 @@ var _ MappedNullable = &AwardItemBlock{}
 // AwardItemBlock struct for AwardItemBlock
 type AwardItemBlock struct {
 	// Unique identifier for this block.
-	Id string `json:"id"`
+	Id *string `json:"id,omitempty"`
 	// Identifies the block variant and determines which additional properties are present in it.
 	Type string `json:"type"`
 	// Semantic labels attached to this block.
@@ -35,9 +35,9 @@ type AwardItemBlock struct {
 	// When set to `true`, applies a partial item reward if the remaining budget is insufficient to award the full reward.
 	Partial *bool `json:"partial,omitempty"`
 	// Blocks evaluated when this block fails or returns false.
-	OnFailure []PromotionBlock `json:"onFailure,omitempty"`
+	OnFailure []Block `json:"onFailure,omitempty"`
 	// Named error handlers evaluated when a specific error occurs.
-	OnError              map[string][]PromotionBlock `json:"onError,omitempty"`
+	OnError              map[string][]Block `json:"onError,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -47,9 +47,8 @@ type _AwardItemBlock AwardItemBlock
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildAwardItemBlock(id string, type_ string, sku string, name string, quantity string) *AwardItemBlock {
+func BuildAwardItemBlock(type_ string, sku string, name string, quantity string) *AwardItemBlock {
 	this := AwardItemBlock{}
-	this.Id = id
 	this.Type = type_
 	this.Sku = sku
 	this.Name = name
@@ -65,28 +64,36 @@ func NewAwardItemBlockWithDefaults() *AwardItemBlock {
 	return &this
 }
 
-// GetId returns the Id field value
+// GetId returns the Id field value if set, zero value otherwise.
 func (o *AwardItemBlock) GetId() string {
-	if o == nil {
+	if o == nil || IsNil(o.Id) {
 		var ret string
 		return ret
 	}
-
-	return o.Id
+	return *o.Id
 }
 
-// GetIdOk returns a tuple with the Id field value
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AwardItemBlock) GetIdOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Id) {
 		return nil, false
 	}
-	return &o.Id, true
+	return o.Id, true
 }
 
-// SetId sets field value
+// HasId returns a boolean if a field has been set.
+func (o *AwardItemBlock) HasId() bool {
+	if o != nil && !IsNil(o.Id) {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
 func (o *AwardItemBlock) SetId(v string) {
-	o.Id = v
+	o.Id = &v
 }
 
 // GetType returns the Type field value
@@ -250,9 +257,9 @@ func (o *AwardItemBlock) SetPartial(v bool) {
 }
 
 // GetOnFailure returns the OnFailure field value if set, zero value otherwise.
-func (o *AwardItemBlock) GetOnFailure() []PromotionBlock {
+func (o *AwardItemBlock) GetOnFailure() []Block {
 	if o == nil || IsNil(o.OnFailure) {
-		var ret []PromotionBlock
+		var ret []Block
 		return ret
 	}
 	return o.OnFailure
@@ -260,7 +267,7 @@ func (o *AwardItemBlock) GetOnFailure() []PromotionBlock {
 
 // GetOnFailureOk returns a tuple with the OnFailure field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *AwardItemBlock) GetOnFailureOk() ([]PromotionBlock, bool) {
+func (o *AwardItemBlock) GetOnFailureOk() ([]Block, bool) {
 	if o == nil || IsNil(o.OnFailure) {
 		return nil, false
 	}
@@ -276,15 +283,15 @@ func (o *AwardItemBlock) HasOnFailure() bool {
 	return false
 }
 
-// SetOnFailure gets a reference to the given []PromotionBlock and assigns it to the OnFailure field.
-func (o *AwardItemBlock) SetOnFailure(v []PromotionBlock) {
+// SetOnFailure gets a reference to the given []Block and assigns it to the OnFailure field.
+func (o *AwardItemBlock) SetOnFailure(v []Block) {
 	o.OnFailure = v
 }
 
 // GetOnError returns the OnError field value if set, zero value otherwise.
-func (o *AwardItemBlock) GetOnError() map[string][]PromotionBlock {
+func (o *AwardItemBlock) GetOnError() map[string][]Block {
 	if o == nil || IsNil(o.OnError) {
-		var ret map[string][]PromotionBlock
+		var ret map[string][]Block
 		return ret
 	}
 	return o.OnError
@@ -292,9 +299,9 @@ func (o *AwardItemBlock) GetOnError() map[string][]PromotionBlock {
 
 // GetOnErrorOk returns a tuple with the OnError field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *AwardItemBlock) GetOnErrorOk() (map[string][]PromotionBlock, bool) {
+func (o *AwardItemBlock) GetOnErrorOk() (map[string][]Block, bool) {
 	if o == nil || IsNil(o.OnError) {
-		return map[string][]PromotionBlock{}, false
+		return map[string][]Block{}, false
 	}
 	return o.OnError, true
 }
@@ -308,8 +315,8 @@ func (o *AwardItemBlock) HasOnError() bool {
 	return false
 }
 
-// SetOnError gets a reference to the given map[string][]PromotionBlock and assigns it to the OnError field.
-func (o *AwardItemBlock) SetOnError(v map[string][]PromotionBlock) {
+// SetOnError gets a reference to the given map[string][]Block and assigns it to the OnError field.
+func (o *AwardItemBlock) SetOnError(v map[string][]Block) {
 	o.OnError = v
 }
 
@@ -323,7 +330,9 @@ func (o AwardItemBlock) MarshalJSON() ([]byte, error) {
 
 func (o AwardItemBlock) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["id"] = o.Id
+	if !IsNil(o.Id) {
+		toSerialize["id"] = o.Id
+	}
 	toSerialize["type"] = o.Type
 	if !IsNil(o.Tags) {
 		toSerialize["tags"] = o.Tags
@@ -353,7 +362,6 @@ func (o *AwardItemBlock) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"id",
 		"type",
 		"sku",
 		"name",

@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **Coupons** | Pointer to [**[]InventoryCoupon**](InventoryCoupon.md) | The coupons reserved by this profile. This array includes hard and soft reservations.  | [optional] 
 **Giveaways** | Pointer to [**[]Giveaway**](Giveaway.md) |  | [optional] 
 **Achievements** | Pointer to [**[]AchievementProgressWithDefinition**](AchievementProgressWithDefinition.md) |  | [optional] 
-**Rewards** | Pointer to **[]interface{}** | The customer rewards that are &#x60;unlocked&#x60; and not yet &#x60;used&#x60;. | [optional] 
+**Rewards** | Pointer to [**[]RewardWithUnlocks**](RewardWithUnlocks.md) | The customer rewards that are &#x60;unlocked&#x60; and not yet &#x60;used&#x60;. | [optional] 
 
 ## Methods
 
@@ -183,20 +183,20 @@ HasAchievements returns a boolean if a field has been set.
 
 ### GetRewards
 
-`func (o *CustomerInventory) GetRewards() []interface{}`
+`func (o *CustomerInventory) GetRewards() []RewardWithUnlocks`
 
 GetRewards returns the Rewards field if non-nil, zero value otherwise.
 
 ### GetRewardsOk
 
-`func (o *CustomerInventory) GetRewardsOk() (*[]interface{}, bool)`
+`func (o *CustomerInventory) GetRewardsOk() (*[]RewardWithUnlocks, bool)`
 
 GetRewardsOk returns a tuple with the Rewards field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetRewards
 
-`func (o *CustomerInventory) SetRewards(v []interface{})`
+`func (o *CustomerInventory) SetRewards(v []RewardWithUnlocks)`
 
 SetRewards sets Rewards field to given value.
 

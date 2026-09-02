@@ -4,9 +4,9 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** | Unique identifier for this block. | 
+**Id** | Pointer to **string** | Unique identifier for this block. | [optional] [readonly] 
 **Type** | **string** | Identifies the block variant and determines which additional properties are present in it. | 
-**Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] 
+**Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] [readonly] 
 **Operator** | **string** | The action to perform. | 
 **Profile** | **string** | The customer profile to add or remove from the audience. &#x60;Current&#x60; targets the customer in the current session; &#x60;Advocate&#x60; targets the person who invited their friend via referral program. | 
 **Audience** | [**UpdateAudienceMembershipBlock1Audience**](UpdateAudienceMembershipBlock1Audience.md) |  | 
@@ -15,7 +15,7 @@ Name | Type | Description | Notes
 
 ### NewUpdateAudienceMembershipBlock
 
-`func NewUpdateAudienceMembershipBlock(id string, type_ string, operator string, profile string, audience UpdateAudienceMembershipBlock1Audience, ) *UpdateAudienceMembershipBlock`
+`func NewUpdateAudienceMembershipBlock(type_ string, operator string, profile string, audience UpdateAudienceMembershipBlock1Audience, ) *UpdateAudienceMembershipBlock`
 
 NewUpdateAudienceMembershipBlock instantiates a new UpdateAudienceMembershipBlock object
 This constructor will assign default values to properties that have it defined,
@@ -49,6 +49,11 @@ and a boolean to check if the value has been set.
 
 SetId sets Id field to given value.
 
+### HasId
+
+`func (o *UpdateAudienceMembershipBlock) HasId() bool`
+
+HasId returns a boolean if a field has been set.
 
 ### GetType
 

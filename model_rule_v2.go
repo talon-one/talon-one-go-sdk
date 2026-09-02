@@ -27,7 +27,9 @@ type RuleV2 struct {
 	// A short description of the rule.
 	Title string `json:"title"`
 	// A longer description of the rule.
-	Description          *string `json:"description,omitempty"`
+	Description *string `json:"description,omitempty"`
+	// The condition and effect blocks that make up this rule.
+	Blocks               []Block `json:"blocks"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -37,9 +39,10 @@ type _RuleV2 RuleV2
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildRuleV2(title string) *RuleV2 {
+func BuildRuleV2(title string, blocks []Block) *RuleV2 {
 	this := RuleV2{}
 	this.Title = title
+	this.Blocks = blocks
 	return &this
 }
 
@@ -171,6 +174,30 @@ func (o *RuleV2) SetDescription(v string) {
 	o.Description = &v
 }
 
+// GetBlocks returns the Blocks field value
+func (o *RuleV2) GetBlocks() []Block {
+	if o == nil {
+		var ret []Block
+		return ret
+	}
+
+	return o.Blocks
+}
+
+// GetBlocksOk returns a tuple with the Blocks field value
+// and a boolean to check if the value has been set.
+func (o *RuleV2) GetBlocksOk() ([]Block, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Blocks, true
+}
+
+// SetBlocks sets field value
+func (o *RuleV2) SetBlocks(v []Block) {
+	o.Blocks = v
+}
+
 func (o RuleV2) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -191,6 +218,7 @@ func (o RuleV2) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Description) {
 		toSerialize["description"] = o.Description
 	}
+	toSerialize["blocks"] = o.Blocks
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value
@@ -205,6 +233,7 @@ func (o *RuleV2) UnmarshalJSON(data []byte) (err error) {
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
 		"title",
+		"blocks",
 	}
 
 	allProperties := make(map[string]interface{})
@@ -238,6 +267,7 @@ func (o *RuleV2) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "parentId")
 		delete(additionalProperties, "title")
 		delete(additionalProperties, "description")
+		delete(additionalProperties, "blocks")
 		o.AdditionalProperties = additionalProperties
 	}
 

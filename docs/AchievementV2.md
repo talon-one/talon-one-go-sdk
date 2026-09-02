@@ -24,7 +24,7 @@ Name | Type | Description | Notes
 **Status** | Pointer to **string** | The status of the achievement.                                                                                               - &#x60;active&#x60;: The achievement is available to customers. - &#x60;scheduled&#x60;: The achievement has a &#x60;fixedStartDate&#x60; set in the future. - &#x60;expired&#x60;: The achievement&#39;s &#x60;endDate&#x60; is in the past.  | [optional] 
 **Sandbox** | **bool** | Indicates if this achievement is a live or sandbox achievement. Achievements of a given type can only be connected to Applications of the same type. | 
 **Timezone** | **string** | A string containing an IANA timezone descriptor. | 
-**CampaignId** | Pointer to **int64** | This property is **deprecated**. Use &#x60;referencedByCampaigns&#x60; instead. The ID of the first campaign in &#x60;referencedByCampaigns&#x60;. Only returned when &#x60;referencedByCampaigns&#x60; is not empty. | [optional] 
+**CampaignId** | Pointer to **int64** | This property is **deprecated**. Use &#x60;referencedByCampaigns&#x60; instead. This field contains the first campaign ID from the related &#x60;referencedByCampaigns&#x60;, and is omitted when &#x60;referencedByCampaigns&#x60; is empty. | [optional] 
 **ReferencedByCampaigns** | [**[]CampaignReference**](CampaignReference.md) | The campaigns that reference this achievement. They are sorted in ascending order by their id. | 
 
 ## Methods

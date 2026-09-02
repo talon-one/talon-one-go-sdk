@@ -85,14 +85,9 @@ func (dst *CreateReferralBlock1UsageLimit) UnmarshalJSON(data []byte) error {
 	} else { // no match
 		if err != nil {
 			return fmt.Errorf("data failed to match schemas in oneOf(CreateReferralBlock1UsageLimit): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(CreateReferralBlock1UsageLimit)")
 		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(CreateReferralBlock1UsageLimit): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(CreateReferralBlock1UsageLimit)")
-		}
+
+		return fmt.Errorf("data failed to match schemas in oneOf(CreateReferralBlock1UsageLimit)")
 	}
 }
 

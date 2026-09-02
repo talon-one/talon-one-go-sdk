@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **ExpiryDate** | Pointer to **time.Time** | Expiration date of the coupon. Coupon never expires if this is omitted. | [optional] 
 **Limits** | Pointer to [**[]LimitConfig**](LimitConfig.md) | Limits configuration for a coupon. These limits will override the limits set from the campaign.  **Note:** Only usable when creating a single coupon which is not tied to a specific recipient. Only per-profile limits are allowed to be configured.  | [optional] 
 **NumberOfCoupons** | **int64** | The number of new coupon codes to generate for the campaign. Must be at least 1. | 
+**BatchId** | Pointer to **string** | The batch ID that all coupons created by the request will bear. If omitted, a batch ID is generated automatically. | [optional] 
 **UniquePrefix** | Pointer to **string** | **DEPRECATED** To create more than 20,000 coupons in one request, use [Create coupons asynchronously](https://docs.talon.one/management-api#tag/Coupons/operation/createCouponsAsync) endpoint.  | [optional] 
 **Attributes** | Pointer to **map[string]interface{}** | Arbitrary properties associated with this item. | [optional] 
 **RecipientIntegrationId** | Pointer to **string** | The integration ID for this coupon&#39;s beneficiary&#39;s profile. | [optional] 
@@ -209,6 +210,31 @@ and a boolean to check if the value has been set.
 
 SetNumberOfCoupons sets NumberOfCoupons field to given value.
 
+
+### GetBatchId
+
+`func (o *NewCoupons) GetBatchId() string`
+
+GetBatchId returns the BatchId field if non-nil, zero value otherwise.
+
+### GetBatchIdOk
+
+`func (o *NewCoupons) GetBatchIdOk() (*string, bool)`
+
+GetBatchIdOk returns a tuple with the BatchId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetBatchId
+
+`func (o *NewCoupons) SetBatchId(v string)`
+
+SetBatchId sets BatchId field to given value.
+
+### HasBatchId
+
+`func (o *NewCoupons) HasBatchId() bool`
+
+HasBatchId returns a boolean if a field has been set.
 
 ### GetUniquePrefix
 

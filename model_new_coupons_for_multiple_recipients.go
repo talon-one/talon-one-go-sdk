@@ -31,6 +31,8 @@ type NewCouponsForMultipleRecipients struct {
 	StartDate *time.Time `json:"startDate,omitempty"`
 	// Expiration date of the coupon. Coupon never expires if this is omitted.
 	ExpiryDate *time.Time `json:"expiryDate,omitempty"`
+	// The batch ID that all coupons created by the request will bear. If omitted, a batch ID is generated automatically.
+	BatchId *string `json:"batchId,omitempty"`
 	// Arbitrary properties associated with this item.
 	Attributes map[string]interface{} `json:"attributes,omitempty"`
 	// The integration IDs for recipients.
@@ -222,6 +224,38 @@ func (o *NewCouponsForMultipleRecipients) SetExpiryDate(v time.Time) {
 	o.ExpiryDate = &v
 }
 
+// GetBatchId returns the BatchId field value if set, zero value otherwise.
+func (o *NewCouponsForMultipleRecipients) GetBatchId() string {
+	if o == nil || IsNil(o.BatchId) {
+		var ret string
+		return ret
+	}
+	return *o.BatchId
+}
+
+// GetBatchIdOk returns a tuple with the BatchId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *NewCouponsForMultipleRecipients) GetBatchIdOk() (*string, bool) {
+	if o == nil || IsNil(o.BatchId) {
+		return nil, false
+	}
+	return o.BatchId, true
+}
+
+// HasBatchId returns a boolean if a field has been set.
+func (o *NewCouponsForMultipleRecipients) HasBatchId() bool {
+	if o != nil && !IsNil(o.BatchId) {
+		return true
+	}
+
+	return false
+}
+
+// SetBatchId gets a reference to the given string and assigns it to the BatchId field.
+func (o *NewCouponsForMultipleRecipients) SetBatchId(v string) {
+	o.BatchId = &v
+}
+
 // GetAttributes returns the Attributes field value if set, zero value otherwise.
 func (o *NewCouponsForMultipleRecipients) GetAttributes() map[string]interface{} {
 	if o == nil || IsNil(o.Attributes) {
@@ -367,6 +401,9 @@ func (o NewCouponsForMultipleRecipients) ToMap() (map[string]interface{}, error)
 	if !IsNil(o.ExpiryDate) {
 		toSerialize["expiryDate"] = o.ExpiryDate
 	}
+	if !IsNil(o.BatchId) {
+		toSerialize["batchId"] = o.BatchId
+	}
 	if !IsNil(o.Attributes) {
 		toSerialize["attributes"] = o.Attributes
 	}
@@ -425,6 +462,7 @@ func (o *NewCouponsForMultipleRecipients) UnmarshalJSON(data []byte) (err error)
 		delete(additionalProperties, "reservationLimit")
 		delete(additionalProperties, "startDate")
 		delete(additionalProperties, "expiryDate")
+		delete(additionalProperties, "batchId")
 		delete(additionalProperties, "attributes")
 		delete(additionalProperties, "recipientsIntegrationIds")
 		delete(additionalProperties, "validCharacters")

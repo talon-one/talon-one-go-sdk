@@ -8,12 +8,13 @@ Name | Type | Description | Notes
 **ParentId** | Pointer to **string** | ID of the parent rule, if any. | [optional] 
 **Title** | **string** | A short description of the rule. | 
 **Description** | Pointer to **string** | A longer description of the rule. | [optional] 
+**Blocks** | [**[]Block**](Block.md) | The condition and effect blocks that make up this rule. | 
 
 ## Methods
 
 ### NewRuleV2
 
-`func NewRuleV2(title string, ) *RuleV2`
+`func NewRuleV2(title string, blocks []Block, ) *RuleV2`
 
 NewRuleV2 instantiates a new RuleV2 object
 This constructor will assign default values to properties that have it defined,
@@ -122,6 +123,26 @@ SetDescription sets Description field to given value.
 `func (o *RuleV2) HasDescription() bool`
 
 HasDescription returns a boolean if a field has been set.
+
+### GetBlocks
+
+`func (o *RuleV2) GetBlocks() []Block`
+
+GetBlocks returns the Blocks field if non-nil, zero value otherwise.
+
+### GetBlocksOk
+
+`func (o *RuleV2) GetBlocksOk() (*[]Block, bool)`
+
+GetBlocksOk returns a tuple with the Blocks field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetBlocks
+
+`func (o *RuleV2) SetBlocks(v []Block)`
+
+SetBlocks sets Blocks field to given value.
+
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

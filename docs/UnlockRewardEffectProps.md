@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **ApplicationId** | **int64** | The internal ID of the application the reward belongs to. | 
 **ProfileIntegrationId** | **string** | The integration ID of the customer profile that unlocked the reward. | 
 **UnlockedAt** | **time.Time** | The time the reward was unlocked. | 
+**CardIdentifier** | Pointer to **string** | The identifier of the loyalty card that unlocked the reward. Only returned when the reward was unlocked with a loyalty card, in which case the reward belongs to the card and is available to all customer profiles linked to it.  | [optional] 
 
 ## Methods
 
@@ -128,6 +129,31 @@ and a boolean to check if the value has been set.
 
 SetUnlockedAt sets UnlockedAt field to given value.
 
+
+### GetCardIdentifier
+
+`func (o *UnlockRewardEffectProps) GetCardIdentifier() string`
+
+GetCardIdentifier returns the CardIdentifier field if non-nil, zero value otherwise.
+
+### GetCardIdentifierOk
+
+`func (o *UnlockRewardEffectProps) GetCardIdentifierOk() (*string, bool)`
+
+GetCardIdentifierOk returns a tuple with the CardIdentifier field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCardIdentifier
+
+`func (o *UnlockRewardEffectProps) SetCardIdentifier(v string)`
+
+SetCardIdentifier sets CardIdentifier field to given value.
+
+### HasCardIdentifier
+
+`func (o *UnlockRewardEffectProps) HasCardIdentifier() bool`
+
+HasCardIdentifier returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

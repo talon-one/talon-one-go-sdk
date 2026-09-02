@@ -397,74 +397,9 @@ func (dst *BaseNotificationPolicy) UnmarshalJSON(data []byte) error {
 	} else { // no match
 		if err != nil {
 			return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy)")
 		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy)")
-		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy)")
-		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy)")
-		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy)")
-		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy)")
-		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy)")
-		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy)")
-		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy)")
-		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy)")
-		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy)")
-		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy)")
-		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy)")
-		}
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy): %v", err)
-		} else {
-			return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy)")
-		}
+
+		return fmt.Errorf("data failed to match schemas in oneOf(BaseNotificationPolicy)")
 	}
 }
 

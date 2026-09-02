@@ -18,13 +18,13 @@ import (
 // checks if the IncreaseAchievementProgressEffectProps type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &IncreaseAchievementProgressEffectProps{}
 
-// IncreaseAchievementProgressEffectProps This effect indicates that the customer's progress in an achievement was updated during the current session. It is triggered when a rule using the [Update customer progress](https://docs.talon.one/docs/product/rules/effects/use-effects#update-customer-progress) effect is successfully validated.  For [on-completion achievements](https://docs.talon.one/docs/product/achievements/achievements-overview#recurring-on-completion-achievements), any customer progress exceeding the target automatically starts a new iteration. This generates a new `progressTrackerId` for each iteration, and there can be multiple progress updates for the same achievement from a single validation of this effect.
+// IncreaseAchievementProgressEffectProps This effect indicates that the customer's progress in an achievement was updated during the current session. It is triggered when a rule using the [Update customer progress](https://docs.talon.one/docs/product/rules/effects/use-effects#update-customer-progress) effect is successfully validated.  For [on-completion achievements](https://docs.talon.one/docs/product/achievements/overview#recurring-on-completion-achievements), any customer progress exceeding the target automatically starts a new iteration. This generates a new `progressTrackerId` for each iteration, and there can be multiple progress updates for the same achievement from a single validation of this effect.
 type IncreaseAchievementProgressEffectProps struct {
 	// The internal ID of the achievement.
 	AchievementId int64 `json:"achievementId"`
 	// The name of the achievement.
 	AchievementName string `json:"achievementName"`
-	// The internal ID of the customer progress tracker. For [on-completion achievements](https://docs.talon.one/docs/product/achievements/achievements-overview#recurring-on-completion-achievements), this effect generates a unique ID for each iteration.
+	// The internal ID of the customer progress tracker. For [on-completion achievements](https://docs.talon.one/docs/product/achievements/overview#recurring-on-completion-achievements), this effect generates a unique ID for each iteration.
 	ProgressTrackerId *int64 `json:"progressTrackerId,omitempty"`
 	// The value by which the customer's current progress in the achievement has increased.
 	Delta float32 `json:"delta"`

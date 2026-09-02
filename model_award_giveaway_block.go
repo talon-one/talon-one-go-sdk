@@ -21,18 +21,19 @@ var _ MappedNullable = &AwardGiveawayBlock{}
 // AwardGiveawayBlock struct for AwardGiveawayBlock
 type AwardGiveawayBlock struct {
 	// Unique identifier for this block.
-	Id string `json:"id"`
+	Id *string `json:"id,omitempty"`
 	// Identifies the block variant and determines which additional properties are present in it.
 	Type string `json:"type"`
 	// Semantic labels attached to this block.
-	Tags         []string                        `json:"tags,omitempty"`
-	GiveawayPool AwardGiveawayBlock1GiveawayPool `json:"giveawayPool"`
+	Tags []string `json:"tags,omitempty"`
+	// The giveaway pool from which an item is awarded.
+	GiveawayPool GiveawayPoolReference `json:"giveawayPool"`
 	// The customer profile to award the giveaway to. `Current` targets the customer in the current session; `Advocate` targets the person who invited their friend via referral program.
 	Profile string `json:"profile"`
 	// Blocks evaluated when this block fails or returns false.
-	OnFailure []PromotionBlock `json:"onFailure,omitempty"`
+	OnFailure []Block `json:"onFailure,omitempty"`
 	// Named error handlers evaluated when a specific error occurs.
-	OnError              map[string][]PromotionBlock `json:"onError,omitempty"`
+	OnError              map[string][]Block `json:"onError,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -42,9 +43,8 @@ type _AwardGiveawayBlock AwardGiveawayBlock
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildAwardGiveawayBlock(id string, type_ string, giveawayPool AwardGiveawayBlock1GiveawayPool, profile string) *AwardGiveawayBlock {
+func BuildAwardGiveawayBlock(type_ string, giveawayPool GiveawayPoolReference, profile string) *AwardGiveawayBlock {
 	this := AwardGiveawayBlock{}
-	this.Id = id
 	this.Type = type_
 	this.GiveawayPool = giveawayPool
 	this.Profile = profile
@@ -59,28 +59,36 @@ func NewAwardGiveawayBlockWithDefaults() *AwardGiveawayBlock {
 	return &this
 }
 
-// GetId returns the Id field value
+// GetId returns the Id field value if set, zero value otherwise.
 func (o *AwardGiveawayBlock) GetId() string {
-	if o == nil {
+	if o == nil || IsNil(o.Id) {
 		var ret string
 		return ret
 	}
-
-	return o.Id
+	return *o.Id
 }
 
-// GetIdOk returns a tuple with the Id field value
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AwardGiveawayBlock) GetIdOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Id) {
 		return nil, false
 	}
-	return &o.Id, true
+	return o.Id, true
 }
 
-// SetId sets field value
+// HasId returns a boolean if a field has been set.
+func (o *AwardGiveawayBlock) HasId() bool {
+	if o != nil && !IsNil(o.Id) {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
 func (o *AwardGiveawayBlock) SetId(v string) {
-	o.Id = v
+	o.Id = &v
 }
 
 // GetType returns the Type field value
@@ -140,9 +148,9 @@ func (o *AwardGiveawayBlock) SetTags(v []string) {
 }
 
 // GetGiveawayPool returns the GiveawayPool field value
-func (o *AwardGiveawayBlock) GetGiveawayPool() AwardGiveawayBlock1GiveawayPool {
+func (o *AwardGiveawayBlock) GetGiveawayPool() GiveawayPoolReference {
 	if o == nil {
-		var ret AwardGiveawayBlock1GiveawayPool
+		var ret GiveawayPoolReference
 		return ret
 	}
 
@@ -151,7 +159,7 @@ func (o *AwardGiveawayBlock) GetGiveawayPool() AwardGiveawayBlock1GiveawayPool {
 
 // GetGiveawayPoolOk returns a tuple with the GiveawayPool field value
 // and a boolean to check if the value has been set.
-func (o *AwardGiveawayBlock) GetGiveawayPoolOk() (*AwardGiveawayBlock1GiveawayPool, bool) {
+func (o *AwardGiveawayBlock) GetGiveawayPoolOk() (*GiveawayPoolReference, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -159,7 +167,7 @@ func (o *AwardGiveawayBlock) GetGiveawayPoolOk() (*AwardGiveawayBlock1GiveawayPo
 }
 
 // SetGiveawayPool sets field value
-func (o *AwardGiveawayBlock) SetGiveawayPool(v AwardGiveawayBlock1GiveawayPool) {
+func (o *AwardGiveawayBlock) SetGiveawayPool(v GiveawayPoolReference) {
 	o.GiveawayPool = v
 }
 
@@ -188,9 +196,9 @@ func (o *AwardGiveawayBlock) SetProfile(v string) {
 }
 
 // GetOnFailure returns the OnFailure field value if set, zero value otherwise.
-func (o *AwardGiveawayBlock) GetOnFailure() []PromotionBlock {
+func (o *AwardGiveawayBlock) GetOnFailure() []Block {
 	if o == nil || IsNil(o.OnFailure) {
-		var ret []PromotionBlock
+		var ret []Block
 		return ret
 	}
 	return o.OnFailure
@@ -198,7 +206,7 @@ func (o *AwardGiveawayBlock) GetOnFailure() []PromotionBlock {
 
 // GetOnFailureOk returns a tuple with the OnFailure field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *AwardGiveawayBlock) GetOnFailureOk() ([]PromotionBlock, bool) {
+func (o *AwardGiveawayBlock) GetOnFailureOk() ([]Block, bool) {
 	if o == nil || IsNil(o.OnFailure) {
 		return nil, false
 	}
@@ -214,15 +222,15 @@ func (o *AwardGiveawayBlock) HasOnFailure() bool {
 	return false
 }
 
-// SetOnFailure gets a reference to the given []PromotionBlock and assigns it to the OnFailure field.
-func (o *AwardGiveawayBlock) SetOnFailure(v []PromotionBlock) {
+// SetOnFailure gets a reference to the given []Block and assigns it to the OnFailure field.
+func (o *AwardGiveawayBlock) SetOnFailure(v []Block) {
 	o.OnFailure = v
 }
 
 // GetOnError returns the OnError field value if set, zero value otherwise.
-func (o *AwardGiveawayBlock) GetOnError() map[string][]PromotionBlock {
+func (o *AwardGiveawayBlock) GetOnError() map[string][]Block {
 	if o == nil || IsNil(o.OnError) {
-		var ret map[string][]PromotionBlock
+		var ret map[string][]Block
 		return ret
 	}
 	return o.OnError
@@ -230,9 +238,9 @@ func (o *AwardGiveawayBlock) GetOnError() map[string][]PromotionBlock {
 
 // GetOnErrorOk returns a tuple with the OnError field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *AwardGiveawayBlock) GetOnErrorOk() (map[string][]PromotionBlock, bool) {
+func (o *AwardGiveawayBlock) GetOnErrorOk() (map[string][]Block, bool) {
 	if o == nil || IsNil(o.OnError) {
-		return map[string][]PromotionBlock{}, false
+		return map[string][]Block{}, false
 	}
 	return o.OnError, true
 }
@@ -246,8 +254,8 @@ func (o *AwardGiveawayBlock) HasOnError() bool {
 	return false
 }
 
-// SetOnError gets a reference to the given map[string][]PromotionBlock and assigns it to the OnError field.
-func (o *AwardGiveawayBlock) SetOnError(v map[string][]PromotionBlock) {
+// SetOnError gets a reference to the given map[string][]Block and assigns it to the OnError field.
+func (o *AwardGiveawayBlock) SetOnError(v map[string][]Block) {
 	o.OnError = v
 }
 
@@ -261,7 +269,9 @@ func (o AwardGiveawayBlock) MarshalJSON() ([]byte, error) {
 
 func (o AwardGiveawayBlock) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["id"] = o.Id
+	if !IsNil(o.Id) {
+		toSerialize["id"] = o.Id
+	}
 	toSerialize["type"] = o.Type
 	if !IsNil(o.Tags) {
 		toSerialize["tags"] = o.Tags
@@ -287,7 +297,6 @@ func (o *AwardGiveawayBlock) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"id",
 		"type",
 		"giveawayPool",
 		"profile",

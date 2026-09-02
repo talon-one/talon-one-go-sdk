@@ -47,11 +47,11 @@ type AchievementStatusEntry struct {
 	EndDate *time.Time `json:"endDate,omitempty"`
 	// When `true`, customer progress can be rolled back in completed achievements.
 	AllowRollbackAfterCompletion *bool `json:"allowRollbackAfterCompletion,omitempty"`
-	// This property is **deprecated**. Use `campaignIds` instead. The first campaign ID in `campaignIds`. Only returned when `campaignIds` is not empty.
+	// This property is **deprecated**. Use `referencedByCampaigns` instead. This field contains the first campaign ID from the related `referencedByCampaigns`, and is omitted when `referencedByCampaigns` is empty.
 	// Deprecated
 	CampaignId *int64 `json:"campaignId,omitempty"`
 	// The IDs of the campaigns that reference this achievement, in ascending order.
-	CampaignIds []int64 `json:"campaignIds"`
+	CampaignIds []int64 `json:"campaignIds,omitempty"`
 	// The status of the achievement.
 	Status               *string              `json:"status,omitempty"`
 	CurrentProgress      *AchievementProgress `json:"currentProgress,omitempty"`
@@ -64,7 +64,7 @@ type _AchievementStatusEntry AchievementStatusEntry
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildAchievementStatusEntry(id int64, created time.Time, name string, title string, description string, target float32, campaignIds []int64) *AchievementStatusEntry {
+func BuildAchievementStatusEntry(id int64, created time.Time, name string, title string, description string, target float32) *AchievementStatusEntry {
 	this := AchievementStatusEntry{}
 	this.Id = id
 	this.Created = created
@@ -72,7 +72,6 @@ func BuildAchievementStatusEntry(id int64, created time.Time, name string, title
 	this.Title = title
 	this.Description = description
 	this.Target = target
-	this.CampaignIds = campaignIds
 	return &this
 }
 
@@ -490,26 +489,34 @@ func (o *AchievementStatusEntry) SetCampaignId(v int64) {
 	o.CampaignId = &v
 }
 
-// GetCampaignIds returns the CampaignIds field value
+// GetCampaignIds returns the CampaignIds field value if set, zero value otherwise.
 func (o *AchievementStatusEntry) GetCampaignIds() []int64 {
-	if o == nil {
+	if o == nil || IsNil(o.CampaignIds) {
 		var ret []int64
 		return ret
 	}
-
 	return o.CampaignIds
 }
 
-// GetCampaignIdsOk returns a tuple with the CampaignIds field value
+// GetCampaignIdsOk returns a tuple with the CampaignIds field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AchievementStatusEntry) GetCampaignIdsOk() ([]int64, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.CampaignIds) {
 		return nil, false
 	}
 	return o.CampaignIds, true
 }
 
-// SetCampaignIds sets field value
+// HasCampaignIds returns a boolean if a field has been set.
+func (o *AchievementStatusEntry) HasCampaignIds() bool {
+	if o != nil && !IsNil(o.CampaignIds) {
+		return true
+	}
+
+	return false
+}
+
+// SetCampaignIds gets a reference to the given []int64 and assigns it to the CampaignIds field.
 func (o *AchievementStatusEntry) SetCampaignIds(v []int64) {
 	o.CampaignIds = v
 }
@@ -618,7 +625,9 @@ func (o AchievementStatusEntry) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CampaignId) {
 		toSerialize["campaignId"] = o.CampaignId
 	}
-	toSerialize["campaignIds"] = o.CampaignIds
+	if !IsNil(o.CampaignIds) {
+		toSerialize["campaignIds"] = o.CampaignIds
+	}
 	if !IsNil(o.Status) {
 		toSerialize["status"] = o.Status
 	}
@@ -644,7 +653,6 @@ func (o *AchievementStatusEntry) UnmarshalJSON(data []byte) (err error) {
 		"title",
 		"description",
 		"target",
-		"campaignIds",
 	}
 
 	allProperties := make(map[string]interface{})

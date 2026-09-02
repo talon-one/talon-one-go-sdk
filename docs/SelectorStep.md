@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Type** | **string** | A step discriminator of type &#x60;filter&#x60;. | 
-**Predicate** | [**SelectorBlock**](SelectorBlock.md) |  | 
+**Predicate** | [**Block**](Block.md) |  | 
 **Fields** | [**[]SortSelectorStepField**](SortSelectorStepField.md) | One or more fields to sort by, applied in order. Each field has its own direction. | 
 **Operator** | **string** | The aggregation operator applied to the items produced by the preceding step: - &#x60;max&#x60;, &#x60;min&#x60;, and &#x60;sum&#x60; operate on numeric values. - &#x60;count&#x60; returns the number of items. - &#x60;empty&#x60; reports whether the list is empty.  | 
 **From** | Pointer to [**SelectSelectorStepFrom**](SelectSelectorStepFrom.md) |  | [optional] 
@@ -20,7 +20,7 @@ Name | Type | Description | Notes
 
 ### NewSelectorStep
 
-`func NewSelectorStep(type_ string, predicate SelectorBlock, fields []SortSelectorStepField, operator string, expression string, valueMap SelectorValueMapRef, ) *SelectorStep`
+`func NewSelectorStep(type_ string, predicate Block, fields []SortSelectorStepField, operator string, expression string, valueMap SelectorValueMapRef, ) *SelectorStep`
 
 NewSelectorStep instantiates a new SelectorStep object
 This constructor will assign default values to properties that have it defined,
@@ -57,20 +57,20 @@ SetType sets Type field to given value.
 
 ### GetPredicate
 
-`func (o *SelectorStep) GetPredicate() SelectorBlock`
+`func (o *SelectorStep) GetPredicate() Block`
 
 GetPredicate returns the Predicate field if non-nil, zero value otherwise.
 
 ### GetPredicateOk
 
-`func (o *SelectorStep) GetPredicateOk() (*SelectorBlock, bool)`
+`func (o *SelectorStep) GetPredicateOk() (*Block, bool)`
 
 GetPredicateOk returns a tuple with the Predicate field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetPredicate
 
-`func (o *SelectorStep) SetPredicate(v SelectorBlock)`
+`func (o *SelectorStep) SetPredicate(v Block)`
 
 SetPredicate sets Predicate field to given value.
 

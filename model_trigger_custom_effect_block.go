@@ -21,7 +21,7 @@ var _ MappedNullable = &TriggerCustomEffectBlock{}
 // TriggerCustomEffectBlock struct for TriggerCustomEffectBlock
 type TriggerCustomEffectBlock struct {
 	// Unique identifier for this block.
-	Id string `json:"id"`
+	Id *string `json:"id,omitempty"`
 	// Identifies the block variant and determines which additional properties are present in it.
 	Type string `json:"type"`
 	// Semantic labels attached to this block.
@@ -31,7 +31,7 @@ type TriggerCustomEffectBlock struct {
 	Params map[string]interface{}          `json:"params,omitempty"`
 	Target TriggerCustomEffectBlock1Target `json:"target"`
 	// Named error handlers evaluated when a specific error occurs.
-	OnError              map[string][]PromotionBlock `json:"onError,omitempty"`
+	OnError              map[string][]Block `json:"onError,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -41,9 +41,8 @@ type _TriggerCustomEffectBlock TriggerCustomEffectBlock
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildTriggerCustomEffectBlock(id string, type_ string, customEffect TriggerCustomEffectBlock1CustomEffect, target TriggerCustomEffectBlock1Target) *TriggerCustomEffectBlock {
+func BuildTriggerCustomEffectBlock(type_ string, customEffect TriggerCustomEffectBlock1CustomEffect, target TriggerCustomEffectBlock1Target) *TriggerCustomEffectBlock {
 	this := TriggerCustomEffectBlock{}
-	this.Id = id
 	this.Type = type_
 	this.CustomEffect = customEffect
 	this.Target = target
@@ -58,28 +57,36 @@ func NewTriggerCustomEffectBlockWithDefaults() *TriggerCustomEffectBlock {
 	return &this
 }
 
-// GetId returns the Id field value
+// GetId returns the Id field value if set, zero value otherwise.
 func (o *TriggerCustomEffectBlock) GetId() string {
-	if o == nil {
+	if o == nil || IsNil(o.Id) {
 		var ret string
 		return ret
 	}
-
-	return o.Id
+	return *o.Id
 }
 
-// GetIdOk returns a tuple with the Id field value
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *TriggerCustomEffectBlock) GetIdOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Id) {
 		return nil, false
 	}
-	return &o.Id, true
+	return o.Id, true
 }
 
-// SetId sets field value
+// HasId returns a boolean if a field has been set.
+func (o *TriggerCustomEffectBlock) HasId() bool {
+	if o != nil && !IsNil(o.Id) {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
 func (o *TriggerCustomEffectBlock) SetId(v string) {
-	o.Id = v
+	o.Id = &v
 }
 
 // GetType returns the Type field value
@@ -219,9 +226,9 @@ func (o *TriggerCustomEffectBlock) SetTarget(v TriggerCustomEffectBlock1Target) 
 }
 
 // GetOnError returns the OnError field value if set, zero value otherwise.
-func (o *TriggerCustomEffectBlock) GetOnError() map[string][]PromotionBlock {
+func (o *TriggerCustomEffectBlock) GetOnError() map[string][]Block {
 	if o == nil || IsNil(o.OnError) {
-		var ret map[string][]PromotionBlock
+		var ret map[string][]Block
 		return ret
 	}
 	return o.OnError
@@ -229,9 +236,9 @@ func (o *TriggerCustomEffectBlock) GetOnError() map[string][]PromotionBlock {
 
 // GetOnErrorOk returns a tuple with the OnError field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *TriggerCustomEffectBlock) GetOnErrorOk() (map[string][]PromotionBlock, bool) {
+func (o *TriggerCustomEffectBlock) GetOnErrorOk() (map[string][]Block, bool) {
 	if o == nil || IsNil(o.OnError) {
-		return map[string][]PromotionBlock{}, false
+		return map[string][]Block{}, false
 	}
 	return o.OnError, true
 }
@@ -245,8 +252,8 @@ func (o *TriggerCustomEffectBlock) HasOnError() bool {
 	return false
 }
 
-// SetOnError gets a reference to the given map[string][]PromotionBlock and assigns it to the OnError field.
-func (o *TriggerCustomEffectBlock) SetOnError(v map[string][]PromotionBlock) {
+// SetOnError gets a reference to the given map[string][]Block and assigns it to the OnError field.
+func (o *TriggerCustomEffectBlock) SetOnError(v map[string][]Block) {
 	o.OnError = v
 }
 
@@ -260,7 +267,9 @@ func (o TriggerCustomEffectBlock) MarshalJSON() ([]byte, error) {
 
 func (o TriggerCustomEffectBlock) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["id"] = o.Id
+	if !IsNil(o.Id) {
+		toSerialize["id"] = o.Id
+	}
 	toSerialize["type"] = o.Type
 	if !IsNil(o.Tags) {
 		toSerialize["tags"] = o.Tags
@@ -286,7 +295,6 @@ func (o *TriggerCustomEffectBlock) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"id",
 		"type",
 		"customEffect",
 		"target",

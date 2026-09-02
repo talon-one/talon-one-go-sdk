@@ -40,6 +40,8 @@ type IntegrationEventV2Response struct {
 	AwardedGiveaways []Giveaway `json:"awardedGiveaways,omitempty"`
 	// The achievements progress of the customer.
 	Achievements []CustomerAchievement `json:"achievements,omitempty"`
+	// The unlocked rewards for the customer profile.
+	Rewards []RewardWithUnlocks `json:"rewards,omitempty"`
 	// The event that was processed.
 	Event                *Event `json:"event,omitempty"`
 	AdditionalProperties map[string]interface{}
@@ -363,6 +365,38 @@ func (o *IntegrationEventV2Response) SetAchievements(v []CustomerAchievement) {
 	o.Achievements = v
 }
 
+// GetRewards returns the Rewards field value if set, zero value otherwise.
+func (o *IntegrationEventV2Response) GetRewards() []RewardWithUnlocks {
+	if o == nil || IsNil(o.Rewards) {
+		var ret []RewardWithUnlocks
+		return ret
+	}
+	return o.Rewards
+}
+
+// GetRewardsOk returns a tuple with the Rewards field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IntegrationEventV2Response) GetRewardsOk() ([]RewardWithUnlocks, bool) {
+	if o == nil || IsNil(o.Rewards) {
+		return nil, false
+	}
+	return o.Rewards, true
+}
+
+// HasRewards returns a boolean if a field has been set.
+func (o *IntegrationEventV2Response) HasRewards() bool {
+	if o != nil && !IsNil(o.Rewards) {
+		return true
+	}
+
+	return false
+}
+
+// SetRewards gets a reference to the given []RewardWithUnlocks and assigns it to the Rewards field.
+func (o *IntegrationEventV2Response) SetRewards(v []RewardWithUnlocks) {
+	o.Rewards = v
+}
+
 // GetEvent returns the Event field value if set, zero value otherwise.
 func (o *IntegrationEventV2Response) GetEvent() Event {
 	if o == nil || IsNil(o.Event) {
@@ -429,6 +463,9 @@ func (o IntegrationEventV2Response) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Achievements) {
 		toSerialize["achievements"] = o.Achievements
 	}
+	if !IsNil(o.Rewards) {
+		toSerialize["rewards"] = o.Rewards
+	}
 	if !IsNil(o.Event) {
 		toSerialize["event"] = o.Event
 	}
@@ -487,6 +524,7 @@ func (o *IntegrationEventV2Response) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "createdReferrals")
 		delete(additionalProperties, "awardedGiveaways")
 		delete(additionalProperties, "achievements")
+		delete(additionalProperties, "rewards")
 		delete(additionalProperties, "event")
 		o.AdditionalProperties = additionalProperties
 	}
