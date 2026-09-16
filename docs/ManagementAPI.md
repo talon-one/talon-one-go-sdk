@@ -14,6 +14,7 @@ Method | HTTP request | Description
 [**CreateAdditionalCost**](ManagementAPI.md#CreateAdditionalCost) | **Post** /v1/additional_costs | Create additional cost
 [**CreateAttribute**](ManagementAPI.md#CreateAttribute) | **Post** /v1/attributes | Create custom attribute
 [**CreateBatchLoyaltyCards**](ManagementAPI.md#CreateBatchLoyaltyCards) | **Post** /v1/loyalty_programs/{loyaltyProgramId}/cards/batch | Create loyalty cards
+[**CreateCampaign**](ManagementAPI.md#CreateCampaign) | **Post** /v1/applications/{applicationId}/campaigns | Create campaign
 [**CreateCampaignFromTemplate**](ManagementAPI.md#CreateCampaignFromTemplate) | **Post** /v1/applications/{applicationId}/create_campaign_from_template | Create campaign from campaign template
 [**CreateCampaignStoreBudget**](ManagementAPI.md#CreateCampaignStoreBudget) | **Post** /v1/applications/{applicationId}/campaigns/{campaignId}/stores/budgets | Create campaign store budget
 [**CreateCollection**](ManagementAPI.md#CreateCollection) | **Post** /v1/applications/{applicationId}/campaigns/{campaignId}/collections | Create campaign-level collection
@@ -883,6 +884,78 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**LoyaltyCardBatchResponse**](LoyaltyCardBatchResponse.md)
+
+### Authorization
+
+[api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## CreateCampaign
+
+> Campaign CreateCampaign(ctx, applicationId).NewCampaign(newCampaign).Execute()
+
+Create campaign
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	applicationId := int64(789) // int64 | The ID of the Application. It is displayed in your Talon.One deployment URL.
+	newCampaign := *openapiclient.NewNewCampaign("Summer promotions", "enabled", []string{"Tags_example"}, []string{"Features_example"}, []openapiclient.LimitConfig{*openapiclient.NewLimitConfig("createCoupon", float32(1000), []string{"Entities_example"})}) // NewCampaign | body
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ManagementAPI.CreateCampaign(context.Background(), applicationId).NewCampaign(newCampaign).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.CreateCampaign``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `CreateCampaign`: Campaign
+	fmt.Fprintf(os.Stdout, "Response from `ManagementAPI.CreateCampaign`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**applicationId** | **int64** | The ID of the Application. It is displayed in your Talon.One deployment URL. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiCreateCampaignRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **newCampaign** | [**NewCampaign**](NewCampaign.md) | body | 
+
+### Return type
+
+[**Campaign**](Campaign.md)
 
 ### Authorization
 
@@ -4203,7 +4276,7 @@ Name | Type | Description  | Notes
 
 ## ExportLoyaltyBalances
 
-> string ExportLoyaltyBalances(ctx, loyaltyProgramId).EndDate(endDate).Balances(balances).Execute()
+> string ExportLoyaltyBalances(ctx, loyaltyProgramId).EndDate(endDate).Balances(balances).SubledgerIds(subledgerIds).Execute()
 
 Export customer loyalty balances
 
@@ -4226,10 +4299,11 @@ func main() {
 	loyaltyProgramId := "loyaltyProgramId_example" // string | The identifier for the loyalty program.
 	endDate := time.Now() // time.Time | Used to return expired, active, and pending loyalty balances before this timestamp. You can enter any past, present, or future timestamp value.  > [!note] **Note** > - This must be an RFC3339 timestamp string. > - You can include a time component in your string, for example, `T23:59:59` to specify the end of the day. The time zone setting >   considered is `UTC`. If you do not include a time component, a default time value of `T00:00:00` (midnight) in `UTC` is considered. > - This parameter does not affect the `currentTier` field in the CSV file, which shows the customer's tier at the time of export.  (optional)
 	balances := "balances_example" // string | Filters which balance fields are included in the CSV export. `currentBalance` is always returned.  By default, all balance fields are included. When this parameter is provided, only the listed fields contain values and the rest are returned empty.  Accepted values: - `currentBalance` - `pendingBalance` - `expiredBalance` - `spentBalance` - `negativeBalance`  Multiple values must be provided as a comma-separated list.  (optional)
+	subledgerIds := []string{"Inner_example"} // []string | Filter results by an array of subledger IDs. If no value is provided, the export includes all subledgers and main ledger data for the specified loyalty program.  To specify the main ledger, provide an empty string (\"\").  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ManagementAPI.ExportLoyaltyBalances(context.Background(), loyaltyProgramId).EndDate(endDate).Balances(balances).Execute()
+	resp, r, err := apiClient.ManagementAPI.ExportLoyaltyBalances(context.Background(), loyaltyProgramId).EndDate(endDate).Balances(balances).SubledgerIds(subledgerIds).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.ExportLoyaltyBalances``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -4257,6 +4331,7 @@ Name | Type | Description  | Notes
 
  **endDate** | **time.Time** | Used to return expired, active, and pending loyalty balances before this timestamp. You can enter any past, present, or future timestamp value.  &gt; [!note] **Note** &gt; - This must be an RFC3339 timestamp string. &gt; - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting &gt;   considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered. &gt; - This parameter does not affect the &#x60;currentTier&#x60; field in the CSV file, which shows the customer&#39;s tier at the time of export.  | 
  **balances** | **string** | Filters which balance fields are included in the CSV export. &#x60;currentBalance&#x60; is always returned.  By default, all balance fields are included. When this parameter is provided, only the listed fields contain values and the rest are returned empty.  Accepted values: - &#x60;currentBalance&#x60; - &#x60;pendingBalance&#x60; - &#x60;expiredBalance&#x60; - &#x60;spentBalance&#x60; - &#x60;negativeBalance&#x60;  Multiple values must be provided as a comma-separated list.  | 
+ **subledgerIds** | **[]string** | Filter results by an array of subledger IDs. If no value is provided, the export includes all subledgers and main ledger data for the specified loyalty program.  To specify the main ledger, provide an empty string (\&quot;\&quot;).  | 
 
 ### Return type
 
@@ -11416,7 +11491,7 @@ Name | Type | Description  | Notes
 
 ## ListAchievementsV2
 
-> ListAchievementsV2200Response ListAchievementsV2(ctx).PageSize(pageSize).Skip(skip).Sort(sort).Title(title).ApplicationId(applicationId).Execute()
+> ListAchievementsV2200Response ListAchievementsV2(ctx).PageSize(pageSize).CampaignId(campaignId).Skip(skip).Sort(sort).Title(title).ApplicationId(applicationId).Execute()
 
 List achievements
 
@@ -11436,6 +11511,7 @@ import (
 
 func main() {
 	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 50)
+	campaignId := []int64{int64(123)} // []int64 | Filter results by one or more campaign IDs.  To include multiple IDs, repeat the parameter for each one, for example,`?campaignId=123&campaignId=456`. The response contains only achievements associated with the specified campaigns.  (optional)
 	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
 	sort := "sort_example" // string | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with `-`.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  (optional)
 	title := "title_example" // string | Filter by the display name of the achievement. (optional)
@@ -11443,7 +11519,7 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ManagementAPI.ListAchievementsV2(context.Background()).PageSize(pageSize).Skip(skip).Sort(sort).Title(title).ApplicationId(applicationId).Execute()
+	resp, r, err := apiClient.ManagementAPI.ListAchievementsV2(context.Background()).PageSize(pageSize).CampaignId(campaignId).Skip(skip).Sort(sort).Title(title).ApplicationId(applicationId).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.ListAchievementsV2``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -11465,6 +11541,7 @@ Other parameters are passed through a pointer to a apiListAchievementsV2Request 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **pageSize** | **int64** | The number of items in the response. | [default to 50]
+ **campaignId** | **[]int64** | Filter results by one or more campaign IDs.  To include multiple IDs, repeat the parameter for each one, for example,&#x60;?campaignId&#x3D;123&amp;campaignId&#x3D;456&#x60;. The response contains only achievements associated with the specified campaigns.  | 
  **skip** | **int64** | The number of items to skip when paging through large result sets. | 
  **sort** | **string** | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with &#x60;-&#x60;.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  | 
  **title** | **string** | Filter by the display name of the achievement. | 

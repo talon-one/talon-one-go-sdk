@@ -21,6 +21,7 @@ type Block struct {
 	AwardDiscountBlock             *AwardDiscountBlock
 	AwardGiveawayBlock             *AwardGiveawayBlock
 	AwardItemBlock                 *AwardItemBlock
+	AwardLoyaltyPointsBlock        *AwardLoyaltyPointsBlock
 	CheckAchievementBlock          *CheckAchievementBlock
 	CheckAttributeBlock            *CheckAttributeBlock
 	CheckAudienceBlock             *CheckAudienceBlock
@@ -43,6 +44,7 @@ type Block struct {
 	UpdateAchievementProgressBlock *UpdateAchievementProgressBlock
 	UpdateAttributeValueBlock      *UpdateAttributeValueBlock
 	UpdateAudienceMembershipBlock  *UpdateAudienceMembershipBlock
+	UpdateLoyaltyPointsExpiryBlock *UpdateLoyaltyPointsExpiryBlock
 }
 
 // AwardDiscountBlockAsBlock is a convenience function that returns AwardDiscountBlock wrapped in Block
@@ -63,6 +65,13 @@ func AwardGiveawayBlockAsBlock(v *AwardGiveawayBlock) Block {
 func AwardItemBlockAsBlock(v *AwardItemBlock) Block {
 	return Block{
 		AwardItemBlock: v,
+	}
+}
+
+// AwardLoyaltyPointsBlockAsBlock is a convenience function that returns AwardLoyaltyPointsBlock wrapped in Block
+func AwardLoyaltyPointsBlockAsBlock(v *AwardLoyaltyPointsBlock) Block {
+	return Block{
+		AwardLoyaltyPointsBlock: v,
 	}
 }
 
@@ -220,6 +229,13 @@ func UpdateAudienceMembershipBlockAsBlock(v *UpdateAudienceMembershipBlock) Bloc
 	}
 }
 
+// UpdateLoyaltyPointsExpiryBlockAsBlock is a convenience function that returns UpdateLoyaltyPointsExpiryBlock wrapped in Block
+func UpdateLoyaltyPointsExpiryBlockAsBlock(v *UpdateLoyaltyPointsExpiryBlock) Block {
+	return Block{
+		UpdateLoyaltyPointsExpiryBlock: v,
+	}
+}
+
 // Unmarshal JSON data into one of the pointers in the struct
 func (dst *Block) UnmarshalJSON(data []byte) error {
 	var err error
@@ -273,6 +289,23 @@ func (dst *Block) UnmarshalJSON(data []byte) error {
 		}
 	} else {
 		dst.AwardItemBlock = nil
+	}
+
+	// try to unmarshal data into AwardLoyaltyPointsBlock
+	err = newStrictDecoder(data).Decode(&dst.AwardLoyaltyPointsBlock)
+	if err == nil {
+		jsonAwardLoyaltyPointsBlock, _ := json.Marshal(dst.AwardLoyaltyPointsBlock)
+		if string(jsonAwardLoyaltyPointsBlock) == "{}" { // empty struct
+			dst.AwardLoyaltyPointsBlock = nil
+		} else {
+			if err = validator.Validate(dst.AwardLoyaltyPointsBlock); err != nil {
+				dst.AwardLoyaltyPointsBlock = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.AwardLoyaltyPointsBlock = nil
 	}
 
 	// try to unmarshal data into CheckAchievementBlock
@@ -649,11 +682,29 @@ func (dst *Block) UnmarshalJSON(data []byte) error {
 		dst.UpdateAudienceMembershipBlock = nil
 	}
 
+	// try to unmarshal data into UpdateLoyaltyPointsExpiryBlock
+	err = newStrictDecoder(data).Decode(&dst.UpdateLoyaltyPointsExpiryBlock)
+	if err == nil {
+		jsonUpdateLoyaltyPointsExpiryBlock, _ := json.Marshal(dst.UpdateLoyaltyPointsExpiryBlock)
+		if string(jsonUpdateLoyaltyPointsExpiryBlock) == "{}" { // empty struct
+			dst.UpdateLoyaltyPointsExpiryBlock = nil
+		} else {
+			if err = validator.Validate(dst.UpdateLoyaltyPointsExpiryBlock); err != nil {
+				dst.UpdateLoyaltyPointsExpiryBlock = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.UpdateLoyaltyPointsExpiryBlock = nil
+	}
+
 	if match > 1 { // more than 1 match
 		// reset to nil
 		dst.AwardDiscountBlock = nil
 		dst.AwardGiveawayBlock = nil
 		dst.AwardItemBlock = nil
+		dst.AwardLoyaltyPointsBlock = nil
 		dst.CheckAchievementBlock = nil
 		dst.CheckAttributeBlock = nil
 		dst.CheckAudienceBlock = nil
@@ -676,6 +727,7 @@ func (dst *Block) UnmarshalJSON(data []byte) error {
 		dst.UpdateAchievementProgressBlock = nil
 		dst.UpdateAttributeValueBlock = nil
 		dst.UpdateAudienceMembershipBlock = nil
+		dst.UpdateLoyaltyPointsExpiryBlock = nil
 
 		return fmt.Errorf("data matches more than one schema in oneOf(Block)")
 	} else if match == 1 {
@@ -701,6 +753,10 @@ func (src Block) MarshalJSON() ([]byte, error) {
 
 	if src.AwardItemBlock != nil {
 		return json.Marshal(&src.AwardItemBlock)
+	}
+
+	if src.AwardLoyaltyPointsBlock != nil {
+		return json.Marshal(&src.AwardLoyaltyPointsBlock)
 	}
 
 	if src.CheckAchievementBlock != nil {
@@ -791,6 +847,10 @@ func (src Block) MarshalJSON() ([]byte, error) {
 		return json.Marshal(&src.UpdateAudienceMembershipBlock)
 	}
 
+	if src.UpdateLoyaltyPointsExpiryBlock != nil {
+		return json.Marshal(&src.UpdateLoyaltyPointsExpiryBlock)
+	}
+
 	return nil, nil // no data in oneOf schemas
 }
 
@@ -809,6 +869,10 @@ func (obj *Block) GetActualInstance() interface{} {
 
 	if obj.AwardItemBlock != nil {
 		return obj.AwardItemBlock
+	}
+
+	if obj.AwardLoyaltyPointsBlock != nil {
+		return obj.AwardLoyaltyPointsBlock
 	}
 
 	if obj.CheckAchievementBlock != nil {
@@ -899,6 +963,10 @@ func (obj *Block) GetActualInstance() interface{} {
 		return obj.UpdateAudienceMembershipBlock
 	}
 
+	if obj.UpdateLoyaltyPointsExpiryBlock != nil {
+		return obj.UpdateLoyaltyPointsExpiryBlock
+	}
+
 	// all schemas are nil
 	return nil
 }
@@ -915,6 +983,10 @@ func (obj Block) GetActualInstanceValue() interface{} {
 
 	if obj.AwardItemBlock != nil {
 		return *obj.AwardItemBlock
+	}
+
+	if obj.AwardLoyaltyPointsBlock != nil {
+		return *obj.AwardLoyaltyPointsBlock
 	}
 
 	if obj.CheckAchievementBlock != nil {
@@ -1003,6 +1075,10 @@ func (obj Block) GetActualInstanceValue() interface{} {
 
 	if obj.UpdateAudienceMembershipBlock != nil {
 		return *obj.UpdateAudienceMembershipBlock
+	}
+
+	if obj.UpdateLoyaltyPointsExpiryBlock != nil {
+		return *obj.UpdateLoyaltyPointsExpiryBlock
 	}
 
 	// all schemas are nil

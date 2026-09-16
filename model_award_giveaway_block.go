@@ -27,7 +27,7 @@ type AwardGiveawayBlock struct {
 	// Semantic labels attached to this block.
 	Tags []string `json:"tags,omitempty"`
 	// The giveaway pool from which an item is awarded.
-	GiveawayPool GiveawayPoolReference `json:"giveawayPool"`
+	GiveawayPool GiveawayPoolBlockReference `json:"giveawayPool"`
 	// The customer profile to award the giveaway to. `Current` targets the customer in the current session; `Advocate` targets the person who invited their friend via referral program.
 	Profile string `json:"profile"`
 	// Blocks evaluated when this block fails or returns false.
@@ -43,7 +43,7 @@ type _AwardGiveawayBlock AwardGiveawayBlock
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildAwardGiveawayBlock(type_ string, giveawayPool GiveawayPoolReference, profile string) *AwardGiveawayBlock {
+func BuildAwardGiveawayBlock(type_ string, giveawayPool GiveawayPoolBlockReference, profile string) *AwardGiveawayBlock {
 	this := AwardGiveawayBlock{}
 	this.Type = type_
 	this.GiveawayPool = giveawayPool
@@ -148,9 +148,9 @@ func (o *AwardGiveawayBlock) SetTags(v []string) {
 }
 
 // GetGiveawayPool returns the GiveawayPool field value
-func (o *AwardGiveawayBlock) GetGiveawayPool() GiveawayPoolReference {
+func (o *AwardGiveawayBlock) GetGiveawayPool() GiveawayPoolBlockReference {
 	if o == nil {
-		var ret GiveawayPoolReference
+		var ret GiveawayPoolBlockReference
 		return ret
 	}
 
@@ -159,7 +159,7 @@ func (o *AwardGiveawayBlock) GetGiveawayPool() GiveawayPoolReference {
 
 // GetGiveawayPoolOk returns a tuple with the GiveawayPool field value
 // and a boolean to check if the value has been set.
-func (o *AwardGiveawayBlock) GetGiveawayPoolOk() (*GiveawayPoolReference, bool) {
+func (o *AwardGiveawayBlock) GetGiveawayPoolOk() (*GiveawayPoolBlockReference, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -167,7 +167,7 @@ func (o *AwardGiveawayBlock) GetGiveawayPoolOk() (*GiveawayPoolReference, bool) 
 }
 
 // SetGiveawayPool sets field value
-func (o *AwardGiveawayBlock) SetGiveawayPool(v GiveawayPoolReference) {
+func (o *AwardGiveawayBlock) SetGiveawayPool(v GiveawayPoolBlockReference) {
 	o.GiveawayPool = v
 }
 

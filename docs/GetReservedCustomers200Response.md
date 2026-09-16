@@ -5,13 +5,13 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **TotalResultSize** | **int64** |  | 
-**Data** | [**[]CustomerProfile**](CustomerProfile.md) |  | 
+**Data** | [**[]CustomerReservation**](CustomerReservation.md) |  | 
 
 ## Methods
 
 ### NewGetReservedCustomers200Response
 
-`func NewGetReservedCustomers200Response(totalResultSize int64, data []CustomerProfile, ) *GetReservedCustomers200Response`
+`func NewGetReservedCustomers200Response(totalResultSize int64, data []CustomerReservation, ) *GetReservedCustomers200Response`
 
 NewGetReservedCustomers200Response instantiates a new GetReservedCustomers200Response object
 This constructor will assign default values to properties that have it defined,
@@ -48,20 +48,20 @@ SetTotalResultSize sets TotalResultSize field to given value.
 
 ### GetData
 
-`func (o *GetReservedCustomers200Response) GetData() []CustomerProfile`
+`func (o *GetReservedCustomers200Response) GetData() []CustomerReservation`
 
 GetData returns the Data field if non-nil, zero value otherwise.
 
 ### GetDataOk
 
-`func (o *GetReservedCustomers200Response) GetDataOk() (*[]CustomerProfile, bool)`
+`func (o *GetReservedCustomers200Response) GetDataOk() (*[]CustomerReservation, bool)`
 
 GetDataOk returns a tuple with the Data field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetData
 
-`func (o *GetReservedCustomers200Response) SetData(v []CustomerProfile)`
+`func (o *GetReservedCustomers200Response) SetData(v []CustomerReservation)`
 
 SetData sets Data field to given value.
 

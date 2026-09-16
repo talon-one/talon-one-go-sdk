@@ -26,7 +26,9 @@ type CustomerProfileIntegrationRequestV2 struct {
 	// Extends the response with the chosen data entities. Use this property to get as much data back as needed from one request instead of sending extra requests to other endpoints.
 	ResponseContent []string `json:"responseContent,omitempty"`
 	// Audiences memberships changes for this profile.
-	AudiencesChanges     *ProfileAudiencesChanges `json:"audiencesChanges,omitempty"`
+	AudiencesChanges *ProfileAudiencesChanges `json:"audiencesChanges,omitempty"`
+	// The integration IDs of the unlocked rewards that can be used in this request.
+	RewardIntegrationIds []string `json:"rewardIntegrationIds,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -177,6 +179,38 @@ func (o *CustomerProfileIntegrationRequestV2) SetAudiencesChanges(v ProfileAudie
 	o.AudiencesChanges = &v
 }
 
+// GetRewardIntegrationIds returns the RewardIntegrationIds field value if set, zero value otherwise.
+func (o *CustomerProfileIntegrationRequestV2) GetRewardIntegrationIds() []string {
+	if o == nil || IsNil(o.RewardIntegrationIds) {
+		var ret []string
+		return ret
+	}
+	return o.RewardIntegrationIds
+}
+
+// GetRewardIntegrationIdsOk returns a tuple with the RewardIntegrationIds field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustomerProfileIntegrationRequestV2) GetRewardIntegrationIdsOk() ([]string, bool) {
+	if o == nil || IsNil(o.RewardIntegrationIds) {
+		return nil, false
+	}
+	return o.RewardIntegrationIds, true
+}
+
+// HasRewardIntegrationIds returns a boolean if a field has been set.
+func (o *CustomerProfileIntegrationRequestV2) HasRewardIntegrationIds() bool {
+	if o != nil && !IsNil(o.RewardIntegrationIds) {
+		return true
+	}
+
+	return false
+}
+
+// SetRewardIntegrationIds gets a reference to the given []string and assigns it to the RewardIntegrationIds field.
+func (o *CustomerProfileIntegrationRequestV2) SetRewardIntegrationIds(v []string) {
+	o.RewardIntegrationIds = v
+}
+
 func (o CustomerProfileIntegrationRequestV2) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -198,6 +232,9 @@ func (o CustomerProfileIntegrationRequestV2) ToMap() (map[string]interface{}, er
 	}
 	if !IsNil(o.AudiencesChanges) {
 		toSerialize["audiencesChanges"] = o.AudiencesChanges
+	}
+	if !IsNil(o.RewardIntegrationIds) {
+		toSerialize["rewardIntegrationIds"] = o.RewardIntegrationIds
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -225,6 +262,7 @@ func (o *CustomerProfileIntegrationRequestV2) UnmarshalJSON(data []byte) (err er
 		delete(additionalProperties, "evaluableCampaignIds")
 		delete(additionalProperties, "responseContent")
 		delete(additionalProperties, "audiencesChanges")
+		delete(additionalProperties, "rewardIntegrationIds")
 		o.AdditionalProperties = additionalProperties
 	}
 

@@ -153,6 +153,20 @@ func Test_talon_ManagementAPIService(t *testing.T) {
 
 	})
 
+	t.Run("Test ManagementAPIService CreateCampaign", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var applicationId int64
+
+		resp, httpRes, err := apiClient.ManagementAPI.CreateCampaign(context.Background(), applicationId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test ManagementAPIService CreateCampaignFromTemplate", func(t *testing.T) {
 
 		t.Skip("skip test")  // remove to run test

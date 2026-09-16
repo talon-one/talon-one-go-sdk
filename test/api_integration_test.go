@@ -221,6 +221,20 @@ func Test_talon_IntegrationAPIService(t *testing.T) {
 
 	})
 
+	t.Run("Test IntegrationAPIService GetCustomerRewards", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var integrationId string
+
+		resp, httpRes, err := apiClient.IntegrationAPI.GetCustomerRewards(context.Background(), integrationId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test IntegrationAPIService GetCustomerSession", func(t *testing.T) {
 
 		t.Skip("skip test")  // remove to run test

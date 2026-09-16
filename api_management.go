@@ -1492,6 +1492,136 @@ func (a *ManagementAPIService) CreateBatchLoyaltyCardsExecute(r ApiCreateBatchLo
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiCreateCampaignRequest struct {
+	ctx           context.Context
+	ApiService    *ManagementAPIService
+	applicationId int64
+	newCampaign   *NewCampaign
+}
+
+// body
+func (r ApiCreateCampaignRequest) NewCampaign(newCampaign NewCampaign) ApiCreateCampaignRequest {
+	r.newCampaign = &newCampaign
+	return r
+}
+
+func (r ApiCreateCampaignRequest) Execute() (*Campaign, *http.Response, error) {
+	return r.ApiService.CreateCampaignExecute(r)
+}
+
+/*
+CreateCampaign Create campaign
+
+Create a campaign. A campaign is part of an Application and contains a set of rules.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param applicationId The ID of the Application. It is displayed in your Talon.One deployment URL.
+	@return ApiCreateCampaignRequest
+*/
+func (a *ManagementAPIService) CreateCampaign(ctx context.Context, applicationId int64) ApiCreateCampaignRequest {
+	return ApiCreateCampaignRequest{
+		ApiService:    a,
+		ctx:           ctx,
+		applicationId: applicationId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return Campaign
+func (a *ManagementAPIService) CreateCampaignExecute(r ApiCreateCampaignRequest) (*Campaign, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *Campaign
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagementAPIService.CreateCampaign")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v1/applications/{applicationId}/campaigns"
+	localVarPath = strings.Replace(localVarPath, "{"+"applicationId"+"}", url.PathEscape(parameterValueToString(r.applicationId, "applicationId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.newCampaign == nil {
+		return localVarReturnValue, nil, reportError("newCampaign is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.newCampaign
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiCreateCampaignFromTemplateRequest struct {
 	ctx                    context.Context
 	ApiService             *ManagementAPIService
@@ -8187,6 +8317,7 @@ type ApiExportLoyaltyBalancesRequest struct {
 	loyaltyProgramId string
 	endDate          *time.Time
 	balances         *string
+	subledgerIds     *[]string
 }
 
 // Used to return expired, active, and pending loyalty balances before this timestamp. You can enter any past, present, or future timestamp value.  &gt; [!note] **Note** &gt; - This must be an RFC3339 timestamp string. &gt; - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting &gt;   considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered. &gt; - This parameter does not affect the &#x60;currentTier&#x60; field in the CSV file, which shows the customer&#39;s tier at the time of export.
@@ -8198,6 +8329,12 @@ func (r ApiExportLoyaltyBalancesRequest) EndDate(endDate time.Time) ApiExportLoy
 // Filters which balance fields are included in the CSV export. &#x60;currentBalance&#x60; is always returned.  By default, all balance fields are included. When this parameter is provided, only the listed fields contain values and the rest are returned empty.  Accepted values: - &#x60;currentBalance&#x60; - &#x60;pendingBalance&#x60; - &#x60;expiredBalance&#x60; - &#x60;spentBalance&#x60; - &#x60;negativeBalance&#x60;  Multiple values must be provided as a comma-separated list.
 func (r ApiExportLoyaltyBalancesRequest) Balances(balances string) ApiExportLoyaltyBalancesRequest {
 	r.balances = &balances
+	return r
+}
+
+// Filter results by an array of subledger IDs. If no value is provided, the export includes all subledgers and main ledger data for the specified loyalty program.  To specify the main ledger, provide an empty string (\&quot;\&quot;).
+func (r ApiExportLoyaltyBalancesRequest) SubledgerIds(subledgerIds []string) ApiExportLoyaltyBalancesRequest {
+	r.subledgerIds = &subledgerIds
 	return r
 }
 
@@ -8265,6 +8402,9 @@ func (a *ManagementAPIService) ExportLoyaltyBalancesExecute(r ApiExportLoyaltyBa
 	}
 	if r.balances != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "balances", r.balances, "form", "")
+	}
+	if r.subledgerIds != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "subledgerIds", r.subledgerIds, "form", "csv")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -22930,7 +23070,7 @@ The CSV file **must** contain the following columns:
 
   - `customerprofileid`: The integration ID of the customer profile whose join
     date you want to update.
-  - `newjoindate`: The new join date for the customer in RFC3339 format. You
+  - `joindate`: The join date for the customer in RFC3339 format. You
     can use the time zone of your choice. It is converted to UTC internally
     by Talon.One.
 
@@ -22943,7 +23083,7 @@ The CSV file **must** contain the following columns:
 ## Example
 
 ```csv
-customerprofileid,newjoindate
+customerprofileid,joindate
 customer1,2024-03-21T07:32:14Z
 customer2,2025-04-16T21:12:37Z
 customer3,2026-05-03T11:47:01Z
@@ -24166,6 +24306,7 @@ type ApiListAchievementsV2Request struct {
 	ctx           context.Context
 	ApiService    *ManagementAPIService
 	pageSize      *int64
+	campaignId    *[]int64
 	skip          *int64
 	sort          *string
 	title         *string
@@ -24175,6 +24316,12 @@ type ApiListAchievementsV2Request struct {
 // The number of items in the response.
 func (r ApiListAchievementsV2Request) PageSize(pageSize int64) ApiListAchievementsV2Request {
 	r.pageSize = &pageSize
+	return r
+}
+
+// Filter results by one or more campaign IDs.  To include multiple IDs, repeat the parameter for each one, for example,&#x60;?campaignId&#x3D;123&amp;campaignId&#x3D;456&#x60;. The response contains only achievements associated with the specified campaigns.
+func (r ApiListAchievementsV2Request) CampaignId(campaignId []int64) ApiListAchievementsV2Request {
+	r.campaignId = &campaignId
 	return r
 }
 
@@ -24249,6 +24396,17 @@ func (a *ManagementAPIService) ListAchievementsV2Execute(r ApiListAchievementsV2
 		var defaultValue int64 = 50
 		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
 		r.pageSize = &defaultValue
+	}
+	if r.campaignId != nil {
+		t := *r.campaignId
+		if reflect.TypeOf(t).Kind() == reflect.Slice {
+			s := reflect.ValueOf(t)
+			for i := 0; i < s.Len(); i++ {
+				parameterAddToHeaderOrQuery(localVarQueryParams, "campaignId", s.Index(i).Interface(), "form", "multi")
+			}
+		} else {
+			parameterAddToHeaderOrQuery(localVarQueryParams, "campaignId", t, "form", "multi")
+		}
 	}
 	if r.skip != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "skip", r.skip, "form", "")
@@ -24363,7 +24521,15 @@ func (r ApiListAllRolesV2Request) Execute() (*ListAllRolesV2200Response, *http.R
 /*
 ListAllRolesV2 List roles
 
-List all roles.
+List the roles defined in the deployment.
+
+The roles returned depend on the role of the user calling this endpoint:
+- If the user has an admin role, all roles defined in the deployment are returned.
+- If the user does not have an admin role, only the roles currently assigned to this user are returned.
+
+If your identity provider provisions roles through SCIM, any admin roles it defines are not included in this list.
+
+To view the details of a specific role, use the [Get role](https://docs.talon.one/management-api#tag/Roles/operation/getRoleV2) endpoint.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiListAllRolesV2Request

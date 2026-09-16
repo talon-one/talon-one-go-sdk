@@ -19,6 +19,7 @@ Method | HTTP request | Description
 [**GetCustomerAchievementHistory**](IntegrationAPI.md#GetCustomerAchievementHistory) | **Get** /v1/customer_profiles/{integrationId}/achievements/{achievementId} | List customer&#39;s achievement history
 [**GetCustomerAchievements**](IntegrationAPI.md#GetCustomerAchievements) | **Get** /v1/customer_profiles/{integrationId}/achievements | List customer&#39;s available achievements
 [**GetCustomerInventory**](IntegrationAPI.md#GetCustomerInventory) | **Get** /v1/customer_profiles/{integrationId}/inventory | List customer data
+[**GetCustomerRewards**](IntegrationAPI.md#GetCustomerRewards) | **Get** /v1/customer_profiles/{integrationId}/rewards | List customer&#39;s rewards
 [**GetCustomerSession**](IntegrationAPI.md#GetCustomerSession) | **Get** /v2/customer_sessions/{customerSessionId} | Get customer session
 [**GetEventV3**](IntegrationAPI.md#GetEventV3) | **Get** /v3/events/{integrationId} | Get advanced event
 [**GetLoyaltyBalances**](IntegrationAPI.md#GetLoyaltyBalances) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/balances | Get customer&#39;s loyalty balances
@@ -255,7 +256,7 @@ Name | Type | Description  | Notes
 
 ## CreateCouponReservation
 
-> Coupon CreateCouponReservation(ctx, couponValue).CouponReservations(couponReservations).Execute()
+> CouponWithReservations CreateCouponReservation(ctx, couponValue).CouponReservations(couponReservations).Execute()
 
 Create coupon reservation
 
@@ -284,7 +285,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Error when calling `IntegrationAPI.CreateCouponReservation``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `CreateCouponReservation`: Coupon
+	// response from `CreateCouponReservation`: CouponWithReservations
 	fmt.Fprintf(os.Stdout, "Response from `IntegrationAPI.CreateCouponReservation`: %v\n", resp)
 }
 ```
@@ -309,7 +310,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**Coupon**](Coupon.md)
+[**CouponWithReservations**](CouponWithReservations.md)
 
 ### Authorization
 
@@ -1113,6 +1114,84 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**CustomerInventory**](CustomerInventory.md)
+
+### Authorization
+
+[api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetCustomerRewards
+
+> GetCustomerRewards200Response GetCustomerRewards(ctx, integrationId).Status(status).PageSize(pageSize).Skip(skip).WithTotalResultSize(withTotalResultSize).Execute()
+
+List customer's rewards
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	integrationId := "integrationId_example" // string | The integration identifier for this customer profile. Must be:  - Unique within the deployment. - Stable for the customer. Do not use an ID that the customer can update themselves. For example, you can use a database ID. 
+	status := []string{"Status_example"} // []string | Filter results by one or more customer reward statuses.  **Note:** If no status is specified, rewards of all statuses are returned.  (optional)
+	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 1000)
+	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
+	withTotalResultSize := true // bool | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.   - When `true`: `totalResultSize` contains the total number of results for this query.  - When `false`: Only `hasMore` is returned, and it is set to `true` when there are more results than shown on the page.  (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.IntegrationAPI.GetCustomerRewards(context.Background(), integrationId).Status(status).PageSize(pageSize).Skip(skip).WithTotalResultSize(withTotalResultSize).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `IntegrationAPI.GetCustomerRewards``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetCustomerRewards`: GetCustomerRewards200Response
+	fmt.Fprintf(os.Stdout, "Response from `IntegrationAPI.GetCustomerRewards`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**integrationId** | **string** | The integration identifier for this customer profile. Must be:  - Unique within the deployment. - Stable for the customer. Do not use an ID that the customer can update themselves. For example, you can use a database ID.  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetCustomerRewardsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **status** | **[]string** | Filter results by one or more customer reward statuses.  **Note:** If no status is specified, rewards of all statuses are returned.  | 
+ **pageSize** | **int64** | The number of items in the response. | [default to 1000]
+ **skip** | **int64** | The number of items to skip when paging through large result sets. | 
+ **withTotalResultSize** | **bool** | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.   - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query.  - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.  | 
+
+### Return type
+
+[**GetCustomerRewards200Response**](GetCustomerRewards200Response.md)
 
 ### Authorization
 
@@ -1967,8 +2046,8 @@ func main() {
 	includeFree := true // bool | Whether to include rewards that have no `pointsRequired`. These rewards are treated as free and available to all customers.  (optional) (default to true)
 	loyaltyProgramId := int64(789) // int64 | Return only rewards available in this loyalty program.  (optional)
 	subledgerId := "subledgerId_example" // string | Return only rewards available in this subledger. Must be combined with `loyaltyProgramId`. To specify the main ledger, provide an empty string (\"\").  (optional)
-	profileIntegrationId := "profileIntegrationId_example" // string | The integration ID of the customer profile whose loyalty balances to include in the response. Balances are returned only when `loyaltyProgramId` is also provided.  **Note:** `profileIntegrationId` and `loyaltyCardId` are mutually exclusive. Do not send both in the same request.  (optional)
-	loyaltyCardId := "loyaltyCardId_example" // string | The identifier of the loyalty card whose loyalty balances to include in the response. Balances are returned only when `loyaltyProgramId` is also provided.  **Note:** `profileIntegrationId` and `loyaltyCardId` are mutually exclusive. Do not send both in the same request.  (optional)
+	profileIntegrationId := "profileIntegrationId_example" // string | The integration ID of the customer profile whose loyalty balances to include in the response. Balances are returned only when `loyaltyProgramId` is also provided.  For a reward with `pointsRequired` configured for a card-based loyalty program, eligibility can be evaluated based on both `profileIntegrationId` and `loyaltyCardId`, if both are provided. The required points are then checked against the card's balance.  (optional)
+	loyaltyCardId := "loyaltyCardId_example" // string | The identifier of the loyalty card whose loyalty balances to include in the response. Balances are returned only when `loyaltyProgramId` is also provided.  For a reward with `pointsRequired` configured for a card-based loyalty program, eligibility can be evaluated based on both `profileIntegrationId` and `loyaltyCardId`, if both are provided. The card must also be linked to that customer profile. - If `loyaltyCardId` is not provided, the reward returns the `CARD_REQUIRED` failure code, because there is no card balance to compare `pointsRequired` against. - If `profileIntegrationId` is not provided, the reward returns the `PROFILE_REQUIRED` failure code, because its eligibility cannot be evaluated without a customer profile.  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -2000,8 +2079,8 @@ Name | Type | Description  | Notes
  **includeFree** | **bool** | Whether to include rewards that have no &#x60;pointsRequired&#x60;. These rewards are treated as free and available to all customers.  | [default to true]
  **loyaltyProgramId** | **int64** | Return only rewards available in this loyalty program.  | 
  **subledgerId** | **string** | Return only rewards available in this subledger. Must be combined with &#x60;loyaltyProgramId&#x60;. To specify the main ledger, provide an empty string (\&quot;\&quot;).  | 
- **profileIntegrationId** | **string** | The integration ID of the customer profile whose loyalty balances to include in the response. Balances are returned only when &#x60;loyaltyProgramId&#x60; is also provided.  **Note:** &#x60;profileIntegrationId&#x60; and &#x60;loyaltyCardId&#x60; are mutually exclusive. Do not send both in the same request.  | 
- **loyaltyCardId** | **string** | The identifier of the loyalty card whose loyalty balances to include in the response. Balances are returned only when &#x60;loyaltyProgramId&#x60; is also provided.  **Note:** &#x60;profileIntegrationId&#x60; and &#x60;loyaltyCardId&#x60; are mutually exclusive. Do not send both in the same request.  | 
+ **profileIntegrationId** | **string** | The integration ID of the customer profile whose loyalty balances to include in the response. Balances are returned only when &#x60;loyaltyProgramId&#x60; is also provided.  For a reward with &#x60;pointsRequired&#x60; configured for a card-based loyalty program, eligibility can be evaluated based on both &#x60;profileIntegrationId&#x60; and &#x60;loyaltyCardId&#x60;, if both are provided. The required points are then checked against the card&#39;s balance.  | 
+ **loyaltyCardId** | **string** | The identifier of the loyalty card whose loyalty balances to include in the response. Balances are returned only when &#x60;loyaltyProgramId&#x60; is also provided.  For a reward with &#x60;pointsRequired&#x60; configured for a card-based loyalty program, eligibility can be evaluated based on both &#x60;profileIntegrationId&#x60; and &#x60;loyaltyCardId&#x60;, if both are provided. The card must also be linked to that customer profile. - If &#x60;loyaltyCardId&#x60; is not provided, the reward returns the &#x60;CARD_REQUIRED&#x60; failure code, because there is no card balance to compare &#x60;pointsRequired&#x60; against. - If &#x60;profileIntegrationId&#x60; is not provided, the reward returns the &#x60;PROFILE_REQUIRED&#x60; failure code, because its eligibility cannot be evaluated without a customer profile.  | 
 
 ### Return type
 
@@ -2612,7 +2691,7 @@ Name | Type | Description  | Notes
 
 ## UnlockReward
 
-> IntegrationStateV2 UnlockReward(ctx, rewardId).IntegrationUnlockRewardRequest(integrationUnlockRewardRequest).Dry(dry).Execute()
+> IntegrationUnlockRewardResponse UnlockReward(ctx, rewardId).IntegrationUnlockRewardRequest(integrationUnlockRewardRequest).Dry(dry).Execute()
 
 Unlock a reward
 
@@ -2642,7 +2721,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Error when calling `IntegrationAPI.UnlockReward``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `UnlockReward`: IntegrationStateV2
+	// response from `UnlockReward`: IntegrationUnlockRewardResponse
 	fmt.Fprintf(os.Stdout, "Response from `IntegrationAPI.UnlockReward`: %v\n", resp)
 }
 ```
@@ -2668,7 +2747,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**IntegrationStateV2**](IntegrationStateV2.md)
+[**IntegrationUnlockRewardResponse**](IntegrationUnlockRewardResponse.md)
 
 ### Authorization
 

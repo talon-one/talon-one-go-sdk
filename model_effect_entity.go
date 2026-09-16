@@ -30,7 +30,7 @@ type EffectEntity struct {
 	RuleIndex int64 `json:"ruleIndex"`
 	// The name of the rule that triggered this effect.
 	RuleName string `json:"ruleName"`
-	// The type of effect that was triggered. See [API effects](https://docs.talon.one/docs/dev/integration-api/api-effects).
+	// See [API effects](https://docs.talon.one/docs/dev/integration-api/api-effects).
 	EffectType string `json:"effectType"`
 	// The ID of the coupon that was being evaluated when this effect was triggered.
 	TriggeredByCoupon *int64 `json:"triggeredByCoupon,omitempty"`

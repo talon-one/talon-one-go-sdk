@@ -25,8 +25,9 @@ type TriggerWebhookBlock struct {
 	// Identifies the block variant and determines which additional properties are present in it.
 	Type string `json:"type"`
 	// Semantic labels attached to this block.
-	Tags    []string                    `json:"tags,omitempty"`
-	Webhook TriggerWebhookBlock1Webhook `json:"webhook"`
+	Tags []string `json:"tags,omitempty"`
+	// The webhook to trigger.
+	Webhook WebhookBlockReference `json:"webhook"`
 	// The webhook's parameters, in configured order. Each property name is the parameter's title, lowercased with spaces replaced by underscores (for example, `Order ID` becomes `order_id`); falls back to `param_0`, `param_1`, and so on if a title is blank or collides with another.
 	Params map[string]interface{} `json:"params,omitempty"`
 	// Named error handlers evaluated when a specific error occurs.
@@ -40,7 +41,7 @@ type _TriggerWebhookBlock TriggerWebhookBlock
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildTriggerWebhookBlock(type_ string, webhook TriggerWebhookBlock1Webhook) *TriggerWebhookBlock {
+func BuildTriggerWebhookBlock(type_ string, webhook WebhookBlockReference) *TriggerWebhookBlock {
 	this := TriggerWebhookBlock{}
 	this.Type = type_
 	this.Webhook = webhook
@@ -144,9 +145,9 @@ func (o *TriggerWebhookBlock) SetTags(v []string) {
 }
 
 // GetWebhook returns the Webhook field value
-func (o *TriggerWebhookBlock) GetWebhook() TriggerWebhookBlock1Webhook {
+func (o *TriggerWebhookBlock) GetWebhook() WebhookBlockReference {
 	if o == nil {
-		var ret TriggerWebhookBlock1Webhook
+		var ret WebhookBlockReference
 		return ret
 	}
 
@@ -155,7 +156,7 @@ func (o *TriggerWebhookBlock) GetWebhook() TriggerWebhookBlock1Webhook {
 
 // GetWebhookOk returns a tuple with the Webhook field value
 // and a boolean to check if the value has been set.
-func (o *TriggerWebhookBlock) GetWebhookOk() (*TriggerWebhookBlock1Webhook, bool) {
+func (o *TriggerWebhookBlock) GetWebhookOk() (*WebhookBlockReference, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -163,7 +164,7 @@ func (o *TriggerWebhookBlock) GetWebhookOk() (*TriggerWebhookBlock1Webhook, bool
 }
 
 // SetWebhook sets field value
-func (o *TriggerWebhookBlock) SetWebhook(v TriggerWebhookBlock1Webhook) {
+func (o *TriggerWebhookBlock) SetWebhook(v WebhookBlockReference) {
 	o.Webhook = v
 }
 

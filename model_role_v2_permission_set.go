@@ -22,7 +22,7 @@ var _ MappedNullable = &RoleV2PermissionSet{}
 type RoleV2PermissionSet struct {
 	// Name of the permission set.
 	Name string `json:"name"`
-	// List of logical operations in the permission set. Each logical operation must be shown under the `x-permission` tag on an endpoint level.
+	// List of logical operations in the permission set.
 	LogicalOperations    []string `json:"logicalOperations"`
 	AdditionalProperties map[string]interface{}
 }

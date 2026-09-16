@@ -33,7 +33,9 @@ type IntegrationEventV2Request struct {
 	// Extends the response with the chosen data entities. Use this property to get as much data back as needed from one request instead of sending extra requests to other endpoints.
 	ResponseContent []string `json:"responseContent,omitempty"`
 	// Identifiers of the loyalty cards used during this event.
-	LoyaltyCards         []string `json:"loyaltyCards,omitempty"`
+	LoyaltyCards []string `json:"loyaltyCards,omitempty"`
+	// The integration IDs of the unlocked rewards that can be used in this event.
+	RewardIntegrationIds []string `json:"rewardIntegrationIds,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -273,6 +275,38 @@ func (o *IntegrationEventV2Request) SetLoyaltyCards(v []string) {
 	o.LoyaltyCards = v
 }
 
+// GetRewardIntegrationIds returns the RewardIntegrationIds field value if set, zero value otherwise.
+func (o *IntegrationEventV2Request) GetRewardIntegrationIds() []string {
+	if o == nil || IsNil(o.RewardIntegrationIds) {
+		var ret []string
+		return ret
+	}
+	return o.RewardIntegrationIds
+}
+
+// GetRewardIntegrationIdsOk returns a tuple with the RewardIntegrationIds field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IntegrationEventV2Request) GetRewardIntegrationIdsOk() ([]string, bool) {
+	if o == nil || IsNil(o.RewardIntegrationIds) {
+		return nil, false
+	}
+	return o.RewardIntegrationIds, true
+}
+
+// HasRewardIntegrationIds returns a boolean if a field has been set.
+func (o *IntegrationEventV2Request) HasRewardIntegrationIds() bool {
+	if o != nil && !IsNil(o.RewardIntegrationIds) {
+		return true
+	}
+
+	return false
+}
+
+// SetRewardIntegrationIds gets a reference to the given []string and assigns it to the RewardIntegrationIds field.
+func (o *IntegrationEventV2Request) SetRewardIntegrationIds(v []string) {
+	o.RewardIntegrationIds = v
+}
+
 func (o IntegrationEventV2Request) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -301,6 +335,9 @@ func (o IntegrationEventV2Request) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.LoyaltyCards) {
 		toSerialize["loyaltyCards"] = o.LoyaltyCards
+	}
+	if !IsNil(o.RewardIntegrationIds) {
+		toSerialize["rewardIntegrationIds"] = o.RewardIntegrationIds
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -352,6 +389,7 @@ func (o *IntegrationEventV2Request) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "attributes")
 		delete(additionalProperties, "responseContent")
 		delete(additionalProperties, "loyaltyCards")
+		delete(additionalProperties, "rewardIntegrationIds")
 		o.AdditionalProperties = additionalProperties
 	}
 
