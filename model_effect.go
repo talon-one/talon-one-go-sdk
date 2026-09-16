@@ -13,730 +13,1646 @@ package talon
 import (
 	"encoding/json"
 	"fmt"
+	"gopkg.in/validator.v2"
 )
 
-// checks if the Effect type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &Effect{}
-
-// Effect struct for Effect
+// Effect - A generic effect that is fired by a triggered campaign. The `effectType` field selects the concrete effect variant and the shape of `props`.
 type Effect struct {
-	// The ID of the experiment that campaign belongs to.
-	ExperimentId *int64 `json:"experimentId,omitempty"`
-	// The ID of the campaign that triggered this effect.
-	CampaignId int64 `json:"campaignId"`
-	// The ID of the ruleset that was active in the campaign when this effect was triggered.
-	RulesetId int64 `json:"rulesetId"`
-	// The position of the rule that triggered this effect within the ruleset.
-	RuleIndex int64 `json:"ruleIndex"`
-	// The name of the rule that triggered this effect.
-	RuleName string `json:"ruleName"`
-	// The type of effect that was triggered. See [API effects](https://docs.talon.one/docs/dev/integration-api/api-effects).
-	EffectType string `json:"effectType"`
-	// The ID of the coupon that was being evaluated when this effect was triggered.
-	TriggeredByCoupon *int64 `json:"triggeredByCoupon,omitempty"`
-	// The ID of the catalog item that was being evaluated when this effect was triggered.
-	TriggeredForCatalogItem *int64 `json:"triggeredForCatalogItem,omitempty"`
-	// The index of the condition that was triggered.
-	ConditionIndex *int64 `json:"conditionIndex,omitempty"`
-	// The ID of the evaluation group. For more information, see [Managing campaign evaluation](https://docs.talon.one/docs/product/applications/managing-campaign-evaluation).
-	EvaluationGroupID *int64 `json:"evaluationGroupID,omitempty"`
-	// The evaluation mode of the evaluation group. For more information, see [Managing campaign evaluation](https://docs.talon.one/docs/product/applications/managing-campaign-evaluation).
-	EvaluationGroupMode *string `json:"evaluationGroupMode,omitempty"`
-	// The revision ID of the campaign that was used when triggering the effect.
-	CampaignRevisionId *int64 `json:"campaignRevisionId,omitempty"`
-	// The revision version ID of the campaign that was used when triggering the effect.
-	CampaignRevisionVersionId *int64 `json:"campaignRevisionVersionId,omitempty"`
-	// The selected price type for the SKU targeted by this effect.
-	SelectedPriceType *string `json:"selectedPriceType,omitempty"`
-	// The value of the selected price type to apply to the SKU targeted by this effect, before any discounts are applied.
-	SelectedPrice *float32 `json:"selectedPrice,omitempty"`
-	// The reference identifier of the selected price adjustment for this SKU. This is only returned if the `selectedPrice` resulted from a price adjustment.
-	AdjustmentReferenceId *string `json:"adjustmentReferenceId,omitempty"`
-	// The ID of the reward that was being evaluated when this effect was triggered.
-	RewardId             *int64      `json:"rewardId,omitempty"`
-	Props                interface{} `json:"props"`
-	AdditionalProperties map[string]interface{}
-}
-
-type _Effect Effect
-
-// NewEffect instantiates a new Effect object
-// This constructor will assign default values to properties that have it defined,
-// and makes sure properties required by API are set, but the set of arguments
-// will change when the set of required properties is changed
-func BuildEffect(campaignId int64, rulesetId int64, ruleIndex int64, ruleName string, effectType string, props interface{}) *Effect {
-	this := Effect{}
-	this.CampaignId = campaignId
-	this.RulesetId = rulesetId
-	this.RuleIndex = ruleIndex
-	this.RuleName = ruleName
-	this.EffectType = effectType
-	this.Props = props
-	return &this
-}
-
-// NewEffectWithDefaults instantiates a new Effect object
-// This constructor will only assign default values to properties that have it defined,
-// but it doesn't guarantee that properties required by API are set
-func NewEffectWithDefaults() *Effect {
-	this := Effect{}
-	return &this
-}
-
-// GetExperimentId returns the ExperimentId field value if set, zero value otherwise.
-func (o *Effect) GetExperimentId() int64 {
-	if o == nil || IsNil(o.ExperimentId) {
-		var ret int64
-		return ret
-	}
-	return *o.ExperimentId
-}
-
-// GetExperimentIdOk returns a tuple with the ExperimentId field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Effect) GetExperimentIdOk() (*int64, bool) {
-	if o == nil || IsNil(o.ExperimentId) {
-		return nil, false
-	}
-	return o.ExperimentId, true
-}
-
-// HasExperimentId returns a boolean if a field has been set.
-func (o *Effect) HasExperimentId() bool {
-	if o != nil && !IsNil(o.ExperimentId) {
-		return true
-	}
-
-	return false
-}
-
-// SetExperimentId gets a reference to the given int64 and assigns it to the ExperimentId field.
-func (o *Effect) SetExperimentId(v int64) {
-	o.ExperimentId = &v
-}
-
-// GetCampaignId returns the CampaignId field value
-func (o *Effect) GetCampaignId() int64 {
-	if o == nil {
-		var ret int64
-		return ret
-	}
-
-	return o.CampaignId
-}
-
-// GetCampaignIdOk returns a tuple with the CampaignId field value
-// and a boolean to check if the value has been set.
-func (o *Effect) GetCampaignIdOk() (*int64, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.CampaignId, true
-}
-
-// SetCampaignId sets field value
-func (o *Effect) SetCampaignId(v int64) {
-	o.CampaignId = v
-}
-
-// GetRulesetId returns the RulesetId field value
-func (o *Effect) GetRulesetId() int64 {
-	if o == nil {
-		var ret int64
-		return ret
-	}
-
-	return o.RulesetId
-}
-
-// GetRulesetIdOk returns a tuple with the RulesetId field value
-// and a boolean to check if the value has been set.
-func (o *Effect) GetRulesetIdOk() (*int64, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.RulesetId, true
+	EffectAcceptCoupon                         *EffectAcceptCoupon
+	EffectAcceptReferral                       *EffectAcceptReferral
+	EffectAddFreeItem                          *EffectAddFreeItem
+	EffectAddLoyaltyPoints                     *EffectAddLoyaltyPoints
+	EffectAddNegativeLoyaltyPoints             *EffectAddNegativeLoyaltyPoints
+	EffectAddToAudience                        *EffectAddToAudience
+	EffectAwardGiveaway                        *EffectAwardGiveaway
+	EffectCallApi                              *EffectCallApi
+	EffectChangeLoyaltyTierLevel               *EffectChangeLoyaltyTierLevel
+	EffectCouponCreated                        *EffectCouponCreated
+	EffectCustomEffect                         *EffectCustomEffect
+	EffectDeductLoyaltyPoints                  *EffectDeductLoyaltyPoints
+	EffectError                                *EffectError
+	EffectExtendLoyaltyPointsExpiryDate        *EffectExtendLoyaltyPointsExpiryDate
+	EffectIncreaseAchievementProgress          *EffectIncreaseAchievementProgress
+	EffectJoinLoyaltyProgram                   *EffectJoinLoyaltyProgram
+	EffectOffsetNegativeLoyaltyPoints          *EffectOffsetNegativeLoyaltyPoints
+	EffectRedeemReferral                       *EffectRedeemReferral
+	EffectReferralCreated                      *EffectReferralCreated
+	EffectRejectCoupon                         *EffectRejectCoupon
+	EffectRejectReferral                       *EffectRejectReferral
+	EffectRemoveFromAudience                   *EffectRemoveFromAudience
+	EffectReserveCoupon                        *EffectReserveCoupon
+	EffectRollbackAddedLoyaltyPoints           *EffectRollbackAddedLoyaltyPoints
+	EffectRollbackCoupon                       *EffectRollbackCoupon
+	EffectRollbackDeductedLoyaltyPoints        *EffectRollbackDeductedLoyaltyPoints
+	EffectRollbackDiscount                     *EffectRollbackDiscount
+	EffectRollbackIncreasedAchievementProgress *EffectRollbackIncreasedAchievementProgress
+	EffectRollbackReferral                     *EffectRollbackReferral
+	EffectRollbackUseReward                    *EffectRollbackUseReward
+	EffectSet                                  *EffectSet
+	EffectSetDiscount                          *EffectSetDiscount
+	EffectSetDiscountPerAdditionalCost         *EffectSetDiscountPerAdditionalCost
+	EffectSetDiscountPerAdditionalCostPerItem  *EffectSetDiscountPerAdditionalCostPerItem
+	EffectSetDiscountPerItem                   *EffectSetDiscountPerItem
+	EffectSetLoyaltyPointsExpiryDate           *EffectSetLoyaltyPointsExpiryDate
+	EffectShowBundleMetadata                   *EffectShowBundleMetadata
+	EffectShowNotification                     *EffectShowNotification
+	EffectStartAchievementProgress             *EffectStartAchievementProgress
+	EffectUnlockReward                         *EffectUnlockReward
+	EffectUseReward                            *EffectUseReward
+	EffectWillAwardGiveaway                    *EffectWillAwardGiveaway
 }
 
-// SetRulesetId sets field value
-func (o *Effect) SetRulesetId(v int64) {
-	o.RulesetId = v
-}
-
-// GetRuleIndex returns the RuleIndex field value
-func (o *Effect) GetRuleIndex() int64 {
-	if o == nil {
-		var ret int64
-		return ret
-	}
-
-	return o.RuleIndex
-}
-
-// GetRuleIndexOk returns a tuple with the RuleIndex field value
-// and a boolean to check if the value has been set.
-func (o *Effect) GetRuleIndexOk() (*int64, bool) {
-	if o == nil {
-		return nil, false
+// EffectAcceptCouponAsEffect is a convenience function that returns EffectAcceptCoupon wrapped in Effect
+func EffectAcceptCouponAsEffect(v *EffectAcceptCoupon) Effect {
+	return Effect{
+		EffectAcceptCoupon: v,
 	}
-	return &o.RuleIndex, true
-}
-
-// SetRuleIndex sets field value
-func (o *Effect) SetRuleIndex(v int64) {
-	o.RuleIndex = v
 }
 
-// GetRuleName returns the RuleName field value
-func (o *Effect) GetRuleName() string {
-	if o == nil {
-		var ret string
-		return ret
+// EffectAcceptReferralAsEffect is a convenience function that returns EffectAcceptReferral wrapped in Effect
+func EffectAcceptReferralAsEffect(v *EffectAcceptReferral) Effect {
+	return Effect{
+		EffectAcceptReferral: v,
 	}
-
-	return o.RuleName
 }
 
-// GetRuleNameOk returns a tuple with the RuleName field value
-// and a boolean to check if the value has been set.
-func (o *Effect) GetRuleNameOk() (*string, bool) {
-	if o == nil {
-		return nil, false
+// EffectAddFreeItemAsEffect is a convenience function that returns EffectAddFreeItem wrapped in Effect
+func EffectAddFreeItemAsEffect(v *EffectAddFreeItem) Effect {
+	return Effect{
+		EffectAddFreeItem: v,
 	}
-	return &o.RuleName, true
-}
-
-// SetRuleName sets field value
-func (o *Effect) SetRuleName(v string) {
-	o.RuleName = v
 }
 
-// GetEffectType returns the EffectType field value
-func (o *Effect) GetEffectType() string {
-	if o == nil {
-		var ret string
-		return ret
+// EffectAddLoyaltyPointsAsEffect is a convenience function that returns EffectAddLoyaltyPoints wrapped in Effect
+func EffectAddLoyaltyPointsAsEffect(v *EffectAddLoyaltyPoints) Effect {
+	return Effect{
+		EffectAddLoyaltyPoints: v,
 	}
-
-	return o.EffectType
 }
 
-// GetEffectTypeOk returns a tuple with the EffectType field value
-// and a boolean to check if the value has been set.
-func (o *Effect) GetEffectTypeOk() (*string, bool) {
-	if o == nil {
-		return nil, false
+// EffectAddNegativeLoyaltyPointsAsEffect is a convenience function that returns EffectAddNegativeLoyaltyPoints wrapped in Effect
+func EffectAddNegativeLoyaltyPointsAsEffect(v *EffectAddNegativeLoyaltyPoints) Effect {
+	return Effect{
+		EffectAddNegativeLoyaltyPoints: v,
 	}
-	return &o.EffectType, true
-}
-
-// SetEffectType sets field value
-func (o *Effect) SetEffectType(v string) {
-	o.EffectType = v
 }
 
-// GetTriggeredByCoupon returns the TriggeredByCoupon field value if set, zero value otherwise.
-func (o *Effect) GetTriggeredByCoupon() int64 {
-	if o == nil || IsNil(o.TriggeredByCoupon) {
-		var ret int64
-		return ret
+// EffectAddToAudienceAsEffect is a convenience function that returns EffectAddToAudience wrapped in Effect
+func EffectAddToAudienceAsEffect(v *EffectAddToAudience) Effect {
+	return Effect{
+		EffectAddToAudience: v,
 	}
-	return *o.TriggeredByCoupon
 }
 
-// GetTriggeredByCouponOk returns a tuple with the TriggeredByCoupon field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Effect) GetTriggeredByCouponOk() (*int64, bool) {
-	if o == nil || IsNil(o.TriggeredByCoupon) {
-		return nil, false
+// EffectAwardGiveawayAsEffect is a convenience function that returns EffectAwardGiveaway wrapped in Effect
+func EffectAwardGiveawayAsEffect(v *EffectAwardGiveaway) Effect {
+	return Effect{
+		EffectAwardGiveaway: v,
 	}
-	return o.TriggeredByCoupon, true
 }
 
-// HasTriggeredByCoupon returns a boolean if a field has been set.
-func (o *Effect) HasTriggeredByCoupon() bool {
-	if o != nil && !IsNil(o.TriggeredByCoupon) {
-		return true
+// EffectCallApiAsEffect is a convenience function that returns EffectCallApi wrapped in Effect
+func EffectCallApiAsEffect(v *EffectCallApi) Effect {
+	return Effect{
+		EffectCallApi: v,
 	}
-
-	return false
-}
-
-// SetTriggeredByCoupon gets a reference to the given int64 and assigns it to the TriggeredByCoupon field.
-func (o *Effect) SetTriggeredByCoupon(v int64) {
-	o.TriggeredByCoupon = &v
 }
 
-// GetTriggeredForCatalogItem returns the TriggeredForCatalogItem field value if set, zero value otherwise.
-func (o *Effect) GetTriggeredForCatalogItem() int64 {
-	if o == nil || IsNil(o.TriggeredForCatalogItem) {
-		var ret int64
-		return ret
+// EffectChangeLoyaltyTierLevelAsEffect is a convenience function that returns EffectChangeLoyaltyTierLevel wrapped in Effect
+func EffectChangeLoyaltyTierLevelAsEffect(v *EffectChangeLoyaltyTierLevel) Effect {
+	return Effect{
+		EffectChangeLoyaltyTierLevel: v,
 	}
-	return *o.TriggeredForCatalogItem
 }
 
-// GetTriggeredForCatalogItemOk returns a tuple with the TriggeredForCatalogItem field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Effect) GetTriggeredForCatalogItemOk() (*int64, bool) {
-	if o == nil || IsNil(o.TriggeredForCatalogItem) {
-		return nil, false
+// EffectCouponCreatedAsEffect is a convenience function that returns EffectCouponCreated wrapped in Effect
+func EffectCouponCreatedAsEffect(v *EffectCouponCreated) Effect {
+	return Effect{
+		EffectCouponCreated: v,
 	}
-	return o.TriggeredForCatalogItem, true
 }
 
-// HasTriggeredForCatalogItem returns a boolean if a field has been set.
-func (o *Effect) HasTriggeredForCatalogItem() bool {
-	if o != nil && !IsNil(o.TriggeredForCatalogItem) {
-		return true
+// EffectCustomEffectAsEffect is a convenience function that returns EffectCustomEffect wrapped in Effect
+func EffectCustomEffectAsEffect(v *EffectCustomEffect) Effect {
+	return Effect{
+		EffectCustomEffect: v,
 	}
-
-	return false
-}
-
-// SetTriggeredForCatalogItem gets a reference to the given int64 and assigns it to the TriggeredForCatalogItem field.
-func (o *Effect) SetTriggeredForCatalogItem(v int64) {
-	o.TriggeredForCatalogItem = &v
 }
 
-// GetConditionIndex returns the ConditionIndex field value if set, zero value otherwise.
-func (o *Effect) GetConditionIndex() int64 {
-	if o == nil || IsNil(o.ConditionIndex) {
-		var ret int64
-		return ret
+// EffectDeductLoyaltyPointsAsEffect is a convenience function that returns EffectDeductLoyaltyPoints wrapped in Effect
+func EffectDeductLoyaltyPointsAsEffect(v *EffectDeductLoyaltyPoints) Effect {
+	return Effect{
+		EffectDeductLoyaltyPoints: v,
 	}
-	return *o.ConditionIndex
 }
 
-// GetConditionIndexOk returns a tuple with the ConditionIndex field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Effect) GetConditionIndexOk() (*int64, bool) {
-	if o == nil || IsNil(o.ConditionIndex) {
-		return nil, false
+// EffectErrorAsEffect is a convenience function that returns EffectError wrapped in Effect
+func EffectErrorAsEffect(v *EffectError) Effect {
+	return Effect{
+		EffectError: v,
 	}
-	return o.ConditionIndex, true
 }
 
-// HasConditionIndex returns a boolean if a field has been set.
-func (o *Effect) HasConditionIndex() bool {
-	if o != nil && !IsNil(o.ConditionIndex) {
-		return true
+// EffectExtendLoyaltyPointsExpiryDateAsEffect is a convenience function that returns EffectExtendLoyaltyPointsExpiryDate wrapped in Effect
+func EffectExtendLoyaltyPointsExpiryDateAsEffect(v *EffectExtendLoyaltyPointsExpiryDate) Effect {
+	return Effect{
+		EffectExtendLoyaltyPointsExpiryDate: v,
 	}
-
-	return false
-}
-
-// SetConditionIndex gets a reference to the given int64 and assigns it to the ConditionIndex field.
-func (o *Effect) SetConditionIndex(v int64) {
-	o.ConditionIndex = &v
 }
 
-// GetEvaluationGroupID returns the EvaluationGroupID field value if set, zero value otherwise.
-func (o *Effect) GetEvaluationGroupID() int64 {
-	if o == nil || IsNil(o.EvaluationGroupID) {
-		var ret int64
-		return ret
+// EffectIncreaseAchievementProgressAsEffect is a convenience function that returns EffectIncreaseAchievementProgress wrapped in Effect
+func EffectIncreaseAchievementProgressAsEffect(v *EffectIncreaseAchievementProgress) Effect {
+	return Effect{
+		EffectIncreaseAchievementProgress: v,
 	}
-	return *o.EvaluationGroupID
 }
 
-// GetEvaluationGroupIDOk returns a tuple with the EvaluationGroupID field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Effect) GetEvaluationGroupIDOk() (*int64, bool) {
-	if o == nil || IsNil(o.EvaluationGroupID) {
-		return nil, false
+// EffectJoinLoyaltyProgramAsEffect is a convenience function that returns EffectJoinLoyaltyProgram wrapped in Effect
+func EffectJoinLoyaltyProgramAsEffect(v *EffectJoinLoyaltyProgram) Effect {
+	return Effect{
+		EffectJoinLoyaltyProgram: v,
 	}
-	return o.EvaluationGroupID, true
 }
 
-// HasEvaluationGroupID returns a boolean if a field has been set.
-func (o *Effect) HasEvaluationGroupID() bool {
-	if o != nil && !IsNil(o.EvaluationGroupID) {
-		return true
+// EffectOffsetNegativeLoyaltyPointsAsEffect is a convenience function that returns EffectOffsetNegativeLoyaltyPoints wrapped in Effect
+func EffectOffsetNegativeLoyaltyPointsAsEffect(v *EffectOffsetNegativeLoyaltyPoints) Effect {
+	return Effect{
+		EffectOffsetNegativeLoyaltyPoints: v,
 	}
-
-	return false
-}
-
-// SetEvaluationGroupID gets a reference to the given int64 and assigns it to the EvaluationGroupID field.
-func (o *Effect) SetEvaluationGroupID(v int64) {
-	o.EvaluationGroupID = &v
 }
 
-// GetEvaluationGroupMode returns the EvaluationGroupMode field value if set, zero value otherwise.
-func (o *Effect) GetEvaluationGroupMode() string {
-	if o == nil || IsNil(o.EvaluationGroupMode) {
-		var ret string
-		return ret
+// EffectRedeemReferralAsEffect is a convenience function that returns EffectRedeemReferral wrapped in Effect
+func EffectRedeemReferralAsEffect(v *EffectRedeemReferral) Effect {
+	return Effect{
+		EffectRedeemReferral: v,
 	}
-	return *o.EvaluationGroupMode
 }
 
-// GetEvaluationGroupModeOk returns a tuple with the EvaluationGroupMode field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Effect) GetEvaluationGroupModeOk() (*string, bool) {
-	if o == nil || IsNil(o.EvaluationGroupMode) {
-		return nil, false
+// EffectReferralCreatedAsEffect is a convenience function that returns EffectReferralCreated wrapped in Effect
+func EffectReferralCreatedAsEffect(v *EffectReferralCreated) Effect {
+	return Effect{
+		EffectReferralCreated: v,
 	}
-	return o.EvaluationGroupMode, true
 }
 
-// HasEvaluationGroupMode returns a boolean if a field has been set.
-func (o *Effect) HasEvaluationGroupMode() bool {
-	if o != nil && !IsNil(o.EvaluationGroupMode) {
-		return true
+// EffectRejectCouponAsEffect is a convenience function that returns EffectRejectCoupon wrapped in Effect
+func EffectRejectCouponAsEffect(v *EffectRejectCoupon) Effect {
+	return Effect{
+		EffectRejectCoupon: v,
 	}
-
-	return false
-}
-
-// SetEvaluationGroupMode gets a reference to the given string and assigns it to the EvaluationGroupMode field.
-func (o *Effect) SetEvaluationGroupMode(v string) {
-	o.EvaluationGroupMode = &v
 }
 
-// GetCampaignRevisionId returns the CampaignRevisionId field value if set, zero value otherwise.
-func (o *Effect) GetCampaignRevisionId() int64 {
-	if o == nil || IsNil(o.CampaignRevisionId) {
-		var ret int64
-		return ret
+// EffectRejectReferralAsEffect is a convenience function that returns EffectRejectReferral wrapped in Effect
+func EffectRejectReferralAsEffect(v *EffectRejectReferral) Effect {
+	return Effect{
+		EffectRejectReferral: v,
 	}
-	return *o.CampaignRevisionId
 }
 
-// GetCampaignRevisionIdOk returns a tuple with the CampaignRevisionId field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Effect) GetCampaignRevisionIdOk() (*int64, bool) {
-	if o == nil || IsNil(o.CampaignRevisionId) {
-		return nil, false
+// EffectRemoveFromAudienceAsEffect is a convenience function that returns EffectRemoveFromAudience wrapped in Effect
+func EffectRemoveFromAudienceAsEffect(v *EffectRemoveFromAudience) Effect {
+	return Effect{
+		EffectRemoveFromAudience: v,
 	}
-	return o.CampaignRevisionId, true
 }
 
-// HasCampaignRevisionId returns a boolean if a field has been set.
-func (o *Effect) HasCampaignRevisionId() bool {
-	if o != nil && !IsNil(o.CampaignRevisionId) {
-		return true
+// EffectReserveCouponAsEffect is a convenience function that returns EffectReserveCoupon wrapped in Effect
+func EffectReserveCouponAsEffect(v *EffectReserveCoupon) Effect {
+	return Effect{
+		EffectReserveCoupon: v,
 	}
-
-	return false
-}
-
-// SetCampaignRevisionId gets a reference to the given int64 and assigns it to the CampaignRevisionId field.
-func (o *Effect) SetCampaignRevisionId(v int64) {
-	o.CampaignRevisionId = &v
 }
 
-// GetCampaignRevisionVersionId returns the CampaignRevisionVersionId field value if set, zero value otherwise.
-func (o *Effect) GetCampaignRevisionVersionId() int64 {
-	if o == nil || IsNil(o.CampaignRevisionVersionId) {
-		var ret int64
-		return ret
+// EffectRollbackAddedLoyaltyPointsAsEffect is a convenience function that returns EffectRollbackAddedLoyaltyPoints wrapped in Effect
+func EffectRollbackAddedLoyaltyPointsAsEffect(v *EffectRollbackAddedLoyaltyPoints) Effect {
+	return Effect{
+		EffectRollbackAddedLoyaltyPoints: v,
 	}
-	return *o.CampaignRevisionVersionId
 }
 
-// GetCampaignRevisionVersionIdOk returns a tuple with the CampaignRevisionVersionId field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Effect) GetCampaignRevisionVersionIdOk() (*int64, bool) {
-	if o == nil || IsNil(o.CampaignRevisionVersionId) {
-		return nil, false
+// EffectRollbackCouponAsEffect is a convenience function that returns EffectRollbackCoupon wrapped in Effect
+func EffectRollbackCouponAsEffect(v *EffectRollbackCoupon) Effect {
+	return Effect{
+		EffectRollbackCoupon: v,
 	}
-	return o.CampaignRevisionVersionId, true
 }
 
-// HasCampaignRevisionVersionId returns a boolean if a field has been set.
-func (o *Effect) HasCampaignRevisionVersionId() bool {
-	if o != nil && !IsNil(o.CampaignRevisionVersionId) {
-		return true
+// EffectRollbackDeductedLoyaltyPointsAsEffect is a convenience function that returns EffectRollbackDeductedLoyaltyPoints wrapped in Effect
+func EffectRollbackDeductedLoyaltyPointsAsEffect(v *EffectRollbackDeductedLoyaltyPoints) Effect {
+	return Effect{
+		EffectRollbackDeductedLoyaltyPoints: v,
 	}
-
-	return false
-}
-
-// SetCampaignRevisionVersionId gets a reference to the given int64 and assigns it to the CampaignRevisionVersionId field.
-func (o *Effect) SetCampaignRevisionVersionId(v int64) {
-	o.CampaignRevisionVersionId = &v
 }
 
-// GetSelectedPriceType returns the SelectedPriceType field value if set, zero value otherwise.
-func (o *Effect) GetSelectedPriceType() string {
-	if o == nil || IsNil(o.SelectedPriceType) {
-		var ret string
-		return ret
+// EffectRollbackDiscountAsEffect is a convenience function that returns EffectRollbackDiscount wrapped in Effect
+func EffectRollbackDiscountAsEffect(v *EffectRollbackDiscount) Effect {
+	return Effect{
+		EffectRollbackDiscount: v,
 	}
-	return *o.SelectedPriceType
 }
 
-// GetSelectedPriceTypeOk returns a tuple with the SelectedPriceType field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Effect) GetSelectedPriceTypeOk() (*string, bool) {
-	if o == nil || IsNil(o.SelectedPriceType) {
-		return nil, false
+// EffectRollbackIncreasedAchievementProgressAsEffect is a convenience function that returns EffectRollbackIncreasedAchievementProgress wrapped in Effect
+func EffectRollbackIncreasedAchievementProgressAsEffect(v *EffectRollbackIncreasedAchievementProgress) Effect {
+	return Effect{
+		EffectRollbackIncreasedAchievementProgress: v,
 	}
-	return o.SelectedPriceType, true
 }
 
-// HasSelectedPriceType returns a boolean if a field has been set.
-func (o *Effect) HasSelectedPriceType() bool {
-	if o != nil && !IsNil(o.SelectedPriceType) {
-		return true
+// EffectRollbackReferralAsEffect is a convenience function that returns EffectRollbackReferral wrapped in Effect
+func EffectRollbackReferralAsEffect(v *EffectRollbackReferral) Effect {
+	return Effect{
+		EffectRollbackReferral: v,
 	}
-
-	return false
-}
-
-// SetSelectedPriceType gets a reference to the given string and assigns it to the SelectedPriceType field.
-func (o *Effect) SetSelectedPriceType(v string) {
-	o.SelectedPriceType = &v
 }
 
-// GetSelectedPrice returns the SelectedPrice field value if set, zero value otherwise.
-func (o *Effect) GetSelectedPrice() float32 {
-	if o == nil || IsNil(o.SelectedPrice) {
-		var ret float32
-		return ret
+// EffectRollbackUseRewardAsEffect is a convenience function that returns EffectRollbackUseReward wrapped in Effect
+func EffectRollbackUseRewardAsEffect(v *EffectRollbackUseReward) Effect {
+	return Effect{
+		EffectRollbackUseReward: v,
 	}
-	return *o.SelectedPrice
 }
 
-// GetSelectedPriceOk returns a tuple with the SelectedPrice field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Effect) GetSelectedPriceOk() (*float32, bool) {
-	if o == nil || IsNil(o.SelectedPrice) {
-		return nil, false
+// EffectSetAsEffect is a convenience function that returns EffectSet wrapped in Effect
+func EffectSetAsEffect(v *EffectSet) Effect {
+	return Effect{
+		EffectSet: v,
 	}
-	return o.SelectedPrice, true
 }
 
-// HasSelectedPrice returns a boolean if a field has been set.
-func (o *Effect) HasSelectedPrice() bool {
-	if o != nil && !IsNil(o.SelectedPrice) {
-		return true
+// EffectSetDiscountAsEffect is a convenience function that returns EffectSetDiscount wrapped in Effect
+func EffectSetDiscountAsEffect(v *EffectSetDiscount) Effect {
+	return Effect{
+		EffectSetDiscount: v,
 	}
-
-	return false
-}
-
-// SetSelectedPrice gets a reference to the given float32 and assigns it to the SelectedPrice field.
-func (o *Effect) SetSelectedPrice(v float32) {
-	o.SelectedPrice = &v
 }
 
-// GetAdjustmentReferenceId returns the AdjustmentReferenceId field value if set, zero value otherwise.
-func (o *Effect) GetAdjustmentReferenceId() string {
-	if o == nil || IsNil(o.AdjustmentReferenceId) {
-		var ret string
-		return ret
+// EffectSetDiscountPerAdditionalCostAsEffect is a convenience function that returns EffectSetDiscountPerAdditionalCost wrapped in Effect
+func EffectSetDiscountPerAdditionalCostAsEffect(v *EffectSetDiscountPerAdditionalCost) Effect {
+	return Effect{
+		EffectSetDiscountPerAdditionalCost: v,
 	}
-	return *o.AdjustmentReferenceId
 }
 
-// GetAdjustmentReferenceIdOk returns a tuple with the AdjustmentReferenceId field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Effect) GetAdjustmentReferenceIdOk() (*string, bool) {
-	if o == nil || IsNil(o.AdjustmentReferenceId) {
-		return nil, false
+// EffectSetDiscountPerAdditionalCostPerItemAsEffect is a convenience function that returns EffectSetDiscountPerAdditionalCostPerItem wrapped in Effect
+func EffectSetDiscountPerAdditionalCostPerItemAsEffect(v *EffectSetDiscountPerAdditionalCostPerItem) Effect {
+	return Effect{
+		EffectSetDiscountPerAdditionalCostPerItem: v,
 	}
-	return o.AdjustmentReferenceId, true
 }
 
-// HasAdjustmentReferenceId returns a boolean if a field has been set.
-func (o *Effect) HasAdjustmentReferenceId() bool {
-	if o != nil && !IsNil(o.AdjustmentReferenceId) {
-		return true
+// EffectSetDiscountPerItemAsEffect is a convenience function that returns EffectSetDiscountPerItem wrapped in Effect
+func EffectSetDiscountPerItemAsEffect(v *EffectSetDiscountPerItem) Effect {
+	return Effect{
+		EffectSetDiscountPerItem: v,
 	}
-
-	return false
-}
-
-// SetAdjustmentReferenceId gets a reference to the given string and assigns it to the AdjustmentReferenceId field.
-func (o *Effect) SetAdjustmentReferenceId(v string) {
-	o.AdjustmentReferenceId = &v
 }
 
-// GetRewardId returns the RewardId field value if set, zero value otherwise.
-func (o *Effect) GetRewardId() int64 {
-	if o == nil || IsNil(o.RewardId) {
-		var ret int64
-		return ret
+// EffectSetLoyaltyPointsExpiryDateAsEffect is a convenience function that returns EffectSetLoyaltyPointsExpiryDate wrapped in Effect
+func EffectSetLoyaltyPointsExpiryDateAsEffect(v *EffectSetLoyaltyPointsExpiryDate) Effect {
+	return Effect{
+		EffectSetLoyaltyPointsExpiryDate: v,
 	}
-	return *o.RewardId
 }
 
-// GetRewardIdOk returns a tuple with the RewardId field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Effect) GetRewardIdOk() (*int64, bool) {
-	if o == nil || IsNil(o.RewardId) {
-		return nil, false
+// EffectShowBundleMetadataAsEffect is a convenience function that returns EffectShowBundleMetadata wrapped in Effect
+func EffectShowBundleMetadataAsEffect(v *EffectShowBundleMetadata) Effect {
+	return Effect{
+		EffectShowBundleMetadata: v,
 	}
-	return o.RewardId, true
 }
 
-// HasRewardId returns a boolean if a field has been set.
-func (o *Effect) HasRewardId() bool {
-	if o != nil && !IsNil(o.RewardId) {
-		return true
+// EffectShowNotificationAsEffect is a convenience function that returns EffectShowNotification wrapped in Effect
+func EffectShowNotificationAsEffect(v *EffectShowNotification) Effect {
+	return Effect{
+		EffectShowNotification: v,
 	}
-
-	return false
 }
 
-// SetRewardId gets a reference to the given int64 and assigns it to the RewardId field.
-func (o *Effect) SetRewardId(v int64) {
-	o.RewardId = &v
-}
-
-// GetProps returns the Props field value
-// If the value is explicit nil, the zero value for interface{} will be returned
-func (o *Effect) GetProps() interface{} {
-	if o == nil {
-		var ret interface{}
-		return ret
+// EffectStartAchievementProgressAsEffect is a convenience function that returns EffectStartAchievementProgress wrapped in Effect
+func EffectStartAchievementProgressAsEffect(v *EffectStartAchievementProgress) Effect {
+	return Effect{
+		EffectStartAchievementProgress: v,
 	}
-
-	return o.Props
 }
 
-// GetPropsOk returns a tuple with the Props field value
-// and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *Effect) GetPropsOk() (*interface{}, bool) {
-	if o == nil || IsNil(o.Props) {
-		return nil, false
+// EffectUnlockRewardAsEffect is a convenience function that returns EffectUnlockReward wrapped in Effect
+func EffectUnlockRewardAsEffect(v *EffectUnlockReward) Effect {
+	return Effect{
+		EffectUnlockReward: v,
 	}
-	return &o.Props, true
 }
 
-// SetProps sets field value
-func (o *Effect) SetProps(v interface{}) {
-	o.Props = v
-}
-
-func (o Effect) MarshalJSON() ([]byte, error) {
-	toSerialize, err := o.ToMap()
-	if err != nil {
-		return []byte{}, err
+// EffectUseRewardAsEffect is a convenience function that returns EffectUseReward wrapped in Effect
+func EffectUseRewardAsEffect(v *EffectUseReward) Effect {
+	return Effect{
+		EffectUseReward: v,
 	}
-	return json.Marshal(toSerialize)
 }
-
-func (o Effect) ToMap() (map[string]interface{}, error) {
-	toSerialize := map[string]interface{}{}
-	if !IsNil(o.ExperimentId) {
-		toSerialize["experimentId"] = o.ExperimentId
-	}
-	toSerialize["campaignId"] = o.CampaignId
-	toSerialize["rulesetId"] = o.RulesetId
-	toSerialize["ruleIndex"] = o.RuleIndex
-	toSerialize["ruleName"] = o.RuleName
-	toSerialize["effectType"] = o.EffectType
-	if !IsNil(o.TriggeredByCoupon) {
-		toSerialize["triggeredByCoupon"] = o.TriggeredByCoupon
-	}
-	if !IsNil(o.TriggeredForCatalogItem) {
-		toSerialize["triggeredForCatalogItem"] = o.TriggeredForCatalogItem
-	}
-	if !IsNil(o.ConditionIndex) {
-		toSerialize["conditionIndex"] = o.ConditionIndex
-	}
-	if !IsNil(o.EvaluationGroupID) {
-		toSerialize["evaluationGroupID"] = o.EvaluationGroupID
-	}
-	if !IsNil(o.EvaluationGroupMode) {
-		toSerialize["evaluationGroupMode"] = o.EvaluationGroupMode
-	}
-	if !IsNil(o.CampaignRevisionId) {
-		toSerialize["campaignRevisionId"] = o.CampaignRevisionId
-	}
-	if !IsNil(o.CampaignRevisionVersionId) {
-		toSerialize["campaignRevisionVersionId"] = o.CampaignRevisionVersionId
-	}
-	if !IsNil(o.SelectedPriceType) {
-		toSerialize["selectedPriceType"] = o.SelectedPriceType
-	}
-	if !IsNil(o.SelectedPrice) {
-		toSerialize["selectedPrice"] = o.SelectedPrice
-	}
-	if !IsNil(o.AdjustmentReferenceId) {
-		toSerialize["adjustmentReferenceId"] = o.AdjustmentReferenceId
-	}
-	if !IsNil(o.RewardId) {
-		toSerialize["rewardId"] = o.RewardId
-	}
-	if o.Props != nil {
-		toSerialize["props"] = o.Props
-	}
 
-	for key, value := range o.AdditionalProperties {
-		toSerialize[key] = value
+// EffectWillAwardGiveawayAsEffect is a convenience function that returns EffectWillAwardGiveaway wrapped in Effect
+func EffectWillAwardGiveawayAsEffect(v *EffectWillAwardGiveaway) Effect {
+	return Effect{
+		EffectWillAwardGiveaway: v,
 	}
-
-	return toSerialize, nil
 }
-
-func (o *Effect) UnmarshalJSON(data []byte) (err error) {
-	// This validates that all required properties are included in the JSON object
-	// by unmarshalling the object into a generic map with string keys and checking
-	// that every required field exists as a key in the generic map.
-	requiredProperties := []string{
-		"campaignId",
-		"rulesetId",
-		"ruleIndex",
-		"ruleName",
-		"effectType",
-		"props",
-	}
-
-	allProperties := make(map[string]interface{})
-
-	err = json.Unmarshal(data, &allProperties)
-
-	if err != nil {
-		return err
-	}
 
-	for _, requiredProperty := range requiredProperties {
-		if _, exists := allProperties[requiredProperty]; !exists {
-			return fmt.Errorf("no value given for required property %v", requiredProperty)
+// Unmarshal JSON data into one of the pointers in the struct
+func (dst *Effect) UnmarshalJSON(data []byte) error {
+	var err error
+	match := 0
+	// try to unmarshal data into EffectAcceptCoupon
+	err = newStrictDecoder(data).Decode(&dst.EffectAcceptCoupon)
+	if err == nil {
+		jsonEffectAcceptCoupon, _ := json.Marshal(dst.EffectAcceptCoupon)
+		if string(jsonEffectAcceptCoupon) == "{}" { // empty struct
+			dst.EffectAcceptCoupon = nil
+		} else {
+			if err = validator.Validate(dst.EffectAcceptCoupon); err != nil {
+				dst.EffectAcceptCoupon = nil
+			} else {
+				match++
+			}
 		}
+	} else {
+		dst.EffectAcceptCoupon = nil
 	}
 
-	varEffect := _Effect{}
-
-	err = json.Unmarshal(data, &varEffect)
-
-	if err != nil {
-		return err
+	// try to unmarshal data into EffectAcceptReferral
+	err = newStrictDecoder(data).Decode(&dst.EffectAcceptReferral)
+	if err == nil {
+		jsonEffectAcceptReferral, _ := json.Marshal(dst.EffectAcceptReferral)
+		if string(jsonEffectAcceptReferral) == "{}" { // empty struct
+			dst.EffectAcceptReferral = nil
+		} else {
+			if err = validator.Validate(dst.EffectAcceptReferral); err != nil {
+				dst.EffectAcceptReferral = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectAcceptReferral = nil
 	}
 
-	*o = Effect(varEffect)
-
-	additionalProperties := make(map[string]interface{})
-
-	if err = json.Unmarshal(data, &additionalProperties); err == nil {
-		delete(additionalProperties, "experimentId")
-		delete(additionalProperties, "campaignId")
-		delete(additionalProperties, "rulesetId")
-		delete(additionalProperties, "ruleIndex")
-		delete(additionalProperties, "ruleName")
-		delete(additionalProperties, "effectType")
-		delete(additionalProperties, "triggeredByCoupon")
-		delete(additionalProperties, "triggeredForCatalogItem")
-		delete(additionalProperties, "conditionIndex")
-		delete(additionalProperties, "evaluationGroupID")
-		delete(additionalProperties, "evaluationGroupMode")
-		delete(additionalProperties, "campaignRevisionId")
-		delete(additionalProperties, "campaignRevisionVersionId")
-		delete(additionalProperties, "selectedPriceType")
-		delete(additionalProperties, "selectedPrice")
-		delete(additionalProperties, "adjustmentReferenceId")
-		delete(additionalProperties, "rewardId")
-		delete(additionalProperties, "props")
-		o.AdditionalProperties = additionalProperties
+	// try to unmarshal data into EffectAddFreeItem
+	err = newStrictDecoder(data).Decode(&dst.EffectAddFreeItem)
+	if err == nil {
+		jsonEffectAddFreeItem, _ := json.Marshal(dst.EffectAddFreeItem)
+		if string(jsonEffectAddFreeItem) == "{}" { // empty struct
+			dst.EffectAddFreeItem = nil
+		} else {
+			if err = validator.Validate(dst.EffectAddFreeItem); err != nil {
+				dst.EffectAddFreeItem = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectAddFreeItem = nil
 	}
 
-	return err
+	// try to unmarshal data into EffectAddLoyaltyPoints
+	err = newStrictDecoder(data).Decode(&dst.EffectAddLoyaltyPoints)
+	if err == nil {
+		jsonEffectAddLoyaltyPoints, _ := json.Marshal(dst.EffectAddLoyaltyPoints)
+		if string(jsonEffectAddLoyaltyPoints) == "{}" { // empty struct
+			dst.EffectAddLoyaltyPoints = nil
+		} else {
+			if err = validator.Validate(dst.EffectAddLoyaltyPoints); err != nil {
+				dst.EffectAddLoyaltyPoints = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectAddLoyaltyPoints = nil
+	}
+
+	// try to unmarshal data into EffectAddNegativeLoyaltyPoints
+	err = newStrictDecoder(data).Decode(&dst.EffectAddNegativeLoyaltyPoints)
+	if err == nil {
+		jsonEffectAddNegativeLoyaltyPoints, _ := json.Marshal(dst.EffectAddNegativeLoyaltyPoints)
+		if string(jsonEffectAddNegativeLoyaltyPoints) == "{}" { // empty struct
+			dst.EffectAddNegativeLoyaltyPoints = nil
+		} else {
+			if err = validator.Validate(dst.EffectAddNegativeLoyaltyPoints); err != nil {
+				dst.EffectAddNegativeLoyaltyPoints = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectAddNegativeLoyaltyPoints = nil
+	}
+
+	// try to unmarshal data into EffectAddToAudience
+	err = newStrictDecoder(data).Decode(&dst.EffectAddToAudience)
+	if err == nil {
+		jsonEffectAddToAudience, _ := json.Marshal(dst.EffectAddToAudience)
+		if string(jsonEffectAddToAudience) == "{}" { // empty struct
+			dst.EffectAddToAudience = nil
+		} else {
+			if err = validator.Validate(dst.EffectAddToAudience); err != nil {
+				dst.EffectAddToAudience = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectAddToAudience = nil
+	}
+
+	// try to unmarshal data into EffectAwardGiveaway
+	err = newStrictDecoder(data).Decode(&dst.EffectAwardGiveaway)
+	if err == nil {
+		jsonEffectAwardGiveaway, _ := json.Marshal(dst.EffectAwardGiveaway)
+		if string(jsonEffectAwardGiveaway) == "{}" { // empty struct
+			dst.EffectAwardGiveaway = nil
+		} else {
+			if err = validator.Validate(dst.EffectAwardGiveaway); err != nil {
+				dst.EffectAwardGiveaway = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectAwardGiveaway = nil
+	}
+
+	// try to unmarshal data into EffectCallApi
+	err = newStrictDecoder(data).Decode(&dst.EffectCallApi)
+	if err == nil {
+		jsonEffectCallApi, _ := json.Marshal(dst.EffectCallApi)
+		if string(jsonEffectCallApi) == "{}" { // empty struct
+			dst.EffectCallApi = nil
+		} else {
+			if err = validator.Validate(dst.EffectCallApi); err != nil {
+				dst.EffectCallApi = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectCallApi = nil
+	}
+
+	// try to unmarshal data into EffectChangeLoyaltyTierLevel
+	err = newStrictDecoder(data).Decode(&dst.EffectChangeLoyaltyTierLevel)
+	if err == nil {
+		jsonEffectChangeLoyaltyTierLevel, _ := json.Marshal(dst.EffectChangeLoyaltyTierLevel)
+		if string(jsonEffectChangeLoyaltyTierLevel) == "{}" { // empty struct
+			dst.EffectChangeLoyaltyTierLevel = nil
+		} else {
+			if err = validator.Validate(dst.EffectChangeLoyaltyTierLevel); err != nil {
+				dst.EffectChangeLoyaltyTierLevel = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectChangeLoyaltyTierLevel = nil
+	}
+
+	// try to unmarshal data into EffectCouponCreated
+	err = newStrictDecoder(data).Decode(&dst.EffectCouponCreated)
+	if err == nil {
+		jsonEffectCouponCreated, _ := json.Marshal(dst.EffectCouponCreated)
+		if string(jsonEffectCouponCreated) == "{}" { // empty struct
+			dst.EffectCouponCreated = nil
+		} else {
+			if err = validator.Validate(dst.EffectCouponCreated); err != nil {
+				dst.EffectCouponCreated = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectCouponCreated = nil
+	}
+
+	// try to unmarshal data into EffectCustomEffect
+	err = newStrictDecoder(data).Decode(&dst.EffectCustomEffect)
+	if err == nil {
+		jsonEffectCustomEffect, _ := json.Marshal(dst.EffectCustomEffect)
+		if string(jsonEffectCustomEffect) == "{}" { // empty struct
+			dst.EffectCustomEffect = nil
+		} else {
+			if err = validator.Validate(dst.EffectCustomEffect); err != nil {
+				dst.EffectCustomEffect = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectCustomEffect = nil
+	}
+
+	// try to unmarshal data into EffectDeductLoyaltyPoints
+	err = newStrictDecoder(data).Decode(&dst.EffectDeductLoyaltyPoints)
+	if err == nil {
+		jsonEffectDeductLoyaltyPoints, _ := json.Marshal(dst.EffectDeductLoyaltyPoints)
+		if string(jsonEffectDeductLoyaltyPoints) == "{}" { // empty struct
+			dst.EffectDeductLoyaltyPoints = nil
+		} else {
+			if err = validator.Validate(dst.EffectDeductLoyaltyPoints); err != nil {
+				dst.EffectDeductLoyaltyPoints = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectDeductLoyaltyPoints = nil
+	}
+
+	// try to unmarshal data into EffectError
+	err = newStrictDecoder(data).Decode(&dst.EffectError)
+	if err == nil {
+		jsonEffectError, _ := json.Marshal(dst.EffectError)
+		if string(jsonEffectError) == "{}" { // empty struct
+			dst.EffectError = nil
+		} else {
+			if err = validator.Validate(dst.EffectError); err != nil {
+				dst.EffectError = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectError = nil
+	}
+
+	// try to unmarshal data into EffectExtendLoyaltyPointsExpiryDate
+	err = newStrictDecoder(data).Decode(&dst.EffectExtendLoyaltyPointsExpiryDate)
+	if err == nil {
+		jsonEffectExtendLoyaltyPointsExpiryDate, _ := json.Marshal(dst.EffectExtendLoyaltyPointsExpiryDate)
+		if string(jsonEffectExtendLoyaltyPointsExpiryDate) == "{}" { // empty struct
+			dst.EffectExtendLoyaltyPointsExpiryDate = nil
+		} else {
+			if err = validator.Validate(dst.EffectExtendLoyaltyPointsExpiryDate); err != nil {
+				dst.EffectExtendLoyaltyPointsExpiryDate = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectExtendLoyaltyPointsExpiryDate = nil
+	}
+
+	// try to unmarshal data into EffectIncreaseAchievementProgress
+	err = newStrictDecoder(data).Decode(&dst.EffectIncreaseAchievementProgress)
+	if err == nil {
+		jsonEffectIncreaseAchievementProgress, _ := json.Marshal(dst.EffectIncreaseAchievementProgress)
+		if string(jsonEffectIncreaseAchievementProgress) == "{}" { // empty struct
+			dst.EffectIncreaseAchievementProgress = nil
+		} else {
+			if err = validator.Validate(dst.EffectIncreaseAchievementProgress); err != nil {
+				dst.EffectIncreaseAchievementProgress = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectIncreaseAchievementProgress = nil
+	}
+
+	// try to unmarshal data into EffectJoinLoyaltyProgram
+	err = newStrictDecoder(data).Decode(&dst.EffectJoinLoyaltyProgram)
+	if err == nil {
+		jsonEffectJoinLoyaltyProgram, _ := json.Marshal(dst.EffectJoinLoyaltyProgram)
+		if string(jsonEffectJoinLoyaltyProgram) == "{}" { // empty struct
+			dst.EffectJoinLoyaltyProgram = nil
+		} else {
+			if err = validator.Validate(dst.EffectJoinLoyaltyProgram); err != nil {
+				dst.EffectJoinLoyaltyProgram = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectJoinLoyaltyProgram = nil
+	}
+
+	// try to unmarshal data into EffectOffsetNegativeLoyaltyPoints
+	err = newStrictDecoder(data).Decode(&dst.EffectOffsetNegativeLoyaltyPoints)
+	if err == nil {
+		jsonEffectOffsetNegativeLoyaltyPoints, _ := json.Marshal(dst.EffectOffsetNegativeLoyaltyPoints)
+		if string(jsonEffectOffsetNegativeLoyaltyPoints) == "{}" { // empty struct
+			dst.EffectOffsetNegativeLoyaltyPoints = nil
+		} else {
+			if err = validator.Validate(dst.EffectOffsetNegativeLoyaltyPoints); err != nil {
+				dst.EffectOffsetNegativeLoyaltyPoints = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectOffsetNegativeLoyaltyPoints = nil
+	}
+
+	// try to unmarshal data into EffectRedeemReferral
+	err = newStrictDecoder(data).Decode(&dst.EffectRedeemReferral)
+	if err == nil {
+		jsonEffectRedeemReferral, _ := json.Marshal(dst.EffectRedeemReferral)
+		if string(jsonEffectRedeemReferral) == "{}" { // empty struct
+			dst.EffectRedeemReferral = nil
+		} else {
+			if err = validator.Validate(dst.EffectRedeemReferral); err != nil {
+				dst.EffectRedeemReferral = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectRedeemReferral = nil
+	}
+
+	// try to unmarshal data into EffectReferralCreated
+	err = newStrictDecoder(data).Decode(&dst.EffectReferralCreated)
+	if err == nil {
+		jsonEffectReferralCreated, _ := json.Marshal(dst.EffectReferralCreated)
+		if string(jsonEffectReferralCreated) == "{}" { // empty struct
+			dst.EffectReferralCreated = nil
+		} else {
+			if err = validator.Validate(dst.EffectReferralCreated); err != nil {
+				dst.EffectReferralCreated = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectReferralCreated = nil
+	}
+
+	// try to unmarshal data into EffectRejectCoupon
+	err = newStrictDecoder(data).Decode(&dst.EffectRejectCoupon)
+	if err == nil {
+		jsonEffectRejectCoupon, _ := json.Marshal(dst.EffectRejectCoupon)
+		if string(jsonEffectRejectCoupon) == "{}" { // empty struct
+			dst.EffectRejectCoupon = nil
+		} else {
+			if err = validator.Validate(dst.EffectRejectCoupon); err != nil {
+				dst.EffectRejectCoupon = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectRejectCoupon = nil
+	}
+
+	// try to unmarshal data into EffectRejectReferral
+	err = newStrictDecoder(data).Decode(&dst.EffectRejectReferral)
+	if err == nil {
+		jsonEffectRejectReferral, _ := json.Marshal(dst.EffectRejectReferral)
+		if string(jsonEffectRejectReferral) == "{}" { // empty struct
+			dst.EffectRejectReferral = nil
+		} else {
+			if err = validator.Validate(dst.EffectRejectReferral); err != nil {
+				dst.EffectRejectReferral = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectRejectReferral = nil
+	}
+
+	// try to unmarshal data into EffectRemoveFromAudience
+	err = newStrictDecoder(data).Decode(&dst.EffectRemoveFromAudience)
+	if err == nil {
+		jsonEffectRemoveFromAudience, _ := json.Marshal(dst.EffectRemoveFromAudience)
+		if string(jsonEffectRemoveFromAudience) == "{}" { // empty struct
+			dst.EffectRemoveFromAudience = nil
+		} else {
+			if err = validator.Validate(dst.EffectRemoveFromAudience); err != nil {
+				dst.EffectRemoveFromAudience = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectRemoveFromAudience = nil
+	}
+
+	// try to unmarshal data into EffectReserveCoupon
+	err = newStrictDecoder(data).Decode(&dst.EffectReserveCoupon)
+	if err == nil {
+		jsonEffectReserveCoupon, _ := json.Marshal(dst.EffectReserveCoupon)
+		if string(jsonEffectReserveCoupon) == "{}" { // empty struct
+			dst.EffectReserveCoupon = nil
+		} else {
+			if err = validator.Validate(dst.EffectReserveCoupon); err != nil {
+				dst.EffectReserveCoupon = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectReserveCoupon = nil
+	}
+
+	// try to unmarshal data into EffectRollbackAddedLoyaltyPoints
+	err = newStrictDecoder(data).Decode(&dst.EffectRollbackAddedLoyaltyPoints)
+	if err == nil {
+		jsonEffectRollbackAddedLoyaltyPoints, _ := json.Marshal(dst.EffectRollbackAddedLoyaltyPoints)
+		if string(jsonEffectRollbackAddedLoyaltyPoints) == "{}" { // empty struct
+			dst.EffectRollbackAddedLoyaltyPoints = nil
+		} else {
+			if err = validator.Validate(dst.EffectRollbackAddedLoyaltyPoints); err != nil {
+				dst.EffectRollbackAddedLoyaltyPoints = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectRollbackAddedLoyaltyPoints = nil
+	}
+
+	// try to unmarshal data into EffectRollbackCoupon
+	err = newStrictDecoder(data).Decode(&dst.EffectRollbackCoupon)
+	if err == nil {
+		jsonEffectRollbackCoupon, _ := json.Marshal(dst.EffectRollbackCoupon)
+		if string(jsonEffectRollbackCoupon) == "{}" { // empty struct
+			dst.EffectRollbackCoupon = nil
+		} else {
+			if err = validator.Validate(dst.EffectRollbackCoupon); err != nil {
+				dst.EffectRollbackCoupon = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectRollbackCoupon = nil
+	}
+
+	// try to unmarshal data into EffectRollbackDeductedLoyaltyPoints
+	err = newStrictDecoder(data).Decode(&dst.EffectRollbackDeductedLoyaltyPoints)
+	if err == nil {
+		jsonEffectRollbackDeductedLoyaltyPoints, _ := json.Marshal(dst.EffectRollbackDeductedLoyaltyPoints)
+		if string(jsonEffectRollbackDeductedLoyaltyPoints) == "{}" { // empty struct
+			dst.EffectRollbackDeductedLoyaltyPoints = nil
+		} else {
+			if err = validator.Validate(dst.EffectRollbackDeductedLoyaltyPoints); err != nil {
+				dst.EffectRollbackDeductedLoyaltyPoints = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectRollbackDeductedLoyaltyPoints = nil
+	}
+
+	// try to unmarshal data into EffectRollbackDiscount
+	err = newStrictDecoder(data).Decode(&dst.EffectRollbackDiscount)
+	if err == nil {
+		jsonEffectRollbackDiscount, _ := json.Marshal(dst.EffectRollbackDiscount)
+		if string(jsonEffectRollbackDiscount) == "{}" { // empty struct
+			dst.EffectRollbackDiscount = nil
+		} else {
+			if err = validator.Validate(dst.EffectRollbackDiscount); err != nil {
+				dst.EffectRollbackDiscount = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectRollbackDiscount = nil
+	}
+
+	// try to unmarshal data into EffectRollbackIncreasedAchievementProgress
+	err = newStrictDecoder(data).Decode(&dst.EffectRollbackIncreasedAchievementProgress)
+	if err == nil {
+		jsonEffectRollbackIncreasedAchievementProgress, _ := json.Marshal(dst.EffectRollbackIncreasedAchievementProgress)
+		if string(jsonEffectRollbackIncreasedAchievementProgress) == "{}" { // empty struct
+			dst.EffectRollbackIncreasedAchievementProgress = nil
+		} else {
+			if err = validator.Validate(dst.EffectRollbackIncreasedAchievementProgress); err != nil {
+				dst.EffectRollbackIncreasedAchievementProgress = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectRollbackIncreasedAchievementProgress = nil
+	}
+
+	// try to unmarshal data into EffectRollbackReferral
+	err = newStrictDecoder(data).Decode(&dst.EffectRollbackReferral)
+	if err == nil {
+		jsonEffectRollbackReferral, _ := json.Marshal(dst.EffectRollbackReferral)
+		if string(jsonEffectRollbackReferral) == "{}" { // empty struct
+			dst.EffectRollbackReferral = nil
+		} else {
+			if err = validator.Validate(dst.EffectRollbackReferral); err != nil {
+				dst.EffectRollbackReferral = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectRollbackReferral = nil
+	}
+
+	// try to unmarshal data into EffectRollbackUseReward
+	err = newStrictDecoder(data).Decode(&dst.EffectRollbackUseReward)
+	if err == nil {
+		jsonEffectRollbackUseReward, _ := json.Marshal(dst.EffectRollbackUseReward)
+		if string(jsonEffectRollbackUseReward) == "{}" { // empty struct
+			dst.EffectRollbackUseReward = nil
+		} else {
+			if err = validator.Validate(dst.EffectRollbackUseReward); err != nil {
+				dst.EffectRollbackUseReward = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectRollbackUseReward = nil
+	}
+
+	// try to unmarshal data into EffectSet
+	err = newStrictDecoder(data).Decode(&dst.EffectSet)
+	if err == nil {
+		jsonEffectSet, _ := json.Marshal(dst.EffectSet)
+		if string(jsonEffectSet) == "{}" { // empty struct
+			dst.EffectSet = nil
+		} else {
+			if err = validator.Validate(dst.EffectSet); err != nil {
+				dst.EffectSet = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectSet = nil
+	}
+
+	// try to unmarshal data into EffectSetDiscount
+	err = newStrictDecoder(data).Decode(&dst.EffectSetDiscount)
+	if err == nil {
+		jsonEffectSetDiscount, _ := json.Marshal(dst.EffectSetDiscount)
+		if string(jsonEffectSetDiscount) == "{}" { // empty struct
+			dst.EffectSetDiscount = nil
+		} else {
+			if err = validator.Validate(dst.EffectSetDiscount); err != nil {
+				dst.EffectSetDiscount = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectSetDiscount = nil
+	}
+
+	// try to unmarshal data into EffectSetDiscountPerAdditionalCost
+	err = newStrictDecoder(data).Decode(&dst.EffectSetDiscountPerAdditionalCost)
+	if err == nil {
+		jsonEffectSetDiscountPerAdditionalCost, _ := json.Marshal(dst.EffectSetDiscountPerAdditionalCost)
+		if string(jsonEffectSetDiscountPerAdditionalCost) == "{}" { // empty struct
+			dst.EffectSetDiscountPerAdditionalCost = nil
+		} else {
+			if err = validator.Validate(dst.EffectSetDiscountPerAdditionalCost); err != nil {
+				dst.EffectSetDiscountPerAdditionalCost = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectSetDiscountPerAdditionalCost = nil
+	}
+
+	// try to unmarshal data into EffectSetDiscountPerAdditionalCostPerItem
+	err = newStrictDecoder(data).Decode(&dst.EffectSetDiscountPerAdditionalCostPerItem)
+	if err == nil {
+		jsonEffectSetDiscountPerAdditionalCostPerItem, _ := json.Marshal(dst.EffectSetDiscountPerAdditionalCostPerItem)
+		if string(jsonEffectSetDiscountPerAdditionalCostPerItem) == "{}" { // empty struct
+			dst.EffectSetDiscountPerAdditionalCostPerItem = nil
+		} else {
+			if err = validator.Validate(dst.EffectSetDiscountPerAdditionalCostPerItem); err != nil {
+				dst.EffectSetDiscountPerAdditionalCostPerItem = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectSetDiscountPerAdditionalCostPerItem = nil
+	}
+
+	// try to unmarshal data into EffectSetDiscountPerItem
+	err = newStrictDecoder(data).Decode(&dst.EffectSetDiscountPerItem)
+	if err == nil {
+		jsonEffectSetDiscountPerItem, _ := json.Marshal(dst.EffectSetDiscountPerItem)
+		if string(jsonEffectSetDiscountPerItem) == "{}" { // empty struct
+			dst.EffectSetDiscountPerItem = nil
+		} else {
+			if err = validator.Validate(dst.EffectSetDiscountPerItem); err != nil {
+				dst.EffectSetDiscountPerItem = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectSetDiscountPerItem = nil
+	}
+
+	// try to unmarshal data into EffectSetLoyaltyPointsExpiryDate
+	err = newStrictDecoder(data).Decode(&dst.EffectSetLoyaltyPointsExpiryDate)
+	if err == nil {
+		jsonEffectSetLoyaltyPointsExpiryDate, _ := json.Marshal(dst.EffectSetLoyaltyPointsExpiryDate)
+		if string(jsonEffectSetLoyaltyPointsExpiryDate) == "{}" { // empty struct
+			dst.EffectSetLoyaltyPointsExpiryDate = nil
+		} else {
+			if err = validator.Validate(dst.EffectSetLoyaltyPointsExpiryDate); err != nil {
+				dst.EffectSetLoyaltyPointsExpiryDate = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectSetLoyaltyPointsExpiryDate = nil
+	}
+
+	// try to unmarshal data into EffectShowBundleMetadata
+	err = newStrictDecoder(data).Decode(&dst.EffectShowBundleMetadata)
+	if err == nil {
+		jsonEffectShowBundleMetadata, _ := json.Marshal(dst.EffectShowBundleMetadata)
+		if string(jsonEffectShowBundleMetadata) == "{}" { // empty struct
+			dst.EffectShowBundleMetadata = nil
+		} else {
+			if err = validator.Validate(dst.EffectShowBundleMetadata); err != nil {
+				dst.EffectShowBundleMetadata = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectShowBundleMetadata = nil
+	}
+
+	// try to unmarshal data into EffectShowNotification
+	err = newStrictDecoder(data).Decode(&dst.EffectShowNotification)
+	if err == nil {
+		jsonEffectShowNotification, _ := json.Marshal(dst.EffectShowNotification)
+		if string(jsonEffectShowNotification) == "{}" { // empty struct
+			dst.EffectShowNotification = nil
+		} else {
+			if err = validator.Validate(dst.EffectShowNotification); err != nil {
+				dst.EffectShowNotification = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectShowNotification = nil
+	}
+
+	// try to unmarshal data into EffectStartAchievementProgress
+	err = newStrictDecoder(data).Decode(&dst.EffectStartAchievementProgress)
+	if err == nil {
+		jsonEffectStartAchievementProgress, _ := json.Marshal(dst.EffectStartAchievementProgress)
+		if string(jsonEffectStartAchievementProgress) == "{}" { // empty struct
+			dst.EffectStartAchievementProgress = nil
+		} else {
+			if err = validator.Validate(dst.EffectStartAchievementProgress); err != nil {
+				dst.EffectStartAchievementProgress = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectStartAchievementProgress = nil
+	}
+
+	// try to unmarshal data into EffectUnlockReward
+	err = newStrictDecoder(data).Decode(&dst.EffectUnlockReward)
+	if err == nil {
+		jsonEffectUnlockReward, _ := json.Marshal(dst.EffectUnlockReward)
+		if string(jsonEffectUnlockReward) == "{}" { // empty struct
+			dst.EffectUnlockReward = nil
+		} else {
+			if err = validator.Validate(dst.EffectUnlockReward); err != nil {
+				dst.EffectUnlockReward = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectUnlockReward = nil
+	}
+
+	// try to unmarshal data into EffectUseReward
+	err = newStrictDecoder(data).Decode(&dst.EffectUseReward)
+	if err == nil {
+		jsonEffectUseReward, _ := json.Marshal(dst.EffectUseReward)
+		if string(jsonEffectUseReward) == "{}" { // empty struct
+			dst.EffectUseReward = nil
+		} else {
+			if err = validator.Validate(dst.EffectUseReward); err != nil {
+				dst.EffectUseReward = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectUseReward = nil
+	}
+
+	// try to unmarshal data into EffectWillAwardGiveaway
+	err = newStrictDecoder(data).Decode(&dst.EffectWillAwardGiveaway)
+	if err == nil {
+		jsonEffectWillAwardGiveaway, _ := json.Marshal(dst.EffectWillAwardGiveaway)
+		if string(jsonEffectWillAwardGiveaway) == "{}" { // empty struct
+			dst.EffectWillAwardGiveaway = nil
+		} else {
+			if err = validator.Validate(dst.EffectWillAwardGiveaway); err != nil {
+				dst.EffectWillAwardGiveaway = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectWillAwardGiveaway = nil
+	}
+
+	if match > 1 { // more than 1 match
+		// reset to nil
+		dst.EffectAcceptCoupon = nil
+		dst.EffectAcceptReferral = nil
+		dst.EffectAddFreeItem = nil
+		dst.EffectAddLoyaltyPoints = nil
+		dst.EffectAddNegativeLoyaltyPoints = nil
+		dst.EffectAddToAudience = nil
+		dst.EffectAwardGiveaway = nil
+		dst.EffectCallApi = nil
+		dst.EffectChangeLoyaltyTierLevel = nil
+		dst.EffectCouponCreated = nil
+		dst.EffectCustomEffect = nil
+		dst.EffectDeductLoyaltyPoints = nil
+		dst.EffectError = nil
+		dst.EffectExtendLoyaltyPointsExpiryDate = nil
+		dst.EffectIncreaseAchievementProgress = nil
+		dst.EffectJoinLoyaltyProgram = nil
+		dst.EffectOffsetNegativeLoyaltyPoints = nil
+		dst.EffectRedeemReferral = nil
+		dst.EffectReferralCreated = nil
+		dst.EffectRejectCoupon = nil
+		dst.EffectRejectReferral = nil
+		dst.EffectRemoveFromAudience = nil
+		dst.EffectReserveCoupon = nil
+		dst.EffectRollbackAddedLoyaltyPoints = nil
+		dst.EffectRollbackCoupon = nil
+		dst.EffectRollbackDeductedLoyaltyPoints = nil
+		dst.EffectRollbackDiscount = nil
+		dst.EffectRollbackIncreasedAchievementProgress = nil
+		dst.EffectRollbackReferral = nil
+		dst.EffectRollbackUseReward = nil
+		dst.EffectSet = nil
+		dst.EffectSetDiscount = nil
+		dst.EffectSetDiscountPerAdditionalCost = nil
+		dst.EffectSetDiscountPerAdditionalCostPerItem = nil
+		dst.EffectSetDiscountPerItem = nil
+		dst.EffectSetLoyaltyPointsExpiryDate = nil
+		dst.EffectShowBundleMetadata = nil
+		dst.EffectShowNotification = nil
+		dst.EffectStartAchievementProgress = nil
+		dst.EffectUnlockReward = nil
+		dst.EffectUseReward = nil
+		dst.EffectWillAwardGiveaway = nil
+
+		return fmt.Errorf("data matches more than one schema in oneOf(Effect)")
+	} else if match == 1 {
+		return nil // exactly one match
+	} else { // no match
+		if err != nil {
+			return fmt.Errorf("data failed to match schemas in oneOf(Effect): %v", err)
+		}
+
+		return fmt.Errorf("data failed to match schemas in oneOf(Effect)")
+	}
+}
+
+// Marshal data from the first non-nil pointers in the struct to JSON
+func (src Effect) MarshalJSON() ([]byte, error) {
+	if src.EffectAcceptCoupon != nil {
+		return json.Marshal(&src.EffectAcceptCoupon)
+	}
+
+	if src.EffectAcceptReferral != nil {
+		return json.Marshal(&src.EffectAcceptReferral)
+	}
+
+	if src.EffectAddFreeItem != nil {
+		return json.Marshal(&src.EffectAddFreeItem)
+	}
+
+	if src.EffectAddLoyaltyPoints != nil {
+		return json.Marshal(&src.EffectAddLoyaltyPoints)
+	}
+
+	if src.EffectAddNegativeLoyaltyPoints != nil {
+		return json.Marshal(&src.EffectAddNegativeLoyaltyPoints)
+	}
+
+	if src.EffectAddToAudience != nil {
+		return json.Marshal(&src.EffectAddToAudience)
+	}
+
+	if src.EffectAwardGiveaway != nil {
+		return json.Marshal(&src.EffectAwardGiveaway)
+	}
+
+	if src.EffectCallApi != nil {
+		return json.Marshal(&src.EffectCallApi)
+	}
+
+	if src.EffectChangeLoyaltyTierLevel != nil {
+		return json.Marshal(&src.EffectChangeLoyaltyTierLevel)
+	}
+
+	if src.EffectCouponCreated != nil {
+		return json.Marshal(&src.EffectCouponCreated)
+	}
+
+	if src.EffectCustomEffect != nil {
+		return json.Marshal(&src.EffectCustomEffect)
+	}
+
+	if src.EffectDeductLoyaltyPoints != nil {
+		return json.Marshal(&src.EffectDeductLoyaltyPoints)
+	}
+
+	if src.EffectError != nil {
+		return json.Marshal(&src.EffectError)
+	}
+
+	if src.EffectExtendLoyaltyPointsExpiryDate != nil {
+		return json.Marshal(&src.EffectExtendLoyaltyPointsExpiryDate)
+	}
+
+	if src.EffectIncreaseAchievementProgress != nil {
+		return json.Marshal(&src.EffectIncreaseAchievementProgress)
+	}
+
+	if src.EffectJoinLoyaltyProgram != nil {
+		return json.Marshal(&src.EffectJoinLoyaltyProgram)
+	}
+
+	if src.EffectOffsetNegativeLoyaltyPoints != nil {
+		return json.Marshal(&src.EffectOffsetNegativeLoyaltyPoints)
+	}
+
+	if src.EffectRedeemReferral != nil {
+		return json.Marshal(&src.EffectRedeemReferral)
+	}
+
+	if src.EffectReferralCreated != nil {
+		return json.Marshal(&src.EffectReferralCreated)
+	}
+
+	if src.EffectRejectCoupon != nil {
+		return json.Marshal(&src.EffectRejectCoupon)
+	}
+
+	if src.EffectRejectReferral != nil {
+		return json.Marshal(&src.EffectRejectReferral)
+	}
+
+	if src.EffectRemoveFromAudience != nil {
+		return json.Marshal(&src.EffectRemoveFromAudience)
+	}
+
+	if src.EffectReserveCoupon != nil {
+		return json.Marshal(&src.EffectReserveCoupon)
+	}
+
+	if src.EffectRollbackAddedLoyaltyPoints != nil {
+		return json.Marshal(&src.EffectRollbackAddedLoyaltyPoints)
+	}
+
+	if src.EffectRollbackCoupon != nil {
+		return json.Marshal(&src.EffectRollbackCoupon)
+	}
+
+	if src.EffectRollbackDeductedLoyaltyPoints != nil {
+		return json.Marshal(&src.EffectRollbackDeductedLoyaltyPoints)
+	}
+
+	if src.EffectRollbackDiscount != nil {
+		return json.Marshal(&src.EffectRollbackDiscount)
+	}
+
+	if src.EffectRollbackIncreasedAchievementProgress != nil {
+		return json.Marshal(&src.EffectRollbackIncreasedAchievementProgress)
+	}
+
+	if src.EffectRollbackReferral != nil {
+		return json.Marshal(&src.EffectRollbackReferral)
+	}
+
+	if src.EffectRollbackUseReward != nil {
+		return json.Marshal(&src.EffectRollbackUseReward)
+	}
+
+	if src.EffectSet != nil {
+		return json.Marshal(&src.EffectSet)
+	}
+
+	if src.EffectSetDiscount != nil {
+		return json.Marshal(&src.EffectSetDiscount)
+	}
+
+	if src.EffectSetDiscountPerAdditionalCost != nil {
+		return json.Marshal(&src.EffectSetDiscountPerAdditionalCost)
+	}
+
+	if src.EffectSetDiscountPerAdditionalCostPerItem != nil {
+		return json.Marshal(&src.EffectSetDiscountPerAdditionalCostPerItem)
+	}
+
+	if src.EffectSetDiscountPerItem != nil {
+		return json.Marshal(&src.EffectSetDiscountPerItem)
+	}
+
+	if src.EffectSetLoyaltyPointsExpiryDate != nil {
+		return json.Marshal(&src.EffectSetLoyaltyPointsExpiryDate)
+	}
+
+	if src.EffectShowBundleMetadata != nil {
+		return json.Marshal(&src.EffectShowBundleMetadata)
+	}
+
+	if src.EffectShowNotification != nil {
+		return json.Marshal(&src.EffectShowNotification)
+	}
+
+	if src.EffectStartAchievementProgress != nil {
+		return json.Marshal(&src.EffectStartAchievementProgress)
+	}
+
+	if src.EffectUnlockReward != nil {
+		return json.Marshal(&src.EffectUnlockReward)
+	}
+
+	if src.EffectUseReward != nil {
+		return json.Marshal(&src.EffectUseReward)
+	}
+
+	if src.EffectWillAwardGiveaway != nil {
+		return json.Marshal(&src.EffectWillAwardGiveaway)
+	}
+
+	return nil, nil // no data in oneOf schemas
+}
+
+// Get the actual instance
+func (obj *Effect) GetActualInstance() interface{} {
+	if obj == nil {
+		return nil
+	}
+	if obj.EffectAcceptCoupon != nil {
+		return obj.EffectAcceptCoupon
+	}
+
+	if obj.EffectAcceptReferral != nil {
+		return obj.EffectAcceptReferral
+	}
+
+	if obj.EffectAddFreeItem != nil {
+		return obj.EffectAddFreeItem
+	}
+
+	if obj.EffectAddLoyaltyPoints != nil {
+		return obj.EffectAddLoyaltyPoints
+	}
+
+	if obj.EffectAddNegativeLoyaltyPoints != nil {
+		return obj.EffectAddNegativeLoyaltyPoints
+	}
+
+	if obj.EffectAddToAudience != nil {
+		return obj.EffectAddToAudience
+	}
+
+	if obj.EffectAwardGiveaway != nil {
+		return obj.EffectAwardGiveaway
+	}
+
+	if obj.EffectCallApi != nil {
+		return obj.EffectCallApi
+	}
+
+	if obj.EffectChangeLoyaltyTierLevel != nil {
+		return obj.EffectChangeLoyaltyTierLevel
+	}
+
+	if obj.EffectCouponCreated != nil {
+		return obj.EffectCouponCreated
+	}
+
+	if obj.EffectCustomEffect != nil {
+		return obj.EffectCustomEffect
+	}
+
+	if obj.EffectDeductLoyaltyPoints != nil {
+		return obj.EffectDeductLoyaltyPoints
+	}
+
+	if obj.EffectError != nil {
+		return obj.EffectError
+	}
+
+	if obj.EffectExtendLoyaltyPointsExpiryDate != nil {
+		return obj.EffectExtendLoyaltyPointsExpiryDate
+	}
+
+	if obj.EffectIncreaseAchievementProgress != nil {
+		return obj.EffectIncreaseAchievementProgress
+	}
+
+	if obj.EffectJoinLoyaltyProgram != nil {
+		return obj.EffectJoinLoyaltyProgram
+	}
+
+	if obj.EffectOffsetNegativeLoyaltyPoints != nil {
+		return obj.EffectOffsetNegativeLoyaltyPoints
+	}
+
+	if obj.EffectRedeemReferral != nil {
+		return obj.EffectRedeemReferral
+	}
+
+	if obj.EffectReferralCreated != nil {
+		return obj.EffectReferralCreated
+	}
+
+	if obj.EffectRejectCoupon != nil {
+		return obj.EffectRejectCoupon
+	}
+
+	if obj.EffectRejectReferral != nil {
+		return obj.EffectRejectReferral
+	}
+
+	if obj.EffectRemoveFromAudience != nil {
+		return obj.EffectRemoveFromAudience
+	}
+
+	if obj.EffectReserveCoupon != nil {
+		return obj.EffectReserveCoupon
+	}
+
+	if obj.EffectRollbackAddedLoyaltyPoints != nil {
+		return obj.EffectRollbackAddedLoyaltyPoints
+	}
+
+	if obj.EffectRollbackCoupon != nil {
+		return obj.EffectRollbackCoupon
+	}
+
+	if obj.EffectRollbackDeductedLoyaltyPoints != nil {
+		return obj.EffectRollbackDeductedLoyaltyPoints
+	}
+
+	if obj.EffectRollbackDiscount != nil {
+		return obj.EffectRollbackDiscount
+	}
+
+	if obj.EffectRollbackIncreasedAchievementProgress != nil {
+		return obj.EffectRollbackIncreasedAchievementProgress
+	}
+
+	if obj.EffectRollbackReferral != nil {
+		return obj.EffectRollbackReferral
+	}
+
+	if obj.EffectRollbackUseReward != nil {
+		return obj.EffectRollbackUseReward
+	}
+
+	if obj.EffectSet != nil {
+		return obj.EffectSet
+	}
+
+	if obj.EffectSetDiscount != nil {
+		return obj.EffectSetDiscount
+	}
+
+	if obj.EffectSetDiscountPerAdditionalCost != nil {
+		return obj.EffectSetDiscountPerAdditionalCost
+	}
+
+	if obj.EffectSetDiscountPerAdditionalCostPerItem != nil {
+		return obj.EffectSetDiscountPerAdditionalCostPerItem
+	}
+
+	if obj.EffectSetDiscountPerItem != nil {
+		return obj.EffectSetDiscountPerItem
+	}
+
+	if obj.EffectSetLoyaltyPointsExpiryDate != nil {
+		return obj.EffectSetLoyaltyPointsExpiryDate
+	}
+
+	if obj.EffectShowBundleMetadata != nil {
+		return obj.EffectShowBundleMetadata
+	}
+
+	if obj.EffectShowNotification != nil {
+		return obj.EffectShowNotification
+	}
+
+	if obj.EffectStartAchievementProgress != nil {
+		return obj.EffectStartAchievementProgress
+	}
+
+	if obj.EffectUnlockReward != nil {
+		return obj.EffectUnlockReward
+	}
+
+	if obj.EffectUseReward != nil {
+		return obj.EffectUseReward
+	}
+
+	if obj.EffectWillAwardGiveaway != nil {
+		return obj.EffectWillAwardGiveaway
+	}
+
+	// all schemas are nil
+	return nil
+}
+
+// Get the actual instance value
+func (obj Effect) GetActualInstanceValue() interface{} {
+	if obj.EffectAcceptCoupon != nil {
+		return *obj.EffectAcceptCoupon
+	}
+
+	if obj.EffectAcceptReferral != nil {
+		return *obj.EffectAcceptReferral
+	}
+
+	if obj.EffectAddFreeItem != nil {
+		return *obj.EffectAddFreeItem
+	}
+
+	if obj.EffectAddLoyaltyPoints != nil {
+		return *obj.EffectAddLoyaltyPoints
+	}
+
+	if obj.EffectAddNegativeLoyaltyPoints != nil {
+		return *obj.EffectAddNegativeLoyaltyPoints
+	}
+
+	if obj.EffectAddToAudience != nil {
+		return *obj.EffectAddToAudience
+	}
+
+	if obj.EffectAwardGiveaway != nil {
+		return *obj.EffectAwardGiveaway
+	}
+
+	if obj.EffectCallApi != nil {
+		return *obj.EffectCallApi
+	}
+
+	if obj.EffectChangeLoyaltyTierLevel != nil {
+		return *obj.EffectChangeLoyaltyTierLevel
+	}
+
+	if obj.EffectCouponCreated != nil {
+		return *obj.EffectCouponCreated
+	}
+
+	if obj.EffectCustomEffect != nil {
+		return *obj.EffectCustomEffect
+	}
+
+	if obj.EffectDeductLoyaltyPoints != nil {
+		return *obj.EffectDeductLoyaltyPoints
+	}
+
+	if obj.EffectError != nil {
+		return *obj.EffectError
+	}
+
+	if obj.EffectExtendLoyaltyPointsExpiryDate != nil {
+		return *obj.EffectExtendLoyaltyPointsExpiryDate
+	}
+
+	if obj.EffectIncreaseAchievementProgress != nil {
+		return *obj.EffectIncreaseAchievementProgress
+	}
+
+	if obj.EffectJoinLoyaltyProgram != nil {
+		return *obj.EffectJoinLoyaltyProgram
+	}
+
+	if obj.EffectOffsetNegativeLoyaltyPoints != nil {
+		return *obj.EffectOffsetNegativeLoyaltyPoints
+	}
+
+	if obj.EffectRedeemReferral != nil {
+		return *obj.EffectRedeemReferral
+	}
+
+	if obj.EffectReferralCreated != nil {
+		return *obj.EffectReferralCreated
+	}
+
+	if obj.EffectRejectCoupon != nil {
+		return *obj.EffectRejectCoupon
+	}
+
+	if obj.EffectRejectReferral != nil {
+		return *obj.EffectRejectReferral
+	}
+
+	if obj.EffectRemoveFromAudience != nil {
+		return *obj.EffectRemoveFromAudience
+	}
+
+	if obj.EffectReserveCoupon != nil {
+		return *obj.EffectReserveCoupon
+	}
+
+	if obj.EffectRollbackAddedLoyaltyPoints != nil {
+		return *obj.EffectRollbackAddedLoyaltyPoints
+	}
+
+	if obj.EffectRollbackCoupon != nil {
+		return *obj.EffectRollbackCoupon
+	}
+
+	if obj.EffectRollbackDeductedLoyaltyPoints != nil {
+		return *obj.EffectRollbackDeductedLoyaltyPoints
+	}
+
+	if obj.EffectRollbackDiscount != nil {
+		return *obj.EffectRollbackDiscount
+	}
+
+	if obj.EffectRollbackIncreasedAchievementProgress != nil {
+		return *obj.EffectRollbackIncreasedAchievementProgress
+	}
+
+	if obj.EffectRollbackReferral != nil {
+		return *obj.EffectRollbackReferral
+	}
+
+	if obj.EffectRollbackUseReward != nil {
+		return *obj.EffectRollbackUseReward
+	}
+
+	if obj.EffectSet != nil {
+		return *obj.EffectSet
+	}
+
+	if obj.EffectSetDiscount != nil {
+		return *obj.EffectSetDiscount
+	}
+
+	if obj.EffectSetDiscountPerAdditionalCost != nil {
+		return *obj.EffectSetDiscountPerAdditionalCost
+	}
+
+	if obj.EffectSetDiscountPerAdditionalCostPerItem != nil {
+		return *obj.EffectSetDiscountPerAdditionalCostPerItem
+	}
+
+	if obj.EffectSetDiscountPerItem != nil {
+		return *obj.EffectSetDiscountPerItem
+	}
+
+	if obj.EffectSetLoyaltyPointsExpiryDate != nil {
+		return *obj.EffectSetLoyaltyPointsExpiryDate
+	}
+
+	if obj.EffectShowBundleMetadata != nil {
+		return *obj.EffectShowBundleMetadata
+	}
+
+	if obj.EffectShowNotification != nil {
+		return *obj.EffectShowNotification
+	}
+
+	if obj.EffectStartAchievementProgress != nil {
+		return *obj.EffectStartAchievementProgress
+	}
+
+	if obj.EffectUnlockReward != nil {
+		return *obj.EffectUnlockReward
+	}
+
+	if obj.EffectUseReward != nil {
+		return *obj.EffectUseReward
+	}
+
+	if obj.EffectWillAwardGiveaway != nil {
+		return *obj.EffectWillAwardGiveaway
+	}
+
+	// all schemas are nil
+	return nil
 }
 
 type NullableEffect struct {

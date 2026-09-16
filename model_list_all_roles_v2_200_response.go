@@ -20,7 +20,9 @@ var _ MappedNullable = &ListAllRolesV2200Response{}
 
 // ListAllRolesV2200Response struct for ListAllRolesV2200Response
 type ListAllRolesV2200Response struct {
-	TotalResultSize      int64    `json:"totalResultSize"`
+	// The total number of roles returned.
+	TotalResultSize int64 `json:"totalResultSize"`
+	// The list of roles.
 	Data                 []RoleV2 `json:"data"`
 	AdditionalProperties map[string]interface{}
 }

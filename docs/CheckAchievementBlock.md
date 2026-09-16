@@ -8,14 +8,14 @@ Name | Type | Description | Notes
 **Type** | **string** | Identifies the block variant and determines which additional properties are present in it. | 
 **Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] [readonly] 
 **Operator** | **string** | The comparison operator applied to the achievement. | 
-**Achievement** | [**CheckAchievementBlock1Achievement**](CheckAchievementBlock1Achievement.md) |  | 
+**Achievement** | [**AchievementBlockReference**](AchievementBlockReference.md) | The achievement to check for. | 
 **OnFailure** | Pointer to [**[]Block**](Block.md) | Promotion blocks evaluated when this block fails or returns false. | [optional] 
 
 ## Methods
 
 ### NewCheckAchievementBlock
 
-`func NewCheckAchievementBlock(type_ string, operator string, achievement CheckAchievementBlock1Achievement, ) *CheckAchievementBlock`
+`func NewCheckAchievementBlock(type_ string, operator string, achievement AchievementBlockReference, ) *CheckAchievementBlock`
 
 NewCheckAchievementBlock instantiates a new CheckAchievementBlock object
 This constructor will assign default values to properties that have it defined,
@@ -122,20 +122,20 @@ SetOperator sets Operator field to given value.
 
 ### GetAchievement
 
-`func (o *CheckAchievementBlock) GetAchievement() CheckAchievementBlock1Achievement`
+`func (o *CheckAchievementBlock) GetAchievement() AchievementBlockReference`
 
 GetAchievement returns the Achievement field if non-nil, zero value otherwise.
 
 ### GetAchievementOk
 
-`func (o *CheckAchievementBlock) GetAchievementOk() (*CheckAchievementBlock1Achievement, bool)`
+`func (o *CheckAchievementBlock) GetAchievementOk() (*AchievementBlockReference, bool)`
 
 GetAchievementOk returns a tuple with the Achievement field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetAchievement
 
-`func (o *CheckAchievementBlock) SetAchievement(v CheckAchievementBlock1Achievement)`
+`func (o *CheckAchievementBlock) SetAchievement(v AchievementBlockReference)`
 
 SetAchievement sets Achievement field to given value.
 

@@ -20,8 +20,8 @@ var _ MappedNullable = &GetReservedCustomers200Response{}
 
 // GetReservedCustomers200Response struct for GetReservedCustomers200Response
 type GetReservedCustomers200Response struct {
-	TotalResultSize      int64             `json:"totalResultSize"`
-	Data                 []CustomerProfile `json:"data"`
+	TotalResultSize      int64                 `json:"totalResultSize"`
+	Data                 []CustomerReservation `json:"data"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -31,7 +31,7 @@ type _GetReservedCustomers200Response GetReservedCustomers200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildGetReservedCustomers200Response(totalResultSize int64, data []CustomerProfile) *GetReservedCustomers200Response {
+func BuildGetReservedCustomers200Response(totalResultSize int64, data []CustomerReservation) *GetReservedCustomers200Response {
 	this := GetReservedCustomers200Response{}
 	this.TotalResultSize = totalResultSize
 	this.Data = data
@@ -71,9 +71,9 @@ func (o *GetReservedCustomers200Response) SetTotalResultSize(v int64) {
 }
 
 // GetData returns the Data field value
-func (o *GetReservedCustomers200Response) GetData() []CustomerProfile {
+func (o *GetReservedCustomers200Response) GetData() []CustomerReservation {
 	if o == nil {
-		var ret []CustomerProfile
+		var ret []CustomerReservation
 		return ret
 	}
 
@@ -82,7 +82,7 @@ func (o *GetReservedCustomers200Response) GetData() []CustomerProfile {
 
 // GetDataOk returns a tuple with the Data field value
 // and a boolean to check if the value has been set.
-func (o *GetReservedCustomers200Response) GetDataOk() ([]CustomerProfile, bool) {
+func (o *GetReservedCustomers200Response) GetDataOk() ([]CustomerReservation, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -90,7 +90,7 @@ func (o *GetReservedCustomers200Response) GetDataOk() ([]CustomerProfile, bool) 
 }
 
 // SetData sets field value
-func (o *GetReservedCustomers200Response) SetData(v []CustomerProfile) {
+func (o *GetReservedCustomers200Response) SetData(v []CustomerReservation) {
 	o.Data = v
 }
 

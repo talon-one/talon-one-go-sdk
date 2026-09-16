@@ -13,26 +13,26 @@ Name | Type | Description | Notes
 **OnError** | Pointer to [**map[string][]Block**](array.md) | Named error handlers evaluated when a specific error occurs. | [optional] 
 **Name** | **string** | A custom description recorded as the reason for the point deduction. | 
 **Value** | [**RedeemLoyaltyPointsBlock1Value**](RedeemLoyaltyPointsBlock1Value.md) |  | 
-**Partial** | **bool** | When set to &#x60;true&#x60;, applies a partial item reward if the remaining budget is insufficient to award the full reward. | 
-**Target** | [**TriggerCustomEffectBlock1Target**](TriggerCustomEffectBlock1Target.md) |  | 
+**Partial** | **bool** | When &#x60;true&#x60;, applies a partial points reward when the requested value exceeds the configured budget. | 
+**Target** | [**AwardLoyaltyPointsTarget**](AwardLoyaltyPointsTarget.md) |  | 
 **Expression** | **[]interface{}** | The raw Talang expression as an array. For a function call, the first element is the function name and subsequent elements are its arguments. For any other expression (for example a bare attribute path or a literal value), this is a single-element array containing that value. | 
 **NotificationType** | **string** | The type of notification to display. | 
 **Title** | **string** | The notification heading shown to the customer. | 
 **Body** | Pointer to **string** | The notification body text. Supports template placeholders (e.g. \&quot;{{$Session.Total}}\&quot;) evaluated at rule execution time. | [optional] 
 **Sku** | **string** | The stock keeping unit of the item to award. | 
 **Quantity** | **string** | The number of items to award. Supports template placeholders (e.g. \&quot;{{$Session.Total / 2}}\&quot;) for dynamic quantities. | 
-**GiveawayPool** | [**GiveawayPoolReference**](GiveawayPoolReference.md) | The giveaway pool from which an item is awarded. | 
+**GiveawayPool** | [**GiveawayPoolBlockReference**](GiveawayPoolBlockReference.md) | The giveaway pool from which an item is awarded. | 
 **Profile** | **string** | The customer profile to add or remove from the audience. &#x60;Current&#x60; targets the customer in the current session; &#x60;Advocate&#x60; targets the person who invited their friend via referral program. | 
-**Audience** | [**UpdateAudienceMembershipBlock1Audience**](UpdateAudienceMembershipBlock1Audience.md) |  | 
+**Audience** | [**AudienceBlockReference**](AudienceBlockReference.md) | The audience to add the customer to or remove them from. | 
 **Program** | [**RedeemLoyaltyPointsBlock1Program**](RedeemLoyaltyPointsBlock1Program.md) |  | 
 **Subledger** | **string** | The name of the subledger to deduct points from. Can be empty if this block deducts from the loyalty program&#39;s main ledger instead of a subledger. | 
 **Balance** | **string** | The type of balance to check:  - &#x60;current&#x60; is the sum of currently active points  - &#x60;pending&#x60; is the sum of pending points.  - &#x60;negative&#x60; is the sum of negative points.  - &#x60;tentativeCurrent&#x60; is the tentative points balance within the current open customer session. | 
 **Redeem** | **bool** | When &#x60;true&#x60;, the referral code is redeemed. | 
-**Achievement** | [**CheckAchievementBlock1Achievement**](CheckAchievementBlock1Achievement.md) |  | 
-**Attribute** | [**UpdateAttributeValueBlock1Attribute**](UpdateAttributeValueBlock1Attribute.md) |  | 
-**Webhook** | [**TriggerWebhookBlock1Webhook**](TriggerWebhookBlock1Webhook.md) |  | 
+**Achievement** | [**AchievementBlockReference**](AchievementBlockReference.md) | The achievement to check for. | 
+**Attribute** | [**AttributeBlockReference**](AttributeBlockReference.md) | The attribute being updated. | 
+**Webhook** | [**WebhookBlockReference**](WebhookBlockReference.md) | The webhook to trigger. | 
 **Params** | Pointer to **map[string]interface{}** | The custom effect&#39;s parameters, in configured order. Each property name is the parameter&#39;s title, lowercased with spaces replaced by underscores (for example, &#x60;Order ID&#x60; becomes &#x60;order_id&#x60;); falls back to &#x60;param_0&#x60;, &#x60;param_1&#x60;, and so on if a title is blank or collides with another. | [optional] 
-**CustomEffect** | [**TriggerCustomEffectBlock1CustomEffect**](TriggerCustomEffectBlock1CustomEffect.md) |  | 
+**CustomEffect** | [**CustomEffectBlockReference**](CustomEffectBlockReference.md) | The custom effect to trigger. | 
 **EventType** | **string** | The event type to check against. | 
 **Matchers** | Pointer to [**[]Block**](Block.md) |  | [optional] 
 **Action** | **string** | The limitable action to check. | 
@@ -41,19 +41,23 @@ Name | Type | Description | Notes
 **StoreInSession** | **bool** | When &#x60;true&#x60;, the referral code is stored in the session. | 
 **UsageLimit** | Pointer to [**CreateReferralBlock1UsageLimit**](CreateReferralBlock1UsageLimit.md) |  | [optional] 
 **DiscountLimit** | Pointer to [**CreateCouponBlock1DiscountLimit**](CreateCouponBlock1DiscountLimit.md) |  | [optional] 
-**StartDate** | Pointer to **interface{}** | Timestamp at which point the referral code becomes valid. | [optional] 
-**ExpiryDate** | Pointer to **interface{}** | Expiration date of the referral code. Referral code never expires if this is omitted. | [optional] 
+**StartDate** | Pointer to **interface{}** | Timestamp at which the awarded points become active. Mutually exclusive with &#x60;awaitsActivation&#x60;. | [optional] 
+**ExpiryDate** | Pointer to **interface{}** | Timestamp at which the awarded points expire. Mutually exclusive with &#x60;validityDuration&#x60;. | [optional] 
 **Attributes** | Pointer to **interface{}** | Custom attributes associated with this referral code. | [optional] 
 **ValidCharacters** | Pointer to **string** | Characters used to generate the random parts of a code. | [optional] 
 **Pattern** | Pointer to **string** | The pattern used to generate codes, such as coupon codes, referral codes, and loyalty cards. The character &#x60;#&#x60; is a placeholder and is replaced by a random character from the &#x60;validCharacters&#x60; set.  | [optional] 
 **FriendId** | **string** | An optional integration ID of the friend&#39;s profile. | 
-**Tier** | [**CheckTierBlock1Tier**](CheckTierBlock1Tier.md) |  | 
+**Recipient** | **string** | The customer profile that receives the points. &#x60;Current&#x60; targets the customer in the current session; &#x60;Advocate&#x60; targets the person who invited their friend via referral program. | 
+**Tier** | [**TierBlockReference**](TierBlockReference.md) | The tier to check for. | 
+**AwaitsActivation** | Pointer to **bool** | When &#x60;true&#x60;, the awarded points require manual or delayed activation before becoming active. Mutually exclusive with &#x60;startDate&#x60;. | [optional] 
+**ValidityDuration** | Pointer to **string** | Relative duration (e.g. &#x60;30D&#x60;) after which the awarded points expire. Mutually exclusive with &#x60;expiryDate&#x60;. | [optional] 
+**PendingDuration** | Pointer to **string** | Relative duration (e.g. &#x60;3D&#x60;) the awarded points remain pending before activation. | [optional] 
 
 ## Methods
 
 ### NewBlock
 
-`func NewBlock(type_ string, operator string, blocks []Block, name string, value RedeemLoyaltyPointsBlock1Value, partial bool, target TriggerCustomEffectBlock1Target, expression []interface{}, notificationType string, title string, sku string, quantity string, giveawayPool GiveawayPoolReference, profile string, audience UpdateAudienceMembershipBlock1Audience, program RedeemLoyaltyPointsBlock1Program, subledger string, balance string, redeem bool, achievement CheckAchievementBlock1Achievement, attribute UpdateAttributeValueBlock1Attribute, webhook TriggerWebhookBlock1Webhook, customEffect TriggerCustomEffectBlock1CustomEffect, eventType string, action string, campaignId CreateReferralBlock1CampaignId, recipientId string, storeInSession bool, friendId string, tier CheckTierBlock1Tier, ) *Block`
+`func NewBlock(type_ string, operator string, blocks []Block, name string, value RedeemLoyaltyPointsBlock1Value, partial bool, target AwardLoyaltyPointsTarget, expression []interface{}, notificationType string, title string, sku string, quantity string, giveawayPool GiveawayPoolBlockReference, profile string, audience AudienceBlockReference, program RedeemLoyaltyPointsBlock1Program, subledger string, balance string, redeem bool, achievement AchievementBlockReference, attribute AttributeBlockReference, webhook WebhookBlockReference, customEffect CustomEffectBlockReference, eventType string, action string, campaignId CreateReferralBlock1CampaignId, recipientId string, storeInSession bool, friendId string, recipient string, tier TierBlockReference, ) *Block`
 
 NewBlock instantiates a new Block object
 This constructor will assign default values to properties that have it defined,
@@ -290,20 +294,20 @@ SetPartial sets Partial field to given value.
 
 ### GetTarget
 
-`func (o *Block) GetTarget() TriggerCustomEffectBlock1Target`
+`func (o *Block) GetTarget() AwardLoyaltyPointsTarget`
 
 GetTarget returns the Target field if non-nil, zero value otherwise.
 
 ### GetTargetOk
 
-`func (o *Block) GetTargetOk() (*TriggerCustomEffectBlock1Target, bool)`
+`func (o *Block) GetTargetOk() (*AwardLoyaltyPointsTarget, bool)`
 
 GetTargetOk returns a tuple with the Target field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetTarget
 
-`func (o *Block) SetTarget(v TriggerCustomEffectBlock1Target)`
+`func (o *Block) SetTarget(v AwardLoyaltyPointsTarget)`
 
 SetTarget sets Target field to given value.
 
@@ -435,20 +439,20 @@ SetQuantity sets Quantity field to given value.
 
 ### GetGiveawayPool
 
-`func (o *Block) GetGiveawayPool() GiveawayPoolReference`
+`func (o *Block) GetGiveawayPool() GiveawayPoolBlockReference`
 
 GetGiveawayPool returns the GiveawayPool field if non-nil, zero value otherwise.
 
 ### GetGiveawayPoolOk
 
-`func (o *Block) GetGiveawayPoolOk() (*GiveawayPoolReference, bool)`
+`func (o *Block) GetGiveawayPoolOk() (*GiveawayPoolBlockReference, bool)`
 
 GetGiveawayPoolOk returns a tuple with the GiveawayPool field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetGiveawayPool
 
-`func (o *Block) SetGiveawayPool(v GiveawayPoolReference)`
+`func (o *Block) SetGiveawayPool(v GiveawayPoolBlockReference)`
 
 SetGiveawayPool sets GiveawayPool field to given value.
 
@@ -475,20 +479,20 @@ SetProfile sets Profile field to given value.
 
 ### GetAudience
 
-`func (o *Block) GetAudience() UpdateAudienceMembershipBlock1Audience`
+`func (o *Block) GetAudience() AudienceBlockReference`
 
 GetAudience returns the Audience field if non-nil, zero value otherwise.
 
 ### GetAudienceOk
 
-`func (o *Block) GetAudienceOk() (*UpdateAudienceMembershipBlock1Audience, bool)`
+`func (o *Block) GetAudienceOk() (*AudienceBlockReference, bool)`
 
 GetAudienceOk returns a tuple with the Audience field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetAudience
 
-`func (o *Block) SetAudience(v UpdateAudienceMembershipBlock1Audience)`
+`func (o *Block) SetAudience(v AudienceBlockReference)`
 
 SetAudience sets Audience field to given value.
 
@@ -575,60 +579,60 @@ SetRedeem sets Redeem field to given value.
 
 ### GetAchievement
 
-`func (o *Block) GetAchievement() CheckAchievementBlock1Achievement`
+`func (o *Block) GetAchievement() AchievementBlockReference`
 
 GetAchievement returns the Achievement field if non-nil, zero value otherwise.
 
 ### GetAchievementOk
 
-`func (o *Block) GetAchievementOk() (*CheckAchievementBlock1Achievement, bool)`
+`func (o *Block) GetAchievementOk() (*AchievementBlockReference, bool)`
 
 GetAchievementOk returns a tuple with the Achievement field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetAchievement
 
-`func (o *Block) SetAchievement(v CheckAchievementBlock1Achievement)`
+`func (o *Block) SetAchievement(v AchievementBlockReference)`
 
 SetAchievement sets Achievement field to given value.
 
 
 ### GetAttribute
 
-`func (o *Block) GetAttribute() UpdateAttributeValueBlock1Attribute`
+`func (o *Block) GetAttribute() AttributeBlockReference`
 
 GetAttribute returns the Attribute field if non-nil, zero value otherwise.
 
 ### GetAttributeOk
 
-`func (o *Block) GetAttributeOk() (*UpdateAttributeValueBlock1Attribute, bool)`
+`func (o *Block) GetAttributeOk() (*AttributeBlockReference, bool)`
 
 GetAttributeOk returns a tuple with the Attribute field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetAttribute
 
-`func (o *Block) SetAttribute(v UpdateAttributeValueBlock1Attribute)`
+`func (o *Block) SetAttribute(v AttributeBlockReference)`
 
 SetAttribute sets Attribute field to given value.
 
 
 ### GetWebhook
 
-`func (o *Block) GetWebhook() TriggerWebhookBlock1Webhook`
+`func (o *Block) GetWebhook() WebhookBlockReference`
 
 GetWebhook returns the Webhook field if non-nil, zero value otherwise.
 
 ### GetWebhookOk
 
-`func (o *Block) GetWebhookOk() (*TriggerWebhookBlock1Webhook, bool)`
+`func (o *Block) GetWebhookOk() (*WebhookBlockReference, bool)`
 
 GetWebhookOk returns a tuple with the Webhook field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetWebhook
 
-`func (o *Block) SetWebhook(v TriggerWebhookBlock1Webhook)`
+`func (o *Block) SetWebhook(v WebhookBlockReference)`
 
 SetWebhook sets Webhook field to given value.
 
@@ -660,20 +664,20 @@ HasParams returns a boolean if a field has been set.
 
 ### GetCustomEffect
 
-`func (o *Block) GetCustomEffect() TriggerCustomEffectBlock1CustomEffect`
+`func (o *Block) GetCustomEffect() CustomEffectBlockReference`
 
 GetCustomEffect returns the CustomEffect field if non-nil, zero value otherwise.
 
 ### GetCustomEffectOk
 
-`func (o *Block) GetCustomEffectOk() (*TriggerCustomEffectBlock1CustomEffect, bool)`
+`func (o *Block) GetCustomEffectOk() (*CustomEffectBlockReference, bool)`
 
 GetCustomEffectOk returns a tuple with the CustomEffect field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetCustomEffect
 
-`func (o *Block) SetCustomEffect(v TriggerCustomEffectBlock1CustomEffect)`
+`func (o *Block) SetCustomEffect(v CustomEffectBlockReference)`
 
 SetCustomEffect sets CustomEffect field to given value.
 
@@ -1028,25 +1032,120 @@ and a boolean to check if the value has been set.
 SetFriendId sets FriendId field to given value.
 
 
+### GetRecipient
+
+`func (o *Block) GetRecipient() string`
+
+GetRecipient returns the Recipient field if non-nil, zero value otherwise.
+
+### GetRecipientOk
+
+`func (o *Block) GetRecipientOk() (*string, bool)`
+
+GetRecipientOk returns a tuple with the Recipient field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRecipient
+
+`func (o *Block) SetRecipient(v string)`
+
+SetRecipient sets Recipient field to given value.
+
+
 ### GetTier
 
-`func (o *Block) GetTier() CheckTierBlock1Tier`
+`func (o *Block) GetTier() TierBlockReference`
 
 GetTier returns the Tier field if non-nil, zero value otherwise.
 
 ### GetTierOk
 
-`func (o *Block) GetTierOk() (*CheckTierBlock1Tier, bool)`
+`func (o *Block) GetTierOk() (*TierBlockReference, bool)`
 
 GetTierOk returns a tuple with the Tier field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetTier
 
-`func (o *Block) SetTier(v CheckTierBlock1Tier)`
+`func (o *Block) SetTier(v TierBlockReference)`
 
 SetTier sets Tier field to given value.
 
+
+### GetAwaitsActivation
+
+`func (o *Block) GetAwaitsActivation() bool`
+
+GetAwaitsActivation returns the AwaitsActivation field if non-nil, zero value otherwise.
+
+### GetAwaitsActivationOk
+
+`func (o *Block) GetAwaitsActivationOk() (*bool, bool)`
+
+GetAwaitsActivationOk returns a tuple with the AwaitsActivation field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAwaitsActivation
+
+`func (o *Block) SetAwaitsActivation(v bool)`
+
+SetAwaitsActivation sets AwaitsActivation field to given value.
+
+### HasAwaitsActivation
+
+`func (o *Block) HasAwaitsActivation() bool`
+
+HasAwaitsActivation returns a boolean if a field has been set.
+
+### GetValidityDuration
+
+`func (o *Block) GetValidityDuration() string`
+
+GetValidityDuration returns the ValidityDuration field if non-nil, zero value otherwise.
+
+### GetValidityDurationOk
+
+`func (o *Block) GetValidityDurationOk() (*string, bool)`
+
+GetValidityDurationOk returns a tuple with the ValidityDuration field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetValidityDuration
+
+`func (o *Block) SetValidityDuration(v string)`
+
+SetValidityDuration sets ValidityDuration field to given value.
+
+### HasValidityDuration
+
+`func (o *Block) HasValidityDuration() bool`
+
+HasValidityDuration returns a boolean if a field has been set.
+
+### GetPendingDuration
+
+`func (o *Block) GetPendingDuration() string`
+
+GetPendingDuration returns the PendingDuration field if non-nil, zero value otherwise.
+
+### GetPendingDurationOk
+
+`func (o *Block) GetPendingDurationOk() (*string, bool)`
+
+GetPendingDurationOk returns a tuple with the PendingDuration field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPendingDuration
+
+`func (o *Block) SetPendingDuration(v string)`
+
+SetPendingDuration sets PendingDuration field to given value.
+
+### HasPendingDuration
+
+`func (o *Block) HasPendingDuration() bool`
+
+HasPendingDuration returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

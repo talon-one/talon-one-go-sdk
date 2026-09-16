@@ -9,13 +9,13 @@ Name | Type | Description | Notes
 **Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] [readonly] 
 **Operator** | **string** |  | 
 **Value** | **string** | The value to update the progress by. Supports template placeholders (e.g. \&quot;{{$Session.Total / 2}}\&quot;) for dynamic quantities. | 
-**Achievement** | [**UpdateAchievementProgressBlock1Achievement**](UpdateAchievementProgressBlock1Achievement.md) |  | 
+**Achievement** | [**AchievementBlockReference**](AchievementBlockReference.md) | The achievement to update. | 
 
 ## Methods
 
 ### NewUpdateAchievementProgressBlock
 
-`func NewUpdateAchievementProgressBlock(type_ string, operator string, value string, achievement UpdateAchievementProgressBlock1Achievement, ) *UpdateAchievementProgressBlock`
+`func NewUpdateAchievementProgressBlock(type_ string, operator string, value string, achievement AchievementBlockReference, ) *UpdateAchievementProgressBlock`
 
 NewUpdateAchievementProgressBlock instantiates a new UpdateAchievementProgressBlock object
 This constructor will assign default values to properties that have it defined,
@@ -142,20 +142,20 @@ SetValue sets Value field to given value.
 
 ### GetAchievement
 
-`func (o *UpdateAchievementProgressBlock) GetAchievement() UpdateAchievementProgressBlock1Achievement`
+`func (o *UpdateAchievementProgressBlock) GetAchievement() AchievementBlockReference`
 
 GetAchievement returns the Achievement field if non-nil, zero value otherwise.
 
 ### GetAchievementOk
 
-`func (o *UpdateAchievementProgressBlock) GetAchievementOk() (*UpdateAchievementProgressBlock1Achievement, bool)`
+`func (o *UpdateAchievementProgressBlock) GetAchievementOk() (*AchievementBlockReference, bool)`
 
 GetAchievementOk returns a tuple with the Achievement field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetAchievement
 
-`func (o *UpdateAchievementProgressBlock) SetAchievement(v UpdateAchievementProgressBlock1Achievement)`
+`func (o *UpdateAchievementProgressBlock) SetAchievement(v AchievementBlockReference)`
 
 SetAchievement sets Achievement field to given value.
 

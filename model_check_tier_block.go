@@ -29,8 +29,9 @@ type CheckTierBlock struct {
 	// An indicator of how the block compares its elements.
 	Operator string `json:"operator"`
 	// The name of the subledger to check the balance of. Can be empty if this block checks the loyalty program's main ledger balance instead of a subledger.
-	Subledger string              `json:"subledger"`
-	Tier      CheckTierBlock1Tier `json:"tier"`
+	Subledger string `json:"subledger"`
+	// The tier to check for.
+	Tier TierBlockReference `json:"tier"`
 	// Promotion blocks evaluated when this block fails or returns false.
 	OnFailure            []Block `json:"onFailure,omitempty"`
 	AdditionalProperties map[string]interface{}
@@ -42,7 +43,7 @@ type _CheckTierBlock CheckTierBlock
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCheckTierBlock(type_ string, operator string, subledger string, tier CheckTierBlock1Tier) *CheckTierBlock {
+func BuildCheckTierBlock(type_ string, operator string, subledger string, tier TierBlockReference) *CheckTierBlock {
 	this := CheckTierBlock{}
 	this.Type = type_
 	this.Operator = operator
@@ -196,9 +197,9 @@ func (o *CheckTierBlock) SetSubledger(v string) {
 }
 
 // GetTier returns the Tier field value
-func (o *CheckTierBlock) GetTier() CheckTierBlock1Tier {
+func (o *CheckTierBlock) GetTier() TierBlockReference {
 	if o == nil {
-		var ret CheckTierBlock1Tier
+		var ret TierBlockReference
 		return ret
 	}
 
@@ -207,7 +208,7 @@ func (o *CheckTierBlock) GetTier() CheckTierBlock1Tier {
 
 // GetTierOk returns a tuple with the Tier field value
 // and a boolean to check if the value has been set.
-func (o *CheckTierBlock) GetTierOk() (*CheckTierBlock1Tier, bool) {
+func (o *CheckTierBlock) GetTierOk() (*TierBlockReference, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -215,7 +216,7 @@ func (o *CheckTierBlock) GetTierOk() (*CheckTierBlock1Tier, bool) {
 }
 
 // SetTier sets field value
-func (o *CheckTierBlock) SetTier(v CheckTierBlock1Tier) {
+func (o *CheckTierBlock) SetTier(v TierBlockReference) {
 	o.Tier = v
 }
 

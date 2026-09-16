@@ -9,14 +9,14 @@ Name | Type | Description | Notes
 **Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] [readonly] 
 **Operator** | **string** | An indicator of how the block compares its elements. | 
 **Profile** | **string** | The customer profile to check against the audience. &#x60;Current&#x60; targets the customer in the current session; &#x60;Advocate&#x60; targets the person who invited their friend via referral program. | 
-**Audience** | [**CheckAudienceBlock1Audience**](CheckAudienceBlock1Audience.md) |  | 
+**Audience** | [**AudienceBlockReference**](AudienceBlockReference.md) | The audience to check the profile against. | 
 **OnFailure** | Pointer to [**[]Block**](Block.md) | Promotion blocks evaluated when this block fails or returns false. | [optional] 
 
 ## Methods
 
 ### NewCheckAudienceBlock
 
-`func NewCheckAudienceBlock(type_ string, operator string, profile string, audience CheckAudienceBlock1Audience, ) *CheckAudienceBlock`
+`func NewCheckAudienceBlock(type_ string, operator string, profile string, audience AudienceBlockReference, ) *CheckAudienceBlock`
 
 NewCheckAudienceBlock instantiates a new CheckAudienceBlock object
 This constructor will assign default values to properties that have it defined,
@@ -143,20 +143,20 @@ SetProfile sets Profile field to given value.
 
 ### GetAudience
 
-`func (o *CheckAudienceBlock) GetAudience() CheckAudienceBlock1Audience`
+`func (o *CheckAudienceBlock) GetAudience() AudienceBlockReference`
 
 GetAudience returns the Audience field if non-nil, zero value otherwise.
 
 ### GetAudienceOk
 
-`func (o *CheckAudienceBlock) GetAudienceOk() (*CheckAudienceBlock1Audience, bool)`
+`func (o *CheckAudienceBlock) GetAudienceOk() (*AudienceBlockReference, bool)`
 
 GetAudienceOk returns a tuple with the Audience field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetAudience
 
-`func (o *CheckAudienceBlock) SetAudience(v CheckAudienceBlock1Audience)`
+`func (o *CheckAudienceBlock) SetAudience(v AudienceBlockReference)`
 
 SetAudience sets Audience field to given value.
 

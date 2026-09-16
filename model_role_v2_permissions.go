@@ -17,7 +17,7 @@ import (
 // checks if the RoleV2Permissions type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &RoleV2Permissions{}
 
-// RoleV2Permissions struct for RoleV2Permissions
+// RoleV2Permissions The permissions that this role gives.
 type RoleV2Permissions struct {
 	// List of grouped logical operations referenced by roles.
 	PermissionSets []RoleV2PermissionSet `json:"permissionSets,omitempty"`

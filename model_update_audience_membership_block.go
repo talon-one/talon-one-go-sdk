@@ -29,8 +29,9 @@ type UpdateAudienceMembershipBlock struct {
 	// The action to perform.
 	Operator string `json:"operator"`
 	// The customer profile to add or remove from the audience. `Current` targets the customer in the current session; `Advocate` targets the person who invited their friend via referral program.
-	Profile              string                                 `json:"profile"`
-	Audience             UpdateAudienceMembershipBlock1Audience `json:"audience"`
+	Profile string `json:"profile"`
+	// The audience to add the customer to or remove them from.
+	Audience             AudienceBlockReference `json:"audience"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -40,7 +41,7 @@ type _UpdateAudienceMembershipBlock UpdateAudienceMembershipBlock
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildUpdateAudienceMembershipBlock(type_ string, operator string, profile string, audience UpdateAudienceMembershipBlock1Audience) *UpdateAudienceMembershipBlock {
+func BuildUpdateAudienceMembershipBlock(type_ string, operator string, profile string, audience AudienceBlockReference) *UpdateAudienceMembershipBlock {
 	this := UpdateAudienceMembershipBlock{}
 	this.Type = type_
 	this.Operator = operator
@@ -194,9 +195,9 @@ func (o *UpdateAudienceMembershipBlock) SetProfile(v string) {
 }
 
 // GetAudience returns the Audience field value
-func (o *UpdateAudienceMembershipBlock) GetAudience() UpdateAudienceMembershipBlock1Audience {
+func (o *UpdateAudienceMembershipBlock) GetAudience() AudienceBlockReference {
 	if o == nil {
-		var ret UpdateAudienceMembershipBlock1Audience
+		var ret AudienceBlockReference
 		return ret
 	}
 
@@ -205,7 +206,7 @@ func (o *UpdateAudienceMembershipBlock) GetAudience() UpdateAudienceMembershipBl
 
 // GetAudienceOk returns a tuple with the Audience field value
 // and a boolean to check if the value has been set.
-func (o *UpdateAudienceMembershipBlock) GetAudienceOk() (*UpdateAudienceMembershipBlock1Audience, bool) {
+func (o *UpdateAudienceMembershipBlock) GetAudienceOk() (*AudienceBlockReference, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -213,7 +214,7 @@ func (o *UpdateAudienceMembershipBlock) GetAudienceOk() (*UpdateAudienceMembersh
 }
 
 // SetAudience sets field value
-func (o *UpdateAudienceMembershipBlock) SetAudience(v UpdateAudienceMembershipBlock1Audience) {
+func (o *UpdateAudienceMembershipBlock) SetAudience(v AudienceBlockReference) {
 	o.Audience = v
 }
 

@@ -29,8 +29,9 @@ type CheckAudienceBlock struct {
 	// An indicator of how the block compares its elements.
 	Operator string `json:"operator"`
 	// The customer profile to check against the audience. `Current` targets the customer in the current session; `Advocate` targets the person who invited their friend via referral program.
-	Profile  string                      `json:"profile"`
-	Audience CheckAudienceBlock1Audience `json:"audience"`
+	Profile string `json:"profile"`
+	// The audience to check the profile against.
+	Audience AudienceBlockReference `json:"audience"`
 	// Promotion blocks evaluated when this block fails or returns false.
 	OnFailure            []Block `json:"onFailure,omitempty"`
 	AdditionalProperties map[string]interface{}
@@ -42,7 +43,7 @@ type _CheckAudienceBlock CheckAudienceBlock
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCheckAudienceBlock(type_ string, operator string, profile string, audience CheckAudienceBlock1Audience) *CheckAudienceBlock {
+func BuildCheckAudienceBlock(type_ string, operator string, profile string, audience AudienceBlockReference) *CheckAudienceBlock {
 	this := CheckAudienceBlock{}
 	this.Type = type_
 	this.Operator = operator
@@ -196,9 +197,9 @@ func (o *CheckAudienceBlock) SetProfile(v string) {
 }
 
 // GetAudience returns the Audience field value
-func (o *CheckAudienceBlock) GetAudience() CheckAudienceBlock1Audience {
+func (o *CheckAudienceBlock) GetAudience() AudienceBlockReference {
 	if o == nil {
-		var ret CheckAudienceBlock1Audience
+		var ret AudienceBlockReference
 		return ret
 	}
 
@@ -207,7 +208,7 @@ func (o *CheckAudienceBlock) GetAudience() CheckAudienceBlock1Audience {
 
 // GetAudienceOk returns a tuple with the Audience field value
 // and a boolean to check if the value has been set.
-func (o *CheckAudienceBlock) GetAudienceOk() (*CheckAudienceBlock1Audience, bool) {
+func (o *CheckAudienceBlock) GetAudienceOk() (*AudienceBlockReference, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -215,7 +216,7 @@ func (o *CheckAudienceBlock) GetAudienceOk() (*CheckAudienceBlock1Audience, bool
 }
 
 // SetAudience sets field value
-func (o *CheckAudienceBlock) SetAudience(v CheckAudienceBlock1Audience) {
+func (o *CheckAudienceBlock) SetAudience(v AudienceBlockReference) {
 	o.Audience = v
 }
 

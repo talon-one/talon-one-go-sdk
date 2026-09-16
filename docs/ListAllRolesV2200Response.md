@@ -4,8 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**TotalResultSize** | **int64** |  | 
-**Data** | [**[]RoleV2**](RoleV2.md) |  | 
+**TotalResultSize** | **int64** | The total number of roles returned. | 
+**Data** | [**[]RoleV2**](RoleV2.md) | The list of roles. | 
 
 ## Methods
 

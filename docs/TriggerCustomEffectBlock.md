@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **Id** | Pointer to **string** | Unique identifier for this block. | [optional] [readonly] 
 **Type** | **string** | Identifies the block variant and determines which additional properties are present in it. | 
 **Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] [readonly] 
-**CustomEffect** | [**TriggerCustomEffectBlock1CustomEffect**](TriggerCustomEffectBlock1CustomEffect.md) |  | 
+**CustomEffect** | [**CustomEffectBlockReference**](CustomEffectBlockReference.md) | The custom effect to trigger. | 
 **Params** | Pointer to **map[string]interface{}** | The custom effect&#39;s parameters, in configured order. Each property name is the parameter&#39;s title, lowercased with spaces replaced by underscores (for example, &#x60;Order ID&#x60; becomes &#x60;order_id&#x60;); falls back to &#x60;param_0&#x60;, &#x60;param_1&#x60;, and so on if a title is blank or collides with another. | [optional] 
 **Target** | [**TriggerCustomEffectBlock1Target**](TriggerCustomEffectBlock1Target.md) |  | 
 **OnError** | Pointer to [**map[string][]Block**](array.md) | Named error handlers evaluated when a specific error occurs. | [optional] 
@@ -16,7 +16,7 @@ Name | Type | Description | Notes
 
 ### NewTriggerCustomEffectBlock
 
-`func NewTriggerCustomEffectBlock(type_ string, customEffect TriggerCustomEffectBlock1CustomEffect, target TriggerCustomEffectBlock1Target, ) *TriggerCustomEffectBlock`
+`func NewTriggerCustomEffectBlock(type_ string, customEffect CustomEffectBlockReference, target TriggerCustomEffectBlock1Target, ) *TriggerCustomEffectBlock`
 
 NewTriggerCustomEffectBlock instantiates a new TriggerCustomEffectBlock object
 This constructor will assign default values to properties that have it defined,
@@ -103,20 +103,20 @@ HasTags returns a boolean if a field has been set.
 
 ### GetCustomEffect
 
-`func (o *TriggerCustomEffectBlock) GetCustomEffect() TriggerCustomEffectBlock1CustomEffect`
+`func (o *TriggerCustomEffectBlock) GetCustomEffect() CustomEffectBlockReference`
 
 GetCustomEffect returns the CustomEffect field if non-nil, zero value otherwise.
 
 ### GetCustomEffectOk
 
-`func (o *TriggerCustomEffectBlock) GetCustomEffectOk() (*TriggerCustomEffectBlock1CustomEffect, bool)`
+`func (o *TriggerCustomEffectBlock) GetCustomEffectOk() (*CustomEffectBlockReference, bool)`
 
 GetCustomEffectOk returns a tuple with the CustomEffect field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetCustomEffect
 
-`func (o *TriggerCustomEffectBlock) SetCustomEffect(v TriggerCustomEffectBlock1CustomEffect)`
+`func (o *TriggerCustomEffectBlock) SetCustomEffect(v CustomEffectBlockReference)`
 
 SetCustomEffect sets CustomEffect field to given value.
 
