@@ -48,8 +48,8 @@ type CustomerProfileReward struct {
 	// The ID of the loyalty program that the loyalty card belongs to. Only returned for rewards unlocked with a loyalty card.
 	LoyaltyProgramId *int64 `json:"loyaltyProgramId,omitempty"`
 	// The identifier of the loyalty card that the reward was unlocked with. Only returned for rewards unlocked with a loyalty card.
-	LoyaltyCardIdentifier *string `json:"loyaltyCardIdentifier,omitempty" validate:"regexp=^[A-Za-z0-9._%+@-]+$"`
-	AdditionalProperties  map[string]interface{}
+	LoyaltyCardId        *string `json:"loyaltyCardId,omitempty" validate:"regexp=^[A-Za-z0-9._%+@-]+$"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CustomerProfileReward CustomerProfileReward
@@ -438,36 +438,36 @@ func (o *CustomerProfileReward) SetLoyaltyProgramId(v int64) {
 	o.LoyaltyProgramId = &v
 }
 
-// GetLoyaltyCardIdentifier returns the LoyaltyCardIdentifier field value if set, zero value otherwise.
-func (o *CustomerProfileReward) GetLoyaltyCardIdentifier() string {
-	if o == nil || IsNil(o.LoyaltyCardIdentifier) {
+// GetLoyaltyCardId returns the LoyaltyCardId field value if set, zero value otherwise.
+func (o *CustomerProfileReward) GetLoyaltyCardId() string {
+	if o == nil || IsNil(o.LoyaltyCardId) {
 		var ret string
 		return ret
 	}
-	return *o.LoyaltyCardIdentifier
+	return *o.LoyaltyCardId
 }
 
-// GetLoyaltyCardIdentifierOk returns a tuple with the LoyaltyCardIdentifier field value if set, nil otherwise
+// GetLoyaltyCardIdOk returns a tuple with the LoyaltyCardId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *CustomerProfileReward) GetLoyaltyCardIdentifierOk() (*string, bool) {
-	if o == nil || IsNil(o.LoyaltyCardIdentifier) {
+func (o *CustomerProfileReward) GetLoyaltyCardIdOk() (*string, bool) {
+	if o == nil || IsNil(o.LoyaltyCardId) {
 		return nil, false
 	}
-	return o.LoyaltyCardIdentifier, true
+	return o.LoyaltyCardId, true
 }
 
-// HasLoyaltyCardIdentifier returns a boolean if a field has been set.
-func (o *CustomerProfileReward) HasLoyaltyCardIdentifier() bool {
-	if o != nil && !IsNil(o.LoyaltyCardIdentifier) {
+// HasLoyaltyCardId returns a boolean if a field has been set.
+func (o *CustomerProfileReward) HasLoyaltyCardId() bool {
+	if o != nil && !IsNil(o.LoyaltyCardId) {
 		return true
 	}
 
 	return false
 }
 
-// SetLoyaltyCardIdentifier gets a reference to the given string and assigns it to the LoyaltyCardIdentifier field.
-func (o *CustomerProfileReward) SetLoyaltyCardIdentifier(v string) {
-	o.LoyaltyCardIdentifier = &v
+// SetLoyaltyCardId gets a reference to the given string and assigns it to the LoyaltyCardId field.
+func (o *CustomerProfileReward) SetLoyaltyCardId(v string) {
+	o.LoyaltyCardId = &v
 }
 
 func (o CustomerProfileReward) MarshalJSON() ([]byte, error) {
@@ -505,8 +505,8 @@ func (o CustomerProfileReward) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.LoyaltyProgramId) {
 		toSerialize["loyaltyProgramId"] = o.LoyaltyProgramId
 	}
-	if !IsNil(o.LoyaltyCardIdentifier) {
-		toSerialize["loyaltyCardIdentifier"] = o.LoyaltyCardIdentifier
+	if !IsNil(o.LoyaltyCardId) {
+		toSerialize["loyaltyCardId"] = o.LoyaltyCardId
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -570,7 +570,7 @@ func (o *CustomerProfileReward) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "usedAt")
 		delete(additionalProperties, "usedByProfileIntegrationId")
 		delete(additionalProperties, "loyaltyProgramId")
-		delete(additionalProperties, "loyaltyCardIdentifier")
+		delete(additionalProperties, "loyaltyCardId")
 		o.AdditionalProperties = additionalProperties
 	}
 

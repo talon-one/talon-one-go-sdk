@@ -28,8 +28,8 @@ type CheckAudienceBlock struct {
 	Tags []string `json:"tags,omitempty"`
 	// An indicator of how the block compares its elements.
 	Operator string `json:"operator"`
-	// The customer profile to check against the audience. `Current` targets the customer in the current session; `Advocate` targets the person who invited their friend via referral program.
-	Profile string `json:"profile"`
+	// The customer profile to check against the audience. `Current` targets the customer in the current session; `Advocate` targets the person who invited their friend via referral program. Only applies to the `member` and `not(member)` operators; ignored for `justJoined` and `justLeft`.
+	Profile *string `json:"profile,omitempty"`
 	// The audience to check the profile against.
 	Audience AudienceBlockReference `json:"audience"`
 	// Promotion blocks evaluated when this block fails or returns false.
@@ -43,11 +43,10 @@ type _CheckAudienceBlock CheckAudienceBlock
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCheckAudienceBlock(type_ string, operator string, profile string, audience AudienceBlockReference) *CheckAudienceBlock {
+func BuildCheckAudienceBlock(type_ string, operator string, audience AudienceBlockReference) *CheckAudienceBlock {
 	this := CheckAudienceBlock{}
 	this.Type = type_
 	this.Operator = operator
-	this.Profile = profile
 	this.Audience = audience
 	return &this
 }
@@ -172,28 +171,36 @@ func (o *CheckAudienceBlock) SetOperator(v string) {
 	o.Operator = v
 }
 
-// GetProfile returns the Profile field value
+// GetProfile returns the Profile field value if set, zero value otherwise.
 func (o *CheckAudienceBlock) GetProfile() string {
-	if o == nil {
+	if o == nil || IsNil(o.Profile) {
 		var ret string
 		return ret
 	}
-
-	return o.Profile
+	return *o.Profile
 }
 
-// GetProfileOk returns a tuple with the Profile field value
+// GetProfileOk returns a tuple with the Profile field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CheckAudienceBlock) GetProfileOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Profile) {
 		return nil, false
 	}
-	return &o.Profile, true
+	return o.Profile, true
 }
 
-// SetProfile sets field value
+// HasProfile returns a boolean if a field has been set.
+func (o *CheckAudienceBlock) HasProfile() bool {
+	if o != nil && !IsNil(o.Profile) {
+		return true
+	}
+
+	return false
+}
+
+// SetProfile gets a reference to the given string and assigns it to the Profile field.
 func (o *CheckAudienceBlock) SetProfile(v string) {
-	o.Profile = v
+	o.Profile = &v
 }
 
 // GetAudience returns the Audience field value
@@ -270,7 +277,9 @@ func (o CheckAudienceBlock) ToMap() (map[string]interface{}, error) {
 		toSerialize["tags"] = o.Tags
 	}
 	toSerialize["operator"] = o.Operator
-	toSerialize["profile"] = o.Profile
+	if !IsNil(o.Profile) {
+		toSerialize["profile"] = o.Profile
+	}
 	toSerialize["audience"] = o.Audience
 	if !IsNil(o.OnFailure) {
 		toSerialize["onFailure"] = o.OnFailure
@@ -290,7 +299,6 @@ func (o *CheckAudienceBlock) UnmarshalJSON(data []byte) (err error) {
 	requiredProperties := []string{
 		"type",
 		"operator",
-		"profile",
 		"audience",
 	}
 

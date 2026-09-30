@@ -27,7 +27,10 @@ type Experiment struct {
 	Created time.Time `json:"created"`
 	// The ID of the Application that owns this entity.
 	ApplicationId int64 `json:"applicationId"`
-	// The source of the assignment. - false - The variant assignment is handled internally by Talon.One. - true - The variant assignment is handled externally.
+	// Controls how customers are assigned to experiment variants. - `random`: Talon.One assigns customers randomly based on variant weights. - `external`: Variant assignment is handled externally. - `audience`: Each variant targets a specific audience; customers are assigned based on audience membership.
+	AssignmentType *string `json:"assignmentType,omitempty"`
+	// Deprecated. Use `assignmentType` instead. - false - The variant assignment is handled internally by Talon.One. - true - The variant assignment is handled externally.
+	// Deprecated
 	IsVariantAssignmentExternal *bool     `json:"isVariantAssignmentExternal,omitempty"`
 	Campaign                    *Campaign `json:"campaign,omitempty"`
 	// The date and time the experiment was activated.
@@ -142,7 +145,40 @@ func (o *Experiment) SetApplicationId(v int64) {
 	o.ApplicationId = v
 }
 
+// GetAssignmentType returns the AssignmentType field value if set, zero value otherwise.
+func (o *Experiment) GetAssignmentType() string {
+	if o == nil || IsNil(o.AssignmentType) {
+		var ret string
+		return ret
+	}
+	return *o.AssignmentType
+}
+
+// GetAssignmentTypeOk returns a tuple with the AssignmentType field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Experiment) GetAssignmentTypeOk() (*string, bool) {
+	if o == nil || IsNil(o.AssignmentType) {
+		return nil, false
+	}
+	return o.AssignmentType, true
+}
+
+// HasAssignmentType returns a boolean if a field has been set.
+func (o *Experiment) HasAssignmentType() bool {
+	if o != nil && !IsNil(o.AssignmentType) {
+		return true
+	}
+
+	return false
+}
+
+// SetAssignmentType gets a reference to the given string and assigns it to the AssignmentType field.
+func (o *Experiment) SetAssignmentType(v string) {
+	o.AssignmentType = &v
+}
+
 // GetIsVariantAssignmentExternal returns the IsVariantAssignmentExternal field value if set, zero value otherwise.
+// Deprecated
 func (o *Experiment) GetIsVariantAssignmentExternal() bool {
 	if o == nil || IsNil(o.IsVariantAssignmentExternal) {
 		var ret bool
@@ -153,6 +189,7 @@ func (o *Experiment) GetIsVariantAssignmentExternal() bool {
 
 // GetIsVariantAssignmentExternalOk returns a tuple with the IsVariantAssignmentExternal field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *Experiment) GetIsVariantAssignmentExternalOk() (*bool, bool) {
 	if o == nil || IsNil(o.IsVariantAssignmentExternal) {
 		return nil, false
@@ -170,6 +207,7 @@ func (o *Experiment) HasIsVariantAssignmentExternal() bool {
 }
 
 // SetIsVariantAssignmentExternal gets a reference to the given bool and assigns it to the IsVariantAssignmentExternal field.
+// Deprecated
 func (o *Experiment) SetIsVariantAssignmentExternal(v bool) {
 	o.IsVariantAssignmentExternal = &v
 }
@@ -395,6 +433,9 @@ func (o Experiment) ToMap() (map[string]interface{}, error) {
 	toSerialize["id"] = o.Id
 	toSerialize["created"] = o.Created
 	toSerialize["applicationId"] = o.ApplicationId
+	if !IsNil(o.AssignmentType) {
+		toSerialize["assignmentType"] = o.AssignmentType
+	}
 	if !IsNil(o.IsVariantAssignmentExternal) {
 		toSerialize["isVariantAssignmentExternal"] = o.IsVariantAssignmentExternal
 	}
@@ -465,6 +506,7 @@ func (o *Experiment) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "id")
 		delete(additionalProperties, "created")
 		delete(additionalProperties, "applicationId")
+		delete(additionalProperties, "assignmentType")
 		delete(additionalProperties, "isVariantAssignmentExternal")
 		delete(additionalProperties, "campaign")
 		delete(additionalProperties, "activated")

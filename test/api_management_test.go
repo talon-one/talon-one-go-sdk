@@ -1584,6 +1584,20 @@ func Test_talon_ManagementAPIService(t *testing.T) {
 
 	})
 
+	t.Run("Test ManagementAPIService GetGiveawaysPool", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var poolId int64
+
+		resp, httpRes, err := apiClient.ManagementAPI.GetGiveawaysPool(context.Background(), poolId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test ManagementAPIService GetLoyaltyCard", func(t *testing.T) {
 
 		t.Skip("skip test")  // remove to run test

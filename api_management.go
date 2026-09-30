@@ -891,7 +891,6 @@ func (a *ManagementAPIService) CreateAchievementExecute(r ApiCreateAchievementRe
 			}
 			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1039,7 +1038,6 @@ func (a *ManagementAPIService) CreateAchievementV2Execute(r ApiCreateAchievement
 			}
 			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -8025,6 +8023,8 @@ The generated file can contain the following columns:
 - `sessionintegrationid`: The integration ID of the session.
 - `total_revenue`: The total revenue.
 - `store_integration_id`: The integration ID of the store. You choose this ID when you create a store.
+- `reward_id`: The ID of the reward whose rule generated this effect, when applicable.
+- `reward_integration_id`: The integration ID of the specific customer reward whose usage produced this effect, when applicable.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param applicationId The ID of the Application. It is displayed in your Talon.One deployment URL.
@@ -8711,6 +8711,29 @@ program.
 > [!tip] If the exported CSV file is too large to view, you can
 > [split it into multiple files](https://www.google.com/search?q=split+CSV+into+multiple+files).
 
+The generated file can contain the following columns:
+
+- `cardidentifier`: The identifier of the loyalty card.
+- `applicationid`: The ID of the Application.
+- `sessionid`: The ID of the session.
+- `customersessionid`: The integration ID of the customer session.
+- `rulesetid`: The ID of the rule set.
+- `rulename`: The name of the rule.
+- `programid`: The ID of the loyalty program.
+- `type`: The transaction type, such as `addition` or `subtraction`.
+- `name`: The reason for the transaction.
+- `subledgerid`: The ID of the subledger, when applicable.
+- `startdate`: The start date of the points.
+- `expirydate`: The expiration date of the points.
+- `id`: The ID of the transaction.
+- `created`: The timestamp of the transaction creation.
+- `amount`: The number of points in that transaction.
+- `archived`: Whether the session related to the transaction is archived.
+- `campaignid`: The ID of the campaign.
+- `transactionUUID`: Unique identifier of the transaction in the UUID format.
+- `validityDuration`: The duration for which the points remain active, relative to the activation date.
+- `remainingAmount`: The current unused amount of points, when applicable to `addition` transactions.
+
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param loyaltyProgramId Identifier of the card-based loyalty program containing the loyalty card. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
 	@param loyaltyCardId Identifier of the loyalty card. You can get the identifier with the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.  **Important**: The loyalty card ID requires [URL encoding](https://www.w3schools.com/tags//ref_urlencode.asp) if it contains special characters. For example, you must encode `NewCard2026%` as `NewCard2026%25`.
@@ -9258,6 +9281,8 @@ The generated file can contain the following columns:
 - `campaignid`: The ID of the campaign.
 - `flags`: The flags of the transaction, when applicable. The `createsNegativeBalance` flag indicates whether the transaction results in a negative balance.
 - `transactionUUID`: Unique identifier of the transaction in the UUID format.
+- `validityDuration`: The duration for which the points remain active, relative to the activation date.
+- `remainingAmount`: The current unused amount of points, when applicable to `addition` transactions.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param loyaltyProgramId The identifier for the loyalty program.
@@ -17734,6 +17759,124 @@ func (a *ManagementAPIService) GetExportsExecute(r ApiGetExportsRequest) (*GetEx
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiGetGiveawaysPoolRequest struct {
+	ctx        context.Context
+	ApiService *ManagementAPIService
+	poolId     int64
+}
+
+func (r ApiGetGiveawaysPoolRequest) Execute() (*GiveawaysPool, *http.Response, error) {
+	return r.ApiService.GetGiveawaysPoolExecute(r)
+}
+
+/*
+GetGiveawaysPool Get giveaway pool
+
+Retrieve the details of a specified giveaway pool.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param poolId The ID of the pool. You can find it in the Campaign Manager, in the **Incentives** section.
+	@return ApiGetGiveawaysPoolRequest
+*/
+func (a *ManagementAPIService) GetGiveawaysPool(ctx context.Context, poolId int64) ApiGetGiveawaysPoolRequest {
+	return ApiGetGiveawaysPoolRequest{
+		ApiService: a,
+		ctx:        ctx,
+		poolId:     poolId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return GiveawaysPool
+func (a *ManagementAPIService) GetGiveawaysPoolExecute(r ApiGetGiveawaysPoolRequest) (*GiveawaysPool, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *GiveawaysPool
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagementAPIService.GetGiveawaysPool")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v1/giveaways/pools/{poolId}"
+	localVarPath = strings.Replace(localVarPath, "{"+"poolId"+"}", url.PathEscape(parameterValueToString(r.poolId, "poolId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiGetLoyaltyCardRequest struct {
 	ctx              context.Context
 	ApiService       *ManagementAPIService
@@ -18839,6 +18982,7 @@ type ApiGetLoyaltyProgramProfileLedgerTransactionsRequest struct {
 	endDate                *time.Time
 	pageSize               *int64
 	skip                   *int64
+	includeReferences      *bool
 	awaitsActivation       *bool
 }
 
@@ -18890,13 +19034,19 @@ func (r ApiGetLoyaltyProgramProfileLedgerTransactionsRequest) Skip(skip int64) A
 	return r
 }
 
+// Whether to include the UUIDs of transactions referenced by deductions.  **Note:** Enabling this can decrease query performance, especially when no date filter is applied to a large transaction history.
+func (r ApiGetLoyaltyProgramProfileLedgerTransactionsRequest) IncludeReferences(includeReferences bool) ApiGetLoyaltyProgramProfileLedgerTransactionsRequest {
+	r.includeReferences = &includeReferences
+	return r
+}
+
 // If &#x60;true&#x60;: Filters results to include only point transactions that have action-based activation and have not expired.  If &#x60;false&#x60;: Returns a &#x60;400&#x60; response.
 func (r ApiGetLoyaltyProgramProfileLedgerTransactionsRequest) AwaitsActivation(awaitsActivation bool) ApiGetLoyaltyProgramProfileLedgerTransactionsRequest {
 	r.awaitsActivation = &awaitsActivation
 	return r
 }
 
-func (r ApiGetLoyaltyProgramProfileLedgerTransactionsRequest) Execute() (*GetLoyaltyProgramProfileTransactions200Response, *http.Response, error) {
+func (r ApiGetLoyaltyProgramProfileLedgerTransactionsRequest) Execute() (*GetLoyaltyProgramProfileLedgerTransactions200Response, *http.Response, error) {
 	return r.ApiService.GetLoyaltyProgramProfileLedgerTransactionsExecute(r)
 }
 
@@ -18904,10 +19054,12 @@ func (r ApiGetLoyaltyProgramProfileLedgerTransactionsRequest) Execute() (*GetLoy
 GetLoyaltyProgramProfileLedgerTransactions List customer's loyalty transactions (Management API)
 
 Retrieve paginated results of loyalty transaction logs for the given
-Integration ID in the specified loyalty program.
+integration ID in the specified loyalty program.
 
-You can filter transactions by date or by ledger (subledger or main ledger). If no filters are applied, the last 50
-loyalty transactions for the given integration ID are returned.
+You can filter transactions by date or by ledger (subledger or main ledger),
+and include the UUIDs of transactions referenced by deductions. If no filters
+are applied, the last 50 loyalty transactions for the given integration ID
+are returned.
 
 > [!note] **Note**
 > - For most use cases, especially real-time integrations, use the Integration API endpoint:
@@ -18931,13 +19083,13 @@ func (a *ManagementAPIService) GetLoyaltyProgramProfileLedgerTransactions(ctx co
 
 // Execute executes the request
 //
-//	@return GetLoyaltyProgramProfileTransactions200Response
-func (a *ManagementAPIService) GetLoyaltyProgramProfileLedgerTransactionsExecute(r ApiGetLoyaltyProgramProfileLedgerTransactionsRequest) (*GetLoyaltyProgramProfileTransactions200Response, *http.Response, error) {
+//	@return GetLoyaltyProgramProfileLedgerTransactions200Response
+func (a *ManagementAPIService) GetLoyaltyProgramProfileLedgerTransactionsExecute(r ApiGetLoyaltyProgramProfileLedgerTransactionsRequest) (*GetLoyaltyProgramProfileLedgerTransactions200Response, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *GetLoyaltyProgramProfileTransactions200Response
+		localVarReturnValue *GetLoyaltyProgramProfileLedgerTransactions200Response
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagementAPIService.GetLoyaltyProgramProfileLedgerTransactions")
@@ -18996,6 +19148,13 @@ func (a *ManagementAPIService) GetLoyaltyProgramProfileLedgerTransactionsExecute
 	}
 	if r.skip != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "skip", r.skip, "form", "")
+	}
+	if r.includeReferences != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "includeReferences", r.includeReferences, "form", "")
+	} else {
+		var defaultValue bool = false
+		parameterAddToHeaderOrQuery(localVarQueryParams, "includeReferences", defaultValue, "form", "")
+		r.includeReferences = &defaultValue
 	}
 	if r.awaitsActivation != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "awaitsActivation", r.awaitsActivation, "form", "")

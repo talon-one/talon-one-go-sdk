@@ -7,13 +7,13 @@ Name | Type | Description | Notes
 **Id** | **int64** | The internal ID of this entity. | 
 **Created** | **time.Time** | The time this entity was created. | 
 **AccountId** | **int64** | The ID of the account that owns this entity. | 
-**Name** | **string** | The name of this giveaways pool. | 
-**Description** | Pointer to **string** | The description of this giveaways pool. | [optional] 
-**SubscribedApplicationsIds** | Pointer to **[]int64** | A list of the IDs of the applications that this giveaways pool is enabled for. | [optional] 
+**Name** | **string** | The name of this giveaway pool. | 
+**Description** | Pointer to **string** | The description of this giveaway pool. | [optional] 
+**SubscribedApplicationsIds** | Pointer to **[]int64** | A list of the IDs of the Applications that this giveaway pool is enabled for. | [optional] 
 **Sandbox** | **bool** | Indicates if this program is a live or sandbox program. Programs of a given type can only be connected to Applications of the same type. | 
-**Modified** | Pointer to **time.Time** | Timestamp of the most recent update to the giveaways pool. | [optional] 
-**CreatedBy** | **int64** | ID of the user who created this giveaways pool. | 
-**ModifiedBy** | Pointer to **int64** | ID of the user who last updated this giveaways pool if available. | [optional] 
+**Modified** | Pointer to **time.Time** | Timestamp of the most recent update to the giveaway pool. | [optional] 
+**CreatedBy** | **int64** | ID of the user who created this giveaway pool. | 
+**ModifiedBy** | Pointer to **int64** | ID of the user who last updated this giveaway pool if available. | [optional] 
 
 ## Methods
 

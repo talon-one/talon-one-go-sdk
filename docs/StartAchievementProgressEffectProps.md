@@ -6,10 +6,10 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **AchievementId** | **int64** | The ID of the achievement. | 
 **AchievementName** | **string** | The name of the achievement. | 
-**ProgressTrackerId** | Pointer to **int64** | The ID of the customer&#39;s progress tracker for this achievement.  For [on-completion achievements](https://docs.talon.one/docs/product/campaigns/achievements/overview#recurring-on-completion-achievements), this effect generates a unique ID for each iteration. | [optional] 
+**ProgressTrackerId** | Pointer to **int64** | The ID of the customer&#39;s progress tracker for this achievement.  For [on-completion achievements](https://docs.talon.one/docs/product/achievements/overview#recurring-on-completion-achievements), this effect generates a unique ID for each iteration. | [optional] 
 **Target** | **float32** | The target value to complete the achievement. | 
 **StartDate** | **time.Time** | Timestamp at which the customer&#39;s progress started. | 
-**EndDate** | Pointer to **time.Time** | Timestamp at which this progress period ends.  Only returned for achievements that have a fixed end date. [On-completion achievements](https://docs.talon.one/docs/product/campaigns/achievements/overview#recurring-on-completion-achievements) have no end date. | [optional] 
+**EndDate** | Pointer to **time.Time** | Timestamp at which this progress period ends.  Only returned for achievements that have a fixed end date. [On-completion achievements](https://docs.talon.one/docs/product/achievements/overview#recurring-on-completion-achievements) have no end date. | [optional] 
 
 ## Methods
 

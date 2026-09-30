@@ -18,7 +18,7 @@ import (
 // checks if the LabelTargetNone type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &LabelTargetNone{}
 
-// LabelTargetNone Represents the target type when no entity is selected.
+// LabelTargetNone Target type when no specific audience is selected. Targets all customers who are not members of an audience.
 type LabelTargetNone struct {
 	Type                 string `json:"type"`
 	AdditionalProperties map[string]interface{}

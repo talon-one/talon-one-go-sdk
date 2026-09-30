@@ -391,6 +391,7 @@ Class | Method | HTTP request | Description
 *ManagementAPI* | [**GetEventTypes**](docs/ManagementAPI.md#geteventtypes) | **Get** /v1/event_types | List event types
 *ManagementAPI* | [**GetExperiment**](docs/ManagementAPI.md#getexperiment) | **Get** /v1/applications/{applicationId}/experiments/{experimentId} | Get experiment in Application
 *ManagementAPI* | [**GetExports**](docs/ManagementAPI.md#getexports) | **Get** /v1/exports | Get exports
+*ManagementAPI* | [**GetGiveawaysPool**](docs/ManagementAPI.md#getgiveawayspool) | **Get** /v1/giveaways/pools/{poolId} | Get giveaway pool
 *ManagementAPI* | [**GetLoyaltyCard**](docs/ManagementAPI.md#getloyaltycard) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId} | Get loyalty card
 *ManagementAPI* | [**GetLoyaltyCardTransactionLogs**](docs/ManagementAPI.md#getloyaltycardtransactionlogs) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/logs | List card&#39;s transactions (Management API)
 *ManagementAPI* | [**GetLoyaltyCards**](docs/ManagementAPI.md#getloyaltycards) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/cards | List loyalty cards
@@ -603,6 +604,7 @@ Class | Method | HTTP request | Description
 - [Binding](docs/Binding.md)
 - [Block](docs/Block.md)
 - [Blueprint](docs/Blueprint.md)
+- [BoostLoyaltyTierEffectProps](docs/BoostLoyaltyTierEffectProps.md)
 - [BulkApplicationNotification](docs/BulkApplicationNotification.md)
 - [BulkOperationOnCampaigns](docs/BulkOperationOnCampaigns.md)
 - [Bundle](docs/Bundle.md)
@@ -773,6 +775,7 @@ Class | Method | HTTP request | Description
 - [EffectAddNegativeLoyaltyPoints](docs/EffectAddNegativeLoyaltyPoints.md)
 - [EffectAddToAudience](docs/EffectAddToAudience.md)
 - [EffectAwardGiveaway](docs/EffectAwardGiveaway.md)
+- [EffectBoostLoyaltyTier](docs/EffectBoostLoyaltyTier.md)
 - [EffectCallApi](docs/EffectCallApi.md)
 - [EffectChangeLoyaltyTierLevel](docs/EffectChangeLoyaltyTierLevel.md)
 - [EffectCouponCreated](docs/EffectCouponCreated.md)
@@ -925,6 +928,7 @@ Class | Method | HTTP request | Description
 - [GetLoyaltyCardTransactionLogs200Response](docs/GetLoyaltyCardTransactionLogs200Response.md)
 - [GetLoyaltyCardTransactions200Response](docs/GetLoyaltyCardTransactions200Response.md)
 - [GetLoyaltyCards200Response](docs/GetLoyaltyCards200Response.md)
+- [GetLoyaltyProgramProfileLedgerTransactions200Response](docs/GetLoyaltyProgramProfileLedgerTransactions200Response.md)
 - [GetLoyaltyProgramProfilePoints200Response](docs/GetLoyaltyProgramProfilePoints200Response.md)
 - [GetLoyaltyProgramProfileTransactions200Response](docs/GetLoyaltyProgramProfileTransactions200Response.md)
 - [GetLoyaltyProgramTransactions200Response](docs/GetLoyaltyProgramTransactions200Response.md)
@@ -1000,6 +1004,7 @@ Class | Method | HTTP request | Description
 - [LedgerInfo](docs/LedgerInfo.md)
 - [LedgerPointsEntryIntegrationAPI](docs/LedgerPointsEntryIntegrationAPI.md)
 - [LedgerTransactionLogEntryIntegrationAPI](docs/LedgerTransactionLogEntryIntegrationAPI.md)
+- [LedgerTransactionLogEntryManagementAPI](docs/LedgerTransactionLogEntryManagementAPI.md)
 - [LibraryAttribute](docs/LibraryAttribute.md)
 - [LimitConfig](docs/LimitConfig.md)
 - [LimitCounter](docs/LimitCounter.md)
@@ -1155,6 +1160,14 @@ Class | Method | HTTP request | Description
 - [OktaEventPayloadData](docs/OktaEventPayloadData.md)
 - [OktaEventTarget](docs/OktaEventTarget.md)
 - [OneTimeCode](docs/OneTimeCode.md)
+- [OutboundLog](docs/OutboundLog.md)
+- [OutboundLogBase](docs/OutboundLogBase.md)
+- [OutboundLogRequest](docs/OutboundLogRequest.md)
+- [OutboundLogResponse](docs/OutboundLogResponse.md)
+- [OutboundLogs](docs/OutboundLogs.md)
+- [OutboundMessage](docs/OutboundMessage.md)
+- [OutboundMessageResponse](docs/OutboundMessageResponse.md)
+- [OutboundMessages](docs/OutboundMessages.md)
 - [OutgoingIntegrationBrazePolicy](docs/OutgoingIntegrationBrazePolicy.md)
 - [OutgoingIntegrationCleverTapPolicy](docs/OutgoingIntegrationCleverTapPolicy.md)
 - [OutgoingIntegrationConfiguration](docs/OutgoingIntegrationConfiguration.md)
@@ -1245,6 +1258,7 @@ Class | Method | HTTP request | Description
 - [RollbackDiscountEffectProps](docs/RollbackDiscountEffectProps.md)
 - [RollbackIncreasedAchievementProgressEffectProps](docs/RollbackIncreasedAchievementProgressEffectProps.md)
 - [RollbackReferralEffectProps](docs/RollbackReferralEffectProps.md)
+- [RollbackTierBoostEffectProps](docs/RollbackTierBoostEffectProps.md)
 - [RollbackUseRewardEffectProps](docs/RollbackUseRewardEffectProps.md)
 - [Rule](docs/Rule.md)
 - [RuleEligibility](docs/RuleEligibility.md)

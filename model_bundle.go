@@ -21,7 +21,7 @@ var _ MappedNullable = &Bundle{}
 // Bundle A named bundle definition consisting of selector sources with matching constraints. Replaces `bundle` [bindings](https://docs.talon.one/management-api#tag/Campaigns/operation/getRuleset.responses.200.bindings) in V1 rulesets.
 type Bundle struct {
 	// An identifier derived from the bundle content.
-	Id string `json:"id"`
+	Id *string `json:"id,omitempty"`
 	// The name of the bundle.
 	Name string `json:"name"`
 	// A binding of type `bundle`.
@@ -41,9 +41,8 @@ type _Bundle Bundle
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildBundle(id string, name string, type_ string, sources []string, counts []int64) *Bundle {
+func BuildBundle(name string, type_ string, sources []string, counts []int64) *Bundle {
 	this := Bundle{}
-	this.Id = id
 	this.Name = name
 	this.Type = type_
 	this.Sources = sources
@@ -59,28 +58,36 @@ func NewBundleWithDefaults() *Bundle {
 	return &this
 }
 
-// GetId returns the Id field value
+// GetId returns the Id field value if set, zero value otherwise.
 func (o *Bundle) GetId() string {
-	if o == nil {
+	if o == nil || IsNil(o.Id) {
 		var ret string
 		return ret
 	}
-
-	return o.Id
+	return *o.Id
 }
 
-// GetIdOk returns a tuple with the Id field value
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Bundle) GetIdOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Id) {
 		return nil, false
 	}
-	return &o.Id, true
+	return o.Id, true
 }
 
-// SetId sets field value
+// HasId returns a boolean if a field has been set.
+func (o *Bundle) HasId() bool {
+	if o != nil && !IsNil(o.Id) {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
 func (o *Bundle) SetId(v string) {
-	o.Id = v
+	o.Id = &v
 }
 
 // GetName returns the Name field value
@@ -221,7 +228,9 @@ func (o Bundle) MarshalJSON() ([]byte, error) {
 
 func (o Bundle) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["id"] = o.Id
+	if !IsNil(o.Id) {
+		toSerialize["id"] = o.Id
+	}
 	toSerialize["name"] = o.Name
 	toSerialize["type"] = o.Type
 	toSerialize["sources"] = o.Sources
@@ -242,7 +251,6 @@ func (o *Bundle) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"id",
 		"name",
 		"type",
 		"sources",

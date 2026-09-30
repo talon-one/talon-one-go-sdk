@@ -429,7 +429,7 @@ paths:
           headers:
             Idempotency-Key:
               description: The idempotency key used for the request.
-              example: 9aa05ee1-876f-42e6-9a5d-fc0bd424d9cb
+              example: key_7k3m9pxq4w1z8vn3
               explode: false
               schema:
                 type: string
@@ -557,7 +557,7 @@ paths:
           headers:
             Idempotency-Key:
               description: The idempotency key used for the request.
-              example: 9aa05ee1-876f-42e6-9a5d-fc0bd424d9cb
+              example: key_7k3m9pxq4w1z8vn3
               explode: false
               schema:
                 type: string
@@ -692,7 +692,7 @@ paths:
           headers:
             Idempotency-Key:
               description: The idempotency key used for the request.
-              example: 9aa05ee1-876f-42e6-9a5d-fc0bd424d9cb
+              example: key_7k3m9pxq4w1z8vn3
               explode: false
               schema:
                 type: string
@@ -886,7 +886,7 @@ paths:
           headers:
             Idempotency-Key:
               description: The idempotency key used for the request.
-              example: 9aa05ee1-876f-42e6-9a5d-fc0bd424d9cb
+              example: key_7k3m9pxq4w1z8vn3
               explode: false
               schema:
                 type: string
@@ -1006,7 +1006,7 @@ paths:
           headers:
             Idempotency-Key:
               description: The idempotency key used for the request.
-              example: 9aa05ee1-876f-42e6-9a5d-fc0bd424d9cb
+              example: key_7k3m9pxq4w1z8vn3
               explode: false
               schema:
                 type: string
@@ -1051,7 +1051,7 @@ paths:
           headers:
             Idempotency-Key:
               description: The idempotency key used for the request.
-              example: 9aa05ee1-876f-42e6-9a5d-fc0bd424d9cb
+              example: key_7k3m9pxq4w1z8vn3
               explode: false
               schema:
                 type: string
@@ -1828,7 +1828,7 @@ paths:
           headers:
             Idempotency-Key:
               description: The idempotency key used for the request.
-              example: 9aa05ee1-876f-42e6-9a5d-fc0bd424d9cb
+              example: key_7k3m9pxq4w1z8vn3
               explode: false
               schema:
                 type: string
@@ -1873,7 +1873,7 @@ paths:
           headers:
             Idempotency-Key:
               description: The idempotency key used for the request.
-              example: 9aa05ee1-876f-42e6-9a5d-fc0bd424d9cb
+              example: key_7k3m9pxq4w1z8vn3
               explode: false
               schema:
                 type: string
@@ -3387,10 +3387,12 @@ paths:
     get:
       description: |
         Retrieve paginated results of loyalty transaction logs for the given
-        Integration ID in the specified loyalty program.
+        integration ID in the specified loyalty program.
 
-        You can filter transactions by date or by ledger (subledger or main ledger). If no filters are applied, the last 50
-        loyalty transactions for the given integration ID are returned.
+        You can filter transactions by date or by ledger (subledger or main ledger),
+        and include the UUIDs of transactions referenced by deductions. If no filters
+        are applied, the last 50 loyalty transactions for the given integration ID
+        are returned.
 
         > [!note] **Note**
         > - For most use cases, especially real-time integrations, use the Integration API endpoint:
@@ -3528,6 +3530,19 @@ paths:
         style: form
       - $ref: "#/components/parameters/skip"
       - description: |
+          Whether to include the UUIDs of transactions referenced by deductions.
+
+          **Note:** Enabling this can decrease query performance, especially
+          when no date filter is applied to a large transaction history.
+        explode: true
+        in: query
+        name: includeReferences
+        required: false
+        schema:
+          default: false
+          type: boolean
+        style: form
+      - description: |
           If `true`: Filters results to include only point transactions that have action-based activation and have not expired.
 
           If `false`: Returns a `400` response.
@@ -3543,7 +3558,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/getLoyaltyProgramProfileTransactions_200_response"
+                $ref: "#/components/schemas/getLoyaltyProgramProfileLedgerTransactions_200_response"
           description: OK
         "400":
           content:
@@ -6309,6 +6324,8 @@ paths:
         - `campaignid`: The ID of the campaign.
         - `flags`: The flags of the transaction, when applicable. The `createsNegativeBalance` flag indicates whether the transaction results in a negative balance.
         - `transactionUUID`: Unique identifier of the transaction in the UUID format.
+        - `validityDuration`: The duration for which the points remain active, relative to the activation date.
+        - `remainingAmount`: The current unused amount of points, when applicable to `addition` transactions.
       operationId: exportLoyaltyLedger
       parameters:
       - description: |
@@ -6380,9 +6397,9 @@ paths:
               examples:
                 response:
                   value: |
-                    customerprofileid,customersessionid,rulesetid,rulename,programid,type,name,subledgerid,startdate,expirydate,id,created,amount,archived,campaignid,flags,transactionuuid,validityduration
-                    8NHOS78H,06b0fafb-ccbf-42c7-b44b-d858e8b525022,1691,test,37,subtraction,10% of current total,,immediate,unlimited,60803,2022-11-29 16:16:10,100.00,false,5,createsNegativeBalance,8c122fb1-1874-4ee2-b7e2-e7b5f8b7b801,""
-                    EB780RDN,06b0fafb-ccbf-42c7-b44b-d858e8b525022,1691,test,37,addition,Reimbursed loyalty points,,on_action,unlimited,60804,2022-11-29 16:16:23,100.00,false,5,,8c122fb1-1874-4ee2-b7e2-e7b5f8b7b801,"30D"
+                    customerprofileid,customersessionid,rulesetid,rulename,programid,type,name,subledgerid,startdate,expirydate,id,created,amount,archived,campaignid,flags,transactionuuid,validityDuration,remainingAmount
+                    8NHOS78H,06b0fafb-ccbf-42c7-b44b-d858e8b525022,1691,test,37,subtraction,10% of current total,,immediate,unlimited,60803,2022-11-29 16:16:10,100.00,false,5,createsNegativeBalance,8c122fb1-1874-4ee2-b7e2-e7b5f8b7b801,"",
+                    EB780RDN,06b0fafb-ccbf-42c7-b44b-d858e8b525022,1691,test,37,addition,Reimbursed loyalty points,,on_action,unlimited,60804,2022-11-29 16:16:23,100.00,false,5,,8c122fb1-1874-4ee2-b7e2-e7b5f8b7b801,"30D",100.00
               schema:
                 format: csv
                 type: string
@@ -7692,6 +7709,29 @@ paths:
 
         > [!tip] If the exported CSV file is too large to view, you can
         > [split it into multiple files](https://www.google.com/search?q=split+CSV+into+multiple+files).
+
+        The generated file can contain the following columns:
+
+        - `cardidentifier`: The identifier of the loyalty card.
+        - `applicationid`: The ID of the Application.
+        - `sessionid`: The ID of the session.
+        - `customersessionid`: The integration ID of the customer session.
+        - `rulesetid`: The ID of the rule set.
+        - `rulename`: The name of the rule.
+        - `programid`: The ID of the loyalty program.
+        - `type`: The transaction type, such as `addition` or `subtraction`.
+        - `name`: The reason for the transaction.
+        - `subledgerid`: The ID of the subledger, when applicable.
+        - `startdate`: The start date of the points.
+        - `expirydate`: The expiration date of the points.
+        - `id`: The ID of the transaction.
+        - `created`: The timestamp of the transaction creation.
+        - `amount`: The number of points in that transaction.
+        - `archived`: Whether the session related to the transaction is archived.
+        - `campaignid`: The ID of the campaign.
+        - `transactionUUID`: Unique identifier of the transaction in the UUID format.
+        - `validityDuration`: The duration for which the points remain active, relative to the activation date.
+        - `remainingAmount`: The current unused amount of points, when applicable to `addition` transactions.
       operationId: exportLoyaltyCardLedger
       parameters:
       - description: |
@@ -7769,6 +7809,11 @@ paths:
         "200":
           content:
             application/csv:
+              examples:
+                response:
+                  value: |
+                    cardidentifier,applicationid,sessionid,customersessionid,rulesetid,rulename,programid,type,name,subledgerid,startdate,expirydate,id,created,amount,archived,campaignid,transactionuuid,validityDuration,remainingAmount
+                    summer-card-0543,1,10,session-123,1691,test,37,addition,Add points,,immediate,unlimited,60804,2022-11-29 16:16:23,100.00,false,5,8c122fb1-1874-4ee2-b7e2-e7b5f8b7b801,"",100.00
               schema:
                 format: csv
                 type: string
@@ -8002,6 +8047,31 @@ paths:
                 $ref: "#/components/schemas/ErrorResponseWithStatus"
           description: Not found
       summary: Transfer card data
+      tags:
+      - management
+  /v1/giveaways/pools/{poolId}:
+    get:
+      description: Retrieve the details of a specified giveaway pool.
+      operationId: getGiveawaysPool
+      parameters:
+      - description: "The ID of the pool. You can find it in the Campaign Manager,\
+          \ in the **Incentives** section."
+        explode: false
+        in: path
+        name: poolId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GiveawaysPool"
+          description: OK
+      summary: Get giveaway pool
       tags:
       - management
   /v1/giveaways/pools/{poolId}/import:
@@ -11341,6 +11411,8 @@ paths:
         - `sessionintegrationid`: The integration ID of the session.
         - `total_revenue`: The total revenue.
         - `store_integration_id`: The integration ID of the store. You choose this ID when you create a store.
+        - `reward_id`: The ID of the reward whose rule generated this effect, when applicable.
+        - `reward_integration_id`: The integration ID of the specific customer reward whose usage produced this effect, when applicable.
       operationId: exportEffects
       parameters:
       - $ref: "#/components/parameters/applicationId"
@@ -11392,9 +11464,10 @@ paths:
               examples:
                 response:
                   value: |
-                    created,name,applicationid,campaignid,rulesetid,ruleindex,sessionintegrationid,profileintegrationid,sessionid,profileid,eventid,event_type,total_revenue,props,couponid,store_id,store_integration_id
-                    2021-06-02T21:14:16Z,rejectCoupon,270,0,0,0,newsession1,,9168,0,95797,talon_session_created,265.00,"{""value"": ""XMAS20"", ""rejectionReason"": ""CouponNotFound""}",,115,STORE-001
-                    2021-09-01T13:04:04Z,setDiscountPerItem,270,3882,13599,0,test_flattening_2,integid_4,9707,4800,98806,talon_session_updated,405.00,"{""name"": ""10% off per item#1"", ""value"": 11.0, ""position"": 1}",,116,STORE-002
+                    created,name,applicationid,campaignid,rulesetid,ruleindex,sessionintegrationid,profileintegrationid,sessionid,profileid,eventid,event_type,total_revenue,props,couponid,store_id,store_integration_id,reward_id,reward_integration_id
+                    2021-06-02T21:14:16Z,rejectCoupon,270,0,0,0,newsession1,,9168,0,95797,talon_session_created,265.00,"{""value"": ""XMAS20"", ""rejectionReason"": ""CouponNotFound""}",,115,STORE-001,,
+                    2021-09-01T13:04:04Z,setDiscountPerItem,270,3882,13599,0,test_flattening_2,integid_4,9707,4800,98806,talon_session_updated,405.00,"{""name"": ""10% off per item#1"", ""value"": 11.0, ""position"": 1}",,116,STORE-002,,
+                    2024-05-29T15:04:05Z,setDiscount,270,0,0,0,newsession3,integid_5,9711,4803,98810,talon_session_closed,120.00,"{""name"": ""10% reward discount"", ""value"": 12.0}",,116,STORE-002,7,reward-unlock-123
               schema:
                 format: csv
                 type: string
@@ -13372,8 +13445,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponseWithStatus"
           description: Unauthorized
-        "409":
-          description: Conflict. An achievement with this name or title already exists.
       summary: Create achievement
       tags:
       - management
@@ -13676,8 +13747,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponseWithStatus"
           description: Unauthorized
-        "409":
-          description: Conflict. An achievement with this name already exists.
       summary: Create achievement
       tags:
       - management
@@ -14208,7 +14277,7 @@ paths:
       description: |
         Unlock a reward for a customer. If the reward has `pointsRequired` configured, the corresponding loyalty points are deducted from the customer's balance.
 
-        To unlock a reward with the points of a loyalty card, provide the card in `cardIdentifier`. The points are then deducted from the card, and the unlocked reward belongs to the card, which makes it available to all customer profiles linked to that card.
+        To unlock a reward with the points of a loyalty card, provide the card in `loyaltyCardId`. The points are then deducted from the card, and the unlocked reward belongs to the card, which makes it available to all customer profiles linked to that card.
       operationId: unlockReward
       parameters:
       - description: "The ID of the reward. You can get the ID with the [List rewards](#tag/Rewards/operation/listRewards)\
@@ -14466,6 +14535,321 @@ components:
       required: false
       schema:
         type: string
+      style: form
+    cursor:
+      description: Page-start location. Omit this parameter to get the first page.
+      explode: true
+      in: query
+      name: cursor
+      required: false
+      schema:
+        format: byte
+      style: form
+    outboundLogs_pageSize:
+      description: Number of results to return.
+      explode: true
+      in: query
+      name: pageSize
+      required: false
+      schema:
+        default: 50
+        format: int64
+        minimum: 1
+      style: form
+    requestPayloadSearch:
+      description: |
+        Free-text terms to match against the request payload.
+
+        Search terms are matched as substrings and may contain `*` wildcards. Repeat this parameter to combine multiple terms with AND logic.
+      explode: true
+      in: query
+      name: requestPayloadSearch
+      required: false
+      schema:
+        items:
+          minLength: 3
+      style: form
+    isSuccessful:
+      description: |
+        Indicates whether to return log entries with either successful or unsuccessful HTTP response codes. When set to`true`, only log entries with `2xx` response codes are returned. When set to `false`, only log entries with `4xx` and `5xx` response codes are returned.
+      explode: true
+      in: query
+      name: isSuccessful
+      required: false
+      schema: {}
+      style: form
+    entityType:
+      description: Entity type related to the outbound request.
+      explode: true
+      in: query
+      name: entityType
+      required: true
+      schema:
+        enum:
+        - application
+        - loyalty_program
+        - rule_engine_webhook
+      style: form
+    responseCode:
+      description: "HTTP response status code or status-code placeholder with a leading\
+        \ digit, for example `2XX`."
+      explode: true
+      in: query
+      name: responseCode
+      required: false
+      schema:
+        pattern: "^[1-5]([0-9]{2}|[Xx]{2})$"
+      style: form
+    notificationId:
+      description: ID of the notification that produced the outbound request.
+      explode: true
+      in: query
+      name: notificationId
+      required: false
+      schema:
+        format: int64
+        minimum: 1
+      style: form
+    webhookId:
+      description: ID of the webhook that sent the outbound request.
+      explode: true
+      in: query
+      name: webhookId
+      required: false
+      schema:
+        format: int64
+        minimum: 1
+      style: form
+    uuid:
+      description: "Message UUID, matching the `X-UUID` request header."
+      explode: true
+      in: query
+      name: uuid
+      required: false
+      schema:
+        format: uuid
+      style: form
+    url:
+      description: Target URL of the outbound request.
+      explode: true
+      in: query
+      name: url
+      required: false
+      schema:
+        type: string
+      style: form
+    outboundLogs_applicationId:
+      description: The ID of the Application associated with the outbound request.
+      explode: true
+      in: query
+      name: applicationId
+      required: false
+      schema:
+        format: int64
+        minimum: 1
+      style: form
+    outboundLogs_campaignId:
+      description: The ID of the campaign associated with the outbound request.
+      explode: true
+      in: query
+      name: campaignId
+      required: false
+      schema:
+        format: int64
+        minimum: 1
+      style: form
+    loyaltyProgramId:
+      description: The ID of the loyalty program associated with the outbound request.
+      explode: true
+      in: query
+      name: loyaltyProgramId
+      required: false
+      schema:
+        format: int64
+        minimum: 1
+      style: form
+    notificationType:
+      description: Notification type in the outbound request payload.
+      explode: true
+      in: query
+      name: notificationType
+      required: false
+      schema:
+        enum:
+        - CampaignNotification
+        - CampaignEvaluationTreeChanged
+        - CouponCreated
+        - CouponUpdated
+        - CouponDeleted
+        - CouponsUpdated
+        - CouponsDeleted
+        - AsyncCouponsCreated
+        - CouponCodeExpiring
+        - LoyaltyPointsAdded
+        - LoyaltyPointsDeducted
+        - LoyaltyAddedDeductedPointsBalances
+        - LoyaltyCardPointsAdded
+        - LoyaltyCardPointsDeducted
+        - LoyaltyCardAddedDeductedPointsBalances
+        - LoyaltyPointsExpiring
+        - LoyaltyCardPointsExpiring
+        - LoyaltyPointsPendingToActive
+        - TierUpgrade
+        - TierDowngrade
+        - TierWillDowngrade
+        - StrikethroughPrice
+        - GiveawayPoolNotification
+      style: form
+    createdBefore:
+      description: "Filter results where request and response times to return entries\
+        \ before parameter value, expected to be an RFC3339 timestamp string. Use\
+        \ UTC time."
+      explode: true
+      in: query
+      name: createdBefore
+      required: false
+      schema:
+        format: date-time
+      style: form
+    createdAfter:
+      description: "Filter results where request and response times to return entries\
+        \ after parameter value, expected to be an RFC3339 timestamp string. Use UTC\
+        \ time."
+      explode: true
+      in: query
+      name: createdAfter
+      required: false
+      schema:
+        format: date-time
+      style: form
+    batchId:
+      description: Batch ID in coupon notification payloads.
+      explode: true
+      in: query
+      name: batchId
+      required: false
+      schema:
+        type: string
+      style: form
+    catalogId:
+      description: Catalog ID in strikethrough notification payloads.
+      explode: true
+      in: query
+      name: catalogId
+      required: false
+      schema:
+        format: int64
+        minimum: 1
+      style: form
+    subledgerId:
+      description: Subledger ID in loyalty notification payloads.
+      explode: true
+      in: query
+      name: subledgerId
+      required: false
+      schema:
+        type: string
+      style: form
+    profileId:
+      description: Customer profile integration ID in notification payloads.
+      explode: true
+      in: query
+      name: profileId
+      required: false
+      schema:
+        type: string
+      style: form
+    cardIdentifier:
+      description: Loyalty card identifier in card-based loyalty notification payloads.
+      explode: true
+      in: query
+      name: cardIdentifier
+      required: false
+      schema:
+        type: string
+      style: form
+    couponCode:
+      description: Coupon code in coupon notification payloads.
+      explode: true
+      in: query
+      name: couponCode
+      required: false
+      schema:
+        type: string
+      style: form
+    expirationDateBefore:
+      description: 'Filter results where coupon expiration date in coupon notification
+        payload is before parameter value.  '
+      explode: true
+      in: query
+      name: expirationDateBefore
+      required: false
+      schema:
+        format: date-time
+        type: string
+      style: form
+    expirationDateAfter:
+      description: 'Filter results where coupon expiration date in coupon notification
+        payload is after parameter value.  '
+      explode: true
+      in: query
+      name: expirationDateAfter
+      required: false
+      schema:
+        format: date-time
+        type: string
+      style: form
+    sku:
+      description: SKU in strikethrough notification payloads.
+      explode: true
+      in: query
+      name: sku
+      required: false
+      schema:
+        type: string
+      style: form
+    tags:
+      description: Campaign tags in campaign notification payloads. Results must match
+        all provided tags.
+      explode: true
+      in: query
+      name: tags
+      required: false
+      schema:
+        items:
+          type: string
+      style: form
+    validFromBefore:
+      description: Filter results where ValidFrom timestamp in scheduled strikethrough
+        notification payload is before parameter value.
+      explode: true
+      in: query
+      name: validFromBefore
+      required: false
+      schema:
+        format: date-time
+        type: string
+      style: form
+    validFromAfter:
+      description: Filter results where ValidFrom timestamp in scheduled strikethrough
+        notification payload is after parameter value.
+      explode: true
+      in: query
+      name: validFromAfter
+      required: false
+      schema:
+        format: date-time
+        type: string
+      style: form
+    version:
+      description: Version in scheduled strikethrough notification payloads.
+      explode: true
+      in: query
+      name: version
+      required: false
+      schema:
+        enum:
+        - v2
       style: form
     x-uuid:
       description: "The unique message ID. You can use it, for example, to deduplicate\
@@ -15232,7 +15616,8 @@ components:
           - StrikethroughPrice
           type: string
         sentAt:
-          description: Timestamp at which the notification was sent.
+          description: Timestamp when the notification was sent by Talon.One. There
+            may be a delay before the notification is delivered to the user.
           format: date-time
           type: string
       required:
@@ -16051,6 +16436,11 @@ components:
           example: 7
           format: int64
           type: integer
+        rewardIntegrationId:
+          description: The integration ID of the specific customer reward whose usage
+            produced this effect.
+          example: reward-unlock-123
+          type: string
       required:
       - campaignId
       - effectType
@@ -16111,6 +16501,7 @@ components:
         selectedPrice: 100
         adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
         rewardId: 7
+        rewardIntegrationId: reward-unlock-123
         props: ""
     AcceptReferralEffectProps:
       description: |-
@@ -16444,6 +16835,57 @@ components:
         - effectType
         - props
         title: awardGiveaway
+    BoostLoyaltyTierEffectProps:
+      description: |
+        Properties returned when a rule triggers a `boostLoyaltyTier` effect. The customer is temporarily placed in a higher loyalty tier for a specified period without any change to their points balance.
+      properties:
+        programId:
+          description: The ID of the loyalty program.
+          format: int64
+          type: integer
+        subLedgerId:
+          description: The ID of the subledger within the loyalty program.
+          type: string
+        tierName:
+          description: The name of the tier to which the customer is temporarily boosted.
+          type: string
+        reason:
+          description: A reason for the tier boost.
+          type: string
+        expiryDate:
+          description: The date when the tier boost expires.
+          format: date-time
+          type: string
+        boostUuid:
+          description: The unique identifier of the tier boost. Used to match the
+            boost to its rollback effect when a session is cancelled.
+          example: 27b16dbb-fbc7-4c02-99b1-b21b8a94c186
+          format: uuid
+          type: string
+      required:
+      - boostUuid
+      - expiryDate
+      - programId
+      - subLedgerId
+      - tierName
+    EffectBoostLoyaltyTier:
+      allOf:
+      - $ref: "#/components/schemas/EffectEntity"
+      - description: "The `boostLoyaltyTier` effect and its properties. See [API effects](https://docs.talon.one/docs/dev/integration-api/api-effects)."
+        properties:
+          effectType:
+            description: An effect discriminator of type `boostLoyaltyTier`.
+            enum:
+            - boostLoyaltyTier
+            type: string
+          props:
+            allOf:
+            - $ref: "#/components/schemas/BoostLoyaltyTierEffectProps"
+            description: The properties of the `boostLoyaltyTier` effect.
+        required:
+        - effectType
+        - props
+        title: boostLoyaltyTier
     TriggerWebhookEffectProps:
       description: "This effect is triggered when a rule containing a [webhook effect](https://docs.talon.one/docs/product/rules/effects/available-effects#webhooks)\
         \ is validated. The details are shared with you for your information only.\
@@ -18179,12 +18621,41 @@ components:
         - props
         title: showNotification
     StartAchievementProgressEffectProps:
-      description: |
-        This effect indicates that the customer's progress in an achievement was started during the current session. The progress value is set to 0. It is triggered when a rule using the [Start achievement progress](https://docs.talon.one/docs/product/rules/effects/use-effects#start-achievement-progress) effect is successfully validated.
-
-        This effect only marks the start of progress tracking. It can fire together with `increaseAchievementProgress` when progress starts and increases at the same time. In that case, both effects share the same `progressTrackerId`, `startDate`, and `endDate`.
-
-        For [on-completion achievements](https://docs.talon.one/docs/product/campaigns/achievements/overview#recurring-on-completion-achievements), each iteration also gets its own `startDate` and `endDate`.
+      description: "This effect indicates that the customer's progress in an achievement\
+        \ was started during \nthe current session. The Rule Engine creates a progress\
+        \ tracker for the customer, \nidentified by `progressTrackerId`. \n\nThis\
+        \ effect only starts the customer's progress and does not increase the\nprogress.\
+        \ When this effect is returned, the customer progress status is\n`inprogress`\
+        \ and the progress value is `0`.\n\nYou can retrieve the customer's current\
+        \ progress at any time, whether or not\nthis effect was returned, in the following\
+        \ ways:\n- Include `achievements` in the `responseContent` property of your\
+        \ request,\n  on any endpoint where this property is available, for example\n\
+        \  [Update customer session](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2).\n\
+        - Use the [List customer's available achievements](https://docs.talon.one/integration-api#tag/Achievements/operation/getCustomerAchievements)\
+        \ endpoint.\n- Use the [List customer's achievement history](https://docs.talon.one/integration-api#tag/Achievements/operation/getCustomerAchievementHistory)\
+        \ endpoint.\n\nFor recurring achievements, this effect is only returned for\
+        \ the first iteration\nand has no effect on the iterations that follow. For\
+        \ \n[recurring user-action achievements](https://docs.talon.one/docs/product/achievements/overview#recurring-user-action-achievements)\n\
+        specifically, this effect also begins the customer's progress period, specified\
+        \ \nby the `startDate` and `endDate` properties.\n\nThis effect is triggered\
+        \ in the following cases:\n\n- A rule containing a [Start customer\n  progress](https://docs.talon.one/docs/product/rules/effects/use-effects#start-customer-progress)\n\
+        \  effect is validated.\n- A rule containing an [Update customer\n  progress](https://docs.talon.one/docs/product/rules/effects/use-effects#update-customer-progress)\n\
+        \  effect is validated for an achievement that the customer has not started\n\
+        \  yet. In this case, the Rule Engine returns the `startAchievementProgress`\n\
+        \  effect first, followed by\n  [increaseAchievementProgress](https://docs.talon.one/docs/dev/integration-api/api-effects#increaseachievementprogress),\n\
+        \  which carries the increased customer progress. Use `progressTrackerId`\
+        \ to\n  connect the results produced by the two effects.\n\n**Note:**\n- This\
+        \ effect is not returned if the customer's progress in the achievement has\
+        \ \n  already started, or if the achievement's end date has passed. In these\
+        \ cases, \n  the **Start customer progress** effect fails, an \n  [error](https://docs.talon.one/docs/dev/integration-api/api-effects#error)\
+        \ effect\n  is returned, and the customer's progress remains unchanged. Any\
+        \ other effects \n  in the same rule are also not applied.\n- If a rule with\
+        \ this effect fails, include `ruleFailureReasons` in the \n  `responseContent`\
+        \ property of your request to see the reason for failure. \n  The customer's\
+        \ progress is unchanged, so no update is required. The failure \n  reason\
+        \ identifies the campaign, ruleset, and rule that failed, and `details` \n\
+        \  explains why.\n- There is no rollback effect for the `startAchievementProgress`\
+        \ effect.\n"
       example:
         achievementId: 10
         achievementName: FreeCoffee10Orders
@@ -18206,7 +18677,7 @@ components:
           description: |-
             The ID of the customer's progress tracker for this achievement.
 
-            For [on-completion achievements](https://docs.talon.one/docs/product/campaigns/achievements/overview#recurring-on-completion-achievements), this effect generates a unique ID for each iteration.
+            For [on-completion achievements](https://docs.talon.one/docs/product/achievements/overview#recurring-on-completion-achievements), this effect generates a unique ID for each iteration.
           example: 42
           format: int64
           type: integer
@@ -18223,7 +18694,7 @@ components:
           description: |-
             Timestamp at which this progress period ends.
 
-            Only returned for achievements that have a fixed end date. [On-completion achievements](https://docs.talon.one/docs/product/campaigns/achievements/overview#recurring-on-completion-achievements) have no end date.
+            Only returned for achievements that have a fixed end date. [On-completion achievements](https://docs.talon.one/docs/product/achievements/overview#recurring-on-completion-achievements) have no end date.
           example: 2026-04-30T11:24:59Z
           format: date-time
           type: string
@@ -18280,7 +18751,7 @@ components:
           example: 2024-05-29T15:04:05Z
           format: date-time
           type: string
-        cardIdentifier:
+        loyaltyCardId:
           allOf:
           - $ref: "#/components/schemas/LoyaltyCardIdentifier"
           description: |
@@ -18414,6 +18885,7 @@ components:
           addNegativeLoyaltyPoints: "#/components/schemas/EffectAddNegativeLoyaltyPoints"
           addToAudience: "#/components/schemas/EffectAddToAudience"
           awardGiveaway: "#/components/schemas/EffectAwardGiveaway"
+          boostLoyaltyTier: "#/components/schemas/EffectBoostLoyaltyTier"
           callApi: "#/components/schemas/EffectCallApi"
           changeLoyaltyTierLevel: "#/components/schemas/EffectChangeLoyaltyTierLevel"
           couponCreated: "#/components/schemas/EffectCouponCreated"
@@ -18458,6 +18930,7 @@ components:
       - $ref: "#/components/schemas/EffectAddNegativeLoyaltyPoints"
       - $ref: "#/components/schemas/EffectAddToAudience"
       - $ref: "#/components/schemas/EffectAwardGiveaway"
+      - $ref: "#/components/schemas/EffectBoostLoyaltyTier"
       - $ref: "#/components/schemas/EffectCallApi"
       - $ref: "#/components/schemas/EffectChangeLoyaltyTierLevel"
       - $ref: "#/components/schemas/EffectCouponCreated"
@@ -18615,6 +19088,7 @@ components:
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
+          rewardIntegrationId: reward-unlock-123
           props: ""
         - experimentId: 12
           campaignId: 244
@@ -18633,6 +19107,7 @@ components:
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
+          rewardIntegrationId: reward-unlock-123
           props: ""
       properties:
         customerSession:
@@ -19074,13 +19549,13 @@ components:
         startDate:
           description: Date and time when the customer moved to this tier. This value
             uses the loyalty program's time zone setting.
-          example: 2021-05-03T12:32:00Z07:00
+          example: 2025-05-03T12:32:00Z07:00
           format: date-time
           type: string
         expiryDate:
           description: Date when tier level expires in the RFC3339 format (in the
             Loyalty Program's timezone).
-          example: 2022-08-02T15:04:05Z07:00
+          example: 2026-08-02T15:04:05+07:00
           format: date-time
           type: string
         downgradePolicy:
@@ -19091,6 +19566,25 @@ components:
           enum:
           - one_down
           - balance_based
+          example: one_down
+          type: string
+        source:
+          default: points
+          description: |
+            Indicates whether the customer's current tier was determined based on their
+            points balance or a temporary boost.
+
+            - `points`: The tier reflects the customer's current point balance.
+            - `boost`: A temporary tier boost is in effect where the customer is in a higher tier than their points-based tier. The boost expires after a set duration and the customer returns to their points-based tier.
+          enum:
+          - boost
+          - points
+          example: points
+          type: string
+        reason:
+          description: |
+            The reason for the tier assignment.
+          example: Subscription to newsletter
           type: string
       required:
       - id
@@ -19103,7 +19597,6 @@ components:
             allOf:
             - $ref: "#/components/schemas/Tier"
             description: Tier for which the ledger is eligible.
-            example: bronze
           pointsToNextTier:
             description: Points required to move up a tier.
             example: 20
@@ -19126,7 +19619,7 @@ components:
         tentativeCurrentBalance: 100
         tentativePendingBalance: 20
         tentativeNegativeBalance: 100
-        currentTier: bronze
+        currentTier: ""
         pointsToNextTier: 20
         nextTierName: Silver
     LoyaltyCard:
@@ -19209,7 +19702,7 @@ components:
             tentativeCurrentBalance: 100
             tentativePendingBalance: 20
             tentativeNegativeBalance: 100
-            currentTier: bronze
+            currentTier: ""
             pointsToNextTier: 20
             nextTierName: Silver
         modified: 2021-09-12T10:12:42Z
@@ -19234,7 +19727,7 @@ components:
             tentativeCurrentBalance: 100
             tentativePendingBalance: 20
             tentativeNegativeBalance: 100
-            currentTier: bronze
+            currentTier: ""
             pointsToNextTier: 20
             nextTierName: Silver
       properties:
@@ -19304,7 +19797,7 @@ components:
               tentativeCurrentBalance: 100
               tentativePendingBalance: 20
               tentativeNegativeBalance: 100
-              currentTier: bronze
+              currentTier: ""
               pointsToNextTier: 20
               nextTierName: Silver
           modified: 2021-09-12T10:12:42Z
@@ -19336,7 +19829,7 @@ components:
               tentativeCurrentBalance: 100
               tentativePendingBalance: 20
               tentativeNegativeBalance: 100
-              currentTier: bronze
+              currentTier: ""
               pointsToNextTier: 20
               nextTierName: Silver
           modified: 2021-09-12T10:12:42Z
@@ -19360,7 +19853,7 @@ components:
                 tentativeCurrentBalance: 100
                 tentativePendingBalance: 20
                 tentativeNegativeBalance: 100
-                currentTier: bronze
+                currentTier: ""
                 pointsToNextTier: 20
                 nextTierName: Silver
       properties:
@@ -20291,6 +20784,16 @@ components:
           type: integer
         effectIndex:
           description: The index of the effect that caused the rule to fail.
+          format: int64
+          type: integer
+        ruleIndex:
+          description: The index of the rule that failed within the ruleset.
+          example: 0
+          format: int64
+          type: integer
+        rulesetId:
+          description: The ID of the ruleset containing the rule that failed.
+          example: 123
           format: int64
           type: integer
         details:
@@ -22210,6 +22713,7 @@ components:
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
+          rewardIntegrationId: reward-unlock-123
           props: ""
         - experimentId: 12
           campaignId: 244
@@ -22228,6 +22732,7 @@ components:
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
+          rewardIntegrationId: reward-unlock-123
           props: ""
         ruleFailureReasons:
         - campaignID: 1
@@ -22532,6 +23037,7 @@ components:
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
+          rewardIntegrationId: reward-unlock-123
           props: ""
         - experimentId: 12
           campaignId: 244
@@ -22550,6 +23056,7 @@ components:
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
+          rewardIntegrationId: reward-unlock-123
           props: ""
       properties:
         effects:
@@ -22744,7 +23251,7 @@ components:
                 tentativeCurrentBalance: 100
                 tentativePendingBalance: 20
                 tentativeNegativeBalance: 100
-                currentTier: bronze
+                currentTier: ""
                 pointsToNextTier: 20
                 nextTierName: Silver
             modified: 2021-09-12T10:12:42Z
@@ -22776,7 +23283,7 @@ components:
                 tentativeCurrentBalance: 100
                 tentativePendingBalance: 20
                 tentativeNegativeBalance: 100
-                currentTier: bronze
+                currentTier: ""
                 pointsToNextTier: 20
                 nextTierName: Silver
             modified: 2021-09-12T10:12:42Z
@@ -22800,7 +23307,7 @@ components:
                   tentativeCurrentBalance: 100
                   tentativePendingBalance: 20
                   tentativeNegativeBalance: 100
-                  currentTier: bronze
+                  currentTier: ""
                   pointsToNextTier: 20
                   nextTierName: Silver
         triggeredCampaigns:
@@ -23286,6 +23793,7 @@ components:
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
+          rewardIntegrationId: reward-unlock-123
           props: ""
         - experimentId: 12
           campaignId: 244
@@ -23304,6 +23812,7 @@ components:
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
+          rewardIntegrationId: reward-unlock-123
           props: ""
         createdCoupons:
         - id: 6
@@ -25721,6 +26230,7 @@ components:
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
+          rewardIntegrationId: reward-unlock-123
           props: ""
         - experimentId: 12
           campaignId: 244
@@ -25739,6 +26249,7 @@ components:
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
+          rewardIntegrationId: reward-unlock-123
           props: ""
         ruleFailureReasons:
         - campaignID: 1
@@ -26362,7 +26873,7 @@ components:
                 tentativeCurrentBalance: 100
                 tentativePendingBalance: 20
                 tentativeNegativeBalance: 100
-                currentTier: bronze
+                currentTier: ""
                 pointsToNextTier: 20
                 nextTierName: Silver
             modified: 2021-09-12T10:12:42Z
@@ -26394,7 +26905,7 @@ components:
                 tentativeCurrentBalance: 100
                 tentativePendingBalance: 20
                 tentativeNegativeBalance: 100
-                currentTier: bronze
+                currentTier: ""
                 pointsToNextTier: 20
                 nextTierName: Silver
             modified: 2021-09-12T10:12:42Z
@@ -26418,7 +26929,7 @@ components:
                   tentativeCurrentBalance: 100
                   tentativePendingBalance: 20
                   tentativeNegativeBalance: 100
-                  currentTier: bronze
+                  currentTier: ""
                   pointsToNextTier: 20
                   nextTierName: Silver
         referrals:
@@ -26923,7 +27434,7 @@ components:
         usedAt: 2026-07-02T10:30:00Z
         usedByProfileIntegrationId: customer2840
         loyaltyProgramId: 9
-        loyaltyCardIdentifier: ""
+        loyaltyCardId: ""
       properties:
         id:
           description: The ID of the customer reward instance. A customer profile
@@ -26996,7 +27507,7 @@ components:
           example: 9
           format: int64
           type: integer
-        loyaltyCardIdentifier:
+        loyaltyCardId:
           allOf:
           - $ref: "#/components/schemas/LoyaltyCardIdentifier"
           description: The identifier of the loyalty card that the reward was unlocked
@@ -27122,7 +27633,6 @@ components:
             allOf:
             - $ref: "#/components/schemas/Tier"
             description: Customer's current tier.
-            example: bronze
           projectedTier:
             $ref: "#/components/schemas/ProjectedTier"
           pointsToNextTier:
@@ -27428,6 +27938,42 @@ components:
       - subledgerId
       - transactionUUID
       - type
+    LedgerTransactionLogEntryManagementAPI:
+      allOf:
+      - $ref: "#/components/schemas/LedgerTransactionLogEntryIntegrationAPI"
+      - properties:
+          referenceTransactionUUIDs:
+            description: |
+              UUIDs of the addition transactions from which this subtraction deducted
+              loyalty points. Only returned when `includeReferences` is `true` and
+              the transaction has references.
+            example:
+            - a36bca2c-a24a-41ce-9f69-314d20c3373d
+            - 7a8e2d7b-521f-48f2-bc4d-67c01f9cf27b
+            items:
+              type: string
+            type: array
+            default: null
+      example:
+        transactionUUID: ce59f12a-f53b-4014-a745-636d93f2bd3f
+        created: 2022-01-02T15:04:05Z07:00
+        programId: 324
+        customerSessionId: 05c2da0d-48fa-4aa1-b629-898f58f1584d
+        storeIntegrationId: STORE-001
+        type: addition
+        name: Reward 10% points of a purchase's current total
+        startDate: 2022-01-02T15:04:05Z07:00
+        expiryDate: 2022-08-02T15:04:05Z07:00
+        subledgerId: sub-123
+        amount: 10.25
+        id: 123
+        rulesetId: 11
+        ruleName: Add 2 points
+        flags: ""
+        validityDuration: 30D
+        referenceTransactionUUIDs:
+        - a36bca2c-a24a-41ce-9f69-314d20c3373d
+        - 7a8e2d7b-521f-48f2-bc4d-67c01f9cf27b
     DeleteLoyaltyTransactionsRequest:
       description: Request to delete transactions based on the specified scope.
       example:
@@ -29539,7 +30085,8 @@ components:
     StrikethroughEffectProps:
       type: object
     LabelTargetNone:
-      description: Represents the target type when no entity is selected.
+      description: Target type when no specific audience is selected. Targets all
+        customers who are not members of an audience.
       example:
         type: NONE
       properties:
@@ -29564,7 +30111,7 @@ components:
       - $ref: "#/components/schemas/AudienceIntegrationID"
     LabelTargetAudience:
       description: |
-        Represents the targeted audience.
+        Target type when a specific audience is selected.
       properties:
         type:
           enum:
@@ -31405,7 +31952,9 @@ components:
           profile:
             description: The customer profile to check against the audience. `Current`
               targets the customer in the current session; `Advocate` targets the
-              person who invited their friend via referral program.
+              person who invited their friend via referral program. Only applies to
+              the `member` and `not(member)` operators; ignored for `justJoined` and
+              `justLeft`.
             enum:
             - Current
             - Advocate
@@ -31425,7 +31974,6 @@ components:
         required:
         - audience
         - operator
-        - profile
         title: CheckAudienceBlock
     CheckLoyaltyBalanceBlock:
       allOf:
@@ -32601,6 +33149,7 @@ components:
         id:
           description: An identifier derived from the bundle content.
           example: 1b671a64-40d5-491e-99b0-da01ff1f3341
+          readOnly: true
           type: string
         name:
           description: The name of the bundle.
@@ -32643,7 +33192,6 @@ components:
           default: null
       required:
       - counts
-      - id
       - name
       - sources
       - type
@@ -32971,14 +33519,12 @@ components:
           description: Variable bindings of type bundle.
           items:
             $ref: "#/components/schemas/Bundle"
-          readOnly: true
           type: array
           default: null
         parameters:
           description: Variable bindings of type template parameter.
           items:
             $ref: "#/components/schemas/TemplateParameter"
-          readOnly: true
           type: array
           default: null
       required:
@@ -33012,6 +33558,8 @@ components:
               Must be at least 1.
             example: 1
             format: int64
+            maximum: 20000
+            minimum: 1
             type: integer
           batchId:
             description: "The batch ID that all coupons created by the request will\
@@ -34201,6 +34749,12 @@ components:
           isPrimary:
             example: true
             type: boolean
+          audienceId:
+            description: |
+              The ID of the audience this variant targets. Only used when the experiment `assignmentType` is `audience`.
+            example: 55
+            format: int64
+            type: integer
         required:
         - isPrimary
         - name
@@ -34383,14 +34937,25 @@ components:
           activatedAt: 2000-01-23T04:56:07.000+00:00
         weight: 12
         isPrimary: true
+        audienceId: 55
     Experiment:
       allOf:
       - $ref: "#/components/schemas/Entity"
       - $ref: "#/components/schemas/ApplicationEntity"
       - properties:
-          isVariantAssignmentExternal:
+          assignmentType:
             description: |
-              The source of the assignment. - false - The variant assignment is handled internally by Talon.One. - true - The variant assignment is handled externally.
+              Controls how customers are assigned to experiment variants. - `random`: Talon.One assigns customers randomly based on variant weights. - `external`: Variant assignment is handled externally. - `audience`: Each variant targets a specific audience; customers are assigned based on audience membership.
+            enum:
+            - random
+            - external
+            - audience
+            example: random
+            type: string
+          isVariantAssignmentExternal:
+            deprecated: true
+            description: |
+              Deprecated. Use `assignmentType` instead. - false - The variant assignment is handled internally by Talon.One. - true - The variant assignment is handled externally.
             type: boolean
           campaign:
             $ref: "#/components/schemas/Campaign"
@@ -34441,6 +35006,7 @@ components:
         id: 6
         created: 2020-06-10T09:05:27.993483Z
         applicationId: 322
+        assignmentType: random
         isVariantAssignmentExternal: true
         campaign:
           id: 4
@@ -34779,6 +35345,7 @@ components:
             activatedAt: 2000-01-23T04:56:07.000+00:00
           weight: 12
           isPrimary: true
+          audienceId: 55
         - id: 6
           created: 2020-06-10T09:05:27.993483Z
           name: Variant A
@@ -34957,15 +35524,27 @@ components:
             activatedAt: 2000-01-23T04:56:07.000+00:00
           weight: 12
           isPrimary: true
+          audienceId: 55
         goalType: other
         goalDescription: Offering free shipping will increase average order revenue
           more than a 10% discount
         deletedat: 2000-01-23T04:56:07.000+00:00
     NewExperiment:
       properties:
-        isVariantAssignmentExternal:
+        assignmentType:
           description: |
-            The source of the assignment. - false - The variant assignment is handled internally by Talon.One. - true - The variant assignment is handled externally.
+            Controls how customers are assigned to experiment variants. Either `assignmentType` or `isVariantAssignmentExternal` must be provided; `assignmentType` takes priority when both are present. - `random`: Talon.One assigns customers randomly based on variant weights. - `external`: Variant assignment is handled externally. - `audience`: Each variant targets a specific audience; customers are
+              assigned based on audience membership.
+          enum:
+          - random
+          - external
+          - audience
+          example: random
+          type: string
+        isVariantAssignmentExternal:
+          deprecated: true
+          description: |
+            Deprecated. Use `assignmentType` instead. Either `assignmentType` or `isVariantAssignmentExternal` must be provided. - false - The variant assignment is handled internally by Talon.One. - true - The variant assignment is handled externally.
           type: boolean
         campaign:
           $ref: "#/components/schemas/NewCampaign"
@@ -34988,7 +35567,6 @@ components:
       required:
       - campaign
       - goalType
-      - isVariantAssignmentExternal
     ExperimentListResultsRequest:
       properties:
         experimentIds:
@@ -35105,8 +35683,9 @@ components:
       allOf:
       - properties:
           isVariantAssignmentExternal:
+            deprecated: true
             description: |
-              The source of the assignment. - false - The variant assignment is handled internally by Talon.One. - true - The variant assignment is handled externally.
+              Deprecated and ignored. The assignment type is set at experiment creation and cannot be changed. Use `assignmentType` when creating an experiment instead.
             type: boolean
           campaign:
             $ref: "#/components/schemas/UpdateCampaign"
@@ -35127,7 +35706,6 @@ components:
             type: string
         required:
         - campaign
-        - isVariantAssignmentExternal
     UpdateExperimentVariant:
       allOf:
       - properties:
@@ -35144,12 +35722,18 @@ components:
           ruleset:
             $ref: "#/components/schemas/NewRuleset"
           weight:
-            description: The percentage split of this variant. The sum of all variant
-              percentages must be 100.
+            description: |
+              The percentage split of this variant. For `random` assignment, the split must be between 1 and 99 and the sum across all variants must equal 100. Ignored for `audience` and `external` assignment.
             example: 13
             format: int64
             maximum: 99
-            minimum: 1
+            minimum: 0
+            type: integer
+          audienceId:
+            description: |
+              The ID of the audience this variant targets. Only used when the experiment `assignmentType` is `audience`.
+            example: 55
+            format: int64
             type: integer
         required:
         - id
@@ -35175,18 +35759,24 @@ components:
           minLength: 1
           type: string
         weight:
-          description: The percentage split of this variant. The sum of all variant
-            percentages must be 100.
+          description: |
+            The percentage split of this variant. For `random` assignment, the split must be between 1 and 99 and the sum across all variants must equal 100. Ignored for `audience` and `external` assignment.
           example: 13
           format: int64
           maximum: 99
-          minimum: 1
+          minimum: 0
           type: integer
         ruleset:
           $ref: "#/components/schemas/NewRuleset"
         isPrimary:
           example: true
           type: boolean
+        audienceId:
+          description: |
+            The ID of the audience this variant targets. Only used when the experiment `assignmentType` is `audience`.
+          example: 55
+          format: int64
+          type: integer
       required:
       - isPrimary
       - name
@@ -36761,6 +37351,8 @@ components:
             description: Number of loyalty cards in the batch.
             example: 5000
             format: int64
+            maximum: 20000
+            minimum: 1
             type: integer
           batchId:
             description: ID of the loyalty card batch.
@@ -37014,15 +37606,15 @@ components:
     NewGiveawaysPool:
       properties:
         name:
-          description: The name of this giveaways pool.
+          description: The name of this giveaway pool.
           example: My giveaway pool
           type: string
         description:
-          description: The description of this giveaways pool.
+          description: The description of this giveaway pool.
           example: Generic pool
           type: string
         subscribedApplicationsIds:
-          description: A list of the IDs of the applications that this giveaways pool
+          description: A list of the IDs of the Applications that this giveaway pool
             is enabled for.
           example:
           - 2
@@ -37048,20 +37640,33 @@ components:
       - $ref: "#/components/schemas/NewGiveawaysPool"
       - properties:
           modified:
-            description: Timestamp of the most recent update to the giveaways pool.
+            description: Timestamp of the most recent update to the giveaway pool.
             format: date-time
             type: string
           createdBy:
-            description: ID of the user who created this giveaways pool.
+            description: ID of the user who created this giveaway pool.
             format: int64
             type: integer
           modifiedBy:
-            description: ID of the user who last updated this giveaways pool if available.
+            description: ID of the user who last updated this giveaway pool if available.
             format: int64
             type: integer
         required:
         - createdBy
-      description: Giveaways pools is an entity for managing multiple similar giveaways.
+      description: A giveaway pool is an entity for managing multiple similar giveaways.
+      example:
+        id: 6
+        created: 2020-06-10T09:05:27.993483Z
+        accountId: 3886
+        name: My giveaway pool
+        description: Generic pool
+        subscribedApplicationsIds:
+        - 2
+        - 4
+        sandbox: true
+        modified: 2000-01-23T04:56:07.000+00:00
+        createdBy: 0
+        modifiedBy: 6
     LimitCounter:
       allOf:
       - $ref: "#/components/schemas/CampaignEntity"
@@ -38304,6 +38909,7 @@ components:
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
+          rewardIntegrationId: reward-unlock-123
           props: ""
         - experimentId: 12
           campaignId: 244
@@ -38322,6 +38928,7 @@ components:
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
+          rewardIntegrationId: reward-unlock-123
           props: ""
         ruleFailureReasons:
         - campaignID: 1
@@ -38762,7 +39369,7 @@ components:
               scope.
             type: string
           giveawaysPools:
-            description: The giveaways pools that the application is subscribed to.
+            description: The giveaway pools that the Application is subscribed to.
             items:
               $ref: "#/components/schemas/GiveawaysPool"
             type: array
@@ -38945,7 +39552,7 @@ components:
             Sets the timeframe for retrieving historical pricing data. Can be one of the following values:
             - `strict`: The timeframe ends at the `timeframeEndDate` value.
             - `price`: The timeframe ends at the start of current price value and takes the prices prior to the start of the current price value into account.
-            - `sale`:  The timeframe ends at the start of current `contextId` and takes the prices prior to the start of the `contextId` into account.
+            - `sale`:  The timeframe ends at the start of the current sales event, as defined by the `contextId`. It takes the prices prior to the current sale event into account.
           enum:
           - strict
           - price
@@ -39051,7 +39658,7 @@ components:
           type: string
         contextIds:
           description: |
-            The identifiers of the relevant context at the time the price was observed. Includes the context IDs of any price adjustments and of the campaigns that influenced the final price.
+            The identifiers of the relevant context (the sales events, e.g. "Spring Sale", "Summer Sale") at the time the price was observed. Includes the context IDs of any price adjustments and of the campaigns that influenced the final price.
           example:
           - SpringSale
           - SummerSale2025
@@ -39139,7 +39746,7 @@ components:
           type: string
         contextIds:
           description: |
-            The identifiers of the relevant context at the time the price was observed. Includes the context IDs of any price adjustments and of the campaigns that influenced the final price.
+            The identifiers of the relevant context (the sales events, e.g. "Spring Sale", "Summer Sale") at the time the price was observed. Includes the context IDs of any price adjustments and of the campaigns that influenced the final price.
           example:
           - SpringSale
           - SummerSale2025
@@ -39711,8 +40318,8 @@ components:
           format: date-time
           type: string
         contextId:
-          description: Identifier of the context of this price adjustment (e.g. summer
-            sale).
+          description: "Identifier of the context of this price adjustment (the sales\
+            \ event, e.g. \"Summer Sale\")."
           example: Summer2025
           type: string
       required:
@@ -44476,6 +45083,8 @@ components:
               Must be at least 1.
             example: 100
             format: int64
+            maximum: 20000
+            minimum: 1
             type: integer
           attributes:
             $ref: "#/components/schemas/NewIntegrationHubCoupons_allOf_attributes"
@@ -45164,7 +45773,7 @@ components:
       example:
         integrationId: reward-unlock-123
         profileIntegrationId: customer1
-        cardIdentifier: ""
+        loyaltyCardId: ""
         loyaltyProgramId: 2
         subledgerId: sub1
         responseContent:
@@ -45180,7 +45789,7 @@ components:
           description: The integration ID of the customer profile unlocking the reward.
           example: customer1
           type: string
-        cardIdentifier:
+        loyaltyCardId:
           allOf:
           - $ref: "#/components/schemas/LoyaltyCardIdentifier"
           description: |-
@@ -45244,6 +45853,7 @@ components:
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
+          rewardIntegrationId: reward-unlock-123
           props: ""
         - experimentId: 12
           campaignId: 244
@@ -45262,6 +45872,7 @@ components:
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
+          rewardIntegrationId: reward-unlock-123
           props: ""
       properties:
         customerProfile:
@@ -45868,6 +46479,7 @@ components:
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
+          rewardIntegrationId: reward-unlock-123
           props: ""
         - experimentId: 12
           campaignId: 244
@@ -45886,6 +46498,7 @@ components:
           selectedPrice: 100
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
+          rewardIntegrationId: reward-unlock-123
           props: ""
         ruleFailureReasons:
         - campaignID: 1
@@ -46110,6 +46723,220 @@ components:
           $ref: "#/components/schemas/EmbeddedAnalyticsConfiguration_dashboards"
       required:
       - dashboards
+    OutboundLogRequest:
+      description: Details of the outbound HTTP request.
+      properties:
+        method:
+          description: HTTP method of the outbound request.
+          example: POST
+          type: string
+        url:
+          description: Target URL of the outbound request.
+          example: https://example.com/webhook
+          type: string
+        headers:
+          description: HTTP headers sent with the outbound request.
+          example:
+          - "content-type: application/json"
+          items:
+            type: string
+          type: array
+          default: null
+        body:
+          additionalProperties: true
+          description: JSON request payload.
+          example:
+            ProfileIntegrationID: URNGV8294NV
+            LoyaltyProgramID: 5
+            SubledgerID: sub-123
+            Amount: 10.99
+            Reason: Compensation
+            TypeOfChange: campaign_manager
+            EmployeeName: Franziska Schneider
+            UserID: 25
+            Operation: addition
+            StartDate: 2023-01-24T14:15:22Z
+            ExpiryDate: 2024-01-24T14:15:22Z
+            SessionIntegrationID: cc53e4fa-547f-4f5e-8333-76e05c381f67
+            NotificationType: LoyaltyPointsDeducted
+            TransactionUUID: 1a6a7599-2622-4489-9034-5a62da3944e0
+          type: object
+      required:
+      - body
+      - headers
+      - method
+      - url
+    OutboundLogBase:
+      description: Shared details of an outbound notification or webhook message.
+      properties:
+        uuid:
+          description: UUID of the outbound message.
+          example: 67e55044-10b1-426f-9247-bb680e5fe0c8
+          format: uuid
+          type: string
+        notificationId:
+          description: ID of the notification that produced the outbound request.
+          example: 1
+          format: int64
+          type: integer
+        notificationName:
+          description: Name of the notification that produced the outbound request.
+          example: Notification name
+          type: string
+        webhookId:
+          description: ID of the webhook that produced the outbound request.
+          example: 101
+          format: int64
+          type: integer
+        webhookName:
+          description: The name of the webhook that produced the outbound request.
+          example: My webhook
+          type: string
+        notificationType:
+          description: Type of notification that produced the outbound request.
+          example: CampaignNotification
+          type: string
+        applicationId:
+          description: ID of the Application associated with the outbound request.
+          example: 1
+          format: int64
+          type: integer
+        loyaltyProgramId:
+          description: ID of the loyalty program associated with the outbound request.
+          example: 2
+          format: int64
+          type: integer
+        request:
+          $ref: "#/components/schemas/OutboundLogRequest"
+      required:
+      - notificationType
+      - uuid
+    OutboundLogResponse:
+      description: Details of the outbound HTTP response.
+      properties:
+        statusCode:
+          description: HTTP status code returned by the receiver.
+          example: 200
+          format: int64
+          type: integer
+        rawBody:
+          description: Raw HTTP response.
+          example: "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n{}"
+          type: string
+      required:
+      - rawBody
+      - statusCode
+    OutboundLog:
+      allOf:
+      - $ref: "#/components/schemas/OutboundLogBase"
+      - properties:
+          createdAt:
+            description: Timestamp when the log entry was created.
+            example: 2026-08-17T14:32:05Z
+            format: date-time
+            type: string
+          processingTimeMs:
+            description: Processing time of the outbound request in milliseconds.
+            example: 180
+            format: int64
+            type: integer
+          response:
+            $ref: "#/components/schemas/OutboundLogResponse"
+        required:
+        - createdAt
+        - processingTimeMs
+      description: Log of an outbound notification or webhook request.
+    OutboundLogs:
+      description: Paginated list of outbound logs.
+      properties:
+        nextCursor:
+          description: Cursor for the next page of results. Omitted when there are
+            no more results.
+          example: SmJlNERRMHdyNWFsTmRDZDVYU0c=
+          format: byte
+          type: string
+        data:
+          description: List of outbound logs.
+          items:
+            $ref: "#/components/schemas/OutboundLog"
+          type: array
+          default: null
+      required:
+      - data
+    OutboundMessageResponse:
+      allOf:
+      - $ref: "#/components/schemas/OutboundLogResponse"
+      - properties:
+          createdAt:
+            description: Timestamp when the log entry was created.
+            example: 2026-08-17T14:32:05Z
+            format: date-time
+            type: string
+          processingTimeMs:
+            description: Processing time of the outbound request in milliseconds.
+            example: 180
+            format: int64
+            type: integer
+        required:
+        - createdAt
+        - processingTimeMs
+      description: Log entry for an outbound message.
+    OutboundMessage:
+      allOf:
+      - $ref: "#/components/schemas/OutboundLogBase"
+      - properties:
+          firstLogAt:
+            description: Timestamp of the first log entry for this message.
+            example: 2026-08-17T14:32:05Z
+            format: date-time
+            type: string
+          lastLogAt:
+            description: Timestamp of the last log entry for this message.
+            example: 2026-08-17T14:32:05Z
+            format: date-time
+            type: string
+          lastResponseCode:
+            description: HTTP status code from the latest response.
+            example: 200
+            format: int64
+            type: integer
+          status:
+            example: pending
+            type: string
+          retryCount:
+            description: Number of retries.
+            example: 1
+            format: int64
+            type: integer
+          responses:
+            description: Log entries for this message. Omitted when `includeLogs=false`.
+            items:
+              $ref: "#/components/schemas/OutboundMessageResponse"
+            type: array
+            default: null
+        required:
+        - firstLogAt
+        - lastLogAt
+        - status
+      description: Outbound notification or webhook message with its shared request
+        details.
+    OutboundMessages:
+      description: Paginated list of outbound messages.
+      properties:
+        nextCursor:
+          description: Cursor for the next page of results. Omitted when there are
+            no more results.
+          example: SmJlNERRMHdyNWFsTmRDZDVYU0c=
+          format: byte
+          type: string
+        data:
+          description: List of outbound messages.
+          items:
+            $ref: "#/components/schemas/OutboundMessage"
+          type: array
+          default: null
+      required:
+      - data
     CampaignNotificationBase:
       properties:
         NotificationType:
@@ -47194,6 +48021,18 @@ components:
           example: 2023-10-26T12:23:00+02:00
           format: date-time
           type: string
+        Source:
+          default: points
+          description: |
+            The source of the tier change, whether from a points change or boost.
+          enum:
+          - boost
+          - points
+          type: string
+        Reason:
+          description: |
+            The reason for the tier change.
+          type: string
       required:
       - CurrentPoints
       - CurrentTier
@@ -47263,6 +48102,18 @@ components:
           example: 2023-10-26T12:23:00+02:00
           format: date-time
           type: string
+        Source:
+          default: points
+          description: |
+            The source of the tier change, whether from a points change or boost.
+          enum:
+          - boost
+          - points
+          type: string
+        Reason:
+          description: |
+            The reason for the tier change.
+          type: string
       required:
       - CurrentPoints
       - CustomerProfileID
@@ -47331,6 +48182,17 @@ components:
           description: The date and time the tier expires.
           example: 2023-12-01T12:23:00+02:00
           format: date-time
+          type: string
+        Source:
+          default: points
+          description: "The source of the tier change, whether from a points change\
+            \ or boost."
+          enum:
+          - boost
+          - points
+          type: string
+        Reason:
+          description: The reason for the tier change.
           type: string
       required:
       - CurrentPoints
@@ -48014,6 +48876,49 @@ components:
         - UsageCounter
         - UsageLimit
         - Value
+    RollbackTierBoostEffectProps:
+      description: |-
+        This effect indicates that a loyalty tier boost was rolled back.
+
+        The Rule Engine triggers this effect when you cancel a customer session
+        that previously triggered the
+        [boostLoyaltyTier](https://docs.talon.one/docs/dev/integration-api/api-effects#boostloyaltytier)
+        API effect. The tier boost is voided and the customer returns to the tier
+        determined by their points balance.
+
+        This effect only applies to full session cancellations. Partially returned
+        sessions do not trigger a tier boost rollback.
+      example:
+        programId: 10
+        subLedgerId: ""
+        tierName: Gold
+        boostUuid: 27b16dbb-fbc7-4c02-99b1-b21b8a94c186
+      properties:
+        programId:
+          description: The ID of the loyalty program.
+          example: 10
+          format: int64
+          type: integer
+        subLedgerId:
+          description: The ID of the subledger within the loyalty program.
+          example: ""
+          type: string
+        tierName:
+          description: The name of the boosted tier that was rolled back.
+          example: Gold
+          type: string
+        boostUuid:
+          description: The unique identifier of the tier boost that was rolled back.
+            Matches the `boostUuid` of the original `boostLoyaltyTier` effect.
+          example: 27b16dbb-fbc7-4c02-99b1-b21b8a94c186
+          format: uuid
+          type: string
+      required:
+      - boostUuid
+      - programId
+      - subLedgerId
+      - tierName
+      title: rollbackTierBoost
     updateCustomerSessionV2_409_response:
       example:
         message: Too many requests are updating this session at the same time
@@ -48343,7 +49248,7 @@ components:
           usedAt: 2026-07-02T10:30:00Z
           usedByProfileIntegrationId: customer2840
           loyaltyProgramId: 9
-          loyaltyCardIdentifier: ""
+          loyaltyCardId: ""
         - id: 6
           integrationId: reward-unlock-123
           rewardId: 12
@@ -48357,7 +49262,7 @@ components:
           usedAt: 2026-07-02T10:30:00Z
           usedByProfileIntegrationId: customer2840
           loyaltyProgramId: 9
-          loyaltyCardIdentifier: ""
+          loyaltyCardId: ""
       properties:
         hasMore:
           type: boolean
@@ -48461,6 +49366,60 @@ components:
         data:
           items:
             $ref: "#/components/schemas/LedgerTransactionLogEntryIntegrationAPI"
+          type: array
+          default: null
+      required:
+      - data
+      - hasMore
+    getLoyaltyProgramProfileLedgerTransactions_200_response:
+      example:
+        hasMore: true
+        data:
+        - transactionUUID: ce59f12a-f53b-4014-a745-636d93f2bd3f
+          created: 2022-01-02T15:04:05Z07:00
+          programId: 324
+          customerSessionId: 05c2da0d-48fa-4aa1-b629-898f58f1584d
+          storeIntegrationId: STORE-001
+          type: addition
+          name: Reward 10% points of a purchase's current total
+          startDate: 2022-01-02T15:04:05Z07:00
+          expiryDate: 2022-08-02T15:04:05Z07:00
+          subledgerId: sub-123
+          amount: 10.25
+          id: 123
+          rulesetId: 11
+          ruleName: Add 2 points
+          flags: ""
+          validityDuration: 30D
+          referenceTransactionUUIDs:
+          - a36bca2c-a24a-41ce-9f69-314d20c3373d
+          - 7a8e2d7b-521f-48f2-bc4d-67c01f9cf27b
+        - transactionUUID: ce59f12a-f53b-4014-a745-636d93f2bd3f
+          created: 2022-01-02T15:04:05Z07:00
+          programId: 324
+          customerSessionId: 05c2da0d-48fa-4aa1-b629-898f58f1584d
+          storeIntegrationId: STORE-001
+          type: addition
+          name: Reward 10% points of a purchase's current total
+          startDate: 2022-01-02T15:04:05Z07:00
+          expiryDate: 2022-08-02T15:04:05Z07:00
+          subledgerId: sub-123
+          amount: 10.25
+          id: 123
+          rulesetId: 11
+          ruleName: Add 2 points
+          flags: ""
+          validityDuration: 30D
+          referenceTransactionUUIDs:
+          - a36bca2c-a24a-41ce-9f69-314d20c3373d
+          - 7a8e2d7b-521f-48f2-bc4d-67c01f9cf27b
+      properties:
+        hasMore:
+          example: true
+          type: boolean
+        data:
+          items:
+            $ref: "#/components/schemas/LedgerTransactionLogEntryManagementAPI"
           type: array
           default: null
       required:
@@ -50204,6 +51163,7 @@ components:
         - id: 6
           created: 2020-06-10T09:05:27.993483Z
           applicationId: 322
+          assignmentType: random
           isVariantAssignmentExternal: true
           campaign:
             id: 4
@@ -50542,6 +51502,7 @@ components:
               activatedAt: 2000-01-23T04:56:07.000+00:00
             weight: 12
             isPrimary: true
+            audienceId: 55
           - id: 6
             created: 2020-06-10T09:05:27.993483Z
             name: Variant A
@@ -50720,6 +51681,7 @@ components:
               activatedAt: 2000-01-23T04:56:07.000+00:00
             weight: 12
             isPrimary: true
+            audienceId: 55
           goalType: other
           goalDescription: Offering free shipping will increase average order revenue
             more than a 10% discount
@@ -50727,6 +51689,7 @@ components:
         - id: 6
           created: 2020-06-10T09:05:27.993483Z
           applicationId: 322
+          assignmentType: random
           isVariantAssignmentExternal: true
           campaign:
             id: 4
@@ -51065,6 +52028,7 @@ components:
               activatedAt: 2000-01-23T04:56:07.000+00:00
             weight: 12
             isPrimary: true
+            audienceId: 55
           - id: 6
             created: 2020-06-10T09:05:27.993483Z
             name: Variant A
@@ -51243,6 +52207,7 @@ components:
               activatedAt: 2000-01-23T04:56:07.000+00:00
             weight: 12
             isPrimary: true
+            audienceId: 55
           goalType: other
           goalDescription: Offering free shipping will increase average order revenue
             more than a 10% discount
@@ -51569,7 +52534,7 @@ components:
               tentativeCurrentBalance: 100
               tentativePendingBalance: 20
               tentativeNegativeBalance: 100
-              currentTier: bronze
+              currentTier: ""
               pointsToNextTier: 20
               nextTierName: Silver
           modified: 2021-09-12T10:12:42Z
@@ -51601,7 +52566,7 @@ components:
               tentativeCurrentBalance: 100
               tentativePendingBalance: 20
               tentativeNegativeBalance: 100
-              currentTier: bronze
+              currentTier: ""
               pointsToNextTier: 20
               nextTierName: Silver
           modified: 2021-09-12T10:12:42Z
@@ -52505,6 +53470,7 @@ components:
             selectedPrice: 100
             adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
             rewardId: 7
+            rewardIntegrationId: reward-unlock-123
             props: ""
           - experimentId: 12
             campaignId: 244
@@ -52523,6 +53489,7 @@ components:
             selectedPrice: 100
             adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
             rewardId: 7
+            rewardIntegrationId: reward-unlock-123
             props: ""
           ruleFailureReasons:
           - campaignID: 1
@@ -52585,6 +53552,7 @@ components:
             selectedPrice: 100
             adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
             rewardId: 7
+            rewardIntegrationId: reward-unlock-123
             props: ""
           - experimentId: 12
             campaignId: 244
@@ -52603,6 +53571,7 @@ components:
             selectedPrice: 100
             adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
             rewardId: 7
+            rewardIntegrationId: reward-unlock-123
             props: ""
           ruleFailureReasons:
           - campaignID: 1
@@ -54011,9 +54980,19 @@ components:
       type: object
     ExperimentCopy_experiment:
       properties:
-        isVariantAssignmentExternal:
+        assignmentType:
           description: |
-            The source of the assignment. - false - The variant assignment is handled internally by Talon.One. - true - The variant assignment is handled externally.
+            Controls how customers are assigned to experiment variants in the copied experiment. - `random`: Talon.One assigns customers randomly based on variant weights. - `external`: The variant assignment is handled externally. - `audience`: Each variant targets a specific audience; customers are assigned based on audience membership. This is the source of truth. When omitted, it is derived from the deprecated `isVariantAssignmentExternal` flag (`true` maps to `external`, otherwise `random`).
+          enum:
+          - random
+          - external
+          - audience
+          example: random
+          type: string
+        isVariantAssignmentExternal:
+          deprecated: true
+          description: |
+            The source of the assignment. - false - The variant assignment is handled internally by Talon.One. - true - The variant assignment is handled externally. Deprecated: use `assignmentType` instead. Kept for backwards compatibility with older clients; when set and `assignmentType` is omitted, `true` maps to `external`.
           type: boolean
         campaign:
           $ref: "#/components/schemas/ExperimentCampaignCopy"
@@ -54032,7 +55011,6 @@ components:
           type: string
       required:
       - campaign
-      - isVariantAssignmentExternal
     ApplicationEvent_allOf_attributes:
       description: Additional JSON serialized data associated with the event.
       type: object
