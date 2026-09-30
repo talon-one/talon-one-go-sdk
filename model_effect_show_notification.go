@@ -54,6 +54,8 @@ type EffectShowNotification struct {
 	AdjustmentReferenceId *string `json:"adjustmentReferenceId,omitempty"`
 	// The ID of the reward that was being evaluated when this effect was triggered.
 	RewardId *int64 `json:"rewardId,omitempty"`
+	// The integration ID of the specific customer reward whose usage produced this effect.
+	RewardIntegrationId *string `json:"rewardIntegrationId,omitempty"`
 	// The properties of the `showNotification` effect.
 	Props                ShowNotificationEffectProps `json:"props"`
 	AdditionalProperties map[string]interface{}
@@ -588,6 +590,38 @@ func (o *EffectShowNotification) SetRewardId(v int64) {
 	o.RewardId = &v
 }
 
+// GetRewardIntegrationId returns the RewardIntegrationId field value if set, zero value otherwise.
+func (o *EffectShowNotification) GetRewardIntegrationId() string {
+	if o == nil || IsNil(o.RewardIntegrationId) {
+		var ret string
+		return ret
+	}
+	return *o.RewardIntegrationId
+}
+
+// GetRewardIntegrationIdOk returns a tuple with the RewardIntegrationId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *EffectShowNotification) GetRewardIntegrationIdOk() (*string, bool) {
+	if o == nil || IsNil(o.RewardIntegrationId) {
+		return nil, false
+	}
+	return o.RewardIntegrationId, true
+}
+
+// HasRewardIntegrationId returns a boolean if a field has been set.
+func (o *EffectShowNotification) HasRewardIntegrationId() bool {
+	if o != nil && !IsNil(o.RewardIntegrationId) {
+		return true
+	}
+
+	return false
+}
+
+// SetRewardIntegrationId gets a reference to the given string and assigns it to the RewardIntegrationId field.
+func (o *EffectShowNotification) SetRewardIntegrationId(v string) {
+	o.RewardIntegrationId = &v
+}
+
 // GetProps returns the Props field value
 func (o *EffectShowNotification) GetProps() ShowNotificationEffectProps {
 	if o == nil {
@@ -663,6 +697,9 @@ func (o EffectShowNotification) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.RewardId) {
 		toSerialize["rewardId"] = o.RewardId
 	}
+	if !IsNil(o.RewardIntegrationId) {
+		toSerialize["rewardIntegrationId"] = o.RewardIntegrationId
+	}
 	toSerialize["props"] = o.Props
 
 	for key, value := range o.AdditionalProperties {
@@ -729,6 +766,7 @@ func (o *EffectShowNotification) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "selectedPrice")
 		delete(additionalProperties, "adjustmentReferenceId")
 		delete(additionalProperties, "rewardId")
+		delete(additionalProperties, "rewardIntegrationId")
 		delete(additionalProperties, "props")
 		o.AdditionalProperties = additionalProperties
 	}

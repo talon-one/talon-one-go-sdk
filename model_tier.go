@@ -30,7 +30,11 @@ type Tier struct {
 	// Date when tier level expires in the RFC3339 format (in the Loyalty Program's timezone).
 	ExpiryDate *time.Time `json:"expiryDate,omitempty"`
 	// The policy that defines how customer tiers are downgraded in the loyalty program after tier reevaluation.  - `one_down`: If the customer doesn't have enough points to stay in the current tier, they are downgraded by one tier.  - `balance_based`: The customer's tier is reevaluated based on the amount of active points they have at the moment.
-	DowngradePolicy      *string `json:"downgradePolicy,omitempty"`
+	DowngradePolicy *string `json:"downgradePolicy,omitempty"`
+	// Indicates whether the customer's current tier was determined based on their points balance or a temporary boost.  - `points`: The tier reflects the customer's current point balance. - `boost`: A temporary tier boost is in effect where the customer is in a higher tier than their points-based tier. The boost expires after a set duration and the customer returns to their points-based tier.
+	Source *string `json:"source,omitempty"`
+	// The reason for the tier assignment.
+	Reason               *string `json:"reason,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -44,6 +48,8 @@ func BuildTier(id int64, name string) *Tier {
 	this := Tier{}
 	this.Id = id
 	this.Name = name
+	var source string = "points"
+	this.Source = &source
 	return &this
 }
 
@@ -52,6 +58,8 @@ func BuildTier(id int64, name string) *Tier {
 // but it doesn't guarantee that properties required by API are set
 func NewTierWithDefaults() *Tier {
 	this := Tier{}
+	var source string = "points"
+	this.Source = &source
 	return &this
 }
 
@@ -199,6 +207,70 @@ func (o *Tier) SetDowngradePolicy(v string) {
 	o.DowngradePolicy = &v
 }
 
+// GetSource returns the Source field value if set, zero value otherwise.
+func (o *Tier) GetSource() string {
+	if o == nil || IsNil(o.Source) {
+		var ret string
+		return ret
+	}
+	return *o.Source
+}
+
+// GetSourceOk returns a tuple with the Source field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Tier) GetSourceOk() (*string, bool) {
+	if o == nil || IsNil(o.Source) {
+		return nil, false
+	}
+	return o.Source, true
+}
+
+// HasSource returns a boolean if a field has been set.
+func (o *Tier) HasSource() bool {
+	if o != nil && !IsNil(o.Source) {
+		return true
+	}
+
+	return false
+}
+
+// SetSource gets a reference to the given string and assigns it to the Source field.
+func (o *Tier) SetSource(v string) {
+	o.Source = &v
+}
+
+// GetReason returns the Reason field value if set, zero value otherwise.
+func (o *Tier) GetReason() string {
+	if o == nil || IsNil(o.Reason) {
+		var ret string
+		return ret
+	}
+	return *o.Reason
+}
+
+// GetReasonOk returns a tuple with the Reason field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Tier) GetReasonOk() (*string, bool) {
+	if o == nil || IsNil(o.Reason) {
+		return nil, false
+	}
+	return o.Reason, true
+}
+
+// HasReason returns a boolean if a field has been set.
+func (o *Tier) HasReason() bool {
+	if o != nil && !IsNil(o.Reason) {
+		return true
+	}
+
+	return false
+}
+
+// SetReason gets a reference to the given string and assigns it to the Reason field.
+func (o *Tier) SetReason(v string) {
+	o.Reason = &v
+}
+
 func (o Tier) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -219,6 +291,12 @@ func (o Tier) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.DowngradePolicy) {
 		toSerialize["downgradePolicy"] = o.DowngradePolicy
+	}
+	if !IsNil(o.Source) {
+		toSerialize["source"] = o.Source
+	}
+	if !IsNil(o.Reason) {
+		toSerialize["reason"] = o.Reason
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -269,6 +347,8 @@ func (o *Tier) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "startDate")
 		delete(additionalProperties, "expiryDate")
 		delete(additionalProperties, "downgradePolicy")
+		delete(additionalProperties, "source")
+		delete(additionalProperties, "reason")
 		o.AdditionalProperties = additionalProperties
 	}
 

@@ -18,7 +18,7 @@ import (
 // checks if the LabelTargetAudience type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &LabelTargetAudience{}
 
-// LabelTargetAudience Represents the targeted audience.
+// LabelTargetAudience Target type when a specific audience is selected.
 type LabelTargetAudience struct {
 	Type                 string            `json:"type"`
 	Audience             AudienceReference `json:"audience"`

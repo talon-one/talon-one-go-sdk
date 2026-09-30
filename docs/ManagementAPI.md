@@ -117,6 +117,7 @@ Method | HTTP request | Description
 [**GetEventTypes**](ManagementAPI.md#GetEventTypes) | **Get** /v1/event_types | List event types
 [**GetExperiment**](ManagementAPI.md#GetExperiment) | **Get** /v1/applications/{applicationId}/experiments/{experimentId} | Get experiment in Application
 [**GetExports**](ManagementAPI.md#GetExports) | **Get** /v1/exports | Get exports
+[**GetGiveawaysPool**](ManagementAPI.md#GetGiveawaysPool) | **Get** /v1/giveaways/pools/{poolId} | Get giveaway pool
 [**GetLoyaltyCard**](ManagementAPI.md#GetLoyaltyCard) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId} | Get loyalty card
 [**GetLoyaltyCardTransactionLogs**](ManagementAPI.md#GetLoyaltyCardTransactionLogs) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/logs | List card&#39;s transactions (Management API)
 [**GetLoyaltyCards**](ManagementAPI.md#GetLoyaltyCards) | **Get** /v1/loyalty_programs/{loyaltyProgramId}/cards | List loyalty cards
@@ -8679,6 +8680,76 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## GetGiveawaysPool
+
+> GiveawaysPool GetGiveawaysPool(ctx, poolId).Execute()
+
+Get giveaway pool
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	poolId := int64(789) // int64 | The ID of the pool. You can find it in the Campaign Manager, in the **Incentives** section.
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ManagementAPI.GetGiveawaysPool(context.Background(), poolId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.GetGiveawaysPool``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetGiveawaysPool`: GiveawaysPool
+	fmt.Fprintf(os.Stdout, "Response from `ManagementAPI.GetGiveawaysPool`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**poolId** | **int64** | The ID of the pool. You can find it in the Campaign Manager, in the **Incentives** section. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetGiveawaysPoolRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+[**GiveawaysPool**](GiveawaysPool.md)
+
+### Authorization
+
+[api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## GetLoyaltyCard
 
 > LoyaltyCard GetLoyaltyCard(ctx, loyaltyProgramId, loyaltyCardId).Execute()
@@ -9149,7 +9220,7 @@ Name | Type | Description  | Notes
 
 ## GetLoyaltyProgramProfileLedgerTransactions
 
-> GetLoyaltyProgramProfileTransactions200Response GetLoyaltyProgramProfileLedgerTransactions(ctx, loyaltyProgramId, integrationId).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).SubledgerId(subledgerId).LoyaltyTransactionType(loyaltyTransactionType).StartDate(startDate).EndDate(endDate).PageSize(pageSize).Skip(skip).AwaitsActivation(awaitsActivation).Execute()
+> GetLoyaltyProgramProfileLedgerTransactions200Response GetLoyaltyProgramProfileLedgerTransactions(ctx, loyaltyProgramId, integrationId).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).SubledgerId(subledgerId).LoyaltyTransactionType(loyaltyTransactionType).StartDate(startDate).EndDate(endDate).PageSize(pageSize).Skip(skip).IncludeReferences(includeReferences).AwaitsActivation(awaitsActivation).Execute()
 
 List customer's loyalty transactions (Management API)
 
@@ -9179,16 +9250,17 @@ func main() {
 	endDate := time.Now() // time.Time | Date and time by which results are returned. Results are filtered by transaction creation date.  > [!note] **Note** > - This must be an RFC3339 timestamp string. > - You can include a time component in your string, for example, `T23:59:59` to specify the end of the day. The time zone setting >   considered is `UTC`. If you do not include a time component, a default time value of `T00:00:00` (midnight) in `UTC` is considered.  (optional)
 	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 50)
 	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
+	includeReferences := true // bool | Whether to include the UUIDs of transactions referenced by deductions.  **Note:** Enabling this can decrease query performance, especially when no date filter is applied to a large transaction history.  (optional) (default to false)
 	awaitsActivation := true // bool | If `true`: Filters results to include only point transactions that have action-based activation and have not expired.  If `false`: Returns a `400` response.  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ManagementAPI.GetLoyaltyProgramProfileLedgerTransactions(context.Background(), loyaltyProgramId, integrationId).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).SubledgerId(subledgerId).LoyaltyTransactionType(loyaltyTransactionType).StartDate(startDate).EndDate(endDate).PageSize(pageSize).Skip(skip).AwaitsActivation(awaitsActivation).Execute()
+	resp, r, err := apiClient.ManagementAPI.GetLoyaltyProgramProfileLedgerTransactions(context.Background(), loyaltyProgramId, integrationId).CustomerSessionIDs(customerSessionIDs).TransactionUUIDs(transactionUUIDs).SubledgerId(subledgerId).LoyaltyTransactionType(loyaltyTransactionType).StartDate(startDate).EndDate(endDate).PageSize(pageSize).Skip(skip).IncludeReferences(includeReferences).AwaitsActivation(awaitsActivation).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.GetLoyaltyProgramProfileLedgerTransactions``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GetLoyaltyProgramProfileLedgerTransactions`: GetLoyaltyProgramProfileTransactions200Response
+	// response from `GetLoyaltyProgramProfileLedgerTransactions`: GetLoyaltyProgramProfileLedgerTransactions200Response
 	fmt.Fprintf(os.Stdout, "Response from `ManagementAPI.GetLoyaltyProgramProfileLedgerTransactions`: %v\n", resp)
 }
 ```
@@ -9219,11 +9291,12 @@ Name | Type | Description  | Notes
  **endDate** | **time.Time** | Date and time by which results are returned. Results are filtered by transaction creation date.  &gt; [!note] **Note** &gt; - This must be an RFC3339 timestamp string. &gt; - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting &gt;   considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.  | 
  **pageSize** | **int64** | The number of items in the response. | [default to 50]
  **skip** | **int64** | The number of items to skip when paging through large result sets. | 
+ **includeReferences** | **bool** | Whether to include the UUIDs of transactions referenced by deductions.  **Note:** Enabling this can decrease query performance, especially when no date filter is applied to a large transaction history.  | [default to false]
  **awaitsActivation** | **bool** | If &#x60;true&#x60;: Filters results to include only point transactions that have action-based activation and have not expired.  If &#x60;false&#x60;: Returns a &#x60;400&#x60; response.  | 
 
 ### Return type
 
-[**GetLoyaltyProgramProfileTransactions200Response**](GetLoyaltyProgramProfileTransactions200Response.md)
+[**GetLoyaltyProgramProfileLedgerTransactions200Response**](GetLoyaltyProgramProfileLedgerTransactions200Response.md)
 
 ### Authorization
 

@@ -20,8 +20,9 @@ var _ MappedNullable = &UpdateExperiment{}
 
 // UpdateExperiment struct for UpdateExperiment
 type UpdateExperiment struct {
-	// The source of the assignment. - false - The variant assignment is handled internally by Talon.One. - true - The variant assignment is handled externally.
-	IsVariantAssignmentExternal bool           `json:"isVariantAssignmentExternal"`
+	// Deprecated and ignored. The assignment type is set at experiment creation and cannot be changed. Use `assignmentType` when creating an experiment instead.
+	// Deprecated
+	IsVariantAssignmentExternal *bool          `json:"isVariantAssignmentExternal,omitempty"`
 	Campaign                    UpdateCampaign `json:"campaign"`
 	// The goal of the experiment. Determines which single metric is used to decide the winning variant. When set to `other`, multiple metrics are used. If omitted, the current value is preserved.
 	GoalType *string `json:"goalType,omitempty"`
@@ -36,9 +37,8 @@ type _UpdateExperiment UpdateExperiment
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildUpdateExperiment(isVariantAssignmentExternal bool, campaign UpdateCampaign) *UpdateExperiment {
+func BuildUpdateExperiment(campaign UpdateCampaign) *UpdateExperiment {
 	this := UpdateExperiment{}
-	this.IsVariantAssignmentExternal = isVariantAssignmentExternal
 	this.Campaign = campaign
 	return &this
 }
@@ -51,28 +51,39 @@ func NewUpdateExperimentWithDefaults() *UpdateExperiment {
 	return &this
 }
 
-// GetIsVariantAssignmentExternal returns the IsVariantAssignmentExternal field value
+// GetIsVariantAssignmentExternal returns the IsVariantAssignmentExternal field value if set, zero value otherwise.
+// Deprecated
 func (o *UpdateExperiment) GetIsVariantAssignmentExternal() bool {
-	if o == nil {
+	if o == nil || IsNil(o.IsVariantAssignmentExternal) {
 		var ret bool
 		return ret
 	}
-
-	return o.IsVariantAssignmentExternal
+	return *o.IsVariantAssignmentExternal
 }
 
-// GetIsVariantAssignmentExternalOk returns a tuple with the IsVariantAssignmentExternal field value
+// GetIsVariantAssignmentExternalOk returns a tuple with the IsVariantAssignmentExternal field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *UpdateExperiment) GetIsVariantAssignmentExternalOk() (*bool, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.IsVariantAssignmentExternal) {
 		return nil, false
 	}
-	return &o.IsVariantAssignmentExternal, true
+	return o.IsVariantAssignmentExternal, true
 }
 
-// SetIsVariantAssignmentExternal sets field value
+// HasIsVariantAssignmentExternal returns a boolean if a field has been set.
+func (o *UpdateExperiment) HasIsVariantAssignmentExternal() bool {
+	if o != nil && !IsNil(o.IsVariantAssignmentExternal) {
+		return true
+	}
+
+	return false
+}
+
+// SetIsVariantAssignmentExternal gets a reference to the given bool and assigns it to the IsVariantAssignmentExternal field.
+// Deprecated
 func (o *UpdateExperiment) SetIsVariantAssignmentExternal(v bool) {
-	o.IsVariantAssignmentExternal = v
+	o.IsVariantAssignmentExternal = &v
 }
 
 // GetCampaign returns the Campaign field value
@@ -173,7 +184,9 @@ func (o UpdateExperiment) MarshalJSON() ([]byte, error) {
 
 func (o UpdateExperiment) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["isVariantAssignmentExternal"] = o.IsVariantAssignmentExternal
+	if !IsNil(o.IsVariantAssignmentExternal) {
+		toSerialize["isVariantAssignmentExternal"] = o.IsVariantAssignmentExternal
+	}
 	toSerialize["campaign"] = o.Campaign
 	if !IsNil(o.GoalType) {
 		toSerialize["goalType"] = o.GoalType
@@ -194,7 +207,6 @@ func (o *UpdateExperiment) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"isVariantAssignmentExternal",
 		"campaign",
 	}
 

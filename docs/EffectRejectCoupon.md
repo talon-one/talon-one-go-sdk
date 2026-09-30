@@ -21,6 +21,7 @@ Name | Type | Description | Notes
 **SelectedPrice** | Pointer to **float32** | The value of the selected price type to apply to the SKU targeted by this effect, before any discounts are applied. | [optional] 
 **AdjustmentReferenceId** | Pointer to **string** | The reference identifier of the selected price adjustment for this SKU. This is only returned if the &#x60;selectedPrice&#x60; resulted from a price adjustment. | [optional] 
 **RewardId** | Pointer to **int64** | The ID of the reward that was being evaluated when this effect was triggered. | [optional] 
+**RewardIntegrationId** | Pointer to **string** | The integration ID of the specific customer reward whose usage produced this effect. | [optional] 
 **Props** | [**RejectCouponEffectProps**](RejectCouponEffectProps.md) | The properties of the &#x60;rejectCoupon&#x60; effect. | 
 
 ## Methods
@@ -441,6 +442,31 @@ SetRewardId sets RewardId field to given value.
 `func (o *EffectRejectCoupon) HasRewardId() bool`
 
 HasRewardId returns a boolean if a field has been set.
+
+### GetRewardIntegrationId
+
+`func (o *EffectRejectCoupon) GetRewardIntegrationId() string`
+
+GetRewardIntegrationId returns the RewardIntegrationId field if non-nil, zero value otherwise.
+
+### GetRewardIntegrationIdOk
+
+`func (o *EffectRejectCoupon) GetRewardIntegrationIdOk() (*string, bool)`
+
+GetRewardIntegrationIdOk returns a tuple with the RewardIntegrationId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRewardIntegrationId
+
+`func (o *EffectRejectCoupon) SetRewardIntegrationId(v string)`
+
+SetRewardIntegrationId sets RewardIntegrationId field to given value.
+
+### HasRewardIntegrationId
+
+`func (o *EffectRejectCoupon) HasRewardIntegrationId() bool`
+
+HasRewardIntegrationId returns a boolean if a field has been set.
 
 ### GetProps
 

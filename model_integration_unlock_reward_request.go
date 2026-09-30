@@ -25,7 +25,7 @@ type IntegrationUnlockRewardRequest struct {
 	// The integration ID of the customer profile unlocking the reward.
 	ProfileIntegrationId string `json:"profileIntegrationId"`
 	// The identifier of the loyalty card unlocking the reward. When provided, the required points are deducted from the card's balance and the unlocked reward belongs to the card, which makes it available to all customer profiles linked to that card. The customer profile given in `profileIntegrationId` must be linked to the card, and the card must be active.
-	CardIdentifier *string `json:"cardIdentifier,omitempty" validate:"regexp=^[A-Za-z0-9._%+@-]+$"`
+	LoyaltyCardId *string `json:"loyaltyCardId,omitempty" validate:"regexp=^[A-Za-z0-9._%+@-]+$"`
 	// The ID of the loyalty program from which points will be deducted. Required when the reward has `pointsRequired` configured.
 	LoyaltyProgramId *int64 `json:"loyaltyProgramId,omitempty"`
 	// The ID of the subledger from which points will be deducted. Required when the reward has `pointsRequired` configured.  To specify the main ledger, provide an empty string (\"\").
@@ -104,36 +104,36 @@ func (o *IntegrationUnlockRewardRequest) SetProfileIntegrationId(v string) {
 	o.ProfileIntegrationId = v
 }
 
-// GetCardIdentifier returns the CardIdentifier field value if set, zero value otherwise.
-func (o *IntegrationUnlockRewardRequest) GetCardIdentifier() string {
-	if o == nil || IsNil(o.CardIdentifier) {
+// GetLoyaltyCardId returns the LoyaltyCardId field value if set, zero value otherwise.
+func (o *IntegrationUnlockRewardRequest) GetLoyaltyCardId() string {
+	if o == nil || IsNil(o.LoyaltyCardId) {
 		var ret string
 		return ret
 	}
-	return *o.CardIdentifier
+	return *o.LoyaltyCardId
 }
 
-// GetCardIdentifierOk returns a tuple with the CardIdentifier field value if set, nil otherwise
+// GetLoyaltyCardIdOk returns a tuple with the LoyaltyCardId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *IntegrationUnlockRewardRequest) GetCardIdentifierOk() (*string, bool) {
-	if o == nil || IsNil(o.CardIdentifier) {
+func (o *IntegrationUnlockRewardRequest) GetLoyaltyCardIdOk() (*string, bool) {
+	if o == nil || IsNil(o.LoyaltyCardId) {
 		return nil, false
 	}
-	return o.CardIdentifier, true
+	return o.LoyaltyCardId, true
 }
 
-// HasCardIdentifier returns a boolean if a field has been set.
-func (o *IntegrationUnlockRewardRequest) HasCardIdentifier() bool {
-	if o != nil && !IsNil(o.CardIdentifier) {
+// HasLoyaltyCardId returns a boolean if a field has been set.
+func (o *IntegrationUnlockRewardRequest) HasLoyaltyCardId() bool {
+	if o != nil && !IsNil(o.LoyaltyCardId) {
 		return true
 	}
 
 	return false
 }
 
-// SetCardIdentifier gets a reference to the given string and assigns it to the CardIdentifier field.
-func (o *IntegrationUnlockRewardRequest) SetCardIdentifier(v string) {
-	o.CardIdentifier = &v
+// SetLoyaltyCardId gets a reference to the given string and assigns it to the LoyaltyCardId field.
+func (o *IntegrationUnlockRewardRequest) SetLoyaltyCardId(v string) {
+	o.LoyaltyCardId = &v
 }
 
 // GetLoyaltyProgramId returns the LoyaltyProgramId field value if set, zero value otherwise.
@@ -244,8 +244,8 @@ func (o IntegrationUnlockRewardRequest) ToMap() (map[string]interface{}, error) 
 	toSerialize := map[string]interface{}{}
 	toSerialize["integrationId"] = o.IntegrationId
 	toSerialize["profileIntegrationId"] = o.ProfileIntegrationId
-	if !IsNil(o.CardIdentifier) {
-		toSerialize["cardIdentifier"] = o.CardIdentifier
+	if !IsNil(o.LoyaltyCardId) {
+		toSerialize["loyaltyCardId"] = o.LoyaltyCardId
 	}
 	if !IsNil(o.LoyaltyProgramId) {
 		toSerialize["loyaltyProgramId"] = o.LoyaltyProgramId
@@ -302,7 +302,7 @@ func (o *IntegrationUnlockRewardRequest) UnmarshalJSON(data []byte) (err error) 
 	if err = json.Unmarshal(data, &additionalProperties); err == nil {
 		delete(additionalProperties, "integrationId")
 		delete(additionalProperties, "profileIntegrationId")
-		delete(additionalProperties, "cardIdentifier")
+		delete(additionalProperties, "loyaltyCardId")
 		delete(additionalProperties, "loyaltyProgramId")
 		delete(additionalProperties, "subledgerId")
 		delete(additionalProperties, "responseContent")

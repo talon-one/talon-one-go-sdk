@@ -145,6 +145,7 @@ docs/BetweenCheckAttributeBlock.md
 docs/Binding.md
 docs/Block.md
 docs/Blueprint.md
+docs/BoostLoyaltyTierEffectProps.md
 docs/BulkApplicationNotification.md
 docs/BulkOperationOnCampaigns.md
 docs/Bundle.md
@@ -315,6 +316,7 @@ docs/EffectAddLoyaltyPoints.md
 docs/EffectAddNegativeLoyaltyPoints.md
 docs/EffectAddToAudience.md
 docs/EffectAwardGiveaway.md
+docs/EffectBoostLoyaltyTier.md
 docs/EffectCallApi.md
 docs/EffectChangeLoyaltyTierLevel.md
 docs/EffectCouponCreated.md
@@ -467,6 +469,7 @@ docs/GetLoyaltyCardPoints200Response.md
 docs/GetLoyaltyCardTransactionLogs200Response.md
 docs/GetLoyaltyCardTransactions200Response.md
 docs/GetLoyaltyCards200Response.md
+docs/GetLoyaltyProgramProfileLedgerTransactions200Response.md
 docs/GetLoyaltyProgramProfilePoints200Response.md
 docs/GetLoyaltyProgramProfileTransactions200Response.md
 docs/GetLoyaltyProgramTransactions200Response.md
@@ -543,6 +546,7 @@ docs/LedgerEntry.md
 docs/LedgerInfo.md
 docs/LedgerPointsEntryIntegrationAPI.md
 docs/LedgerTransactionLogEntryIntegrationAPI.md
+docs/LedgerTransactionLogEntryManagementAPI.md
 docs/LibraryAttribute.md
 docs/LimitConfig.md
 docs/LimitCounter.md
@@ -699,6 +703,14 @@ docs/OktaEventPayload.md
 docs/OktaEventPayloadData.md
 docs/OktaEventTarget.md
 docs/OneTimeCode.md
+docs/OutboundLog.md
+docs/OutboundLogBase.md
+docs/OutboundLogRequest.md
+docs/OutboundLogResponse.md
+docs/OutboundLogs.md
+docs/OutboundMessage.md
+docs/OutboundMessageResponse.md
+docs/OutboundMessages.md
 docs/OutgoingIntegrationBrazePolicy.md
 docs/OutgoingIntegrationCleverTapPolicy.md
 docs/OutgoingIntegrationConfiguration.md
@@ -789,6 +801,7 @@ docs/RollbackDeductedLoyaltyPointsEffectProps.md
 docs/RollbackDiscountEffectProps.md
 docs/RollbackIncreasedAchievementProgressEffectProps.md
 docs/RollbackReferralEffectProps.md
+docs/RollbackTierBoostEffectProps.md
 docs/RollbackUseRewardEffectProps.md
 docs/Rule.md
 docs/RuleEligibility.md
@@ -1081,6 +1094,7 @@ model_between_check_attribute_block.go
 model_binding.go
 model_block.go
 model_blueprint.go
+model_boost_loyalty_tier_effect_props.go
 model_bulk_application_notification.go
 model_bulk_operation_on_campaigns.go
 model_bundle.go
@@ -1251,6 +1265,7 @@ model_effect_add_loyalty_points.go
 model_effect_add_negative_loyalty_points.go
 model_effect_add_to_audience.go
 model_effect_award_giveaway.go
+model_effect_boost_loyalty_tier.go
 model_effect_call_api.go
 model_effect_change_loyalty_tier_level.go
 model_effect_coupon_created.go
@@ -1403,6 +1418,7 @@ model_get_loyalty_card_points_200_response.go
 model_get_loyalty_card_transaction_logs_200_response.go
 model_get_loyalty_card_transactions_200_response.go
 model_get_loyalty_cards_200_response.go
+model_get_loyalty_program_profile_ledger_transactions_200_response.go
 model_get_loyalty_program_profile_points_200_response.go
 model_get_loyalty_program_profile_transactions_200_response.go
 model_get_loyalty_program_transactions_200_response.go
@@ -1478,6 +1494,7 @@ model_ledger_entry.go
 model_ledger_info.go
 model_ledger_points_entry_integration_api.go
 model_ledger_transaction_log_entry_integration_api.go
+model_ledger_transaction_log_entry_management_api.go
 model_library_attribute.go
 model_limit_config.go
 model_limit_counter.go
@@ -1633,6 +1650,14 @@ model_okta_event_payload.go
 model_okta_event_payload_data.go
 model_okta_event_target.go
 model_one_time_code.go
+model_outbound_log.go
+model_outbound_log_base.go
+model_outbound_log_request.go
+model_outbound_log_response.go
+model_outbound_logs.go
+model_outbound_message.go
+model_outbound_message_response.go
+model_outbound_messages.go
 model_outgoing_integration_braze_policy.go
 model_outgoing_integration_clever_tap_policy.go
 model_outgoing_integration_configuration.go
@@ -1723,6 +1748,7 @@ model_rollback_deducted_loyalty_points_effect_props.go
 model_rollback_discount_effect_props.go
 model_rollback_increased_achievement_progress_effect_props.go
 model_rollback_referral_effect_props.go
+model_rollback_tier_boost_effect_props.go
 model_rollback_use_reward_effect_props.go
 model_rule.go
 model_rule_eligibility.go

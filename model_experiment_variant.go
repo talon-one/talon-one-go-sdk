@@ -24,12 +24,14 @@ type ExperimentVariant struct {
 	// The internal ID of this entity.
 	Id int64 `json:"id"`
 	// The time this entity was created.
-	Created              time.Time `json:"created"`
-	Name                 string    `json:"name"`
-	ExperimentId         *int64    `json:"experimentId,omitempty"`
-	Ruleset              *Ruleset  `json:"ruleset,omitempty"`
-	Weight               *int64    `json:"weight,omitempty"`
-	IsPrimary            bool      `json:"isPrimary"`
+	Created      time.Time `json:"created"`
+	Name         string    `json:"name"`
+	ExperimentId *int64    `json:"experimentId,omitempty"`
+	Ruleset      *Ruleset  `json:"ruleset,omitempty"`
+	Weight       *int64    `json:"weight,omitempty"`
+	IsPrimary    bool      `json:"isPrimary"`
+	// The ID of the audience this variant targets. Only used when the experiment `assignmentType` is `audience`.
+	AudienceId           *int64 `json:"audienceId,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -248,6 +250,38 @@ func (o *ExperimentVariant) SetIsPrimary(v bool) {
 	o.IsPrimary = v
 }
 
+// GetAudienceId returns the AudienceId field value if set, zero value otherwise.
+func (o *ExperimentVariant) GetAudienceId() int64 {
+	if o == nil || IsNil(o.AudienceId) {
+		var ret int64
+		return ret
+	}
+	return *o.AudienceId
+}
+
+// GetAudienceIdOk returns a tuple with the AudienceId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ExperimentVariant) GetAudienceIdOk() (*int64, bool) {
+	if o == nil || IsNil(o.AudienceId) {
+		return nil, false
+	}
+	return o.AudienceId, true
+}
+
+// HasAudienceId returns a boolean if a field has been set.
+func (o *ExperimentVariant) HasAudienceId() bool {
+	if o != nil && !IsNil(o.AudienceId) {
+		return true
+	}
+
+	return false
+}
+
+// SetAudienceId gets a reference to the given int64 and assigns it to the AudienceId field.
+func (o *ExperimentVariant) SetAudienceId(v int64) {
+	o.AudienceId = &v
+}
+
 func (o ExperimentVariant) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -271,6 +305,9 @@ func (o ExperimentVariant) ToMap() (map[string]interface{}, error) {
 		toSerialize["weight"] = o.Weight
 	}
 	toSerialize["isPrimary"] = o.IsPrimary
+	if !IsNil(o.AudienceId) {
+		toSerialize["audienceId"] = o.AudienceId
+	}
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value
@@ -324,6 +361,7 @@ func (o *ExperimentVariant) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "ruleset")
 		delete(additionalProperties, "weight")
 		delete(additionalProperties, "isPrimary")
+		delete(additionalProperties, "audienceId")
 		o.AdditionalProperties = additionalProperties
 	}
 

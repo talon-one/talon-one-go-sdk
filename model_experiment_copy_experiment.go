@@ -20,8 +20,11 @@ var _ MappedNullable = &ExperimentCopyExperiment{}
 
 // ExperimentCopyExperiment struct for ExperimentCopyExperiment
 type ExperimentCopyExperiment struct {
-	// The source of the assignment. - false - The variant assignment is handled internally by Talon.One. - true - The variant assignment is handled externally.
-	IsVariantAssignmentExternal bool                   `json:"isVariantAssignmentExternal"`
+	// Controls how customers are assigned to experiment variants in the copied experiment. - `random`: Talon.One assigns customers randomly based on variant weights. - `external`: The variant assignment is handled externally. - `audience`: Each variant targets a specific audience; customers are assigned based on audience membership. This is the source of truth. When omitted, it is derived from the deprecated `isVariantAssignmentExternal` flag (`true` maps to `external`, otherwise `random`).
+	AssignmentType *string `json:"assignmentType,omitempty"`
+	// The source of the assignment. - false - The variant assignment is handled internally by Talon.One. - true - The variant assignment is handled externally. Deprecated: use `assignmentType` instead. Kept for backwards compatibility with older clients; when set and `assignmentType` is omitted, `true` maps to `external`.
+	// Deprecated
+	IsVariantAssignmentExternal *bool                  `json:"isVariantAssignmentExternal,omitempty"`
 	Campaign                    ExperimentCampaignCopy `json:"campaign"`
 	// The goal of the experiment. Determines which single metric is used to decide the winning variant. When set to `other`, multiple metrics are used. If omitted, the value from the source experiment is used.
 	GoalType *string `json:"goalType,omitempty"`
@@ -36,9 +39,8 @@ type _ExperimentCopyExperiment ExperimentCopyExperiment
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildExperimentCopyExperiment(isVariantAssignmentExternal bool, campaign ExperimentCampaignCopy) *ExperimentCopyExperiment {
+func BuildExperimentCopyExperiment(campaign ExperimentCampaignCopy) *ExperimentCopyExperiment {
 	this := ExperimentCopyExperiment{}
-	this.IsVariantAssignmentExternal = isVariantAssignmentExternal
 	this.Campaign = campaign
 	return &this
 }
@@ -51,28 +53,71 @@ func NewExperimentCopyExperimentWithDefaults() *ExperimentCopyExperiment {
 	return &this
 }
 
-// GetIsVariantAssignmentExternal returns the IsVariantAssignmentExternal field value
+// GetAssignmentType returns the AssignmentType field value if set, zero value otherwise.
+func (o *ExperimentCopyExperiment) GetAssignmentType() string {
+	if o == nil || IsNil(o.AssignmentType) {
+		var ret string
+		return ret
+	}
+	return *o.AssignmentType
+}
+
+// GetAssignmentTypeOk returns a tuple with the AssignmentType field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ExperimentCopyExperiment) GetAssignmentTypeOk() (*string, bool) {
+	if o == nil || IsNil(o.AssignmentType) {
+		return nil, false
+	}
+	return o.AssignmentType, true
+}
+
+// HasAssignmentType returns a boolean if a field has been set.
+func (o *ExperimentCopyExperiment) HasAssignmentType() bool {
+	if o != nil && !IsNil(o.AssignmentType) {
+		return true
+	}
+
+	return false
+}
+
+// SetAssignmentType gets a reference to the given string and assigns it to the AssignmentType field.
+func (o *ExperimentCopyExperiment) SetAssignmentType(v string) {
+	o.AssignmentType = &v
+}
+
+// GetIsVariantAssignmentExternal returns the IsVariantAssignmentExternal field value if set, zero value otherwise.
+// Deprecated
 func (o *ExperimentCopyExperiment) GetIsVariantAssignmentExternal() bool {
-	if o == nil {
+	if o == nil || IsNil(o.IsVariantAssignmentExternal) {
 		var ret bool
 		return ret
 	}
-
-	return o.IsVariantAssignmentExternal
+	return *o.IsVariantAssignmentExternal
 }
 
-// GetIsVariantAssignmentExternalOk returns a tuple with the IsVariantAssignmentExternal field value
+// GetIsVariantAssignmentExternalOk returns a tuple with the IsVariantAssignmentExternal field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *ExperimentCopyExperiment) GetIsVariantAssignmentExternalOk() (*bool, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.IsVariantAssignmentExternal) {
 		return nil, false
 	}
-	return &o.IsVariantAssignmentExternal, true
+	return o.IsVariantAssignmentExternal, true
 }
 
-// SetIsVariantAssignmentExternal sets field value
+// HasIsVariantAssignmentExternal returns a boolean if a field has been set.
+func (o *ExperimentCopyExperiment) HasIsVariantAssignmentExternal() bool {
+	if o != nil && !IsNil(o.IsVariantAssignmentExternal) {
+		return true
+	}
+
+	return false
+}
+
+// SetIsVariantAssignmentExternal gets a reference to the given bool and assigns it to the IsVariantAssignmentExternal field.
+// Deprecated
 func (o *ExperimentCopyExperiment) SetIsVariantAssignmentExternal(v bool) {
-	o.IsVariantAssignmentExternal = v
+	o.IsVariantAssignmentExternal = &v
 }
 
 // GetCampaign returns the Campaign field value
@@ -173,7 +218,12 @@ func (o ExperimentCopyExperiment) MarshalJSON() ([]byte, error) {
 
 func (o ExperimentCopyExperiment) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["isVariantAssignmentExternal"] = o.IsVariantAssignmentExternal
+	if !IsNil(o.AssignmentType) {
+		toSerialize["assignmentType"] = o.AssignmentType
+	}
+	if !IsNil(o.IsVariantAssignmentExternal) {
+		toSerialize["isVariantAssignmentExternal"] = o.IsVariantAssignmentExternal
+	}
 	toSerialize["campaign"] = o.Campaign
 	if !IsNil(o.GoalType) {
 		toSerialize["goalType"] = o.GoalType
@@ -194,7 +244,6 @@ func (o *ExperimentCopyExperiment) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"isVariantAssignmentExternal",
 		"campaign",
 	}
 
@@ -225,6 +274,7 @@ func (o *ExperimentCopyExperiment) UnmarshalJSON(data []byte) (err error) {
 	additionalProperties := make(map[string]interface{})
 
 	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "assignmentType")
 		delete(additionalProperties, "isVariantAssignmentExternal")
 		delete(additionalProperties, "campaign")
 		delete(additionalProperties, "goalType")

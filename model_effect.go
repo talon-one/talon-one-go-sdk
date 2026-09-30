@@ -25,6 +25,7 @@ type Effect struct {
 	EffectAddNegativeLoyaltyPoints             *EffectAddNegativeLoyaltyPoints
 	EffectAddToAudience                        *EffectAddToAudience
 	EffectAwardGiveaway                        *EffectAwardGiveaway
+	EffectBoostLoyaltyTier                     *EffectBoostLoyaltyTier
 	EffectCallApi                              *EffectCallApi
 	EffectChangeLoyaltyTierLevel               *EffectChangeLoyaltyTierLevel
 	EffectCouponCreated                        *EffectCouponCreated
@@ -108,6 +109,13 @@ func EffectAddToAudienceAsEffect(v *EffectAddToAudience) Effect {
 func EffectAwardGiveawayAsEffect(v *EffectAwardGiveaway) Effect {
 	return Effect{
 		EffectAwardGiveaway: v,
+	}
+}
+
+// EffectBoostLoyaltyTierAsEffect is a convenience function that returns EffectBoostLoyaltyTier wrapped in Effect
+func EffectBoostLoyaltyTierAsEffect(v *EffectBoostLoyaltyTier) Effect {
+	return Effect{
+		EffectBoostLoyaltyTier: v,
 	}
 }
 
@@ -477,6 +485,23 @@ func (dst *Effect) UnmarshalJSON(data []byte) error {
 		}
 	} else {
 		dst.EffectAwardGiveaway = nil
+	}
+
+	// try to unmarshal data into EffectBoostLoyaltyTier
+	err = newStrictDecoder(data).Decode(&dst.EffectBoostLoyaltyTier)
+	if err == nil {
+		jsonEffectBoostLoyaltyTier, _ := json.Marshal(dst.EffectBoostLoyaltyTier)
+		if string(jsonEffectBoostLoyaltyTier) == "{}" { // empty struct
+			dst.EffectBoostLoyaltyTier = nil
+		} else {
+			if err = validator.Validate(dst.EffectBoostLoyaltyTier); err != nil {
+				dst.EffectBoostLoyaltyTier = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectBoostLoyaltyTier = nil
 	}
 
 	// try to unmarshal data into EffectCallApi
@@ -1083,6 +1108,7 @@ func (dst *Effect) UnmarshalJSON(data []byte) error {
 		dst.EffectAddNegativeLoyaltyPoints = nil
 		dst.EffectAddToAudience = nil
 		dst.EffectAwardGiveaway = nil
+		dst.EffectBoostLoyaltyTier = nil
 		dst.EffectCallApi = nil
 		dst.EffectChangeLoyaltyTierLevel = nil
 		dst.EffectCouponCreated = nil
@@ -1159,6 +1185,10 @@ func (src Effect) MarshalJSON() ([]byte, error) {
 
 	if src.EffectAwardGiveaway != nil {
 		return json.Marshal(&src.EffectAwardGiveaway)
+	}
+
+	if src.EffectBoostLoyaltyTier != nil {
+		return json.Marshal(&src.EffectBoostLoyaltyTier)
 	}
 
 	if src.EffectCallApi != nil {
@@ -1337,6 +1367,10 @@ func (obj *Effect) GetActualInstance() interface{} {
 		return obj.EffectAwardGiveaway
 	}
 
+	if obj.EffectBoostLoyaltyTier != nil {
+		return obj.EffectBoostLoyaltyTier
+	}
+
 	if obj.EffectCallApi != nil {
 		return obj.EffectCallApi
 	}
@@ -1509,6 +1543,10 @@ func (obj Effect) GetActualInstanceValue() interface{} {
 
 	if obj.EffectAwardGiveaway != nil {
 		return *obj.EffectAwardGiveaway
+	}
+
+	if obj.EffectBoostLoyaltyTier != nil {
+		return *obj.EffectBoostLoyaltyTier
 	}
 
 	if obj.EffectCallApi != nil {
