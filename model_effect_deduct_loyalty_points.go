@@ -55,8 +55,7 @@ type EffectDeductLoyaltyPoints struct {
 	// The ID of the reward that was being evaluated when this effect was triggered.
 	RewardId *int64 `json:"rewardId,omitempty"`
 	// The integration ID of the specific customer reward whose usage produced this effect.
-	RewardIntegrationId *string `json:"rewardIntegrationId,omitempty"`
-	// The properties of the `deductLoyaltyPoints` effect.
+	RewardIntegrationId  *string                        `json:"rewardIntegrationId,omitempty"`
 	Props                DeductLoyaltyPointsEffectProps `json:"props"`
 	AdditionalProperties map[string]interface{}
 }

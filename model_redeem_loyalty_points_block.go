@@ -31,9 +31,7 @@ type RedeemLoyaltyPointsBlock struct {
 	Subledger string                         `json:"subledger"`
 	Value     RedeemLoyaltyPointsBlock1Value `json:"value"`
 	// A custom description recorded as the reason for the point deduction.
-	Name *string `json:"name,omitempty"`
-	// Promotion blocks evaluated when this block fails or returns false.
-	OnFailure            []Block `json:"onFailure,omitempty"`
+	Name                 *string `json:"name,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -252,38 +250,6 @@ func (o *RedeemLoyaltyPointsBlock) SetName(v string) {
 	o.Name = &v
 }
 
-// GetOnFailure returns the OnFailure field value if set, zero value otherwise.
-func (o *RedeemLoyaltyPointsBlock) GetOnFailure() []Block {
-	if o == nil || IsNil(o.OnFailure) {
-		var ret []Block
-		return ret
-	}
-	return o.OnFailure
-}
-
-// GetOnFailureOk returns a tuple with the OnFailure field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *RedeemLoyaltyPointsBlock) GetOnFailureOk() ([]Block, bool) {
-	if o == nil || IsNil(o.OnFailure) {
-		return nil, false
-	}
-	return o.OnFailure, true
-}
-
-// HasOnFailure returns a boolean if a field has been set.
-func (o *RedeemLoyaltyPointsBlock) HasOnFailure() bool {
-	if o != nil && !IsNil(o.OnFailure) {
-		return true
-	}
-
-	return false
-}
-
-// SetOnFailure gets a reference to the given []Block and assigns it to the OnFailure field.
-func (o *RedeemLoyaltyPointsBlock) SetOnFailure(v []Block) {
-	o.OnFailure = v
-}
-
 func (o RedeemLoyaltyPointsBlock) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -306,9 +272,6 @@ func (o RedeemLoyaltyPointsBlock) ToMap() (map[string]interface{}, error) {
 	toSerialize["value"] = o.Value
 	if !IsNil(o.Name) {
 		toSerialize["name"] = o.Name
-	}
-	if !IsNil(o.OnFailure) {
-		toSerialize["onFailure"] = o.OnFailure
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -363,7 +326,6 @@ func (o *RedeemLoyaltyPointsBlock) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "subledger")
 		delete(additionalProperties, "value")
 		delete(additionalProperties, "name")
-		delete(additionalProperties, "onFailure")
 		o.AdditionalProperties = additionalProperties
 	}
 

@@ -1434,6 +1434,21 @@ func Test_talon_ManagementAPIService(t *testing.T) {
 
 	})
 
+	t.Run("Test ManagementAPIService GetCurrentRevision", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var applicationId int64
+		var campaignId int64
+
+		resp, httpRes, err := apiClient.ManagementAPI.GetCurrentRevision(context.Background(), applicationId, campaignId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test ManagementAPIService GetCustomerActivityReport", func(t *testing.T) {
 
 		t.Skip("skip test")  // remove to run test
@@ -2225,6 +2240,18 @@ func Test_talon_ManagementAPIService(t *testing.T) {
 		var applicationId int64
 
 		resp, httpRes, err := apiClient.ManagementAPI.ListExperiments(context.Background(), applicationId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test ManagementAPIService ListGiveawaysPool", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		resp, httpRes, err := apiClient.ManagementAPI.ListGiveawaysPool(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

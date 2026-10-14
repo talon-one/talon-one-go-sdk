@@ -5,13 +5,13 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **int64** | The unique identifier of the webhook. | 
-**Title** | **string** | The display name of the webhook. | 
+**Title** | Pointer to **string** | The display name of the webhook. | [optional] [readonly] 
 
 ## Methods
 
 ### NewWebhookBlockReference
 
-`func NewWebhookBlockReference(id int64, title string, ) *WebhookBlockReference`
+`func NewWebhookBlockReference(id int64, ) *WebhookBlockReference`
 
 NewWebhookBlockReference instantiates a new WebhookBlockReference object
 This constructor will assign default values to properties that have it defined,
@@ -65,6 +65,11 @@ and a boolean to check if the value has been set.
 
 SetTitle sets Title field to given value.
 
+### HasTitle
+
+`func (o *WebhookBlockReference) HasTitle() bool`
+
+HasTitle returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

@@ -106,6 +106,7 @@ Method | HTTP request | Description
 [**GetCollection**](ManagementAPI.md#GetCollection) | **Get** /v1/applications/{applicationId}/campaigns/{campaignId}/collections/{collectionId} | Get campaign-level collection
 [**GetCollectionItems**](ManagementAPI.md#GetCollectionItems) | **Get** /v1/collections/{collectionId}/items | Get collection items
 [**GetCouponsWithoutTotalCount**](ManagementAPI.md#GetCouponsWithoutTotalCount) | **Get** /v1/applications/{applicationId}/campaigns/{campaignId}/coupons/no_total | List coupons
+[**GetCurrentRevision**](ManagementAPI.md#GetCurrentRevision) | **Get** /v1/applications/{applicationId}/campaigns/{campaignId}/revisions/current | Get current revision version
 [**GetCustomerActivityReport**](ManagementAPI.md#GetCustomerActivityReport) | **Get** /v1/applications/{applicationId}/customer_activity_reports/{customerId} | Get customer&#39;s activity report
 [**GetCustomerActivityReportsWithoutTotalCount**](ManagementAPI.md#GetCustomerActivityReportsWithoutTotalCount) | **Get** /v1/applications/{applicationId}/customer_activity_reports/no_total | Get Activity Reports for Application Customers
 [**GetCustomerAnalytics**](ManagementAPI.md#GetCustomerAnalytics) | **Get** /v1/applications/{applicationId}/customers/{customerId}/analytics | Get customer&#39;s analytics report
@@ -163,6 +164,7 @@ Method | HTTP request | Description
 [**ListCollections**](ManagementAPI.md#ListCollections) | **Get** /v1/applications/{applicationId}/campaigns/{campaignId}/collections | List collections in campaign
 [**ListCollectionsInApplication**](ManagementAPI.md#ListCollectionsInApplication) | **Get** /v1/applications/{applicationId}/collections | List collections in Application
 [**ListExperiments**](ManagementAPI.md#ListExperiments) | **Get** /v1/applications/{applicationId}/experiments | List experiments
+[**ListGiveawaysPool**](ManagementAPI.md#ListGiveawaysPool) | **Get** /v1/giveaways/pools | List giveaway pools
 [**ListStores**](ManagementAPI.md#ListStores) | **Get** /v1/applications/{applicationId}/stores | List stores
 [**OktaEventHandlerChallenge**](ManagementAPI.md#OktaEventHandlerChallenge) | **Get** /v1/provisioning/okta | Validate Okta API ownership
 [**PriceHistory**](ManagementAPI.md#PriceHistory) | **Post** /v1/applications/{applicationId}/price_history | Get summary of price history
@@ -4300,7 +4302,7 @@ func main() {
 	loyaltyProgramId := "loyaltyProgramId_example" // string | The identifier for the loyalty program.
 	endDate := time.Now() // time.Time | Used to return expired, active, and pending loyalty balances before this timestamp. You can enter any past, present, or future timestamp value.  > [!note] **Note** > - This must be an RFC3339 timestamp string. > - You can include a time component in your string, for example, `T23:59:59` to specify the end of the day. The time zone setting >   considered is `UTC`. If you do not include a time component, a default time value of `T00:00:00` (midnight) in `UTC` is considered. > - This parameter does not affect the `currentTier` field in the CSV file, which shows the customer's tier at the time of export.  (optional)
 	balances := "balances_example" // string | Filters which balance fields are included in the CSV export. `currentBalance` is always returned.  By default, all balance fields are included. When this parameter is provided, only the listed fields contain values and the rest are returned empty.  Accepted values: - `currentBalance` - `pendingBalance` - `expiredBalance` - `spentBalance` - `negativeBalance`  Multiple values must be provided as a comma-separated list.  (optional)
-	subledgerIds := []string{"Inner_example"} // []string | Filter results by an array of subledger IDs. If no value is provided, the export includes all subledgers and main ledger data for the specified loyalty program.  To specify the main ledger, provide an empty string (\"\").  (optional)
+	subledgerIds := []string{"Inner_example"} // []string | Filters the results to specific subledgers.  **Note:** - When this parameter is not provided, the export includes all subledgers   and main ledger data for the specified loyalty program.  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -4332,7 +4334,7 @@ Name | Type | Description  | Notes
 
  **endDate** | **time.Time** | Used to return expired, active, and pending loyalty balances before this timestamp. You can enter any past, present, or future timestamp value.  &gt; [!note] **Note** &gt; - This must be an RFC3339 timestamp string. &gt; - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting &gt;   considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered. &gt; - This parameter does not affect the &#x60;currentTier&#x60; field in the CSV file, which shows the customer&#39;s tier at the time of export.  | 
  **balances** | **string** | Filters which balance fields are included in the CSV export. &#x60;currentBalance&#x60; is always returned.  By default, all balance fields are included. When this parameter is provided, only the listed fields contain values and the rest are returned empty.  Accepted values: - &#x60;currentBalance&#x60; - &#x60;pendingBalance&#x60; - &#x60;expiredBalance&#x60; - &#x60;spentBalance&#x60; - &#x60;negativeBalance&#x60;  Multiple values must be provided as a comma-separated list.  | 
- **subledgerIds** | **[]string** | Filter results by an array of subledger IDs. If no value is provided, the export includes all subledgers and main ledger data for the specified loyalty program.  To specify the main ledger, provide an empty string (\&quot;\&quot;).  | 
+ **subledgerIds** | **[]string** | Filters the results to specific subledgers.  **Note:** - When this parameter is not provided, the export includes all subledgers   and main ledger data for the specified loyalty program.  | 
 
 ### Return type
 
@@ -5923,7 +5925,7 @@ Name | Type | Description  | Notes
 
 ## GetApplicationCustomers
 
-> GetApplicationCustomers200Response GetApplicationCustomers(ctx, applicationId).IntegrationId(integrationId).PageSize(pageSize).Skip(skip).WithTotalResultSize(withTotalResultSize).Execute()
+> GetApplicationCustomers200Response GetApplicationCustomers(ctx, applicationId).IntegrationId(integrationId).PageSize(pageSize).Skip(skip).WithTotalResultSize(withTotalResultSize).WithLoyaltyMemberships(withLoyaltyMemberships).Execute()
 
 List application's customers
 
@@ -5947,10 +5949,11 @@ func main() {
 	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 1000)
 	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
 	withTotalResultSize := true // bool | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When `true`: `totalResultSize` contains the total number of results for this query. - When `false`: Only `hasMore` is returned, and it is set to `true` when there are more results than shown on the page.  (optional)
+	withLoyaltyMemberships := true // bool | When set to `true`, the `loyaltyProgramJoinDates` property returns the dates on which each customer joined the profile-based loyalty programs they are part of. This might decrease performance on large data sets. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ManagementAPI.GetApplicationCustomers(context.Background(), applicationId).IntegrationId(integrationId).PageSize(pageSize).Skip(skip).WithTotalResultSize(withTotalResultSize).Execute()
+	resp, r, err := apiClient.ManagementAPI.GetApplicationCustomers(context.Background(), applicationId).IntegrationId(integrationId).PageSize(pageSize).Skip(skip).WithTotalResultSize(withTotalResultSize).WithLoyaltyMemberships(withLoyaltyMemberships).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.GetApplicationCustomers``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -5980,6 +5983,7 @@ Name | Type | Description  | Notes
  **pageSize** | **int64** | The number of items in the response. | [default to 1000]
  **skip** | **int64** | The number of items to skip when paging through large result sets. | 
  **withTotalResultSize** | **bool** | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query. - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.  | 
+ **withLoyaltyMemberships** | **bool** | When set to &#x60;true&#x60;, the &#x60;loyaltyProgramJoinDates&#x60; property returns the dates on which each customer joined the profile-based loyalty programs they are part of. This might decrease performance on large data sets. | 
 
 ### Return type
 
@@ -6001,7 +6005,7 @@ Name | Type | Description  | Notes
 
 ## GetApplicationCustomersByAttributes
 
-> GetApplicationCustomersByAttributes200Response GetApplicationCustomersByAttributes(ctx, applicationId).CustomerProfileSearchQuery(customerProfileSearchQuery).PageSize(pageSize).Skip(skip).WithTotalResultSize(withTotalResultSize).Execute()
+> GetApplicationCustomersByAttributes200Response GetApplicationCustomersByAttributes(ctx, applicationId).CustomerProfileSearchQuery(customerProfileSearchQuery).PageSize(pageSize).Skip(skip).WithTotalResultSize(withTotalResultSize).WithLoyaltyMemberships(withLoyaltyMemberships).Execute()
 
 List application customers matching the given attributes
 
@@ -6025,10 +6029,11 @@ func main() {
 	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 1000)
 	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
 	withTotalResultSize := true // bool | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When `true`: `totalResultSize` contains the total number of results for this query. - When `false`: Only `hasMore` is returned, and it is set to `true` when there are more results than shown on the page.  (optional)
+	withLoyaltyMemberships := true // bool | When set to `true`, the `loyaltyProgramJoinDates` property returns the dates on which each customer joined the profile-based loyalty programs they are part of. This might decrease performance on large data sets. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ManagementAPI.GetApplicationCustomersByAttributes(context.Background(), applicationId).CustomerProfileSearchQuery(customerProfileSearchQuery).PageSize(pageSize).Skip(skip).WithTotalResultSize(withTotalResultSize).Execute()
+	resp, r, err := apiClient.ManagementAPI.GetApplicationCustomersByAttributes(context.Background(), applicationId).CustomerProfileSearchQuery(customerProfileSearchQuery).PageSize(pageSize).Skip(skip).WithTotalResultSize(withTotalResultSize).WithLoyaltyMemberships(withLoyaltyMemberships).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.GetApplicationCustomersByAttributes``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -6058,6 +6063,7 @@ Name | Type | Description  | Notes
  **pageSize** | **int64** | The number of items in the response. | [default to 1000]
  **skip** | **int64** | The number of items to skip when paging through large result sets. | 
  **withTotalResultSize** | **bool** | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query. - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.  | 
+ **withLoyaltyMemberships** | **bool** | When set to &#x60;true&#x60;, the &#x60;loyaltyProgramJoinDates&#x60; property returns the dates on which each customer joined the profile-based loyalty programs they are part of. This might decrease performance on large data sets. | 
 
 ### Return type
 
@@ -7824,6 +7830,79 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**GetCouponsWithoutTotalCount200Response**](GetCouponsWithoutTotalCount200Response.md)
+
+### Authorization
+
+[api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetCurrentRevision
+
+> Revision GetCurrentRevision(ctx, applicationId, campaignId).Execute()
+
+Get current revision version
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	applicationId := int64(789) // int64 | The ID of the Application. It is displayed in your Talon.One deployment URL.
+	campaignId := int64(789) // int64 | The ID of the campaign. It is displayed in your Talon.One deployment URL.
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ManagementAPI.GetCurrentRevision(context.Background(), applicationId, campaignId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.GetCurrentRevision``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetCurrentRevision`: Revision
+	fmt.Fprintf(os.Stdout, "Response from `ManagementAPI.GetCurrentRevision`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**applicationId** | **int64** | The ID of the Application. It is displayed in your Talon.One deployment URL. | 
+**campaignId** | **int64** | The ID of the campaign. It is displayed in your Talon.One deployment URL. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetCurrentRevisionRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+### Return type
+
+[**Revision**](Revision.md)
 
 ### Authorization
 
@@ -12156,6 +12235,80 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**ListExperiments200Response**](ListExperiments200Response.md)
+
+### Authorization
+
+[api_key_v1](../README.md#api_key_v1)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ListGiveawaysPool
+
+> ListGiveawaysPool200Response ListGiveawaysPool(ctx).PageSize(pageSize).Skip(skip).Sort(sort).WithTotalResultSize(withTotalResultSize).ApplicationIds(applicationIds).Execute()
+
+List giveaway pools
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
+)
+
+func main() {
+	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 1000)
+	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
+	sort := "sort_example" // string | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with `-`.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  (optional)
+	withTotalResultSize := true // bool | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When `true`: `totalResultSize` contains the total number of results for this query. - When `false`: Only `hasMore` is returned, and it is set to `true` when there are more results than shown on the page.  (optional)
+	applicationIds := "applicationIds_example" // string | Filter by one or more Application IDs, separated by a comma. (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ManagementAPI.ListGiveawaysPool(context.Background()).PageSize(pageSize).Skip(skip).Sort(sort).WithTotalResultSize(withTotalResultSize).ApplicationIds(applicationIds).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.ListGiveawaysPool``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ListGiveawaysPool`: ListGiveawaysPool200Response
+	fmt.Fprintf(os.Stdout, "Response from `ManagementAPI.ListGiveawaysPool`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiListGiveawaysPoolRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **pageSize** | **int64** | The number of items in the response. | [default to 1000]
+ **skip** | **int64** | The number of items to skip when paging through large result sets. | 
+ **sort** | **string** | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with &#x60;-&#x60;.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  | 
+ **withTotalResultSize** | **bool** | When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query. - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.  | 
+ **applicationIds** | **string** | Filter by one or more Application IDs, separated by a comma. | 
+
+### Return type
+
+[**ListGiveawaysPool200Response**](ListGiveawaysPool200Response.md)
 
 ### Authorization
 

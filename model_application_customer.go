@@ -46,7 +46,9 @@ type ApplicationCustomer struct {
 	Sandbox *bool `json:"sandbox,omitempty"`
 	// The Integration ID of the Customer Profile that referred this Customer in the Application.
 	AdvocateIntegrationId *string `json:"advocateIntegrationId,omitempty"`
-	AdditionalProperties  map[string]interface{}
+	// The dates on which the customer joined the profile-based loyalty programs they are part of. Returned only when the `withLoyaltyMemberships` query parameter is `true`.
+	LoyaltyProgramJoinDates []LoyaltyMembership `json:"loyaltyProgramJoinDates,omitempty"`
+	AdditionalProperties    map[string]interface{}
 }
 
 type _ApplicationCustomer ApplicationCustomer
@@ -406,6 +408,38 @@ func (o *ApplicationCustomer) SetAdvocateIntegrationId(v string) {
 	o.AdvocateIntegrationId = &v
 }
 
+// GetLoyaltyProgramJoinDates returns the LoyaltyProgramJoinDates field value if set, zero value otherwise.
+func (o *ApplicationCustomer) GetLoyaltyProgramJoinDates() []LoyaltyMembership {
+	if o == nil || IsNil(o.LoyaltyProgramJoinDates) {
+		var ret []LoyaltyMembership
+		return ret
+	}
+	return o.LoyaltyProgramJoinDates
+}
+
+// GetLoyaltyProgramJoinDatesOk returns a tuple with the LoyaltyProgramJoinDates field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ApplicationCustomer) GetLoyaltyProgramJoinDatesOk() ([]LoyaltyMembership, bool) {
+	if o == nil || IsNil(o.LoyaltyProgramJoinDates) {
+		return nil, false
+	}
+	return o.LoyaltyProgramJoinDates, true
+}
+
+// HasLoyaltyProgramJoinDates returns a boolean if a field has been set.
+func (o *ApplicationCustomer) HasLoyaltyProgramJoinDates() bool {
+	if o != nil && !IsNil(o.LoyaltyProgramJoinDates) {
+		return true
+	}
+
+	return false
+}
+
+// SetLoyaltyProgramJoinDates gets a reference to the given []LoyaltyMembership and assigns it to the LoyaltyProgramJoinDates field.
+func (o *ApplicationCustomer) SetLoyaltyProgramJoinDates(v []LoyaltyMembership) {
+	o.LoyaltyProgramJoinDates = v
+}
+
 func (o ApplicationCustomer) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -437,6 +471,9 @@ func (o ApplicationCustomer) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.AdvocateIntegrationId) {
 		toSerialize["advocateIntegrationId"] = o.AdvocateIntegrationId
+	}
+	if !IsNil(o.LoyaltyProgramJoinDates) {
+		toSerialize["loyaltyProgramJoinDates"] = o.LoyaltyProgramJoinDates
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -499,6 +536,7 @@ func (o *ApplicationCustomer) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "lastActivity")
 		delete(additionalProperties, "sandbox")
 		delete(additionalProperties, "advocateIntegrationId")
+		delete(additionalProperties, "loyaltyProgramJoinDates")
 		o.AdditionalProperties = additionalProperties
 	}
 

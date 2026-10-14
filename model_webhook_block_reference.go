@@ -23,7 +23,7 @@ type WebhookBlockReference struct {
 	// The unique identifier of the webhook.
 	Id int64 `json:"id"`
 	// The display name of the webhook.
-	Title                string `json:"title"`
+	Title                *string `json:"title,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -33,10 +33,9 @@ type _WebhookBlockReference WebhookBlockReference
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildWebhookBlockReference(id int64, title string) *WebhookBlockReference {
+func BuildWebhookBlockReference(id int64) *WebhookBlockReference {
 	this := WebhookBlockReference{}
 	this.Id = id
-	this.Title = title
 	return &this
 }
 
@@ -72,28 +71,36 @@ func (o *WebhookBlockReference) SetId(v int64) {
 	o.Id = v
 }
 
-// GetTitle returns the Title field value
+// GetTitle returns the Title field value if set, zero value otherwise.
 func (o *WebhookBlockReference) GetTitle() string {
-	if o == nil {
+	if o == nil || IsNil(o.Title) {
 		var ret string
 		return ret
 	}
-
-	return o.Title
+	return *o.Title
 }
 
-// GetTitleOk returns a tuple with the Title field value
+// GetTitleOk returns a tuple with the Title field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *WebhookBlockReference) GetTitleOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Title) {
 		return nil, false
 	}
-	return &o.Title, true
+	return o.Title, true
 }
 
-// SetTitle sets field value
+// HasTitle returns a boolean if a field has been set.
+func (o *WebhookBlockReference) HasTitle() bool {
+	if o != nil && !IsNil(o.Title) {
+		return true
+	}
+
+	return false
+}
+
+// SetTitle gets a reference to the given string and assigns it to the Title field.
 func (o *WebhookBlockReference) SetTitle(v string) {
-	o.Title = v
+	o.Title = &v
 }
 
 func (o WebhookBlockReference) MarshalJSON() ([]byte, error) {
@@ -107,7 +114,9 @@ func (o WebhookBlockReference) MarshalJSON() ([]byte, error) {
 func (o WebhookBlockReference) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["id"] = o.Id
-	toSerialize["title"] = o.Title
+	if !IsNil(o.Title) {
+		toSerialize["title"] = o.Title
+	}
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value
@@ -122,7 +131,6 @@ func (o *WebhookBlockReference) UnmarshalJSON(data []byte) (err error) {
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
 		"id",
-		"title",
 	}
 
 	allProperties := make(map[string]interface{})

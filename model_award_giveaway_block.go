@@ -30,8 +30,6 @@ type AwardGiveawayBlock struct {
 	GiveawayPool GiveawayPoolBlockReference `json:"giveawayPool"`
 	// The customer profile to award the giveaway to. `Current` targets the customer in the current session; `Advocate` targets the person who invited their friend via referral program.
 	Profile string `json:"profile"`
-	// Blocks evaluated when this block fails or returns false.
-	OnFailure []Block `json:"onFailure,omitempty"`
 	// Named error handlers evaluated when a specific error occurs.
 	OnError              map[string][]Block `json:"onError,omitempty"`
 	AdditionalProperties map[string]interface{}
@@ -195,38 +193,6 @@ func (o *AwardGiveawayBlock) SetProfile(v string) {
 	o.Profile = v
 }
 
-// GetOnFailure returns the OnFailure field value if set, zero value otherwise.
-func (o *AwardGiveawayBlock) GetOnFailure() []Block {
-	if o == nil || IsNil(o.OnFailure) {
-		var ret []Block
-		return ret
-	}
-	return o.OnFailure
-}
-
-// GetOnFailureOk returns a tuple with the OnFailure field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *AwardGiveawayBlock) GetOnFailureOk() ([]Block, bool) {
-	if o == nil || IsNil(o.OnFailure) {
-		return nil, false
-	}
-	return o.OnFailure, true
-}
-
-// HasOnFailure returns a boolean if a field has been set.
-func (o *AwardGiveawayBlock) HasOnFailure() bool {
-	if o != nil && !IsNil(o.OnFailure) {
-		return true
-	}
-
-	return false
-}
-
-// SetOnFailure gets a reference to the given []Block and assigns it to the OnFailure field.
-func (o *AwardGiveawayBlock) SetOnFailure(v []Block) {
-	o.OnFailure = v
-}
-
 // GetOnError returns the OnError field value if set, zero value otherwise.
 func (o *AwardGiveawayBlock) GetOnError() map[string][]Block {
 	if o == nil || IsNil(o.OnError) {
@@ -278,9 +244,6 @@ func (o AwardGiveawayBlock) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["giveawayPool"] = o.GiveawayPool
 	toSerialize["profile"] = o.Profile
-	if !IsNil(o.OnFailure) {
-		toSerialize["onFailure"] = o.OnFailure
-	}
 	if !IsNil(o.OnError) {
 		toSerialize["onError"] = o.OnError
 	}
@@ -334,7 +297,6 @@ func (o *AwardGiveawayBlock) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "tags")
 		delete(additionalProperties, "giveawayPool")
 		delete(additionalProperties, "profile")
-		delete(additionalProperties, "onFailure")
 		delete(additionalProperties, "onError")
 		o.AdditionalProperties = additionalProperties
 	}

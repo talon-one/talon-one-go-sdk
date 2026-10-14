@@ -26,15 +26,15 @@ type RevisionVersion struct {
 	// A user-facing name for this campaign.
 	Name *string `json:"name,omitempty"`
 	// Timestamp when the campaign will become active.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime NullableTime `json:"startTime,omitempty"`
 	// Timestamp when the campaign will become inactive.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime NullableTime `json:"endTime,omitempty"`
 	// Arbitrary properties associated with this campaign.
 	Attributes map[string]interface{} `json:"attributes,omitempty"`
 	// A detailed description of the campaign.
-	Description *string `json:"description,omitempty"`
+	Description NullableString `json:"description,omitempty"`
 	// The ID of the ruleset this campaign will use.
-	ActiveRulesetId *int32 `json:"activeRulesetId,omitempty"`
+	ActiveRulesetId NullableInt32 `json:"activeRulesetId,omitempty"`
 	// A list of tags for the campaign.
 	Tags             []string               `json:"tags,omitempty"`
 	CouponSettings   *CodeGeneratorSettings `json:"couponSettings,omitempty"`
@@ -46,14 +46,21 @@ type RevisionVersion struct {
 	// A list of features for the campaign.
 	Features []string `json:"features,omitempty"`
 	// Arbitrary properties associated with coupons in this campaign.
-	CouponAttributes     map[string]interface{} `json:"couponAttributes,omitempty"`
-	AccountId            int64                  `json:"accountId"`
-	ApplicationId        int64                  `json:"applicationId"`
-	CampaignId           int64                  `json:"campaignId"`
-	Created              time.Time              `json:"created"`
-	CreatedBy            int64                  `json:"createdBy"`
-	RevisionId           int64                  `json:"revisionId"`
-	Version              int64                  `json:"version"`
+	CouponAttributes map[string]interface{} `json:"couponAttributes,omitempty"`
+	// The ID of the account that owns this entity.
+	AccountId int64 `json:"accountId"`
+	// The ID of the Application that owns this entity.
+	ApplicationId int64 `json:"applicationId"`
+	// The ID of the campaign that the revision was created from.
+	CampaignId int64 `json:"campaignId"`
+	// Timestamp when the revision was created.
+	Created time.Time `json:"created"`
+	// The ID of the user who created this revision.
+	CreatedBy int64 `json:"createdBy"`
+	// The ID of the revision.
+	RevisionId int64 `json:"revisionId"`
+	// Incrementing number representing how many revisions have been activated on this campaign. Starts from `0` for a new campaign.
+	Version              int64 `json:"version"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -140,68 +147,90 @@ func (o *RevisionVersion) SetName(v string) {
 	o.Name = &v
 }
 
-// GetStartTime returns the StartTime field value if set, zero value otherwise.
+// GetStartTime returns the StartTime field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *RevisionVersion) GetStartTime() time.Time {
-	if o == nil || IsNil(o.StartTime) {
+	if o == nil || IsNil(o.StartTime.Get()) {
 		var ret time.Time
 		return ret
 	}
-	return *o.StartTime
+	return *o.StartTime.Get()
 }
 
 // GetStartTimeOk returns a tuple with the StartTime field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *RevisionVersion) GetStartTimeOk() (*time.Time, bool) {
-	if o == nil || IsNil(o.StartTime) {
+	if o == nil {
 		return nil, false
 	}
-	return o.StartTime, true
+	return o.StartTime.Get(), o.StartTime.IsSet()
 }
 
 // HasStartTime returns a boolean if a field has been set.
 func (o *RevisionVersion) HasStartTime() bool {
-	if o != nil && !IsNil(o.StartTime) {
+	if o != nil && o.StartTime.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetStartTime gets a reference to the given time.Time and assigns it to the StartTime field.
+// SetStartTime gets a reference to the given NullableTime and assigns it to the StartTime field.
 func (o *RevisionVersion) SetStartTime(v time.Time) {
-	o.StartTime = &v
+	o.StartTime.Set(&v)
 }
 
-// GetEndTime returns the EndTime field value if set, zero value otherwise.
+// SetStartTimeNil sets the value for StartTime to be an explicit nil
+func (o *RevisionVersion) SetStartTimeNil() {
+	o.StartTime.Set(nil)
+}
+
+// UnsetStartTime ensures that no value is present for StartTime, not even an explicit nil
+func (o *RevisionVersion) UnsetStartTime() {
+	o.StartTime.Unset()
+}
+
+// GetEndTime returns the EndTime field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *RevisionVersion) GetEndTime() time.Time {
-	if o == nil || IsNil(o.EndTime) {
+	if o == nil || IsNil(o.EndTime.Get()) {
 		var ret time.Time
 		return ret
 	}
-	return *o.EndTime
+	return *o.EndTime.Get()
 }
 
 // GetEndTimeOk returns a tuple with the EndTime field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *RevisionVersion) GetEndTimeOk() (*time.Time, bool) {
-	if o == nil || IsNil(o.EndTime) {
+	if o == nil {
 		return nil, false
 	}
-	return o.EndTime, true
+	return o.EndTime.Get(), o.EndTime.IsSet()
 }
 
 // HasEndTime returns a boolean if a field has been set.
 func (o *RevisionVersion) HasEndTime() bool {
-	if o != nil && !IsNil(o.EndTime) {
+	if o != nil && o.EndTime.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetEndTime gets a reference to the given time.Time and assigns it to the EndTime field.
+// SetEndTime gets a reference to the given NullableTime and assigns it to the EndTime field.
 func (o *RevisionVersion) SetEndTime(v time.Time) {
-	o.EndTime = &v
+	o.EndTime.Set(&v)
+}
+
+// SetEndTimeNil sets the value for EndTime to be an explicit nil
+func (o *RevisionVersion) SetEndTimeNil() {
+	o.EndTime.Set(nil)
+}
+
+// UnsetEndTime ensures that no value is present for EndTime, not even an explicit nil
+func (o *RevisionVersion) UnsetEndTime() {
+	o.EndTime.Unset()
 }
 
 // GetAttributes returns the Attributes field value if set, zero value otherwise.
@@ -236,68 +265,90 @@ func (o *RevisionVersion) SetAttributes(v map[string]interface{}) {
 	o.Attributes = v
 }
 
-// GetDescription returns the Description field value if set, zero value otherwise.
+// GetDescription returns the Description field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *RevisionVersion) GetDescription() string {
-	if o == nil || IsNil(o.Description) {
+	if o == nil || IsNil(o.Description.Get()) {
 		var ret string
 		return ret
 	}
-	return *o.Description
+	return *o.Description.Get()
 }
 
 // GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *RevisionVersion) GetDescriptionOk() (*string, bool) {
-	if o == nil || IsNil(o.Description) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Description, true
+	return o.Description.Get(), o.Description.IsSet()
 }
 
 // HasDescription returns a boolean if a field has been set.
 func (o *RevisionVersion) HasDescription() bool {
-	if o != nil && !IsNil(o.Description) {
+	if o != nil && o.Description.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetDescription gets a reference to the given string and assigns it to the Description field.
+// SetDescription gets a reference to the given NullableString and assigns it to the Description field.
 func (o *RevisionVersion) SetDescription(v string) {
-	o.Description = &v
+	o.Description.Set(&v)
 }
 
-// GetActiveRulesetId returns the ActiveRulesetId field value if set, zero value otherwise.
+// SetDescriptionNil sets the value for Description to be an explicit nil
+func (o *RevisionVersion) SetDescriptionNil() {
+	o.Description.Set(nil)
+}
+
+// UnsetDescription ensures that no value is present for Description, not even an explicit nil
+func (o *RevisionVersion) UnsetDescription() {
+	o.Description.Unset()
+}
+
+// GetActiveRulesetId returns the ActiveRulesetId field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *RevisionVersion) GetActiveRulesetId() int32 {
-	if o == nil || IsNil(o.ActiveRulesetId) {
+	if o == nil || IsNil(o.ActiveRulesetId.Get()) {
 		var ret int32
 		return ret
 	}
-	return *o.ActiveRulesetId
+	return *o.ActiveRulesetId.Get()
 }
 
 // GetActiveRulesetIdOk returns a tuple with the ActiveRulesetId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *RevisionVersion) GetActiveRulesetIdOk() (*int32, bool) {
-	if o == nil || IsNil(o.ActiveRulesetId) {
+	if o == nil {
 		return nil, false
 	}
-	return o.ActiveRulesetId, true
+	return o.ActiveRulesetId.Get(), o.ActiveRulesetId.IsSet()
 }
 
 // HasActiveRulesetId returns a boolean if a field has been set.
 func (o *RevisionVersion) HasActiveRulesetId() bool {
-	if o != nil && !IsNil(o.ActiveRulesetId) {
+	if o != nil && o.ActiveRulesetId.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetActiveRulesetId gets a reference to the given int32 and assigns it to the ActiveRulesetId field.
+// SetActiveRulesetId gets a reference to the given NullableInt32 and assigns it to the ActiveRulesetId field.
 func (o *RevisionVersion) SetActiveRulesetId(v int32) {
-	o.ActiveRulesetId = &v
+	o.ActiveRulesetId.Set(&v)
+}
+
+// SetActiveRulesetIdNil sets the value for ActiveRulesetId to be an explicit nil
+func (o *RevisionVersion) SetActiveRulesetIdNil() {
+	o.ActiveRulesetId.Set(nil)
+}
+
+// UnsetActiveRulesetId ensures that no value is present for ActiveRulesetId, not even an explicit nil
+func (o *RevisionVersion) UnsetActiveRulesetId() {
+	o.ActiveRulesetId.Unset()
 }
 
 // GetTags returns the Tags field value if set, zero value otherwise.
@@ -706,20 +757,20 @@ func (o RevisionVersion) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Name) {
 		toSerialize["name"] = o.Name
 	}
-	if !IsNil(o.StartTime) {
-		toSerialize["startTime"] = o.StartTime
+	if o.StartTime.IsSet() {
+		toSerialize["startTime"] = o.StartTime.Get()
 	}
-	if !IsNil(o.EndTime) {
-		toSerialize["endTime"] = o.EndTime
+	if o.EndTime.IsSet() {
+		toSerialize["endTime"] = o.EndTime.Get()
 	}
 	if !IsNil(o.Attributes) {
 		toSerialize["attributes"] = o.Attributes
 	}
-	if !IsNil(o.Description) {
-		toSerialize["description"] = o.Description
+	if o.Description.IsSet() {
+		toSerialize["description"] = o.Description.Get()
 	}
-	if !IsNil(o.ActiveRulesetId) {
-		toSerialize["activeRulesetId"] = o.ActiveRulesetId
+	if o.ActiveRulesetId.IsSet() {
+		toSerialize["activeRulesetId"] = o.ActiveRulesetId.Get()
 	}
 	if !IsNil(o.Tags) {
 		toSerialize["tags"] = o.Tags

@@ -46,9 +46,7 @@ type AwardLoyaltyPointsBlock struct {
 	// Timestamp at which the awarded points expire. Mutually exclusive with `validityDuration`.
 	ExpiryDate interface{} `json:"expiryDate,omitempty"`
 	// Relative duration (e.g. `3D`) the awarded points remain pending before activation.
-	PendingDuration *string `json:"pendingDuration,omitempty"`
-	// Promotion blocks evaluated when this block fails or returns false.
-	OnFailure            []Block `json:"onFailure,omitempty"`
+	PendingDuration      *string `json:"pendingDuration,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -504,38 +502,6 @@ func (o *AwardLoyaltyPointsBlock) SetPendingDuration(v string) {
 	o.PendingDuration = &v
 }
 
-// GetOnFailure returns the OnFailure field value if set, zero value otherwise.
-func (o *AwardLoyaltyPointsBlock) GetOnFailure() []Block {
-	if o == nil || IsNil(o.OnFailure) {
-		var ret []Block
-		return ret
-	}
-	return o.OnFailure
-}
-
-// GetOnFailureOk returns a tuple with the OnFailure field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *AwardLoyaltyPointsBlock) GetOnFailureOk() ([]Block, bool) {
-	if o == nil || IsNil(o.OnFailure) {
-		return nil, false
-	}
-	return o.OnFailure, true
-}
-
-// HasOnFailure returns a boolean if a field has been set.
-func (o *AwardLoyaltyPointsBlock) HasOnFailure() bool {
-	if o != nil && !IsNil(o.OnFailure) {
-		return true
-	}
-
-	return false
-}
-
-// SetOnFailure gets a reference to the given []Block and assigns it to the OnFailure field.
-func (o *AwardLoyaltyPointsBlock) SetOnFailure(v []Block) {
-	o.OnFailure = v
-}
-
 func (o AwardLoyaltyPointsBlock) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -576,9 +542,6 @@ func (o AwardLoyaltyPointsBlock) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.PendingDuration) {
 		toSerialize["pendingDuration"] = o.PendingDuration
-	}
-	if !IsNil(o.OnFailure) {
-		toSerialize["onFailure"] = o.OnFailure
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -644,7 +607,6 @@ func (o *AwardLoyaltyPointsBlock) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "validityDuration")
 		delete(additionalProperties, "expiryDate")
 		delete(additionalProperties, "pendingDuration")
-		delete(additionalProperties, "onFailure")
 		o.AdditionalProperties = additionalProperties
 	}
 

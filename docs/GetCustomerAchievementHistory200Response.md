@@ -5,13 +5,13 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **TotalResultSize** | **int64** |  | 
-**Data** | [**[]AchievementProgress**](AchievementProgress.md) |  | 
+**Data** | [**[]CustomerAchievementHistoryEntry**](CustomerAchievementHistoryEntry.md) |  | 
 
 ## Methods
 
 ### NewGetCustomerAchievementHistory200Response
 
-`func NewGetCustomerAchievementHistory200Response(totalResultSize int64, data []AchievementProgress, ) *GetCustomerAchievementHistory200Response`
+`func NewGetCustomerAchievementHistory200Response(totalResultSize int64, data []CustomerAchievementHistoryEntry, ) *GetCustomerAchievementHistory200Response`
 
 NewGetCustomerAchievementHistory200Response instantiates a new GetCustomerAchievementHistory200Response object
 This constructor will assign default values to properties that have it defined,
@@ -48,20 +48,20 @@ SetTotalResultSize sets TotalResultSize field to given value.
 
 ### GetData
 
-`func (o *GetCustomerAchievementHistory200Response) GetData() []AchievementProgress`
+`func (o *GetCustomerAchievementHistory200Response) GetData() []CustomerAchievementHistoryEntry`
 
 GetData returns the Data field if non-nil, zero value otherwise.
 
 ### GetDataOk
 
-`func (o *GetCustomerAchievementHistory200Response) GetDataOk() (*[]AchievementProgress, bool)`
+`func (o *GetCustomerAchievementHistory200Response) GetDataOk() (*[]CustomerAchievementHistoryEntry, bool)`
 
 GetDataOk returns a tuple with the Data field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetData
 
-`func (o *GetCustomerAchievementHistory200Response) SetData(v []AchievementProgress)`
+`func (o *GetCustomerAchievementHistory200Response) SetData(v []CustomerAchievementHistoryEntry)`
 
 SetData sets Data field to given value.
 

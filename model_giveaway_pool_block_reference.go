@@ -23,7 +23,7 @@ type GiveawayPoolBlockReference struct {
 	// The unique identifier of the giveaway pool.
 	Id int64 `json:"id"`
 	// The display name of the giveaway pool.
-	Name                 string `json:"name"`
+	Name                 *string `json:"name,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -33,10 +33,9 @@ type _GiveawayPoolBlockReference GiveawayPoolBlockReference
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildGiveawayPoolBlockReference(id int64, name string) *GiveawayPoolBlockReference {
+func BuildGiveawayPoolBlockReference(id int64) *GiveawayPoolBlockReference {
 	this := GiveawayPoolBlockReference{}
 	this.Id = id
-	this.Name = name
 	return &this
 }
 
@@ -72,28 +71,36 @@ func (o *GiveawayPoolBlockReference) SetId(v int64) {
 	o.Id = v
 }
 
-// GetName returns the Name field value
+// GetName returns the Name field value if set, zero value otherwise.
 func (o *GiveawayPoolBlockReference) GetName() string {
-	if o == nil {
+	if o == nil || IsNil(o.Name) {
 		var ret string
 		return ret
 	}
-
-	return o.Name
+	return *o.Name
 }
 
-// GetNameOk returns a tuple with the Name field value
+// GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *GiveawayPoolBlockReference) GetNameOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Name) {
 		return nil, false
 	}
-	return &o.Name, true
+	return o.Name, true
 }
 
-// SetName sets field value
+// HasName returns a boolean if a field has been set.
+func (o *GiveawayPoolBlockReference) HasName() bool {
+	if o != nil && !IsNil(o.Name) {
+		return true
+	}
+
+	return false
+}
+
+// SetName gets a reference to the given string and assigns it to the Name field.
 func (o *GiveawayPoolBlockReference) SetName(v string) {
-	o.Name = v
+	o.Name = &v
 }
 
 func (o GiveawayPoolBlockReference) MarshalJSON() ([]byte, error) {
@@ -107,7 +114,9 @@ func (o GiveawayPoolBlockReference) MarshalJSON() ([]byte, error) {
 func (o GiveawayPoolBlockReference) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["id"] = o.Id
-	toSerialize["name"] = o.Name
+	if !IsNil(o.Name) {
+		toSerialize["name"] = o.Name
+	}
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value
@@ -122,7 +131,6 @@ func (o *GiveawayPoolBlockReference) UnmarshalJSON(data []byte) (err error) {
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
 		"id",
-		"name",
 	}
 
 	allProperties := make(map[string]interface{})

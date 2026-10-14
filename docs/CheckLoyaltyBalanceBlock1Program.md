@@ -5,14 +5,14 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **int64** | The ID of the loyalty program. | 
-**Name** | **string** | The internal name of the loyalty program. | 
-**Title** | **string** | The display name of the loyalty program. | 
+**Name** | Pointer to **string** | The internal name of the loyalty program. | [optional] [readonly] 
+**Title** | Pointer to **string** | The display name of the loyalty program. | [optional] [readonly] 
 
 ## Methods
 
 ### NewCheckLoyaltyBalanceBlock1Program
 
-`func NewCheckLoyaltyBalanceBlock1Program(id int64, name string, title string, ) *CheckLoyaltyBalanceBlock1Program`
+`func NewCheckLoyaltyBalanceBlock1Program(id int64, ) *CheckLoyaltyBalanceBlock1Program`
 
 NewCheckLoyaltyBalanceBlock1Program instantiates a new CheckLoyaltyBalanceBlock1Program object
 This constructor will assign default values to properties that have it defined,
@@ -66,6 +66,11 @@ and a boolean to check if the value has been set.
 
 SetName sets Name field to given value.
 
+### HasName
+
+`func (o *CheckLoyaltyBalanceBlock1Program) HasName() bool`
+
+HasName returns a boolean if a field has been set.
 
 ### GetTitle
 
@@ -86,6 +91,11 @@ and a boolean to check if the value has been set.
 
 SetTitle sets Title field to given value.
 
+### HasTitle
+
+`func (o *CheckLoyaltyBalanceBlock1Program) HasTitle() bool`
+
+HasTitle returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

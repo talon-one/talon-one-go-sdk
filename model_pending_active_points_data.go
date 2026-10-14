@@ -35,6 +35,12 @@ type PendingActivePointsData struct {
 	ExpireOn *time.Time `json:"ExpireOn,omitempty"`
 	// The integration ID of the session through which the points were earned.
 	SessionIntegrationID *string `json:"SessionIntegrationID,omitempty"`
+	// The timestamp when the loyalty transaction occurred.
+	Created *time.Time `json:"Created,omitempty"`
+	// Indicates whether the points have an action-based start date. This property is returned only for point transactions with an action-based start date.
+	AwaitsActivation *bool `json:"AwaitsActivation,omitempty"`
+	// The duration for which the points remain active, relative to the activation date.  **Note**: This only applies to points for which `AwaitsActivation` is `true` and `ExpireOn` is not set.
+	ValidityDuration     *string `json:"ValidityDuration,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -255,6 +261,102 @@ func (o *PendingActivePointsData) SetSessionIntegrationID(v string) {
 	o.SessionIntegrationID = &v
 }
 
+// GetCreated returns the Created field value if set, zero value otherwise.
+func (o *PendingActivePointsData) GetCreated() time.Time {
+	if o == nil || IsNil(o.Created) {
+		var ret time.Time
+		return ret
+	}
+	return *o.Created
+}
+
+// GetCreatedOk returns a tuple with the Created field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PendingActivePointsData) GetCreatedOk() (*time.Time, bool) {
+	if o == nil || IsNil(o.Created) {
+		return nil, false
+	}
+	return o.Created, true
+}
+
+// HasCreated returns a boolean if a field has been set.
+func (o *PendingActivePointsData) HasCreated() bool {
+	if o != nil && !IsNil(o.Created) {
+		return true
+	}
+
+	return false
+}
+
+// SetCreated gets a reference to the given time.Time and assigns it to the Created field.
+func (o *PendingActivePointsData) SetCreated(v time.Time) {
+	o.Created = &v
+}
+
+// GetAwaitsActivation returns the AwaitsActivation field value if set, zero value otherwise.
+func (o *PendingActivePointsData) GetAwaitsActivation() bool {
+	if o == nil || IsNil(o.AwaitsActivation) {
+		var ret bool
+		return ret
+	}
+	return *o.AwaitsActivation
+}
+
+// GetAwaitsActivationOk returns a tuple with the AwaitsActivation field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PendingActivePointsData) GetAwaitsActivationOk() (*bool, bool) {
+	if o == nil || IsNil(o.AwaitsActivation) {
+		return nil, false
+	}
+	return o.AwaitsActivation, true
+}
+
+// HasAwaitsActivation returns a boolean if a field has been set.
+func (o *PendingActivePointsData) HasAwaitsActivation() bool {
+	if o != nil && !IsNil(o.AwaitsActivation) {
+		return true
+	}
+
+	return false
+}
+
+// SetAwaitsActivation gets a reference to the given bool and assigns it to the AwaitsActivation field.
+func (o *PendingActivePointsData) SetAwaitsActivation(v bool) {
+	o.AwaitsActivation = &v
+}
+
+// GetValidityDuration returns the ValidityDuration field value if set, zero value otherwise.
+func (o *PendingActivePointsData) GetValidityDuration() string {
+	if o == nil || IsNil(o.ValidityDuration) {
+		var ret string
+		return ret
+	}
+	return *o.ValidityDuration
+}
+
+// GetValidityDurationOk returns a tuple with the ValidityDuration field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PendingActivePointsData) GetValidityDurationOk() (*string, bool) {
+	if o == nil || IsNil(o.ValidityDuration) {
+		return nil, false
+	}
+	return o.ValidityDuration, true
+}
+
+// HasValidityDuration returns a boolean if a field has been set.
+func (o *PendingActivePointsData) HasValidityDuration() bool {
+	if o != nil && !IsNil(o.ValidityDuration) {
+		return true
+	}
+
+	return false
+}
+
+// SetValidityDuration gets a reference to the given string and assigns it to the ValidityDuration field.
+func (o *PendingActivePointsData) SetValidityDuration(v string) {
+	o.ValidityDuration = &v
+}
+
 func (o PendingActivePointsData) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -277,6 +379,15 @@ func (o PendingActivePointsData) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.SessionIntegrationID) {
 		toSerialize["SessionIntegrationID"] = o.SessionIntegrationID
+	}
+	if !IsNil(o.Created) {
+		toSerialize["Created"] = o.Created
+	}
+	if !IsNil(o.AwaitsActivation) {
+		toSerialize["AwaitsActivation"] = o.AwaitsActivation
+	}
+	if !IsNil(o.ValidityDuration) {
+		toSerialize["ValidityDuration"] = o.ValidityDuration
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -331,6 +442,9 @@ func (o *PendingActivePointsData) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "ActiveOn")
 		delete(additionalProperties, "ExpireOn")
 		delete(additionalProperties, "SessionIntegrationID")
+		delete(additionalProperties, "Created")
+		delete(additionalProperties, "AwaitsActivation")
+		delete(additionalProperties, "ValidityDuration")
 		o.AdditionalProperties = additionalProperties
 	}
 

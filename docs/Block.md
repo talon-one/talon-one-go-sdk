@@ -18,7 +18,7 @@ Name | Type | Description | Notes
 **Expression** | **[]interface{}** | The raw Talang expression as an array. For a function call, the first element is the function name and subsequent elements are its arguments. For any other expression (for example a bare attribute path or a literal value), this is a single-element array containing that value. | 
 **NotificationType** | **string** | The type of notification to display. | 
 **Title** | **string** | The notification heading shown to the customer. | 
-**Body** | Pointer to **string** | The notification body text. Supports template placeholders (e.g. \&quot;{{$Session.Total}}\&quot;) evaluated at rule execution time. | [optional] 
+**Body** | **string** | The notification body text. Supports template placeholders (e.g. \&quot;{{$Session.Total}}\&quot;) evaluated at rule execution time. | 
 **Sku** | **string** | The stock keeping unit of the item to award. | 
 **Quantity** | **string** | The number of items to award. Supports template placeholders (e.g. \&quot;{{$Session.Total / 2}}\&quot;) for dynamic quantities. | 
 **GiveawayPool** | [**GiveawayPoolBlockReference**](GiveawayPoolBlockReference.md) | The giveaway pool from which an item is awarded. | 
@@ -26,7 +26,7 @@ Name | Type | Description | Notes
 **Audience** | [**AudienceBlockReference**](AudienceBlockReference.md) | The audience to add the customer to or remove them from. | 
 **Program** | [**RedeemLoyaltyPointsBlock1Program**](RedeemLoyaltyPointsBlock1Program.md) |  | 
 **Subledger** | **string** | The name of the subledger to deduct points from. Can be empty if this block deducts from the loyalty program&#39;s main ledger instead of a subledger. | 
-**Balance** | **string** | The type of balance to check:  - &#x60;current&#x60; is the sum of currently active points  - &#x60;pending&#x60; is the sum of pending points.  - &#x60;negative&#x60; is the sum of negative points.  - &#x60;tentativeCurrent&#x60; is the tentative points balance within the current open customer session. | 
+**Balance** | **string** | The type of balance to check:  - &#x60;current&#x60; is the sum of currently active points  - &#x60;pending&#x60; is the sum of pending points.  - &#x60;negative&#x60; is the sum of negative points. It cannot be used with a subledger.  - &#x60;tentativeCurrent&#x60; is the tentative points balance within the current open customer session. | 
 **Redeem** | **bool** | When &#x60;true&#x60;, the referral code is redeemed. | 
 **Achievement** | [**AchievementBlockReference**](AchievementBlockReference.md) | The achievement to check for. | 
 **Attribute** | [**AttributeBlockReference**](AttributeBlockReference.md) | The attribute being updated. | 
@@ -57,7 +57,7 @@ Name | Type | Description | Notes
 
 ### NewBlock
 
-`func NewBlock(type_ string, operator string, blocks []Block, name string, value RedeemLoyaltyPointsBlock1Value, partial bool, target AwardLoyaltyPointsTarget, expression []interface{}, notificationType string, title string, sku string, quantity string, giveawayPool GiveawayPoolBlockReference, profile string, audience AudienceBlockReference, program RedeemLoyaltyPointsBlock1Program, subledger string, balance string, redeem bool, achievement AchievementBlockReference, attribute AttributeBlockReference, webhook WebhookBlockReference, customEffect CustomEffectBlockReference, eventType string, action string, campaignId CreateReferralBlock1CampaignId, recipientId string, storeInSession bool, friendId string, recipient string, tier TierBlockReference, ) *Block`
+`func NewBlock(type_ string, operator string, blocks []Block, name string, value RedeemLoyaltyPointsBlock1Value, partial bool, target AwardLoyaltyPointsTarget, expression []interface{}, notificationType string, title string, body string, sku string, quantity string, giveawayPool GiveawayPoolBlockReference, profile string, audience AudienceBlockReference, program RedeemLoyaltyPointsBlock1Program, subledger string, balance string, redeem bool, achievement AchievementBlockReference, attribute AttributeBlockReference, webhook WebhookBlockReference, customEffect CustomEffectBlockReference, eventType string, action string, campaignId CreateReferralBlock1CampaignId, recipientId string, storeInSession bool, friendId string, recipient string, tier TierBlockReference, ) *Block`
 
 NewBlock instantiates a new Block object
 This constructor will assign default values to properties that have it defined,
@@ -391,11 +391,6 @@ and a boolean to check if the value has been set.
 
 SetBody sets Body field to given value.
 
-### HasBody
-
-`func (o *Block) HasBody() bool`
-
-HasBody returns a boolean if a field has been set.
 
 ### GetSku
 

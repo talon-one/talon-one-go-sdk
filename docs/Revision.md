@@ -5,15 +5,15 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **int64** | Unique ID for this entity. Not to be confused with the Integration ID, which is set by your integration layer and used in most endpoints. | 
-**ActivateAt** | Pointer to **time.Time** |  | [optional] 
-**AccountId** | **int64** |  | 
-**ApplicationId** | **int64** |  | 
-**CampaignId** | **int64** |  | 
-**Created** | **time.Time** |  | 
-**CreatedBy** | **int64** |  | 
-**ActivatedAt** | Pointer to **time.Time** |  | [optional] 
-**ActivatedBy** | Pointer to **int64** |  | [optional] 
-**CurrentVersion** | Pointer to [**RevisionVersion**](RevisionVersion.md) |  | [optional] 
+**ActivateAt** | Pointer to **time.Time** | Timestamp when the revision will be activated. | [optional] 
+**AccountId** | **int64** | The ID of the account that owns this entity. | 
+**ApplicationId** | **int64** | The ID of the Application that owns this entity. | 
+**CampaignId** | **int64** | The ID of the campaign that the revision was created from. | 
+**Created** | **time.Time** | Timestamp when the revision was created. | 
+**CreatedBy** | **int64** | The ID of the user who created this revision. | 
+**ActivatedAt** | Pointer to **time.Time** | Timestamp when this revision was activated. | [optional] 
+**ActivatedBy** | Pointer to **int64** | The ID of the user who activated this revision. | [optional] 
+**CurrentVersion** | Pointer to [**RevisionVersion**](RevisionVersion.md) | The current version of this revision. | [optional] 
 
 ## Methods
 

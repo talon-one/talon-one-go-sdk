@@ -7,14 +7,14 @@ Name | Type | Description | Notes
 **Id** | **int64** | The internal ID of the attribute. Reverts to &#x60;0&#x60; when the attribute is deleted or does not exist. | 
 **Entity** | **string** | The entity type that owns the attribute. Reverts to an empty string when the attribute is deleted or does not exist. | 
 **Name** | **string** | The attribute name as used in API requests. | 
-**Title** | **string** | The human-readable name of the attribute. | 
-**Type** | **string** | The data type of the attribute. | 
+**Title** | Pointer to **string** | The human-readable name of the attribute. | [optional] [readonly] 
+**Type** | Pointer to **string** | The data type of the attribute. | [optional] [readonly] 
 
 ## Methods
 
 ### NewAttributeBlockReference
 
-`func NewAttributeBlockReference(id int64, entity string, name string, title string, type_ string, ) *AttributeBlockReference`
+`func NewAttributeBlockReference(id int64, entity string, name string, ) *AttributeBlockReference`
 
 NewAttributeBlockReference instantiates a new AttributeBlockReference object
 This constructor will assign default values to properties that have it defined,
@@ -108,6 +108,11 @@ and a boolean to check if the value has been set.
 
 SetTitle sets Title field to given value.
 
+### HasTitle
+
+`func (o *AttributeBlockReference) HasTitle() bool`
+
+HasTitle returns a boolean if a field has been set.
 
 ### GetType
 
@@ -128,6 +133,11 @@ and a boolean to check if the value has been set.
 
 SetType sets Type field to given value.
 
+### HasType
+
+`func (o *AttributeBlockReference) HasType() bool`
+
+HasType returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

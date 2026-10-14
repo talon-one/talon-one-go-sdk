@@ -5,15 +5,15 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **int64** | The ID of the achievement. | 
-**Title** | **string** | The display name for the achievement in the Campaign Manager. | 
-**Name** | **string** | The internal name of the achievement used in API requests. | 
-**Target** | **float32** | The required number of actions or the transactional milestone to complete the achievement. | 
+**Title** | Pointer to **string** | The display name for the achievement in the Campaign Manager. | [optional] [readonly] 
+**Name** | Pointer to **string** | The internal name of the achievement used in API requests. | [optional] [readonly] 
+**Target** | Pointer to **float32** | The required number of actions or the transactional milestone to complete the achievement. | [optional] [readonly] 
 
 ## Methods
 
 ### NewAchievementBlockReference
 
-`func NewAchievementBlockReference(id int64, title string, name string, target float32, ) *AchievementBlockReference`
+`func NewAchievementBlockReference(id int64, ) *AchievementBlockReference`
 
 NewAchievementBlockReference instantiates a new AchievementBlockReference object
 This constructor will assign default values to properties that have it defined,
@@ -67,6 +67,11 @@ and a boolean to check if the value has been set.
 
 SetTitle sets Title field to given value.
 
+### HasTitle
+
+`func (o *AchievementBlockReference) HasTitle() bool`
+
+HasTitle returns a boolean if a field has been set.
 
 ### GetName
 
@@ -87,6 +92,11 @@ and a boolean to check if the value has been set.
 
 SetName sets Name field to given value.
 
+### HasName
+
+`func (o *AchievementBlockReference) HasName() bool`
+
+HasName returns a boolean if a field has been set.
 
 ### GetTarget
 
@@ -107,6 +117,11 @@ and a boolean to check if the value has been set.
 
 SetTarget sets Target field to given value.
 
+### HasTarget
+
+`func (o *AchievementBlockReference) HasTarget() bool`
+
+HasTarget returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

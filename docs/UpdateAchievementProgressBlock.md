@@ -8,14 +8,14 @@ Name | Type | Description | Notes
 **Type** | **string** | Identifies the block variant and determines which additional properties are present in it. | 
 **Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] [readonly] 
 **Operator** | **string** |  | 
-**Value** | **string** | The value to update the progress by. Supports template placeholders (e.g. \&quot;{{$Session.Total / 2}}\&quot;) for dynamic quantities. | 
+**Value** | [**UpdateAchievementProgressBlock1Value**](UpdateAchievementProgressBlock1Value.md) |  | 
 **Achievement** | [**AchievementBlockReference**](AchievementBlockReference.md) | The achievement to update. | 
 
 ## Methods
 
 ### NewUpdateAchievementProgressBlock
 
-`func NewUpdateAchievementProgressBlock(type_ string, operator string, value string, achievement AchievementBlockReference, ) *UpdateAchievementProgressBlock`
+`func NewUpdateAchievementProgressBlock(type_ string, operator string, value UpdateAchievementProgressBlock1Value, achievement AchievementBlockReference, ) *UpdateAchievementProgressBlock`
 
 NewUpdateAchievementProgressBlock instantiates a new UpdateAchievementProgressBlock object
 This constructor will assign default values to properties that have it defined,
@@ -122,20 +122,20 @@ SetOperator sets Operator field to given value.
 
 ### GetValue
 
-`func (o *UpdateAchievementProgressBlock) GetValue() string`
+`func (o *UpdateAchievementProgressBlock) GetValue() UpdateAchievementProgressBlock1Value`
 
 GetValue returns the Value field if non-nil, zero value otherwise.
 
 ### GetValueOk
 
-`func (o *UpdateAchievementProgressBlock) GetValueOk() (*string, bool)`
+`func (o *UpdateAchievementProgressBlock) GetValueOk() (*UpdateAchievementProgressBlock1Value, bool)`
 
 GetValueOk returns a tuple with the Value field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetValue
 
-`func (o *UpdateAchievementProgressBlock) SetValue(v string)`
+`func (o *UpdateAchievementProgressBlock) SetValue(v UpdateAchievementProgressBlock1Value)`
 
 SetValue sets Value field to given value.
 

@@ -23,11 +23,11 @@ type AchievementBlockReference struct {
 	// The ID of the achievement.
 	Id int64 `json:"id"`
 	// The display name for the achievement in the Campaign Manager.
-	Title string `json:"title"`
+	Title *string `json:"title,omitempty"`
 	// The internal name of the achievement used in API requests.
-	Name string `json:"name"`
+	Name *string `json:"name,omitempty"`
 	// The required number of actions or the transactional milestone to complete the achievement.
-	Target               float32 `json:"target"`
+	Target               *float32 `json:"target,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -37,12 +37,9 @@ type _AchievementBlockReference AchievementBlockReference
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildAchievementBlockReference(id int64, title string, name string, target float32) *AchievementBlockReference {
+func BuildAchievementBlockReference(id int64) *AchievementBlockReference {
 	this := AchievementBlockReference{}
 	this.Id = id
-	this.Title = title
-	this.Name = name
-	this.Target = target
 	return &this
 }
 
@@ -78,76 +75,100 @@ func (o *AchievementBlockReference) SetId(v int64) {
 	o.Id = v
 }
 
-// GetTitle returns the Title field value
+// GetTitle returns the Title field value if set, zero value otherwise.
 func (o *AchievementBlockReference) GetTitle() string {
-	if o == nil {
+	if o == nil || IsNil(o.Title) {
 		var ret string
 		return ret
 	}
-
-	return o.Title
+	return *o.Title
 }
 
-// GetTitleOk returns a tuple with the Title field value
+// GetTitleOk returns a tuple with the Title field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AchievementBlockReference) GetTitleOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Title) {
 		return nil, false
 	}
-	return &o.Title, true
+	return o.Title, true
 }
 
-// SetTitle sets field value
+// HasTitle returns a boolean if a field has been set.
+func (o *AchievementBlockReference) HasTitle() bool {
+	if o != nil && !IsNil(o.Title) {
+		return true
+	}
+
+	return false
+}
+
+// SetTitle gets a reference to the given string and assigns it to the Title field.
 func (o *AchievementBlockReference) SetTitle(v string) {
-	o.Title = v
+	o.Title = &v
 }
 
-// GetName returns the Name field value
+// GetName returns the Name field value if set, zero value otherwise.
 func (o *AchievementBlockReference) GetName() string {
-	if o == nil {
+	if o == nil || IsNil(o.Name) {
 		var ret string
 		return ret
 	}
-
-	return o.Name
+	return *o.Name
 }
 
-// GetNameOk returns a tuple with the Name field value
+// GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AchievementBlockReference) GetNameOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Name) {
 		return nil, false
 	}
-	return &o.Name, true
+	return o.Name, true
 }
 
-// SetName sets field value
+// HasName returns a boolean if a field has been set.
+func (o *AchievementBlockReference) HasName() bool {
+	if o != nil && !IsNil(o.Name) {
+		return true
+	}
+
+	return false
+}
+
+// SetName gets a reference to the given string and assigns it to the Name field.
 func (o *AchievementBlockReference) SetName(v string) {
-	o.Name = v
+	o.Name = &v
 }
 
-// GetTarget returns the Target field value
+// GetTarget returns the Target field value if set, zero value otherwise.
 func (o *AchievementBlockReference) GetTarget() float32 {
-	if o == nil {
+	if o == nil || IsNil(o.Target) {
 		var ret float32
 		return ret
 	}
-
-	return o.Target
+	return *o.Target
 }
 
-// GetTargetOk returns a tuple with the Target field value
+// GetTargetOk returns a tuple with the Target field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AchievementBlockReference) GetTargetOk() (*float32, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Target) {
 		return nil, false
 	}
-	return &o.Target, true
+	return o.Target, true
 }
 
-// SetTarget sets field value
+// HasTarget returns a boolean if a field has been set.
+func (o *AchievementBlockReference) HasTarget() bool {
+	if o != nil && !IsNil(o.Target) {
+		return true
+	}
+
+	return false
+}
+
+// SetTarget gets a reference to the given float32 and assigns it to the Target field.
 func (o *AchievementBlockReference) SetTarget(v float32) {
-	o.Target = v
+	o.Target = &v
 }
 
 func (o AchievementBlockReference) MarshalJSON() ([]byte, error) {
@@ -161,9 +182,15 @@ func (o AchievementBlockReference) MarshalJSON() ([]byte, error) {
 func (o AchievementBlockReference) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["id"] = o.Id
-	toSerialize["title"] = o.Title
-	toSerialize["name"] = o.Name
-	toSerialize["target"] = o.Target
+	if !IsNil(o.Title) {
+		toSerialize["title"] = o.Title
+	}
+	if !IsNil(o.Name) {
+		toSerialize["name"] = o.Name
+	}
+	if !IsNil(o.Target) {
+		toSerialize["target"] = o.Target
+	}
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value
@@ -178,9 +205,6 @@ func (o *AchievementBlockReference) UnmarshalJSON(data []byte) (err error) {
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
 		"id",
-		"title",
-		"name",
-		"target",
 	}
 
 	allProperties := make(map[string]interface{})

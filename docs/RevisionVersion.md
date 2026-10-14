@@ -6,11 +6,11 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **int64** | Unique ID for this entity. Not to be confused with the Integration ID, which is set by your integration layer and used in most endpoints. | 
 **Name** | Pointer to **string** | A user-facing name for this campaign. | [optional] 
-**StartTime** | Pointer to **time.Time** | Timestamp when the campaign will become active. | [optional] 
-**EndTime** | Pointer to **time.Time** | Timestamp when the campaign will become inactive. | [optional] 
+**StartTime** | Pointer to **NullableTime** | Timestamp when the campaign will become active. | [optional] 
+**EndTime** | Pointer to **NullableTime** | Timestamp when the campaign will become inactive. | [optional] 
 **Attributes** | Pointer to **map[string]interface{}** | Arbitrary properties associated with this campaign. | [optional] 
-**Description** | Pointer to **string** | A detailed description of the campaign. | [optional] 
-**ActiveRulesetId** | Pointer to **int32** | The ID of the ruleset this campaign will use. | [optional] 
+**Description** | Pointer to **NullableString** | A detailed description of the campaign. | [optional] 
+**ActiveRulesetId** | Pointer to **NullableInt32** | The ID of the ruleset this campaign will use. | [optional] 
 **Tags** | Pointer to **[]string** | A list of tags for the campaign. | [optional] 
 **CouponSettings** | Pointer to [**CodeGeneratorSettings**](CodeGeneratorSettings.md) |  | [optional] 
 **ReferralSettings** | Pointer to [**CodeGeneratorSettings**](CodeGeneratorSettings.md) |  | [optional] 
@@ -18,13 +18,13 @@ Name | Type | Description | Notes
 **ReevaluateOnReturn** | Pointer to **bool** | Indicates whether this campaign should be reevaluated when a customer returns an item. | [optional] 
 **Features** | Pointer to **[]string** | A list of features for the campaign. | [optional] 
 **CouponAttributes** | Pointer to **map[string]interface{}** | Arbitrary properties associated with coupons in this campaign. | [optional] 
-**AccountId** | **int64** |  | 
-**ApplicationId** | **int64** |  | 
-**CampaignId** | **int64** |  | 
-**Created** | **time.Time** |  | 
-**CreatedBy** | **int64** |  | 
-**RevisionId** | **int64** |  | 
-**Version** | **int64** |  | 
+**AccountId** | **int64** | The ID of the account that owns this entity. | 
+**ApplicationId** | **int64** | The ID of the Application that owns this entity. | 
+**CampaignId** | **int64** | The ID of the campaign that the revision was created from. | 
+**Created** | **time.Time** | Timestamp when the revision was created. | 
+**CreatedBy** | **int64** | The ID of the user who created this revision. | 
+**RevisionId** | **int64** | The ID of the revision. | 
+**Version** | **int64** | Incrementing number representing how many revisions have been activated on this campaign. Starts from &#x60;0&#x60; for a new campaign.  | 
 
 ## Methods
 
@@ -115,6 +115,16 @@ SetStartTime sets StartTime field to given value.
 
 HasStartTime returns a boolean if a field has been set.
 
+### SetStartTimeNil
+
+`func (o *RevisionVersion) SetStartTimeNil(b bool)`
+
+ SetStartTimeNil sets the value for StartTime to be an explicit nil
+
+### UnsetStartTime
+`func (o *RevisionVersion) UnsetStartTime()`
+
+UnsetStartTime ensures that no value is present for StartTime, not even an explicit nil
 ### GetEndTime
 
 `func (o *RevisionVersion) GetEndTime() time.Time`
@@ -140,6 +150,16 @@ SetEndTime sets EndTime field to given value.
 
 HasEndTime returns a boolean if a field has been set.
 
+### SetEndTimeNil
+
+`func (o *RevisionVersion) SetEndTimeNil(b bool)`
+
+ SetEndTimeNil sets the value for EndTime to be an explicit nil
+
+### UnsetEndTime
+`func (o *RevisionVersion) UnsetEndTime()`
+
+UnsetEndTime ensures that no value is present for EndTime, not even an explicit nil
 ### GetAttributes
 
 `func (o *RevisionVersion) GetAttributes() map[string]interface{}`
@@ -190,6 +210,16 @@ SetDescription sets Description field to given value.
 
 HasDescription returns a boolean if a field has been set.
 
+### SetDescriptionNil
+
+`func (o *RevisionVersion) SetDescriptionNil(b bool)`
+
+ SetDescriptionNil sets the value for Description to be an explicit nil
+
+### UnsetDescription
+`func (o *RevisionVersion) UnsetDescription()`
+
+UnsetDescription ensures that no value is present for Description, not even an explicit nil
 ### GetActiveRulesetId
 
 `func (o *RevisionVersion) GetActiveRulesetId() int32`
@@ -215,6 +245,16 @@ SetActiveRulesetId sets ActiveRulesetId field to given value.
 
 HasActiveRulesetId returns a boolean if a field has been set.
 
+### SetActiveRulesetIdNil
+
+`func (o *RevisionVersion) SetActiveRulesetIdNil(b bool)`
+
+ SetActiveRulesetIdNil sets the value for ActiveRulesetId to be an explicit nil
+
+### UnsetActiveRulesetId
+`func (o *RevisionVersion) UnsetActiveRulesetId()`
+
+UnsetActiveRulesetId ensures that no value is present for ActiveRulesetId, not even an explicit nil
 ### GetTags
 
 `func (o *RevisionVersion) GetTags() []string`
