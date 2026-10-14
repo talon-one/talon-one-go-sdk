@@ -31,9 +31,7 @@ type ShowNotificationBlock struct {
 	// The notification heading shown to the customer.
 	Title string `json:"title"`
 	// The notification body text. Supports template placeholders (e.g. \"{{$Session.Total}}\") evaluated at rule execution time.
-	Body *string `json:"body,omitempty"`
-	// Blocks evaluated when this block fails or returns false.
-	OnFailure []Block `json:"onFailure,omitempty"`
+	Body string `json:"body"`
 	// Named error handlers evaluated when a specific error occurs.
 	OnError              map[string][]Block `json:"onError,omitempty"`
 	AdditionalProperties map[string]interface{}
@@ -45,11 +43,12 @@ type _ShowNotificationBlock ShowNotificationBlock
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildShowNotificationBlock(type_ string, notificationType string, title string) *ShowNotificationBlock {
+func BuildShowNotificationBlock(type_ string, notificationType string, title string, body string) *ShowNotificationBlock {
 	this := ShowNotificationBlock{}
 	this.Type = type_
 	this.NotificationType = notificationType
 	this.Title = title
+	this.Body = body
 	return &this
 }
 
@@ -197,68 +196,28 @@ func (o *ShowNotificationBlock) SetTitle(v string) {
 	o.Title = v
 }
 
-// GetBody returns the Body field value if set, zero value otherwise.
+// GetBody returns the Body field value
 func (o *ShowNotificationBlock) GetBody() string {
-	if o == nil || IsNil(o.Body) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.Body
+
+	return o.Body
 }
 
-// GetBodyOk returns a tuple with the Body field value if set, nil otherwise
+// GetBodyOk returns a tuple with the Body field value
 // and a boolean to check if the value has been set.
 func (o *ShowNotificationBlock) GetBodyOk() (*string, bool) {
-	if o == nil || IsNil(o.Body) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Body, true
+	return &o.Body, true
 }
 
-// HasBody returns a boolean if a field has been set.
-func (o *ShowNotificationBlock) HasBody() bool {
-	if o != nil && !IsNil(o.Body) {
-		return true
-	}
-
-	return false
-}
-
-// SetBody gets a reference to the given string and assigns it to the Body field.
+// SetBody sets field value
 func (o *ShowNotificationBlock) SetBody(v string) {
-	o.Body = &v
-}
-
-// GetOnFailure returns the OnFailure field value if set, zero value otherwise.
-func (o *ShowNotificationBlock) GetOnFailure() []Block {
-	if o == nil || IsNil(o.OnFailure) {
-		var ret []Block
-		return ret
-	}
-	return o.OnFailure
-}
-
-// GetOnFailureOk returns a tuple with the OnFailure field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *ShowNotificationBlock) GetOnFailureOk() ([]Block, bool) {
-	if o == nil || IsNil(o.OnFailure) {
-		return nil, false
-	}
-	return o.OnFailure, true
-}
-
-// HasOnFailure returns a boolean if a field has been set.
-func (o *ShowNotificationBlock) HasOnFailure() bool {
-	if o != nil && !IsNil(o.OnFailure) {
-		return true
-	}
-
-	return false
-}
-
-// SetOnFailure gets a reference to the given []Block and assigns it to the OnFailure field.
-func (o *ShowNotificationBlock) SetOnFailure(v []Block) {
-	o.OnFailure = v
+	o.Body = v
 }
 
 // GetOnError returns the OnError field value if set, zero value otherwise.
@@ -312,12 +271,7 @@ func (o ShowNotificationBlock) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["notificationType"] = o.NotificationType
 	toSerialize["title"] = o.Title
-	if !IsNil(o.Body) {
-		toSerialize["body"] = o.Body
-	}
-	if !IsNil(o.OnFailure) {
-		toSerialize["onFailure"] = o.OnFailure
-	}
+	toSerialize["body"] = o.Body
 	if !IsNil(o.OnError) {
 		toSerialize["onError"] = o.OnError
 	}
@@ -337,6 +291,7 @@ func (o *ShowNotificationBlock) UnmarshalJSON(data []byte) (err error) {
 		"type",
 		"notificationType",
 		"title",
+		"body",
 	}
 
 	allProperties := make(map[string]interface{})
@@ -372,7 +327,6 @@ func (o *ShowNotificationBlock) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "notificationType")
 		delete(additionalProperties, "title")
 		delete(additionalProperties, "body")
-		delete(additionalProperties, "onFailure")
 		delete(additionalProperties, "onError")
 		o.AdditionalProperties = additionalProperties
 	}

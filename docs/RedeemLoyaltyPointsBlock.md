@@ -11,7 +11,6 @@ Name | Type | Description | Notes
 **Subledger** | **string** | The name of the subledger to deduct points from. Can be empty if this block deducts from the loyalty program&#39;s main ledger instead of a subledger. | 
 **Value** | [**RedeemLoyaltyPointsBlock1Value**](RedeemLoyaltyPointsBlock1Value.md) |  | 
 **Name** | Pointer to **string** | A custom description recorded as the reason for the point deduction. | [optional] 
-**OnFailure** | Pointer to [**[]Block**](Block.md) | Promotion blocks evaluated when this block fails or returns false. | [optional] 
 
 ## Methods
 
@@ -186,31 +185,6 @@ SetName sets Name field to given value.
 `func (o *RedeemLoyaltyPointsBlock) HasName() bool`
 
 HasName returns a boolean if a field has been set.
-
-### GetOnFailure
-
-`func (o *RedeemLoyaltyPointsBlock) GetOnFailure() []Block`
-
-GetOnFailure returns the OnFailure field if non-nil, zero value otherwise.
-
-### GetOnFailureOk
-
-`func (o *RedeemLoyaltyPointsBlock) GetOnFailureOk() (*[]Block, bool)`
-
-GetOnFailureOk returns a tuple with the OnFailure field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetOnFailure
-
-`func (o *RedeemLoyaltyPointsBlock) SetOnFailure(v []Block)`
-
-SetOnFailure sets OnFailure field to given value.
-
-### HasOnFailure
-
-`func (o *RedeemLoyaltyPointsBlock) HasOnFailure() bool`
-
-HasOnFailure returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

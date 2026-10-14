@@ -23,9 +23,9 @@ type CustomEffectBlockReference struct {
 	// The unique identifier of the custom effect.
 	Id int64 `json:"id"`
 	// The name of the custom effect, as used in API requests.
-	Name string `json:"name"`
+	Name *string `json:"name,omitempty"`
 	// The display name of the custom effect.
-	Title                string `json:"title"`
+	Title                *string `json:"title,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -35,11 +35,9 @@ type _CustomEffectBlockReference CustomEffectBlockReference
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCustomEffectBlockReference(id int64, name string, title string) *CustomEffectBlockReference {
+func BuildCustomEffectBlockReference(id int64) *CustomEffectBlockReference {
 	this := CustomEffectBlockReference{}
 	this.Id = id
-	this.Name = name
-	this.Title = title
 	return &this
 }
 
@@ -75,52 +73,68 @@ func (o *CustomEffectBlockReference) SetId(v int64) {
 	o.Id = v
 }
 
-// GetName returns the Name field value
+// GetName returns the Name field value if set, zero value otherwise.
 func (o *CustomEffectBlockReference) GetName() string {
-	if o == nil {
+	if o == nil || IsNil(o.Name) {
 		var ret string
 		return ret
 	}
-
-	return o.Name
+	return *o.Name
 }
 
-// GetNameOk returns a tuple with the Name field value
+// GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CustomEffectBlockReference) GetNameOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Name) {
 		return nil, false
 	}
-	return &o.Name, true
+	return o.Name, true
 }
 
-// SetName sets field value
+// HasName returns a boolean if a field has been set.
+func (o *CustomEffectBlockReference) HasName() bool {
+	if o != nil && !IsNil(o.Name) {
+		return true
+	}
+
+	return false
+}
+
+// SetName gets a reference to the given string and assigns it to the Name field.
 func (o *CustomEffectBlockReference) SetName(v string) {
-	o.Name = v
+	o.Name = &v
 }
 
-// GetTitle returns the Title field value
+// GetTitle returns the Title field value if set, zero value otherwise.
 func (o *CustomEffectBlockReference) GetTitle() string {
-	if o == nil {
+	if o == nil || IsNil(o.Title) {
 		var ret string
 		return ret
 	}
-
-	return o.Title
+	return *o.Title
 }
 
-// GetTitleOk returns a tuple with the Title field value
+// GetTitleOk returns a tuple with the Title field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CustomEffectBlockReference) GetTitleOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Title) {
 		return nil, false
 	}
-	return &o.Title, true
+	return o.Title, true
 }
 
-// SetTitle sets field value
+// HasTitle returns a boolean if a field has been set.
+func (o *CustomEffectBlockReference) HasTitle() bool {
+	if o != nil && !IsNil(o.Title) {
+		return true
+	}
+
+	return false
+}
+
+// SetTitle gets a reference to the given string and assigns it to the Title field.
 func (o *CustomEffectBlockReference) SetTitle(v string) {
-	o.Title = v
+	o.Title = &v
 }
 
 func (o CustomEffectBlockReference) MarshalJSON() ([]byte, error) {
@@ -134,8 +148,12 @@ func (o CustomEffectBlockReference) MarshalJSON() ([]byte, error) {
 func (o CustomEffectBlockReference) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["id"] = o.Id
-	toSerialize["name"] = o.Name
-	toSerialize["title"] = o.Title
+	if !IsNil(o.Name) {
+		toSerialize["name"] = o.Name
+	}
+	if !IsNil(o.Title) {
+		toSerialize["title"] = o.Title
+	}
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value
@@ -150,8 +168,6 @@ func (o *CustomEffectBlockReference) UnmarshalJSON(data []byte) (err error) {
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
 		"id",
-		"name",
-		"title",
 	}
 
 	allProperties := make(map[string]interface{})

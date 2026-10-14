@@ -3009,7 +3009,7 @@ CreateRulesetV2 Create ruleset (V2)
 
 Create a ruleset from promotion and strikethrough rules in the V2 JSON block format. A ruleset is a revision of all the rules of a campaign.
 
-Only `group` and `passthrough` blocks are currently writable, with optional `onFailure` blocks. A payload containing any other block type is rejected. Each rule's `blocks` array may contain at most one block.
+Only the first block of a rule can be a condition. Every other block must be an effect.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param applicationId The ID of the Application. It is displayed in your Talon.One deployment URL.
@@ -8332,7 +8332,7 @@ func (r ApiExportLoyaltyBalancesRequest) Balances(balances string) ApiExportLoya
 	return r
 }
 
-// Filter results by an array of subledger IDs. If no value is provided, the export includes all subledgers and main ledger data for the specified loyalty program.  To specify the main ledger, provide an empty string (\&quot;\&quot;).
+// Filters the results to specific subledgers.  **Note:** - When this parameter is not provided, the export includes all subledgers   and main ledger data for the specified loyalty program.
 func (r ApiExportLoyaltyBalancesRequest) SubledgerIds(subledgerIds []string) ApiExportLoyaltyBalancesRequest {
 	r.subledgerIds = &subledgerIds
 	return r
@@ -8351,7 +8351,7 @@ program.
 > [!tip] If the exported CSV file is too large to view, you can
 > [split it into multiple files](https://www.google.com/search?q=split+CSV+into+multiple+files).
 
-The generated file can contain the following columns:
+The generated file contains the following columns:
 
 - `loyaltyProgramID`: The ID of the loyalty program.
 - `loyaltySubledger`: The name of the subledger, when applicable.
@@ -8361,6 +8361,7 @@ The generated file can contain the following columns:
 - `expiredBalance`: The number of expired points.
 - `spentBalance`: The number of spent points.
 - `currentTier`: The tier that the customer is in at the time of the export.
+- `negativeBalance`: The number of negative points. Only contains a value when requested via `balances` and the program uses negative points.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param loyaltyProgramId The identifier for the loyalty program.
@@ -11716,13 +11717,14 @@ func (a *ManagementAPIService) GetApplicationCustomerFriendsExecute(r ApiGetAppl
 }
 
 type ApiGetApplicationCustomersRequest struct {
-	ctx                 context.Context
-	ApiService          *ManagementAPIService
-	applicationId       int64
-	integrationId       *string
-	pageSize            *int64
-	skip                *int64
-	withTotalResultSize *bool
+	ctx                    context.Context
+	ApiService             *ManagementAPIService
+	applicationId          int64
+	integrationId          *string
+	pageSize               *int64
+	skip                   *int64
+	withTotalResultSize    *bool
+	withLoyaltyMemberships *bool
 }
 
 // Filter results performing an exact matching against the profile integration identifier.
@@ -11746,6 +11748,12 @@ func (r ApiGetApplicationCustomersRequest) Skip(skip int64) ApiGetApplicationCus
 // When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query. - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.
 func (r ApiGetApplicationCustomersRequest) WithTotalResultSize(withTotalResultSize bool) ApiGetApplicationCustomersRequest {
 	r.withTotalResultSize = &withTotalResultSize
+	return r
+}
+
+// When set to &#x60;true&#x60;, the &#x60;loyaltyProgramJoinDates&#x60; property returns the dates on which each customer joined the profile-based loyalty programs they are part of. This might decrease performance on large data sets.
+func (r ApiGetApplicationCustomersRequest) WithLoyaltyMemberships(withLoyaltyMemberships bool) ApiGetApplicationCustomersRequest {
+	r.withLoyaltyMemberships = &withLoyaltyMemberships
 	return r
 }
 
@@ -11808,6 +11816,9 @@ func (a *ManagementAPIService) GetApplicationCustomersExecute(r ApiGetApplicatio
 	}
 	if r.withTotalResultSize != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "withTotalResultSize", r.withTotalResultSize, "form", "")
+	}
+	if r.withLoyaltyMemberships != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "withLoyaltyMemberships", r.withLoyaltyMemberships, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -11885,6 +11896,7 @@ type ApiGetApplicationCustomersByAttributesRequest struct {
 	pageSize                   *int64
 	skip                       *int64
 	withTotalResultSize        *bool
+	withLoyaltyMemberships     *bool
 }
 
 // body
@@ -11908,6 +11920,12 @@ func (r ApiGetApplicationCustomersByAttributesRequest) Skip(skip int64) ApiGetAp
 // When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query. - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.
 func (r ApiGetApplicationCustomersByAttributesRequest) WithTotalResultSize(withTotalResultSize bool) ApiGetApplicationCustomersByAttributesRequest {
 	r.withTotalResultSize = &withTotalResultSize
+	return r
+}
+
+// When set to &#x60;true&#x60;, the &#x60;loyaltyProgramJoinDates&#x60; property returns the dates on which each customer joined the profile-based loyalty programs they are part of. This might decrease performance on large data sets.
+func (r ApiGetApplicationCustomersByAttributesRequest) WithLoyaltyMemberships(withLoyaltyMemberships bool) ApiGetApplicationCustomersByAttributesRequest {
+	r.withLoyaltyMemberships = &withLoyaltyMemberships
 	return r
 }
 
@@ -11972,6 +11990,9 @@ func (a *ManagementAPIService) GetApplicationCustomersByAttributesExecute(r ApiG
 	}
 	if r.withTotalResultSize != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "withTotalResultSize", r.withTotalResultSize, "form", "")
+	}
+	if r.withLoyaltyMemberships != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "withLoyaltyMemberships", r.withLoyaltyMemberships, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -15906,6 +15927,131 @@ func (a *ManagementAPIService) GetCouponsWithoutTotalCountExecute(r ApiGetCoupon
 		parameterAddToHeaderOrQuery(localVarQueryParams, "valuesOnly", defaultValue, "form", "")
 		r.valuesOnly = &defaultValue
 	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetCurrentRevisionRequest struct {
+	ctx           context.Context
+	ApiService    *ManagementAPIService
+	applicationId int64
+	campaignId    int64
+}
+
+func (r ApiGetCurrentRevisionRequest) Execute() (*Revision, *http.Response, error) {
+	return r.ApiService.GetCurrentRevisionExecute(r)
+}
+
+/*
+GetCurrentRevision Get current revision version
+
+Get the current revision version for the given campaign.
+
+**Note:** The [Campaign staging and revisions](https://docs.talon.one/docs/product/applications/manage-general-settings#campaign-staging-and-revisions) feature must be enabled for your Application.
+For more information, see [Revise campaigns](https://docs.talon.one/docs/product/campaigns/revise-campaigns).
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param applicationId The ID of the Application. It is displayed in your Talon.One deployment URL.
+	@param campaignId The ID of the campaign. It is displayed in your Talon.One deployment URL.
+	@return ApiGetCurrentRevisionRequest
+*/
+func (a *ManagementAPIService) GetCurrentRevision(ctx context.Context, applicationId int64, campaignId int64) ApiGetCurrentRevisionRequest {
+	return ApiGetCurrentRevisionRequest{
+		ApiService:    a,
+		ctx:           ctx,
+		applicationId: applicationId,
+		campaignId:    campaignId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return Revision
+func (a *ManagementAPIService) GetCurrentRevisionExecute(r ApiGetCurrentRevisionRequest) (*Revision, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *Revision
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagementAPIService.GetCurrentRevision")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v1/applications/{applicationId}/campaigns/{campaignId}/revisions/current"
+	localVarPath = strings.Replace(localVarPath, "{"+"applicationId"+"}", url.PathEscape(parameterValueToString(r.applicationId, "applicationId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"campaignId"+"}", url.PathEscape(parameterValueToString(r.campaignId, "campaignId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -23236,6 +23382,7 @@ The CSV file **must** contain the following columns:
 **Note**:
 - Customer profiles must already exist. If a referenced profile does not exist, the import fails with a `400` error.
 - If a join date already exists for a profile, the uploaded date replaces it.
+- If a join date is in the future at the time of the import, the import fails with a `400` error.
 
 > [!note] We recommend limiting your file size to 500 MB.
 
@@ -25755,6 +25902,174 @@ func (a *ManagementAPIService) ListExperimentsExecute(r ApiListExperimentsReques
 	}
 	if r.sort != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "sort", r.sort, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiListGiveawaysPoolRequest struct {
+	ctx                 context.Context
+	ApiService          *ManagementAPIService
+	pageSize            *int64
+	skip                *int64
+	sort                *string
+	withTotalResultSize *bool
+	applicationIds      *string
+}
+
+// The number of items in the response.
+func (r ApiListGiveawaysPoolRequest) PageSize(pageSize int64) ApiListGiveawaysPoolRequest {
+	r.pageSize = &pageSize
+	return r
+}
+
+// The number of items to skip when paging through large result sets.
+func (r ApiListGiveawaysPoolRequest) Skip(skip int64) ApiListGiveawaysPoolRequest {
+	r.skip = &skip
+	return r
+}
+
+// The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with &#x60;-&#x60;.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.
+func (r ApiListGiveawaysPoolRequest) Sort(sort string) ApiListGiveawaysPoolRequest {
+	r.sort = &sort
+	return r
+}
+
+// When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.  - When &#x60;true&#x60;: &#x60;totalResultSize&#x60; contains the total number of results for this query. - When &#x60;false&#x60;: Only &#x60;hasMore&#x60; is returned, and it is set to &#x60;true&#x60; when there are more results than shown on the page.
+func (r ApiListGiveawaysPoolRequest) WithTotalResultSize(withTotalResultSize bool) ApiListGiveawaysPoolRequest {
+	r.withTotalResultSize = &withTotalResultSize
+	return r
+}
+
+// Filter by one or more Application IDs, separated by a comma.
+func (r ApiListGiveawaysPoolRequest) ApplicationIds(applicationIds string) ApiListGiveawaysPoolRequest {
+	r.applicationIds = &applicationIds
+	return r
+}
+
+func (r ApiListGiveawaysPoolRequest) Execute() (*ListGiveawaysPool200Response, *http.Response, error) {
+	return r.ApiService.ListGiveawaysPoolExecute(r)
+}
+
+/*
+ListGiveawaysPool List giveaway pools
+
+Retrieve all the giveaway pools for an account.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiListGiveawaysPoolRequest
+*/
+func (a *ManagementAPIService) ListGiveawaysPool(ctx context.Context) ApiListGiveawaysPoolRequest {
+	return ApiListGiveawaysPoolRequest{
+		ApiService: a,
+		ctx:        ctx,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ListGiveawaysPool200Response
+func (a *ManagementAPIService) ListGiveawaysPoolExecute(r ApiListGiveawaysPoolRequest) (*ListGiveawaysPool200Response, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ListGiveawaysPool200Response
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ManagementAPIService.ListGiveawaysPool")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v1/giveaways/pools"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.pageSize != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", r.pageSize, "form", "")
+	} else {
+		var defaultValue int64 = 1000
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pageSize", defaultValue, "form", "")
+		r.pageSize = &defaultValue
+	}
+	if r.skip != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "skip", r.skip, "form", "")
+	}
+	if r.sort != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "sort", r.sort, "form", "")
+	}
+	if r.withTotalResultSize != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "withTotalResultSize", r.withTotalResultSize, "form", "")
+	}
+	if r.applicationIds != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "applicationIds", r.applicationIds, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

@@ -2659,6 +2659,7 @@ paths:
       summary: List customer's rewards
       tags:
       - integration
+      x-scalar-stability: experimental
   /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/balances:
     get:
       description: |
@@ -4254,6 +4255,27 @@ paths:
       summary: Create campaign
       tags:
       - management
+  /v1/applications/{applicationId}/campaigns/{campaignId}/revisions/current:
+    get:
+      description: |
+        Get the current revision version for the given campaign.
+
+        **Note:** The [Campaign staging and revisions](https://docs.talon.one/docs/product/applications/manage-general-settings#campaign-staging-and-revisions) feature must be enabled for your Application.
+        For more information, see [Revise campaigns](https://docs.talon.one/docs/product/campaigns/revise-campaigns).
+      operationId: getCurrentRevision
+      parameters:
+      - $ref: "#/components/parameters/applicationId"
+      - $ref: "#/components/parameters/campaignId"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Revision"
+          description: OK
+      summary: Get current revision version
+      tags:
+      - management
   /v1/applications/{applicationId}/campaigns/{campaignId}:
     delete:
       description: Delete the given campaign.
@@ -4439,7 +4461,7 @@ paths:
       description: |-
         Create a ruleset from promotion and strikethrough rules in the V2 JSON block format. A ruleset is a revision of all the rules of a campaign.
 
-        Only `group` and `passthrough` blocks are currently writable, with optional `onFailure` blocks. A payload containing any other block type is rejected. Each rule's `blocks` array may contain at most one block.
+        Only the first block of a rule can be a condition. Every other block must be an effect.
       operationId: createRulesetV2
       parameters:
       - $ref: "#/components/parameters/applicationId"
@@ -6077,6 +6099,7 @@ paths:
         **Note**:
         - Customer profiles must already exist. If a referenced profile does not exist, the import fails with a `400` error.
         - If a join date already exists for a profile, the uploaded date replaces it.
+        - If a join date is in the future at the time of the import, the import fails with a `400` error.
 
         > [!note] We recommend limiting your file size to 500 MB.
 
@@ -6570,7 +6593,7 @@ paths:
         > [!tip] If the exported CSV file is too large to view, you can
         > [split it into multiple files](https://www.google.com/search?q=split+CSV+into+multiple+files).
 
-        The generated file can contain the following columns:
+        The generated file contains the following columns:
 
         - `loyaltyProgramID`: The ID of the loyalty program.
         - `loyaltySubledger`: The name of the subledger, when applicable.
@@ -6580,6 +6603,7 @@ paths:
         - `expiredBalance`: The number of expired points.
         - `spentBalance`: The number of spent points.
         - `currentTier`: The tier that the customer is in at the time of the export.
+        - `negativeBalance`: The number of negative points. Only contains a value when requested via `balances` and the program uses negative points.
       operationId: exportLoyaltyBalances
       parameters:
       - description: The identifier for the loyalty program.
@@ -6630,9 +6654,11 @@ paths:
           type: string
         style: form
       - description: |
-          Filter results by an array of subledger IDs. If no value is provided, the export includes all subledgers and main ledger data for the specified loyalty program.
+          Filters the results to specific subledgers.
 
-          To specify the main ledger, provide an empty string ("").
+          **Note:**
+          - When this parameter is not provided, the export includes all subledgers
+            and main ledger data for the specified loyalty program.
         explode: false
         in: query
         name: subledgerIds
@@ -6650,9 +6676,9 @@ paths:
               examples:
                 response:
                   value: |
-                    loyaltyProgramID,loyaltySubledger,profileIntegrationID,currentBalance,pendingBalance,expiredBalance,spentBalance,currentTier
-                    40,,8786NTHSAO8,10.00,0.00,0.00,0.00,First
-                    40,,2735HATHOH8,20.00,0.00,0.00,0.00,First
+                    loyaltyProgramID,loyaltySubledger,profileIntegrationID,currentBalance,pendingBalance,expiredBalance,spentBalance,currentTier,negativeBalance
+                    40,,8786NTHSAO8,10.00,0.00,0.00,0.00,First,0.00
+                    40,,2735HATHOH8,20.00,0.00,0.00,0.00,First,0.00
               schema:
                 format: csv
                 type: string
@@ -8049,6 +8075,44 @@ paths:
       summary: Transfer card data
       tags:
       - management
+  /v1/giveaways/pools:
+    get:
+      description: Retrieve all the giveaway pools for an account.
+      operationId: listGiveawaysPool
+      parameters:
+      - $ref: "#/components/parameters/pageSize"
+      - $ref: "#/components/parameters/skip"
+      - $ref: "#/components/parameters/sort"
+      - description: |
+          When this flag is set, the result includes the total number of results for this query. This might decrease performance on large data sets.
+
+          - When `true`: `totalResultSize` contains the total number of results for this query.
+          - When `false`: Only `hasMore` is returned, and it is set to `true` when there are more results than shown on the page.
+        explode: true
+        in: query
+        name: withTotalResultSize
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: "Filter by one or more Application IDs, separated by a comma."
+        explode: true
+        in: query
+        name: applicationIds
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listGiveawaysPool_200_response"
+          description: OK
+      summary: List giveaway pools
+      tags:
+      - management
   /v1/giveaways/pools/{poolId}:
     get:
       description: Retrieve the details of a specified giveaway pool.
@@ -9100,6 +9164,16 @@ paths:
         schema:
           type: boolean
         style: form
+      - description: "When set to `true`, the `loyaltyProgramJoinDates` property returns\
+          \ the dates on which each customer joined the profile-based loyalty programs\
+          \ they are part of. This might decrease performance on large data sets."
+        explode: true
+        in: query
+        name: withLoyaltyMemberships
+        required: false
+        schema:
+          type: boolean
+        style: form
       responses:
         "200":
           content:
@@ -9129,6 +9203,16 @@ paths:
         explode: true
         in: query
         name: withTotalResultSize
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: "When set to `true`, the `loyaltyProgramJoinDates` property returns\
+          \ the dates on which each customer joined the profile-based loyalty programs\
+          \ they are part of. This might decrease performance on large data sets."
+        explode: true
+        in: query
+        name: withLoyaltyMemberships
         required: false
         schema:
           type: boolean
@@ -16465,6 +16549,36 @@ components:
       required:
       - value
       title: acceptCoupon
+    RollbackCouponEffectProps:
+      description: |-
+        This effect indicates that a coupon code redemption has been rolled back. The coupon becomes redeemable again.
+
+        The effect is triggered when you [cancel](https://docs.talon.one/docs/dev/concepts/entities/customer-sessions#manage-the-sessions-state) a session where a coupon was accepted. See an example of use in the [cancelling a session tutorial](https://docs.talon.one/docs/dev/tutorials/roll-back-effects).
+      example:
+        value: COUP-XYZ789
+      properties:
+        value:
+          description: The coupon code whose redemption has been rolled back.
+          type: string
+      required:
+      - value
+      title: rollbackCoupon
+    EffectRollbackCoupon:
+      allOf:
+      - $ref: "#/components/schemas/EffectEntity"
+      - description: "The `rollbackCoupon` effect and its properties. See [API effects](https://docs.talon.one/docs/dev/integration-api/api-effects)."
+        properties:
+          effectType:
+            description: An effect discriminator of type `rollbackCoupon`.
+            enum:
+            - rollbackCoupon
+            type: string
+          props:
+            $ref: "#/components/schemas/RollbackCouponEffectProps"
+        required:
+        - effectType
+        - props
+        title: rollbackCoupon
     EffectAcceptCoupon:
       allOf:
       - $ref: "#/components/schemas/EffectEntity"
@@ -16476,13 +16590,13 @@ components:
             - acceptCoupon
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/AcceptCouponEffectProps"
-            description: The properties of the `acceptCoupon` effect.
+            $ref: "#/components/schemas/AcceptCouponEffectProps"
         required:
         - effectType
         - props
         title: acceptCoupon
+        x-rollback-effect:
+          $ref: "#/components/schemas/EffectRollbackCoupon"
       example:
         experimentId: 12
         campaignId: 244
@@ -16502,7 +16616,8 @@ components:
         adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
         rewardId: 7
         rewardIntegrationId: reward-unlock-123
-        props: ""
+        props:
+          value: COUP-XYZ789
     AcceptReferralEffectProps:
       description: |-
         This effect indicates that the referral code supplied is valid.
@@ -16521,6 +16636,36 @@ components:
       required:
       - value
       title: acceptReferral
+    RollbackReferralEffectProps:
+      description: |-
+        This effect indicates that the redemption of the referral code has been rolled back. It triggers when a closed session that redeemed a referral is gets cancelled. The code becomes redeemable again.
+
+        For more information about session states, see [Managing states](https://docs.talon.one/docs/dev/concepts/entities/customer-sessions#customer-session-states).
+      example:
+        value: REF-ABC123
+      properties:
+        value:
+          description: The referral code to be rolled back.
+          type: string
+      required:
+      - value
+      title: rollbackReferral
+    EffectRollbackReferral:
+      allOf:
+      - $ref: "#/components/schemas/EffectEntity"
+      - description: "The `rollbackReferral` effect and its properties. See [API effects](https://docs.talon.one/docs/dev/integration-api/api-effects)."
+        properties:
+          effectType:
+            description: An effect discriminator of type `rollbackReferral`.
+            enum:
+            - rollbackReferral
+            type: string
+          props:
+            $ref: "#/components/schemas/RollbackReferralEffectProps"
+        required:
+        - effectType
+        - props
+        title: rollbackReferral
     EffectAcceptReferral:
       allOf:
       - $ref: "#/components/schemas/EffectEntity"
@@ -16532,18 +16677,17 @@ components:
             - acceptReferral
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/AcceptReferralEffectProps"
-            description: The properties of the `acceptReferral` effect.
+            $ref: "#/components/schemas/AcceptReferralEffectProps"
         required:
         - effectType
         - props
         title: acceptReferral
+        x-rollback-effect:
+          $ref: "#/components/schemas/EffectRollbackReferral"
     AddFreeItemEffectProps:
-      description: |-
-        This effect indicates that a free item should be added to the shopping cart in the current session. In this example, add the SKU to the shopping cart and set its price to `0`.
-
-        The effect of a successful referral can mean a free item for someone else, such as the referrer.
+      description: "This effect indicates that a free item should be added to the\
+        \ shopping cart in the current session. In this example, add the SKU to the\
+        \ shopping cart and set its price to `0`."
       example:
         sku: SKU1241028
         name: Free Gift Item
@@ -16575,9 +16719,7 @@ components:
             - addFreeItem
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/AddFreeItemEffectProps"
-            description: The properties of the `addFreeItem` effect.
+            $ref: "#/components/schemas/AddFreeItemEffectProps"
         required:
         - effectType
         - props
@@ -16696,6 +16838,85 @@ components:
       - transactionUUID
       - value
       title: addLoyaltyPoints
+    RollbackAddedLoyaltyPointsEffectProps:
+      description: |-
+        This effect is triggered in the following cases:
+
+        - A session was cancelled in which loyalty points have been added.
+        - A session was partially returned and loyalty point were added by the returned items. See [returning items](https://docs.talon.one/docs/dev/tutorials/partially-return-a-session).
+
+        If you use the [Add loyalty points per item effect](https://docs.talon.one/docs/product/rules/effects/available-effects#reward-effects), use the `cartItemPosition` property to identify which items the loyalty points were rolled back for.
+
+        If you use **Add loyalty points per item** and if the session contains some cart items with _quantity > 1_, use the `cartItemSubPosition` property to identify the item unit in its line item.
+
+        If the loyalty program is [profile-based](https://docs.talon.one/docs/product/loyalty-programs/overview#loyalty-program-types), use the `recipientIntegrationId` property to identify the user for whom the loyalty points are rolled back. If the loyalty program is [card-based](https://docs.talon.one/docs/product/loyalty-programs/overview#loyalty-program-types), use the `cardIdentifier` property to identify the loyalty card where the points were originally added.
+      example:
+        programId: 5
+        subLedgerId: main
+        value: 100
+        recipientIntegrationId: URNGV8294NV
+        transactionUUID: 8c2d3670-6ea5-4e9e-b5c6-e7e7b4a10111
+        cartItemPosition: 1
+        cartItemSubPosition: 1
+        cardIdentifier: loyalty-card-001
+      properties:
+        programId:
+          description: The ID of the loyalty program where these points were rolled
+            back.
+          format: int64
+          type: integer
+        subLedgerId:
+          description: The ID of the subledger within the loyalty program where these
+            points were rolled back.
+          type: string
+        value:
+          description: The amount of points that were rolled back.
+          type: number
+        recipientIntegrationId:
+          description: The user for whom these points were rolled back.
+          example: URNGV8294NV
+          maxLength: 1000
+          type: string
+        transactionUUID:
+          description: The identifier of this loyalty point transaction.
+          type: string
+        cartItemPosition:
+          description: (_Add points per cart item_ only.) The index of the item in
+            the `cartItem` object for which these points were rolled back.
+          type: number
+        cartItemSubPosition:
+          description: (_Add points per cart item_ ) The index of the item unit in
+            its line item.
+          type: number
+        cardIdentifier:
+          allOf:
+          - $ref: "#/components/schemas/LoyaltyCardIdentifier"
+          description: The identifier of the card on which these points were originally
+            added.
+      required:
+      - programId
+      - recipientIntegrationId
+      - subLedgerId
+      - transactionUUID
+      - value
+      title: rollbackAddedLoyaltyPoints
+    EffectRollbackAddedLoyaltyPoints:
+      allOf:
+      - $ref: "#/components/schemas/EffectEntity"
+      - description: "The `rollbackAddedLoyaltyPoints` effect and its properties.\
+          \ See [API effects](https://docs.talon.one/docs/dev/integration-api/api-effects)."
+        properties:
+          effectType:
+            description: An effect discriminator of type `rollbackAddedLoyaltyPoints`.
+            enum:
+            - rollbackAddedLoyaltyPoints
+            type: string
+          props:
+            $ref: "#/components/schemas/RollbackAddedLoyaltyPointsEffectProps"
+        required:
+        - effectType
+        - props
+        title: rollbackAddedLoyaltyPoints
     EffectAddLoyaltyPoints:
       allOf:
       - $ref: "#/components/schemas/EffectEntity"
@@ -16707,13 +16928,13 @@ components:
             - addLoyaltyPoints
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/AddLoyaltyPointsEffectProps"
-            description: The properties of the `addLoyaltyPoints` effect.
+            $ref: "#/components/schemas/AddLoyaltyPointsEffectProps"
         required:
         - effectType
         - props
         title: addLoyaltyPoints
+        x-rollback-effect:
+          $ref: "#/components/schemas/EffectRollbackAddedLoyaltyPoints"
     EffectAddNegativeLoyaltyPoints:
       allOf:
       - $ref: "#/components/schemas/EffectEntity"
@@ -16770,9 +16991,7 @@ components:
             - addToAudience
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/AddToAudienceEffectProps"
-            description: The properties of the `addToAudience` effect.
+            $ref: "#/components/schemas/AddToAudienceEffectProps"
         required:
         - effectType
         - props
@@ -16828,16 +17047,15 @@ components:
             - awardGiveaway
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/AwardGiveawayEffectProps"
-            description: The properties of the `awardGiveaway` effect.
+            $ref: "#/components/schemas/AwardGiveawayEffectProps"
         required:
         - effectType
         - props
         title: awardGiveaway
     BoostLoyaltyTierEffectProps:
-      description: |
-        Properties returned when a rule triggers a `boostLoyaltyTier` effect. The customer is temporarily placed in a higher loyalty tier for a specified period without any change to their points balance.
+      description: "This effect indicates that the customer was temporarily placed\
+        \ in a higher loyalty tier for a specified period, without any change to their\
+        \ points balance."
       properties:
         programId:
           description: The ID of the loyalty program.
@@ -16868,6 +17086,67 @@ components:
       - programId
       - subLedgerId
       - tierName
+      title: boostLoyaltyTier
+    RollbackTierBoostEffectProps:
+      description: |-
+        This effect indicates that a loyalty tier boost was rolled back.
+
+        The Rule Engine triggers this effect when you cancel a customer session
+        that previously triggered the
+        [boostLoyaltyTier](https://docs.talon.one/docs/dev/integration-api/api-effects#boostloyaltytier)
+        API effect. The tier boost is voided and the customer returns to the tier
+        determined by their points balance.
+
+        This effect only applies to full session cancellations. Partially returned
+        sessions do not trigger a tier boost rollback.
+      example:
+        programId: 10
+        subLedgerId: ""
+        tierName: Gold
+        boostUuid: 27b16dbb-fbc7-4c02-99b1-b21b8a94c186
+      properties:
+        programId:
+          description: The ID of the loyalty program.
+          example: 10
+          format: int64
+          type: integer
+        subLedgerId:
+          description: The ID of the subledger within the loyalty program.
+          example: ""
+          type: string
+        tierName:
+          description: The name of the boosted tier that was rolled back.
+          example: Gold
+          type: string
+        boostUuid:
+          description: The unique identifier of the tier boost that was rolled back.
+            Matches the `boostUuid` of the original `boostLoyaltyTier` effect.
+          example: 27b16dbb-fbc7-4c02-99b1-b21b8a94c186
+          format: uuid
+          type: string
+      required:
+      - boostUuid
+      - programId
+      - subLedgerId
+      - tierName
+      title: rollbackTierBoost
+    EffectRollbackTierBoost:
+      allOf:
+      - $ref: "#/components/schemas/EffectEntity"
+      - description: "The `rollbackTierBoost` effect and its properties. See [API\
+          \ effects](https://docs.talon.one/docs/dev/integration-api/api-effects)."
+        properties:
+          effectType:
+            description: An effect of type `rollbackTierBoost`.
+            enum:
+            - rollbackTierBoost
+            type: string
+          props:
+            $ref: "#/components/schemas/RollbackTierBoostEffectProps"
+        required:
+        - effectType
+        - props
+        title: rollbackTierBoost
     EffectBoostLoyaltyTier:
       allOf:
       - $ref: "#/components/schemas/EffectEntity"
@@ -16879,13 +17158,13 @@ components:
             - boostLoyaltyTier
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/BoostLoyaltyTierEffectProps"
-            description: The properties of the `boostLoyaltyTier` effect.
+            $ref: "#/components/schemas/BoostLoyaltyTierEffectProps"
         required:
         - effectType
         - props
         title: boostLoyaltyTier
+        x-rollback-effect:
+          $ref: "#/components/schemas/EffectRollbackTierBoost"
     TriggerWebhookEffectProps:
       description: "This effect is triggered when a rule containing a [webhook effect](https://docs.talon.one/docs/product/rules/effects/available-effects#webhooks)\
         \ is validated. The details are shared with you for your information only.\
@@ -16915,9 +17194,7 @@ components:
             - callApi
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/TriggerWebhookEffectProps"
-            description: The properties of the `callApi` effect.
+            $ref: "#/components/schemas/TriggerWebhookEffectProps"
         required:
         - effectType
         - props
@@ -16974,9 +17251,7 @@ components:
             - changeLoyaltyTierLevel
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/ChangeLoyaltyTierLevelEffectProps"
-            description: The properties of the `changeLoyaltyTierLevel` effect.
+            $ref: "#/components/schemas/ChangeLoyaltyTierLevelEffectProps"
         required:
         - effectType
         - props
@@ -17014,9 +17289,7 @@ components:
             - couponCreated
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/CouponCreatedEffectProps"
-            description: The properties of the `couponCreated` effect.
+            $ref: "#/components/schemas/CouponCreatedEffectProps"
         required:
         - effectType
         - props
@@ -17087,9 +17360,7 @@ components:
             - customEffect
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/CustomEffectProps"
-            description: The properties of the `customEffect` effect.
+            $ref: "#/components/schemas/CustomEffectProps"
         required:
         - effectType
         - props
@@ -17150,6 +17421,85 @@ components:
       - transactionUUID
       - value
       title: deductLoyaltyPoints
+    RollbackDeductedLoyaltyPointsEffectProps:
+      description: |-
+        This effect is triggered in the following cases:
+
+        - A session is _cancelled_ and this session deducted loyalty points. The rollback action returns the redeemed loyalty points to the customer.
+        - A session is impacted by a _partial return_. Only added loyalty points that are still **pending** are rolled back.
+        - A session in which loyalty points were spent is reopened.
+
+        See the [session states](https://docs.talon.one/docs/dev/concepts/entities/customer-sessions#customer-session-states).
+
+        If you set custom activation and expiration dates for the loyalty points, use the `startDate` and `expiryDate` properties to identify when the reward will be active and when will expire.
+
+        If the loyalty program is [profile-based](https://docs.talon.one/docs/product/loyalty-programs/profile-based/profile-based-overview), use the `recipientIntegrationId` property to identify the user who receives the loyalty points. If the loyalty program is [card-based](https://docs.talon.one/docs/product/loyalty-programs/overview#loyalty-program-types), use the `cardIdentifier` property to identify the loyalty card where the points are reimbursed.
+      example:
+        programId: 5
+        subLedgerId: main
+        value: 50
+        recipientIntegrationId: URNGV8294NV
+        startDate: 2024-01-01T00:00:00Z
+        expiryDate: 2025-01-01T00:00:00Z
+        transactionUUID: 9f3e4781-7fb6-5f0f-c6d7-f8f8c5b21222
+        cardIdentifier: loyalty-card-001
+      properties:
+        programId:
+          description: The ID of the loyalty program where these points were reimbursed.
+          format: int64
+          type: integer
+        subLedgerId:
+          description: The ID of the subledger within the loyalty program where these
+            points were reimbursed.
+          type: string
+        value:
+          description: The amount of points that were reimbursed.
+          type: number
+        recipientIntegrationId:
+          description: The user for whom these points were reimbursed.
+          example: URNGV8294NV
+          maxLength: 1000
+          type: string
+        startDate:
+          description: The date after which the reimbursed points will be valid.
+          format: date-time
+          type: string
+        expiryDate:
+          description: The date after which the reimbursed points will expire.
+          format: date-time
+          type: string
+        transactionUUID:
+          description: The identifier of this loyalty point transaction.
+          type: string
+        cardIdentifier:
+          allOf:
+          - $ref: "#/components/schemas/LoyaltyCardIdentifier"
+          description: The identifier of the card from which these points were originally
+            deducted.
+      required:
+      - programId
+      - recipientIntegrationId
+      - subLedgerId
+      - transactionUUID
+      - value
+      title: rollbackDeductedLoyaltyPoints
+    EffectRollbackDeductedLoyaltyPoints:
+      allOf:
+      - $ref: "#/components/schemas/EffectEntity"
+      - description: "The `rollbackDeductedLoyaltyPoints` effect and its properties.\
+          \ See [API effects](https://docs.talon.one/docs/dev/integration-api/api-effects)."
+        properties:
+          effectType:
+            description: An effect discriminator of type `rollbackDeductedLoyaltyPoints`.
+            enum:
+            - rollbackDeductedLoyaltyPoints
+            type: string
+          props:
+            $ref: "#/components/schemas/RollbackDeductedLoyaltyPointsEffectProps"
+        required:
+        - effectType
+        - props
+        title: rollbackDeductedLoyaltyPoints
     EffectDeductLoyaltyPoints:
       allOf:
       - $ref: "#/components/schemas/EffectEntity"
@@ -17162,13 +17512,13 @@ components:
             - deductLoyaltyPoints
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/DeductLoyaltyPointsEffectProps"
-            description: The properties of the `deductLoyaltyPoints` effect.
+            $ref: "#/components/schemas/DeductLoyaltyPointsEffectProps"
         required:
         - effectType
         - props
         title: deductLoyaltyPoints
+        x-rollback-effect:
+          $ref: "#/components/schemas/EffectRollbackDeductedLoyaltyPoints"
     ErrorEffectProps:
       description: This effect is triggered whenever an error occurs during rule evaluation.
         This effect only provides information about what the error is.
@@ -17192,9 +17542,7 @@ components:
             - error
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/ErrorEffectProps"
-            description: The properties of the `error` effect.
+            $ref: "#/components/schemas/ErrorEffectProps"
         required:
         - effectType
         - props
@@ -17286,9 +17634,7 @@ components:
             - extendLoyaltyPointsExpiryDate
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/ExtendLoyaltyPointsExpiryDateEffectProps"
-            description: The properties of the `extendLoyaltyPointsExpiryDate` effect.
+            $ref: "#/components/schemas/ExtendLoyaltyPointsExpiryDateEffectProps"
         required:
         - effectType
         - props
@@ -17344,6 +17690,69 @@ components:
       - target
       - value
       title: increaseAchievementProgress
+    RollbackIncreasedAchievementProgressEffectProps:
+      description: |-
+        This effect indicates that the customer's progress in an achievement was rolled back.
+
+        The Rule Engine triggers this effect when you cancel or [reopen a customer session](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/reopenCustomerSession) that previously validated the [Update customer progress](https://docs.talon.one/docs/product/rules/effects/use-effects#update-customer-progress) effect and triggered the [increaseAchievementProgress](https://docs.talon.one/docs/dev/integration-api/api-effects#increaseachievementprogress) API effect.
+
+        The effect is also triggered for completed achievements if the **Allow progress rollback for completed achievements** setting is enabled. You can enable this through the [Campaign Manager](https://docs.talon.one/docs/product/achievements/manage-achievements) or the [Management API](https://docs.talon.one/management-api#tag/Achievements/operation/createAchievement) by setting the `achievementAllowRollbackAfterCompletion` property to `true`. This setting only applies to one-time and recurring on expiration achievements.
+      example:
+        achievementId: 10
+        achievementName: FreeCoffee10Orders
+        progressTrackerId: 42
+        decreaseProgressBy: 1
+        currentProgress: 6
+        target: 10
+      properties:
+        achievementId:
+          description: The internal ID of the achievement.
+          example: 10
+          format: int64
+          type: integer
+        achievementName:
+          description: The name of the achievement.
+          example: FreeCoffee10Orders
+          type: string
+        progressTrackerId:
+          description: The internal ID of the achievement progress tracker.
+          format: int64
+          type: integer
+        decreaseProgressBy:
+          description: The value by which the customer's current progress in the achievement
+            has decreased.
+          type: number
+        currentProgress:
+          description: The current progress of the customer in the achievement.
+          type: number
+        target:
+          description: The target value to complete the achievement.
+          type: number
+      required:
+      - achievementId
+      - achievementName
+      - currentProgress
+      - decreaseProgressBy
+      - progressTrackerId
+      - target
+      title: rollbackIncreasedAchievementProgress
+    EffectRollbackIncreasedAchievementProgress:
+      allOf:
+      - $ref: "#/components/schemas/EffectEntity"
+      - description: "The `rollbackIncreasedAchievementProgress` effect and its properties.\
+          \ See [API effects](https://docs.talon.one/docs/dev/integration-api/api-effects)."
+        properties:
+          effectType:
+            description: An effect discriminator of type `rollbackIncreasedAchievementProgress`.
+            enum:
+            - rollbackIncreasedAchievementProgress
+            type: string
+          props:
+            $ref: "#/components/schemas/RollbackIncreasedAchievementProgressEffectProps"
+        required:
+        - effectType
+        - props
+        title: rollbackIncreasedAchievementProgress
     EffectIncreaseAchievementProgress:
       allOf:
       - $ref: "#/components/schemas/EffectEntity"
@@ -17356,13 +17765,110 @@ components:
             - increaseAchievementProgress
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/IncreaseAchievementProgressEffectProps"
-            description: The properties of the `increaseAchievementProgress` effect.
+            $ref: "#/components/schemas/IncreaseAchievementProgressEffectProps"
         required:
         - effectType
         - props
         title: increaseAchievementProgress
+        x-rollback-effect:
+          $ref: "#/components/schemas/EffectRollbackIncreasedAchievementProgress"
+    IncreaseAchievementProgressPerItemEffectProps:
+      description: |-
+        This effect schema is returned when you use the **Update customer progress per item** effect in a rule.
+
+        It indicates that the customer's progress in an achievement was updated during the current session for a specific cart item.
+
+        If your list of cart items is a [bundle definition](https://docs.talon.one/docs/product/rules/create-and-manage-bundles), use the `bundleIndex` and `bundleName` properties to identify the bundle containing the item whose progress was updated.
+
+        If the cart item has a quantity greater than one, use the `cartItemSubPosition` property to identify the specific unit within the item's line item.
+
+        For [on-completion achievements](https://docs.talon.one/docs/product/achievements/overview#recurring-on-completion-achievements), any customer progress exceeding the target automatically starts a new iteration. This generates a new `progressTrackerId` for each iteration, and there can be multiple progress updates for the same achievement from a single validation of this effect.
+      example:
+        achievementId: 10
+        achievementName: FreeCoffee10Orders
+        progressTrackerId: 42
+        delta: 1
+        value: 7
+        target: 10
+        isJustCompleted: false
+        cartItemPosition: 1
+        cartItemSubPosition: 1
+        bundleIndex: 1
+        bundleName: my_bundle
+      properties:
+        achievementId:
+          description: The internal ID of the achievement.
+          example: 10
+          format: int64
+          type: integer
+        achievementName:
+          description: The name of the achievement.
+          example: FreeCoffee10Orders
+          type: string
+        progressTrackerId:
+          description: |-
+            The internal ID of the customer progress tracker.
+            For [on-completion achievements](https://docs.talon.one/docs/product/achievements/overview#recurring-on-completion-achievements), this effect generates a unique ID for each iteration.
+          format: int64
+          type: integer
+        delta:
+          description: The value by which the customer's current progress in the achievement
+            has increased.
+          type: number
+        value:
+          description: The current progress of the customer in the achievement.
+          type: number
+        target:
+          description: The target value to complete the achievement.
+          type: number
+        isJustCompleted:
+          description: Indicates if the customer has completed the achievement in
+            the current session.
+          type: boolean
+        cartItemPosition:
+          description: The index of the item in the `cartItem` object on which the
+            customer's progress in the achievement was updated.
+          type: number
+        cartItemSubPosition:
+          description: "For cart items with `quantity` > 1, indicates which specific\
+            \ unit of the item the effect applies to."
+          type: number
+        bundleIndex:
+          description: "_(With bundles only)_ The position of the specific bundle\
+            \ in the list of bundles created from the same bundle definition. For\
+            \ example, if a customer creates two identical bundles, the first has\
+            \ index `0` and the second has index `1`."
+          format: int64
+          type: integer
+        bundleName:
+          description: _(With bundles only)_ The name of the bundle definition.
+          type: string
+      required:
+      - achievementId
+      - achievementName
+      - cartItemPosition
+      - delta
+      - isJustCompleted
+      - target
+      - value
+      title: increaseAchievementProgressPerItem
+    EffectIncreaseAchievementProgressPerItem:
+      allOf:
+      - $ref: "#/components/schemas/EffectEntity"
+      - description: "The `increaseAchievementProgressPerItem` effect and its properties.\
+          \ See [API effects](https://docs.talon.one/docs/dev/integration-api/api-effects)."
+        properties:
+          effectType:
+            description: An effect discriminator of type `increaseAchievementProgressPerItem`.
+            enum:
+            - increaseAchievementProgressPerItem
+            type: string
+          props:
+            $ref: "#/components/schemas/IncreaseAchievementProgressPerItemEffectProps"
+        required:
+        - effectType
+        - props
+        title: increaseAchievementProgressPerItem
     JoinLoyaltyProgramEffectProps:
       description: |
         This effect indicates that a customer profile was joined to a profile-based loyalty program with the specified join date.
@@ -17402,9 +17908,7 @@ components:
             - joinLoyaltyProgram
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/JoinLoyaltyProgramEffectProps"
-            description: The properties of the `joinLoyaltyProgram` effect.
+            $ref: "#/components/schemas/JoinLoyaltyProgramEffectProps"
         required:
         - effectType
         - props
@@ -17454,13 +17958,13 @@ components:
             - redeemReferral
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/RedeemReferralEffectProps"
-            description: The properties of the `redeemReferral` effect.
+            $ref: "#/components/schemas/RedeemReferralEffectProps"
         required:
         - effectType
         - props
         title: redeemReferral
+        x-rollback-effect:
+          $ref: "#/components/schemas/EffectRollbackReferral"
     ReferralCreatedEffectProps:
       description: "The `referralCreated` effect behaves similarly to [couponCreated](https://docs.talon.one/docs/dev/integration-api/api-effects#couponcreated).\
         \ If the `friendProfileIntegrationId` parameter is empty, the referral code\
@@ -17485,9 +17989,7 @@ components:
             - referralCreated
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/ReferralCreatedEffectProps"
-            description: The properties of the `referralCreated` effect.
+            $ref: "#/components/schemas/ReferralCreatedEffectProps"
         required:
         - effectType
         - props
@@ -17563,9 +18065,7 @@ components:
             - rejectCoupon
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/RejectCouponEffectProps"
-            description: The properties of the `rejectCoupon` effect.
+            $ref: "#/components/schemas/RejectCouponEffectProps"
         required:
         - effectType
         - props
@@ -17639,9 +18139,7 @@ components:
             - rejectReferral
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/RejectReferralEffectProps"
-            description: The properties of the `rejectReferral` effect.
+            $ref: "#/components/schemas/RejectReferralEffectProps"
         required:
         - effectType
         - props
@@ -17689,9 +18187,7 @@ components:
             - removeFromAudience
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/RemoveFromAudienceEffectProps"
-            description: The properties of the `removeFromAudience` effect.
+            $ref: "#/components/schemas/RemoveFromAudienceEffectProps"
         required:
         - effectType
         - props
@@ -17732,207 +18228,11 @@ components:
             - reserveCoupon
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/ReserveCouponEffectProps"
-            description: The properties of the `reserveCoupon` effect.
+            $ref: "#/components/schemas/ReserveCouponEffectProps"
         required:
         - effectType
         - props
         title: reserveCoupon
-    RollbackAddedLoyaltyPointsEffectProps:
-      description: |-
-        This effect is triggered in the following cases:
-
-        - A session was cancelled in which loyalty points have been added.
-        - A session was partially returned and loyalty point were added by the returned items. See [returning items](https://docs.talon.one/docs/dev/tutorials/partially-return-a-session).
-
-        If you use the [Add loyalty points per item effect](https://docs.talon.one/docs/product/rules/effects/available-effects#reward-effects), use the `cartItemPosition` property to identify which items the loyalty points were rolled back for.
-
-        If you use **Add loyalty points per item** and if the session contains some cart items with _quantity > 1_, use the `cartItemSubPosition` property to identify the item unit in its line item.
-
-        If the loyalty program is [profile-based](https://docs.talon.one/docs/product/loyalty-programs/overview#loyalty-program-types), use the `recipientIntegrationId` property to identify the user for whom the loyalty points are rolled back. If the loyalty program is [card-based](https://docs.talon.one/docs/product/loyalty-programs/overview#loyalty-program-types), use the `cardIdentifier` property to identify the loyalty card where the points were originally added.
-      example:
-        programId: 5
-        subLedgerId: main
-        value: 100
-        recipientIntegrationId: URNGV8294NV
-        transactionUUID: 8c2d3670-6ea5-4e9e-b5c6-e7e7b4a10111
-        cartItemPosition: 1
-        cartItemSubPosition: 1
-        cardIdentifier: loyalty-card-001
-      properties:
-        programId:
-          description: The ID of the loyalty program where these points were rolled
-            back.
-          format: int64
-          type: integer
-        subLedgerId:
-          description: The ID of the subledger within the loyalty program where these
-            points were rolled back.
-          type: string
-        value:
-          description: The amount of points that were rolled back.
-          type: number
-        recipientIntegrationId:
-          description: The user for whom these points were rolled back.
-          example: URNGV8294NV
-          maxLength: 1000
-          type: string
-        transactionUUID:
-          description: The identifier of this loyalty point transaction.
-          type: string
-        cartItemPosition:
-          description: (_Add points per cart item_ only.) The index of the item in
-            the `cartItem` object for which these points were rolled back.
-          type: number
-        cartItemSubPosition:
-          description: (_Add points per cart item_ ) The index of the item unit in
-            its line item.
-          type: number
-        cardIdentifier:
-          allOf:
-          - $ref: "#/components/schemas/LoyaltyCardIdentifier"
-          description: The identifier of the card on which these points were originally
-            added.
-      required:
-      - programId
-      - recipientIntegrationId
-      - subLedgerId
-      - transactionUUID
-      - value
-      title: rollbackAddedLoyaltyPoints
-    EffectRollbackAddedLoyaltyPoints:
-      allOf:
-      - $ref: "#/components/schemas/EffectEntity"
-      - description: "The `rollbackAddedLoyaltyPoints` effect and its properties.\
-          \ See [API effects](https://docs.talon.one/docs/dev/integration-api/api-effects)."
-        properties:
-          effectType:
-            description: An effect discriminator of type `rollbackAddedLoyaltyPoints`.
-            enum:
-            - rollbackAddedLoyaltyPoints
-            type: string
-          props:
-            allOf:
-            - $ref: "#/components/schemas/RollbackAddedLoyaltyPointsEffectProps"
-            description: The properties of the `rollbackAddedLoyaltyPoints` effect.
-        required:
-        - effectType
-        - props
-        title: rollbackAddedLoyaltyPoints
-    RollbackCouponEffectProps:
-      description: |-
-        This effect indicates that a coupon code redemption has been rolled back. The coupon becomes redeemable again.
-
-        The effect is triggered when you [cancel](https://docs.talon.one/docs/dev/concepts/entities/customer-sessions#manage-the-sessions-state) a session where a coupon was accepted. See an example of use in the [cancelling a session tutorial](https://docs.talon.one/docs/dev/tutorials/roll-back-effects).
-      example:
-        value: COUP-XYZ789
-      properties:
-        value:
-          description: The coupon code whose redemption has been rolled back.
-          type: string
-      required:
-      - value
-      title: rollbackCoupon
-    EffectRollbackCoupon:
-      allOf:
-      - $ref: "#/components/schemas/EffectEntity"
-      - description: "The `rollbackCoupon` effect and its properties. See [API effects](https://docs.talon.one/docs/dev/integration-api/api-effects)."
-        properties:
-          effectType:
-            description: An effect discriminator of type `rollbackCoupon`.
-            enum:
-            - rollbackCoupon
-            type: string
-          props:
-            allOf:
-            - $ref: "#/components/schemas/RollbackCouponEffectProps"
-            description: The properties of the `rollbackCoupon` effect.
-        required:
-        - effectType
-        - props
-        title: rollbackCoupon
-    RollbackDeductedLoyaltyPointsEffectProps:
-      description: |-
-        This effect is triggered in the following cases:
-
-        - A session is _cancelled_ and this session deducted loyalty points. The rollback action returns the redeemed loyalty points to the customer.
-        - A session is impacted by a _partial return_. Only added loyalty points that are still **pending** are rolled back.
-        - A session in which loyalty points were spent is reopened.
-
-        See the [session states](https://docs.talon.one/docs/dev/concepts/entities/customer-sessions#customer-session-states).
-
-        If you set custom activation and expiration dates for the loyalty points, use the `startDate` and `expiryDate` properties to identify when the reward will be active and when will expire.
-
-        If the loyalty program is [profile-based](https://docs.talon.one/docs/product/loyalty-programs/profile-based/profile-based-overview), use the `recipientIntegrationId` property to identify the user who receives the loyalty points. If the loyalty program is [card-based](https://docs.talon.one/docs/product/loyalty-programs/overview#loyalty-program-types), use the `cardIdentifier` property to identify the loyalty card where the points are reimbursed.
-      example:
-        programId: 5
-        subLedgerId: main
-        value: 50
-        recipientIntegrationId: URNGV8294NV
-        startDate: 2024-01-01T00:00:00Z
-        expiryDate: 2025-01-01T00:00:00Z
-        transactionUUID: 9f3e4781-7fb6-5f0f-c6d7-f8f8c5b21222
-        cardIdentifier: loyalty-card-001
-      properties:
-        programId:
-          description: The ID of the loyalty program where these points were reimbursed.
-          format: int64
-          type: integer
-        subLedgerId:
-          description: The ID of the subledger within the loyalty program where these
-            points were reimbursed.
-          type: string
-        value:
-          description: The amount of points that were reimbursed.
-          type: number
-        recipientIntegrationId:
-          description: The user for whom these points were reimbursed.
-          example: URNGV8294NV
-          maxLength: 1000
-          type: string
-        startDate:
-          description: The date after which the reimbursed points will be valid.
-          format: date-time
-          type: string
-        expiryDate:
-          description: The date after which the reimbursed points will expire.
-          format: date-time
-          type: string
-        transactionUUID:
-          description: The identifier of this loyalty point transaction.
-          type: string
-        cardIdentifier:
-          allOf:
-          - $ref: "#/components/schemas/LoyaltyCardIdentifier"
-          description: The identifier of the card from which these points were originally
-            deducted.
-      required:
-      - programId
-      - recipientIntegrationId
-      - subLedgerId
-      - transactionUUID
-      - value
-      title: rollbackDeductedLoyaltyPoints
-    EffectRollbackDeductedLoyaltyPoints:
-      allOf:
-      - $ref: "#/components/schemas/EffectEntity"
-      - description: "The `rollbackDeductedLoyaltyPoints` effect and its properties.\
-          \ See [API effects](https://docs.talon.one/docs/dev/integration-api/api-effects)."
-        properties:
-          effectType:
-            description: An effect discriminator of type `rollbackDeductedLoyaltyPoints`.
-            enum:
-            - rollbackDeductedLoyaltyPoints
-            type: string
-          props:
-            allOf:
-            - $ref: "#/components/schemas/RollbackDeductedLoyaltyPointsEffectProps"
-            description: The properties of the `rollbackDeductedLoyaltyPoints` effect.
-        required:
-        - effectType
-        - props
-        title: rollbackDeductedLoyaltyPoints
     RollbackDiscountEffectProps:
       description: |-
         This effect indicates that a discounted session, cart item, or additional cost has been cancelled or partially returned. This effect can only happen when you set the status of a session to `cancel` or the status changes to `partially_returned`.
@@ -17994,18 +18294,20 @@ components:
             - rollbackDiscount
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/RollbackDiscountEffectProps"
-            description: The properties of the `rollbackDiscount` effect.
+            $ref: "#/components/schemas/RollbackDiscountEffectProps"
         required:
         - effectType
         - props
         title: rollbackDiscount
-    RollbackIncreasedAchievementProgressEffectProps:
+    RollbackIncreasedAchievementProgressPerItemEffectProps:
       description: |-
-        This effect indicates that the customer's progress in an achievement was rolled back.
+        This effect schema is returned when you cancel or [reopen a customer session](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/reopenCustomerSession) that previously validated the **Update customer progress per item** effect.
 
-        The Rule Engine triggers this effect when you cancel or [reopen a customer session](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/reopenCustomerSession) that previously validated the [Update customer progress](https://docs.talon.one/docs/product/rules/effects/use-effects#update-customer-progress) effect and triggered the [increaseAchievementProgress](https://docs.talon.one/docs/dev/integration-api/api-effects#increaseachievementprogress) API effect.
+        It indicates that the customer's progress in an achievement was rolled back for a specific cart item.
+
+        If your list of cart items is a [bundle definition](https://docs.talon.one/docs/product/rules/create-and-manage-bundles), use the `bundleIndex` and `bundleName` properties to identify the bundle containing the item whose progress was rolled back.
+
+        If the session contains cart items with _quantity > 1_, use the `cartItemSubPosition` property to identify the specific unit within the item's line item.
 
         The effect is also triggered for completed achievements if the **Allow progress rollback for completed achievements** setting is enabled. You can enable this through the [Campaign Manager](https://docs.talon.one/docs/product/achievements/manage-achievements) or the [Management API](https://docs.talon.one/management-api#tag/Achievements/operation/createAchievement) by setting the `achievementAllowRollbackAfterCompletion` property to `true`. This setting only applies to one-time and recurring on expiration achievements.
       example:
@@ -18015,6 +18317,10 @@ components:
         decreaseProgressBy: 1
         currentProgress: 6
         target: 10
+        cartItemPosition: 1
+        cartItemSubPosition: 1
+        bundleIndex: 1
+        bundleName: my_bundle
       properties:
         achievementId:
           description: The internal ID of the achievement.
@@ -18039,66 +18345,50 @@ components:
         target:
           description: The target value to complete the achievement.
           type: number
+        cartItemPosition:
+          description: The index of the item in the `cartItem` object on which the
+            customer's progress in the achievement was updated.
+          type: number
+        cartItemSubPosition:
+          description: "For cart items with `quantity` > 1, indicates which specific\
+            \ unit of the item the effect applies to."
+          type: number
+        bundleIndex:
+          description: "_(With bundles only)_ The position of the specific bundle\
+            \ in the list of bundles created from the same bundle definition. For\
+            \ example, if a customer creates two identical bundles, the first has\
+            \ index `0` and the second has index `1`."
+          format: int64
+          type: integer
+        bundleName:
+          description: _(With bundles only)_ The name of the bundle definition.
+          type: string
       required:
       - achievementId
       - achievementName
+      - cartItemPosition
       - currentProgress
       - decreaseProgressBy
       - progressTrackerId
       - target
-      title: rollbackIncreasedAchievementProgress
-    EffectRollbackIncreasedAchievementProgress:
+      title: rollbackIncreasedAchievementProgressPerItem
+    EffectRollbackIncreasedAchievementProgressPerItem:
       allOf:
       - $ref: "#/components/schemas/EffectEntity"
-      - description: "The `rollbackIncreasedAchievementProgress` effect and its properties.\
-          \ See [API effects](https://docs.talon.one/docs/dev/integration-api/api-effects)."
+      - description: "The `rollbackIncreasedAchievementProgressPerItem` effect and\
+          \ its properties. See [API effects](https://docs.talon.one/docs/dev/integration-api/api-effects)."
         properties:
           effectType:
-            description: An effect discriminator of type `rollbackIncreasedAchievementProgress`.
+            description: An effect discriminator of type `rollbackIncreasedAchievementProgressPerItem`.
             enum:
-            - rollbackIncreasedAchievementProgress
+            - rollbackIncreasedAchievementProgressPerItem
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/RollbackIncreasedAchievementProgressEffectProps"
-            description: The properties of the `rollbackIncreasedAchievementProgress`
-              effect.
+            $ref: "#/components/schemas/RollbackIncreasedAchievementProgressPerItemEffectProps"
         required:
         - effectType
         - props
-        title: rollbackIncreasedAchievementProgress
-    RollbackReferralEffectProps:
-      description: |-
-        This effect indicates that the redemption of the referral code has been rolled back. It triggers when a closed session that redeemed a referral is gets cancelled. The code becomes redeemable again.
-
-        For more information about session states, see [Managing states](https://docs.talon.one/docs/dev/concepts/entities/customer-sessions#customer-session-states).
-      example:
-        value: REF-ABC123
-      properties:
-        value:
-          description: The referral code to be rolled back.
-          type: string
-      required:
-      - value
-      title: rollbackReferral
-    EffectRollbackReferral:
-      allOf:
-      - $ref: "#/components/schemas/EffectEntity"
-      - description: "The `rollbackReferral` effect and its properties. See [API effects](https://docs.talon.one/docs/dev/integration-api/api-effects)."
-        properties:
-          effectType:
-            description: An effect discriminator of type `rollbackReferral`.
-            enum:
-            - rollbackReferral
-            type: string
-          props:
-            allOf:
-            - $ref: "#/components/schemas/RollbackReferralEffectProps"
-            description: The properties of the `rollbackReferral` effect.
-        required:
-        - effectType
-        - props
-        title: rollbackReferral
+        title: rollbackIncreasedAchievementProgressPerItem
     RollbackUseRewardEffectProps:
       description: This effect is triggered when a reward usage has been rolled back
         by a session cancellation.
@@ -18134,9 +18424,7 @@ components:
             - rollbackUseReward
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/RollbackUseRewardEffectProps"
-            description: The properties of the `rollbackUseReward` effect.
+            $ref: "#/components/schemas/RollbackUseRewardEffectProps"
         required:
         - effectType
         - props
@@ -18171,9 +18459,7 @@ components:
             - set
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/UpdateAttributeEffectProps"
-            description: The properties of the `set` effect.
+            $ref: "#/components/schemas/UpdateAttributeEffectProps"
         required:
         - effectType
         - props
@@ -18226,13 +18512,13 @@ components:
             - setDiscount
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/SetDiscountEffectProps"
-            description: The properties of the `setDiscount` effect.
+            $ref: "#/components/schemas/SetDiscountEffectProps"
         required:
         - effectType
         - props
         title: setDiscount
+        x-rollback-effect:
+          $ref: "#/components/schemas/EffectRollbackDiscount"
     SetDiscountPerAdditionalCostEffectProps:
       description: |-
         This effect indicates that a discount that should be applied on a specific additional cost. It is triggered whenever a rule containing a **Discount additional cost** effect is validated.
@@ -18280,13 +18566,13 @@ components:
             - setDiscountPerAdditionalCost
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/SetDiscountPerAdditionalCostEffectProps"
-            description: The properties of the `setDiscountPerAdditionalCost` effect.
+            $ref: "#/components/schemas/SetDiscountPerAdditionalCostEffectProps"
         required:
         - effectType
         - props
         title: setDiscountPerAdditionalCost
+        x-rollback-effect:
+          $ref: "#/components/schemas/EffectRollbackDiscount"
     SetDiscountPerAdditionalCostPerItemEffectProps:
       description: |-
         This effect indicates that a discount of a specific additional cost within a specific item should be applied. It gets triggered whenever a rule containing a **Discount additional cost per item** effect is validated.
@@ -18347,14 +18633,13 @@ components:
             - setDiscountPerAdditionalCostPerItem
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/SetDiscountPerAdditionalCostPerItemEffectProps"
-            description: The properties of the `setDiscountPerAdditionalCostPerItem`
-              effect.
+            $ref: "#/components/schemas/SetDiscountPerAdditionalCostPerItemEffectProps"
         required:
         - effectType
         - props
         title: setDiscountPerAdditionalCostPerItem
+        x-rollback-effect:
+          $ref: "#/components/schemas/EffectRollbackDiscount"
     SetDiscountPerItemEffectProps:
       description: |-
         This effect schema is returned when you use the **Discount individual items**, **Discount individual items pro rata**, or **Discount individual item in bundles** effect in a rule.
@@ -18453,13 +18738,13 @@ components:
             - setDiscountPerItem
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/SetDiscountPerItemEffectProps"
-            description: The properties of the `setDiscountPerItem` effect.
+            $ref: "#/components/schemas/SetDiscountPerItemEffectProps"
         required:
         - effectType
         - props
         title: setDiscountPerItem
+        x-rollback-effect:
+          $ref: "#/components/schemas/EffectRollbackDiscount"
     SetLoyaltyPointsExpiryDateEffectProps:
       description: |
         This effect updates the expiry date of all active, pending, and unlimited point transactions to a specific date.
@@ -18506,9 +18791,7 @@ components:
             - setLoyaltyPointsExpiryDate
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/SetLoyaltyPointsExpiryDateEffectProps"
-            description: The properties of the `setLoyaltyPointsExpiryDate` effect.
+            $ref: "#/components/schemas/SetLoyaltyPointsExpiryDateEffectProps"
         required:
         - effectType
         - props
@@ -18564,9 +18847,7 @@ components:
             - showBundleMetadata
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/ShowBundleMetadataEffectProps"
-            description: The properties of the `showBundleMetadata` effect.
+            $ref: "#/components/schemas/ShowBundleMetadataEffectProps"
         required:
         - effectType
         - props
@@ -18613,9 +18894,7 @@ components:
             - showNotification
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/ShowNotificationEffectProps"
-            description: The properties of the `showNotification` effect.
+            $ref: "#/components/schemas/ShowNotificationEffectProps"
         required:
         - effectType
         - props
@@ -18716,9 +18995,7 @@ components:
             - startAchievementProgress
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/StartAchievementProgressEffectProps"
-            description: The properties of the `startAchievementProgress` effect.
+            $ref: "#/components/schemas/StartAchievementProgressEffectProps"
         required:
         - effectType
         - props
@@ -18777,9 +19054,7 @@ components:
             - unlockReward
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/UnlockRewardEffectProps"
-            description: The properties of the `unlockReward` effect.
+            $ref: "#/components/schemas/UnlockRewardEffectProps"
         required:
         - effectType
         - props
@@ -18818,13 +19093,13 @@ components:
             - useReward
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/UseRewardEffectProps"
-            description: The properties of the `useReward` effect.
+            $ref: "#/components/schemas/UseRewardEffectProps"
         required:
         - effectType
         - props
         title: useReward
+        x-rollback-effect:
+          $ref: "#/components/schemas/EffectRollbackUseReward"
     WillAwardGiveawayEffectProps:
       description: |-
         The equivalent of the `awardGiveaway` effect but returned when updating a session with any state other than `closed`. This ensures no giveaway codes are leaked when they are still not guaranteed to be awarded.
@@ -18866,16 +19141,12 @@ components:
             - willAwardGiveaway
             type: string
           props:
-            allOf:
-            - $ref: "#/components/schemas/WillAwardGiveawayEffectProps"
-            description: The properties of the `willAwardGiveaway` effect.
+            $ref: "#/components/schemas/WillAwardGiveawayEffectProps"
         required:
         - effectType
         - props
         title: willAwardGiveaway
     Effect:
-      description: A generic effect that is fired by a triggered campaign. The `effectType`
-        field selects the concrete effect variant and the shape of `props`.
       discriminator:
         mapping:
           acceptCoupon: "#/components/schemas/EffectAcceptCoupon"
@@ -18894,6 +19165,7 @@ components:
           error: "#/components/schemas/EffectError"
           extendLoyaltyPointsExpiryDate: "#/components/schemas/EffectExtendLoyaltyPointsExpiryDate"
           increaseAchievementProgress: "#/components/schemas/EffectIncreaseAchievementProgress"
+          increaseAchievementProgressPerItem: "#/components/schemas/EffectIncreaseAchievementProgressPerItem"
           joinLoyaltyProgram: "#/components/schemas/EffectJoinLoyaltyProgram"
           offsetNegativeLoyaltyPoints: "#/components/schemas/EffectOffsetNegativeLoyaltyPoints"
           redeemReferral: "#/components/schemas/EffectRedeemReferral"
@@ -18907,7 +19179,9 @@ components:
           rollbackDeductedLoyaltyPoints: "#/components/schemas/EffectRollbackDeductedLoyaltyPoints"
           rollbackDiscount: "#/components/schemas/EffectRollbackDiscount"
           rollbackIncreasedAchievementProgress: "#/components/schemas/EffectRollbackIncreasedAchievementProgress"
+          rollbackIncreasedAchievementProgressPerItem: "#/components/schemas/EffectRollbackIncreasedAchievementProgressPerItem"
           rollbackReferral: "#/components/schemas/EffectRollbackReferral"
+          rollbackTierBoost: "#/components/schemas/EffectRollbackTierBoost"
           rollbackUseReward: "#/components/schemas/EffectRollbackUseReward"
           set: "#/components/schemas/EffectSet"
           setDiscount: "#/components/schemas/EffectSetDiscount"
@@ -18939,6 +19213,7 @@ components:
       - $ref: "#/components/schemas/EffectError"
       - $ref: "#/components/schemas/EffectExtendLoyaltyPointsExpiryDate"
       - $ref: "#/components/schemas/EffectIncreaseAchievementProgress"
+      - $ref: "#/components/schemas/EffectIncreaseAchievementProgressPerItem"
       - $ref: "#/components/schemas/EffectJoinLoyaltyProgram"
       - $ref: "#/components/schemas/EffectOffsetNegativeLoyaltyPoints"
       - $ref: "#/components/schemas/EffectRedeemReferral"
@@ -18952,7 +19227,9 @@ components:
       - $ref: "#/components/schemas/EffectRollbackDeductedLoyaltyPoints"
       - $ref: "#/components/schemas/EffectRollbackDiscount"
       - $ref: "#/components/schemas/EffectRollbackIncreasedAchievementProgress"
+      - $ref: "#/components/schemas/EffectRollbackIncreasedAchievementProgressPerItem"
       - $ref: "#/components/schemas/EffectRollbackReferral"
+      - $ref: "#/components/schemas/EffectRollbackTierBoost"
       - $ref: "#/components/schemas/EffectRollbackUseReward"
       - $ref: "#/components/schemas/EffectSet"
       - $ref: "#/components/schemas/EffectSetDiscount"
@@ -19089,7 +19366,8 @@ components:
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
           rewardIntegrationId: reward-unlock-123
-          props: ""
+          props:
+            value: COUP-XYZ789
         - experimentId: 12
           campaignId: 244
           rulesetId: 73
@@ -19108,7 +19386,8 @@ components:
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
           rewardIntegrationId: reward-unlock-123
-          props: ""
+          props:
+            value: COUP-XYZ789
       properties:
         customerSession:
           $ref: "#/components/schemas/CustomerSessionV2"
@@ -20420,7 +20699,7 @@ components:
           type: integer
         version:
           description: |
-            Incrementing number representing how many revisions have been activated on this campaign, starts from 0 for a new campaign.
+            Incrementing number representing how many revisions have been activated on this campaign. Starts from `0` for a new campaign.
           example: 6
           format: int64
           type: integer
@@ -20699,17 +20978,19 @@ components:
       - failureCode
     CampaignEligibilityDetails:
       example:
-        passed: true
-        couponCode: couponCode
+        passed: false
+        couponCode: XMAS-20-2021
         details: ""
       properties:
         passed:
           description: Indicates whether the customer was eligible for the campaign
             in the current session.
+          example: false
           type: boolean
         couponCode:
           description: "The coupon code used to check a customer's eligibility for\
             \ the campaign in the current session, if applicable."
+          example: XMAS-20-2021
           type: string
         details:
           allOf:
@@ -20806,19 +21087,20 @@ components:
       description: "The customer's eligibility for a rule in the current session,\
         \ based on whether all of the rule's conditions were met."
       example:
-        passed: true
-        couponCode: couponCode
+        passed: false
+        couponCode: XMAS-20-2021
         details: ""
       properties:
         passed:
           description: "Indicates whether the customer was eligible for the rule in\
             \ the current session, based on whether all of the rule's conditions were\
             \ met."
-          example: true
+          example: false
           type: boolean
         couponCode:
           description: "The coupon code used to check a customer's eligibility for\
             \ the rule in the current session, if applicable."
+          example: XMAS-20-2021
           type: string
         details:
           allOf:
@@ -20845,11 +21127,11 @@ components:
           valid till Dec 5 only.
         relatedData: https://example.com/discounts/20-off-shoes.png
         eligibility:
-        - passed: true
-          couponCode: couponCode
+        - passed: false
+          couponCode: XMAS-20-2021
           details: ""
-        - passed: true
-          couponCode: couponCode
+        - passed: false
+          couponCode: XMAS-20-2021
           details: ""
     CampaignEligibilityExperiment:
       description: |
@@ -20915,11 +21197,11 @@ components:
         - coupons
         - referrals
         eligibility:
-        - passed: true
-          couponCode: couponCode
+        - passed: false
+          couponCode: XMAS-20-2021
           details: ""
-        - passed: true
-          couponCode: couponCode
+        - passed: false
+          couponCode: XMAS-20-2021
           details: ""
         rules:
         - title: Give discount via coupon
@@ -20928,11 +21210,11 @@ components:
             Offer valid till Dec 5 only.
           relatedData: https://example.com/discounts/20-off-shoes.png
           eligibility:
-          - passed: true
-            couponCode: couponCode
+          - passed: false
+            couponCode: XMAS-20-2021
             details: ""
-          - passed: true
-            couponCode: couponCode
+          - passed: false
+            couponCode: XMAS-20-2021
             details: ""
         - title: Give discount via coupon
           displayName: 20% off all shoes!
@@ -20940,11 +21222,11 @@ components:
             Offer valid till Dec 5 only.
           relatedData: https://example.com/discounts/20-off-shoes.png
           eligibility:
-          - passed: true
-            couponCode: couponCode
+          - passed: false
+            couponCode: XMAS-20-2021
             details: ""
-          - passed: true
-            couponCode: couponCode
+          - passed: false
+            couponCode: XMAS-20-2021
             details: ""
         experiment:
           id: 0
@@ -21036,7 +21318,7 @@ components:
           type: integer
         evaluationGroupMode:
           description: "The evaluation mode of the evaluation group. For more information,\
-            \ see [Managing campaign evaluation](https://docs.talon.one/docs/product/applications/managing-campaign-"
+            \ see [Managing campaign evaluation](https://docs.talon.one/docs/product/applications/managing-campaign-evaluation)."
           example: stackable
           type: string
       required:
@@ -22613,11 +22895,11 @@ components:
           - coupons
           - referrals
           eligibility:
-          - passed: true
-            couponCode: couponCode
+          - passed: false
+            couponCode: XMAS-20-2021
             details: ""
-          - passed: true
-            couponCode: couponCode
+          - passed: false
+            couponCode: XMAS-20-2021
             details: ""
           rules:
           - title: Give discount via coupon
@@ -22626,11 +22908,11 @@ components:
               Offer valid till Dec 5 only.
             relatedData: https://example.com/discounts/20-off-shoes.png
             eligibility:
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
           - title: Give discount via coupon
             displayName: 20% off all shoes!
@@ -22638,11 +22920,11 @@ components:
               Offer valid till Dec 5 only.
             relatedData: https://example.com/discounts/20-off-shoes.png
             eligibility:
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
           experiment:
             id: 0
@@ -22661,11 +22943,11 @@ components:
           - coupons
           - referrals
           eligibility:
-          - passed: true
-            couponCode: couponCode
+          - passed: false
+            couponCode: XMAS-20-2021
             details: ""
-          - passed: true
-            couponCode: couponCode
+          - passed: false
+            couponCode: XMAS-20-2021
             details: ""
           rules:
           - title: Give discount via coupon
@@ -22674,11 +22956,11 @@ components:
               Offer valid till Dec 5 only.
             relatedData: https://example.com/discounts/20-off-shoes.png
             eligibility:
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
           - title: Give discount via coupon
             displayName: 20% off all shoes!
@@ -22686,11 +22968,11 @@ components:
               Offer valid till Dec 5 only.
             relatedData: https://example.com/discounts/20-off-shoes.png
             eligibility:
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
           experiment:
             id: 0
@@ -22714,7 +22996,8 @@ components:
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
           rewardIntegrationId: reward-unlock-123
-          props: ""
+          props:
+            value: COUP-XYZ789
         - experimentId: 12
           campaignId: 244
           rulesetId: 73
@@ -22733,7 +23016,8 @@ components:
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
           rewardIntegrationId: reward-unlock-123
-          props: ""
+          props:
+            value: COUP-XYZ789
         ruleFailureReasons:
         - campaignID: 1
           campaignName: campaignName
@@ -23038,7 +23322,8 @@ components:
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
           rewardIntegrationId: reward-unlock-123
-          props: ""
+          props:
+            value: COUP-XYZ789
         - experimentId: 12
           campaignId: 244
           rulesetId: 73
@@ -23057,7 +23342,8 @@ components:
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
           rewardIntegrationId: reward-unlock-123
-          props: ""
+          props:
+            value: COUP-XYZ789
       properties:
         effects:
           description: "The effects generated by the rules in your running campaigns.\
@@ -23669,11 +23955,11 @@ components:
           - coupons
           - referrals
           eligibility:
-          - passed: true
-            couponCode: couponCode
+          - passed: false
+            couponCode: XMAS-20-2021
             details: ""
-          - passed: true
-            couponCode: couponCode
+          - passed: false
+            couponCode: XMAS-20-2021
             details: ""
           rules:
           - title: Give discount via coupon
@@ -23682,11 +23968,11 @@ components:
               Offer valid till Dec 5 only.
             relatedData: https://example.com/discounts/20-off-shoes.png
             eligibility:
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
           - title: Give discount via coupon
             displayName: 20% off all shoes!
@@ -23694,11 +23980,11 @@ components:
               Offer valid till Dec 5 only.
             relatedData: https://example.com/discounts/20-off-shoes.png
             eligibility:
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
           experiment:
             id: 0
@@ -23717,11 +24003,11 @@ components:
           - coupons
           - referrals
           eligibility:
-          - passed: true
-            couponCode: couponCode
+          - passed: false
+            couponCode: XMAS-20-2021
             details: ""
-          - passed: true
-            couponCode: couponCode
+          - passed: false
+            couponCode: XMAS-20-2021
             details: ""
           rules:
           - title: Give discount via coupon
@@ -23730,11 +24016,11 @@ components:
               Offer valid till Dec 5 only.
             relatedData: https://example.com/discounts/20-off-shoes.png
             eligibility:
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
           - title: Give discount via coupon
             displayName: 20% off all shoes!
@@ -23742,11 +24028,11 @@ components:
               Offer valid till Dec 5 only.
             relatedData: https://example.com/discounts/20-off-shoes.png
             eligibility:
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
           experiment:
             id: 0
@@ -23794,7 +24080,8 @@ components:
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
           rewardIntegrationId: reward-unlock-123
-          props: ""
+          props:
+            value: COUP-XYZ789
         - experimentId: 12
           campaignId: 244
           rulesetId: 73
@@ -23813,7 +24100,8 @@ components:
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
           rewardIntegrationId: reward-unlock-123
-          props: ""
+          props:
+            value: COUP-XYZ789
         createdCoupons:
         - id: 6
           created: 2020-06-10T09:05:27.993483Z
@@ -26130,11 +26418,11 @@ components:
           - coupons
           - referrals
           eligibility:
-          - passed: true
-            couponCode: couponCode
+          - passed: false
+            couponCode: XMAS-20-2021
             details: ""
-          - passed: true
-            couponCode: couponCode
+          - passed: false
+            couponCode: XMAS-20-2021
             details: ""
           rules:
           - title: Give discount via coupon
@@ -26143,11 +26431,11 @@ components:
               Offer valid till Dec 5 only.
             relatedData: https://example.com/discounts/20-off-shoes.png
             eligibility:
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
           - title: Give discount via coupon
             displayName: 20% off all shoes!
@@ -26155,11 +26443,11 @@ components:
               Offer valid till Dec 5 only.
             relatedData: https://example.com/discounts/20-off-shoes.png
             eligibility:
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
           experiment:
             id: 0
@@ -26178,11 +26466,11 @@ components:
           - coupons
           - referrals
           eligibility:
-          - passed: true
-            couponCode: couponCode
+          - passed: false
+            couponCode: XMAS-20-2021
             details: ""
-          - passed: true
-            couponCode: couponCode
+          - passed: false
+            couponCode: XMAS-20-2021
             details: ""
           rules:
           - title: Give discount via coupon
@@ -26191,11 +26479,11 @@ components:
               Offer valid till Dec 5 only.
             relatedData: https://example.com/discounts/20-off-shoes.png
             eligibility:
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
           - title: Give discount via coupon
             displayName: 20% off all shoes!
@@ -26203,11 +26491,11 @@ components:
               Offer valid till Dec 5 only.
             relatedData: https://example.com/discounts/20-off-shoes.png
             eligibility:
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
           experiment:
             id: 0
@@ -26231,7 +26519,8 @@ components:
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
           rewardIntegrationId: reward-unlock-123
-          props: ""
+          props:
+            value: COUP-XYZ789
         - experimentId: 12
           campaignId: 244
           rulesetId: 73
@@ -26250,7 +26539,8 @@ components:
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
           rewardIntegrationId: reward-unlock-123
-          props: ""
+          props:
+            value: COUP-XYZ789
         ruleFailureReasons:
         - campaignID: 1
           campaignName: campaignName
@@ -27418,6 +27708,24 @@ components:
           startDate: 2024-01-01T15:04:05Z07:00
           completionDate: 2024-01-15T15:04:05Z07:00
           endDate: 2024-02-01T15:04:05Z07:00
+    CustomerAchievementHistoryEntry:
+      allOf:
+      - $ref: "#/components/schemas/AchievementProgress"
+      - properties:
+          progressTrackerId:
+            description: The ID of the customer's progress tracker for this achievement.
+            example: 42
+            format: int64
+            type: integer
+        required:
+        - progressTrackerId
+      example:
+        status: completed
+        progress: 10
+        startDate: 2024-01-01T15:04:05Z07:00
+        completionDate: 2024-01-15T15:04:05Z07:00
+        endDate: 2024-02-01T15:04:05Z07:00
+        progressTrackerId: 42
     CustomerProfileReward:
       description: A reward instance held by a customer profile.
       example:
@@ -28408,6 +28716,8 @@ components:
     RevisionActivation:
       properties:
         activateAt:
+          description: Timestamp when the revision will be activated.
+          example: 2026-10-08T09:30:00Z
           format: date-time
           type: string
     NewRevisionVersion:
@@ -28491,24 +28801,38 @@ components:
       - $ref: "#/components/schemas/IdentifiableEntity"
       - properties:
           accountId:
+            description: The ID of the account that owns this entity.
+            example: 3886
             format: int64
             type: integer
           applicationId:
+            description: The ID of the Application that owns this entity.
+            example: 42
             format: int64
             type: integer
           campaignId:
+            description: The ID of the campaign that the revision was created from.
+            example: 18
             format: int64
             type: integer
           created:
+            description: Timestamp when the revision was created.
+            example: 2026-10-01T08:00:00Z
             format: date-time
             type: string
           createdBy:
+            description: The ID of the user who created this revision.
+            example: 134
             format: int64
             type: integer
           revisionId:
+            description: The ID of the revision.
+            example: 6
             format: int64
             type: integer
           version:
+            description: |
+              Incrementing number representing how many revisions have been activated on this campaign. Starts from `0` for a new campaign.
             format: int64
             type: integer
         required:
@@ -28526,34 +28850,80 @@ components:
       - $ref: "#/components/schemas/RevisionActivation"
       - properties:
           accountId:
+            description: The ID of the account that owns this entity.
+            example: 3886
             format: int64
             type: integer
           applicationId:
+            description: The ID of the Application that owns this entity.
+            example: 42
             format: int64
             type: integer
           campaignId:
+            description: The ID of the campaign that the revision was created from.
+            example: 18
             format: int64
             type: integer
           created:
+            description: Timestamp when the revision was created.
+            example: 2026-10-01T08:00:00Z
             format: date-time
             type: string
           createdBy:
+            description: The ID of the user who created this revision.
+            example: 134
             format: int64
             type: integer
           activatedAt:
+            description: Timestamp when this revision was activated.
+            example: 2026-10-08T09:30:00Z
             format: date-time
             type: string
           activatedBy:
+            description: The ID of the user who activated this revision.
+            example: 334
             format: int64
             type: integer
           currentVersion:
-            $ref: "#/components/schemas/RevisionVersion"
+            allOf:
+            - $ref: "#/components/schemas/RevisionVersion"
+            description: The current version of this revision.
+            example:
+              id: 6
+              accountId: 3886
+              applicationId: 42
+              campaignId: 18
+              created: 2026-10-01T08:00:00Z
+              createdBy: 134
+              revisionId: 6
+              version: 1
+              name: Summer promotions
         required:
         - accountId
         - applicationId
         - campaignId
         - created
         - createdBy
+      example:
+        id: 6
+        activateAt: 2026-10-08T09:30:00Z
+        accountId: 3886
+        applicationId: 42
+        campaignId: 18
+        created: 2026-10-01T08:00:00Z
+        createdBy: 134
+        activatedAt: 2026-10-08T09:30:00Z
+        activatedBy: 334
+        currentVersion:
+          id: 6
+          accountId: 3886
+          applicationId: 42
+          campaignId: 18
+          created: 2026-10-01T08:00:00Z
+          createdBy: 134
+          revisionId: 6
+          version: 1
+          name: Summer promotions
     RevisionActivationRequest:
       properties:
         userIds:
@@ -31263,7 +31633,7 @@ components:
       allOf:
       - $ref: "#/components/schemas/BaseBlock"
       - description: "A block that displays a notification to the customer with a\
-          \ configurable type, title, and optional body message."
+          \ configurable type, title, and body message."
         properties:
           notificationType:
             description: The type of notification to display.
@@ -31278,12 +31648,6 @@ components:
               \ (e.g. \"{{$Session.Total}}\") evaluated at rule execution time."
             example: You saved $10 on your order.
             type: string
-          onFailure:
-            description: Blocks evaluated when this block fails or returns false.
-            items:
-              $ref: "#/components/schemas/Block"
-            type: array
-            default: null
           onError:
             additionalProperties:
               items:
@@ -31293,6 +31657,7 @@ components:
             description: Named error handlers evaluated when a specific error occurs.
             type: object
         required:
+        - body
         - notificationType
         - title
         title: ShowNotificationBlock
@@ -31317,7 +31682,8 @@ components:
             type: string
           partial:
             description: "When set to `true`, applies a partial item reward if the\
-              \ remaining budget is insufficient to award the full reward."
+              \ remaining budget is insufficient to award the full reward. When omitted,\
+              \ the Application's partial discounts setting applies."
             example: false
             type: boolean
           onFailure:
@@ -31355,7 +31721,6 @@ components:
             type: string
         required:
         - id
-        - name
     AwardGiveawayBlock:
       allOf:
       - $ref: "#/components/schemas/BaseBlock"
@@ -31375,12 +31740,6 @@ components:
             - Advocate
             example: Current
             type: string
-          onFailure:
-            description: Blocks evaluated when this block fails or returns false.
-            items:
-              $ref: "#/components/schemas/Block"
-            type: array
-            default: null
           onError:
             additionalProperties:
               items:
@@ -31405,10 +31764,10 @@ components:
           title:
             description: The display name of the webhook.
             example: Thank you for your order.
+            readOnly: true
             type: string
         required:
         - id
-        - title
     TriggerWebhookBlock:
       allOf:
       - $ref: "#/components/schemas/BaseBlock"
@@ -31914,6 +32273,7 @@ components:
           name:
             description: The display name of the audience.
             example: Travel audience
+            readOnly: true
             type: string
           integration:
             description: |
@@ -31933,7 +32293,6 @@ components:
             type: string
         required:
         - id
-        - name
     CheckAudienceBlock:
       allOf:
       - $ref: "#/components/schemas/BaseBlock"
@@ -31998,7 +32357,8 @@ components:
           subledger:
             description: The name of the subledger to check the balance of. Can be
               empty if this block checks the loyalty program's main ledger balance
-              instead of a subledger.
+              instead of a subledger. A subledger can only be used when the loyalty
+              program has subledgers enabled.
             example: ""
             type: string
           balance:
@@ -32006,7 +32366,7 @@ components:
               The type of balance to check:
                - `current` is the sum of currently active points
                - `pending` is the sum of pending points.
-               - `negative` is the sum of negative points.
+               - `negative` is the sum of negative points. It cannot be used with a subledger.
                - `tentativeCurrent` is the tentative points balance
               within the current open customer session.
             enum:
@@ -32128,21 +32488,21 @@ components:
           title:
             description: The display name for the achievement in the Campaign Manager.
             example: 50% off on 50th purchase.
+            readOnly: true
             type: string
           name:
             description: The internal name of the achievement used in API requests.
             example: Order50Discount
+            readOnly: true
             type: string
           target:
             description: The required number of actions or the transactional milestone
               to complete the achievement.
             example: 50
+            readOnly: true
             type: number
         required:
         - id
-        - name
-        - target
-        - title
     UpdateAchievementProgressBlock:
       allOf:
       - $ref: "#/components/schemas/BaseBlock"
@@ -32154,10 +32514,7 @@ components:
             example: increaseBy
             type: string
           value:
-            description: "The value to update the progress by. Supports template placeholders\
-              \ (e.g. \"{{$Session.Total / 2}}\") for dynamic quantities."
-            example: "10"
-            type: string
+            $ref: "#/components/schemas/UpdateAchievementProgressBlock_1_value"
           achievement:
             allOf:
             - $ref: "#/components/schemas/AchievementBlockReference"
@@ -32189,17 +32546,17 @@ components:
           title:
             description: The human-readable name of the attribute.
             example: City
+            readOnly: true
             type: string
           type:
             description: The data type of the attribute.
             example: string
+            readOnly: true
             type: string
         required:
         - entity
         - id
         - name
-        - title
-        - type
     UpdateAttributeValueBlock:
       allOf:
       - $ref: "#/components/schemas/BaseBlock"
@@ -32252,15 +32609,15 @@ components:
           name:
             description: "The name of the custom effect, as used in API requests."
             example: sendEmail
+            readOnly: true
             type: string
           title:
             description: The display name of the custom effect.
             example: Send email
+            readOnly: true
             type: string
         required:
         - id
-        - name
-        - title
     TriggerCustomEffectBlock:
       allOf:
       - $ref: "#/components/schemas/BaseBlock"
@@ -32586,8 +32943,8 @@ components:
     CheckTierBlock:
       allOf:
       - $ref: "#/components/schemas/BaseBlock"
-      - description: A block that checks whether a user profile is a member of a specific
-          tier within a loyalty program.
+      - description: A block that checks whether a customer profile is a member of
+          a specific tier in a loyalty program.
         properties:
           operator:
             description: An indicator of how the block compares its elements.
@@ -32597,9 +32954,9 @@ components:
             example: member
             type: string
           subledger:
-            description: The name of the subledger to check the balance of. Can be
-              empty if this block checks the loyalty program's main ledger balance
-              instead of a subledger.
+            description: |-
+              The name of the subledger to check a customer's tier in. Can be empty if this block checks the loyalty program's main ledger instead of a subledger. A subledger can only be used when the loyalty program that the tier is in has subledgers enabled.
+              To specify the main ledger, provide an empty string ("").
             example: ""
             type: string
           tier:
@@ -32767,13 +33124,6 @@ components:
               before activation.
             example: 3D
             type: string
-          onFailure:
-            description: Promotion blocks evaluated when this block fails or returns
-              false.
-            items:
-              $ref: "#/components/schemas/Block"
-            type: array
-            default: null
         required:
         - name
         - program
@@ -32803,13 +33153,6 @@ components:
               deduction.
             example: Purchase Deduction
             type: string
-          onFailure:
-            description: Promotion blocks evaluated when this block fails or returns
-              false.
-            items:
-              $ref: "#/components/schemas/Block"
-            type: array
-            default: null
         required:
         - program
         - subledger
@@ -34729,6 +35072,306 @@ components:
       - instructions
       - name
       - state
+    CatalogRule:
+      description: "A rule template stored in a catalog entry. Rules in catalog entries\
+        \ only contain title (no description, as description is at the catalog entry\
+        \ level)."
+      properties:
+        title:
+          description: A short description of the rule.
+          example: Give discount via coupon
+          type: string
+        bindings:
+          description: An array that provides objects with variable names (name) and
+            talang expressions to whose result they are bound (expression) during
+            rule evaluation. The order of the evaluation is decided by the position
+            in the array.
+          items:
+            $ref: "#/components/schemas/Binding"
+          type: array
+          default: null
+        condition:
+          description: A Talang expression that will be evaluated in the context of
+            the given event.
+          example:
+          - and
+          - - couponValid
+          items: {}
+          minItems: 1
+          type: array
+          default: null
+        effects:
+          description: An array of effectful Talang expressions in arrays that will
+            be evaluated when a rule matches.
+          example:
+          - catch
+          - - noop
+          - - setDiscount
+            - 10% off
+            - - '*'
+              - - "."
+                - Session
+                - Total
+              - - /
+                - 10
+                - 100
+          items:
+            type: object
+          type: array
+          default: null
+      required:
+      - condition
+      - effects
+      - title
+    CatalogRuleset:
+      description: A ruleset template stored in a catalog entry. It contains rule
+        templates and the global bindings they rely on.
+      properties:
+        rules:
+          description: "Array of rule templates in this ruleset. Rules only contain\
+            \ title (no description, as description is at the catalog entry level)."
+          items:
+            $ref: "#/components/schemas/CatalogRule"
+          type: array
+          default: null
+        bindings:
+          description: An array that provides objects with variable names (name) and
+            talang expressions to whose result they are bound (expression) during
+            rule evaluation. The order of the evaluation is decided by the position
+            in the array.
+          example: []
+          items:
+            $ref: "#/components/schemas/Binding"
+          type: array
+          default: null
+        rbVersion:
+          description: The version of the rulebuilder used to create this ruleset.
+          example: v2
+          type: string
+      required:
+      - rules
+    ExperimentBlueprintVariant:
+      description: An experiment variant template stored in an experiment blueprint.
+        Variants only contain the fields needed to recreate them in an experiment.
+      properties:
+        name:
+          description: The name of this variant.
+          example: Variant A
+          maxLength: 255
+          minLength: 1
+          type: string
+        weight:
+          description: |
+            The percentage split of this variant. For `random` assignment, the split must be between 1 and 99 and the sum across all variants must equal 100. Ignored for `audience` and `external` assignment.
+          example: 50
+          format: int64
+          maximum: 99
+          minimum: 0
+          type: integer
+        ruleset:
+          $ref: "#/components/schemas/CatalogRuleset"
+        isPrimary:
+          description: Indicates whether this variant is the primary variant of the
+            experiment.
+          example: true
+          type: boolean
+      required:
+      - isPrimary
+      - name
+      - ruleset
+      - weight
+    CartItemFilterTemplate:
+      description: "A cart item filter template stored in a library entry. Cart item\
+        \ filters in library entries only contain name (no description, as description\
+        \ is at the library entry level)."
+      properties:
+        name:
+          description: The name of the Application cart item filter.
+          example: Filter items by product
+          type: string
+        expression:
+          description: The Talang expression for the cart item filter.
+          example:
+          - filter
+          - - "."
+            - Session
+            - CartItems
+          - - - Item
+            - - catch
+              - false
+              - - contains
+                - - "."
+                  - Item
+                  - Category
+                - Kitchen
+          items: {}
+          type: array
+          default: null
+      required:
+      - expression
+      - name
+    ExperimentBlueprint:
+      properties:
+        id:
+          description: The internal ID of this experiment blueprint.
+          example: 42
+          format: int64
+          type: integer
+        accountId:
+          description: The ID of the account that owns this experiment blueprint.
+          example: 3886
+          format: int64
+          type: integer
+        applicationId:
+          description: The ID of the Application that owns this experiment blueprint.
+          example: 322
+          format: int64
+          type: integer
+        title:
+          description: A short description of the experiment blueprint.
+          example: High value cart discount test
+          type: string
+        description:
+          description: "A longer, more detailed description of the experiment blueprint."
+          example: Compares a flat discount against a percentage discount on high
+            value carts.
+          type: string
+        category:
+          description: Category used to group experiment blueprints.
+          enum:
+          - promotions
+          - pricing
+          - loyalty
+          - custom
+          example: custom
+          type: string
+        source:
+          description: Indicates whether the experiment blueprint is custom or shipped
+            by Talon.One.
+          enum:
+          - custom
+          - default
+          example: custom
+          type: string
+        variants:
+          description: "Array of experiment variant templates in this experiment blueprint.\
+            \ Variants only contain name, weight, ruleset and the primary flag."
+          items:
+            $ref: "#/components/schemas/ExperimentBlueprintVariant"
+          type: array
+          default: null
+        cartItemFilters:
+          description: "Array of cart item filter templates in this experiment blueprint.\
+            \ Cart item filters only contain name (no description, as description\
+            \ is at the experiment blueprint level)."
+          items:
+            $ref: "#/components/schemas/CartItemFilterTemplate"
+          type: array
+          default: null
+        created:
+          description: Timestamp when the experiment blueprint was created.
+          example: 2021-09-12T10:12:42Z
+          format: date-time
+          type: string
+        createdBy:
+          description: ID of the user who created the experiment blueprint.
+          example: 388
+          format: int64
+          type: integer
+        modified:
+          description: Timestamp when the experiment blueprint was last updated.
+          example: 2021-09-12T10:12:42Z
+          format: date-time
+          type: string
+        modifiedBy:
+          description: ID of the user who last updated the experiment blueprint.
+          example: 388
+          format: int64
+          type: integer
+      required:
+      - accountId
+      - applicationId
+      - cartItemFilters
+      - category
+      - created
+      - createdBy
+      - id
+      - source
+      - title
+      - variants
+    NewExperimentBlueprint:
+      properties:
+        title:
+          description: The display name for the experiment blueprint.
+          example: High value cart discount test
+          type: string
+        description:
+          description: "A longer, more detailed description of the experiment blueprint."
+          example: Compares a flat discount against a percentage discount on high
+            value carts.
+          type: string
+        category:
+          default: custom
+          description: Category used to group experiment blueprints.
+          enum:
+          - promotions
+          - pricing
+          - loyalty
+          - custom
+          example: custom
+          type: string
+        variants:
+          description: Array of experiment variant templates to store in this experiment
+            blueprint. At least one variant or cart item filter is required.
+          items:
+            $ref: "#/components/schemas/ExperimentBlueprintVariant"
+          type: array
+          default: null
+        cartItemFilters:
+          description: "Array of cart item filters to store in this experiment blueprint.\
+            \ If not provided, will be extracted from the variant rulesets. Cart item\
+            \ filters should only contain name (no description, as description is\
+            \ at the experiment blueprint level)."
+          items:
+            $ref: "#/components/schemas/CartItemFilterTemplate"
+          type: array
+          default: null
+      required:
+      - title
+    UpdateExperimentBlueprint:
+      properties:
+        title:
+          description: The display name for the experiment blueprint.
+          example: High value cart discount test
+          type: string
+        description:
+          description: "A longer, more detailed description of the experiment blueprint."
+          example: Compares a flat discount against a percentage discount on high
+            value carts.
+          type: string
+        category:
+          description: Category used to group experiment blueprints.
+          enum:
+          - promotions
+          - pricing
+          - loyalty
+          - custom
+          example: custom
+          type: string
+        variants:
+          description: Replaces the stored experiment variant templates.
+          items:
+            $ref: "#/components/schemas/ExperimentBlueprintVariant"
+          type: array
+          default: null
+        cartItemFilters:
+          description: "Replaces the stored cart item filters. Cart item filters should\
+            \ only contain name (no description, as description is at the experiment\
+            \ blueprint level)."
+          items:
+            $ref: "#/components/schemas/CartItemFilterTemplate"
+          type: array
+          default: null
     ExperimentVariant:
       allOf:
       - $ref: "#/components/schemas/Entity"
@@ -36792,6 +37435,7 @@ components:
         archived: false
         flags: ""
         validityDuration: 30D
+        awaitsActivation: false
       properties:
         created:
           example: 2021-07-20T22:00:00Z
@@ -36866,6 +37510,12 @@ components:
             **Note**: This only applies to points for which `awaitsActivation` is `true` and `expiryDate` is not set.
           example: 30D
           type: string
+        awaitsActivation:
+          description: Indicates whether the points have an action-based start date.
+            This property is returned only for point transactions with an action-based
+            start date.
+          example: false
+          type: boolean
       required:
       - amount
       - created
@@ -36892,6 +37542,7 @@ components:
           archived: false
           flags: ""
           validityDuration: 30D
+          awaitsActivation: false
         - created: 2021-07-20T22:00:00Z
           programID: 5
           customerProfileID: URNGV8294NV
@@ -36908,6 +37559,7 @@ components:
           archived: false
           flags: ""
           validityDuration: 30D
+          awaitsActivation: false
       properties:
         ledgerEntries:
           description: Updated ledger entries after activation.
@@ -38508,6 +39160,14 @@ components:
               this Customer in the Application.
             maxLength: 1000
             type: string
+          loyaltyProgramJoinDates:
+            description: The dates on which the customer joined the profile-based
+              loyalty programs they are part of. Returned only when the `withLoyaltyMemberships`
+              query parameter is `true`.
+            items:
+              $ref: "#/components/schemas/LoyaltyMembership"
+            type: array
+            default: null
         required:
         - accountId
       example:
@@ -38533,6 +39193,11 @@ components:
         lastActivity: 2020-02-08T14:15:20Z
         sandbox: false
         advocateIntegrationId: advocateIntegrationId
+        loyaltyProgramJoinDates:
+        - joined: 2012-03-20T14:15:22Z
+          loyaltyProgramId: 323414846
+        - joined: 2012-03-20T14:15:22Z
+          loyaltyProgramId: 323414846
     CustomerProfileSearchQuery:
       example:
         attributes: "{}"
@@ -38910,7 +39575,8 @@ components:
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
           rewardIntegrationId: reward-unlock-123
-          props: ""
+          props:
+            value: COUP-XYZ789
         - experimentId: 12
           campaignId: 244
           rulesetId: 73
@@ -38929,7 +39595,8 @@ components:
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
           rewardIntegrationId: reward-unlock-123
-          props: ""
+          props:
+            value: COUP-XYZ789
         ruleFailureReasons:
         - campaignID: 1
           campaignName: campaignName
@@ -43515,87 +44182,6 @@ components:
                   - Category
                 - Kitchen
         applicationId: 322
-    CatalogRule:
-      description: "A rule template stored in a catalog entry. Rules in catalog entries\
-        \ only contain title (no description, as description is at the catalog entry\
-        \ level)."
-      properties:
-        title:
-          description: A short description of the rule.
-          example: Give discount via coupon
-          type: string
-        bindings:
-          description: An array that provides objects with variable names (name) and
-            talang expressions to whose result they are bound (expression) during
-            rule evaluation. The order of the evaluation is decided by the position
-            in the array.
-          items:
-            $ref: "#/components/schemas/Binding"
-          type: array
-          default: null
-        condition:
-          description: A Talang expression that will be evaluated in the context of
-            the given event.
-          example:
-          - and
-          - - couponValid
-          items: {}
-          minItems: 1
-          type: array
-          default: null
-        effects:
-          description: An array of effectful Talang expressions in arrays that will
-            be evaluated when a rule matches.
-          example:
-          - catch
-          - - noop
-          - - setDiscount
-            - 10% off
-            - - '*'
-              - - "."
-                - Session
-                - Total
-              - - /
-                - 10
-                - 100
-          items:
-            type: object
-          type: array
-          default: null
-      required:
-      - condition
-      - effects
-      - title
-    CartItemFilterTemplate:
-      description: "A cart item filter template stored in a library entry. Cart item\
-        \ filters in library entries only contain name (no description, as description\
-        \ is at the library entry level)."
-      properties:
-        name:
-          description: The name of the Application cart item filter.
-          example: Filter items by product
-          type: string
-        expression:
-          description: The Talang expression for the cart item filter.
-          example:
-          - filter
-          - - "."
-            - Session
-            - CartItems
-          - - - Item
-            - - catch
-              - false
-              - - contains
-                - - "."
-                  - Item
-                  - Category
-                - Kitchen
-          items: {}
-          type: array
-          default: null
-      required:
-      - expression
-      - name
     Blueprint:
       properties:
         id:
@@ -45083,7 +45669,7 @@ components:
               Must be at least 1.
             example: 100
             format: int64
-            maximum: 20000
+            maximum: 5000000
             minimum: 1
             type: integer
           attributes:
@@ -45182,12 +45768,11 @@ components:
           format: int64
           type: integer
         subledgerId:
-          description: "Identifier of the subledger the points are added to or deducted\
-            \ from. If there is no existing subledger with this ID, the subledger\
-            \ is created automatically."
-          example: 123
-          format: int64
-          type: integer
+          description: ID of the subledger the points are added to or deducted from.
+            Must be combined with `loyaltyProgramId`. The subledger must already exist
+            in the given loyalty program.
+          example: sub-123
+          type: string
         customerProfileId:
           description: Integration ID of the customer profile linked to the support
             request.
@@ -45247,12 +45832,11 @@ components:
           format: int64
           type: integer
         subledgerId:
-          description: "Identifier of the subledger the points are added to or deducted\
-            \ from. If there is no existing subledger with this ID, the subledger\
-            \ is created automatically."
-          example: 123
-          format: int64
-          type: integer
+          description: ID of the subledger the points are added to or deducted from.
+            Must be combined with `loyaltyProgramId`. The subledger must already exist
+            in the given loyalty program.
+          example: sub-123
+          type: string
         createdByUser:
           description: Email address of the customer support agent who created the
             support request.
@@ -45589,6 +46173,39 @@ components:
             $ref: "#/components/schemas/RewardPointsRequired"
           type: array
           default: null
+        validityDuration:
+          description: |
+            The duration for which the customer rewards unlocked from this reward remain active, relative to when the customer reward was unlocked.
+
+            The time format is an **integer** followed by one letter indicating the time unit.
+
+            Examples: `5D`, `7W`, `10M`, `15Y`.
+
+            Available units:
+
+            - `D`: days
+            - `W`: weeks
+            - `M`: months
+            - `Y`: years
+
+            You can round certain units up or down:
+            - `_D` for rounding down days only. Signifies the start of the day.
+            - `_U` for rounding up days, weeks, months and years. Signifies the end of the day, week, month or year.
+
+            This field cannot be used in combination with `expiryDate`. If both `validityDuration` and `expiryDate` are not set, customer rewards have unlimited validity.
+          example: 3M_U
+          type: string
+        expiryDate:
+          description: |
+            Expiry date of the customer rewards unlocked from this reward. Customer
+            rewards never expire if this is omitted and `validityDuration` is not set.
+
+            **Note:**
+            - The date must be in the future.
+            - This field cannot be used in combination with `validityDuration`.
+          example: 2026-12-31T00:00:00Z
+          format: date-time
+          type: string
       required:
       - apiName
       - applicationIds
@@ -45641,7 +46258,7 @@ components:
       properties:
         passed:
           description: Indicates whether the customer is eligible for the reward.
-          example: true
+          example: false
           type: boolean
         details:
           description: The reasons the customer is not eligible for the reward. Empty
@@ -45763,6 +46380,39 @@ components:
             $ref: "#/components/schemas/RewardPointsRequired"
           type: array
           default: null
+        validityDuration:
+          description: |
+            The duration for which the customer rewards unlocked from this reward remain active, relative to when the customer reward was unlocked.
+
+            The time format is an **integer** followed by one letter indicating the time unit.
+
+            Examples: `5D`, `7W`, `10M`, `15Y`.
+
+            Available units:
+
+            - `D`: days
+            - `W`: weeks
+            - `M`: months
+            - `Y`: years
+
+            You can round certain units up or down:
+            - `_D` for rounding down days only. Signifies the start of the day.
+            - `_U` for rounding up days, weeks, months and years. Signifies the end of the day, week, month or year.
+
+            This field cannot be used in combination with `expiryDate`. If both `validityDuration` and `expiryDate` are not set, customer rewards have unlimited validity.
+          example: 3M_U
+          type: string
+        expiryDate:
+          description: |
+            Expiry date of the customer rewards unlocked from this reward. Customer
+            rewards never expire if this is omitted and `validityDuration` is not set.
+
+            **Note:**
+            - The date must be in the future.
+            - This field cannot be used in combination with `validityDuration`.
+          example: 2026-12-31T00:00:00Z
+          format: date-time
+          type: string
       required:
       - name
       - status
@@ -45854,7 +46504,8 @@ components:
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
           rewardIntegrationId: reward-unlock-123
-          props: ""
+          props:
+            value: COUP-XYZ789
         - experimentId: 12
           campaignId: 244
           rulesetId: 73
@@ -45873,7 +46524,8 @@ components:
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
           rewardIntegrationId: reward-unlock-123
-          props: ""
+          props:
+            value: COUP-XYZ789
       properties:
         customerProfile:
           allOf:
@@ -46379,11 +47031,11 @@ components:
           - coupons
           - referrals
           eligibility:
-          - passed: true
-            couponCode: couponCode
+          - passed: false
+            couponCode: XMAS-20-2021
             details: ""
-          - passed: true
-            couponCode: couponCode
+          - passed: false
+            couponCode: XMAS-20-2021
             details: ""
           rules:
           - title: Give discount via coupon
@@ -46392,11 +47044,11 @@ components:
               Offer valid till Dec 5 only.
             relatedData: https://example.com/discounts/20-off-shoes.png
             eligibility:
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
           - title: Give discount via coupon
             displayName: 20% off all shoes!
@@ -46404,11 +47056,11 @@ components:
               Offer valid till Dec 5 only.
             relatedData: https://example.com/discounts/20-off-shoes.png
             eligibility:
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
           experiment:
             id: 0
@@ -46427,11 +47079,11 @@ components:
           - coupons
           - referrals
           eligibility:
-          - passed: true
-            couponCode: couponCode
+          - passed: false
+            couponCode: XMAS-20-2021
             details: ""
-          - passed: true
-            couponCode: couponCode
+          - passed: false
+            couponCode: XMAS-20-2021
             details: ""
           rules:
           - title: Give discount via coupon
@@ -46440,11 +47092,11 @@ components:
               Offer valid till Dec 5 only.
             relatedData: https://example.com/discounts/20-off-shoes.png
             eligibility:
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
           - title: Give discount via coupon
             displayName: 20% off all shoes!
@@ -46452,11 +47104,11 @@ components:
               Offer valid till Dec 5 only.
             relatedData: https://example.com/discounts/20-off-shoes.png
             eligibility:
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
-            - passed: true
-              couponCode: couponCode
+            - passed: false
+              couponCode: XMAS-20-2021
               details: ""
           experiment:
             id: 0
@@ -46480,7 +47132,8 @@ components:
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
           rewardIntegrationId: reward-unlock-123
-          props: ""
+          props:
+            value: COUP-XYZ789
         - experimentId: 12
           campaignId: 244
           rulesetId: 73
@@ -46499,7 +47152,8 @@ components:
           adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
           rewardId: 7
           rewardIntegrationId: reward-unlock-123
-          props: ""
+          props:
+            value: COUP-XYZ789
         ruleFailureReasons:
         - campaignID: 1
           campaignName: campaignName
@@ -47611,6 +48265,24 @@ components:
             points were added.
           example: sub-123
           type: string
+        Created:
+          description: The timestamp when the loyalty transaction occurred.
+          example: 2023-01-24T14:15:22Z
+          format: date-time
+          type: string
+        AwaitsActivation:
+          description: Indicates whether the points have an action-based start date.
+            This property is returned only for point transactions with an action-based
+            start date.
+          example: false
+          type: boolean
+        ValidityDuration:
+          description: |
+            The duration for which the points remain active, relative to the activation date.
+
+            **Note**: This only applies to points for which `AwaitsActivation` is `true` and `ExpiryDate` is not set.
+          example: 30D
+          type: string
       required:
       - AmountOfExpiringPoints
       - CustomerProfileID
@@ -47679,6 +48351,24 @@ components:
             type: string
           type: array
           default: null
+        Created:
+          description: The timestamp when the loyalty transaction occurred.
+          example: 2023-01-24T14:15:22Z
+          format: date-time
+          type: string
+        AwaitsActivation:
+          description: Indicates whether the points have an action-based start date.
+            This property is returned only for point transactions with an action-based
+            start date.
+          example: false
+          type: boolean
+        ValidityDuration:
+          description: |
+            The duration for which the points remain active, relative to the activation date.
+
+            **Note**: This only applies to points for which `AwaitsActivation` is `true` and `ExpiryDate` is not set.
+          example: 30D
+          type: string
       required:
       - AmountOfExpiringPoints
       - CardIdentifier
@@ -47789,6 +48479,24 @@ components:
           description: The identifier of the transaction in the loyalty ledger.
           format: uuid
           type: string
+        Created:
+          description: The timestamp when the loyalty transaction occurred.
+          example: 2023-01-24T14:15:22Z
+          format: date-time
+          type: string
+        AwaitsActivation:
+          description: Indicates whether the points have an action-based start date.
+            This property is returned only for point transactions with an action-based
+            start date.
+          example: false
+          type: boolean
+        ValidityDuration:
+          description: |
+            The duration for which the points remain active, relative to the activation date.
+
+            **Note**: This only applies to points for which `AwaitsActivation` is `true` and `ExpiryDate` is not set.
+          example: 30D
+          type: string
       required:
       - Amount
       - EmployeeName
@@ -47831,6 +48539,25 @@ components:
         TransactionUUID:
           description: The identifier of the transaction in the loyalty ledger.
           format: uuid
+          type: string
+        Created:
+          description: The timestamp when the loyalty transaction occurred.
+          example: 2023-01-24T14:15:22Z
+          format: date-time
+          type: string
+        AwaitsActivation:
+          description: Indicates whether the points have an action-based start date.
+            This property is returned only for point transactions with an action-based
+            start date.
+          example: false
+          type: boolean
+        ValidityDuration:
+          description: |
+            The duration for which the points remain active, calculated relative to their start date.
+
+
+            **Note**: This only applies to points for which `AwaitsActivation` is `true` and `ExpiryDate` is not set.
+          example: 30D
           type: string
       required:
       - Amount
@@ -47945,6 +48672,24 @@ components:
           description: The integration ID of the session through which the points
             were earned.
           example: cc53e4fa-547f-4f5e-8333-76e05c381f67
+          type: string
+        Created:
+          description: The timestamp when the loyalty transaction occurred.
+          example: 2023-08-20T12:22:00+02:00
+          format: date-time
+          type: string
+        AwaitsActivation:
+          description: Indicates whether the points have an action-based start date.
+            This property is returned only for point transactions with an action-based
+            start date.
+          example: false
+          type: boolean
+        ValidityDuration:
+          description: |
+            The duration for which the points remain active, relative to the activation date.
+
+            **Note**: This only applies to points for which `AwaitsActivation` is `true` and `ExpireOn` is not set.
+          example: 30D
           type: string
       required:
       - CustomerProfileID
@@ -48489,6 +49234,24 @@ components:
           description: The identifier of the transaction in the loyalty ledger.
           format: uuid
           type: string
+        Created:
+          description: The timestamp when the loyalty transaction occurred.
+          example: 2023-01-24T14:15:22Z
+          format: date-time
+          type: string
+        AwaitsActivation:
+          description: Indicates whether the points have an action-based start date.
+            This property is returned only for point transactions with an action-based
+            start date.
+          example: false
+          type: boolean
+        ValidityDuration:
+          description: |
+            The duration for which the points remain active, relative to the activation date.
+
+            **Note**: This only applies to points for which `AwaitsActivation` is `true` and `ExpiryDate` is not set.
+          example: 30D
+          type: string
       required:
       - Amount
       - CardIdentifier
@@ -48614,6 +49377,24 @@ components:
           TransactionUUID:
             description: The identifier of the transaction in the loyalty ledger.
             format: uuid
+            type: string
+          Created:
+            description: The timestamp when the loyalty transaction occurred.
+            example: 2023-01-24T14:15:22Z
+            format: date-time
+            type: string
+          AwaitsActivation:
+            description: Indicates whether the points have an action-based start date.
+              This property is returned only for point transactions with an action-based
+              start date.
+            example: false
+            type: boolean
+          ValidityDuration:
+            description: |
+              The duration for which the points remain active, relative to the activation date.
+
+              **Note**: This only applies to points for which `AwaitsActivation` is `true` and `ExpiryDate` is not set.
+            example: 30D
             type: string
         required:
         - Amount
@@ -48876,49 +49657,6 @@ components:
         - UsageCounter
         - UsageLimit
         - Value
-    RollbackTierBoostEffectProps:
-      description: |-
-        This effect indicates that a loyalty tier boost was rolled back.
-
-        The Rule Engine triggers this effect when you cancel a customer session
-        that previously triggered the
-        [boostLoyaltyTier](https://docs.talon.one/docs/dev/integration-api/api-effects#boostloyaltytier)
-        API effect. The tier boost is voided and the customer returns to the tier
-        determined by their points balance.
-
-        This effect only applies to full session cancellations. Partially returned
-        sessions do not trigger a tier boost rollback.
-      example:
-        programId: 10
-        subLedgerId: ""
-        tierName: Gold
-        boostUuid: 27b16dbb-fbc7-4c02-99b1-b21b8a94c186
-      properties:
-        programId:
-          description: The ID of the loyalty program.
-          example: 10
-          format: int64
-          type: integer
-        subLedgerId:
-          description: The ID of the subledger within the loyalty program.
-          example: ""
-          type: string
-        tierName:
-          description: The name of the boosted tier that was rolled back.
-          example: Gold
-          type: string
-        boostUuid:
-          description: The unique identifier of the tier boost that was rolled back.
-            Matches the `boostUuid` of the original `boostLoyaltyTier` effect.
-          example: 27b16dbb-fbc7-4c02-99b1-b21b8a94c186
-          format: uuid
-          type: string
-      required:
-      - boostUuid
-      - programId
-      - subLedgerId
-      - tierName
-      title: rollbackTierBoost
     updateCustomerSessionV2_409_response:
       example:
         message: Too many requests are updating this session at the same time
@@ -49212,11 +49950,13 @@ components:
           startDate: 2024-01-01T15:04:05Z07:00
           completionDate: 2024-01-15T15:04:05Z07:00
           endDate: 2024-02-01T15:04:05Z07:00
+          progressTrackerId: 42
         - status: completed
           progress: 10
           startDate: 2024-01-01T15:04:05Z07:00
           completionDate: 2024-01-15T15:04:05Z07:00
           endDate: 2024-02-01T15:04:05Z07:00
+          progressTrackerId: 42
       properties:
         totalResultSize:
           example: 1
@@ -49224,7 +49964,7 @@ components:
           type: integer
         data:
           items:
-            $ref: "#/components/schemas/AchievementProgress"
+            $ref: "#/components/schemas/CustomerAchievementHistoryEntry"
           type: array
           default: null
       required:
@@ -52631,6 +53371,49 @@ components:
       required:
       - data
       - hasMore
+    listGiveawaysPool_200_response:
+      example:
+        hasMore: true
+        totalResultSize: 1
+        data:
+        - id: 6
+          created: 2020-06-10T09:05:27.993483Z
+          accountId: 3886
+          name: My giveaway pool
+          description: Generic pool
+          subscribedApplicationsIds:
+          - 2
+          - 4
+          sandbox: true
+          modified: 2000-01-23T04:56:07.000+00:00
+          createdBy: 0
+          modifiedBy: 6
+        - id: 6
+          created: 2020-06-10T09:05:27.993483Z
+          accountId: 3886
+          name: My giveaway pool
+          description: Generic pool
+          subscribedApplicationsIds:
+          - 2
+          - 4
+          sandbox: true
+          modified: 2000-01-23T04:56:07.000+00:00
+          createdBy: 0
+          modifiedBy: 6
+      properties:
+        hasMore:
+          type: boolean
+        totalResultSize:
+          example: 1
+          format: int64
+          type: integer
+        data:
+          items:
+            $ref: "#/components/schemas/GiveawaysPool"
+          type: array
+          default: null
+      required:
+      - data
     listAccountCollections_200_response:
       example:
         hasMore: true
@@ -52830,6 +53613,11 @@ components:
           lastActivity: 2020-02-08T14:15:20Z
           sandbox: false
           advocateIntegrationId: advocateIntegrationId
+          loyaltyProgramJoinDates:
+          - joined: 2012-03-20T14:15:22Z
+            loyaltyProgramId: 323414846
+          - joined: 2012-03-20T14:15:22Z
+            loyaltyProgramId: 323414846
         - id: 6
           created: 2020-02-07T08:15:22Z
           integrationId: URNGV8294NV
@@ -52852,6 +53640,11 @@ components:
           lastActivity: 2020-02-08T14:15:20Z
           sandbox: false
           advocateIntegrationId: advocateIntegrationId
+          loyaltyProgramJoinDates:
+          - joined: 2012-03-20T14:15:22Z
+            loyaltyProgramId: 323414846
+          - joined: 2012-03-20T14:15:22Z
+            loyaltyProgramId: 323414846
       properties:
         totalResultSize:
           example: 1
@@ -52893,6 +53686,11 @@ components:
           lastActivity: 2020-02-08T14:15:20Z
           sandbox: false
           advocateIntegrationId: advocateIntegrationId
+          loyaltyProgramJoinDates:
+          - joined: 2012-03-20T14:15:22Z
+            loyaltyProgramId: 323414846
+          - joined: 2012-03-20T14:15:22Z
+            loyaltyProgramId: 323414846
         - id: 6
           created: 2020-02-07T08:15:22Z
           integrationId: URNGV8294NV
@@ -52915,6 +53713,11 @@ components:
           lastActivity: 2020-02-08T14:15:20Z
           sandbox: false
           advocateIntegrationId: advocateIntegrationId
+          loyaltyProgramJoinDates:
+          - joined: 2012-03-20T14:15:22Z
+            loyaltyProgramId: 323414846
+          - joined: 2012-03-20T14:15:22Z
+            loyaltyProgramId: 323414846
       properties:
         hasMore:
           type: boolean
@@ -53471,7 +54274,8 @@ components:
             adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
             rewardId: 7
             rewardIntegrationId: reward-unlock-123
-            props: ""
+            props:
+              value: COUP-XYZ789
           - experimentId: 12
             campaignId: 244
             rulesetId: 73
@@ -53490,7 +54294,8 @@ components:
             adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
             rewardId: 7
             rewardIntegrationId: reward-unlock-123
-            props: ""
+            props:
+              value: COUP-XYZ789
           ruleFailureReasons:
           - campaignID: 1
             campaignName: campaignName
@@ -53553,7 +54358,8 @@ components:
             adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
             rewardId: 7
             rewardIntegrationId: reward-unlock-123
-            props: ""
+            props:
+              value: COUP-XYZ789
           - experimentId: 12
             campaignId: 244
             rulesetId: 73
@@ -53572,7 +54378,8 @@ components:
             adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
             rewardId: 7
             rewardIntegrationId: reward-unlock-123
-            props: ""
+            props:
+              value: COUP-XYZ789
           ruleFailureReasons:
           - campaignID: 1
             campaignName: campaignName
@@ -54766,15 +55573,23 @@ components:
         name:
           description: The internal name of the loyalty program.
           example: MainProgram
+          readOnly: true
           type: string
         title:
           description: The display name of the loyalty program.
           example: Main Loyalty Program
+          readOnly: true
           type: string
       required:
       - id
-      - name
-      - title
+    UpdateAchievementProgressBlock_1_value:
+      description: "The value to update the progress by. Either a numeric scalar or\
+        \ a `{{expression}}` string that resolves to a number at evaluation time."
+      oneOf:
+      - example: 10
+        type: number
+      - example: "{{$Session.CartTotal * 0.1}}"
+        type: string
     UpdateAttributeValueBlock_1_target:
       description: The entity or item scope that this effect operates on.
       properties:
@@ -54875,15 +55690,15 @@ components:
         name:
           description: The internal name of the loyalty program.
           example: MainProgram
+          readOnly: true
           type: string
         title:
           description: The display name of the loyalty program.
           example: Main Loyalty Program
+          readOnly: true
           type: string
       required:
       - id
-      - name
-      - title
     AwardLoyaltyPointsBlock_1_program:
       description: The loyalty program points are added to.
       properties:
@@ -54895,15 +55710,15 @@ components:
         name:
           description: The internal name of the loyalty program.
           example: MainProgram
+          readOnly: true
           type: string
         title:
           description: The display name of the loyalty program.
           example: Main Loyalty Program
+          readOnly: true
           type: string
       required:
       - id
-      - name
-      - title
     AwardLoyaltyPointsBlock_1_value:
       description: "Number of points to award. Either a numeric scalar or a `{{expression}}`\
         \ string that resolves to a number at evaluation time."
@@ -54923,15 +55738,15 @@ components:
         name:
           description: The internal name of the loyalty program.
           example: MainProgram
+          readOnly: true
           type: string
         title:
           description: The display name of the loyalty program.
           example: Main Loyalty Program
+          readOnly: true
           type: string
       required:
       - id
-      - name
-      - title
     RedeemLoyaltyPointsBlock_1_value:
       description: "Number of points to deduct. Either a numeric scalar or a `{{expression}}`\
         \ string that resolves to a number at evaluation time."

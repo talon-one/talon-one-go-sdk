@@ -16,51 +16,54 @@ import (
 	"gopkg.in/validator.v2"
 )
 
-// Effect - A generic effect that is fired by a triggered campaign. The `effectType` field selects the concrete effect variant and the shape of `props`.
+// Effect - struct for Effect
 type Effect struct {
-	EffectAcceptCoupon                         *EffectAcceptCoupon
-	EffectAcceptReferral                       *EffectAcceptReferral
-	EffectAddFreeItem                          *EffectAddFreeItem
-	EffectAddLoyaltyPoints                     *EffectAddLoyaltyPoints
-	EffectAddNegativeLoyaltyPoints             *EffectAddNegativeLoyaltyPoints
-	EffectAddToAudience                        *EffectAddToAudience
-	EffectAwardGiveaway                        *EffectAwardGiveaway
-	EffectBoostLoyaltyTier                     *EffectBoostLoyaltyTier
-	EffectCallApi                              *EffectCallApi
-	EffectChangeLoyaltyTierLevel               *EffectChangeLoyaltyTierLevel
-	EffectCouponCreated                        *EffectCouponCreated
-	EffectCustomEffect                         *EffectCustomEffect
-	EffectDeductLoyaltyPoints                  *EffectDeductLoyaltyPoints
-	EffectError                                *EffectError
-	EffectExtendLoyaltyPointsExpiryDate        *EffectExtendLoyaltyPointsExpiryDate
-	EffectIncreaseAchievementProgress          *EffectIncreaseAchievementProgress
-	EffectJoinLoyaltyProgram                   *EffectJoinLoyaltyProgram
-	EffectOffsetNegativeLoyaltyPoints          *EffectOffsetNegativeLoyaltyPoints
-	EffectRedeemReferral                       *EffectRedeemReferral
-	EffectReferralCreated                      *EffectReferralCreated
-	EffectRejectCoupon                         *EffectRejectCoupon
-	EffectRejectReferral                       *EffectRejectReferral
-	EffectRemoveFromAudience                   *EffectRemoveFromAudience
-	EffectReserveCoupon                        *EffectReserveCoupon
-	EffectRollbackAddedLoyaltyPoints           *EffectRollbackAddedLoyaltyPoints
-	EffectRollbackCoupon                       *EffectRollbackCoupon
-	EffectRollbackDeductedLoyaltyPoints        *EffectRollbackDeductedLoyaltyPoints
-	EffectRollbackDiscount                     *EffectRollbackDiscount
-	EffectRollbackIncreasedAchievementProgress *EffectRollbackIncreasedAchievementProgress
-	EffectRollbackReferral                     *EffectRollbackReferral
-	EffectRollbackUseReward                    *EffectRollbackUseReward
-	EffectSet                                  *EffectSet
-	EffectSetDiscount                          *EffectSetDiscount
-	EffectSetDiscountPerAdditionalCost         *EffectSetDiscountPerAdditionalCost
-	EffectSetDiscountPerAdditionalCostPerItem  *EffectSetDiscountPerAdditionalCostPerItem
-	EffectSetDiscountPerItem                   *EffectSetDiscountPerItem
-	EffectSetLoyaltyPointsExpiryDate           *EffectSetLoyaltyPointsExpiryDate
-	EffectShowBundleMetadata                   *EffectShowBundleMetadata
-	EffectShowNotification                     *EffectShowNotification
-	EffectStartAchievementProgress             *EffectStartAchievementProgress
-	EffectUnlockReward                         *EffectUnlockReward
-	EffectUseReward                            *EffectUseReward
-	EffectWillAwardGiveaway                    *EffectWillAwardGiveaway
+	EffectAcceptCoupon                                *EffectAcceptCoupon
+	EffectAcceptReferral                              *EffectAcceptReferral
+	EffectAddFreeItem                                 *EffectAddFreeItem
+	EffectAddLoyaltyPoints                            *EffectAddLoyaltyPoints
+	EffectAddNegativeLoyaltyPoints                    *EffectAddNegativeLoyaltyPoints
+	EffectAddToAudience                               *EffectAddToAudience
+	EffectAwardGiveaway                               *EffectAwardGiveaway
+	EffectBoostLoyaltyTier                            *EffectBoostLoyaltyTier
+	EffectCallApi                                     *EffectCallApi
+	EffectChangeLoyaltyTierLevel                      *EffectChangeLoyaltyTierLevel
+	EffectCouponCreated                               *EffectCouponCreated
+	EffectCustomEffect                                *EffectCustomEffect
+	EffectDeductLoyaltyPoints                         *EffectDeductLoyaltyPoints
+	EffectError                                       *EffectError
+	EffectExtendLoyaltyPointsExpiryDate               *EffectExtendLoyaltyPointsExpiryDate
+	EffectIncreaseAchievementProgress                 *EffectIncreaseAchievementProgress
+	EffectIncreaseAchievementProgressPerItem          *EffectIncreaseAchievementProgressPerItem
+	EffectJoinLoyaltyProgram                          *EffectJoinLoyaltyProgram
+	EffectOffsetNegativeLoyaltyPoints                 *EffectOffsetNegativeLoyaltyPoints
+	EffectRedeemReferral                              *EffectRedeemReferral
+	EffectReferralCreated                             *EffectReferralCreated
+	EffectRejectCoupon                                *EffectRejectCoupon
+	EffectRejectReferral                              *EffectRejectReferral
+	EffectRemoveFromAudience                          *EffectRemoveFromAudience
+	EffectReserveCoupon                               *EffectReserveCoupon
+	EffectRollbackAddedLoyaltyPoints                  *EffectRollbackAddedLoyaltyPoints
+	EffectRollbackCoupon                              *EffectRollbackCoupon
+	EffectRollbackDeductedLoyaltyPoints               *EffectRollbackDeductedLoyaltyPoints
+	EffectRollbackDiscount                            *EffectRollbackDiscount
+	EffectRollbackIncreasedAchievementProgress        *EffectRollbackIncreasedAchievementProgress
+	EffectRollbackIncreasedAchievementProgressPerItem *EffectRollbackIncreasedAchievementProgressPerItem
+	EffectRollbackReferral                            *EffectRollbackReferral
+	EffectRollbackTierBoost                           *EffectRollbackTierBoost
+	EffectRollbackUseReward                           *EffectRollbackUseReward
+	EffectSet                                         *EffectSet
+	EffectSetDiscount                                 *EffectSetDiscount
+	EffectSetDiscountPerAdditionalCost                *EffectSetDiscountPerAdditionalCost
+	EffectSetDiscountPerAdditionalCostPerItem         *EffectSetDiscountPerAdditionalCostPerItem
+	EffectSetDiscountPerItem                          *EffectSetDiscountPerItem
+	EffectSetLoyaltyPointsExpiryDate                  *EffectSetLoyaltyPointsExpiryDate
+	EffectShowBundleMetadata                          *EffectShowBundleMetadata
+	EffectShowNotification                            *EffectShowNotification
+	EffectStartAchievementProgress                    *EffectStartAchievementProgress
+	EffectUnlockReward                                *EffectUnlockReward
+	EffectUseReward                                   *EffectUseReward
+	EffectWillAwardGiveaway                           *EffectWillAwardGiveaway
 }
 
 // EffectAcceptCouponAsEffect is a convenience function that returns EffectAcceptCoupon wrapped in Effect
@@ -175,6 +178,13 @@ func EffectIncreaseAchievementProgressAsEffect(v *EffectIncreaseAchievementProgr
 	}
 }
 
+// EffectIncreaseAchievementProgressPerItemAsEffect is a convenience function that returns EffectIncreaseAchievementProgressPerItem wrapped in Effect
+func EffectIncreaseAchievementProgressPerItemAsEffect(v *EffectIncreaseAchievementProgressPerItem) Effect {
+	return Effect{
+		EffectIncreaseAchievementProgressPerItem: v,
+	}
+}
+
 // EffectJoinLoyaltyProgramAsEffect is a convenience function that returns EffectJoinLoyaltyProgram wrapped in Effect
 func EffectJoinLoyaltyProgramAsEffect(v *EffectJoinLoyaltyProgram) Effect {
 	return Effect{
@@ -266,10 +276,24 @@ func EffectRollbackIncreasedAchievementProgressAsEffect(v *EffectRollbackIncreas
 	}
 }
 
+// EffectRollbackIncreasedAchievementProgressPerItemAsEffect is a convenience function that returns EffectRollbackIncreasedAchievementProgressPerItem wrapped in Effect
+func EffectRollbackIncreasedAchievementProgressPerItemAsEffect(v *EffectRollbackIncreasedAchievementProgressPerItem) Effect {
+	return Effect{
+		EffectRollbackIncreasedAchievementProgressPerItem: v,
+	}
+}
+
 // EffectRollbackReferralAsEffect is a convenience function that returns EffectRollbackReferral wrapped in Effect
 func EffectRollbackReferralAsEffect(v *EffectRollbackReferral) Effect {
 	return Effect{
 		EffectRollbackReferral: v,
+	}
+}
+
+// EffectRollbackTierBoostAsEffect is a convenience function that returns EffectRollbackTierBoost wrapped in Effect
+func EffectRollbackTierBoostAsEffect(v *EffectRollbackTierBoost) Effect {
+	return Effect{
+		EffectRollbackTierBoost: v,
 	}
 }
 
@@ -640,6 +664,23 @@ func (dst *Effect) UnmarshalJSON(data []byte) error {
 		dst.EffectIncreaseAchievementProgress = nil
 	}
 
+	// try to unmarshal data into EffectIncreaseAchievementProgressPerItem
+	err = newStrictDecoder(data).Decode(&dst.EffectIncreaseAchievementProgressPerItem)
+	if err == nil {
+		jsonEffectIncreaseAchievementProgressPerItem, _ := json.Marshal(dst.EffectIncreaseAchievementProgressPerItem)
+		if string(jsonEffectIncreaseAchievementProgressPerItem) == "{}" { // empty struct
+			dst.EffectIncreaseAchievementProgressPerItem = nil
+		} else {
+			if err = validator.Validate(dst.EffectIncreaseAchievementProgressPerItem); err != nil {
+				dst.EffectIncreaseAchievementProgressPerItem = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectIncreaseAchievementProgressPerItem = nil
+	}
+
 	// try to unmarshal data into EffectJoinLoyaltyProgram
 	err = newStrictDecoder(data).Decode(&dst.EffectJoinLoyaltyProgram)
 	if err == nil {
@@ -861,6 +902,23 @@ func (dst *Effect) UnmarshalJSON(data []byte) error {
 		dst.EffectRollbackIncreasedAchievementProgress = nil
 	}
 
+	// try to unmarshal data into EffectRollbackIncreasedAchievementProgressPerItem
+	err = newStrictDecoder(data).Decode(&dst.EffectRollbackIncreasedAchievementProgressPerItem)
+	if err == nil {
+		jsonEffectRollbackIncreasedAchievementProgressPerItem, _ := json.Marshal(dst.EffectRollbackIncreasedAchievementProgressPerItem)
+		if string(jsonEffectRollbackIncreasedAchievementProgressPerItem) == "{}" { // empty struct
+			dst.EffectRollbackIncreasedAchievementProgressPerItem = nil
+		} else {
+			if err = validator.Validate(dst.EffectRollbackIncreasedAchievementProgressPerItem); err != nil {
+				dst.EffectRollbackIncreasedAchievementProgressPerItem = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectRollbackIncreasedAchievementProgressPerItem = nil
+	}
+
 	// try to unmarshal data into EffectRollbackReferral
 	err = newStrictDecoder(data).Decode(&dst.EffectRollbackReferral)
 	if err == nil {
@@ -876,6 +934,23 @@ func (dst *Effect) UnmarshalJSON(data []byte) error {
 		}
 	} else {
 		dst.EffectRollbackReferral = nil
+	}
+
+	// try to unmarshal data into EffectRollbackTierBoost
+	err = newStrictDecoder(data).Decode(&dst.EffectRollbackTierBoost)
+	if err == nil {
+		jsonEffectRollbackTierBoost, _ := json.Marshal(dst.EffectRollbackTierBoost)
+		if string(jsonEffectRollbackTierBoost) == "{}" { // empty struct
+			dst.EffectRollbackTierBoost = nil
+		} else {
+			if err = validator.Validate(dst.EffectRollbackTierBoost); err != nil {
+				dst.EffectRollbackTierBoost = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.EffectRollbackTierBoost = nil
 	}
 
 	// try to unmarshal data into EffectRollbackUseReward
@@ -1117,6 +1192,7 @@ func (dst *Effect) UnmarshalJSON(data []byte) error {
 		dst.EffectError = nil
 		dst.EffectExtendLoyaltyPointsExpiryDate = nil
 		dst.EffectIncreaseAchievementProgress = nil
+		dst.EffectIncreaseAchievementProgressPerItem = nil
 		dst.EffectJoinLoyaltyProgram = nil
 		dst.EffectOffsetNegativeLoyaltyPoints = nil
 		dst.EffectRedeemReferral = nil
@@ -1130,7 +1206,9 @@ func (dst *Effect) UnmarshalJSON(data []byte) error {
 		dst.EffectRollbackDeductedLoyaltyPoints = nil
 		dst.EffectRollbackDiscount = nil
 		dst.EffectRollbackIncreasedAchievementProgress = nil
+		dst.EffectRollbackIncreasedAchievementProgressPerItem = nil
 		dst.EffectRollbackReferral = nil
+		dst.EffectRollbackTierBoost = nil
 		dst.EffectRollbackUseReward = nil
 		dst.EffectSet = nil
 		dst.EffectSetDiscount = nil
@@ -1223,6 +1301,10 @@ func (src Effect) MarshalJSON() ([]byte, error) {
 		return json.Marshal(&src.EffectIncreaseAchievementProgress)
 	}
 
+	if src.EffectIncreaseAchievementProgressPerItem != nil {
+		return json.Marshal(&src.EffectIncreaseAchievementProgressPerItem)
+	}
+
 	if src.EffectJoinLoyaltyProgram != nil {
 		return json.Marshal(&src.EffectJoinLoyaltyProgram)
 	}
@@ -1275,8 +1357,16 @@ func (src Effect) MarshalJSON() ([]byte, error) {
 		return json.Marshal(&src.EffectRollbackIncreasedAchievementProgress)
 	}
 
+	if src.EffectRollbackIncreasedAchievementProgressPerItem != nil {
+		return json.Marshal(&src.EffectRollbackIncreasedAchievementProgressPerItem)
+	}
+
 	if src.EffectRollbackReferral != nil {
 		return json.Marshal(&src.EffectRollbackReferral)
+	}
+
+	if src.EffectRollbackTierBoost != nil {
+		return json.Marshal(&src.EffectRollbackTierBoost)
 	}
 
 	if src.EffectRollbackUseReward != nil {
@@ -1403,6 +1493,10 @@ func (obj *Effect) GetActualInstance() interface{} {
 		return obj.EffectIncreaseAchievementProgress
 	}
 
+	if obj.EffectIncreaseAchievementProgressPerItem != nil {
+		return obj.EffectIncreaseAchievementProgressPerItem
+	}
+
 	if obj.EffectJoinLoyaltyProgram != nil {
 		return obj.EffectJoinLoyaltyProgram
 	}
@@ -1455,8 +1549,16 @@ func (obj *Effect) GetActualInstance() interface{} {
 		return obj.EffectRollbackIncreasedAchievementProgress
 	}
 
+	if obj.EffectRollbackIncreasedAchievementProgressPerItem != nil {
+		return obj.EffectRollbackIncreasedAchievementProgressPerItem
+	}
+
 	if obj.EffectRollbackReferral != nil {
 		return obj.EffectRollbackReferral
+	}
+
+	if obj.EffectRollbackTierBoost != nil {
+		return obj.EffectRollbackTierBoost
 	}
 
 	if obj.EffectRollbackUseReward != nil {
@@ -1581,6 +1683,10 @@ func (obj Effect) GetActualInstanceValue() interface{} {
 		return *obj.EffectIncreaseAchievementProgress
 	}
 
+	if obj.EffectIncreaseAchievementProgressPerItem != nil {
+		return *obj.EffectIncreaseAchievementProgressPerItem
+	}
+
 	if obj.EffectJoinLoyaltyProgram != nil {
 		return *obj.EffectJoinLoyaltyProgram
 	}
@@ -1633,8 +1739,16 @@ func (obj Effect) GetActualInstanceValue() interface{} {
 		return *obj.EffectRollbackIncreasedAchievementProgress
 	}
 
+	if obj.EffectRollbackIncreasedAchievementProgressPerItem != nil {
+		return *obj.EffectRollbackIncreasedAchievementProgressPerItem
+	}
+
 	if obj.EffectRollbackReferral != nil {
 		return *obj.EffectRollbackReferral
+	}
+
+	if obj.EffectRollbackTierBoost != nil {
+		return *obj.EffectRollbackTierBoost
 	}
 
 	if obj.EffectRollbackUseReward != nil {

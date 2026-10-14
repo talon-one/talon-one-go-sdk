@@ -13,6 +13,7 @@ package talon
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 )
 
 // checks if the ExpiringPointsData type satisfies the MappedNullable interface at compile time
@@ -29,7 +30,13 @@ type ExpiringPointsData struct {
 	// The amount of loyalty points that will be expired soon.
 	AmountOfExpiringPoints float32 `json:"AmountOfExpiringPoints"`
 	// The ID of the subledger within the loyalty program where these points were added.
-	SubledgerID          string `json:"SubledgerID"`
+	SubledgerID string `json:"SubledgerID"`
+	// The timestamp when the loyalty transaction occurred.
+	Created *time.Time `json:"Created,omitempty"`
+	// Indicates whether the points have an action-based start date. This property is returned only for point transactions with an action-based start date.
+	AwaitsActivation *bool `json:"AwaitsActivation,omitempty"`
+	// The duration for which the points remain active, relative to the activation date.  **Note**: This only applies to points for which `AwaitsActivation` is `true` and `ExpiryDate` is not set.
+	ValidityDuration     *string `json:"ValidityDuration,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -177,6 +184,102 @@ func (o *ExpiringPointsData) SetSubledgerID(v string) {
 	o.SubledgerID = v
 }
 
+// GetCreated returns the Created field value if set, zero value otherwise.
+func (o *ExpiringPointsData) GetCreated() time.Time {
+	if o == nil || IsNil(o.Created) {
+		var ret time.Time
+		return ret
+	}
+	return *o.Created
+}
+
+// GetCreatedOk returns a tuple with the Created field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ExpiringPointsData) GetCreatedOk() (*time.Time, bool) {
+	if o == nil || IsNil(o.Created) {
+		return nil, false
+	}
+	return o.Created, true
+}
+
+// HasCreated returns a boolean if a field has been set.
+func (o *ExpiringPointsData) HasCreated() bool {
+	if o != nil && !IsNil(o.Created) {
+		return true
+	}
+
+	return false
+}
+
+// SetCreated gets a reference to the given time.Time and assigns it to the Created field.
+func (o *ExpiringPointsData) SetCreated(v time.Time) {
+	o.Created = &v
+}
+
+// GetAwaitsActivation returns the AwaitsActivation field value if set, zero value otherwise.
+func (o *ExpiringPointsData) GetAwaitsActivation() bool {
+	if o == nil || IsNil(o.AwaitsActivation) {
+		var ret bool
+		return ret
+	}
+	return *o.AwaitsActivation
+}
+
+// GetAwaitsActivationOk returns a tuple with the AwaitsActivation field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ExpiringPointsData) GetAwaitsActivationOk() (*bool, bool) {
+	if o == nil || IsNil(o.AwaitsActivation) {
+		return nil, false
+	}
+	return o.AwaitsActivation, true
+}
+
+// HasAwaitsActivation returns a boolean if a field has been set.
+func (o *ExpiringPointsData) HasAwaitsActivation() bool {
+	if o != nil && !IsNil(o.AwaitsActivation) {
+		return true
+	}
+
+	return false
+}
+
+// SetAwaitsActivation gets a reference to the given bool and assigns it to the AwaitsActivation field.
+func (o *ExpiringPointsData) SetAwaitsActivation(v bool) {
+	o.AwaitsActivation = &v
+}
+
+// GetValidityDuration returns the ValidityDuration field value if set, zero value otherwise.
+func (o *ExpiringPointsData) GetValidityDuration() string {
+	if o == nil || IsNil(o.ValidityDuration) {
+		var ret string
+		return ret
+	}
+	return *o.ValidityDuration
+}
+
+// GetValidityDurationOk returns a tuple with the ValidityDuration field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ExpiringPointsData) GetValidityDurationOk() (*string, bool) {
+	if o == nil || IsNil(o.ValidityDuration) {
+		return nil, false
+	}
+	return o.ValidityDuration, true
+}
+
+// HasValidityDuration returns a boolean if a field has been set.
+func (o *ExpiringPointsData) HasValidityDuration() bool {
+	if o != nil && !IsNil(o.ValidityDuration) {
+		return true
+	}
+
+	return false
+}
+
+// SetValidityDuration gets a reference to the given string and assigns it to the ValidityDuration field.
+func (o *ExpiringPointsData) SetValidityDuration(v string) {
+	o.ValidityDuration = &v
+}
+
 func (o ExpiringPointsData) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -192,6 +295,15 @@ func (o ExpiringPointsData) ToMap() (map[string]interface{}, error) {
 	toSerialize["CustomerProfileID"] = o.CustomerProfileID
 	toSerialize["AmountOfExpiringPoints"] = o.AmountOfExpiringPoints
 	toSerialize["SubledgerID"] = o.SubledgerID
+	if !IsNil(o.Created) {
+		toSerialize["Created"] = o.Created
+	}
+	if !IsNil(o.AwaitsActivation) {
+		toSerialize["AwaitsActivation"] = o.AwaitsActivation
+	}
+	if !IsNil(o.ValidityDuration) {
+		toSerialize["ValidityDuration"] = o.ValidityDuration
+	}
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value
@@ -244,6 +356,9 @@ func (o *ExpiringPointsData) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "CustomerProfileID")
 		delete(additionalProperties, "AmountOfExpiringPoints")
 		delete(additionalProperties, "SubledgerID")
+		delete(additionalProperties, "Created")
+		delete(additionalProperties, "AwaitsActivation")
+		delete(additionalProperties, "ValidityDuration")
 		o.AdditionalProperties = additionalProperties
 	}
 

@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**ActivateAt** | Pointer to **time.Time** |  | [optional] 
+**ActivateAt** | Pointer to **time.Time** | Timestamp when the revision will be activated. | [optional] 
 
 ## Methods
 

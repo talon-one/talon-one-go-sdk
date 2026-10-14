@@ -22,7 +22,7 @@ Name | Type | Description | Notes
 **AdjustmentReferenceId** | Pointer to **string** | The reference identifier of the selected price adjustment for this SKU. This is only returned if the &#x60;selectedPrice&#x60; resulted from a price adjustment. | [optional] 
 **RewardId** | Pointer to **int64** | The ID of the reward that was being evaluated when this effect was triggered. | [optional] 
 **RewardIntegrationId** | Pointer to **string** | The integration ID of the specific customer reward whose usage produced this effect. | [optional] 
-**Props** | [**RollbackCouponEffectProps**](RollbackCouponEffectProps.md) | The properties of the &#x60;rollbackCoupon&#x60; effect. | 
+**Props** | [**RollbackCouponEffectProps**](RollbackCouponEffectProps.md) |  | 
 
 ## Methods
 

@@ -55,8 +55,7 @@ type EffectAcceptCoupon struct {
 	// The ID of the reward that was being evaluated when this effect was triggered.
 	RewardId *int64 `json:"rewardId,omitempty"`
 	// The integration ID of the specific customer reward whose usage produced this effect.
-	RewardIntegrationId *string `json:"rewardIntegrationId,omitempty"`
-	// The properties of the `acceptCoupon` effect.
+	RewardIntegrationId  *string                 `json:"rewardIntegrationId,omitempty"`
 	Props                AcceptCouponEffectProps `json:"props"`
 	AdditionalProperties map[string]interface{}
 }

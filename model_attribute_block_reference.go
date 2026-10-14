@@ -27,9 +27,9 @@ type AttributeBlockReference struct {
 	// The attribute name as used in API requests.
 	Name string `json:"name"`
 	// The human-readable name of the attribute.
-	Title string `json:"title"`
+	Title *string `json:"title,omitempty"`
 	// The data type of the attribute.
-	Type                 string `json:"type"`
+	Type                 *string `json:"type,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -39,13 +39,11 @@ type _AttributeBlockReference AttributeBlockReference
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildAttributeBlockReference(id int64, entity string, name string, title string, type_ string) *AttributeBlockReference {
+func BuildAttributeBlockReference(id int64, entity string, name string) *AttributeBlockReference {
 	this := AttributeBlockReference{}
 	this.Id = id
 	this.Entity = entity
 	this.Name = name
-	this.Title = title
-	this.Type = type_
 	return &this
 }
 
@@ -129,52 +127,68 @@ func (o *AttributeBlockReference) SetName(v string) {
 	o.Name = v
 }
 
-// GetTitle returns the Title field value
+// GetTitle returns the Title field value if set, zero value otherwise.
 func (o *AttributeBlockReference) GetTitle() string {
-	if o == nil {
+	if o == nil || IsNil(o.Title) {
 		var ret string
 		return ret
 	}
-
-	return o.Title
+	return *o.Title
 }
 
-// GetTitleOk returns a tuple with the Title field value
+// GetTitleOk returns a tuple with the Title field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AttributeBlockReference) GetTitleOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Title) {
 		return nil, false
 	}
-	return &o.Title, true
+	return o.Title, true
 }
 
-// SetTitle sets field value
+// HasTitle returns a boolean if a field has been set.
+func (o *AttributeBlockReference) HasTitle() bool {
+	if o != nil && !IsNil(o.Title) {
+		return true
+	}
+
+	return false
+}
+
+// SetTitle gets a reference to the given string and assigns it to the Title field.
 func (o *AttributeBlockReference) SetTitle(v string) {
-	o.Title = v
+	o.Title = &v
 }
 
-// GetType returns the Type field value
+// GetType returns the Type field value if set, zero value otherwise.
 func (o *AttributeBlockReference) GetType() string {
-	if o == nil {
+	if o == nil || IsNil(o.Type) {
 		var ret string
 		return ret
 	}
-
-	return o.Type
+	return *o.Type
 }
 
-// GetTypeOk returns a tuple with the Type field value
+// GetTypeOk returns a tuple with the Type field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AttributeBlockReference) GetTypeOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Type) {
 		return nil, false
 	}
-	return &o.Type, true
+	return o.Type, true
 }
 
-// SetType sets field value
+// HasType returns a boolean if a field has been set.
+func (o *AttributeBlockReference) HasType() bool {
+	if o != nil && !IsNil(o.Type) {
+		return true
+	}
+
+	return false
+}
+
+// SetType gets a reference to the given string and assigns it to the Type field.
 func (o *AttributeBlockReference) SetType(v string) {
-	o.Type = v
+	o.Type = &v
 }
 
 func (o AttributeBlockReference) MarshalJSON() ([]byte, error) {
@@ -190,8 +204,12 @@ func (o AttributeBlockReference) ToMap() (map[string]interface{}, error) {
 	toSerialize["id"] = o.Id
 	toSerialize["entity"] = o.Entity
 	toSerialize["name"] = o.Name
-	toSerialize["title"] = o.Title
-	toSerialize["type"] = o.Type
+	if !IsNil(o.Title) {
+		toSerialize["title"] = o.Title
+	}
+	if !IsNil(o.Type) {
+		toSerialize["type"] = o.Type
+	}
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value
@@ -208,8 +226,6 @@ func (o *AttributeBlockReference) UnmarshalJSON(data []byte) (err error) {
 		"id",
 		"entity",
 		"name",
-		"title",
-		"type",
 	}
 
 	allProperties := make(map[string]interface{})

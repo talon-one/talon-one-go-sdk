@@ -55,8 +55,7 @@ type EffectRollbackReferral struct {
 	// The ID of the reward that was being evaluated when this effect was triggered.
 	RewardId *int64 `json:"rewardId,omitempty"`
 	// The integration ID of the specific customer reward whose usage produced this effect.
-	RewardIntegrationId *string `json:"rewardIntegrationId,omitempty"`
-	// The properties of the `rollbackReferral` effect.
+	RewardIntegrationId  *string                     `json:"rewardIntegrationId,omitempty"`
 	Props                RollbackReferralEffectProps `json:"props"`
 	AdditionalProperties map[string]interface{}
 }

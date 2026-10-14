@@ -13,6 +13,7 @@ package talon
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 )
 
 // checks if the NewReward type satisfies the MappedNullable interface at compile time
@@ -37,7 +38,11 @@ type NewReward struct {
 	// A list of named variables created before the reward's rules are evaluated. Each binding pairs a name with a talang expression. The expression is evaluated once and its result is available by name in any rule condition or effect. Bindings must be defined outside of individual rules.
 	Bindings []Binding `json:"bindings,omitempty"`
 	// The loyalty points required to activate the reward. Each object defines the specific loyalty program and subledger from which points are deducted when activating the reward.  **Note:** When creating a reward, the `id` of each entry is ignored and a new entry is always created.
-	PointsRequired       []RewardPointsRequired `json:"pointsRequired,omitempty"`
+	PointsRequired []RewardPointsRequired `json:"pointsRequired,omitempty"`
+	// The duration for which the customer rewards unlocked from this reward remain active, relative to when the customer reward was unlocked.  The time format is an **integer** followed by one letter indicating the time unit.  Examples: `5D`, `7W`, `10M`, `15Y`.  Available units:  - `D`: days - `W`: weeks - `M`: months - `Y`: years  You can round certain units up or down: - `_D` for rounding down days only. Signifies the start of the day. - `_U` for rounding up days, weeks, months and years. Signifies the end of the day, week, month or year.  This field cannot be used in combination with `expiryDate`. If both `validityDuration` and `expiryDate` are not set, customer rewards have unlimited validity.
+	ValidityDuration *string `json:"validityDuration,omitempty"`
+	// Expiry date of the customer rewards unlocked from this reward. Customer rewards never expire if this is omitted and `validityDuration` is not set.  **Note:** - The date must be in the future. - This field cannot be used in combination with `validityDuration`.
+	ExpiryDate           *time.Time `json:"expiryDate,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -320,6 +325,70 @@ func (o *NewReward) SetPointsRequired(v []RewardPointsRequired) {
 	o.PointsRequired = v
 }
 
+// GetValidityDuration returns the ValidityDuration field value if set, zero value otherwise.
+func (o *NewReward) GetValidityDuration() string {
+	if o == nil || IsNil(o.ValidityDuration) {
+		var ret string
+		return ret
+	}
+	return *o.ValidityDuration
+}
+
+// GetValidityDurationOk returns a tuple with the ValidityDuration field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *NewReward) GetValidityDurationOk() (*string, bool) {
+	if o == nil || IsNil(o.ValidityDuration) {
+		return nil, false
+	}
+	return o.ValidityDuration, true
+}
+
+// HasValidityDuration returns a boolean if a field has been set.
+func (o *NewReward) HasValidityDuration() bool {
+	if o != nil && !IsNil(o.ValidityDuration) {
+		return true
+	}
+
+	return false
+}
+
+// SetValidityDuration gets a reference to the given string and assigns it to the ValidityDuration field.
+func (o *NewReward) SetValidityDuration(v string) {
+	o.ValidityDuration = &v
+}
+
+// GetExpiryDate returns the ExpiryDate field value if set, zero value otherwise.
+func (o *NewReward) GetExpiryDate() time.Time {
+	if o == nil || IsNil(o.ExpiryDate) {
+		var ret time.Time
+		return ret
+	}
+	return *o.ExpiryDate
+}
+
+// GetExpiryDateOk returns a tuple with the ExpiryDate field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *NewReward) GetExpiryDateOk() (*time.Time, bool) {
+	if o == nil || IsNil(o.ExpiryDate) {
+		return nil, false
+	}
+	return o.ExpiryDate, true
+}
+
+// HasExpiryDate returns a boolean if a field has been set.
+func (o *NewReward) HasExpiryDate() bool {
+	if o != nil && !IsNil(o.ExpiryDate) {
+		return true
+	}
+
+	return false
+}
+
+// SetExpiryDate gets a reference to the given time.Time and assigns it to the ExpiryDate field.
+func (o *NewReward) SetExpiryDate(v time.Time) {
+	o.ExpiryDate = &v
+}
+
 func (o NewReward) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -348,6 +417,12 @@ func (o NewReward) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.PointsRequired) {
 		toSerialize["pointsRequired"] = o.PointsRequired
+	}
+	if !IsNil(o.ValidityDuration) {
+		toSerialize["validityDuration"] = o.ValidityDuration
+	}
+	if !IsNil(o.ExpiryDate) {
+		toSerialize["expiryDate"] = o.ExpiryDate
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -404,6 +479,8 @@ func (o *NewReward) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "rule")
 		delete(additionalProperties, "bindings")
 		delete(additionalProperties, "pointsRequired")
+		delete(additionalProperties, "validityDuration")
+		delete(additionalProperties, "expiryDate")
 		o.AdditionalProperties = additionalProperties
 	}
 

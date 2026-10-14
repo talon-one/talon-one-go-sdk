@@ -20,8 +20,8 @@ var _ MappedNullable = &GetCustomerAchievementHistory200Response{}
 
 // GetCustomerAchievementHistory200Response struct for GetCustomerAchievementHistory200Response
 type GetCustomerAchievementHistory200Response struct {
-	TotalResultSize      int64                 `json:"totalResultSize"`
-	Data                 []AchievementProgress `json:"data"`
+	TotalResultSize      int64                             `json:"totalResultSize"`
+	Data                 []CustomerAchievementHistoryEntry `json:"data"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -31,7 +31,7 @@ type _GetCustomerAchievementHistory200Response GetCustomerAchievementHistory200R
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildGetCustomerAchievementHistory200Response(totalResultSize int64, data []AchievementProgress) *GetCustomerAchievementHistory200Response {
+func BuildGetCustomerAchievementHistory200Response(totalResultSize int64, data []CustomerAchievementHistoryEntry) *GetCustomerAchievementHistory200Response {
 	this := GetCustomerAchievementHistory200Response{}
 	this.TotalResultSize = totalResultSize
 	this.Data = data
@@ -71,9 +71,9 @@ func (o *GetCustomerAchievementHistory200Response) SetTotalResultSize(v int64) {
 }
 
 // GetData returns the Data field value
-func (o *GetCustomerAchievementHistory200Response) GetData() []AchievementProgress {
+func (o *GetCustomerAchievementHistory200Response) GetData() []CustomerAchievementHistoryEntry {
 	if o == nil {
-		var ret []AchievementProgress
+		var ret []CustomerAchievementHistoryEntry
 		return ret
 	}
 
@@ -82,7 +82,7 @@ func (o *GetCustomerAchievementHistory200Response) GetData() []AchievementProgre
 
 // GetDataOk returns a tuple with the Data field value
 // and a boolean to check if the value has been set.
-func (o *GetCustomerAchievementHistory200Response) GetDataOk() ([]AchievementProgress, bool) {
+func (o *GetCustomerAchievementHistory200Response) GetDataOk() ([]CustomerAchievementHistoryEntry, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -90,7 +90,7 @@ func (o *GetCustomerAchievementHistory200Response) GetDataOk() ([]AchievementPro
 }
 
 // SetData sets field value
-func (o *GetCustomerAchievementHistory200Response) SetData(v []AchievementProgress) {
+func (o *GetCustomerAchievementHistory200Response) SetData(v []CustomerAchievementHistoryEntry) {
 	o.Data = v
 }
 

@@ -19,7 +19,6 @@ Name | Type | Description | Notes
 **ValidityDuration** | Pointer to **string** | Relative duration (e.g. &#x60;30D&#x60;) after which the awarded points expire. Mutually exclusive with &#x60;expiryDate&#x60;. | [optional] 
 **ExpiryDate** | Pointer to **interface{}** | Timestamp at which the awarded points expire. Mutually exclusive with &#x60;validityDuration&#x60;. | [optional] 
 **PendingDuration** | Pointer to **string** | Relative duration (e.g. &#x60;3D&#x60;) the awarded points remain pending before activation. | [optional] 
-**OnFailure** | Pointer to [**[]Block**](Block.md) | Promotion blocks evaluated when this block fails or returns false. | [optional] 
 
 ## Methods
 
@@ -399,31 +398,6 @@ SetPendingDuration sets PendingDuration field to given value.
 `func (o *AwardLoyaltyPointsBlock) HasPendingDuration() bool`
 
 HasPendingDuration returns a boolean if a field has been set.
-
-### GetOnFailure
-
-`func (o *AwardLoyaltyPointsBlock) GetOnFailure() []Block`
-
-GetOnFailure returns the OnFailure field if non-nil, zero value otherwise.
-
-### GetOnFailureOk
-
-`func (o *AwardLoyaltyPointsBlock) GetOnFailureOk() (*[]Block, bool)`
-
-GetOnFailureOk returns a tuple with the OnFailure field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetOnFailure
-
-`func (o *AwardLoyaltyPointsBlock) SetOnFailure(v []Block)`
-
-SetOnFailure sets OnFailure field to given value.
-
-### HasOnFailure
-
-`func (o *AwardLoyaltyPointsBlock) HasOnFailure() bool`
-
-HasOnFailure returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

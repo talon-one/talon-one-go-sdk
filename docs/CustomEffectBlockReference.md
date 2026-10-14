@@ -5,14 +5,14 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **int64** | The unique identifier of the custom effect. | 
-**Name** | **string** | The name of the custom effect, as used in API requests. | 
-**Title** | **string** | The display name of the custom effect. | 
+**Name** | Pointer to **string** | The name of the custom effect, as used in API requests. | [optional] [readonly] 
+**Title** | Pointer to **string** | The display name of the custom effect. | [optional] [readonly] 
 
 ## Methods
 
 ### NewCustomEffectBlockReference
 
-`func NewCustomEffectBlockReference(id int64, name string, title string, ) *CustomEffectBlockReference`
+`func NewCustomEffectBlockReference(id int64, ) *CustomEffectBlockReference`
 
 NewCustomEffectBlockReference instantiates a new CustomEffectBlockReference object
 This constructor will assign default values to properties that have it defined,
@@ -66,6 +66,11 @@ and a boolean to check if the value has been set.
 
 SetName sets Name field to given value.
 
+### HasName
+
+`func (o *CustomEffectBlockReference) HasName() bool`
+
+HasName returns a boolean if a field has been set.
 
 ### GetTitle
 
@@ -86,6 +91,11 @@ and a boolean to check if the value has been set.
 
 SetTitle sets Title field to given value.
 
+### HasTitle
+
+`func (o *CustomEffectBlockReference) HasTitle() bool`
+
+HasTitle returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

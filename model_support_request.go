@@ -29,8 +29,8 @@ type SupportRequest struct {
 	CampaignId *int64 `json:"campaignId,omitempty"`
 	// Identifier of the loyalty program where the points are added or deducted.
 	LoyaltyProgramId *int64 `json:"loyaltyProgramId,omitempty"`
-	// Identifier of the subledger the points are added to or deducted from. If there is no existing subledger with this ID, the subledger is created automatically.
-	SubledgerId *int64 `json:"subledgerId,omitempty"`
+	// ID of the subledger the points are added to or deducted from. Must be combined with `loyaltyProgramId`. The subledger must already exist in the given loyalty program.
+	SubledgerId *string `json:"subledgerId,omitempty"`
 	// Email address of the customer support agent who created the support request.
 	CreatedByUser string `json:"createdByUser"`
 	// Timestamp when the request was made.
@@ -196,9 +196,9 @@ func (o *SupportRequest) SetLoyaltyProgramId(v int64) {
 }
 
 // GetSubledgerId returns the SubledgerId field value if set, zero value otherwise.
-func (o *SupportRequest) GetSubledgerId() int64 {
+func (o *SupportRequest) GetSubledgerId() string {
 	if o == nil || IsNil(o.SubledgerId) {
-		var ret int64
+		var ret string
 		return ret
 	}
 	return *o.SubledgerId
@@ -206,7 +206,7 @@ func (o *SupportRequest) GetSubledgerId() int64 {
 
 // GetSubledgerIdOk returns a tuple with the SubledgerId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *SupportRequest) GetSubledgerIdOk() (*int64, bool) {
+func (o *SupportRequest) GetSubledgerIdOk() (*string, bool) {
 	if o == nil || IsNil(o.SubledgerId) {
 		return nil, false
 	}
@@ -222,8 +222,8 @@ func (o *SupportRequest) HasSubledgerId() bool {
 	return false
 }
 
-// SetSubledgerId gets a reference to the given int64 and assigns it to the SubledgerId field.
-func (o *SupportRequest) SetSubledgerId(v int64) {
+// SetSubledgerId gets a reference to the given string and assigns it to the SubledgerId field.
+func (o *SupportRequest) SetSubledgerId(v string) {
 	o.SubledgerId = &v
 }
 

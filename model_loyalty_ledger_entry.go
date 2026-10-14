@@ -43,7 +43,9 @@ type LoyaltyLedgerEntry struct {
 	// A map of flags providing additional details about the entry.
 	Flags *LoyaltyLedgerEntryFlags `json:"flags,omitempty"`
 	// The duration for which the points remain active, relative to the  activation date.  **Note**: This only applies to points for which `awaitsActivation` is `true` and `expiryDate` is not set.
-	ValidityDuration     *string `json:"validityDuration,omitempty"`
+	ValidityDuration *string `json:"validityDuration,omitempty"`
+	// Indicates whether the points have an action-based start date. This property is returned only for point transactions with an action-based start date.
+	AwaitsActivation     *bool `json:"awaitsActivation,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -536,6 +538,38 @@ func (o *LoyaltyLedgerEntry) SetValidityDuration(v string) {
 	o.ValidityDuration = &v
 }
 
+// GetAwaitsActivation returns the AwaitsActivation field value if set, zero value otherwise.
+func (o *LoyaltyLedgerEntry) GetAwaitsActivation() bool {
+	if o == nil || IsNil(o.AwaitsActivation) {
+		var ret bool
+		return ret
+	}
+	return *o.AwaitsActivation
+}
+
+// GetAwaitsActivationOk returns a tuple with the AwaitsActivation field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *LoyaltyLedgerEntry) GetAwaitsActivationOk() (*bool, bool) {
+	if o == nil || IsNil(o.AwaitsActivation) {
+		return nil, false
+	}
+	return o.AwaitsActivation, true
+}
+
+// HasAwaitsActivation returns a boolean if a field has been set.
+func (o *LoyaltyLedgerEntry) HasAwaitsActivation() bool {
+	if o != nil && !IsNil(o.AwaitsActivation) {
+		return true
+	}
+
+	return false
+}
+
+// SetAwaitsActivation gets a reference to the given bool and assigns it to the AwaitsActivation field.
+func (o *LoyaltyLedgerEntry) SetAwaitsActivation(v bool) {
+	o.AwaitsActivation = &v
+}
+
 func (o LoyaltyLedgerEntry) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -581,6 +615,9 @@ func (o LoyaltyLedgerEntry) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.ValidityDuration) {
 		toSerialize["validityDuration"] = o.ValidityDuration
+	}
+	if !IsNil(o.AwaitsActivation) {
+		toSerialize["awaitsActivation"] = o.AwaitsActivation
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -646,6 +683,7 @@ func (o *LoyaltyLedgerEntry) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "archived")
 		delete(additionalProperties, "flags")
 		delete(additionalProperties, "validityDuration")
+		delete(additionalProperties, "awaitsActivation")
 		o.AdditionalProperties = additionalProperties
 	}
 

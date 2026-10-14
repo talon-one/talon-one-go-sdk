@@ -9,7 +9,6 @@ Name | Type | Description | Notes
 **Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] [readonly] 
 **GiveawayPool** | [**GiveawayPoolBlockReference**](GiveawayPoolBlockReference.md) | The giveaway pool from which an item is awarded. | 
 **Profile** | **string** | The customer profile to award the giveaway to. &#x60;Current&#x60; targets the customer in the current session; &#x60;Advocate&#x60; targets the person who invited their friend via referral program. | 
-**OnFailure** | Pointer to [**[]Block**](Block.md) | Blocks evaluated when this block fails or returns false. | [optional] 
 **OnError** | Pointer to [**map[string][]Block**](array.md) | Named error handlers evaluated when a specific error occurs. | [optional] 
 
 ## Methods
@@ -140,31 +139,6 @@ and a boolean to check if the value has been set.
 
 SetProfile sets Profile field to given value.
 
-
-### GetOnFailure
-
-`func (o *AwardGiveawayBlock) GetOnFailure() []Block`
-
-GetOnFailure returns the OnFailure field if non-nil, zero value otherwise.
-
-### GetOnFailureOk
-
-`func (o *AwardGiveawayBlock) GetOnFailureOk() (*[]Block, bool)`
-
-GetOnFailureOk returns a tuple with the OnFailure field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetOnFailure
-
-`func (o *AwardGiveawayBlock) SetOnFailure(v []Block)`
-
-SetOnFailure sets OnFailure field to given value.
-
-### HasOnFailure
-
-`func (o *AwardGiveawayBlock) HasOnFailure() bool`
-
-HasOnFailure returns a boolean if a field has been set.
 
 ### GetOnError
 
