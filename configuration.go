@@ -15,6 +15,7 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"time"
 )
 
 // contextKeys are used to identify the type of value in the context.
@@ -72,6 +73,11 @@ type ServerConfiguration struct {
 
 // ServerConfigurations stores multiple ServerConfiguration items
 type ServerConfigurations []ServerConfiguration
+
+// DefaultHTTPTimeout is the timeout applied to the SDK's HTTP client when
+// no custom http.Client is provided. It prevents requests from hanging
+// indefinitely if the server stops responding.
+const DefaultHTTPTimeout = 30 * time.Second
 
 // Configuration stores the configuration of the API client
 type Configuration struct {
