@@ -361,6 +361,7 @@ docs/EffectWillAwardGiveaway.md
 docs/EmailEntity.md
 docs/EmbeddedAnalyticsConfiguration.md
 docs/EmbeddedAnalyticsConfigurationDashboards.md
+docs/EmbeddedAnalyticsToken.md
 docs/EmbeddedDashboardConfiguration.md
 docs/Endpoint.md
 docs/Entity.md
@@ -1323,6 +1324,7 @@ model_effect_will_award_giveaway.go
 model_email_entity.go
 model_embedded_analytics_configuration.go
 model_embedded_analytics_configuration_dashboards.go
+model_embedded_analytics_token.go
 model_embedded_dashboard_configuration.go
 model_endpoint.go
 model_entity.go

@@ -19,23 +19,23 @@ import (
 // checks if the OutboundMessage type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &OutboundMessage{}
 
-// OutboundMessage Outbound notification or webhook message with its shared request details.
+// OutboundMessage struct for OutboundMessage
 type OutboundMessage struct {
 	// UUID of the outbound message.
 	Uuid string `json:"uuid"`
-	// ID of the notification that produced the outbound request.
+	// ID of the notification that triggered the outbound message.
 	NotificationId *int64 `json:"notificationId,omitempty"`
-	// Name of the notification that produced the outbound request.
+	// Name of the notification that triggered the outbound message.
 	NotificationName *string `json:"notificationName,omitempty"`
-	// ID of the webhook that produced the outbound request.
+	// ID of the webhook that triggered the outbound message.
 	WebhookId *int64 `json:"webhookId,omitempty"`
-	// The name of the webhook that produced the outbound request.
+	// Name of the webhook that triggered the outbound message.
 	WebhookName *string `json:"webhookName,omitempty"`
-	// Type of notification that produced the outbound request.
+	// Type of notification that triggered the outbound message.
 	NotificationType string `json:"notificationType"`
-	// ID of the Application associated with the outbound request.
+	// ID of the Application associated with the outbound message.
 	ApplicationId *int64 `json:"applicationId,omitempty"`
-	// ID of the loyalty program associated with the outbound request.
+	// ID of the loyalty program associated with the outbound message.
 	LoyaltyProgramId *int64              `json:"loyaltyProgramId,omitempty"`
 	Request          *OutboundLogRequest `json:"request,omitempty"`
 	// Timestamp of the first log entry for this message.
@@ -47,7 +47,7 @@ type OutboundMessage struct {
 	Status           string `json:"status"`
 	// Number of retries.
 	RetryCount *int64 `json:"retryCount,omitempty"`
-	// Log entries for this message. Omitted when `includeLogs=false`.
+	// Log entries for this message. One entry per delivery attempt. Empty when `includeLogs=false`.
 	Responses            []OutboundMessageResponse `json:"responses,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
