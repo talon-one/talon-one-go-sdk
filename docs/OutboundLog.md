@@ -5,16 +5,16 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Uuid** | **string** | UUID of the outbound message. | 
-**NotificationId** | Pointer to **int64** | ID of the notification that produced the outbound request. | [optional] 
-**NotificationName** | Pointer to **string** | Name of the notification that produced the outbound request. | [optional] 
-**WebhookId** | Pointer to **int64** | ID of the webhook that produced the outbound request. | [optional] 
-**WebhookName** | Pointer to **string** | The name of the webhook that produced the outbound request. | [optional] 
-**NotificationType** | **string** | Type of notification that produced the outbound request. | 
-**ApplicationId** | Pointer to **int64** | ID of the Application associated with the outbound request. | [optional] 
-**LoyaltyProgramId** | Pointer to **int64** | ID of the loyalty program associated with the outbound request. | [optional] 
+**NotificationId** | Pointer to **int64** | ID of the notification that triggered the outbound message. | [optional] 
+**NotificationName** | Pointer to **string** | Name of the notification that triggered the outbound message. | [optional] 
+**WebhookId** | Pointer to **int64** | ID of the webhook that triggered the outbound message. | [optional] 
+**WebhookName** | Pointer to **string** | Name of the webhook that triggered the outbound message. | [optional] 
+**NotificationType** | **string** | Type of notification that triggered the outbound message. | 
+**ApplicationId** | Pointer to **int64** | ID of the Application associated with the outbound message. | [optional] 
+**LoyaltyProgramId** | Pointer to **int64** | ID of the loyalty program associated with the outbound message. | [optional] 
 **Request** | Pointer to [**OutboundLogRequest**](OutboundLogRequest.md) |  | [optional] 
-**CreatedAt** | **time.Time** | Timestamp when the log entry was created. | 
-**ProcessingTimeMs** | **int64** | Processing time of the outbound request in milliseconds. | 
+**CreatedAt** | **time.Time** | Timestamp when the log was created. | 
+**ProcessingTimeMs** | **int64** | Time in milliseconds between sending the outbound request and receiving the response. | 
 **Response** | Pointer to [**OutboundLogResponse**](OutboundLogResponse.md) |  | [optional] 
 
 ## Methods

@@ -5,20 +5,20 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Uuid** | **string** | UUID of the outbound message. | 
-**NotificationId** | Pointer to **int64** | ID of the notification that produced the outbound request. | [optional] 
-**NotificationName** | Pointer to **string** | Name of the notification that produced the outbound request. | [optional] 
-**WebhookId** | Pointer to **int64** | ID of the webhook that produced the outbound request. | [optional] 
-**WebhookName** | Pointer to **string** | The name of the webhook that produced the outbound request. | [optional] 
-**NotificationType** | **string** | Type of notification that produced the outbound request. | 
-**ApplicationId** | Pointer to **int64** | ID of the Application associated with the outbound request. | [optional] 
-**LoyaltyProgramId** | Pointer to **int64** | ID of the loyalty program associated with the outbound request. | [optional] 
+**NotificationId** | Pointer to **int64** | ID of the notification that triggered the outbound message. | [optional] 
+**NotificationName** | Pointer to **string** | Name of the notification that triggered the outbound message. | [optional] 
+**WebhookId** | Pointer to **int64** | ID of the webhook that triggered the outbound message. | [optional] 
+**WebhookName** | Pointer to **string** | Name of the webhook that triggered the outbound message. | [optional] 
+**NotificationType** | **string** | Type of notification that triggered the outbound message. | 
+**ApplicationId** | Pointer to **int64** | ID of the Application associated with the outbound message. | [optional] 
+**LoyaltyProgramId** | Pointer to **int64** | ID of the loyalty program associated with the outbound message. | [optional] 
 **Request** | Pointer to [**OutboundLogRequest**](OutboundLogRequest.md) |  | [optional] 
 **FirstLogAt** | **time.Time** | Timestamp of the first log entry for this message. | 
 **LastLogAt** | **time.Time** | Timestamp of the last log entry for this message. | 
 **LastResponseCode** | Pointer to **int64** | HTTP status code from the latest response. | [optional] 
 **Status** | **string** |  | 
 **RetryCount** | Pointer to **int64** | Number of retries. | [optional] 
-**Responses** | Pointer to [**[]OutboundMessageResponse**](OutboundMessageResponse.md) | Log entries for this message. Omitted when &#x60;includeLogs&#x3D;false&#x60;. | [optional] 
+**Responses** | Pointer to [**[]OutboundMessageResponse**](OutboundMessageResponse.md) | Log entries for this message. One entry per delivery attempt. Empty when &#x60;includeLogs&#x3D;false&#x60;. | [optional] 
 
 ## Methods
 

@@ -25,7 +25,9 @@ type LoyaltyCardBatch struct {
 	// ID of the loyalty card batch.
 	BatchId *string `json:"batchId,omitempty" validate:"regexp=^[A-Za-z0-9_-]*$"`
 	// Status of the loyalty cards in the batch.
-	Status               *string                `json:"status,omitempty"`
+	Status *string `json:"status,omitempty"`
+	// Set values for the [custom attributes](https://docs.talon.one/docs/dev/concepts/attributes#custom-attributes) of a loyalty card. These attributes must be created in the Campaign Manager before their values can be updated through this endpoint.
+	Attributes           map[string]interface{} `json:"attributes,omitempty"`
 	CardCodeSettings     *CodeGeneratorSettings `json:"cardCodeSettings,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
@@ -142,6 +144,38 @@ func (o *LoyaltyCardBatch) SetStatus(v string) {
 	o.Status = &v
 }
 
+// GetAttributes returns the Attributes field value if set, zero value otherwise.
+func (o *LoyaltyCardBatch) GetAttributes() map[string]interface{} {
+	if o == nil || IsNil(o.Attributes) {
+		var ret map[string]interface{}
+		return ret
+	}
+	return o.Attributes
+}
+
+// GetAttributesOk returns a tuple with the Attributes field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *LoyaltyCardBatch) GetAttributesOk() (map[string]interface{}, bool) {
+	if o == nil || IsNil(o.Attributes) {
+		return map[string]interface{}{}, false
+	}
+	return o.Attributes, true
+}
+
+// HasAttributes returns a boolean if a field has been set.
+func (o *LoyaltyCardBatch) HasAttributes() bool {
+	if o != nil && !IsNil(o.Attributes) {
+		return true
+	}
+
+	return false
+}
+
+// SetAttributes gets a reference to the given map[string]interface{} and assigns it to the Attributes field.
+func (o *LoyaltyCardBatch) SetAttributes(v map[string]interface{}) {
+	o.Attributes = v
+}
+
 // GetCardCodeSettings returns the CardCodeSettings field value if set, zero value otherwise.
 func (o *LoyaltyCardBatch) GetCardCodeSettings() CodeGeneratorSettings {
 	if o == nil || IsNil(o.CardCodeSettings) {
@@ -190,6 +224,9 @@ func (o LoyaltyCardBatch) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Status) {
 		toSerialize["status"] = o.Status
+	}
+	if !IsNil(o.Attributes) {
+		toSerialize["attributes"] = o.Attributes
 	}
 	if !IsNil(o.CardCodeSettings) {
 		toSerialize["cardCodeSettings"] = o.CardCodeSettings
@@ -240,6 +277,7 @@ func (o *LoyaltyCardBatch) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "numberOfCards")
 		delete(additionalProperties, "batchId")
 		delete(additionalProperties, "status")
+		delete(additionalProperties, "attributes")
 		delete(additionalProperties, "cardCodeSettings")
 		o.AdditionalProperties = additionalProperties
 	}
