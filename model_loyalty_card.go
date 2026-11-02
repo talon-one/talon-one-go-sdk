@@ -35,8 +35,6 @@ type LoyaltyCard struct {
 	Status string `json:"status"`
 	// Reason for transferring and blocking the loyalty card.
 	BlockReason *string `json:"blockReason,omitempty"`
-	// Set values for the [custom attributes](https://docs.talon.one/docs/dev/concepts/attributes#custom-attributes) of a loyalty card. These attributes must be created in the Campaign Manager before their values can be updated through this endpoint.
-	Attributes map[string]interface{} `json:"attributes,omitempty"`
 	// The identifier of the loyalty card, which must match the regular expression `^[A-Za-z0-9._%+@-]+$`.
 	Identifier string `json:"identifier" validate:"regexp=^[A-Za-z0-9._%+@-]+$"`
 	// The max amount of customer profiles that can be linked to the card. 0 means unlimited.
@@ -46,7 +44,7 @@ type LoyaltyCard struct {
 	// Displays point balances of the card in the main ledger of the loyalty program.
 	Ledger *LedgerInfo `json:"ledger,omitempty"`
 	// Displays point balances of the card in the subledgers of the loyalty program.
-	Subledgers map[string]LedgerInfo `json:"subledgers,omitempty"`
+	Subledgers *map[string]LedgerInfo `json:"subledgers,omitempty"`
 	// Timestamp of the most recent update of the loyalty card.
 	Modified *time.Time `json:"modified,omitempty"`
 	// The identifier of the card from which the points were transferred.
@@ -275,38 +273,6 @@ func (o *LoyaltyCard) SetBlockReason(v string) {
 	o.BlockReason = &v
 }
 
-// GetAttributes returns the Attributes field value if set, zero value otherwise.
-func (o *LoyaltyCard) GetAttributes() map[string]interface{} {
-	if o == nil || IsNil(o.Attributes) {
-		var ret map[string]interface{}
-		return ret
-	}
-	return o.Attributes
-}
-
-// GetAttributesOk returns a tuple with the Attributes field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *LoyaltyCard) GetAttributesOk() (map[string]interface{}, bool) {
-	if o == nil || IsNil(o.Attributes) {
-		return map[string]interface{}{}, false
-	}
-	return o.Attributes, true
-}
-
-// HasAttributes returns a boolean if a field has been set.
-func (o *LoyaltyCard) HasAttributes() bool {
-	if o != nil && !IsNil(o.Attributes) {
-		return true
-	}
-
-	return false
-}
-
-// SetAttributes gets a reference to the given map[string]interface{} and assigns it to the Attributes field.
-func (o *LoyaltyCard) SetAttributes(v map[string]interface{}) {
-	o.Attributes = v
-}
-
 // GetIdentifier returns the Identifier field value
 func (o *LoyaltyCard) GetIdentifier() string {
 	if o == nil {
@@ -425,14 +391,14 @@ func (o *LoyaltyCard) GetSubledgers() map[string]LedgerInfo {
 		var ret map[string]LedgerInfo
 		return ret
 	}
-	return o.Subledgers
+	return *o.Subledgers
 }
 
 // GetSubledgersOk returns a tuple with the Subledgers field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *LoyaltyCard) GetSubledgersOk() (map[string]LedgerInfo, bool) {
+func (o *LoyaltyCard) GetSubledgersOk() (*map[string]LedgerInfo, bool) {
 	if o == nil || IsNil(o.Subledgers) {
-		return map[string]LedgerInfo{}, false
+		return nil, false
 	}
 	return o.Subledgers, true
 }
@@ -448,7 +414,7 @@ func (o *LoyaltyCard) HasSubledgers() bool {
 
 // SetSubledgers gets a reference to the given map[string]LedgerInfo and assigns it to the Subledgers field.
 func (o *LoyaltyCard) SetSubledgers(v map[string]LedgerInfo) {
-	o.Subledgers = v
+	o.Subledgers = &v
 }
 
 // GetModified returns the Modified field value if set, zero value otherwise.
@@ -602,9 +568,6 @@ func (o LoyaltyCard) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.BlockReason) {
 		toSerialize["blockReason"] = o.BlockReason
 	}
-	if !IsNil(o.Attributes) {
-		toSerialize["attributes"] = o.Attributes
-	}
 	toSerialize["identifier"] = o.Identifier
 	toSerialize["usersPerCardLimit"] = o.UsersPerCardLimit
 	if !IsNil(o.Profiles) {
@@ -683,7 +646,6 @@ func (o *LoyaltyCard) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "programTitle")
 		delete(additionalProperties, "status")
 		delete(additionalProperties, "blockReason")
-		delete(additionalProperties, "attributes")
 		delete(additionalProperties, "identifier")
 		delete(additionalProperties, "usersPerCardLimit")
 		delete(additionalProperties, "profiles")

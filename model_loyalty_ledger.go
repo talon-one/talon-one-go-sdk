@@ -23,7 +23,7 @@ type LoyaltyLedger struct {
 	// The balance of the main ledger in the loyalty program.
 	Ledger LoyaltySubLedger `json:"ledger"`
 	// A map containing a list of all loyalty subledger balances.
-	SubLedgers           map[string]LoyaltySubLedger `json:"subLedgers,omitempty"`
+	SubLedgers           *map[string]LoyaltySubLedger `json:"subLedgers,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -77,14 +77,14 @@ func (o *LoyaltyLedger) GetSubLedgers() map[string]LoyaltySubLedger {
 		var ret map[string]LoyaltySubLedger
 		return ret
 	}
-	return o.SubLedgers
+	return *o.SubLedgers
 }
 
 // GetSubLedgersOk returns a tuple with the SubLedgers field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *LoyaltyLedger) GetSubLedgersOk() (map[string]LoyaltySubLedger, bool) {
+func (o *LoyaltyLedger) GetSubLedgersOk() (*map[string]LoyaltySubLedger, bool) {
 	if o == nil || IsNil(o.SubLedgers) {
-		return map[string]LoyaltySubLedger{}, false
+		return nil, false
 	}
 	return o.SubLedgers, true
 }
@@ -100,7 +100,7 @@ func (o *LoyaltyLedger) HasSubLedgers() bool {
 
 // SetSubLedgers gets a reference to the given map[string]LoyaltySubLedger and assigns it to the SubLedgers field.
 func (o *LoyaltyLedger) SetSubLedgers(v map[string]LoyaltySubLedger) {
-	o.SubLedgers = v
+	o.SubLedgers = &v
 }
 
 func (o LoyaltyLedger) MarshalJSON() ([]byte, error) {

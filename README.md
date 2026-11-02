@@ -36,10 +36,9 @@ package main
 
 import (
     "context"
-    "encoding/json"
     "fmt"
 
-    talon "github.com/talon-one/talon-one-go-sdk"
+    talon "github.com/talon-one/talon-one-go-sdk/v26"
 )
 
 func main() {
@@ -59,7 +58,7 @@ func main() {
 
     // Create integration authentication context using api key
     integrationAuthContext := context.WithValue(context.Background(), talon.ContextAPIKeys, map[string]talon.APIKey{
-        "api_key_v1": {
+        "Authorization": {
             Prefix: "ApiKey-v1",
             Key:    "fd1fd219b1e953a6b2700e8034de5bfc877462ae106127311ddd710978654312",
         },
@@ -69,7 +68,7 @@ func main() {
     newCustomerSession := talon.NewCustomerSessionV2{
         // You can use either struct literals
         ProfileId:   talon.PtrString("DEADBEEF"),
-        CouponCodes: &[]string{"Cool-Stuff!"},
+        CouponCodes: []string{"Cool-Stuff!"},
     }
 
     // Or alternatively, using the relevant setter in a later stage in the code
@@ -117,43 +116,21 @@ func main() {
 
     // Parsing the returned effects list, please consult https://developers.talon.one/Integration-API/handling-effects-v2 for the full list of effects and their corresponding properties
     for _, effect := range integrationState.GetEffects() {
-        effectType := effect.GetEffectType()
         switch {
-        case "setDiscount" == effectType:
-            // Initiating right props instance according to the effect type
-            effectProps := talon.SetDiscountEffectProps{}
-            if err := decodeHelper(effect.GetProps(), &effectProps); err != nil {
-                fmt.Printf("ERROR while decoding 'setDiscount' props: %s\n", err)
-                continue
-            }
+        case effect.EffectSetDiscount != nil:
+            effectProps := effect.EffectSetDiscount.GetProps()
 
             // Access the specific effect's properties
             fmt.Printf("Set a discount '%s' of %2.3f\n", effectProps.GetName(), effectProps.GetValue())
-        case "acceptCoupon" == effectType:
-            // Initiating right props instance according to the effect type
-            effectProps := talon.AcceptCouponEffectProps{}
-            if err := decodeHelper(effect.GetProps(), &effectProps); err != nil {
-                fmt.Printf("ERROR while decoding props: %s\n", err)
-                continue
-            }
-
-            // Work with AcceptCouponEffectProps' properties
-            // ...
+        case effect.EffectAcceptCoupon != nil:
+            effectProps := effect.EffectAcceptCoupon.GetProps()
+            fmt.Printf("Accepted coupon '%s'\n", effectProps.GetValue())
         default:
-            fmt.Printf("Encounter unknown effect type: %s\n", effectType)
+            fmt.Printf("Unhandled effect: %#v\n", effect.GetActualInstance())
         }
     }
 }
 
-// quick decoding of props-map into our library structures using JSON marshaling,
-// or alternatively using a library like https://github.com/mitchellh/mapstructure
-func decodeHelper(propsMap map[string]interface{}, v interface{}) error {
-    propsJSON, err := json.Marshal(propsMap)
-    if err != nil {
-        return err
-    }
-    return json.Unmarshal(propsJSON, v)
-}
 ```
 
 ### Management API
@@ -167,7 +144,7 @@ import (
     "context"
     "fmt"
 
-    talon "github.com/talon-one/talon-one-go-sdk"
+    talon "github.com/talon-one/talon-one-go-sdk/v26"
 )
 
 func main() {
@@ -263,7 +240,6 @@ Class | Method | HTTP request | Description
 *IntegrationAPI* | [**GetReservedCustomers**](docs/IntegrationAPI.md#getreservedcustomers) | **Get** /v1/coupon_reservations/customerprofiles/{couponValue} | List customers that have this coupon reserved
 *IntegrationAPI* | [**IntegrationGetAllCampaigns**](docs/IntegrationAPI.md#integrationgetallcampaigns) | **Get** /v1/integration/campaigns | List all running campaigns
 *IntegrationAPI* | [**IntegrationRewardsCatalog**](docs/IntegrationAPI.md#integrationrewardscatalog) | **Get** /v1/rewards/catalog | List rewards in the catalog
-*IntegrationAPI* | [**IntegrationUpdateLoyaltyCard**](docs/IntegrationAPI.md#integrationupdateloyaltycard) | **Put** /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/update | Update loyalty card
 *IntegrationAPI* | [**JoinLoyaltyProgram**](docs/IntegrationAPI.md#joinloyaltyprogram) | **Post** /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/join | Join customer profile to loyalty program
 *IntegrationAPI* | [**LinkLoyaltyCardToProfile**](docs/IntegrationAPI.md#linkloyaltycardtoprofile) | **Post** /v2/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/link_profile | Link customer profile to card
 *IntegrationAPI* | [**ReopenCustomerSession**](docs/IntegrationAPI.md#reopencustomersession) | **Put** /v2/customer_sessions/{customerSessionId}/reopen | Reopen customer session
@@ -823,7 +799,6 @@ Class | Method | HTTP request | Description
 - [EmailEntity](docs/EmailEntity.md)
 - [EmbeddedAnalyticsConfiguration](docs/EmbeddedAnalyticsConfiguration.md)
 - [EmbeddedAnalyticsConfigurationDashboards](docs/EmbeddedAnalyticsConfigurationDashboards.md)
-- [EmbeddedAnalyticsToken](docs/EmbeddedAnalyticsToken.md)
 - [EmbeddedDashboardConfiguration](docs/EmbeddedDashboardConfiguration.md)
 - [Endpoint](docs/Endpoint.md)
 - [Entity](docs/Entity.md)

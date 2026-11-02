@@ -32,7 +32,7 @@ type StrikethroughChangedItem struct {
 	// The price of the changed item.
 	Price float32 `json:"price"`
 	// A map of keys and values representing the price types and related price adjustment details for this cart item.       The keys correspond to the `priceType` names.
-	Prices map[string]PriceDetail `json:"prices,omitempty"`
+	Prices *map[string]PriceDetail `json:"prices,omitempty"`
 	// The evaluation time of the changed item.
 	EvaluatedAt          time.Time             `json:"evaluatedAt"`
 	Effects              []StrikethroughEffect `json:"effects,omitempty"`
@@ -190,14 +190,14 @@ func (o *StrikethroughChangedItem) GetPrices() map[string]PriceDetail {
 		var ret map[string]PriceDetail
 		return ret
 	}
-	return o.Prices
+	return *o.Prices
 }
 
 // GetPricesOk returns a tuple with the Prices field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *StrikethroughChangedItem) GetPricesOk() (map[string]PriceDetail, bool) {
+func (o *StrikethroughChangedItem) GetPricesOk() (*map[string]PriceDetail, bool) {
 	if o == nil || IsNil(o.Prices) {
-		return map[string]PriceDetail{}, false
+		return nil, false
 	}
 	return o.Prices, true
 }
@@ -213,7 +213,7 @@ func (o *StrikethroughChangedItem) HasPrices() bool {
 
 // SetPrices gets a reference to the given map[string]PriceDetail and assigns it to the Prices field.
 func (o *StrikethroughChangedItem) SetPrices(v map[string]PriceDetail) {
-	o.Prices = v
+	o.Prices = &v
 }
 
 // GetEvaluatedAt returns the EvaluatedAt field value

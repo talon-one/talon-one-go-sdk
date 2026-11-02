@@ -21,7 +21,7 @@ var _ MappedNullable = &NewMessageTest{}
 // NewMessageTest struct for NewMessageTest
 type NewMessageTest struct {
 	// List of API HTTP headers for the given message.
-	Headers map[string]string `json:"headers,omitempty"`
+	Headers *map[string]string `json:"headers,omitempty"`
 	// API method for this message.
 	Verb string `json:"verb"`
 	// API URL for the given message.
@@ -64,14 +64,14 @@ func (o *NewMessageTest) GetHeaders() map[string]string {
 		var ret map[string]string
 		return ret
 	}
-	return o.Headers
+	return *o.Headers
 }
 
 // GetHeadersOk returns a tuple with the Headers field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *NewMessageTest) GetHeadersOk() (map[string]string, bool) {
+func (o *NewMessageTest) GetHeadersOk() (*map[string]string, bool) {
 	if o == nil || IsNil(o.Headers) {
-		return map[string]string{}, false
+		return nil, false
 	}
 	return o.Headers, true
 }
@@ -87,7 +87,7 @@ func (o *NewMessageTest) HasHeaders() bool {
 
 // SetHeaders gets a reference to the given map[string]string and assigns it to the Headers field.
 func (o *NewMessageTest) SetHeaders(v map[string]string) {
-	o.Headers = v
+	o.Headers = &v
 }
 
 // GetVerb returns the Verb field value

@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"testing"
-	openapiclient "github.com/talon-one/talon-one-go-sdk"
+	openapiclient "github.com/talon-one/talon-one-go-sdk/v26"
 )
 
 func Test_talon_IntegrationAPIService(t *testing.T) {
@@ -384,21 +384,6 @@ func Test_talon_IntegrationAPIService(t *testing.T) {
 		t.Skip("skip test")  // remove to run test
 
 		resp, httpRes, err := apiClient.IntegrationAPI.IntegrationRewardsCatalog(context.Background()).Execute()
-
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
-
-	})
-
-	t.Run("Test IntegrationAPIService IntegrationUpdateLoyaltyCard", func(t *testing.T) {
-
-		t.Skip("skip test")  // remove to run test
-
-		var loyaltyProgramId int64
-		var loyaltyCardId string
-
-		resp, httpRes, err := apiClient.IntegrationAPI.IntegrationUpdateLoyaltyCard(context.Background(), loyaltyProgramId, loyaltyCardId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
