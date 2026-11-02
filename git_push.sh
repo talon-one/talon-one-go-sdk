@@ -19,7 +19,7 @@ if [ -z "${git_user_id}" ]; then
 fi
 
 if [ -z "${git_repo_id}" ]; then
-    git_repo_id="talon-one-go-sdk"
+    git_repo_id="talon-one-go-sdk/v26"
     echo "[INFO] No command line input provided. Set \${git_repo_id} to ${git_repo_id}"
 fi
 

@@ -19,28 +19,28 @@ import (
 // checks if the OutboundLog type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &OutboundLog{}
 
-// OutboundLog struct for OutboundLog
+// OutboundLog Log of an outbound notification or webhook request.
 type OutboundLog struct {
 	// UUID of the outbound message.
 	Uuid string `json:"uuid"`
-	// ID of the notification that triggered the outbound message.
+	// ID of the notification that produced the outbound request.
 	NotificationId *int64 `json:"notificationId,omitempty"`
-	// Name of the notification that triggered the outbound message.
+	// Name of the notification that produced the outbound request.
 	NotificationName *string `json:"notificationName,omitempty"`
-	// ID of the webhook that triggered the outbound message.
+	// ID of the webhook that produced the outbound request.
 	WebhookId *int64 `json:"webhookId,omitempty"`
-	// Name of the webhook that triggered the outbound message.
+	// The name of the webhook that produced the outbound request.
 	WebhookName *string `json:"webhookName,omitempty"`
-	// Type of notification that triggered the outbound message.
+	// Type of notification that produced the outbound request.
 	NotificationType string `json:"notificationType"`
-	// ID of the Application associated with the outbound message.
+	// ID of the Application associated with the outbound request.
 	ApplicationId *int64 `json:"applicationId,omitempty"`
-	// ID of the loyalty program associated with the outbound message.
+	// ID of the loyalty program associated with the outbound request.
 	LoyaltyProgramId *int64              `json:"loyaltyProgramId,omitempty"`
 	Request          *OutboundLogRequest `json:"request,omitempty"`
-	// Timestamp when the log was created.
+	// Timestamp when the log entry was created.
 	CreatedAt time.Time `json:"createdAt"`
-	// Time in milliseconds between sending the outbound request and receiving the response.
+	// Processing time of the outbound request in milliseconds.
 	ProcessingTimeMs     int64                `json:"processingTimeMs"`
 	Response             *OutboundLogResponse `json:"response,omitempty"`
 	AdditionalProperties map[string]interface{}

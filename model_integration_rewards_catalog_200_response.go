@@ -22,7 +22,7 @@ var _ MappedNullable = &IntegrationRewardsCatalog200Response{}
 type IntegrationRewardsCatalog200Response struct {
 	Catalog IntegrationRewardsCatalog200ResponseCatalog `json:"catalog"`
 	// The customer's loyalty balances for the specified loyalty program. Returned only when `loyaltyProgramId` is provided together with `profileIntegrationId` or `loyaltyCardId`.
-	Loyalty              map[string]LoyaltyBalances `json:"loyalty,omitempty"`
+	Loyalty              *map[string]LoyaltyBalances `json:"loyalty,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -76,14 +76,14 @@ func (o *IntegrationRewardsCatalog200Response) GetLoyalty() map[string]LoyaltyBa
 		var ret map[string]LoyaltyBalances
 		return ret
 	}
-	return o.Loyalty
+	return *o.Loyalty
 }
 
 // GetLoyaltyOk returns a tuple with the Loyalty field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *IntegrationRewardsCatalog200Response) GetLoyaltyOk() (map[string]LoyaltyBalances, bool) {
+func (o *IntegrationRewardsCatalog200Response) GetLoyaltyOk() (*map[string]LoyaltyBalances, bool) {
 	if o == nil || IsNil(o.Loyalty) {
-		return map[string]LoyaltyBalances{}, false
+		return nil, false
 	}
 	return o.Loyalty, true
 }
@@ -99,7 +99,7 @@ func (o *IntegrationRewardsCatalog200Response) HasLoyalty() bool {
 
 // SetLoyalty gets a reference to the given map[string]LoyaltyBalances and assigns it to the Loyalty field.
 func (o *IntegrationRewardsCatalog200Response) SetLoyalty(v map[string]LoyaltyBalances) {
-	o.Loyalty = v
+	o.Loyalty = &v
 }
 
 func (o IntegrationRewardsCatalog200Response) MarshalJSON() ([]byte, error) {

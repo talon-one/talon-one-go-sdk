@@ -31,7 +31,7 @@ type NewDigitalPass struct {
 	// The wallet platform the pass is generated for. Possible values:  - `apple`: The digital pass is generated for Apple Wallet. - `google`: The digital pass is generated for Google Wallet.
 	Platform string `json:"platform"`
 	// A map of placeholder values that you provide to fill in the pass template. These values are not validated against the template.
-	Attributes           map[string]string `json:"attributes,omitempty"`
+	Attributes           *map[string]string `json:"attributes,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -192,14 +192,14 @@ func (o *NewDigitalPass) GetAttributes() map[string]string {
 		var ret map[string]string
 		return ret
 	}
-	return o.Attributes
+	return *o.Attributes
 }
 
 // GetAttributesOk returns a tuple with the Attributes field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *NewDigitalPass) GetAttributesOk() (map[string]string, bool) {
+func (o *NewDigitalPass) GetAttributesOk() (*map[string]string, bool) {
 	if o == nil || IsNil(o.Attributes) {
-		return map[string]string{}, false
+		return nil, false
 	}
 	return o.Attributes, true
 }
@@ -215,7 +215,7 @@ func (o *NewDigitalPass) HasAttributes() bool {
 
 // SetAttributes gets a reference to the given map[string]string and assigns it to the Attributes field.
 func (o *NewDigitalPass) SetAttributes(v map[string]string) {
-	o.Attributes = v
+	o.Attributes = &v
 }
 
 func (o NewDigitalPass) MarshalJSON() ([]byte, error) {

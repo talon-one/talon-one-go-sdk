@@ -20,11 +20,11 @@ var _ MappedNullable = &RoleV2RolesGroup{}
 // RoleV2RolesGroup A map of target entities to their permission sets.
 type RoleV2RolesGroup struct {
 	// A map of the link between the Application, campaign, or draft campaign-related permission set and the Application ID the permissions apply to.
-	Applications map[string]RoleV2ApplicationDetails `json:"applications,omitempty"`
+	Applications *map[string]RoleV2ApplicationDetails `json:"applications,omitempty"`
 	// A map of the link between the loyalty program-related permission set and the loyalty program ID the permissions apply to.
-	LoyaltyPrograms map[string]string `json:"loyaltyPrograms,omitempty"`
+	LoyaltyPrograms *map[string]string `json:"loyaltyPrograms,omitempty"`
 	// A map of the link between the campaign access group-related permission set and the campaign access group ID the permissions apply to.
-	CampaignAccessGroups map[string]string `json:"campaignAccessGroups,omitempty"`
+	CampaignAccessGroups *map[string]string `json:"campaignAccessGroups,omitempty"`
 	// Name of the account-level permission set.
 	Account              *string `json:"account,omitempty"`
 	AdditionalProperties map[string]interface{}
@@ -55,14 +55,14 @@ func (o *RoleV2RolesGroup) GetApplications() map[string]RoleV2ApplicationDetails
 		var ret map[string]RoleV2ApplicationDetails
 		return ret
 	}
-	return o.Applications
+	return *o.Applications
 }
 
 // GetApplicationsOk returns a tuple with the Applications field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *RoleV2RolesGroup) GetApplicationsOk() (map[string]RoleV2ApplicationDetails, bool) {
+func (o *RoleV2RolesGroup) GetApplicationsOk() (*map[string]RoleV2ApplicationDetails, bool) {
 	if o == nil || IsNil(o.Applications) {
-		return map[string]RoleV2ApplicationDetails{}, false
+		return nil, false
 	}
 	return o.Applications, true
 }
@@ -78,7 +78,7 @@ func (o *RoleV2RolesGroup) HasApplications() bool {
 
 // SetApplications gets a reference to the given map[string]RoleV2ApplicationDetails and assigns it to the Applications field.
 func (o *RoleV2RolesGroup) SetApplications(v map[string]RoleV2ApplicationDetails) {
-	o.Applications = v
+	o.Applications = &v
 }
 
 // GetLoyaltyPrograms returns the LoyaltyPrograms field value if set, zero value otherwise.
@@ -87,14 +87,14 @@ func (o *RoleV2RolesGroup) GetLoyaltyPrograms() map[string]string {
 		var ret map[string]string
 		return ret
 	}
-	return o.LoyaltyPrograms
+	return *o.LoyaltyPrograms
 }
 
 // GetLoyaltyProgramsOk returns a tuple with the LoyaltyPrograms field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *RoleV2RolesGroup) GetLoyaltyProgramsOk() (map[string]string, bool) {
+func (o *RoleV2RolesGroup) GetLoyaltyProgramsOk() (*map[string]string, bool) {
 	if o == nil || IsNil(o.LoyaltyPrograms) {
-		return map[string]string{}, false
+		return nil, false
 	}
 	return o.LoyaltyPrograms, true
 }
@@ -110,7 +110,7 @@ func (o *RoleV2RolesGroup) HasLoyaltyPrograms() bool {
 
 // SetLoyaltyPrograms gets a reference to the given map[string]string and assigns it to the LoyaltyPrograms field.
 func (o *RoleV2RolesGroup) SetLoyaltyPrograms(v map[string]string) {
-	o.LoyaltyPrograms = v
+	o.LoyaltyPrograms = &v
 }
 
 // GetCampaignAccessGroups returns the CampaignAccessGroups field value if set, zero value otherwise.
@@ -119,14 +119,14 @@ func (o *RoleV2RolesGroup) GetCampaignAccessGroups() map[string]string {
 		var ret map[string]string
 		return ret
 	}
-	return o.CampaignAccessGroups
+	return *o.CampaignAccessGroups
 }
 
 // GetCampaignAccessGroupsOk returns a tuple with the CampaignAccessGroups field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *RoleV2RolesGroup) GetCampaignAccessGroupsOk() (map[string]string, bool) {
+func (o *RoleV2RolesGroup) GetCampaignAccessGroupsOk() (*map[string]string, bool) {
 	if o == nil || IsNil(o.CampaignAccessGroups) {
-		return map[string]string{}, false
+		return nil, false
 	}
 	return o.CampaignAccessGroups, true
 }
@@ -142,7 +142,7 @@ func (o *RoleV2RolesGroup) HasCampaignAccessGroups() bool {
 
 // SetCampaignAccessGroups gets a reference to the given map[string]string and assigns it to the CampaignAccessGroups field.
 func (o *RoleV2RolesGroup) SetCampaignAccessGroups(v map[string]string) {
-	o.CampaignAccessGroups = v
+	o.CampaignAccessGroups = &v
 }
 
 // GetAccount returns the Account field value if set, zero value otherwise.
