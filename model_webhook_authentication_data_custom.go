@@ -56,11 +56,11 @@ func (o *WebhookAuthenticationDataCustom) GetHeaders() map[string]string {
 
 // GetHeadersOk returns a tuple with the Headers field value
 // and a boolean to check if the value has been set.
-func (o *WebhookAuthenticationDataCustom) GetHeadersOk() (map[string]string, bool) {
+func (o *WebhookAuthenticationDataCustom) GetHeadersOk() (*map[string]string, bool) {
 	if o == nil {
-		return map[string]string{}, false
+		return nil, false
 	}
-	return o.Headers, true
+	return &o.Headers, true
 }
 
 // SetHeaders sets field value

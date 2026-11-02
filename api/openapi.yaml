@@ -15463,7 +15463,7 @@ components:
       required: true
   schemas:
     ApplicationNotification:
-      $ref: "#/components/schemas/CampaignEvaluationTreeChangedNotification"
+      $ref: "#/components/schemas/CampaignEvaluationTreeChangedNotificationData"
     ApplicationSessionEntity:
       properties:
         sessionId:
@@ -15785,7 +15785,7 @@ components:
       required:
       - RoleID
       - UserID
-    StrikethroughLabelingNotification:
+    StrikethroughPriceNotification:
       description: The strikethrough labels notification for an application.
       properties:
         version:
@@ -20913,7 +20913,7 @@ components:
         description: Campaign for all summer 2021 promotions
         startTime: 2021-07-20T22:00:00Z
         endTime: 2021-09-22T22:00:00Z
-        attributes: "{}"
+        attributes: {}
         state: enabled
         activeRulesetId: 6
         tags:
@@ -21019,7 +21019,7 @@ components:
         - 1
         - 2
         - 3
-        couponAttributes: "{}"
+        couponAttributes: {}
         budgets:
         - action: createCoupon
           limit: 1000
@@ -21361,7 +21361,7 @@ components:
         description: Campaign for all summer 2021 promotions
         startTime: 2021-07-20T22:00:00Z
         endTime: 2021-09-22T22:00:00Z
-        attributes: null
+        attributes: {}
         state: enabled
         tags:
         - summer
@@ -21687,7 +21687,7 @@ components:
         discountCounter: 10
         discountRemainder: 5
         reservationCounter: 1
-        attributes: null
+        attributes: {}
         referralId: 326632952
         recipientIntegrationId: URNGV8294NV
         importId: 4
@@ -21857,7 +21857,7 @@ components:
         poolId: 1
         startDate: 2022-01-02T15:04:05Z07:00
         endDate: 2023-01-02T15:04:05Z07:00
-        attributes: null
+        attributes: {}
         used: true
         importId: 4
         profileIntegrationId: R195412
@@ -22435,8 +22435,8 @@ components:
       - referralId
     Meta:
       example:
-        campaigns: "{}"
-        coupons: "{}"
+        campaigns: {}
+        coupons: {}
         couponRejectionReason:
           campaignId: 244
           couponId: 4928
@@ -22445,7 +22445,7 @@ components:
           campaignId: 1
           referralId: 5
           reason: ReferralNotFound
-        warnings: "{}"
+        warnings: {}
       properties:
         campaigns:
           description: Maps each evaluated campaign ID to a key-value list of that
@@ -22503,8 +22503,8 @@ components:
         integrationId: 175KJPS947296
         sessionId: 175KJPS947296
         effects:
-        - "{}"
-        - "{}"
+        - {}
+        - {}
         ledgerEntries:
         - id: 6
           created: 2020-06-10T09:05:27.993483Z
@@ -22527,8 +22527,8 @@ components:
           expiryDate: 2022-04-26T11:02:38Z
           referenceId: 6
         meta:
-          campaigns: "{}"
-          coupons: "{}"
+          campaigns: {}
+          coupons: {}
           couponRejectionReason:
             campaignId: 244
             couponId: 4928
@@ -22537,7 +22537,7 @@ components:
             campaignId: 1
             referralId: 5
             reason: ReferralNotFound
-          warnings: "{}"
+          warnings: {}
     EventV3Connections:
       properties:
         connectedSessionId:
@@ -22586,8 +22586,8 @@ components:
         integrationId: 175KJPS947296
         referralCode: NT2K54D9
         effects:
-        - "{}"
-        - "{}"
+        - {}
+        - {}
     AccountEntity:
       properties:
         accountId:
@@ -22750,7 +22750,7 @@ components:
           description: Campaign for all summer 2021 promotions
           startTime: 2021-07-20T22:00:00Z
           endTime: 2021-09-22T22:00:00Z
-          attributes: "{}"
+          attributes: {}
           state: enabled
           activeRulesetId: 6
           tags:
@@ -22856,7 +22856,7 @@ components:
           - 1
           - 2
           - 3
-          couponAttributes: "{}"
+          couponAttributes: {}
           budgets:
           - action: createCoupon
             limit: 1000
@@ -22905,7 +22905,7 @@ components:
           description: Campaign for all summer 2021 promotions
           startTime: 2021-07-20T22:00:00Z
           endTime: 2021-09-22T22:00:00Z
-          attributes: "{}"
+          attributes: {}
           state: enabled
           activeRulesetId: 6
           tags:
@@ -23011,7 +23011,7 @@ components:
           - 1
           - 2
           - 3
-          couponAttributes: "{}"
+          couponAttributes: {}
           budgets:
           - action: createCoupon
             limit: 1000
@@ -23059,7 +23059,7 @@ components:
           description: Campaign for all summer 2021 promotions
           startTime: 2021-07-20T22:00:00Z
           endTime: 2021-09-22T22:00:00Z
-          attributes: null
+          attributes: {}
           state: enabled
           tags:
           - summer
@@ -23107,7 +23107,7 @@ components:
           description: Campaign for all summer 2021 promotions
           startTime: 2021-07-20T22:00:00Z
           endTime: 2021-09-22T22:00:00Z
-          attributes: null
+          attributes: {}
           state: enabled
           tags:
           - summer
@@ -23248,7 +23248,7 @@ components:
           discountCounter: 10
           discountRemainder: 5
           reservationCounter: 1
-          attributes: null
+          attributes: {}
           referralId: 326632952
           recipientIntegrationId: URNGV8294NV
           importId: 4
@@ -23280,7 +23280,7 @@ components:
           discountCounter: 10
           discountRemainder: 5
           reservationCounter: 1
-          attributes: null
+          attributes: {}
           referralId: 326632952
           recipientIntegrationId: URNGV8294NV
           importId: 4
@@ -23322,7 +23322,7 @@ components:
           poolId: 1
           startDate: 2022-01-02T15:04:05Z07:00
           endDate: 2023-01-02T15:04:05Z07:00
-          attributes: null
+          attributes: {}
           used: true
           importId: 4
           profileIntegrationId: R195412
@@ -23333,7 +23333,7 @@ components:
           poolId: 1
           startDate: 2022-01-02T15:04:05Z07:00
           endDate: 2023-01-02T15:04:05Z07:00
-          attributes: null
+          attributes: {}
           used: true
           importId: 4
           profileIntegrationId: R195412
@@ -23647,8 +23647,8 @@ components:
           integrationId: 175KJPS947296
           sessionId: 175KJPS947296
           effects:
-          - "{}"
-          - "{}"
+          - {}
+          - {}
           ledgerEntries:
           - id: 6
             created: 2020-06-10T09:05:27.993483Z
@@ -23671,8 +23671,8 @@ components:
             expiryDate: 2022-04-26T11:02:38Z
             referenceId: 6
           meta:
-            campaigns: "{}"
-            coupons: "{}"
+            campaigns: {}
+            coupons: {}
             couponRejectionReason:
               campaignId: 244
               couponId: 4928
@@ -23681,7 +23681,7 @@ components:
               campaignId: 1
               referralId: 5
               reason: ReferralNotFound
-            warnings: "{}"
+            warnings: {}
         loyalty:
           cards:
           - id: 6
@@ -23783,7 +23783,7 @@ components:
           description: Campaign for all summer 2021 promotions
           startTime: 2021-07-20T22:00:00Z
           endTime: 2021-09-22T22:00:00Z
-          attributes: "{}"
+          attributes: {}
           state: enabled
           activeRulesetId: 6
           tags:
@@ -23889,7 +23889,7 @@ components:
           - 1
           - 2
           - 3
-          couponAttributes: "{}"
+          couponAttributes: {}
           budgets:
           - action: createCoupon
             limit: 1000
@@ -23938,7 +23938,7 @@ components:
           description: Campaign for all summer 2021 promotions
           startTime: 2021-07-20T22:00:00Z
           endTime: 2021-09-22T22:00:00Z
-          attributes: "{}"
+          attributes: {}
           state: enabled
           activeRulesetId: 6
           tags:
@@ -24044,7 +24044,7 @@ components:
           - 1
           - 2
           - 3
-          couponAttributes: "{}"
+          couponAttributes: {}
           budgets:
           - action: createCoupon
             limit: 1000
@@ -24125,7 +24125,7 @@ components:
           description: Campaign for all summer 2021 promotions
           startTime: 2021-07-20T22:00:00Z
           endTime: 2021-09-22T22:00:00Z
-          attributes: null
+          attributes: {}
           state: enabled
           tags:
           - summer
@@ -24173,7 +24173,7 @@ components:
           description: Campaign for all summer 2021 promotions
           startTime: 2021-07-20T22:00:00Z
           endTime: 2021-09-22T22:00:00Z
-          attributes: null
+          attributes: {}
           state: enabled
           tags:
           - summer
@@ -24222,7 +24222,7 @@ components:
           poolId: 1
           startDate: 2022-01-02T15:04:05Z07:00
           endDate: 2023-01-02T15:04:05Z07:00
-          attributes: null
+          attributes: {}
           used: true
           importId: 4
           profileIntegrationId: R195412
@@ -24233,7 +24233,7 @@ components:
           poolId: 1
           startDate: 2022-01-02T15:04:05Z07:00
           endDate: 2023-01-02T15:04:05Z07:00
-          attributes: null
+          attributes: {}
           used: true
           importId: 4
           profileIntegrationId: R195412
@@ -24305,7 +24305,7 @@ components:
           discountCounter: 10
           discountRemainder: 5
           reservationCounter: 1
-          attributes: null
+          attributes: {}
           referralId: 326632952
           recipientIntegrationId: URNGV8294NV
           importId: 4
@@ -24337,7 +24337,7 @@ components:
           discountCounter: 10
           discountRemainder: 5
           reservationCounter: 1
-          attributes: null
+          attributes: {}
           referralId: 326632952
           recipientIntegrationId: URNGV8294NV
           importId: 4
@@ -24807,7 +24807,7 @@ components:
         description: Campaign for all summer 2021 promotions
         startTime: 2021-07-20T22:00:00Z
         endTime: 2021-09-22T22:00:00Z
-        attributes: null
+        attributes: {}
         state: enabled
         tags:
         - summer
@@ -25102,7 +25102,7 @@ components:
         discountCounter: 10
         discountRemainder: 5
         reservationCounter: 1
-        attributes: null
+        attributes: {}
         referralId: 326632952
         recipientIntegrationId: URNGV8294NV
         importId: 4
@@ -25780,7 +25780,7 @@ components:
         timezone: Europe/Berlin
         currency: EUR
         caseSensitivity: sensitive
-        attributes: "{}"
+        attributes: {}
         limits:
         - action: createCoupon
           limit: 1000
@@ -26279,7 +26279,7 @@ components:
           description: Campaign for all summer 2021 promotions
           startTime: 2021-07-20T22:00:00Z
           endTime: 2021-09-22T22:00:00Z
-          attributes: "{}"
+          attributes: {}
           state: enabled
           activeRulesetId: 6
           tags:
@@ -26385,7 +26385,7 @@ components:
           - 1
           - 2
           - 3
-          couponAttributes: "{}"
+          couponAttributes: {}
           budgets:
           - action: createCoupon
             limit: 1000
@@ -26434,7 +26434,7 @@ components:
           description: Campaign for all summer 2021 promotions
           startTime: 2021-07-20T22:00:00Z
           endTime: 2021-09-22T22:00:00Z
-          attributes: "{}"
+          attributes: {}
           state: enabled
           activeRulesetId: 6
           tags:
@@ -26540,7 +26540,7 @@ components:
           - 1
           - 2
           - 3
-          couponAttributes: "{}"
+          couponAttributes: {}
           budgets:
           - action: createCoupon
             limit: 1000
@@ -26588,7 +26588,7 @@ components:
           description: Campaign for all summer 2021 promotions
           startTime: 2021-07-20T22:00:00Z
           endTime: 2021-09-22T22:00:00Z
-          attributes: null
+          attributes: {}
           state: enabled
           tags:
           - summer
@@ -26636,7 +26636,7 @@ components:
           description: Campaign for all summer 2021 promotions
           startTime: 2021-07-20T22:00:00Z
           endTime: 2021-09-22T22:00:00Z
-          attributes: null
+          attributes: {}
           state: enabled
           tags:
           - summer
@@ -26777,7 +26777,7 @@ components:
           discountCounter: 10
           discountRemainder: 5
           reservationCounter: 1
-          attributes: null
+          attributes: {}
           referralId: 326632952
           recipientIntegrationId: URNGV8294NV
           importId: 4
@@ -26809,7 +26809,7 @@ components:
           discountCounter: 10
           discountRemainder: 5
           reservationCounter: 1
-          attributes: null
+          attributes: {}
           referralId: 326632952
           recipientIntegrationId: URNGV8294NV
           importId: 4
@@ -26851,7 +26851,7 @@ components:
           poolId: 1
           startDate: 2022-01-02T15:04:05Z07:00
           endDate: 2023-01-02T15:04:05Z07:00
-          attributes: null
+          attributes: {}
           used: true
           importId: 4
           profileIntegrationId: R195412
@@ -26862,7 +26862,7 @@ components:
           poolId: 1
           startDate: 2022-01-02T15:04:05Z07:00
           endDate: 2023-01-02T15:04:05Z07:00
-          attributes: null
+          attributes: {}
           used: true
           importId: 4
           profileIntegrationId: R195412
@@ -27106,7 +27106,7 @@ components:
         discountCounter: 10
         discountRemainder: 5
         reservationCounter: 1
-        attributes: null
+        attributes: {}
         referralId: 326632952
         recipientIntegrationId: URNGV8294NV
         importId: 4
@@ -27464,7 +27464,7 @@ components:
           discountCounter: 10
           discountRemainder: 5
           reservationCounter: 1
-          attributes: null
+          attributes: {}
           referralId: 326632952
           recipientIntegrationId: URNGV8294NV
           importId: 4
@@ -27498,7 +27498,7 @@ components:
           discountCounter: 10
           discountRemainder: 5
           reservationCounter: 1
-          attributes: null
+          attributes: {}
           referralId: 326632952
           recipientIntegrationId: URNGV8294NV
           importId: 4
@@ -27515,7 +27515,7 @@ components:
           poolId: 1
           startDate: 2022-01-02T15:04:05Z07:00
           endDate: 2023-01-02T15:04:05Z07:00
-          attributes: null
+          attributes: {}
           used: true
           importId: 4
           profileIntegrationId: R195412
@@ -27526,7 +27526,7 @@ components:
           poolId: 1
           startDate: 2022-01-02T15:04:05Z07:00
           endDate: 2023-01-02T15:04:05Z07:00
-          attributes: null
+          attributes: {}
           used: true
           importId: 4
           profileIntegrationId: R195412
@@ -28790,7 +28790,7 @@ components:
         description: Campaign for all summer 2021 promotions
         startTime: 2021-07-20T22:00:00Z
         endTime: 2021-09-22T22:00:00Z
-        attributes: "{}"
+        attributes: {}
         state: enabled
         activeRulesetId: 6
         tags:
@@ -28896,7 +28896,7 @@ components:
         - 1
         - 2
         - 3
-        couponAttributes: "{}"
+        couponAttributes: {}
         evaluationGroupId: 2
     IdentifiableEntity:
       properties:
@@ -29435,7 +29435,7 @@ components:
         - 1
         - 2
         - 3
-        couponAttributes: "{}"
+        couponAttributes: {}
       properties:
         name:
           description: A user-facing name for this campaign.
@@ -30106,7 +30106,7 @@ components:
         params: []
         enabled: true
         authenticationId: 1
-    ExpiringCouponsNotificationTrigger:
+    CouponCodeExpiringNotificationTrigger:
       properties:
         amount:
           description: The amount of period.
@@ -30123,7 +30123,7 @@ components:
       required:
       - amount
       - period
-    ExpiringCouponsNotificationPolicy:
+    CouponCodeExpiringNotificationPolicy:
       properties:
         name:
           description: Notification name.
@@ -30132,7 +30132,7 @@ components:
           type: string
         triggers:
           items:
-            $ref: "#/components/schemas/ExpiringCouponsNotificationTrigger"
+            $ref: "#/components/schemas/CouponCodeExpiringNotificationTrigger"
           maxItems: 3
           minItems: 1
           type: array
@@ -30152,7 +30152,7 @@ components:
       required:
       - name
       - triggers
-    CardExpiringPointsNotificationTrigger:
+    LoyaltyCardPointsExpiringNotificationTrigger:
       properties:
         amount:
           description: The amount of period.
@@ -30169,7 +30169,7 @@ components:
       required:
       - amount
       - period
-    CardExpiringPointsNotificationPolicy:
+    LoyaltyCardPointsExpiringNotificationPolicy:
       properties:
         name:
           description: Notification name.
@@ -30178,7 +30178,7 @@ components:
           type: string
         triggers:
           items:
-            $ref: "#/components/schemas/CardExpiringPointsNotificationTrigger"
+            $ref: "#/components/schemas/LoyaltyCardPointsExpiringNotificationTrigger"
           maxItems: 3
           minItems: 1
           type: array
@@ -30198,7 +30198,7 @@ components:
       required:
       - name
       - triggers
-    ExpiringPointsNotificationTrigger:
+    LoyaltyPointsExpiringNotificationTrigger:
       properties:
         amount:
           description: The amount of period.
@@ -30215,7 +30215,7 @@ components:
       required:
       - amount
       - period
-    ExpiringPointsNotificationPolicy:
+    LoyaltyPointsExpiringNotificationPolicy:
       properties:
         name:
           description: Notification name.
@@ -30224,7 +30224,7 @@ components:
           type: string
         triggers:
           items:
-            $ref: "#/components/schemas/ExpiringPointsNotificationTrigger"
+            $ref: "#/components/schemas/LoyaltyPointsExpiringNotificationTrigger"
           maxItems: 3
           minItems: 1
           type: array
@@ -30244,7 +30244,7 @@ components:
       required:
       - name
       - triggers
-    AddedDeductedPointsNotificationPolicy:
+    LoyaltyPointsAddedDeductedNotificationPolicy:
       properties:
         name:
           description: Notification name.
@@ -30266,7 +30266,7 @@ components:
       required:
       - name
       - scopes
-    CardAddedDeductedPointsNotificationPolicy:
+    LoyaltyCardPointsAddedDeductedNotificationPolicy:
       properties:
         name:
           description: Notification name.
@@ -30288,12 +30288,12 @@ components:
       required:
       - name
       - scopes
-    AddedDeductedPointsBalancesNotificationPolicy:
+    LoyaltyAddedDeductedPointsBalancesNotificationPolicy:
       allOf:
-      - $ref: "#/components/schemas/AddedDeductedPointsNotificationPolicy"
-    CardAddedDeductedPointsBalancesNotificationPolicy:
+      - $ref: "#/components/schemas/LoyaltyPointsAddedDeductedNotificationPolicy"
+    LoyaltyCardAddedDeductedPointsBalancesNotificationPolicy:
       allOf:
-      - $ref: "#/components/schemas/CardAddedDeductedPointsNotificationPolicy"
+      - $ref: "#/components/schemas/LoyaltyCardPointsAddedDeductedNotificationPolicy"
     CouponsNotificationPolicy:
       properties:
         name:
@@ -30333,7 +30333,7 @@ components:
       required:
       - name
       - scopes
-    CatalogsStrikethroughNotificationPolicy:
+    StrikethroughPriceNotificationPolicy:
       properties:
         name:
           description: Notification name.
@@ -30355,7 +30355,7 @@ components:
           type: integer
       required:
       - name
-    PendingPointsNotificationPolicy:
+    LoyaltyPointsPendingToActiveNotificationPolicy:
       properties:
         name:
           description: Notification name.
@@ -30487,16 +30487,16 @@ components:
     BaseNotificationPolicy:
       description: Indicates which notification properties to apply.
       oneOf:
-      - $ref: "#/components/schemas/ExpiringCouponsNotificationPolicy"
-      - $ref: "#/components/schemas/CardExpiringPointsNotificationPolicy"
-      - $ref: "#/components/schemas/ExpiringPointsNotificationPolicy"
-      - $ref: "#/components/schemas/AddedDeductedPointsNotificationPolicy"
-      - $ref: "#/components/schemas/CardAddedDeductedPointsNotificationPolicy"
-      - $ref: "#/components/schemas/AddedDeductedPointsBalancesNotificationPolicy"
-      - $ref: "#/components/schemas/CardAddedDeductedPointsBalancesNotificationPolicy"
+      - $ref: "#/components/schemas/CouponCodeExpiringNotificationPolicy"
+      - $ref: "#/components/schemas/LoyaltyCardPointsExpiringNotificationPolicy"
+      - $ref: "#/components/schemas/LoyaltyPointsExpiringNotificationPolicy"
+      - $ref: "#/components/schemas/LoyaltyPointsAddedDeductedNotificationPolicy"
+      - $ref: "#/components/schemas/LoyaltyCardPointsAddedDeductedNotificationPolicy"
+      - $ref: "#/components/schemas/LoyaltyAddedDeductedPointsBalancesNotificationPolicy"
+      - $ref: "#/components/schemas/LoyaltyCardAddedDeductedPointsBalancesNotificationPolicy"
       - $ref: "#/components/schemas/CouponsNotificationPolicy"
-      - $ref: "#/components/schemas/CatalogsStrikethroughNotificationPolicy"
-      - $ref: "#/components/schemas/PendingPointsNotificationPolicy"
+      - $ref: "#/components/schemas/StrikethroughPriceNotificationPolicy"
+      - $ref: "#/components/schemas/LoyaltyPointsPendingToActiveNotificationPolicy"
       - $ref: "#/components/schemas/CampaignNotificationPolicy"
       - $ref: "#/components/schemas/TierDowngradeNotificationPolicy"
       - $ref: "#/components/schemas/TierUpgradeNotificationPolicy"
@@ -31020,7 +31020,7 @@ components:
       - httpStatus
     CampaignSearch:
       example:
-        attributes: "{}"
+        attributes: {}
       properties:
         attributes:
           description: Properties to match against a campaign. All provided attributes
@@ -34091,7 +34091,7 @@ components:
         reservationLimit: 45
         startDate: 2020-01-24T14:15:22Z
         expiryDate: 2023-08-24T14:15:22Z
-        attributes: null
+        attributes: {}
         batchID: batchID
     NewCoupons:
       allOf:
@@ -34381,7 +34381,7 @@ components:
           - "8"
           - "9"
           couponPattern: SUMMER-####-####
-        attributes: null
+        attributes: {}
         isReservationMandatory: false
     AsyncCouponCreationResponse:
       example:
@@ -34574,7 +34574,7 @@ components:
           entities:
           - Coupon
         recipientIntegrationId: URNGV8294NV
-        attributes: null
+        attributes: {}
         isReservationMandatory: false
         implicitlyReserved: false
     CouponSearch:
@@ -34625,7 +34625,7 @@ components:
         startDate: 2020-11-10T23:00:00Z
         expiryDate: 2021-11-10T23:00:00Z
         usageLimit: 1
-        attributes: "{}"
+        attributes: {}
       properties:
         friendProfileIntegrationId:
           description: An optional Integration ID of the Friend's Profile.
@@ -35038,8 +35038,8 @@ components:
         instructions: "Use this template for discount campaigns. Set the campaign\
           \ properties according to the campaign goals, and don't forget to set an\
           \ end date."
-        campaignAttributes: "{}"
-        couponAttributes: "{}"
+        campaignAttributes: {}
+        couponAttributes: {}
         state: draft
         activeRulesetId: 5
         tags:
@@ -35592,8 +35592,19 @@ components:
             format: int64
             type: integer
           isPrimary:
+            deprecated: true
+            description: |
+              **Deprecated.** Use `order` instead.
+              Indicates whether this is the primary variant. This is computed as `order == 0`.
             example: true
             type: boolean
+          order:
+            description: |
+              The position of this variant in the experiment. The variant with `order: 0` is the primary variant.
+            example: 0
+            format: int64
+            minimum: 0
+            type: integer
           audienceId:
             description: |
               The ID of the audience this variant targets. Only used when the experiment `assignmentType` is `audience`.
@@ -35601,7 +35612,6 @@ components:
             format: int64
             type: integer
         required:
-        - isPrimary
         - name
       example:
         id: 6
@@ -35782,6 +35792,7 @@ components:
           activatedAt: 2000-01-23T04:56:07.000+00:00
         weight: 12
         isPrimary: true
+        order: 0
         audienceId: 55
     Experiment:
       allOf:
@@ -35862,7 +35873,7 @@ components:
           description: Campaign for all summer 2021 promotions
           startTime: 2021-07-20T22:00:00Z
           endTime: 2021-09-22T22:00:00Z
-          attributes: "{}"
+          attributes: {}
           state: enabled
           activeRulesetId: 6
           tags:
@@ -35968,7 +35979,7 @@ components:
           - 1
           - 2
           - 3
-          couponAttributes: "{}"
+          couponAttributes: {}
           budgets:
           - action: createCoupon
             limit: 1000
@@ -36190,6 +36201,7 @@ components:
             activatedAt: 2000-01-23T04:56:07.000+00:00
           weight: 12
           isPrimary: true
+          order: 0
           audienceId: 55
         - id: 6
           created: 2020-06-10T09:05:27.993483Z
@@ -36369,6 +36381,7 @@ components:
             activatedAt: 2000-01-23T04:56:07.000+00:00
           weight: 12
           isPrimary: true
+          order: 0
           audienceId: 55
         goalType: other
         goalDescription: Offering free shipping will increase average order revenue
@@ -36574,6 +36587,13 @@ components:
             maximum: 99
             minimum: 0
             type: integer
+          order:
+            description: |
+              The position of this variant in the experiment. The variant with `order: 0` is the primary variant.
+            example: 0
+            format: int64
+            minimum: 0
+            type: integer
           audienceId:
             description: |
               The ID of the audience this variant targets. Only used when the experiment `assignmentType` is `audience`.
@@ -36614,8 +36634,19 @@ components:
         ruleset:
           $ref: "#/components/schemas/NewRuleset"
         isPrimary:
+          deprecated: true
+          description: |
+            **Deprecated.** Use `order` instead.
+            Indicates whether this is the primary variant. This is computed as `order == 0`.
           example: true
           type: boolean
+        order:
+          description: |
+            The position of this variant in the experiment. The variant with `order: 0` is the primary variant. When omitted, the backend assigns order based on the array position.
+          example: 0
+          format: int64
+          minimum: 0
+          type: integer
         audienceId:
           description: |
             The ID of the audience this variant targets. Only used when the experiment `assignmentType` is `audience`.
@@ -36623,7 +36654,6 @@ components:
           format: int64
           type: integer
       required:
-      - isPrimary
       - name
       - ruleset
       - weight
@@ -36916,7 +36946,7 @@ components:
         name: Discount campaign
         description: This template is for discount campaigns.
         templateId: 4
-        campaignAttributesOverrides: "{}"
+        campaignAttributesOverrides: {}
         templateParamValues:
         - name: Discount percentage
           type: templateParameter
@@ -37173,7 +37203,7 @@ components:
           description: Campaign for all summer 2021 promotions
           startTime: 2021-07-20T22:00:00Z
           endTime: 2021-09-22T22:00:00Z
-          attributes: "{}"
+          attributes: {}
           state: enabled
           activeRulesetId: 6
           tags:
@@ -37279,7 +37309,7 @@ components:
           - 1
           - 2
           - 3
-          couponAttributes: "{}"
+          couponAttributes: {}
           budgets:
           - action: createCoupon
             limit: 1000
@@ -39411,7 +39441,7 @@ components:
           loyaltyProgramId: 323414846
     CustomerProfileSearchQuery:
       example:
-        attributes: "{}"
+        attributes: {}
         integrationIDs:
         - integrationIDs
         - integrationIDs
@@ -39711,7 +39741,7 @@ components:
           key: 0.8008281904610115
         totalDiscounts: 100
         total: 200
-        attributes: null
+        attributes: {}
     ApplicationStoreEntity:
       properties:
         storeId:
@@ -39766,7 +39796,7 @@ components:
         integrationId: 175KJPS947296
         sessionId: 6
         type: type
-        attributes: null
+        attributes: {}
         effects:
         - experimentId: 12
           campaignId: 244
@@ -41819,7 +41849,7 @@ components:
         roles:
         - 1
         - 3
-        applicationNotificationSubscriptions: "{}"
+        applicationNotificationSubscriptions: {}
       properties:
         name:
           description: Name of the user.
@@ -43003,7 +43033,7 @@ components:
         userCount: 2
         campaignsActiveCount: 7
         campaignsInactiveCount: 9
-        attributes: null
+        attributes: {}
     AccountAnalytics:
       example:
         applications: 11
@@ -43262,7 +43292,7 @@ components:
         accountId: 3886
         userId: 388
         entity: Coupon
-        filter: null
+        filter: {}
     ManagerConfig:
       properties:
         schemaVersion:
@@ -46966,7 +46996,7 @@ components:
           description: Campaign for all summer 2021 promotions
           startTime: 2021-07-20T22:00:00Z
           endTime: 2021-09-22T22:00:00Z
-          attributes: "{}"
+          attributes: {}
           state: enabled
           activeRulesetId: 6
           tags:
@@ -47072,7 +47102,7 @@ components:
           - 1
           - 2
           - 3
-          couponAttributes: "{}"
+          couponAttributes: {}
           budgets:
           - action: createCoupon
             limit: 1000
@@ -47121,7 +47151,7 @@ components:
           description: Campaign for all summer 2021 promotions
           startTime: 2021-07-20T22:00:00Z
           endTime: 2021-09-22T22:00:00Z
-          attributes: "{}"
+          attributes: {}
           state: enabled
           activeRulesetId: 6
           tags:
@@ -47227,7 +47257,7 @@ components:
           - 1
           - 2
           - 3
-          couponAttributes: "{}"
+          couponAttributes: {}
           budgets:
           - action: createCoupon
             limit: 1000
@@ -47275,7 +47305,7 @@ components:
           description: Campaign for all summer 2021 promotions
           startTime: 2021-07-20T22:00:00Z
           endTime: 2021-09-22T22:00:00Z
-          attributes: null
+          attributes: {}
           state: enabled
           tags:
           - summer
@@ -47323,7 +47353,7 @@ components:
           description: Campaign for all summer 2021 promotions
           startTime: 2021-07-20T22:00:00Z
           endTime: 2021-09-22T22:00:00Z
-          attributes: null
+          attributes: {}
           state: enabled
           tags:
           - summer
@@ -47464,7 +47494,7 @@ components:
           discountCounter: 10
           discountRemainder: 5
           reservationCounter: 1
-          attributes: null
+          attributes: {}
           referralId: 326632952
           recipientIntegrationId: URNGV8294NV
           importId: 4
@@ -47496,7 +47526,7 @@ components:
           discountCounter: 10
           discountRemainder: 5
           reservationCounter: 1
-          attributes: null
+          attributes: {}
           referralId: 326632952
           recipientIntegrationId: URNGV8294NV
           importId: 4
@@ -47538,7 +47568,7 @@ components:
           poolId: 1
           startDate: 2022-01-02T15:04:05Z07:00
           endDate: 2023-01-02T15:04:05Z07:00
-          attributes: null
+          attributes: {}
           used: true
           importId: 4
           profileIntegrationId: R195412
@@ -47549,7 +47579,7 @@ components:
           poolId: 1
           startDate: 2022-01-02T15:04:05Z07:00
           endDate: 2023-01-02T15:04:05Z07:00
-          attributes: null
+          attributes: {}
           used: true
           importId: 4
           profileIntegrationId: R195412
@@ -48163,7 +48193,7 @@ components:
             default: null
         required:
         - TotalResultSize
-    CampaignEvaluationTreeChangedNotification:
+    CampaignEvaluationTreeChangedNotificationData:
       description: Notification about an Application whose campaign evaluation tree
         changed.
       properties:
@@ -48183,7 +48213,7 @@ components:
       required:
       - applicationId
       - evaluationTree
-    CampaignEvaluationTreeChangedMessage:
+    CampaignEvaluationTreeChangedNotification:
       properties:
         NotificationType:
           description: The type of the notification
@@ -48311,7 +48341,7 @@ components:
             type: integer
         required:
         - ApplicationId
-    CreateCouponData:
+    CouponCreatedNotification:
       properties:
         data:
           description: "The array of coupons codes. If 1000 or fewer coupons are requested,\
@@ -48375,7 +48405,7 @@ components:
       - NotificationType
       - Operation
       - TypeOfChange
-    CouponsNotificationData:
+    CouponUpdatedDeletedNotification:
       properties:
         TypeOfChange:
           description: The type of change that occurred.
@@ -48411,7 +48441,7 @@ components:
       - NotificationType
       - Operation
       - TypeOfChange
-    AsyncCouponsData:
+    AsyncCouponsCreatedNotification:
       properties:
         BatchID:
           description: |
@@ -48443,7 +48473,7 @@ components:
       - NotificationType
       - Operation
       - TypeOfChange
-    UpdateCouponsData:
+    CouponsUpdatedNotification:
       properties:
         BatchID:
           type: string
@@ -48472,7 +48502,7 @@ components:
       - NotificationType
       - Operation
       - TypeOfChange
-    DeleteCouponsData:
+    CouponsDeletedNotification:
       properties:
         TypeOfChange:
           type: string
@@ -48555,7 +48585,7 @@ components:
       - ExpiryDate
       - LoyaltyProgramID
       - SubledgerID
-    ExpiringPointsNotification:
+    LoyaltyPointsExpiringNotification:
       properties:
         TotalResultSize:
           example: 1
@@ -48643,7 +48673,7 @@ components:
       - Profiles
       - SubledgerID
       - UsersPerCardLimit
-    ExpiringCardPointsNotification:
+    LoyaltyCardPointsExpiringNotification:
       properties:
         TotalResultSize:
           example: 1
@@ -48664,7 +48694,7 @@ components:
       - Data
       - NotificationType
       - TotalResultSize
-    AddedDeductedPointsNotification:
+    LoyaltyPointsAddedDeductedNotification:
       properties:
         EmployeeName:
           description: The name of the employee who added or deducted points.
@@ -48830,7 +48860,7 @@ components:
       - Operation
       - Reason
       - TransactionUUID
-    AddedDeductedPointsBalancesNotification:
+    LoyaltyAddedDeductedPointsBalancesNotification:
       properties:
         EmployeeName:
           description: The name of the employee who added or deducted points.
@@ -48962,7 +48992,7 @@ components:
       - LoyaltyProgramID
       - Points
       - SubledgerID
-    PendingActivePointsNotification:
+    LoyaltyPointsPendingToActiveNotification:
       properties:
         TotalResultSize:
           example: 1
@@ -49318,7 +49348,7 @@ components:
       - Data
       - NotificationType
       - TotalResultSize
-    ExpiringCouponsData:
+    CouponCodeExpiringNotificationData:
       properties:
         CouponValue:
           description: The coupon code.
@@ -49383,7 +49413,7 @@ components:
       - CouponValue
       - UsageCounter
       - UsageLimit
-    ExpiringCouponsNotification:
+    CouponCodeExpiringNotification:
       properties:
         TotalResultSize:
           example: 1
@@ -49392,7 +49422,7 @@ components:
         Data:
           description: The array of expiring coupon notifications.
           items:
-            $ref: "#/components/schemas/ExpiringCouponsData"
+            $ref: "#/components/schemas/CouponCodeExpiringNotificationData"
           type: array
           default: null
         NotificationType:
@@ -49404,7 +49434,7 @@ components:
       - Data
       - NotificationType
       - TotalResultSize
-    CardAddedDeductedPointsNotification:
+    LoyaltyCardPointsAddedDeductedNotification:
       properties:
         CardIdentifier:
           description: Loyalty card identification number.
@@ -49533,7 +49563,7 @@ components:
       - TypeOfChange
       - UserID
       - UsersPerCardLimit
-    CardAddedDeductedPointsBalancesNotification:
+    LoyaltyCardAddedDeductedPointsBalancesNotification:
       properties:
         CardIdentifier:
           description: Loyalty card identification number.
@@ -49971,7 +50001,7 @@ components:
           description: Campaign for all summer 2021 promotions
           startTime: 2021-07-20T22:00:00Z
           endTime: 2021-09-22T22:00:00Z
-          attributes: null
+          attributes: {}
           state: enabled
           tags:
           - summer
@@ -50001,7 +50031,7 @@ components:
           description: Campaign for all summer 2021 promotions
           startTime: 2021-07-20T22:00:00Z
           endTime: 2021-09-22T22:00:00Z
-          attributes: null
+          attributes: {}
           state: enabled
           tags:
           - summer
@@ -50522,7 +50552,7 @@ components:
           timezone: Europe/Berlin
           currency: EUR
           caseSensitivity: sensitive
-          attributes: "{}"
+          attributes: {}
           limits:
           - action: createCoupon
             limit: 1000
@@ -50725,7 +50755,7 @@ components:
           timezone: Europe/Berlin
           currency: EUR
           caseSensitivity: sensitive
-          attributes: "{}"
+          attributes: {}
           limits:
           - action: createCoupon
             limit: 1000
@@ -50944,7 +50974,7 @@ components:
           description: Campaign for all summer 2021 promotions
           startTime: 2021-07-20T22:00:00Z
           endTime: 2021-09-22T22:00:00Z
-          attributes: "{}"
+          attributes: {}
           state: enabled
           activeRulesetId: 6
           tags:
@@ -51050,7 +51080,7 @@ components:
           - 1
           - 2
           - 3
-          couponAttributes: "{}"
+          couponAttributes: {}
           budgets:
           - action: createCoupon
             limit: 1000
@@ -51099,7 +51129,7 @@ components:
           description: Campaign for all summer 2021 promotions
           startTime: 2021-07-20T22:00:00Z
           endTime: 2021-09-22T22:00:00Z
-          attributes: "{}"
+          attributes: {}
           state: enabled
           activeRulesetId: 6
           tags:
@@ -51205,7 +51235,7 @@ components:
           - 1
           - 2
           - 3
-          couponAttributes: "{}"
+          couponAttributes: {}
           budgets:
           - action: createCoupon
             limit: 1000
@@ -51646,7 +51676,7 @@ components:
           discountCounter: 10
           discountRemainder: 5
           reservationCounter: 1
-          attributes: null
+          attributes: {}
           referralId: 326632952
           recipientIntegrationId: URNGV8294NV
           importId: 4
@@ -51678,7 +51708,7 @@ components:
           discountCounter: 10
           discountRemainder: 5
           reservationCounter: 1
-          attributes: null
+          attributes: {}
           referralId: 326632952
           recipientIntegrationId: URNGV8294NV
           importId: 4
@@ -51727,7 +51757,7 @@ components:
           discountCounter: 10
           discountRemainder: 5
           reservationCounter: 1
-          attributes: null
+          attributes: {}
           referralId: 326632952
           recipientIntegrationId: URNGV8294NV
           importId: 4
@@ -51759,7 +51789,7 @@ components:
           discountCounter: 10
           discountRemainder: 5
           reservationCounter: 1
-          attributes: null
+          attributes: {}
           referralId: 326632952
           recipientIntegrationId: URNGV8294NV
           importId: 4
@@ -51881,8 +51911,8 @@ components:
           instructions: "Use this template for discount campaigns. Set the campaign\
             \ properties according to the campaign goals, and don't forget to set\
             \ an end date."
-          campaignAttributes: "{}"
-          couponAttributes: "{}"
+          campaignAttributes: {}
+          couponAttributes: {}
           state: draft
           activeRulesetId: 5
           tags:
@@ -52020,8 +52050,8 @@ components:
           instructions: "Use this template for discount campaigns. Set the campaign\
             \ properties according to the campaign goals, and don't forget to set\
             \ an end date."
-          campaignAttributes: "{}"
-          couponAttributes: "{}"
+          campaignAttributes: {}
+          couponAttributes: {}
           state: draft
           activeRulesetId: 5
           tags:
@@ -52180,7 +52210,7 @@ components:
             description: Campaign for all summer 2021 promotions
             startTime: 2021-07-20T22:00:00Z
             endTime: 2021-09-22T22:00:00Z
-            attributes: "{}"
+            attributes: {}
             state: enabled
             activeRulesetId: 6
             tags:
@@ -52286,7 +52316,7 @@ components:
             - 1
             - 2
             - 3
-            couponAttributes: "{}"
+            couponAttributes: {}
             budgets:
             - action: createCoupon
               limit: 1000
@@ -52508,6 +52538,7 @@ components:
               activatedAt: 2000-01-23T04:56:07.000+00:00
             weight: 12
             isPrimary: true
+            order: 0
             audienceId: 55
           - id: 6
             created: 2020-06-10T09:05:27.993483Z
@@ -52687,6 +52718,7 @@ components:
               activatedAt: 2000-01-23T04:56:07.000+00:00
             weight: 12
             isPrimary: true
+            order: 0
             audienceId: 55
           goalType: other
           goalDescription: Offering free shipping will increase average order revenue
@@ -52706,7 +52738,7 @@ components:
             description: Campaign for all summer 2021 promotions
             startTime: 2021-07-20T22:00:00Z
             endTime: 2021-09-22T22:00:00Z
-            attributes: "{}"
+            attributes: {}
             state: enabled
             activeRulesetId: 6
             tags:
@@ -52812,7 +52844,7 @@ components:
             - 1
             - 2
             - 3
-            couponAttributes: "{}"
+            couponAttributes: {}
             budgets:
             - action: createCoupon
               limit: 1000
@@ -53034,6 +53066,7 @@ components:
               activatedAt: 2000-01-23T04:56:07.000+00:00
             weight: 12
             isPrimary: true
+            order: 0
             audienceId: 55
           - id: 6
             created: 2020-06-10T09:05:27.993483Z
@@ -53213,6 +53246,7 @@ components:
               activatedAt: 2000-01-23T04:56:07.000+00:00
             weight: 12
             isPrimary: true
+            order: 0
             audienceId: 55
           goalType: other
           goalDescription: Offering free shipping will increase average order revenue
@@ -54244,7 +54278,7 @@ components:
             key: 0.8008281904610115
           totalDiscounts: 100
           total: 200
-          attributes: null
+          attributes: {}
         - id: 6
           created: 2020-02-07T08:15:22Z
           integrationId: URNGV8294NV
@@ -54324,7 +54358,7 @@ components:
             key: 0.8008281904610115
           totalDiscounts: 100
           total: 200
-          attributes: null
+          attributes: {}
       properties:
         hasMore:
           type: boolean
@@ -54419,7 +54453,7 @@ components:
             key: 0.8008281904610115
           totalDiscounts: 100
           total: 200
-          attributes: null
+          attributes: {}
         - id: 6
           created: 2020-02-07T08:15:22Z
           integrationId: URNGV8294NV
@@ -54499,7 +54533,7 @@ components:
             key: 0.8008281904610115
           totalDiscounts: 100
           total: 200
-          attributes: null
+          attributes: {}
       properties:
         hasMore:
           type: boolean
@@ -54526,7 +54560,7 @@ components:
           integrationId: 175KJPS947296
           sessionId: 6
           type: type
-          attributes: null
+          attributes: {}
           effects:
           - experimentId: 12
             campaignId: 244
@@ -54610,7 +54644,7 @@ components:
           integrationId: 175KJPS947296
           sessionId: 6
           type: type
-          attributes: null
+          attributes: {}
           effects:
           - experimentId: 12
             campaignId: 244
@@ -55215,13 +55249,13 @@ components:
           accountId: 3886
           userId: 388
           entity: Coupon
-          filter: null
+          filter: {}
         - id: 6
           created: 2020-06-10T09:05:27.993483Z
           accountId: 3886
           userId: 388
           entity: Coupon
-          filter: null
+          filter: {}
       properties:
         totalResultSize:
           example: 1
@@ -55771,9 +55805,11 @@ components:
       - $ref: "#/components/schemas/IntegrationHubEventPayloadCouponBasedNotifications"
     IntegrationCampaignBase_allOf_attributes:
       description: Arbitrary properties associated with this campaign.
+      example: {}
       type: object
     Attributes_of_coupon:
       description: Custom attributes associated with this coupon.
+      example: {}
       title: Attributes of coupon
       type: object
     NewReferral_allOf_attributes:
@@ -55782,6 +55818,7 @@ components:
       type: object
     Giveaway_allOf_attributes:
       description: Arbitrary properties associated with this giveaway.
+      example: {}
       type: object
     IntegrationEvent_allOf_attributes:
       description: Arbitrary additional JSON data associated with the event.
@@ -56056,6 +56093,7 @@ components:
 
         Coupon attributes can also be set to _mandatory_ in your Application [settings](https://docs.talon.one/docs/product/applications/using-attributes#making-attributes-mandatory).
         If your Application uses mandatory attributes, you must use this property to set their value.
+      example: {}
       type: object
     NewCoupons_allOf_attributes:
       description: Arbitrary properties associated with this item.
@@ -56063,9 +56101,11 @@ components:
       type: object
     NewCouponCreationJob_allOf_attributes:
       description: Arbitrary properties associated with coupons.
+      example: {}
       type: object
     UpdateCoupon_allOf_attributes:
       description: Arbitrary properties associated with this item.
+      example: {}
       type: object
     Role_allOf_acl:
       description: The `Access Control List` json defining the role of the user. This
@@ -56114,6 +56154,7 @@ components:
       type: object
     ApplicationEvent_allOf_attributes:
       description: Additional JSON serialized data associated with the event.
+      example: {}
       type: object
     WebhookAuthentication_allOf_data:
       oneOf:
@@ -56208,6 +56249,7 @@ components:
       type: object
     Export_allOf_filter:
       description: Map of keys and values that were used to filter the exported rows.
+      example: {}
       type: object
     ProductUnitAnalytics_totals:
       properties:

@@ -40,7 +40,7 @@ type NewCustomerSessionV2 struct {
 	// The experiment variant allocations to add to this session.
 	ExperimentVariantAllocations []ExperimentVariantAllocation `json:"experimentVariantAllocations,omitempty"`
 	// Use this property to set a value for the additional costs of this session, such as a shipping cost.  They must be created in the Campaign Manager before you set them with this property. See [Managing additional costs](https://docs.talon.one/docs/product/account/dev-tools/managing-additional-costs).
-	AdditionalCosts map[string]AdditionalCost `json:"additionalCosts,omitempty"`
+	AdditionalCosts *map[string]AdditionalCost `json:"additionalCosts,omitempty"`
 	// Session custom identifiers that you can set limits on or use inside your rules.  For example, you can use IP addresses as identifiers to potentially identify devices and limit discounts abuse in case of customers creating multiple accounts. See the [tutorial](https://docs.talon.one/docs/dev/tutorials/using-identifiers).  **Important**: Ensure the session contains an identifier by the time you close it if: - You [create a unique identifier budget](https://docs.talon.one/docs/product/campaigns/settings/managing-campaign-budgets/#budget-types) for your campaign. - Your campaign has [coupons](https://docs.talon.one/docs/product/campaigns/coupons/coupon-page-overview). - We recommend passing an anonymized (hashed) version of the identifier value.
 	Identifiers []string `json:"identifiers,omitempty"`
 	// Use this property to set a value for the attributes of your choice. Attributes represent any information to attach to your session, like the shipping city.  You can use [built-in attributes](https://docs.talon.one/docs/dev/concepts/attributes#built-in-attributes) or [custom ones](https://docs.talon.one/docs/dev/concepts/attributes#custom-attributes). Custom attributes must be created in the Campaign Manager before you set them with this property.
@@ -397,14 +397,14 @@ func (o *NewCustomerSessionV2) GetAdditionalCosts() map[string]AdditionalCost {
 		var ret map[string]AdditionalCost
 		return ret
 	}
-	return o.AdditionalCosts
+	return *o.AdditionalCosts
 }
 
 // GetAdditionalCostsOk returns a tuple with the AdditionalCosts field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *NewCustomerSessionV2) GetAdditionalCostsOk() (map[string]AdditionalCost, bool) {
+func (o *NewCustomerSessionV2) GetAdditionalCostsOk() (*map[string]AdditionalCost, bool) {
 	if o == nil || IsNil(o.AdditionalCosts) {
-		return map[string]AdditionalCost{}, false
+		return nil, false
 	}
 	return o.AdditionalCosts, true
 }
@@ -420,7 +420,7 @@ func (o *NewCustomerSessionV2) HasAdditionalCosts() bool {
 
 // SetAdditionalCosts gets a reference to the given map[string]AdditionalCost and assigns it to the AdditionalCosts field.
 func (o *NewCustomerSessionV2) SetAdditionalCosts(v map[string]AdditionalCost) {
-	o.AdditionalCosts = v
+	o.AdditionalCosts = &v
 }
 
 // GetIdentifiers returns the Identifiers field value if set, zero value otherwise.

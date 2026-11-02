@@ -18,14 +18,14 @@ import (
 // checks if the CampaignEvaluationTreeChangedNotification type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &CampaignEvaluationTreeChangedNotification{}
 
-// CampaignEvaluationTreeChangedNotification Notification about an Application whose campaign evaluation tree changed.
+// CampaignEvaluationTreeChangedNotification struct for CampaignEvaluationTreeChangedNotification
 type CampaignEvaluationTreeChangedNotification struct {
-	// The ID of the Application whose campaign evaluation tree changed.
-	ApplicationId int64 `json:"applicationId"`
-	// The previous campaign evaluation tree.
-	OldEvaluationTree *CampaignSet `json:"oldEvaluationTree,omitempty"`
-	// The new campaign evaluation tree.
-	EvaluationTree       CampaignSet `json:"evaluationTree"`
+	// The type of the notification
+	NotificationType string `json:"NotificationType"`
+	// The total size of the result set.
+	TotalResultSize int64 `json:"TotalResultSize"`
+	// The array of changes.
+	Data                 []CampaignEvaluationTreeChangedNotificationData `json:"Data"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -35,10 +35,11 @@ type _CampaignEvaluationTreeChangedNotification CampaignEvaluationTreeChangedNot
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCampaignEvaluationTreeChangedNotification(applicationId int64, evaluationTree CampaignSet) *CampaignEvaluationTreeChangedNotification {
+func BuildCampaignEvaluationTreeChangedNotification(notificationType string, totalResultSize int64, data []CampaignEvaluationTreeChangedNotificationData) *CampaignEvaluationTreeChangedNotification {
 	this := CampaignEvaluationTreeChangedNotification{}
-	this.ApplicationId = applicationId
-	this.EvaluationTree = evaluationTree
+	this.NotificationType = notificationType
+	this.TotalResultSize = totalResultSize
+	this.Data = data
 	return &this
 }
 
@@ -50,84 +51,76 @@ func NewCampaignEvaluationTreeChangedNotificationWithDefaults() *CampaignEvaluat
 	return &this
 }
 
-// GetApplicationId returns the ApplicationId field value
-func (o *CampaignEvaluationTreeChangedNotification) GetApplicationId() int64 {
+// GetNotificationType returns the NotificationType field value
+func (o *CampaignEvaluationTreeChangedNotification) GetNotificationType() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.NotificationType
+}
+
+// GetNotificationTypeOk returns a tuple with the NotificationType field value
+// and a boolean to check if the value has been set.
+func (o *CampaignEvaluationTreeChangedNotification) GetNotificationTypeOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.NotificationType, true
+}
+
+// SetNotificationType sets field value
+func (o *CampaignEvaluationTreeChangedNotification) SetNotificationType(v string) {
+	o.NotificationType = v
+}
+
+// GetTotalResultSize returns the TotalResultSize field value
+func (o *CampaignEvaluationTreeChangedNotification) GetTotalResultSize() int64 {
 	if o == nil {
 		var ret int64
 		return ret
 	}
 
-	return o.ApplicationId
+	return o.TotalResultSize
 }
 
-// GetApplicationIdOk returns a tuple with the ApplicationId field value
+// GetTotalResultSizeOk returns a tuple with the TotalResultSize field value
 // and a boolean to check if the value has been set.
-func (o *CampaignEvaluationTreeChangedNotification) GetApplicationIdOk() (*int64, bool) {
+func (o *CampaignEvaluationTreeChangedNotification) GetTotalResultSizeOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.ApplicationId, true
+	return &o.TotalResultSize, true
 }
 
-// SetApplicationId sets field value
-func (o *CampaignEvaluationTreeChangedNotification) SetApplicationId(v int64) {
-	o.ApplicationId = v
+// SetTotalResultSize sets field value
+func (o *CampaignEvaluationTreeChangedNotification) SetTotalResultSize(v int64) {
+	o.TotalResultSize = v
 }
 
-// GetOldEvaluationTree returns the OldEvaluationTree field value if set, zero value otherwise.
-func (o *CampaignEvaluationTreeChangedNotification) GetOldEvaluationTree() CampaignSet {
-	if o == nil || IsNil(o.OldEvaluationTree) {
-		var ret CampaignSet
-		return ret
-	}
-	return *o.OldEvaluationTree
-}
-
-// GetOldEvaluationTreeOk returns a tuple with the OldEvaluationTree field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *CampaignEvaluationTreeChangedNotification) GetOldEvaluationTreeOk() (*CampaignSet, bool) {
-	if o == nil || IsNil(o.OldEvaluationTree) {
-		return nil, false
-	}
-	return o.OldEvaluationTree, true
-}
-
-// HasOldEvaluationTree returns a boolean if a field has been set.
-func (o *CampaignEvaluationTreeChangedNotification) HasOldEvaluationTree() bool {
-	if o != nil && !IsNil(o.OldEvaluationTree) {
-		return true
-	}
-
-	return false
-}
-
-// SetOldEvaluationTree gets a reference to the given CampaignSet and assigns it to the OldEvaluationTree field.
-func (o *CampaignEvaluationTreeChangedNotification) SetOldEvaluationTree(v CampaignSet) {
-	o.OldEvaluationTree = &v
-}
-
-// GetEvaluationTree returns the EvaluationTree field value
-func (o *CampaignEvaluationTreeChangedNotification) GetEvaluationTree() CampaignSet {
+// GetData returns the Data field value
+func (o *CampaignEvaluationTreeChangedNotification) GetData() []CampaignEvaluationTreeChangedNotificationData {
 	if o == nil {
-		var ret CampaignSet
+		var ret []CampaignEvaluationTreeChangedNotificationData
 		return ret
 	}
 
-	return o.EvaluationTree
+	return o.Data
 }
 
-// GetEvaluationTreeOk returns a tuple with the EvaluationTree field value
+// GetDataOk returns a tuple with the Data field value
 // and a boolean to check if the value has been set.
-func (o *CampaignEvaluationTreeChangedNotification) GetEvaluationTreeOk() (*CampaignSet, bool) {
+func (o *CampaignEvaluationTreeChangedNotification) GetDataOk() ([]CampaignEvaluationTreeChangedNotificationData, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.EvaluationTree, true
+	return o.Data, true
 }
 
-// SetEvaluationTree sets field value
-func (o *CampaignEvaluationTreeChangedNotification) SetEvaluationTree(v CampaignSet) {
-	o.EvaluationTree = v
+// SetData sets field value
+func (o *CampaignEvaluationTreeChangedNotification) SetData(v []CampaignEvaluationTreeChangedNotificationData) {
+	o.Data = v
 }
 
 func (o CampaignEvaluationTreeChangedNotification) MarshalJSON() ([]byte, error) {
@@ -140,11 +133,9 @@ func (o CampaignEvaluationTreeChangedNotification) MarshalJSON() ([]byte, error)
 
 func (o CampaignEvaluationTreeChangedNotification) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["applicationId"] = o.ApplicationId
-	if !IsNil(o.OldEvaluationTree) {
-		toSerialize["oldEvaluationTree"] = o.OldEvaluationTree
-	}
-	toSerialize["evaluationTree"] = o.EvaluationTree
+	toSerialize["NotificationType"] = o.NotificationType
+	toSerialize["TotalResultSize"] = o.TotalResultSize
+	toSerialize["Data"] = o.Data
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value
@@ -158,8 +149,9 @@ func (o *CampaignEvaluationTreeChangedNotification) UnmarshalJSON(data []byte) (
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"applicationId",
-		"evaluationTree",
+		"NotificationType",
+		"TotalResultSize",
+		"Data",
 	}
 
 	allProperties := make(map[string]interface{})
@@ -189,9 +181,9 @@ func (o *CampaignEvaluationTreeChangedNotification) UnmarshalJSON(data []byte) (
 	additionalProperties := make(map[string]interface{})
 
 	if err = json.Unmarshal(data, &additionalProperties); err == nil {
-		delete(additionalProperties, "applicationId")
-		delete(additionalProperties, "oldEvaluationTree")
-		delete(additionalProperties, "evaluationTree")
+		delete(additionalProperties, "NotificationType")
+		delete(additionalProperties, "TotalResultSize")
+		delete(additionalProperties, "Data")
 		o.AdditionalProperties = additionalProperties
 	}
 

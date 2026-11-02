@@ -14,7 +14,7 @@ The following changes were required to update our example code:
 ```diff
 import (
 -  talon "github.com/talon-one/talon_go/v25"
-+  talon "github.com/talon-one/talon-one-go-sdk"
++  talon "github.com/talon-one/talon-one-go-sdk/v99"
 )
 
 //...
@@ -38,6 +38,6 @@ As you can see, the migration requires minimal changes:
 
 Follow these steps to migrate your code from the legacy Go SDK to the new version:
 
-1. Replace all imports of `github.com/talon-one/talon_go/v25` with `github.com/talon-one/talon-one-go-sdk`.
+1. Replace all imports of `github.com/talon-one/talon_go/v25` with `github.com/talon-one/talon-one-go-sdk/v99`.
 2. Run `go mod tidy && go mod vendor` to update your dependencies.
 3. Review and address any compilation errors by updating function names according to the new naming conventions.

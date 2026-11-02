@@ -36,10 +36,9 @@ package main
 
 import (
     "context"
-    "encoding/json"
     "fmt"
 
-    talon "github.com/talon-one/talon-one-go-sdk"
+    talon "github.com/talon-one/talon-one-go-sdk/v99"
 )
 
 func main() {
@@ -59,7 +58,7 @@ func main() {
 
     // Create integration authentication context using api key
     integrationAuthContext := context.WithValue(context.Background(), talon.ContextAPIKeys, map[string]talon.APIKey{
-        "api_key_v1": {
+        "Authorization": {
             Prefix: "ApiKey-v1",
             Key:    "fd1fd219b1e953a6b2700e8034de5bfc877462ae106127311ddd710978654312",
         },
@@ -69,7 +68,7 @@ func main() {
     newCustomerSession := talon.NewCustomerSessionV2{
         // You can use either struct literals
         ProfileId:   talon.PtrString("DEADBEEF"),
-        CouponCodes: &[]string{"Cool-Stuff!"},
+        CouponCodes: []string{"Cool-Stuff!"},
     }
 
     // Or alternatively, using the relevant setter in a later stage in the code
@@ -117,43 +116,21 @@ func main() {
 
     // Parsing the returned effects list, please consult https://developers.talon.one/Integration-API/handling-effects-v2 for the full list of effects and their corresponding properties
     for _, effect := range integrationState.GetEffects() {
-        effectType := effect.GetEffectType()
         switch {
-        case "setDiscount" == effectType:
-            // Initiating right props instance according to the effect type
-            effectProps := talon.SetDiscountEffectProps{}
-            if err := decodeHelper(effect.GetProps(), &effectProps); err != nil {
-                fmt.Printf("ERROR while decoding 'setDiscount' props: %s\n", err)
-                continue
-            }
+        case effect.EffectSetDiscount != nil:
+            effectProps := effect.EffectSetDiscount.GetProps()
 
             // Access the specific effect's properties
             fmt.Printf("Set a discount '%s' of %2.3f\n", effectProps.GetName(), effectProps.GetValue())
-        case "acceptCoupon" == effectType:
-            // Initiating right props instance according to the effect type
-            effectProps := talon.AcceptCouponEffectProps{}
-            if err := decodeHelper(effect.GetProps(), &effectProps); err != nil {
-                fmt.Printf("ERROR while decoding props: %s\n", err)
-                continue
-            }
-
-            // Work with AcceptCouponEffectProps' properties
-            // ...
+        case effect.EffectAcceptCoupon != nil:
+            effectProps := effect.EffectAcceptCoupon.GetProps()
+            fmt.Printf("Accepted coupon '%s'\n", effectProps.GetValue())
         default:
-            fmt.Printf("Encounter unknown effect type: %s\n", effectType)
+            fmt.Printf("Unhandled effect: %#v\n", effect.GetActualInstance())
         }
     }
 }
 
-// quick decoding of props-map into our library structures using JSON marshaling,
-// or alternatively using a library like https://github.com/mitchellh/mapstructure
-func decodeHelper(propsMap map[string]interface{}, v interface{}) error {
-    propsJSON, err := json.Marshal(propsMap)
-    if err != nil {
-        return err
-    }
-    return json.Unmarshal(propsJSON, v)
-}
 ```
 
 ### Management API
@@ -167,7 +144,7 @@ import (
     "context"
     "fmt"
 
-    talon "github.com/talon-one/talon-one-go-sdk"
+    talon "github.com/talon-one/talon-one-go-sdk/v99"
 )
 
 func main() {
@@ -518,10 +495,6 @@ Class | Method | HTTP request | Description
 - [AddPriceAdjustmentCatalogAction](docs/AddPriceAdjustmentCatalogAction.md)
 - [AddToAudienceEffectProps](docs/AddToAudienceEffectProps.md)
 - [AddedDeductedPointsBalancesAction](docs/AddedDeductedPointsBalancesAction.md)
-- [AddedDeductedPointsBalancesNotification](docs/AddedDeductedPointsBalancesNotification.md)
-- [AddedDeductedPointsBalancesNotificationPolicy](docs/AddedDeductedPointsBalancesNotificationPolicy.md)
-- [AddedDeductedPointsNotification](docs/AddedDeductedPointsNotification.md)
-- [AddedDeductedPointsNotificationPolicy](docs/AddedDeductedPointsNotificationPolicy.md)
 - [AdditionalCampaignProperties](docs/AdditionalCampaignProperties.md)
 - [AdditionalCost](docs/AdditionalCost.md)
 - [AdditionalCostReference](docs/AdditionalCostReference.md)
@@ -552,7 +525,7 @@ Class | Method | HTTP request | Description
 - [ApplicationStoreEntity](docs/ApplicationStoreEntity.md)
 - [AsyncCouponCreationResponse](docs/AsyncCouponCreationResponse.md)
 - [AsyncCouponDeletionJobResponse](docs/AsyncCouponDeletionJobResponse.md)
-- [AsyncCouponsData](docs/AsyncCouponsData.md)
+- [AsyncCouponsCreatedNotification](docs/AsyncCouponsCreatedNotification.md)
 - [Attribute](docs/Attribute.md)
 - [AttributeBlockReference](docs/AttributeBlockReference.md)
 - [AttributesMandatory](docs/AttributesMandatory.md)
@@ -635,8 +608,8 @@ Class | Method | HTTP request | Description
 - [CampaignEntity](docs/CampaignEntity.md)
 - [CampaignEvaluationGroup](docs/CampaignEvaluationGroup.md)
 - [CampaignEvaluationPosition](docs/CampaignEvaluationPosition.md)
-- [CampaignEvaluationTreeChangedMessage](docs/CampaignEvaluationTreeChangedMessage.md)
 - [CampaignEvaluationTreeChangedNotification](docs/CampaignEvaluationTreeChangedNotification.md)
+- [CampaignEvaluationTreeChangedNotificationData](docs/CampaignEvaluationTreeChangedNotificationData.md)
 - [CampaignGroup](docs/CampaignGroup.md)
 - [CampaignGroupEntity](docs/CampaignGroupEntity.md)
 - [CampaignLogSummary](docs/CampaignLogSummary.md)
@@ -662,12 +635,6 @@ Class | Method | HTTP request | Description
 - [CampaignTemplateCouponReservationSettings](docs/CampaignTemplateCouponReservationSettings.md)
 - [CampaignTemplateParams](docs/CampaignTemplateParams.md)
 - [CampaignVersions](docs/CampaignVersions.md)
-- [CardAddedDeductedPointsBalancesNotification](docs/CardAddedDeductedPointsBalancesNotification.md)
-- [CardAddedDeductedPointsBalancesNotificationPolicy](docs/CardAddedDeductedPointsBalancesNotificationPolicy.md)
-- [CardAddedDeductedPointsNotification](docs/CardAddedDeductedPointsNotification.md)
-- [CardAddedDeductedPointsNotificationPolicy](docs/CardAddedDeductedPointsNotificationPolicy.md)
-- [CardExpiringPointsNotificationPolicy](docs/CardExpiringPointsNotificationPolicy.md)
-- [CardExpiringPointsNotificationTrigger](docs/CardExpiringPointsNotificationTrigger.md)
 - [CardLedgerPointsEntryIntegrationAPI](docs/CardLedgerPointsEntryIntegrationAPI.md)
 - [CardLedgerTransactionLogEntry](docs/CardLedgerTransactionLogEntry.md)
 - [CardLedgerTransactionLogEntryIntegrationAPI](docs/CardLedgerTransactionLogEntryIntegrationAPI.md)
@@ -686,7 +653,6 @@ Class | Method | HTTP request | Description
 - [CatalogRule](docs/CatalogRule.md)
 - [CatalogRuleset](docs/CatalogRuleset.md)
 - [CatalogSyncRequest](docs/CatalogSyncRequest.md)
-- [CatalogsStrikethroughNotificationPolicy](docs/CatalogsStrikethroughNotificationPolicy.md)
 - [Change](docs/Change.md)
 - [ChangeLoyaltyTierLevelEffectProps](docs/ChangeLoyaltyTierLevelEffectProps.md)
 - [ChangeProfilePassword](docs/ChangeProfilePassword.md)
@@ -708,8 +674,13 @@ Class | Method | HTTP request | Description
 - [CollectionWithoutPayload](docs/CollectionWithoutPayload.md)
 - [ConfirmRisksRequest](docs/ConfirmRisksRequest.md)
 - [Coupon](docs/Coupon.md)
+- [CouponCodeExpiringNotification](docs/CouponCodeExpiringNotification.md)
+- [CouponCodeExpiringNotificationData](docs/CouponCodeExpiringNotificationData.md)
+- [CouponCodeExpiringNotificationPolicy](docs/CouponCodeExpiringNotificationPolicy.md)
+- [CouponCodeExpiringNotificationTrigger](docs/CouponCodeExpiringNotificationTrigger.md)
 - [CouponConstraints](docs/CouponConstraints.md)
 - [CouponCreatedEffectProps](docs/CouponCreatedEffectProps.md)
+- [CouponCreatedNotification](docs/CouponCreatedNotification.md)
 - [CouponCreationJob](docs/CouponCreationJob.md)
 - [CouponDeletionFilters](docs/CouponDeletionFilters.md)
 - [CouponDeletionJob](docs/CouponDeletionJob.md)
@@ -721,11 +692,13 @@ Class | Method | HTTP request | Description
 - [CouponReservation](docs/CouponReservation.md)
 - [CouponReservations](docs/CouponReservations.md)
 - [CouponSearch](docs/CouponSearch.md)
+- [CouponUpdatedDeletedNotification](docs/CouponUpdatedDeletedNotification.md)
 - [CouponValue](docs/CouponValue.md)
 - [CouponWithApplication](docs/CouponWithApplication.md)
 - [CouponWithReservations](docs/CouponWithReservations.md)
-- [CouponsNotificationData](docs/CouponsNotificationData.md)
+- [CouponsDeletedNotification](docs/CouponsDeletedNotification.md)
 - [CouponsNotificationPolicy](docs/CouponsNotificationPolicy.md)
+- [CouponsUpdatedNotification](docs/CouponsUpdatedNotification.md)
 - [CreateAchievement](docs/CreateAchievement.md)
 - [CreateAchievementV2](docs/CreateAchievementV2.md)
 - [CreateApplicationAPIKey](docs/CreateApplicationAPIKey.md)
@@ -733,7 +706,6 @@ Class | Method | HTTP request | Description
 - [CreateCouponBlock1CampaignId](docs/CreateCouponBlock1CampaignId.md)
 - [CreateCouponBlock1DiscountLimit](docs/CreateCouponBlock1DiscountLimit.md)
 - [CreateCouponBlock1UsageLimit](docs/CreateCouponBlock1UsageLimit.md)
-- [CreateCouponData](docs/CreateCouponData.md)
 - [CreateCoupons200Response](docs/CreateCoupons200Response.md)
 - [CreateMCPKey](docs/CreateMCPKey.md)
 - [CreateManagementKey](docs/CreateManagementKey.md)
@@ -767,7 +739,6 @@ Class | Method | HTTP request | Description
 - [DeactivateUserRequest](docs/DeactivateUserRequest.md)
 - [DeductLoyaltyPoints](docs/DeductLoyaltyPoints.md)
 - [DeductLoyaltyPointsEffectProps](docs/DeductLoyaltyPointsEffectProps.md)
-- [DeleteCouponsData](docs/DeleteCouponsData.md)
 - [DeleteLoyaltyTransactionsRequest](docs/DeleteLoyaltyTransactionsRequest.md)
 - [DeleteUserRequest](docs/DeleteUserRequest.md)
 - [DigitalPass](docs/DigitalPass.md)
@@ -867,15 +838,7 @@ Class | Method | HTTP request | Description
 - [ExperimentVerdict](docs/ExperimentVerdict.md)
 - [ExperimentVerdictResponse](docs/ExperimentVerdictResponse.md)
 - [ExpiringCardPointsData](docs/ExpiringCardPointsData.md)
-- [ExpiringCardPointsNotification](docs/ExpiringCardPointsNotification.md)
-- [ExpiringCouponsData](docs/ExpiringCouponsData.md)
-- [ExpiringCouponsNotification](docs/ExpiringCouponsNotification.md)
-- [ExpiringCouponsNotificationPolicy](docs/ExpiringCouponsNotificationPolicy.md)
-- [ExpiringCouponsNotificationTrigger](docs/ExpiringCouponsNotificationTrigger.md)
 - [ExpiringPointsData](docs/ExpiringPointsData.md)
-- [ExpiringPointsNotification](docs/ExpiringPointsNotification.md)
-- [ExpiringPointsNotificationPolicy](docs/ExpiringPointsNotificationPolicy.md)
-- [ExpiringPointsNotificationTrigger](docs/ExpiringPointsNotificationTrigger.md)
 - [Export](docs/Export.md)
 - [ExtendLoyaltyPointsExpiryDateEffectProps](docs/ExtendLoyaltyPointsExpiryDateEffectProps.md)
 - [ExtendedCoupon](docs/ExtendedCoupon.md)
@@ -1039,14 +1002,23 @@ Class | Method | HTTP request | Description
 - [LocationCheckAttributeBlockValuesOneOfInner](docs/LocationCheckAttributeBlockValuesOneOfInner.md)
 - [LoginParams](docs/LoginParams.md)
 - [Loyalty](docs/Loyalty.md)
+- [LoyaltyAddedDeductedPointsBalancesNotification](docs/LoyaltyAddedDeductedPointsBalancesNotification.md)
+- [LoyaltyAddedDeductedPointsBalancesNotificationPolicy](docs/LoyaltyAddedDeductedPointsBalancesNotificationPolicy.md)
 - [LoyaltyBalance](docs/LoyaltyBalance.md)
 - [LoyaltyBalanceWithTier](docs/LoyaltyBalanceWithTier.md)
 - [LoyaltyBalances](docs/LoyaltyBalances.md)
 - [LoyaltyBalancesWithTiers](docs/LoyaltyBalancesWithTiers.md)
 - [LoyaltyCard](docs/LoyaltyCard.md)
+- [LoyaltyCardAddedDeductedPointsBalancesNotification](docs/LoyaltyCardAddedDeductedPointsBalancesNotification.md)
+- [LoyaltyCardAddedDeductedPointsBalancesNotificationPolicy](docs/LoyaltyCardAddedDeductedPointsBalancesNotificationPolicy.md)
 - [LoyaltyCardBalances](docs/LoyaltyCardBalances.md)
 - [LoyaltyCardBatch](docs/LoyaltyCardBatch.md)
 - [LoyaltyCardBatchResponse](docs/LoyaltyCardBatchResponse.md)
+- [LoyaltyCardPointsAddedDeductedNotification](docs/LoyaltyCardPointsAddedDeductedNotification.md)
+- [LoyaltyCardPointsAddedDeductedNotificationPolicy](docs/LoyaltyCardPointsAddedDeductedNotificationPolicy.md)
+- [LoyaltyCardPointsExpiringNotification](docs/LoyaltyCardPointsExpiringNotification.md)
+- [LoyaltyCardPointsExpiringNotificationPolicy](docs/LoyaltyCardPointsExpiringNotificationPolicy.md)
+- [LoyaltyCardPointsExpiringNotificationTrigger](docs/LoyaltyCardPointsExpiringNotificationTrigger.md)
 - [LoyaltyCardProfileRegistration](docs/LoyaltyCardProfileRegistration.md)
 - [LoyaltyCardRegistration](docs/LoyaltyCardRegistration.md)
 - [LoyaltyDashboardData](docs/LoyaltyDashboardData.md)
@@ -1057,6 +1029,13 @@ Class | Method | HTTP request | Description
 - [LoyaltyLedgerEntryFlags](docs/LoyaltyLedgerEntryFlags.md)
 - [LoyaltyLedgerTransactions](docs/LoyaltyLedgerTransactions.md)
 - [LoyaltyMembership](docs/LoyaltyMembership.md)
+- [LoyaltyPointsAddedDeductedNotification](docs/LoyaltyPointsAddedDeductedNotification.md)
+- [LoyaltyPointsAddedDeductedNotificationPolicy](docs/LoyaltyPointsAddedDeductedNotificationPolicy.md)
+- [LoyaltyPointsExpiringNotification](docs/LoyaltyPointsExpiringNotification.md)
+- [LoyaltyPointsExpiringNotificationPolicy](docs/LoyaltyPointsExpiringNotificationPolicy.md)
+- [LoyaltyPointsExpiringNotificationTrigger](docs/LoyaltyPointsExpiringNotificationTrigger.md)
+- [LoyaltyPointsPendingToActiveNotification](docs/LoyaltyPointsPendingToActiveNotification.md)
+- [LoyaltyPointsPendingToActiveNotificationPolicy](docs/LoyaltyPointsPendingToActiveNotificationPolicy.md)
 - [LoyaltyProgram](docs/LoyaltyProgram.md)
 - [LoyaltyProgramBalance](docs/LoyaltyProgramBalance.md)
 - [LoyaltyProgramEntity](docs/LoyaltyProgramEntity.md)
@@ -1197,8 +1176,6 @@ Class | Method | HTTP request | Description
 - [PatchItemCatalogAction](docs/PatchItemCatalogAction.md)
 - [PatchManyItemsCatalogAction](docs/PatchManyItemsCatalogAction.md)
 - [PendingActivePointsData](docs/PendingActivePointsData.md)
-- [PendingActivePointsNotification](docs/PendingActivePointsNotification.md)
-- [PendingPointsNotificationPolicy](docs/PendingPointsNotificationPolicy.md)
 - [Picklist](docs/Picklist.md)
 - [PlaceholderDetails](docs/PlaceholderDetails.md)
 - [PriceDetail](docs/PriceDetail.md)
@@ -1337,7 +1314,8 @@ Class | Method | HTTP request | Description
 - [StrikethroughCustomEffectPerItemProps](docs/StrikethroughCustomEffectPerItemProps.md)
 - [StrikethroughDebugResponse](docs/StrikethroughDebugResponse.md)
 - [StrikethroughEffect](docs/StrikethroughEffect.md)
-- [StrikethroughLabelingNotification](docs/StrikethroughLabelingNotification.md)
+- [StrikethroughPriceNotification](docs/StrikethroughPriceNotification.md)
+- [StrikethroughPriceNotificationPolicy](docs/StrikethroughPriceNotificationPolicy.md)
 - [StrikethroughSetDiscountPerItemEffectProps](docs/StrikethroughSetDiscountPerItemEffectProps.md)
 - [StrikethroughSetDiscountPerItemMemberEffectProps](docs/StrikethroughSetDiscountPerItemMemberEffectProps.md)
 - [StrikethroughTrigger](docs/StrikethroughTrigger.md)
@@ -1397,7 +1375,6 @@ Class | Method | HTTP request | Description
 - [UpdateCollection](docs/UpdateCollection.md)
 - [UpdateCoupon](docs/UpdateCoupon.md)
 - [UpdateCouponBatch](docs/UpdateCouponBatch.md)
-- [UpdateCouponsData](docs/UpdateCouponsData.md)
 - [UpdateCustomEffect](docs/UpdateCustomEffect.md)
 - [UpdateCustomerProfileV2409Response](docs/UpdateCustomerProfileV2409Response.md)
 - [UpdateCustomerSessionV2409Response](docs/UpdateCustomerSessionV2409Response.md)

@@ -471,11 +471,11 @@ func (o *CustomerSession) GetDiscounts() map[string]float32 {
 
 // GetDiscountsOk returns a tuple with the Discounts field value
 // and a boolean to check if the value has been set.
-func (o *CustomerSession) GetDiscountsOk() (map[string]float32, bool) {
+func (o *CustomerSession) GetDiscountsOk() (*map[string]float32, bool) {
 	if o == nil {
-		return map[string]float32{}, false
+		return nil, false
 	}
-	return o.Discounts, true
+	return &o.Discounts, true
 }
 
 // SetDiscounts sets field value

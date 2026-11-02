@@ -46,7 +46,7 @@ type LoyaltyCard struct {
 	// Displays point balances of the card in the main ledger of the loyalty program.
 	Ledger *LedgerInfo `json:"ledger,omitempty"`
 	// Displays point balances of the card in the subledgers of the loyalty program.
-	Subledgers map[string]LedgerInfo `json:"subledgers,omitempty"`
+	Subledgers *map[string]LedgerInfo `json:"subledgers,omitempty"`
 	// Timestamp of the most recent update of the loyalty card.
 	Modified *time.Time `json:"modified,omitempty"`
 	// The identifier of the card from which the points were transferred.
@@ -425,14 +425,14 @@ func (o *LoyaltyCard) GetSubledgers() map[string]LedgerInfo {
 		var ret map[string]LedgerInfo
 		return ret
 	}
-	return o.Subledgers
+	return *o.Subledgers
 }
 
 // GetSubledgersOk returns a tuple with the Subledgers field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *LoyaltyCard) GetSubledgersOk() (map[string]LedgerInfo, bool) {
+func (o *LoyaltyCard) GetSubledgersOk() (*map[string]LedgerInfo, bool) {
 	if o == nil || IsNil(o.Subledgers) {
-		return map[string]LedgerInfo{}, false
+		return nil, false
 	}
 	return o.Subledgers, true
 }
@@ -448,7 +448,7 @@ func (o *LoyaltyCard) HasSubledgers() bool {
 
 // SetSubledgers gets a reference to the given map[string]LedgerInfo and assigns it to the Subledgers field.
 func (o *LoyaltyCard) SetSubledgers(v map[string]LedgerInfo) {
-	o.Subledgers = v
+	o.Subledgers = &v
 }
 
 // GetModified returns the Modified field value if set, zero value otherwise.

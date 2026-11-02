@@ -21,7 +21,7 @@ var _ MappedNullable = &LoyaltyCardBalances{}
 type LoyaltyCardBalances struct {
 	Balance *LoyaltyBalance `json:"balance,omitempty"`
 	// Map of the loyalty balances of the subledgers of a ledger.
-	SubledgerBalances map[string]LoyaltyBalance `json:"subledgerBalances,omitempty"`
+	SubledgerBalances *map[string]LoyaltyBalance `json:"subledgerBalances,omitempty"`
 	// Customer profiles linked to the loyalty card.
 	Profiles             []LoyaltyCardProfileRegistration `json:"profiles,omitempty"`
 	AdditionalProperties map[string]interface{}
@@ -84,14 +84,14 @@ func (o *LoyaltyCardBalances) GetSubledgerBalances() map[string]LoyaltyBalance {
 		var ret map[string]LoyaltyBalance
 		return ret
 	}
-	return o.SubledgerBalances
+	return *o.SubledgerBalances
 }
 
 // GetSubledgerBalancesOk returns a tuple with the SubledgerBalances field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *LoyaltyCardBalances) GetSubledgerBalancesOk() (map[string]LoyaltyBalance, bool) {
+func (o *LoyaltyCardBalances) GetSubledgerBalancesOk() (*map[string]LoyaltyBalance, bool) {
 	if o == nil || IsNil(o.SubledgerBalances) {
-		return map[string]LoyaltyBalance{}, false
+		return nil, false
 	}
 	return o.SubledgerBalances, true
 }
@@ -107,7 +107,7 @@ func (o *LoyaltyCardBalances) HasSubledgerBalances() bool {
 
 // SetSubledgerBalances gets a reference to the given map[string]LoyaltyBalance and assigns it to the SubledgerBalances field.
 func (o *LoyaltyCardBalances) SetSubledgerBalances(v map[string]LoyaltyBalance) {
-	o.SubledgerBalances = v
+	o.SubledgerBalances = &v
 }
 
 // GetProfiles returns the Profiles field value if set, zero value otherwise.

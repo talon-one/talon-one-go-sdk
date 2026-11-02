@@ -91,11 +91,11 @@ func (o *Loyalty) GetPrograms() map[string]LoyaltyProgramLedgers {
 
 // GetProgramsOk returns a tuple with the Programs field value
 // and a boolean to check if the value has been set.
-func (o *Loyalty) GetProgramsOk() (map[string]LoyaltyProgramLedgers, bool) {
+func (o *Loyalty) GetProgramsOk() (*map[string]LoyaltyProgramLedgers, bool) {
 	if o == nil {
-		return map[string]LoyaltyProgramLedgers{}, false
+		return nil, false
 	}
-	return o.Programs, true
+	return &o.Programs, true
 }
 
 // SetPrograms sets field value

@@ -2,11 +2,10 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"os"
 
-	talon "github.com/talon-one/talon-one-go-sdk"
+	talon "github.com/talon-one/talon-one-go-sdk/v99"
 )
 
 func main() {
@@ -83,40 +82,17 @@ func main() {
 
 	// Parsing the returned effects list, please consult https://developers.talon.one/Integration-API/handling-effects-v2 for the full list of effects and their corresponding properties
 	for _, effect := range integrationState.GetEffects() {
-		effectType := effect.GetEffectType()
 		switch {
-		case "setDiscount" == effectType:
-			// Initiating right props instance according to the effect type
-			effectProps := talon.SetDiscountEffectProps{}
-			if err := decodeHelper(effect.GetProps(), &effectProps); err != nil {
-				fmt.Printf("ERROR while decoding 'setDiscount' props: %s\n", err)
-				continue
-			}
+		case effect.EffectSetDiscount != nil:
+			effectProps := effect.EffectSetDiscount.GetProps()
 
 			// Access the specific effect's properties
 			fmt.Printf("Set a discount '%s' of %2.3f\n", effectProps.GetName(), effectProps.GetValue())
-		case "acceptCoupon" == effectType:
-			// Initiating right props instance according to the effect type
-			effectProps := talon.AcceptCouponEffectProps{}
-			if err := decodeHelper(effect.GetProps(), &effectProps); err != nil {
-				fmt.Printf("ERROR while decoding props: %s\n", err)
-				continue
-			}
-
-			// Work with AcceptCouponEffectProps' properties
-			// ...
+		case effect.EffectAcceptCoupon != nil:
+			effectProps := effect.EffectAcceptCoupon.GetProps()
+			fmt.Printf("Accepted coupon '%s'\n", effectProps.GetValue())
 		default:
-			fmt.Printf("Encounter unknown effect type: %s\n", effectType)
+			fmt.Printf("Unhandled effect: %#v\n", effect.GetActualInstance())
 		}
 	}
-}
-
-// quick decoding of props-map into our library structures using JSON marshaling,
-// or alternatively using a library like https://github.com/mitchellh/mapstructure
-func decodeHelper(propsMap any, v interface{}) error {
-	propsJSON, err := json.Marshal(propsMap)
-	if err != nil {
-		return err
-	}
-	return json.Unmarshal(propsJSON, v)
 }

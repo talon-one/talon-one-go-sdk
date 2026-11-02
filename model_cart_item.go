@@ -49,7 +49,7 @@ type CartItem struct {
 	// Use this property to set a value for the attributes of your choice. [Attributes](https://docs.talon.one/docs/dev/concepts/attributes) represent any information to attach to this cart item.  Custom _cart item_ attributes must be created in the Campaign Manager before you set them with this property.  **Note:** Any previously defined attributes that you do not include in the array will be removed.
 	Attributes map[string]interface{} `json:"attributes,omitempty"`
 	// Use this property to set a value for the additional costs of this item, such as a shipping cost. They must be created in the Campaign Manager before you set them with this property. See [Managing additional costs](https://docs.talon.one/docs/product/account/dev-tools/managing-additional-costs).
-	AdditionalCosts map[string]AdditionalCost `json:"additionalCosts,omitempty"`
+	AdditionalCosts *map[string]AdditionalCost `json:"additionalCosts,omitempty"`
 	// The catalog item ID.
 	CatalogItemID *int64 `json:"catalogItemID,omitempty"`
 	// The selected price type for this cart item (e.g. the price for members only).
@@ -61,7 +61,7 @@ type CartItem struct {
 	// The date and time until which the price adjustment is effective. Only returned if the selected price resulted from a price adjustment that contains this field.
 	AdjustmentEffectiveUntil *time.Time `json:"adjustmentEffectiveUntil,omitempty"`
 	// A map of keys and values representing the price types and related price adjustment details for this cart item. The keys correspond to the `priceType` names.
-	Prices               map[string]PriceDetail `json:"prices,omitempty"`
+	Prices               *map[string]PriceDetail `json:"prices,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -524,14 +524,14 @@ func (o *CartItem) GetAdditionalCosts() map[string]AdditionalCost {
 		var ret map[string]AdditionalCost
 		return ret
 	}
-	return o.AdditionalCosts
+	return *o.AdditionalCosts
 }
 
 // GetAdditionalCostsOk returns a tuple with the AdditionalCosts field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *CartItem) GetAdditionalCostsOk() (map[string]AdditionalCost, bool) {
+func (o *CartItem) GetAdditionalCostsOk() (*map[string]AdditionalCost, bool) {
 	if o == nil || IsNil(o.AdditionalCosts) {
-		return map[string]AdditionalCost{}, false
+		return nil, false
 	}
 	return o.AdditionalCosts, true
 }
@@ -547,7 +547,7 @@ func (o *CartItem) HasAdditionalCosts() bool {
 
 // SetAdditionalCosts gets a reference to the given map[string]AdditionalCost and assigns it to the AdditionalCosts field.
 func (o *CartItem) SetAdditionalCosts(v map[string]AdditionalCost) {
-	o.AdditionalCosts = v
+	o.AdditionalCosts = &v
 }
 
 // GetCatalogItemID returns the CatalogItemID field value if set, zero value otherwise.
@@ -716,14 +716,14 @@ func (o *CartItem) GetPrices() map[string]PriceDetail {
 		var ret map[string]PriceDetail
 		return ret
 	}
-	return o.Prices
+	return *o.Prices
 }
 
 // GetPricesOk returns a tuple with the Prices field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *CartItem) GetPricesOk() (map[string]PriceDetail, bool) {
+func (o *CartItem) GetPricesOk() (*map[string]PriceDetail, bool) {
 	if o == nil || IsNil(o.Prices) {
-		return map[string]PriceDetail{}, false
+		return nil, false
 	}
 	return o.Prices, true
 }
@@ -739,7 +739,7 @@ func (o *CartItem) HasPrices() bool {
 
 // SetPrices gets a reference to the given map[string]PriceDetail and assigns it to the Prices field.
 func (o *CartItem) SetPrices(v map[string]PriceDetail) {
-	o.Prices = v
+	o.Prices = &v
 }
 
 func (o CartItem) MarshalJSON() ([]byte, error) {
