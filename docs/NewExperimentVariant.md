@@ -7,14 +7,15 @@ Name | Type | Description | Notes
 **Name** | **string** | The name of this variant. | 
 **Weight** | **int64** | The percentage split of this variant. For &#x60;random&#x60; assignment, the split must be between 1 and 99 and the sum across all variants must equal 100. Ignored for &#x60;audience&#x60; and &#x60;external&#x60; assignment.  | 
 **Ruleset** | [**NewRuleset**](NewRuleset.md) |  | 
-**IsPrimary** | **bool** |  | 
+**IsPrimary** | Pointer to **bool** | **Deprecated.** Use &#x60;order&#x60; instead. Indicates whether this is the primary variant. This is computed as &#x60;order &#x3D;&#x3D; 0&#x60;.  | [optional] 
+**Order** | Pointer to **int64** | The position of this variant in the experiment. The variant with &#x60;order: 0&#x60; is the primary variant. When omitted, the backend assigns order based on the array position.  | [optional] 
 **AudienceId** | Pointer to **int64** | The ID of the audience this variant targets. Only used when the experiment &#x60;assignmentType&#x60; is &#x60;audience&#x60;.  | [optional] 
 
 ## Methods
 
 ### NewNewExperimentVariant
 
-`func NewNewExperimentVariant(name string, weight int64, ruleset NewRuleset, isPrimary bool, ) *NewExperimentVariant`
+`func NewNewExperimentVariant(name string, weight int64, ruleset NewRuleset, ) *NewExperimentVariant`
 
 NewNewExperimentVariant instantiates a new NewExperimentVariant object
 This constructor will assign default values to properties that have it defined,
@@ -108,6 +109,36 @@ and a boolean to check if the value has been set.
 
 SetIsPrimary sets IsPrimary field to given value.
 
+### HasIsPrimary
+
+`func (o *NewExperimentVariant) HasIsPrimary() bool`
+
+HasIsPrimary returns a boolean if a field has been set.
+
+### GetOrder
+
+`func (o *NewExperimentVariant) GetOrder() int64`
+
+GetOrder returns the Order field if non-nil, zero value otherwise.
+
+### GetOrderOk
+
+`func (o *NewExperimentVariant) GetOrderOk() (*int64, bool)`
+
+GetOrderOk returns a tuple with the Order field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetOrder
+
+`func (o *NewExperimentVariant) SetOrder(v int64)`
+
+SetOrder sets Order field to given value.
+
+### HasOrder
+
+`func (o *NewExperimentVariant) HasOrder() bool`
+
+HasOrder returns a boolean if a field has been set.
 
 ### GetAudienceId
 

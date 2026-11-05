@@ -18,34 +18,20 @@ import (
 
 // BaseNotificationPolicy - Indicates which notification properties to apply.
 type BaseNotificationPolicy struct {
-	AddedDeductedPointsBalancesNotificationPolicy     *AddedDeductedPointsBalancesNotificationPolicy
-	AddedDeductedPointsNotificationPolicy             *AddedDeductedPointsNotificationPolicy
-	CampaignNotificationPolicy                        *CampaignNotificationPolicy
-	CardAddedDeductedPointsBalancesNotificationPolicy *CardAddedDeductedPointsBalancesNotificationPolicy
-	CardAddedDeductedPointsNotificationPolicy         *CardAddedDeductedPointsNotificationPolicy
-	CardExpiringPointsNotificationPolicy              *CardExpiringPointsNotificationPolicy
-	CatalogsStrikethroughNotificationPolicy           *CatalogsStrikethroughNotificationPolicy
-	CouponsNotificationPolicy                         *CouponsNotificationPolicy
-	ExpiringCouponsNotificationPolicy                 *ExpiringCouponsNotificationPolicy
-	ExpiringPointsNotificationPolicy                  *ExpiringPointsNotificationPolicy
-	PendingPointsNotificationPolicy                   *PendingPointsNotificationPolicy
-	TierDowngradeNotificationPolicy                   *TierDowngradeNotificationPolicy
-	TierUpgradeNotificationPolicy                     *TierUpgradeNotificationPolicy
-	TierWillDowngradeNotificationPolicy               *TierWillDowngradeNotificationPolicy
-}
-
-// AddedDeductedPointsBalancesNotificationPolicyAsBaseNotificationPolicy is a convenience function that returns AddedDeductedPointsBalancesNotificationPolicy wrapped in BaseNotificationPolicy
-func AddedDeductedPointsBalancesNotificationPolicyAsBaseNotificationPolicy(v *AddedDeductedPointsBalancesNotificationPolicy) BaseNotificationPolicy {
-	return BaseNotificationPolicy{
-		AddedDeductedPointsBalancesNotificationPolicy: v,
-	}
-}
-
-// AddedDeductedPointsNotificationPolicyAsBaseNotificationPolicy is a convenience function that returns AddedDeductedPointsNotificationPolicy wrapped in BaseNotificationPolicy
-func AddedDeductedPointsNotificationPolicyAsBaseNotificationPolicy(v *AddedDeductedPointsNotificationPolicy) BaseNotificationPolicy {
-	return BaseNotificationPolicy{
-		AddedDeductedPointsNotificationPolicy: v,
-	}
+	CampaignNotificationPolicy                               *CampaignNotificationPolicy
+	CouponCodeExpiringNotificationPolicy                     *CouponCodeExpiringNotificationPolicy
+	CouponsNotificationPolicy                                *CouponsNotificationPolicy
+	LoyaltyAddedDeductedPointsBalancesNotificationPolicy     *LoyaltyAddedDeductedPointsBalancesNotificationPolicy
+	LoyaltyCardAddedDeductedPointsBalancesNotificationPolicy *LoyaltyCardAddedDeductedPointsBalancesNotificationPolicy
+	LoyaltyCardPointsAddedDeductedNotificationPolicy         *LoyaltyCardPointsAddedDeductedNotificationPolicy
+	LoyaltyCardPointsExpiringNotificationPolicy              *LoyaltyCardPointsExpiringNotificationPolicy
+	LoyaltyPointsAddedDeductedNotificationPolicy             *LoyaltyPointsAddedDeductedNotificationPolicy
+	LoyaltyPointsExpiringNotificationPolicy                  *LoyaltyPointsExpiringNotificationPolicy
+	LoyaltyPointsPendingToActiveNotificationPolicy           *LoyaltyPointsPendingToActiveNotificationPolicy
+	StrikethroughPriceNotificationPolicy                     *StrikethroughPriceNotificationPolicy
+	TierDowngradeNotificationPolicy                          *TierDowngradeNotificationPolicy
+	TierUpgradeNotificationPolicy                            *TierUpgradeNotificationPolicy
+	TierWillDowngradeNotificationPolicy                      *TierWillDowngradeNotificationPolicy
 }
 
 // CampaignNotificationPolicyAsBaseNotificationPolicy is a convenience function that returns CampaignNotificationPolicy wrapped in BaseNotificationPolicy
@@ -55,31 +41,10 @@ func CampaignNotificationPolicyAsBaseNotificationPolicy(v *CampaignNotificationP
 	}
 }
 
-// CardAddedDeductedPointsBalancesNotificationPolicyAsBaseNotificationPolicy is a convenience function that returns CardAddedDeductedPointsBalancesNotificationPolicy wrapped in BaseNotificationPolicy
-func CardAddedDeductedPointsBalancesNotificationPolicyAsBaseNotificationPolicy(v *CardAddedDeductedPointsBalancesNotificationPolicy) BaseNotificationPolicy {
+// CouponCodeExpiringNotificationPolicyAsBaseNotificationPolicy is a convenience function that returns CouponCodeExpiringNotificationPolicy wrapped in BaseNotificationPolicy
+func CouponCodeExpiringNotificationPolicyAsBaseNotificationPolicy(v *CouponCodeExpiringNotificationPolicy) BaseNotificationPolicy {
 	return BaseNotificationPolicy{
-		CardAddedDeductedPointsBalancesNotificationPolicy: v,
-	}
-}
-
-// CardAddedDeductedPointsNotificationPolicyAsBaseNotificationPolicy is a convenience function that returns CardAddedDeductedPointsNotificationPolicy wrapped in BaseNotificationPolicy
-func CardAddedDeductedPointsNotificationPolicyAsBaseNotificationPolicy(v *CardAddedDeductedPointsNotificationPolicy) BaseNotificationPolicy {
-	return BaseNotificationPolicy{
-		CardAddedDeductedPointsNotificationPolicy: v,
-	}
-}
-
-// CardExpiringPointsNotificationPolicyAsBaseNotificationPolicy is a convenience function that returns CardExpiringPointsNotificationPolicy wrapped in BaseNotificationPolicy
-func CardExpiringPointsNotificationPolicyAsBaseNotificationPolicy(v *CardExpiringPointsNotificationPolicy) BaseNotificationPolicy {
-	return BaseNotificationPolicy{
-		CardExpiringPointsNotificationPolicy: v,
-	}
-}
-
-// CatalogsStrikethroughNotificationPolicyAsBaseNotificationPolicy is a convenience function that returns CatalogsStrikethroughNotificationPolicy wrapped in BaseNotificationPolicy
-func CatalogsStrikethroughNotificationPolicyAsBaseNotificationPolicy(v *CatalogsStrikethroughNotificationPolicy) BaseNotificationPolicy {
-	return BaseNotificationPolicy{
-		CatalogsStrikethroughNotificationPolicy: v,
+		CouponCodeExpiringNotificationPolicy: v,
 	}
 }
 
@@ -90,24 +55,59 @@ func CouponsNotificationPolicyAsBaseNotificationPolicy(v *CouponsNotificationPol
 	}
 }
 
-// ExpiringCouponsNotificationPolicyAsBaseNotificationPolicy is a convenience function that returns ExpiringCouponsNotificationPolicy wrapped in BaseNotificationPolicy
-func ExpiringCouponsNotificationPolicyAsBaseNotificationPolicy(v *ExpiringCouponsNotificationPolicy) BaseNotificationPolicy {
+// LoyaltyAddedDeductedPointsBalancesNotificationPolicyAsBaseNotificationPolicy is a convenience function that returns LoyaltyAddedDeductedPointsBalancesNotificationPolicy wrapped in BaseNotificationPolicy
+func LoyaltyAddedDeductedPointsBalancesNotificationPolicyAsBaseNotificationPolicy(v *LoyaltyAddedDeductedPointsBalancesNotificationPolicy) BaseNotificationPolicy {
 	return BaseNotificationPolicy{
-		ExpiringCouponsNotificationPolicy: v,
+		LoyaltyAddedDeductedPointsBalancesNotificationPolicy: v,
 	}
 }
 
-// ExpiringPointsNotificationPolicyAsBaseNotificationPolicy is a convenience function that returns ExpiringPointsNotificationPolicy wrapped in BaseNotificationPolicy
-func ExpiringPointsNotificationPolicyAsBaseNotificationPolicy(v *ExpiringPointsNotificationPolicy) BaseNotificationPolicy {
+// LoyaltyCardAddedDeductedPointsBalancesNotificationPolicyAsBaseNotificationPolicy is a convenience function that returns LoyaltyCardAddedDeductedPointsBalancesNotificationPolicy wrapped in BaseNotificationPolicy
+func LoyaltyCardAddedDeductedPointsBalancesNotificationPolicyAsBaseNotificationPolicy(v *LoyaltyCardAddedDeductedPointsBalancesNotificationPolicy) BaseNotificationPolicy {
 	return BaseNotificationPolicy{
-		ExpiringPointsNotificationPolicy: v,
+		LoyaltyCardAddedDeductedPointsBalancesNotificationPolicy: v,
 	}
 }
 
-// PendingPointsNotificationPolicyAsBaseNotificationPolicy is a convenience function that returns PendingPointsNotificationPolicy wrapped in BaseNotificationPolicy
-func PendingPointsNotificationPolicyAsBaseNotificationPolicy(v *PendingPointsNotificationPolicy) BaseNotificationPolicy {
+// LoyaltyCardPointsAddedDeductedNotificationPolicyAsBaseNotificationPolicy is a convenience function that returns LoyaltyCardPointsAddedDeductedNotificationPolicy wrapped in BaseNotificationPolicy
+func LoyaltyCardPointsAddedDeductedNotificationPolicyAsBaseNotificationPolicy(v *LoyaltyCardPointsAddedDeductedNotificationPolicy) BaseNotificationPolicy {
 	return BaseNotificationPolicy{
-		PendingPointsNotificationPolicy: v,
+		LoyaltyCardPointsAddedDeductedNotificationPolicy: v,
+	}
+}
+
+// LoyaltyCardPointsExpiringNotificationPolicyAsBaseNotificationPolicy is a convenience function that returns LoyaltyCardPointsExpiringNotificationPolicy wrapped in BaseNotificationPolicy
+func LoyaltyCardPointsExpiringNotificationPolicyAsBaseNotificationPolicy(v *LoyaltyCardPointsExpiringNotificationPolicy) BaseNotificationPolicy {
+	return BaseNotificationPolicy{
+		LoyaltyCardPointsExpiringNotificationPolicy: v,
+	}
+}
+
+// LoyaltyPointsAddedDeductedNotificationPolicyAsBaseNotificationPolicy is a convenience function that returns LoyaltyPointsAddedDeductedNotificationPolicy wrapped in BaseNotificationPolicy
+func LoyaltyPointsAddedDeductedNotificationPolicyAsBaseNotificationPolicy(v *LoyaltyPointsAddedDeductedNotificationPolicy) BaseNotificationPolicy {
+	return BaseNotificationPolicy{
+		LoyaltyPointsAddedDeductedNotificationPolicy: v,
+	}
+}
+
+// LoyaltyPointsExpiringNotificationPolicyAsBaseNotificationPolicy is a convenience function that returns LoyaltyPointsExpiringNotificationPolicy wrapped in BaseNotificationPolicy
+func LoyaltyPointsExpiringNotificationPolicyAsBaseNotificationPolicy(v *LoyaltyPointsExpiringNotificationPolicy) BaseNotificationPolicy {
+	return BaseNotificationPolicy{
+		LoyaltyPointsExpiringNotificationPolicy: v,
+	}
+}
+
+// LoyaltyPointsPendingToActiveNotificationPolicyAsBaseNotificationPolicy is a convenience function that returns LoyaltyPointsPendingToActiveNotificationPolicy wrapped in BaseNotificationPolicy
+func LoyaltyPointsPendingToActiveNotificationPolicyAsBaseNotificationPolicy(v *LoyaltyPointsPendingToActiveNotificationPolicy) BaseNotificationPolicy {
+	return BaseNotificationPolicy{
+		LoyaltyPointsPendingToActiveNotificationPolicy: v,
+	}
+}
+
+// StrikethroughPriceNotificationPolicyAsBaseNotificationPolicy is a convenience function that returns StrikethroughPriceNotificationPolicy wrapped in BaseNotificationPolicy
+func StrikethroughPriceNotificationPolicyAsBaseNotificationPolicy(v *StrikethroughPriceNotificationPolicy) BaseNotificationPolicy {
+	return BaseNotificationPolicy{
+		StrikethroughPriceNotificationPolicy: v,
 	}
 }
 
@@ -136,40 +136,6 @@ func TierWillDowngradeNotificationPolicyAsBaseNotificationPolicy(v *TierWillDown
 func (dst *BaseNotificationPolicy) UnmarshalJSON(data []byte) error {
 	var err error
 	match := 0
-	// try to unmarshal data into AddedDeductedPointsBalancesNotificationPolicy
-	err = newStrictDecoder(data).Decode(&dst.AddedDeductedPointsBalancesNotificationPolicy)
-	if err == nil {
-		jsonAddedDeductedPointsBalancesNotificationPolicy, _ := json.Marshal(dst.AddedDeductedPointsBalancesNotificationPolicy)
-		if string(jsonAddedDeductedPointsBalancesNotificationPolicy) == "{}" { // empty struct
-			dst.AddedDeductedPointsBalancesNotificationPolicy = nil
-		} else {
-			if err = validator.Validate(dst.AddedDeductedPointsBalancesNotificationPolicy); err != nil {
-				dst.AddedDeductedPointsBalancesNotificationPolicy = nil
-			} else {
-				match++
-			}
-		}
-	} else {
-		dst.AddedDeductedPointsBalancesNotificationPolicy = nil
-	}
-
-	// try to unmarshal data into AddedDeductedPointsNotificationPolicy
-	err = newStrictDecoder(data).Decode(&dst.AddedDeductedPointsNotificationPolicy)
-	if err == nil {
-		jsonAddedDeductedPointsNotificationPolicy, _ := json.Marshal(dst.AddedDeductedPointsNotificationPolicy)
-		if string(jsonAddedDeductedPointsNotificationPolicy) == "{}" { // empty struct
-			dst.AddedDeductedPointsNotificationPolicy = nil
-		} else {
-			if err = validator.Validate(dst.AddedDeductedPointsNotificationPolicy); err != nil {
-				dst.AddedDeductedPointsNotificationPolicy = nil
-			} else {
-				match++
-			}
-		}
-	} else {
-		dst.AddedDeductedPointsNotificationPolicy = nil
-	}
-
 	// try to unmarshal data into CampaignNotificationPolicy
 	err = newStrictDecoder(data).Decode(&dst.CampaignNotificationPolicy)
 	if err == nil {
@@ -187,72 +153,21 @@ func (dst *BaseNotificationPolicy) UnmarshalJSON(data []byte) error {
 		dst.CampaignNotificationPolicy = nil
 	}
 
-	// try to unmarshal data into CardAddedDeductedPointsBalancesNotificationPolicy
-	err = newStrictDecoder(data).Decode(&dst.CardAddedDeductedPointsBalancesNotificationPolicy)
+	// try to unmarshal data into CouponCodeExpiringNotificationPolicy
+	err = newStrictDecoder(data).Decode(&dst.CouponCodeExpiringNotificationPolicy)
 	if err == nil {
-		jsonCardAddedDeductedPointsBalancesNotificationPolicy, _ := json.Marshal(dst.CardAddedDeductedPointsBalancesNotificationPolicy)
-		if string(jsonCardAddedDeductedPointsBalancesNotificationPolicy) == "{}" { // empty struct
-			dst.CardAddedDeductedPointsBalancesNotificationPolicy = nil
+		jsonCouponCodeExpiringNotificationPolicy, _ := json.Marshal(dst.CouponCodeExpiringNotificationPolicy)
+		if string(jsonCouponCodeExpiringNotificationPolicy) == "{}" { // empty struct
+			dst.CouponCodeExpiringNotificationPolicy = nil
 		} else {
-			if err = validator.Validate(dst.CardAddedDeductedPointsBalancesNotificationPolicy); err != nil {
-				dst.CardAddedDeductedPointsBalancesNotificationPolicy = nil
+			if err = validator.Validate(dst.CouponCodeExpiringNotificationPolicy); err != nil {
+				dst.CouponCodeExpiringNotificationPolicy = nil
 			} else {
 				match++
 			}
 		}
 	} else {
-		dst.CardAddedDeductedPointsBalancesNotificationPolicy = nil
-	}
-
-	// try to unmarshal data into CardAddedDeductedPointsNotificationPolicy
-	err = newStrictDecoder(data).Decode(&dst.CardAddedDeductedPointsNotificationPolicy)
-	if err == nil {
-		jsonCardAddedDeductedPointsNotificationPolicy, _ := json.Marshal(dst.CardAddedDeductedPointsNotificationPolicy)
-		if string(jsonCardAddedDeductedPointsNotificationPolicy) == "{}" { // empty struct
-			dst.CardAddedDeductedPointsNotificationPolicy = nil
-		} else {
-			if err = validator.Validate(dst.CardAddedDeductedPointsNotificationPolicy); err != nil {
-				dst.CardAddedDeductedPointsNotificationPolicy = nil
-			} else {
-				match++
-			}
-		}
-	} else {
-		dst.CardAddedDeductedPointsNotificationPolicy = nil
-	}
-
-	// try to unmarshal data into CardExpiringPointsNotificationPolicy
-	err = newStrictDecoder(data).Decode(&dst.CardExpiringPointsNotificationPolicy)
-	if err == nil {
-		jsonCardExpiringPointsNotificationPolicy, _ := json.Marshal(dst.CardExpiringPointsNotificationPolicy)
-		if string(jsonCardExpiringPointsNotificationPolicy) == "{}" { // empty struct
-			dst.CardExpiringPointsNotificationPolicy = nil
-		} else {
-			if err = validator.Validate(dst.CardExpiringPointsNotificationPolicy); err != nil {
-				dst.CardExpiringPointsNotificationPolicy = nil
-			} else {
-				match++
-			}
-		}
-	} else {
-		dst.CardExpiringPointsNotificationPolicy = nil
-	}
-
-	// try to unmarshal data into CatalogsStrikethroughNotificationPolicy
-	err = newStrictDecoder(data).Decode(&dst.CatalogsStrikethroughNotificationPolicy)
-	if err == nil {
-		jsonCatalogsStrikethroughNotificationPolicy, _ := json.Marshal(dst.CatalogsStrikethroughNotificationPolicy)
-		if string(jsonCatalogsStrikethroughNotificationPolicy) == "{}" { // empty struct
-			dst.CatalogsStrikethroughNotificationPolicy = nil
-		} else {
-			if err = validator.Validate(dst.CatalogsStrikethroughNotificationPolicy); err != nil {
-				dst.CatalogsStrikethroughNotificationPolicy = nil
-			} else {
-				match++
-			}
-		}
-	} else {
-		dst.CatalogsStrikethroughNotificationPolicy = nil
+		dst.CouponCodeExpiringNotificationPolicy = nil
 	}
 
 	// try to unmarshal data into CouponsNotificationPolicy
@@ -272,55 +187,140 @@ func (dst *BaseNotificationPolicy) UnmarshalJSON(data []byte) error {
 		dst.CouponsNotificationPolicy = nil
 	}
 
-	// try to unmarshal data into ExpiringCouponsNotificationPolicy
-	err = newStrictDecoder(data).Decode(&dst.ExpiringCouponsNotificationPolicy)
+	// try to unmarshal data into LoyaltyAddedDeductedPointsBalancesNotificationPolicy
+	err = newStrictDecoder(data).Decode(&dst.LoyaltyAddedDeductedPointsBalancesNotificationPolicy)
 	if err == nil {
-		jsonExpiringCouponsNotificationPolicy, _ := json.Marshal(dst.ExpiringCouponsNotificationPolicy)
-		if string(jsonExpiringCouponsNotificationPolicy) == "{}" { // empty struct
-			dst.ExpiringCouponsNotificationPolicy = nil
+		jsonLoyaltyAddedDeductedPointsBalancesNotificationPolicy, _ := json.Marshal(dst.LoyaltyAddedDeductedPointsBalancesNotificationPolicy)
+		if string(jsonLoyaltyAddedDeductedPointsBalancesNotificationPolicy) == "{}" { // empty struct
+			dst.LoyaltyAddedDeductedPointsBalancesNotificationPolicy = nil
 		} else {
-			if err = validator.Validate(dst.ExpiringCouponsNotificationPolicy); err != nil {
-				dst.ExpiringCouponsNotificationPolicy = nil
+			if err = validator.Validate(dst.LoyaltyAddedDeductedPointsBalancesNotificationPolicy); err != nil {
+				dst.LoyaltyAddedDeductedPointsBalancesNotificationPolicy = nil
 			} else {
 				match++
 			}
 		}
 	} else {
-		dst.ExpiringCouponsNotificationPolicy = nil
+		dst.LoyaltyAddedDeductedPointsBalancesNotificationPolicy = nil
 	}
 
-	// try to unmarshal data into ExpiringPointsNotificationPolicy
-	err = newStrictDecoder(data).Decode(&dst.ExpiringPointsNotificationPolicy)
+	// try to unmarshal data into LoyaltyCardAddedDeductedPointsBalancesNotificationPolicy
+	err = newStrictDecoder(data).Decode(&dst.LoyaltyCardAddedDeductedPointsBalancesNotificationPolicy)
 	if err == nil {
-		jsonExpiringPointsNotificationPolicy, _ := json.Marshal(dst.ExpiringPointsNotificationPolicy)
-		if string(jsonExpiringPointsNotificationPolicy) == "{}" { // empty struct
-			dst.ExpiringPointsNotificationPolicy = nil
+		jsonLoyaltyCardAddedDeductedPointsBalancesNotificationPolicy, _ := json.Marshal(dst.LoyaltyCardAddedDeductedPointsBalancesNotificationPolicy)
+		if string(jsonLoyaltyCardAddedDeductedPointsBalancesNotificationPolicy) == "{}" { // empty struct
+			dst.LoyaltyCardAddedDeductedPointsBalancesNotificationPolicy = nil
 		} else {
-			if err = validator.Validate(dst.ExpiringPointsNotificationPolicy); err != nil {
-				dst.ExpiringPointsNotificationPolicy = nil
+			if err = validator.Validate(dst.LoyaltyCardAddedDeductedPointsBalancesNotificationPolicy); err != nil {
+				dst.LoyaltyCardAddedDeductedPointsBalancesNotificationPolicy = nil
 			} else {
 				match++
 			}
 		}
 	} else {
-		dst.ExpiringPointsNotificationPolicy = nil
+		dst.LoyaltyCardAddedDeductedPointsBalancesNotificationPolicy = nil
 	}
 
-	// try to unmarshal data into PendingPointsNotificationPolicy
-	err = newStrictDecoder(data).Decode(&dst.PendingPointsNotificationPolicy)
+	// try to unmarshal data into LoyaltyCardPointsAddedDeductedNotificationPolicy
+	err = newStrictDecoder(data).Decode(&dst.LoyaltyCardPointsAddedDeductedNotificationPolicy)
 	if err == nil {
-		jsonPendingPointsNotificationPolicy, _ := json.Marshal(dst.PendingPointsNotificationPolicy)
-		if string(jsonPendingPointsNotificationPolicy) == "{}" { // empty struct
-			dst.PendingPointsNotificationPolicy = nil
+		jsonLoyaltyCardPointsAddedDeductedNotificationPolicy, _ := json.Marshal(dst.LoyaltyCardPointsAddedDeductedNotificationPolicy)
+		if string(jsonLoyaltyCardPointsAddedDeductedNotificationPolicy) == "{}" { // empty struct
+			dst.LoyaltyCardPointsAddedDeductedNotificationPolicy = nil
 		} else {
-			if err = validator.Validate(dst.PendingPointsNotificationPolicy); err != nil {
-				dst.PendingPointsNotificationPolicy = nil
+			if err = validator.Validate(dst.LoyaltyCardPointsAddedDeductedNotificationPolicy); err != nil {
+				dst.LoyaltyCardPointsAddedDeductedNotificationPolicy = nil
 			} else {
 				match++
 			}
 		}
 	} else {
-		dst.PendingPointsNotificationPolicy = nil
+		dst.LoyaltyCardPointsAddedDeductedNotificationPolicy = nil
+	}
+
+	// try to unmarshal data into LoyaltyCardPointsExpiringNotificationPolicy
+	err = newStrictDecoder(data).Decode(&dst.LoyaltyCardPointsExpiringNotificationPolicy)
+	if err == nil {
+		jsonLoyaltyCardPointsExpiringNotificationPolicy, _ := json.Marshal(dst.LoyaltyCardPointsExpiringNotificationPolicy)
+		if string(jsonLoyaltyCardPointsExpiringNotificationPolicy) == "{}" { // empty struct
+			dst.LoyaltyCardPointsExpiringNotificationPolicy = nil
+		} else {
+			if err = validator.Validate(dst.LoyaltyCardPointsExpiringNotificationPolicy); err != nil {
+				dst.LoyaltyCardPointsExpiringNotificationPolicy = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.LoyaltyCardPointsExpiringNotificationPolicy = nil
+	}
+
+	// try to unmarshal data into LoyaltyPointsAddedDeductedNotificationPolicy
+	err = newStrictDecoder(data).Decode(&dst.LoyaltyPointsAddedDeductedNotificationPolicy)
+	if err == nil {
+		jsonLoyaltyPointsAddedDeductedNotificationPolicy, _ := json.Marshal(dst.LoyaltyPointsAddedDeductedNotificationPolicy)
+		if string(jsonLoyaltyPointsAddedDeductedNotificationPolicy) == "{}" { // empty struct
+			dst.LoyaltyPointsAddedDeductedNotificationPolicy = nil
+		} else {
+			if err = validator.Validate(dst.LoyaltyPointsAddedDeductedNotificationPolicy); err != nil {
+				dst.LoyaltyPointsAddedDeductedNotificationPolicy = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.LoyaltyPointsAddedDeductedNotificationPolicy = nil
+	}
+
+	// try to unmarshal data into LoyaltyPointsExpiringNotificationPolicy
+	err = newStrictDecoder(data).Decode(&dst.LoyaltyPointsExpiringNotificationPolicy)
+	if err == nil {
+		jsonLoyaltyPointsExpiringNotificationPolicy, _ := json.Marshal(dst.LoyaltyPointsExpiringNotificationPolicy)
+		if string(jsonLoyaltyPointsExpiringNotificationPolicy) == "{}" { // empty struct
+			dst.LoyaltyPointsExpiringNotificationPolicy = nil
+		} else {
+			if err = validator.Validate(dst.LoyaltyPointsExpiringNotificationPolicy); err != nil {
+				dst.LoyaltyPointsExpiringNotificationPolicy = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.LoyaltyPointsExpiringNotificationPolicy = nil
+	}
+
+	// try to unmarshal data into LoyaltyPointsPendingToActiveNotificationPolicy
+	err = newStrictDecoder(data).Decode(&dst.LoyaltyPointsPendingToActiveNotificationPolicy)
+	if err == nil {
+		jsonLoyaltyPointsPendingToActiveNotificationPolicy, _ := json.Marshal(dst.LoyaltyPointsPendingToActiveNotificationPolicy)
+		if string(jsonLoyaltyPointsPendingToActiveNotificationPolicy) == "{}" { // empty struct
+			dst.LoyaltyPointsPendingToActiveNotificationPolicy = nil
+		} else {
+			if err = validator.Validate(dst.LoyaltyPointsPendingToActiveNotificationPolicy); err != nil {
+				dst.LoyaltyPointsPendingToActiveNotificationPolicy = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.LoyaltyPointsPendingToActiveNotificationPolicy = nil
+	}
+
+	// try to unmarshal data into StrikethroughPriceNotificationPolicy
+	err = newStrictDecoder(data).Decode(&dst.StrikethroughPriceNotificationPolicy)
+	if err == nil {
+		jsonStrikethroughPriceNotificationPolicy, _ := json.Marshal(dst.StrikethroughPriceNotificationPolicy)
+		if string(jsonStrikethroughPriceNotificationPolicy) == "{}" { // empty struct
+			dst.StrikethroughPriceNotificationPolicy = nil
+		} else {
+			if err = validator.Validate(dst.StrikethroughPriceNotificationPolicy); err != nil {
+				dst.StrikethroughPriceNotificationPolicy = nil
+			} else {
+				match++
+			}
+		}
+	} else {
+		dst.StrikethroughPriceNotificationPolicy = nil
 	}
 
 	// try to unmarshal data into TierDowngradeNotificationPolicy
@@ -376,17 +376,17 @@ func (dst *BaseNotificationPolicy) UnmarshalJSON(data []byte) error {
 
 	if match > 1 { // more than 1 match
 		// reset to nil
-		dst.AddedDeductedPointsBalancesNotificationPolicy = nil
-		dst.AddedDeductedPointsNotificationPolicy = nil
 		dst.CampaignNotificationPolicy = nil
-		dst.CardAddedDeductedPointsBalancesNotificationPolicy = nil
-		dst.CardAddedDeductedPointsNotificationPolicy = nil
-		dst.CardExpiringPointsNotificationPolicy = nil
-		dst.CatalogsStrikethroughNotificationPolicy = nil
+		dst.CouponCodeExpiringNotificationPolicy = nil
 		dst.CouponsNotificationPolicy = nil
-		dst.ExpiringCouponsNotificationPolicy = nil
-		dst.ExpiringPointsNotificationPolicy = nil
-		dst.PendingPointsNotificationPolicy = nil
+		dst.LoyaltyAddedDeductedPointsBalancesNotificationPolicy = nil
+		dst.LoyaltyCardAddedDeductedPointsBalancesNotificationPolicy = nil
+		dst.LoyaltyCardPointsAddedDeductedNotificationPolicy = nil
+		dst.LoyaltyCardPointsExpiringNotificationPolicy = nil
+		dst.LoyaltyPointsAddedDeductedNotificationPolicy = nil
+		dst.LoyaltyPointsExpiringNotificationPolicy = nil
+		dst.LoyaltyPointsPendingToActiveNotificationPolicy = nil
+		dst.StrikethroughPriceNotificationPolicy = nil
 		dst.TierDowngradeNotificationPolicy = nil
 		dst.TierUpgradeNotificationPolicy = nil
 		dst.TierWillDowngradeNotificationPolicy = nil
@@ -405,48 +405,48 @@ func (dst *BaseNotificationPolicy) UnmarshalJSON(data []byte) error {
 
 // Marshal data from the first non-nil pointers in the struct to JSON
 func (src BaseNotificationPolicy) MarshalJSON() ([]byte, error) {
-	if src.AddedDeductedPointsBalancesNotificationPolicy != nil {
-		return json.Marshal(&src.AddedDeductedPointsBalancesNotificationPolicy)
-	}
-
-	if src.AddedDeductedPointsNotificationPolicy != nil {
-		return json.Marshal(&src.AddedDeductedPointsNotificationPolicy)
-	}
-
 	if src.CampaignNotificationPolicy != nil {
 		return json.Marshal(&src.CampaignNotificationPolicy)
 	}
 
-	if src.CardAddedDeductedPointsBalancesNotificationPolicy != nil {
-		return json.Marshal(&src.CardAddedDeductedPointsBalancesNotificationPolicy)
-	}
-
-	if src.CardAddedDeductedPointsNotificationPolicy != nil {
-		return json.Marshal(&src.CardAddedDeductedPointsNotificationPolicy)
-	}
-
-	if src.CardExpiringPointsNotificationPolicy != nil {
-		return json.Marshal(&src.CardExpiringPointsNotificationPolicy)
-	}
-
-	if src.CatalogsStrikethroughNotificationPolicy != nil {
-		return json.Marshal(&src.CatalogsStrikethroughNotificationPolicy)
+	if src.CouponCodeExpiringNotificationPolicy != nil {
+		return json.Marshal(&src.CouponCodeExpiringNotificationPolicy)
 	}
 
 	if src.CouponsNotificationPolicy != nil {
 		return json.Marshal(&src.CouponsNotificationPolicy)
 	}
 
-	if src.ExpiringCouponsNotificationPolicy != nil {
-		return json.Marshal(&src.ExpiringCouponsNotificationPolicy)
+	if src.LoyaltyAddedDeductedPointsBalancesNotificationPolicy != nil {
+		return json.Marshal(&src.LoyaltyAddedDeductedPointsBalancesNotificationPolicy)
 	}
 
-	if src.ExpiringPointsNotificationPolicy != nil {
-		return json.Marshal(&src.ExpiringPointsNotificationPolicy)
+	if src.LoyaltyCardAddedDeductedPointsBalancesNotificationPolicy != nil {
+		return json.Marshal(&src.LoyaltyCardAddedDeductedPointsBalancesNotificationPolicy)
 	}
 
-	if src.PendingPointsNotificationPolicy != nil {
-		return json.Marshal(&src.PendingPointsNotificationPolicy)
+	if src.LoyaltyCardPointsAddedDeductedNotificationPolicy != nil {
+		return json.Marshal(&src.LoyaltyCardPointsAddedDeductedNotificationPolicy)
+	}
+
+	if src.LoyaltyCardPointsExpiringNotificationPolicy != nil {
+		return json.Marshal(&src.LoyaltyCardPointsExpiringNotificationPolicy)
+	}
+
+	if src.LoyaltyPointsAddedDeductedNotificationPolicy != nil {
+		return json.Marshal(&src.LoyaltyPointsAddedDeductedNotificationPolicy)
+	}
+
+	if src.LoyaltyPointsExpiringNotificationPolicy != nil {
+		return json.Marshal(&src.LoyaltyPointsExpiringNotificationPolicy)
+	}
+
+	if src.LoyaltyPointsPendingToActiveNotificationPolicy != nil {
+		return json.Marshal(&src.LoyaltyPointsPendingToActiveNotificationPolicy)
+	}
+
+	if src.StrikethroughPriceNotificationPolicy != nil {
+		return json.Marshal(&src.StrikethroughPriceNotificationPolicy)
 	}
 
 	if src.TierDowngradeNotificationPolicy != nil {
@@ -469,48 +469,48 @@ func (obj *BaseNotificationPolicy) GetActualInstance() interface{} {
 	if obj == nil {
 		return nil
 	}
-	if obj.AddedDeductedPointsBalancesNotificationPolicy != nil {
-		return obj.AddedDeductedPointsBalancesNotificationPolicy
-	}
-
-	if obj.AddedDeductedPointsNotificationPolicy != nil {
-		return obj.AddedDeductedPointsNotificationPolicy
-	}
-
 	if obj.CampaignNotificationPolicy != nil {
 		return obj.CampaignNotificationPolicy
 	}
 
-	if obj.CardAddedDeductedPointsBalancesNotificationPolicy != nil {
-		return obj.CardAddedDeductedPointsBalancesNotificationPolicy
-	}
-
-	if obj.CardAddedDeductedPointsNotificationPolicy != nil {
-		return obj.CardAddedDeductedPointsNotificationPolicy
-	}
-
-	if obj.CardExpiringPointsNotificationPolicy != nil {
-		return obj.CardExpiringPointsNotificationPolicy
-	}
-
-	if obj.CatalogsStrikethroughNotificationPolicy != nil {
-		return obj.CatalogsStrikethroughNotificationPolicy
+	if obj.CouponCodeExpiringNotificationPolicy != nil {
+		return obj.CouponCodeExpiringNotificationPolicy
 	}
 
 	if obj.CouponsNotificationPolicy != nil {
 		return obj.CouponsNotificationPolicy
 	}
 
-	if obj.ExpiringCouponsNotificationPolicy != nil {
-		return obj.ExpiringCouponsNotificationPolicy
+	if obj.LoyaltyAddedDeductedPointsBalancesNotificationPolicy != nil {
+		return obj.LoyaltyAddedDeductedPointsBalancesNotificationPolicy
 	}
 
-	if obj.ExpiringPointsNotificationPolicy != nil {
-		return obj.ExpiringPointsNotificationPolicy
+	if obj.LoyaltyCardAddedDeductedPointsBalancesNotificationPolicy != nil {
+		return obj.LoyaltyCardAddedDeductedPointsBalancesNotificationPolicy
 	}
 
-	if obj.PendingPointsNotificationPolicy != nil {
-		return obj.PendingPointsNotificationPolicy
+	if obj.LoyaltyCardPointsAddedDeductedNotificationPolicy != nil {
+		return obj.LoyaltyCardPointsAddedDeductedNotificationPolicy
+	}
+
+	if obj.LoyaltyCardPointsExpiringNotificationPolicy != nil {
+		return obj.LoyaltyCardPointsExpiringNotificationPolicy
+	}
+
+	if obj.LoyaltyPointsAddedDeductedNotificationPolicy != nil {
+		return obj.LoyaltyPointsAddedDeductedNotificationPolicy
+	}
+
+	if obj.LoyaltyPointsExpiringNotificationPolicy != nil {
+		return obj.LoyaltyPointsExpiringNotificationPolicy
+	}
+
+	if obj.LoyaltyPointsPendingToActiveNotificationPolicy != nil {
+		return obj.LoyaltyPointsPendingToActiveNotificationPolicy
+	}
+
+	if obj.StrikethroughPriceNotificationPolicy != nil {
+		return obj.StrikethroughPriceNotificationPolicy
 	}
 
 	if obj.TierDowngradeNotificationPolicy != nil {
@@ -531,48 +531,48 @@ func (obj *BaseNotificationPolicy) GetActualInstance() interface{} {
 
 // Get the actual instance value
 func (obj BaseNotificationPolicy) GetActualInstanceValue() interface{} {
-	if obj.AddedDeductedPointsBalancesNotificationPolicy != nil {
-		return *obj.AddedDeductedPointsBalancesNotificationPolicy
-	}
-
-	if obj.AddedDeductedPointsNotificationPolicy != nil {
-		return *obj.AddedDeductedPointsNotificationPolicy
-	}
-
 	if obj.CampaignNotificationPolicy != nil {
 		return *obj.CampaignNotificationPolicy
 	}
 
-	if obj.CardAddedDeductedPointsBalancesNotificationPolicy != nil {
-		return *obj.CardAddedDeductedPointsBalancesNotificationPolicy
-	}
-
-	if obj.CardAddedDeductedPointsNotificationPolicy != nil {
-		return *obj.CardAddedDeductedPointsNotificationPolicy
-	}
-
-	if obj.CardExpiringPointsNotificationPolicy != nil {
-		return *obj.CardExpiringPointsNotificationPolicy
-	}
-
-	if obj.CatalogsStrikethroughNotificationPolicy != nil {
-		return *obj.CatalogsStrikethroughNotificationPolicy
+	if obj.CouponCodeExpiringNotificationPolicy != nil {
+		return *obj.CouponCodeExpiringNotificationPolicy
 	}
 
 	if obj.CouponsNotificationPolicy != nil {
 		return *obj.CouponsNotificationPolicy
 	}
 
-	if obj.ExpiringCouponsNotificationPolicy != nil {
-		return *obj.ExpiringCouponsNotificationPolicy
+	if obj.LoyaltyAddedDeductedPointsBalancesNotificationPolicy != nil {
+		return *obj.LoyaltyAddedDeductedPointsBalancesNotificationPolicy
 	}
 
-	if obj.ExpiringPointsNotificationPolicy != nil {
-		return *obj.ExpiringPointsNotificationPolicy
+	if obj.LoyaltyCardAddedDeductedPointsBalancesNotificationPolicy != nil {
+		return *obj.LoyaltyCardAddedDeductedPointsBalancesNotificationPolicy
 	}
 
-	if obj.PendingPointsNotificationPolicy != nil {
-		return *obj.PendingPointsNotificationPolicy
+	if obj.LoyaltyCardPointsAddedDeductedNotificationPolicy != nil {
+		return *obj.LoyaltyCardPointsAddedDeductedNotificationPolicy
+	}
+
+	if obj.LoyaltyCardPointsExpiringNotificationPolicy != nil {
+		return *obj.LoyaltyCardPointsExpiringNotificationPolicy
+	}
+
+	if obj.LoyaltyPointsAddedDeductedNotificationPolicy != nil {
+		return *obj.LoyaltyPointsAddedDeductedNotificationPolicy
+	}
+
+	if obj.LoyaltyPointsExpiringNotificationPolicy != nil {
+		return *obj.LoyaltyPointsExpiringNotificationPolicy
+	}
+
+	if obj.LoyaltyPointsPendingToActiveNotificationPolicy != nil {
+		return *obj.LoyaltyPointsPendingToActiveNotificationPolicy
+	}
+
+	if obj.StrikethroughPriceNotificationPolicy != nil {
+		return *obj.StrikethroughPriceNotificationPolicy
 	}
 
 	if obj.TierDowngradeNotificationPolicy != nil {

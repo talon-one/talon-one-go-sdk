@@ -21,11 +21,11 @@ var _ MappedNullable = &PriceHistoryRequest{}
 
 // PriceHistoryRequest struct for PriceHistoryRequest
 type PriceHistoryRequest struct {
-	// The SKU of the item for which the historical prices are being retrieved.
+	// The SKU of the item for which the price records are being retrieved.
 	Sku string `json:"sku"`
-	// The start date of the period for which historical prices should be retrieved.
+	// The start date of the period for which price records should be retrieved.
 	StartDate time.Time `json:"startDate"`
-	// The end date of the period for which historical prices should be retrieved.
+	// The end date of the period for which price records should be retrieved.
 	EndDate              time.Time `json:"endDate"`
 	AdditionalProperties map[string]interface{}
 }

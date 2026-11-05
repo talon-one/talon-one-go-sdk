@@ -4,9 +4,9 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Sku** | **string** | The SKU of the item for which the historical prices are being retrieved. | 
-**StartDate** | **time.Time** | The start date of the period for which historical prices should be retrieved. | 
-**EndDate** | **time.Time** | The end date of the period for which historical prices should be retrieved. | 
+**Sku** | **string** | The SKU of the item for which the price records are being retrieved. | 
+**StartDate** | **time.Time** | The start date of the period for which price records should be retrieved. | 
+**EndDate** | **time.Time** | The end date of the period for which price records should be retrieved. | 
 
 ## Methods
 

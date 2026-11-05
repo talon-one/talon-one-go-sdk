@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **Name** | **string** | The name of this variant. | 
 **Ruleset** | [**NewRuleset**](NewRuleset.md) |  | 
 **Weight** | **int64** | The percentage split of this variant. For &#x60;random&#x60; assignment, the split must be between 1 and 99 and the sum across all variants must equal 100. Ignored for &#x60;audience&#x60; and &#x60;external&#x60; assignment.  | 
+**Order** | Pointer to **int64** | The position of this variant in the experiment. The variant with &#x60;order: 0&#x60; is the primary variant.  | [optional] 
 **AudienceId** | Pointer to **int64** | The ID of the audience this variant targets. Only used when the experiment &#x60;assignmentType&#x60; is &#x60;audience&#x60;.  | [optional] 
 
 ## Methods
@@ -108,6 +109,31 @@ and a boolean to check if the value has been set.
 
 SetWeight sets Weight field to given value.
 
+
+### GetOrder
+
+`func (o *UpdateExperimentVariant) GetOrder() int64`
+
+GetOrder returns the Order field if non-nil, zero value otherwise.
+
+### GetOrderOk
+
+`func (o *UpdateExperimentVariant) GetOrderOk() (*int64, bool)`
+
+GetOrderOk returns a tuple with the Order field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetOrder
+
+`func (o *UpdateExperimentVariant) SetOrder(v int64)`
+
+SetOrder sets Order field to given value.
+
+### HasOrder
+
+`func (o *UpdateExperimentVariant) HasOrder() bool`
+
+HasOrder returns a boolean if a field has been set.
 
 ### GetAudienceId
 

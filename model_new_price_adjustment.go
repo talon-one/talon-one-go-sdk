@@ -29,9 +29,9 @@ type NewPriceAdjustment struct {
 	ReferenceId string `json:"referenceId"`
 	// The time at which this price was calculated. If provided, this is used to determine the most recent price adjustment to choose if price adjustments overlap. Defaults to internal creation time if not provided.
 	CalculatedAt *time.Time `json:"calculatedAt,omitempty"`
-	// The date and time from which the price adjustment is effective.
+	// The date and time from which the price adjustment is effective.  **Note**: If no timeframe is defined, the price adjustment is applied immediately and is effective until another, more recent, price adjustment is synced with the catalog.
 	EffectiveFrom *time.Time `json:"effectiveFrom,omitempty"`
-	// The date and time until which the price adjustment is effective.
+	// The date and time until which the price adjustment is effective.  **Note**: If no timeframe is defined, the price adjustment is applied immediately and is effective until another, more recent, price adjustment is synced with the catalog.
 	EffectiveUntil *time.Time `json:"effectiveUntil,omitempty"`
 	// Identifier of the context of this price adjustment (the sales event, e.g. \"Summer Sale\").
 	ContextId            *string `json:"contextId,omitempty"`

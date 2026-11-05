@@ -10,14 +10,15 @@ Name | Type | Description | Notes
 **ExperimentId** | Pointer to **int64** |  | [optional] 
 **Ruleset** | Pointer to [**Ruleset**](Ruleset.md) |  | [optional] 
 **Weight** | Pointer to **int64** |  | [optional] 
-**IsPrimary** | **bool** |  | 
+**IsPrimary** | Pointer to **bool** | **Deprecated.** Use &#x60;order&#x60; instead. Indicates whether this is the primary variant. This is computed as &#x60;order &#x3D;&#x3D; 0&#x60;.  | [optional] 
+**Order** | Pointer to **int64** | The position of this variant in the experiment. The variant with &#x60;order: 0&#x60; is the primary variant.  | [optional] 
 **AudienceId** | Pointer to **int64** | The ID of the audience this variant targets. Only used when the experiment &#x60;assignmentType&#x60; is &#x60;audience&#x60;.  | [optional] 
 
 ## Methods
 
 ### NewExperimentVariant
 
-`func NewExperimentVariant(id int64, created time.Time, name string, isPrimary bool, ) *ExperimentVariant`
+`func NewExperimentVariant(id int64, created time.Time, name string, ) *ExperimentVariant`
 
 NewExperimentVariant instantiates a new ExperimentVariant object
 This constructor will assign default values to properties that have it defined,
@@ -186,6 +187,36 @@ and a boolean to check if the value has been set.
 
 SetIsPrimary sets IsPrimary field to given value.
 
+### HasIsPrimary
+
+`func (o *ExperimentVariant) HasIsPrimary() bool`
+
+HasIsPrimary returns a boolean if a field has been set.
+
+### GetOrder
+
+`func (o *ExperimentVariant) GetOrder() int64`
+
+GetOrder returns the Order field if non-nil, zero value otherwise.
+
+### GetOrderOk
+
+`func (o *ExperimentVariant) GetOrderOk() (*int64, bool)`
+
+GetOrderOk returns a tuple with the Order field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetOrder
+
+`func (o *ExperimentVariant) SetOrder(v int64)`
+
+SetOrder sets Order field to given value.
+
+### HasOrder
+
+`func (o *ExperimentVariant) HasOrder() bool`
+
+HasOrder returns a boolean if a field has been set.
 
 ### GetAudienceId
 

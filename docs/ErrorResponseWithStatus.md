@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Message** | Pointer to **string** |  | [optional] 
 **Errors** | Pointer to [**[]APIError**](APIError.md) | An array of individual problems encountered during the request. | [optional] 
-**StatusCode** | Pointer to **int64** | The error code | [optional] 
+**StatusCode** | Pointer to **int64** | The error code. | [optional] 
 
 ## Methods
 

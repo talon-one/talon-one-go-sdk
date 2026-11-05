@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Sku** | **string** | The SKU of the item for which historical prices should be retrieved. | 
+**Sku** | **string** | The SKU of the item for which price records should be retrieved. | 
 **History** | [**[]History**](History.md) |  | 
 
 ## Methods
