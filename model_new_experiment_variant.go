@@ -23,9 +23,13 @@ type NewExperimentVariant struct {
 	// The name of this variant.
 	Name string `json:"name"`
 	// The percentage split of this variant. For `random` assignment, the split must be between 1 and 99 and the sum across all variants must equal 100. Ignored for `audience` and `external` assignment.
-	Weight    int64      `json:"weight"`
-	Ruleset   NewRuleset `json:"ruleset"`
-	IsPrimary bool       `json:"isPrimary"`
+	Weight  int64      `json:"weight"`
+	Ruleset NewRuleset `json:"ruleset"`
+	// **Deprecated.** Use `order` instead. Indicates whether this is the primary variant. This is computed as `order == 0`.
+	// Deprecated
+	IsPrimary *bool `json:"isPrimary,omitempty"`
+	// The position of this variant in the experiment. The variant with `order: 0` is the primary variant. When omitted, the backend assigns order based on the array position.
+	Order *int64 `json:"order,omitempty"`
 	// The ID of the audience this variant targets. Only used when the experiment `assignmentType` is `audience`.
 	AudienceId           *int64 `json:"audienceId,omitempty"`
 	AdditionalProperties map[string]interface{}
@@ -37,12 +41,11 @@ type _NewExperimentVariant NewExperimentVariant
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildNewExperimentVariant(name string, weight int64, ruleset NewRuleset, isPrimary bool) *NewExperimentVariant {
+func BuildNewExperimentVariant(name string, weight int64, ruleset NewRuleset) *NewExperimentVariant {
 	this := NewExperimentVariant{}
 	this.Name = name
 	this.Weight = weight
 	this.Ruleset = ruleset
-	this.IsPrimary = isPrimary
 	return &this
 }
 
@@ -126,28 +129,71 @@ func (o *NewExperimentVariant) SetRuleset(v NewRuleset) {
 	o.Ruleset = v
 }
 
-// GetIsPrimary returns the IsPrimary field value
+// GetIsPrimary returns the IsPrimary field value if set, zero value otherwise.
+// Deprecated
 func (o *NewExperimentVariant) GetIsPrimary() bool {
-	if o == nil {
+	if o == nil || IsNil(o.IsPrimary) {
 		var ret bool
 		return ret
 	}
-
-	return o.IsPrimary
+	return *o.IsPrimary
 }
 
-// GetIsPrimaryOk returns a tuple with the IsPrimary field value
+// GetIsPrimaryOk returns a tuple with the IsPrimary field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// Deprecated
 func (o *NewExperimentVariant) GetIsPrimaryOk() (*bool, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.IsPrimary) {
 		return nil, false
 	}
-	return &o.IsPrimary, true
+	return o.IsPrimary, true
 }
 
-// SetIsPrimary sets field value
+// HasIsPrimary returns a boolean if a field has been set.
+func (o *NewExperimentVariant) HasIsPrimary() bool {
+	if o != nil && !IsNil(o.IsPrimary) {
+		return true
+	}
+
+	return false
+}
+
+// SetIsPrimary gets a reference to the given bool and assigns it to the IsPrimary field.
+// Deprecated
 func (o *NewExperimentVariant) SetIsPrimary(v bool) {
-	o.IsPrimary = v
+	o.IsPrimary = &v
+}
+
+// GetOrder returns the Order field value if set, zero value otherwise.
+func (o *NewExperimentVariant) GetOrder() int64 {
+	if o == nil || IsNil(o.Order) {
+		var ret int64
+		return ret
+	}
+	return *o.Order
+}
+
+// GetOrderOk returns a tuple with the Order field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *NewExperimentVariant) GetOrderOk() (*int64, bool) {
+	if o == nil || IsNil(o.Order) {
+		return nil, false
+	}
+	return o.Order, true
+}
+
+// HasOrder returns a boolean if a field has been set.
+func (o *NewExperimentVariant) HasOrder() bool {
+	if o != nil && !IsNil(o.Order) {
+		return true
+	}
+
+	return false
+}
+
+// SetOrder gets a reference to the given int64 and assigns it to the Order field.
+func (o *NewExperimentVariant) SetOrder(v int64) {
+	o.Order = &v
 }
 
 // GetAudienceId returns the AudienceId field value if set, zero value otherwise.
@@ -195,7 +241,12 @@ func (o NewExperimentVariant) ToMap() (map[string]interface{}, error) {
 	toSerialize["name"] = o.Name
 	toSerialize["weight"] = o.Weight
 	toSerialize["ruleset"] = o.Ruleset
-	toSerialize["isPrimary"] = o.IsPrimary
+	if !IsNil(o.IsPrimary) {
+		toSerialize["isPrimary"] = o.IsPrimary
+	}
+	if !IsNil(o.Order) {
+		toSerialize["order"] = o.Order
+	}
 	if !IsNil(o.AudienceId) {
 		toSerialize["audienceId"] = o.AudienceId
 	}
@@ -215,7 +266,6 @@ func (o *NewExperimentVariant) UnmarshalJSON(data []byte) (err error) {
 		"name",
 		"weight",
 		"ruleset",
-		"isPrimary",
 	}
 
 	allProperties := make(map[string]interface{})
@@ -249,6 +299,7 @@ func (o *NewExperimentVariant) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "weight")
 		delete(additionalProperties, "ruleset")
 		delete(additionalProperties, "isPrimary")
+		delete(additionalProperties, "order")
 		delete(additionalProperties, "audienceId")
 		o.AdditionalProperties = additionalProperties
 	}

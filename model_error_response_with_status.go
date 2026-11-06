@@ -22,7 +22,7 @@ type ErrorResponseWithStatus struct {
 	Message *string `json:"message,omitempty"`
 	// An array of individual problems encountered during the request.
 	Errors []APIError `json:"errors,omitempty"`
-	// The error code
+	// The error code.
 	StatusCode           *int64 `json:"StatusCode,omitempty"`
 	AdditionalProperties map[string]interface{}
 }

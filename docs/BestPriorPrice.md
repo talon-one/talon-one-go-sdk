@@ -4,10 +4,10 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **int64** | The ID of the historical price. | 
+**Id** | **int64** | The ID of the price record. | 
 **Sku** | **string** | sku | 
-**ObservedAt** | **time.Time** | The date and time when the price was observed. | 
-**ContextIds** | **[]string** | The identifiers of the relevant context (the sales events, e.g. \&quot;Spring Sale\&quot;, \&quot;Summer Sale\&quot;) at the time the price was observed. Includes the context IDs of any price adjustments and of the campaigns that influenced the final price.  | 
+**ObservedAt** | **time.Time** | The date and time when the price change was recorded. | 
+**ContextIds** | **[]string** | The identifiers of the relevant context (the sales events, e.g. \&quot;Spring Sale\&quot;, \&quot;Summer Sale\&quot;) at the time the price change was recorded. Includes the context IDs of any price adjustments and of the campaigns that influenced the final price.  | 
 **Price** | **float32** | Price of the item. | 
 **Metadata** | [**BestPriorPriceMetadata**](BestPriorPriceMetadata.md) |  | 
 **Target** | [**LabelTarget**](LabelTarget.md) |  | 

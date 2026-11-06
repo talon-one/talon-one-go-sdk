@@ -20,8 +20,8 @@ var _ MappedNullable = &BulkApplicationNotification{}
 
 // BulkApplicationNotification struct for BulkApplicationNotification
 type BulkApplicationNotification struct {
-	TotalResultSize      int64                                       `json:"totalResultSize"`
-	Data                 []CampaignEvaluationTreeChangedNotification `json:"data"`
+	TotalResultSize      int64                                           `json:"totalResultSize"`
+	Data                 []CampaignEvaluationTreeChangedNotificationData `json:"data"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -31,7 +31,7 @@ type _BulkApplicationNotification BulkApplicationNotification
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildBulkApplicationNotification(totalResultSize int64, data []CampaignEvaluationTreeChangedNotification) *BulkApplicationNotification {
+func BuildBulkApplicationNotification(totalResultSize int64, data []CampaignEvaluationTreeChangedNotificationData) *BulkApplicationNotification {
 	this := BulkApplicationNotification{}
 	this.TotalResultSize = totalResultSize
 	this.Data = data
@@ -71,9 +71,9 @@ func (o *BulkApplicationNotification) SetTotalResultSize(v int64) {
 }
 
 // GetData returns the Data field value
-func (o *BulkApplicationNotification) GetData() []CampaignEvaluationTreeChangedNotification {
+func (o *BulkApplicationNotification) GetData() []CampaignEvaluationTreeChangedNotificationData {
 	if o == nil {
-		var ret []CampaignEvaluationTreeChangedNotification
+		var ret []CampaignEvaluationTreeChangedNotificationData
 		return ret
 	}
 
@@ -82,7 +82,7 @@ func (o *BulkApplicationNotification) GetData() []CampaignEvaluationTreeChangedN
 
 // GetDataOk returns a tuple with the Data field value
 // and a boolean to check if the value has been set.
-func (o *BulkApplicationNotification) GetDataOk() ([]CampaignEvaluationTreeChangedNotification, bool) {
+func (o *BulkApplicationNotification) GetDataOk() ([]CampaignEvaluationTreeChangedNotificationData, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -90,7 +90,7 @@ func (o *BulkApplicationNotification) GetDataOk() ([]CampaignEvaluationTreeChang
 }
 
 // SetData sets field value
-func (o *BulkApplicationNotification) SetData(v []CampaignEvaluationTreeChangedNotification) {
+func (o *BulkApplicationNotification) SetData(v []CampaignEvaluationTreeChangedNotificationData) {
 	o.Data = v
 }
 

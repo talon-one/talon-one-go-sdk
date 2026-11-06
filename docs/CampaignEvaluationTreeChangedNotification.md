@@ -4,15 +4,15 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**ApplicationId** | **int64** | The ID of the Application whose campaign evaluation tree changed. | 
-**OldEvaluationTree** | Pointer to [**CampaignSet**](CampaignSet.md) | The previous campaign evaluation tree. | [optional] 
-**EvaluationTree** | [**CampaignSet**](CampaignSet.md) | The new campaign evaluation tree. | 
+**NotificationType** | **string** | The type of the notification | 
+**TotalResultSize** | **int64** | The total size of the result set. | 
+**Data** | [**[]CampaignEvaluationTreeChangedNotificationData**](CampaignEvaluationTreeChangedNotificationData.md) | The array of changes. | 
 
 ## Methods
 
 ### NewCampaignEvaluationTreeChangedNotification
 
-`func NewCampaignEvaluationTreeChangedNotification(applicationId int64, evaluationTree CampaignSet, ) *CampaignEvaluationTreeChangedNotification`
+`func NewCampaignEvaluationTreeChangedNotification(notificationType string, totalResultSize int64, data []CampaignEvaluationTreeChangedNotificationData, ) *CampaignEvaluationTreeChangedNotification`
 
 NewCampaignEvaluationTreeChangedNotification instantiates a new CampaignEvaluationTreeChangedNotification object
 This constructor will assign default values to properties that have it defined,
@@ -27,69 +27,64 @@ NewCampaignEvaluationTreeChangedNotificationWithDefaults instantiates a new Camp
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
-### GetApplicationId
+### GetNotificationType
 
-`func (o *CampaignEvaluationTreeChangedNotification) GetApplicationId() int64`
+`func (o *CampaignEvaluationTreeChangedNotification) GetNotificationType() string`
 
-GetApplicationId returns the ApplicationId field if non-nil, zero value otherwise.
+GetNotificationType returns the NotificationType field if non-nil, zero value otherwise.
 
-### GetApplicationIdOk
+### GetNotificationTypeOk
 
-`func (o *CampaignEvaluationTreeChangedNotification) GetApplicationIdOk() (*int64, bool)`
+`func (o *CampaignEvaluationTreeChangedNotification) GetNotificationTypeOk() (*string, bool)`
 
-GetApplicationIdOk returns a tuple with the ApplicationId field if it's non-nil, zero value otherwise
+GetNotificationTypeOk returns a tuple with the NotificationType field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetApplicationId
+### SetNotificationType
 
-`func (o *CampaignEvaluationTreeChangedNotification) SetApplicationId(v int64)`
+`func (o *CampaignEvaluationTreeChangedNotification) SetNotificationType(v string)`
 
-SetApplicationId sets ApplicationId field to given value.
+SetNotificationType sets NotificationType field to given value.
 
 
-### GetOldEvaluationTree
+### GetTotalResultSize
 
-`func (o *CampaignEvaluationTreeChangedNotification) GetOldEvaluationTree() CampaignSet`
+`func (o *CampaignEvaluationTreeChangedNotification) GetTotalResultSize() int64`
 
-GetOldEvaluationTree returns the OldEvaluationTree field if non-nil, zero value otherwise.
+GetTotalResultSize returns the TotalResultSize field if non-nil, zero value otherwise.
 
-### GetOldEvaluationTreeOk
+### GetTotalResultSizeOk
 
-`func (o *CampaignEvaluationTreeChangedNotification) GetOldEvaluationTreeOk() (*CampaignSet, bool)`
+`func (o *CampaignEvaluationTreeChangedNotification) GetTotalResultSizeOk() (*int64, bool)`
 
-GetOldEvaluationTreeOk returns a tuple with the OldEvaluationTree field if it's non-nil, zero value otherwise
+GetTotalResultSizeOk returns a tuple with the TotalResultSize field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetOldEvaluationTree
+### SetTotalResultSize
 
-`func (o *CampaignEvaluationTreeChangedNotification) SetOldEvaluationTree(v CampaignSet)`
+`func (o *CampaignEvaluationTreeChangedNotification) SetTotalResultSize(v int64)`
 
-SetOldEvaluationTree sets OldEvaluationTree field to given value.
+SetTotalResultSize sets TotalResultSize field to given value.
 
-### HasOldEvaluationTree
 
-`func (o *CampaignEvaluationTreeChangedNotification) HasOldEvaluationTree() bool`
+### GetData
 
-HasOldEvaluationTree returns a boolean if a field has been set.
+`func (o *CampaignEvaluationTreeChangedNotification) GetData() []CampaignEvaluationTreeChangedNotificationData`
 
-### GetEvaluationTree
+GetData returns the Data field if non-nil, zero value otherwise.
 
-`func (o *CampaignEvaluationTreeChangedNotification) GetEvaluationTree() CampaignSet`
+### GetDataOk
 
-GetEvaluationTree returns the EvaluationTree field if non-nil, zero value otherwise.
+`func (o *CampaignEvaluationTreeChangedNotification) GetDataOk() (*[]CampaignEvaluationTreeChangedNotificationData, bool)`
 
-### GetEvaluationTreeOk
-
-`func (o *CampaignEvaluationTreeChangedNotification) GetEvaluationTreeOk() (*CampaignSet, bool)`
-
-GetEvaluationTreeOk returns a tuple with the EvaluationTree field if it's non-nil, zero value otherwise
+GetDataOk returns a tuple with the Data field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetEvaluationTree
+### SetData
 
-`func (o *CampaignEvaluationTreeChangedNotification) SetEvaluationTree(v CampaignSet)`
+`func (o *CampaignEvaluationTreeChangedNotification) SetData(v []CampaignEvaluationTreeChangedNotificationData)`
 
-SetEvaluationTree sets EvaluationTree field to given value.
+SetData sets Data field to given value.
 
 
 

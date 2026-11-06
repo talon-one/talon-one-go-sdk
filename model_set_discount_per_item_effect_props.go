@@ -44,7 +44,7 @@ type SetDiscountPerItemEffectProps struct {
 	TargetedItemPosition *float32 `json:"targetedItemPosition,omitempty"`
 	// _(Discounting individual item in bundles only)_ The sub-position of the targeted bundle item on which the applied discount is based.
 	TargetedItemSubPosition *float32 `json:"targetedItemSubPosition,omitempty"`
-	// When set to `true`, the applied discount is excluded from the item's price history.
+	// When set to `true`, the applied discount is excluded from the item's price history. When set to `false`, the applied discount is included in the item's price history. This property is only returned if the [best prior price](https://docs.talon.one/docs/dev/integration-guides/best-prior-price) setting is enabled for the Application.
 	ExcludedFromPriceHistory *bool `json:"excludedFromPriceHistory,omitempty"`
 	AdditionalProperties     map[string]interface{}
 }

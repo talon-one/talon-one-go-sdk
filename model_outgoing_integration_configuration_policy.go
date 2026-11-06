@@ -13,7 +13,6 @@ package talon
 import (
 	"encoding/json"
 	"fmt"
-	"gopkg.in/validator.v2"
 )
 
 // OutgoingIntegrationConfigurationPolicy - The outgoing integration policy specific to each integration type.
@@ -57,68 +56,52 @@ func (dst *OutgoingIntegrationConfigurationPolicy) UnmarshalJSON(data []byte) er
 	var err error
 	match := 0
 	// try to unmarshal data into OutgoingIntegrationBrazePolicy
-	err = newStrictDecoder(data).Decode(&dst.OutgoingIntegrationBrazePolicy)
+	err = json.Unmarshal(data, &dst.OutgoingIntegrationBrazePolicy)
 	if err == nil {
 		jsonOutgoingIntegrationBrazePolicy, _ := json.Marshal(dst.OutgoingIntegrationBrazePolicy)
 		if string(jsonOutgoingIntegrationBrazePolicy) == "{}" { // empty struct
 			dst.OutgoingIntegrationBrazePolicy = nil
 		} else {
-			if err = validator.Validate(dst.OutgoingIntegrationBrazePolicy); err != nil {
-				dst.OutgoingIntegrationBrazePolicy = nil
-			} else {
-				match++
-			}
+			match++
 		}
 	} else {
 		dst.OutgoingIntegrationBrazePolicy = nil
 	}
 
 	// try to unmarshal data into OutgoingIntegrationCleverTapPolicy
-	err = newStrictDecoder(data).Decode(&dst.OutgoingIntegrationCleverTapPolicy)
+	err = json.Unmarshal(data, &dst.OutgoingIntegrationCleverTapPolicy)
 	if err == nil {
 		jsonOutgoingIntegrationCleverTapPolicy, _ := json.Marshal(dst.OutgoingIntegrationCleverTapPolicy)
 		if string(jsonOutgoingIntegrationCleverTapPolicy) == "{}" { // empty struct
 			dst.OutgoingIntegrationCleverTapPolicy = nil
 		} else {
-			if err = validator.Validate(dst.OutgoingIntegrationCleverTapPolicy); err != nil {
-				dst.OutgoingIntegrationCleverTapPolicy = nil
-			} else {
-				match++
-			}
+			match++
 		}
 	} else {
 		dst.OutgoingIntegrationCleverTapPolicy = nil
 	}
 
 	// try to unmarshal data into OutgoingIntegrationIterablePolicy
-	err = newStrictDecoder(data).Decode(&dst.OutgoingIntegrationIterablePolicy)
+	err = json.Unmarshal(data, &dst.OutgoingIntegrationIterablePolicy)
 	if err == nil {
 		jsonOutgoingIntegrationIterablePolicy, _ := json.Marshal(dst.OutgoingIntegrationIterablePolicy)
 		if string(jsonOutgoingIntegrationIterablePolicy) == "{}" { // empty struct
 			dst.OutgoingIntegrationIterablePolicy = nil
 		} else {
-			if err = validator.Validate(dst.OutgoingIntegrationIterablePolicy); err != nil {
-				dst.OutgoingIntegrationIterablePolicy = nil
-			} else {
-				match++
-			}
+			match++
 		}
 	} else {
 		dst.OutgoingIntegrationIterablePolicy = nil
 	}
 
 	// try to unmarshal data into OutgoingIntegrationMoEngagePolicy
-	err = newStrictDecoder(data).Decode(&dst.OutgoingIntegrationMoEngagePolicy)
+	err = json.Unmarshal(data, &dst.OutgoingIntegrationMoEngagePolicy)
 	if err == nil {
 		jsonOutgoingIntegrationMoEngagePolicy, _ := json.Marshal(dst.OutgoingIntegrationMoEngagePolicy)
 		if string(jsonOutgoingIntegrationMoEngagePolicy) == "{}" { // empty struct
 			dst.OutgoingIntegrationMoEngagePolicy = nil
 		} else {
-			if err = validator.Validate(dst.OutgoingIntegrationMoEngagePolicy); err != nil {
-				dst.OutgoingIntegrationMoEngagePolicy = nil
-			} else {
-				match++
-			}
+			match++
 		}
 	} else {
 		dst.OutgoingIntegrationMoEngagePolicy = nil

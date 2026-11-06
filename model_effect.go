@@ -13,7 +13,6 @@ package talon
 import (
 	"encoding/json"
 	"fmt"
-	"gopkg.in/validator.v2"
 )
 
 // Effect - struct for Effect
@@ -391,848 +390,566 @@ func EffectWillAwardGiveawayAsEffect(v *EffectWillAwardGiveaway) Effect {
 // Unmarshal JSON data into one of the pointers in the struct
 func (dst *Effect) UnmarshalJSON(data []byte) error {
 	var err error
-	match := 0
-	// try to unmarshal data into EffectAcceptCoupon
-	err = newStrictDecoder(data).Decode(&dst.EffectAcceptCoupon)
-	if err == nil {
-		jsonEffectAcceptCoupon, _ := json.Marshal(dst.EffectAcceptCoupon)
-		if string(jsonEffectAcceptCoupon) == "{}" { // empty struct
+	// use discriminator value to speed up the lookup
+	var jsonDict map[string]interface{}
+	err = newStrictDecoder(data).Decode(&jsonDict)
+	if err != nil {
+		return fmt.Errorf("failed to unmarshal JSON into map for the discriminator lookup")
+	}
+
+	// check if the discriminator value is 'acceptCoupon'
+	if jsonDict["effectType"] == "acceptCoupon" {
+		// try to unmarshal JSON data into EffectAcceptCoupon
+		err = json.Unmarshal(data, &dst.EffectAcceptCoupon)
+		if err == nil {
+			return nil // data stored in dst.EffectAcceptCoupon, return on the first match
+		} else {
 			dst.EffectAcceptCoupon = nil
-		} else {
-			if err = validator.Validate(dst.EffectAcceptCoupon); err != nil {
-				dst.EffectAcceptCoupon = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectAcceptCoupon: %s", err.Error())
 		}
-	} else {
-		dst.EffectAcceptCoupon = nil
 	}
 
-	// try to unmarshal data into EffectAcceptReferral
-	err = newStrictDecoder(data).Decode(&dst.EffectAcceptReferral)
-	if err == nil {
-		jsonEffectAcceptReferral, _ := json.Marshal(dst.EffectAcceptReferral)
-		if string(jsonEffectAcceptReferral) == "{}" { // empty struct
+	// check if the discriminator value is 'acceptReferral'
+	if jsonDict["effectType"] == "acceptReferral" {
+		// try to unmarshal JSON data into EffectAcceptReferral
+		err = json.Unmarshal(data, &dst.EffectAcceptReferral)
+		if err == nil {
+			return nil // data stored in dst.EffectAcceptReferral, return on the first match
+		} else {
 			dst.EffectAcceptReferral = nil
-		} else {
-			if err = validator.Validate(dst.EffectAcceptReferral); err != nil {
-				dst.EffectAcceptReferral = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectAcceptReferral: %s", err.Error())
 		}
-	} else {
-		dst.EffectAcceptReferral = nil
 	}
 
-	// try to unmarshal data into EffectAddFreeItem
-	err = newStrictDecoder(data).Decode(&dst.EffectAddFreeItem)
-	if err == nil {
-		jsonEffectAddFreeItem, _ := json.Marshal(dst.EffectAddFreeItem)
-		if string(jsonEffectAddFreeItem) == "{}" { // empty struct
+	// check if the discriminator value is 'addFreeItem'
+	if jsonDict["effectType"] == "addFreeItem" {
+		// try to unmarshal JSON data into EffectAddFreeItem
+		err = json.Unmarshal(data, &dst.EffectAddFreeItem)
+		if err == nil {
+			return nil // data stored in dst.EffectAddFreeItem, return on the first match
+		} else {
 			dst.EffectAddFreeItem = nil
-		} else {
-			if err = validator.Validate(dst.EffectAddFreeItem); err != nil {
-				dst.EffectAddFreeItem = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectAddFreeItem: %s", err.Error())
 		}
-	} else {
-		dst.EffectAddFreeItem = nil
 	}
 
-	// try to unmarshal data into EffectAddLoyaltyPoints
-	err = newStrictDecoder(data).Decode(&dst.EffectAddLoyaltyPoints)
-	if err == nil {
-		jsonEffectAddLoyaltyPoints, _ := json.Marshal(dst.EffectAddLoyaltyPoints)
-		if string(jsonEffectAddLoyaltyPoints) == "{}" { // empty struct
+	// check if the discriminator value is 'addLoyaltyPoints'
+	if jsonDict["effectType"] == "addLoyaltyPoints" {
+		// try to unmarshal JSON data into EffectAddLoyaltyPoints
+		err = json.Unmarshal(data, &dst.EffectAddLoyaltyPoints)
+		if err == nil {
+			return nil // data stored in dst.EffectAddLoyaltyPoints, return on the first match
+		} else {
 			dst.EffectAddLoyaltyPoints = nil
-		} else {
-			if err = validator.Validate(dst.EffectAddLoyaltyPoints); err != nil {
-				dst.EffectAddLoyaltyPoints = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectAddLoyaltyPoints: %s", err.Error())
 		}
-	} else {
-		dst.EffectAddLoyaltyPoints = nil
 	}
 
-	// try to unmarshal data into EffectAddNegativeLoyaltyPoints
-	err = newStrictDecoder(data).Decode(&dst.EffectAddNegativeLoyaltyPoints)
-	if err == nil {
-		jsonEffectAddNegativeLoyaltyPoints, _ := json.Marshal(dst.EffectAddNegativeLoyaltyPoints)
-		if string(jsonEffectAddNegativeLoyaltyPoints) == "{}" { // empty struct
+	// check if the discriminator value is 'addNegativeLoyaltyPoints'
+	if jsonDict["effectType"] == "addNegativeLoyaltyPoints" {
+		// try to unmarshal JSON data into EffectAddNegativeLoyaltyPoints
+		err = json.Unmarshal(data, &dst.EffectAddNegativeLoyaltyPoints)
+		if err == nil {
+			return nil // data stored in dst.EffectAddNegativeLoyaltyPoints, return on the first match
+		} else {
 			dst.EffectAddNegativeLoyaltyPoints = nil
-		} else {
-			if err = validator.Validate(dst.EffectAddNegativeLoyaltyPoints); err != nil {
-				dst.EffectAddNegativeLoyaltyPoints = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectAddNegativeLoyaltyPoints: %s", err.Error())
 		}
-	} else {
-		dst.EffectAddNegativeLoyaltyPoints = nil
 	}
 
-	// try to unmarshal data into EffectAddToAudience
-	err = newStrictDecoder(data).Decode(&dst.EffectAddToAudience)
-	if err == nil {
-		jsonEffectAddToAudience, _ := json.Marshal(dst.EffectAddToAudience)
-		if string(jsonEffectAddToAudience) == "{}" { // empty struct
+	// check if the discriminator value is 'addToAudience'
+	if jsonDict["effectType"] == "addToAudience" {
+		// try to unmarshal JSON data into EffectAddToAudience
+		err = json.Unmarshal(data, &dst.EffectAddToAudience)
+		if err == nil {
+			return nil // data stored in dst.EffectAddToAudience, return on the first match
+		} else {
 			dst.EffectAddToAudience = nil
-		} else {
-			if err = validator.Validate(dst.EffectAddToAudience); err != nil {
-				dst.EffectAddToAudience = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectAddToAudience: %s", err.Error())
 		}
-	} else {
-		dst.EffectAddToAudience = nil
 	}
 
-	// try to unmarshal data into EffectAwardGiveaway
-	err = newStrictDecoder(data).Decode(&dst.EffectAwardGiveaway)
-	if err == nil {
-		jsonEffectAwardGiveaway, _ := json.Marshal(dst.EffectAwardGiveaway)
-		if string(jsonEffectAwardGiveaway) == "{}" { // empty struct
+	// check if the discriminator value is 'awardGiveaway'
+	if jsonDict["effectType"] == "awardGiveaway" {
+		// try to unmarshal JSON data into EffectAwardGiveaway
+		err = json.Unmarshal(data, &dst.EffectAwardGiveaway)
+		if err == nil {
+			return nil // data stored in dst.EffectAwardGiveaway, return on the first match
+		} else {
 			dst.EffectAwardGiveaway = nil
-		} else {
-			if err = validator.Validate(dst.EffectAwardGiveaway); err != nil {
-				dst.EffectAwardGiveaway = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectAwardGiveaway: %s", err.Error())
 		}
-	} else {
-		dst.EffectAwardGiveaway = nil
 	}
 
-	// try to unmarshal data into EffectBoostLoyaltyTier
-	err = newStrictDecoder(data).Decode(&dst.EffectBoostLoyaltyTier)
-	if err == nil {
-		jsonEffectBoostLoyaltyTier, _ := json.Marshal(dst.EffectBoostLoyaltyTier)
-		if string(jsonEffectBoostLoyaltyTier) == "{}" { // empty struct
+	// check if the discriminator value is 'boostLoyaltyTier'
+	if jsonDict["effectType"] == "boostLoyaltyTier" {
+		// try to unmarshal JSON data into EffectBoostLoyaltyTier
+		err = json.Unmarshal(data, &dst.EffectBoostLoyaltyTier)
+		if err == nil {
+			return nil // data stored in dst.EffectBoostLoyaltyTier, return on the first match
+		} else {
 			dst.EffectBoostLoyaltyTier = nil
-		} else {
-			if err = validator.Validate(dst.EffectBoostLoyaltyTier); err != nil {
-				dst.EffectBoostLoyaltyTier = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectBoostLoyaltyTier: %s", err.Error())
 		}
-	} else {
-		dst.EffectBoostLoyaltyTier = nil
 	}
 
-	// try to unmarshal data into EffectCallApi
-	err = newStrictDecoder(data).Decode(&dst.EffectCallApi)
-	if err == nil {
-		jsonEffectCallApi, _ := json.Marshal(dst.EffectCallApi)
-		if string(jsonEffectCallApi) == "{}" { // empty struct
+	// check if the discriminator value is 'callApi'
+	if jsonDict["effectType"] == "callApi" {
+		// try to unmarshal JSON data into EffectCallApi
+		err = json.Unmarshal(data, &dst.EffectCallApi)
+		if err == nil {
+			return nil // data stored in dst.EffectCallApi, return on the first match
+		} else {
 			dst.EffectCallApi = nil
-		} else {
-			if err = validator.Validate(dst.EffectCallApi); err != nil {
-				dst.EffectCallApi = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectCallApi: %s", err.Error())
 		}
-	} else {
-		dst.EffectCallApi = nil
 	}
 
-	// try to unmarshal data into EffectChangeLoyaltyTierLevel
-	err = newStrictDecoder(data).Decode(&dst.EffectChangeLoyaltyTierLevel)
-	if err == nil {
-		jsonEffectChangeLoyaltyTierLevel, _ := json.Marshal(dst.EffectChangeLoyaltyTierLevel)
-		if string(jsonEffectChangeLoyaltyTierLevel) == "{}" { // empty struct
+	// check if the discriminator value is 'changeLoyaltyTierLevel'
+	if jsonDict["effectType"] == "changeLoyaltyTierLevel" {
+		// try to unmarshal JSON data into EffectChangeLoyaltyTierLevel
+		err = json.Unmarshal(data, &dst.EffectChangeLoyaltyTierLevel)
+		if err == nil {
+			return nil // data stored in dst.EffectChangeLoyaltyTierLevel, return on the first match
+		} else {
 			dst.EffectChangeLoyaltyTierLevel = nil
-		} else {
-			if err = validator.Validate(dst.EffectChangeLoyaltyTierLevel); err != nil {
-				dst.EffectChangeLoyaltyTierLevel = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectChangeLoyaltyTierLevel: %s", err.Error())
 		}
-	} else {
-		dst.EffectChangeLoyaltyTierLevel = nil
 	}
 
-	// try to unmarshal data into EffectCouponCreated
-	err = newStrictDecoder(data).Decode(&dst.EffectCouponCreated)
-	if err == nil {
-		jsonEffectCouponCreated, _ := json.Marshal(dst.EffectCouponCreated)
-		if string(jsonEffectCouponCreated) == "{}" { // empty struct
+	// check if the discriminator value is 'couponCreated'
+	if jsonDict["effectType"] == "couponCreated" {
+		// try to unmarshal JSON data into EffectCouponCreated
+		err = json.Unmarshal(data, &dst.EffectCouponCreated)
+		if err == nil {
+			return nil // data stored in dst.EffectCouponCreated, return on the first match
+		} else {
 			dst.EffectCouponCreated = nil
-		} else {
-			if err = validator.Validate(dst.EffectCouponCreated); err != nil {
-				dst.EffectCouponCreated = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectCouponCreated: %s", err.Error())
 		}
-	} else {
-		dst.EffectCouponCreated = nil
 	}
 
-	// try to unmarshal data into EffectCustomEffect
-	err = newStrictDecoder(data).Decode(&dst.EffectCustomEffect)
-	if err == nil {
-		jsonEffectCustomEffect, _ := json.Marshal(dst.EffectCustomEffect)
-		if string(jsonEffectCustomEffect) == "{}" { // empty struct
+	// check if the discriminator value is 'customEffect'
+	if jsonDict["effectType"] == "customEffect" {
+		// try to unmarshal JSON data into EffectCustomEffect
+		err = json.Unmarshal(data, &dst.EffectCustomEffect)
+		if err == nil {
+			return nil // data stored in dst.EffectCustomEffect, return on the first match
+		} else {
 			dst.EffectCustomEffect = nil
-		} else {
-			if err = validator.Validate(dst.EffectCustomEffect); err != nil {
-				dst.EffectCustomEffect = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectCustomEffect: %s", err.Error())
 		}
-	} else {
-		dst.EffectCustomEffect = nil
 	}
 
-	// try to unmarshal data into EffectDeductLoyaltyPoints
-	err = newStrictDecoder(data).Decode(&dst.EffectDeductLoyaltyPoints)
-	if err == nil {
-		jsonEffectDeductLoyaltyPoints, _ := json.Marshal(dst.EffectDeductLoyaltyPoints)
-		if string(jsonEffectDeductLoyaltyPoints) == "{}" { // empty struct
+	// check if the discriminator value is 'deductLoyaltyPoints'
+	if jsonDict["effectType"] == "deductLoyaltyPoints" {
+		// try to unmarshal JSON data into EffectDeductLoyaltyPoints
+		err = json.Unmarshal(data, &dst.EffectDeductLoyaltyPoints)
+		if err == nil {
+			return nil // data stored in dst.EffectDeductLoyaltyPoints, return on the first match
+		} else {
 			dst.EffectDeductLoyaltyPoints = nil
-		} else {
-			if err = validator.Validate(dst.EffectDeductLoyaltyPoints); err != nil {
-				dst.EffectDeductLoyaltyPoints = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectDeductLoyaltyPoints: %s", err.Error())
 		}
-	} else {
-		dst.EffectDeductLoyaltyPoints = nil
 	}
 
-	// try to unmarshal data into EffectError
-	err = newStrictDecoder(data).Decode(&dst.EffectError)
-	if err == nil {
-		jsonEffectError, _ := json.Marshal(dst.EffectError)
-		if string(jsonEffectError) == "{}" { // empty struct
+	// check if the discriminator value is 'error'
+	if jsonDict["effectType"] == "error" {
+		// try to unmarshal JSON data into EffectError
+		err = json.Unmarshal(data, &dst.EffectError)
+		if err == nil {
+			return nil // data stored in dst.EffectError, return on the first match
+		} else {
 			dst.EffectError = nil
-		} else {
-			if err = validator.Validate(dst.EffectError); err != nil {
-				dst.EffectError = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectError: %s", err.Error())
 		}
-	} else {
-		dst.EffectError = nil
 	}
 
-	// try to unmarshal data into EffectExtendLoyaltyPointsExpiryDate
-	err = newStrictDecoder(data).Decode(&dst.EffectExtendLoyaltyPointsExpiryDate)
-	if err == nil {
-		jsonEffectExtendLoyaltyPointsExpiryDate, _ := json.Marshal(dst.EffectExtendLoyaltyPointsExpiryDate)
-		if string(jsonEffectExtendLoyaltyPointsExpiryDate) == "{}" { // empty struct
+	// check if the discriminator value is 'extendLoyaltyPointsExpiryDate'
+	if jsonDict["effectType"] == "extendLoyaltyPointsExpiryDate" {
+		// try to unmarshal JSON data into EffectExtendLoyaltyPointsExpiryDate
+		err = json.Unmarshal(data, &dst.EffectExtendLoyaltyPointsExpiryDate)
+		if err == nil {
+			return nil // data stored in dst.EffectExtendLoyaltyPointsExpiryDate, return on the first match
+		} else {
 			dst.EffectExtendLoyaltyPointsExpiryDate = nil
-		} else {
-			if err = validator.Validate(dst.EffectExtendLoyaltyPointsExpiryDate); err != nil {
-				dst.EffectExtendLoyaltyPointsExpiryDate = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectExtendLoyaltyPointsExpiryDate: %s", err.Error())
 		}
-	} else {
-		dst.EffectExtendLoyaltyPointsExpiryDate = nil
 	}
 
-	// try to unmarshal data into EffectIncreaseAchievementProgress
-	err = newStrictDecoder(data).Decode(&dst.EffectIncreaseAchievementProgress)
-	if err == nil {
-		jsonEffectIncreaseAchievementProgress, _ := json.Marshal(dst.EffectIncreaseAchievementProgress)
-		if string(jsonEffectIncreaseAchievementProgress) == "{}" { // empty struct
+	// check if the discriminator value is 'increaseAchievementProgress'
+	if jsonDict["effectType"] == "increaseAchievementProgress" {
+		// try to unmarshal JSON data into EffectIncreaseAchievementProgress
+		err = json.Unmarshal(data, &dst.EffectIncreaseAchievementProgress)
+		if err == nil {
+			return nil // data stored in dst.EffectIncreaseAchievementProgress, return on the first match
+		} else {
 			dst.EffectIncreaseAchievementProgress = nil
-		} else {
-			if err = validator.Validate(dst.EffectIncreaseAchievementProgress); err != nil {
-				dst.EffectIncreaseAchievementProgress = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectIncreaseAchievementProgress: %s", err.Error())
 		}
-	} else {
-		dst.EffectIncreaseAchievementProgress = nil
 	}
 
-	// try to unmarshal data into EffectIncreaseAchievementProgressPerItem
-	err = newStrictDecoder(data).Decode(&dst.EffectIncreaseAchievementProgressPerItem)
-	if err == nil {
-		jsonEffectIncreaseAchievementProgressPerItem, _ := json.Marshal(dst.EffectIncreaseAchievementProgressPerItem)
-		if string(jsonEffectIncreaseAchievementProgressPerItem) == "{}" { // empty struct
+	// check if the discriminator value is 'increaseAchievementProgressPerItem'
+	if jsonDict["effectType"] == "increaseAchievementProgressPerItem" {
+		// try to unmarshal JSON data into EffectIncreaseAchievementProgressPerItem
+		err = json.Unmarshal(data, &dst.EffectIncreaseAchievementProgressPerItem)
+		if err == nil {
+			return nil // data stored in dst.EffectIncreaseAchievementProgressPerItem, return on the first match
+		} else {
 			dst.EffectIncreaseAchievementProgressPerItem = nil
-		} else {
-			if err = validator.Validate(dst.EffectIncreaseAchievementProgressPerItem); err != nil {
-				dst.EffectIncreaseAchievementProgressPerItem = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectIncreaseAchievementProgressPerItem: %s", err.Error())
 		}
-	} else {
-		dst.EffectIncreaseAchievementProgressPerItem = nil
 	}
 
-	// try to unmarshal data into EffectJoinLoyaltyProgram
-	err = newStrictDecoder(data).Decode(&dst.EffectJoinLoyaltyProgram)
-	if err == nil {
-		jsonEffectJoinLoyaltyProgram, _ := json.Marshal(dst.EffectJoinLoyaltyProgram)
-		if string(jsonEffectJoinLoyaltyProgram) == "{}" { // empty struct
+	// check if the discriminator value is 'joinLoyaltyProgram'
+	if jsonDict["effectType"] == "joinLoyaltyProgram" {
+		// try to unmarshal JSON data into EffectJoinLoyaltyProgram
+		err = json.Unmarshal(data, &dst.EffectJoinLoyaltyProgram)
+		if err == nil {
+			return nil // data stored in dst.EffectJoinLoyaltyProgram, return on the first match
+		} else {
 			dst.EffectJoinLoyaltyProgram = nil
-		} else {
-			if err = validator.Validate(dst.EffectJoinLoyaltyProgram); err != nil {
-				dst.EffectJoinLoyaltyProgram = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectJoinLoyaltyProgram: %s", err.Error())
 		}
-	} else {
-		dst.EffectJoinLoyaltyProgram = nil
 	}
 
-	// try to unmarshal data into EffectOffsetNegativeLoyaltyPoints
-	err = newStrictDecoder(data).Decode(&dst.EffectOffsetNegativeLoyaltyPoints)
-	if err == nil {
-		jsonEffectOffsetNegativeLoyaltyPoints, _ := json.Marshal(dst.EffectOffsetNegativeLoyaltyPoints)
-		if string(jsonEffectOffsetNegativeLoyaltyPoints) == "{}" { // empty struct
+	// check if the discriminator value is 'offsetNegativeLoyaltyPoints'
+	if jsonDict["effectType"] == "offsetNegativeLoyaltyPoints" {
+		// try to unmarshal JSON data into EffectOffsetNegativeLoyaltyPoints
+		err = json.Unmarshal(data, &dst.EffectOffsetNegativeLoyaltyPoints)
+		if err == nil {
+			return nil // data stored in dst.EffectOffsetNegativeLoyaltyPoints, return on the first match
+		} else {
 			dst.EffectOffsetNegativeLoyaltyPoints = nil
-		} else {
-			if err = validator.Validate(dst.EffectOffsetNegativeLoyaltyPoints); err != nil {
-				dst.EffectOffsetNegativeLoyaltyPoints = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectOffsetNegativeLoyaltyPoints: %s", err.Error())
 		}
-	} else {
-		dst.EffectOffsetNegativeLoyaltyPoints = nil
 	}
 
-	// try to unmarshal data into EffectRedeemReferral
-	err = newStrictDecoder(data).Decode(&dst.EffectRedeemReferral)
-	if err == nil {
-		jsonEffectRedeemReferral, _ := json.Marshal(dst.EffectRedeemReferral)
-		if string(jsonEffectRedeemReferral) == "{}" { // empty struct
+	// check if the discriminator value is 'redeemReferral'
+	if jsonDict["effectType"] == "redeemReferral" {
+		// try to unmarshal JSON data into EffectRedeemReferral
+		err = json.Unmarshal(data, &dst.EffectRedeemReferral)
+		if err == nil {
+			return nil // data stored in dst.EffectRedeemReferral, return on the first match
+		} else {
 			dst.EffectRedeemReferral = nil
-		} else {
-			if err = validator.Validate(dst.EffectRedeemReferral); err != nil {
-				dst.EffectRedeemReferral = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectRedeemReferral: %s", err.Error())
 		}
-	} else {
-		dst.EffectRedeemReferral = nil
 	}
 
-	// try to unmarshal data into EffectReferralCreated
-	err = newStrictDecoder(data).Decode(&dst.EffectReferralCreated)
-	if err == nil {
-		jsonEffectReferralCreated, _ := json.Marshal(dst.EffectReferralCreated)
-		if string(jsonEffectReferralCreated) == "{}" { // empty struct
+	// check if the discriminator value is 'referralCreated'
+	if jsonDict["effectType"] == "referralCreated" {
+		// try to unmarshal JSON data into EffectReferralCreated
+		err = json.Unmarshal(data, &dst.EffectReferralCreated)
+		if err == nil {
+			return nil // data stored in dst.EffectReferralCreated, return on the first match
+		} else {
 			dst.EffectReferralCreated = nil
-		} else {
-			if err = validator.Validate(dst.EffectReferralCreated); err != nil {
-				dst.EffectReferralCreated = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectReferralCreated: %s", err.Error())
 		}
-	} else {
-		dst.EffectReferralCreated = nil
 	}
 
-	// try to unmarshal data into EffectRejectCoupon
-	err = newStrictDecoder(data).Decode(&dst.EffectRejectCoupon)
-	if err == nil {
-		jsonEffectRejectCoupon, _ := json.Marshal(dst.EffectRejectCoupon)
-		if string(jsonEffectRejectCoupon) == "{}" { // empty struct
+	// check if the discriminator value is 'rejectCoupon'
+	if jsonDict["effectType"] == "rejectCoupon" {
+		// try to unmarshal JSON data into EffectRejectCoupon
+		err = json.Unmarshal(data, &dst.EffectRejectCoupon)
+		if err == nil {
+			return nil // data stored in dst.EffectRejectCoupon, return on the first match
+		} else {
 			dst.EffectRejectCoupon = nil
-		} else {
-			if err = validator.Validate(dst.EffectRejectCoupon); err != nil {
-				dst.EffectRejectCoupon = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectRejectCoupon: %s", err.Error())
 		}
-	} else {
-		dst.EffectRejectCoupon = nil
 	}
 
-	// try to unmarshal data into EffectRejectReferral
-	err = newStrictDecoder(data).Decode(&dst.EffectRejectReferral)
-	if err == nil {
-		jsonEffectRejectReferral, _ := json.Marshal(dst.EffectRejectReferral)
-		if string(jsonEffectRejectReferral) == "{}" { // empty struct
+	// check if the discriminator value is 'rejectReferral'
+	if jsonDict["effectType"] == "rejectReferral" {
+		// try to unmarshal JSON data into EffectRejectReferral
+		err = json.Unmarshal(data, &dst.EffectRejectReferral)
+		if err == nil {
+			return nil // data stored in dst.EffectRejectReferral, return on the first match
+		} else {
 			dst.EffectRejectReferral = nil
-		} else {
-			if err = validator.Validate(dst.EffectRejectReferral); err != nil {
-				dst.EffectRejectReferral = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectRejectReferral: %s", err.Error())
 		}
-	} else {
-		dst.EffectRejectReferral = nil
 	}
 
-	// try to unmarshal data into EffectRemoveFromAudience
-	err = newStrictDecoder(data).Decode(&dst.EffectRemoveFromAudience)
-	if err == nil {
-		jsonEffectRemoveFromAudience, _ := json.Marshal(dst.EffectRemoveFromAudience)
-		if string(jsonEffectRemoveFromAudience) == "{}" { // empty struct
+	// check if the discriminator value is 'removeFromAudience'
+	if jsonDict["effectType"] == "removeFromAudience" {
+		// try to unmarshal JSON data into EffectRemoveFromAudience
+		err = json.Unmarshal(data, &dst.EffectRemoveFromAudience)
+		if err == nil {
+			return nil // data stored in dst.EffectRemoveFromAudience, return on the first match
+		} else {
 			dst.EffectRemoveFromAudience = nil
-		} else {
-			if err = validator.Validate(dst.EffectRemoveFromAudience); err != nil {
-				dst.EffectRemoveFromAudience = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectRemoveFromAudience: %s", err.Error())
 		}
-	} else {
-		dst.EffectRemoveFromAudience = nil
 	}
 
-	// try to unmarshal data into EffectReserveCoupon
-	err = newStrictDecoder(data).Decode(&dst.EffectReserveCoupon)
-	if err == nil {
-		jsonEffectReserveCoupon, _ := json.Marshal(dst.EffectReserveCoupon)
-		if string(jsonEffectReserveCoupon) == "{}" { // empty struct
+	// check if the discriminator value is 'reserveCoupon'
+	if jsonDict["effectType"] == "reserveCoupon" {
+		// try to unmarshal JSON data into EffectReserveCoupon
+		err = json.Unmarshal(data, &dst.EffectReserveCoupon)
+		if err == nil {
+			return nil // data stored in dst.EffectReserveCoupon, return on the first match
+		} else {
 			dst.EffectReserveCoupon = nil
-		} else {
-			if err = validator.Validate(dst.EffectReserveCoupon); err != nil {
-				dst.EffectReserveCoupon = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectReserveCoupon: %s", err.Error())
 		}
-	} else {
-		dst.EffectReserveCoupon = nil
 	}
 
-	// try to unmarshal data into EffectRollbackAddedLoyaltyPoints
-	err = newStrictDecoder(data).Decode(&dst.EffectRollbackAddedLoyaltyPoints)
-	if err == nil {
-		jsonEffectRollbackAddedLoyaltyPoints, _ := json.Marshal(dst.EffectRollbackAddedLoyaltyPoints)
-		if string(jsonEffectRollbackAddedLoyaltyPoints) == "{}" { // empty struct
+	// check if the discriminator value is 'rollbackAddedLoyaltyPoints'
+	if jsonDict["effectType"] == "rollbackAddedLoyaltyPoints" {
+		// try to unmarshal JSON data into EffectRollbackAddedLoyaltyPoints
+		err = json.Unmarshal(data, &dst.EffectRollbackAddedLoyaltyPoints)
+		if err == nil {
+			return nil // data stored in dst.EffectRollbackAddedLoyaltyPoints, return on the first match
+		} else {
 			dst.EffectRollbackAddedLoyaltyPoints = nil
-		} else {
-			if err = validator.Validate(dst.EffectRollbackAddedLoyaltyPoints); err != nil {
-				dst.EffectRollbackAddedLoyaltyPoints = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectRollbackAddedLoyaltyPoints: %s", err.Error())
 		}
-	} else {
-		dst.EffectRollbackAddedLoyaltyPoints = nil
 	}
 
-	// try to unmarshal data into EffectRollbackCoupon
-	err = newStrictDecoder(data).Decode(&dst.EffectRollbackCoupon)
-	if err == nil {
-		jsonEffectRollbackCoupon, _ := json.Marshal(dst.EffectRollbackCoupon)
-		if string(jsonEffectRollbackCoupon) == "{}" { // empty struct
+	// check if the discriminator value is 'rollbackCoupon'
+	if jsonDict["effectType"] == "rollbackCoupon" {
+		// try to unmarshal JSON data into EffectRollbackCoupon
+		err = json.Unmarshal(data, &dst.EffectRollbackCoupon)
+		if err == nil {
+			return nil // data stored in dst.EffectRollbackCoupon, return on the first match
+		} else {
 			dst.EffectRollbackCoupon = nil
-		} else {
-			if err = validator.Validate(dst.EffectRollbackCoupon); err != nil {
-				dst.EffectRollbackCoupon = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectRollbackCoupon: %s", err.Error())
 		}
-	} else {
-		dst.EffectRollbackCoupon = nil
 	}
 
-	// try to unmarshal data into EffectRollbackDeductedLoyaltyPoints
-	err = newStrictDecoder(data).Decode(&dst.EffectRollbackDeductedLoyaltyPoints)
-	if err == nil {
-		jsonEffectRollbackDeductedLoyaltyPoints, _ := json.Marshal(dst.EffectRollbackDeductedLoyaltyPoints)
-		if string(jsonEffectRollbackDeductedLoyaltyPoints) == "{}" { // empty struct
+	// check if the discriminator value is 'rollbackDeductedLoyaltyPoints'
+	if jsonDict["effectType"] == "rollbackDeductedLoyaltyPoints" {
+		// try to unmarshal JSON data into EffectRollbackDeductedLoyaltyPoints
+		err = json.Unmarshal(data, &dst.EffectRollbackDeductedLoyaltyPoints)
+		if err == nil {
+			return nil // data stored in dst.EffectRollbackDeductedLoyaltyPoints, return on the first match
+		} else {
 			dst.EffectRollbackDeductedLoyaltyPoints = nil
-		} else {
-			if err = validator.Validate(dst.EffectRollbackDeductedLoyaltyPoints); err != nil {
-				dst.EffectRollbackDeductedLoyaltyPoints = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectRollbackDeductedLoyaltyPoints: %s", err.Error())
 		}
-	} else {
-		dst.EffectRollbackDeductedLoyaltyPoints = nil
 	}
 
-	// try to unmarshal data into EffectRollbackDiscount
-	err = newStrictDecoder(data).Decode(&dst.EffectRollbackDiscount)
-	if err == nil {
-		jsonEffectRollbackDiscount, _ := json.Marshal(dst.EffectRollbackDiscount)
-		if string(jsonEffectRollbackDiscount) == "{}" { // empty struct
+	// check if the discriminator value is 'rollbackDiscount'
+	if jsonDict["effectType"] == "rollbackDiscount" {
+		// try to unmarshal JSON data into EffectRollbackDiscount
+		err = json.Unmarshal(data, &dst.EffectRollbackDiscount)
+		if err == nil {
+			return nil // data stored in dst.EffectRollbackDiscount, return on the first match
+		} else {
 			dst.EffectRollbackDiscount = nil
-		} else {
-			if err = validator.Validate(dst.EffectRollbackDiscount); err != nil {
-				dst.EffectRollbackDiscount = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectRollbackDiscount: %s", err.Error())
 		}
-	} else {
-		dst.EffectRollbackDiscount = nil
 	}
 
-	// try to unmarshal data into EffectRollbackIncreasedAchievementProgress
-	err = newStrictDecoder(data).Decode(&dst.EffectRollbackIncreasedAchievementProgress)
-	if err == nil {
-		jsonEffectRollbackIncreasedAchievementProgress, _ := json.Marshal(dst.EffectRollbackIncreasedAchievementProgress)
-		if string(jsonEffectRollbackIncreasedAchievementProgress) == "{}" { // empty struct
+	// check if the discriminator value is 'rollbackIncreasedAchievementProgress'
+	if jsonDict["effectType"] == "rollbackIncreasedAchievementProgress" {
+		// try to unmarshal JSON data into EffectRollbackIncreasedAchievementProgress
+		err = json.Unmarshal(data, &dst.EffectRollbackIncreasedAchievementProgress)
+		if err == nil {
+			return nil // data stored in dst.EffectRollbackIncreasedAchievementProgress, return on the first match
+		} else {
 			dst.EffectRollbackIncreasedAchievementProgress = nil
-		} else {
-			if err = validator.Validate(dst.EffectRollbackIncreasedAchievementProgress); err != nil {
-				dst.EffectRollbackIncreasedAchievementProgress = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectRollbackIncreasedAchievementProgress: %s", err.Error())
 		}
-	} else {
-		dst.EffectRollbackIncreasedAchievementProgress = nil
 	}
 
-	// try to unmarshal data into EffectRollbackIncreasedAchievementProgressPerItem
-	err = newStrictDecoder(data).Decode(&dst.EffectRollbackIncreasedAchievementProgressPerItem)
-	if err == nil {
-		jsonEffectRollbackIncreasedAchievementProgressPerItem, _ := json.Marshal(dst.EffectRollbackIncreasedAchievementProgressPerItem)
-		if string(jsonEffectRollbackIncreasedAchievementProgressPerItem) == "{}" { // empty struct
+	// check if the discriminator value is 'rollbackIncreasedAchievementProgressPerItem'
+	if jsonDict["effectType"] == "rollbackIncreasedAchievementProgressPerItem" {
+		// try to unmarshal JSON data into EffectRollbackIncreasedAchievementProgressPerItem
+		err = json.Unmarshal(data, &dst.EffectRollbackIncreasedAchievementProgressPerItem)
+		if err == nil {
+			return nil // data stored in dst.EffectRollbackIncreasedAchievementProgressPerItem, return on the first match
+		} else {
 			dst.EffectRollbackIncreasedAchievementProgressPerItem = nil
-		} else {
-			if err = validator.Validate(dst.EffectRollbackIncreasedAchievementProgressPerItem); err != nil {
-				dst.EffectRollbackIncreasedAchievementProgressPerItem = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectRollbackIncreasedAchievementProgressPerItem: %s", err.Error())
 		}
-	} else {
-		dst.EffectRollbackIncreasedAchievementProgressPerItem = nil
 	}
 
-	// try to unmarshal data into EffectRollbackReferral
-	err = newStrictDecoder(data).Decode(&dst.EffectRollbackReferral)
-	if err == nil {
-		jsonEffectRollbackReferral, _ := json.Marshal(dst.EffectRollbackReferral)
-		if string(jsonEffectRollbackReferral) == "{}" { // empty struct
+	// check if the discriminator value is 'rollbackReferral'
+	if jsonDict["effectType"] == "rollbackReferral" {
+		// try to unmarshal JSON data into EffectRollbackReferral
+		err = json.Unmarshal(data, &dst.EffectRollbackReferral)
+		if err == nil {
+			return nil // data stored in dst.EffectRollbackReferral, return on the first match
+		} else {
 			dst.EffectRollbackReferral = nil
-		} else {
-			if err = validator.Validate(dst.EffectRollbackReferral); err != nil {
-				dst.EffectRollbackReferral = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectRollbackReferral: %s", err.Error())
 		}
-	} else {
-		dst.EffectRollbackReferral = nil
 	}
 
-	// try to unmarshal data into EffectRollbackTierBoost
-	err = newStrictDecoder(data).Decode(&dst.EffectRollbackTierBoost)
-	if err == nil {
-		jsonEffectRollbackTierBoost, _ := json.Marshal(dst.EffectRollbackTierBoost)
-		if string(jsonEffectRollbackTierBoost) == "{}" { // empty struct
+	// check if the discriminator value is 'rollbackTierBoost'
+	if jsonDict["effectType"] == "rollbackTierBoost" {
+		// try to unmarshal JSON data into EffectRollbackTierBoost
+		err = json.Unmarshal(data, &dst.EffectRollbackTierBoost)
+		if err == nil {
+			return nil // data stored in dst.EffectRollbackTierBoost, return on the first match
+		} else {
 			dst.EffectRollbackTierBoost = nil
-		} else {
-			if err = validator.Validate(dst.EffectRollbackTierBoost); err != nil {
-				dst.EffectRollbackTierBoost = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectRollbackTierBoost: %s", err.Error())
 		}
-	} else {
-		dst.EffectRollbackTierBoost = nil
 	}
 
-	// try to unmarshal data into EffectRollbackUseReward
-	err = newStrictDecoder(data).Decode(&dst.EffectRollbackUseReward)
-	if err == nil {
-		jsonEffectRollbackUseReward, _ := json.Marshal(dst.EffectRollbackUseReward)
-		if string(jsonEffectRollbackUseReward) == "{}" { // empty struct
+	// check if the discriminator value is 'rollbackUseReward'
+	if jsonDict["effectType"] == "rollbackUseReward" {
+		// try to unmarshal JSON data into EffectRollbackUseReward
+		err = json.Unmarshal(data, &dst.EffectRollbackUseReward)
+		if err == nil {
+			return nil // data stored in dst.EffectRollbackUseReward, return on the first match
+		} else {
 			dst.EffectRollbackUseReward = nil
-		} else {
-			if err = validator.Validate(dst.EffectRollbackUseReward); err != nil {
-				dst.EffectRollbackUseReward = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectRollbackUseReward: %s", err.Error())
 		}
-	} else {
-		dst.EffectRollbackUseReward = nil
 	}
 
-	// try to unmarshal data into EffectSet
-	err = newStrictDecoder(data).Decode(&dst.EffectSet)
-	if err == nil {
-		jsonEffectSet, _ := json.Marshal(dst.EffectSet)
-		if string(jsonEffectSet) == "{}" { // empty struct
+	// check if the discriminator value is 'set'
+	if jsonDict["effectType"] == "set" {
+		// try to unmarshal JSON data into EffectSet
+		err = json.Unmarshal(data, &dst.EffectSet)
+		if err == nil {
+			return nil // data stored in dst.EffectSet, return on the first match
+		} else {
 			dst.EffectSet = nil
-		} else {
-			if err = validator.Validate(dst.EffectSet); err != nil {
-				dst.EffectSet = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectSet: %s", err.Error())
 		}
-	} else {
-		dst.EffectSet = nil
 	}
 
-	// try to unmarshal data into EffectSetDiscount
-	err = newStrictDecoder(data).Decode(&dst.EffectSetDiscount)
-	if err == nil {
-		jsonEffectSetDiscount, _ := json.Marshal(dst.EffectSetDiscount)
-		if string(jsonEffectSetDiscount) == "{}" { // empty struct
+	// check if the discriminator value is 'setDiscount'
+	if jsonDict["effectType"] == "setDiscount" {
+		// try to unmarshal JSON data into EffectSetDiscount
+		err = json.Unmarshal(data, &dst.EffectSetDiscount)
+		if err == nil {
+			return nil // data stored in dst.EffectSetDiscount, return on the first match
+		} else {
 			dst.EffectSetDiscount = nil
-		} else {
-			if err = validator.Validate(dst.EffectSetDiscount); err != nil {
-				dst.EffectSetDiscount = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectSetDiscount: %s", err.Error())
 		}
-	} else {
-		dst.EffectSetDiscount = nil
 	}
 
-	// try to unmarshal data into EffectSetDiscountPerAdditionalCost
-	err = newStrictDecoder(data).Decode(&dst.EffectSetDiscountPerAdditionalCost)
-	if err == nil {
-		jsonEffectSetDiscountPerAdditionalCost, _ := json.Marshal(dst.EffectSetDiscountPerAdditionalCost)
-		if string(jsonEffectSetDiscountPerAdditionalCost) == "{}" { // empty struct
+	// check if the discriminator value is 'setDiscountPerAdditionalCost'
+	if jsonDict["effectType"] == "setDiscountPerAdditionalCost" {
+		// try to unmarshal JSON data into EffectSetDiscountPerAdditionalCost
+		err = json.Unmarshal(data, &dst.EffectSetDiscountPerAdditionalCost)
+		if err == nil {
+			return nil // data stored in dst.EffectSetDiscountPerAdditionalCost, return on the first match
+		} else {
 			dst.EffectSetDiscountPerAdditionalCost = nil
-		} else {
-			if err = validator.Validate(dst.EffectSetDiscountPerAdditionalCost); err != nil {
-				dst.EffectSetDiscountPerAdditionalCost = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectSetDiscountPerAdditionalCost: %s", err.Error())
 		}
-	} else {
-		dst.EffectSetDiscountPerAdditionalCost = nil
 	}
 
-	// try to unmarshal data into EffectSetDiscountPerAdditionalCostPerItem
-	err = newStrictDecoder(data).Decode(&dst.EffectSetDiscountPerAdditionalCostPerItem)
-	if err == nil {
-		jsonEffectSetDiscountPerAdditionalCostPerItem, _ := json.Marshal(dst.EffectSetDiscountPerAdditionalCostPerItem)
-		if string(jsonEffectSetDiscountPerAdditionalCostPerItem) == "{}" { // empty struct
+	// check if the discriminator value is 'setDiscountPerAdditionalCostPerItem'
+	if jsonDict["effectType"] == "setDiscountPerAdditionalCostPerItem" {
+		// try to unmarshal JSON data into EffectSetDiscountPerAdditionalCostPerItem
+		err = json.Unmarshal(data, &dst.EffectSetDiscountPerAdditionalCostPerItem)
+		if err == nil {
+			return nil // data stored in dst.EffectSetDiscountPerAdditionalCostPerItem, return on the first match
+		} else {
 			dst.EffectSetDiscountPerAdditionalCostPerItem = nil
-		} else {
-			if err = validator.Validate(dst.EffectSetDiscountPerAdditionalCostPerItem); err != nil {
-				dst.EffectSetDiscountPerAdditionalCostPerItem = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectSetDiscountPerAdditionalCostPerItem: %s", err.Error())
 		}
-	} else {
-		dst.EffectSetDiscountPerAdditionalCostPerItem = nil
 	}
 
-	// try to unmarshal data into EffectSetDiscountPerItem
-	err = newStrictDecoder(data).Decode(&dst.EffectSetDiscountPerItem)
-	if err == nil {
-		jsonEffectSetDiscountPerItem, _ := json.Marshal(dst.EffectSetDiscountPerItem)
-		if string(jsonEffectSetDiscountPerItem) == "{}" { // empty struct
+	// check if the discriminator value is 'setDiscountPerItem'
+	if jsonDict["effectType"] == "setDiscountPerItem" {
+		// try to unmarshal JSON data into EffectSetDiscountPerItem
+		err = json.Unmarshal(data, &dst.EffectSetDiscountPerItem)
+		if err == nil {
+			return nil // data stored in dst.EffectSetDiscountPerItem, return on the first match
+		} else {
 			dst.EffectSetDiscountPerItem = nil
-		} else {
-			if err = validator.Validate(dst.EffectSetDiscountPerItem); err != nil {
-				dst.EffectSetDiscountPerItem = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectSetDiscountPerItem: %s", err.Error())
 		}
-	} else {
-		dst.EffectSetDiscountPerItem = nil
 	}
 
-	// try to unmarshal data into EffectSetLoyaltyPointsExpiryDate
-	err = newStrictDecoder(data).Decode(&dst.EffectSetLoyaltyPointsExpiryDate)
-	if err == nil {
-		jsonEffectSetLoyaltyPointsExpiryDate, _ := json.Marshal(dst.EffectSetLoyaltyPointsExpiryDate)
-		if string(jsonEffectSetLoyaltyPointsExpiryDate) == "{}" { // empty struct
+	// check if the discriminator value is 'setLoyaltyPointsExpiryDate'
+	if jsonDict["effectType"] == "setLoyaltyPointsExpiryDate" {
+		// try to unmarshal JSON data into EffectSetLoyaltyPointsExpiryDate
+		err = json.Unmarshal(data, &dst.EffectSetLoyaltyPointsExpiryDate)
+		if err == nil {
+			return nil // data stored in dst.EffectSetLoyaltyPointsExpiryDate, return on the first match
+		} else {
 			dst.EffectSetLoyaltyPointsExpiryDate = nil
-		} else {
-			if err = validator.Validate(dst.EffectSetLoyaltyPointsExpiryDate); err != nil {
-				dst.EffectSetLoyaltyPointsExpiryDate = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectSetLoyaltyPointsExpiryDate: %s", err.Error())
 		}
-	} else {
-		dst.EffectSetLoyaltyPointsExpiryDate = nil
 	}
 
-	// try to unmarshal data into EffectShowBundleMetadata
-	err = newStrictDecoder(data).Decode(&dst.EffectShowBundleMetadata)
-	if err == nil {
-		jsonEffectShowBundleMetadata, _ := json.Marshal(dst.EffectShowBundleMetadata)
-		if string(jsonEffectShowBundleMetadata) == "{}" { // empty struct
+	// check if the discriminator value is 'showBundleMetadata'
+	if jsonDict["effectType"] == "showBundleMetadata" {
+		// try to unmarshal JSON data into EffectShowBundleMetadata
+		err = json.Unmarshal(data, &dst.EffectShowBundleMetadata)
+		if err == nil {
+			return nil // data stored in dst.EffectShowBundleMetadata, return on the first match
+		} else {
 			dst.EffectShowBundleMetadata = nil
-		} else {
-			if err = validator.Validate(dst.EffectShowBundleMetadata); err != nil {
-				dst.EffectShowBundleMetadata = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectShowBundleMetadata: %s", err.Error())
 		}
-	} else {
-		dst.EffectShowBundleMetadata = nil
 	}
 
-	// try to unmarshal data into EffectShowNotification
-	err = newStrictDecoder(data).Decode(&dst.EffectShowNotification)
-	if err == nil {
-		jsonEffectShowNotification, _ := json.Marshal(dst.EffectShowNotification)
-		if string(jsonEffectShowNotification) == "{}" { // empty struct
+	// check if the discriminator value is 'showNotification'
+	if jsonDict["effectType"] == "showNotification" {
+		// try to unmarshal JSON data into EffectShowNotification
+		err = json.Unmarshal(data, &dst.EffectShowNotification)
+		if err == nil {
+			return nil // data stored in dst.EffectShowNotification, return on the first match
+		} else {
 			dst.EffectShowNotification = nil
-		} else {
-			if err = validator.Validate(dst.EffectShowNotification); err != nil {
-				dst.EffectShowNotification = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectShowNotification: %s", err.Error())
 		}
-	} else {
-		dst.EffectShowNotification = nil
 	}
 
-	// try to unmarshal data into EffectStartAchievementProgress
-	err = newStrictDecoder(data).Decode(&dst.EffectStartAchievementProgress)
-	if err == nil {
-		jsonEffectStartAchievementProgress, _ := json.Marshal(dst.EffectStartAchievementProgress)
-		if string(jsonEffectStartAchievementProgress) == "{}" { // empty struct
+	// check if the discriminator value is 'startAchievementProgress'
+	if jsonDict["effectType"] == "startAchievementProgress" {
+		// try to unmarshal JSON data into EffectStartAchievementProgress
+		err = json.Unmarshal(data, &dst.EffectStartAchievementProgress)
+		if err == nil {
+			return nil // data stored in dst.EffectStartAchievementProgress, return on the first match
+		} else {
 			dst.EffectStartAchievementProgress = nil
-		} else {
-			if err = validator.Validate(dst.EffectStartAchievementProgress); err != nil {
-				dst.EffectStartAchievementProgress = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectStartAchievementProgress: %s", err.Error())
 		}
-	} else {
-		dst.EffectStartAchievementProgress = nil
 	}
 
-	// try to unmarshal data into EffectUnlockReward
-	err = newStrictDecoder(data).Decode(&dst.EffectUnlockReward)
-	if err == nil {
-		jsonEffectUnlockReward, _ := json.Marshal(dst.EffectUnlockReward)
-		if string(jsonEffectUnlockReward) == "{}" { // empty struct
+	// check if the discriminator value is 'unlockReward'
+	if jsonDict["effectType"] == "unlockReward" {
+		// try to unmarshal JSON data into EffectUnlockReward
+		err = json.Unmarshal(data, &dst.EffectUnlockReward)
+		if err == nil {
+			return nil // data stored in dst.EffectUnlockReward, return on the first match
+		} else {
 			dst.EffectUnlockReward = nil
-		} else {
-			if err = validator.Validate(dst.EffectUnlockReward); err != nil {
-				dst.EffectUnlockReward = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectUnlockReward: %s", err.Error())
 		}
-	} else {
-		dst.EffectUnlockReward = nil
 	}
 
-	// try to unmarshal data into EffectUseReward
-	err = newStrictDecoder(data).Decode(&dst.EffectUseReward)
-	if err == nil {
-		jsonEffectUseReward, _ := json.Marshal(dst.EffectUseReward)
-		if string(jsonEffectUseReward) == "{}" { // empty struct
+	// check if the discriminator value is 'useReward'
+	if jsonDict["effectType"] == "useReward" {
+		// try to unmarshal JSON data into EffectUseReward
+		err = json.Unmarshal(data, &dst.EffectUseReward)
+		if err == nil {
+			return nil // data stored in dst.EffectUseReward, return on the first match
+		} else {
 			dst.EffectUseReward = nil
-		} else {
-			if err = validator.Validate(dst.EffectUseReward); err != nil {
-				dst.EffectUseReward = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectUseReward: %s", err.Error())
 		}
-	} else {
-		dst.EffectUseReward = nil
 	}
 
-	// try to unmarshal data into EffectWillAwardGiveaway
-	err = newStrictDecoder(data).Decode(&dst.EffectWillAwardGiveaway)
-	if err == nil {
-		jsonEffectWillAwardGiveaway, _ := json.Marshal(dst.EffectWillAwardGiveaway)
-		if string(jsonEffectWillAwardGiveaway) == "{}" { // empty struct
+	// check if the discriminator value is 'willAwardGiveaway'
+	if jsonDict["effectType"] == "willAwardGiveaway" {
+		// try to unmarshal JSON data into EffectWillAwardGiveaway
+		err = json.Unmarshal(data, &dst.EffectWillAwardGiveaway)
+		if err == nil {
+			return nil // data stored in dst.EffectWillAwardGiveaway, return on the first match
+		} else {
 			dst.EffectWillAwardGiveaway = nil
-		} else {
-			if err = validator.Validate(dst.EffectWillAwardGiveaway); err != nil {
-				dst.EffectWillAwardGiveaway = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Effect as EffectWillAwardGiveaway: %s", err.Error())
 		}
-	} else {
-		dst.EffectWillAwardGiveaway = nil
 	}
 
-	if match > 1 { // more than 1 match
-		// reset to nil
-		dst.EffectAcceptCoupon = nil
-		dst.EffectAcceptReferral = nil
-		dst.EffectAddFreeItem = nil
-		dst.EffectAddLoyaltyPoints = nil
-		dst.EffectAddNegativeLoyaltyPoints = nil
-		dst.EffectAddToAudience = nil
-		dst.EffectAwardGiveaway = nil
-		dst.EffectBoostLoyaltyTier = nil
-		dst.EffectCallApi = nil
-		dst.EffectChangeLoyaltyTierLevel = nil
-		dst.EffectCouponCreated = nil
-		dst.EffectCustomEffect = nil
-		dst.EffectDeductLoyaltyPoints = nil
-		dst.EffectError = nil
-		dst.EffectExtendLoyaltyPointsExpiryDate = nil
-		dst.EffectIncreaseAchievementProgress = nil
-		dst.EffectIncreaseAchievementProgressPerItem = nil
-		dst.EffectJoinLoyaltyProgram = nil
-		dst.EffectOffsetNegativeLoyaltyPoints = nil
-		dst.EffectRedeemReferral = nil
-		dst.EffectReferralCreated = nil
-		dst.EffectRejectCoupon = nil
-		dst.EffectRejectReferral = nil
-		dst.EffectRemoveFromAudience = nil
-		dst.EffectReserveCoupon = nil
-		dst.EffectRollbackAddedLoyaltyPoints = nil
-		dst.EffectRollbackCoupon = nil
-		dst.EffectRollbackDeductedLoyaltyPoints = nil
-		dst.EffectRollbackDiscount = nil
-		dst.EffectRollbackIncreasedAchievementProgress = nil
-		dst.EffectRollbackIncreasedAchievementProgressPerItem = nil
-		dst.EffectRollbackReferral = nil
-		dst.EffectRollbackTierBoost = nil
-		dst.EffectRollbackUseReward = nil
-		dst.EffectSet = nil
-		dst.EffectSetDiscount = nil
-		dst.EffectSetDiscountPerAdditionalCost = nil
-		dst.EffectSetDiscountPerAdditionalCostPerItem = nil
-		dst.EffectSetDiscountPerItem = nil
-		dst.EffectSetLoyaltyPointsExpiryDate = nil
-		dst.EffectShowBundleMetadata = nil
-		dst.EffectShowNotification = nil
-		dst.EffectStartAchievementProgress = nil
-		dst.EffectUnlockReward = nil
-		dst.EffectUseReward = nil
-		dst.EffectWillAwardGiveaway = nil
-
-		return fmt.Errorf("data matches more than one schema in oneOf(Effect)")
-	} else if match == 1 {
-		return nil // exactly one match
-	} else { // no match
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(Effect): %v", err)
-		}
-
-		return fmt.Errorf("data failed to match schemas in oneOf(Effect)")
-	}
+	return nil
 }
 
 // Marshal data from the first non-nil pointers in the struct to JSON

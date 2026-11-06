@@ -13,6 +13,7 @@ package talon
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 )
 
 // checks if the RewardCatalogItem type satisfies the MappedNullable interface at compile time
@@ -31,7 +32,11 @@ type RewardCatalogItem struct {
 	// Customer-facing rule metadata for the reward.
 	Rule RuleMetadata `json:"rule"`
 	// The customer's eligibility for the reward. Returned only when the request includes a `profileIntegrationId` or `loyaltyCardId`.
-	Eligibility          *RewardEligibility `json:"eligibility,omitempty"`
+	Eligibility *RewardEligibility `json:"eligibility,omitempty"`
+	// The duration for which the customer rewards unlocked from this reward remain active, relative to when the customer reward was unlocked.  The time format is an **integer** followed by one letter indicating the time unit.  Examples: `30m`, `1h`, `5D`, `7W`, `10M`, `15Y`.  Available units:  - `m`: minutes - `h`: hours - `D`: days - `W`: weeks - `M`: months - `Y`: years  Certain units can be rounded up or down: - `_D` for rounding down days only. Signifies the start of the day. - `_U` for rounding up days, weeks, months and years. Signifies the end of the day, week, month or year.  This field is not returned in combination with `expiryDate`. If both `validityDuration` and `expiryDate` are not returned, customer rewards have unlimited validity.
+	ValidityDuration *string `json:"validityDuration,omitempty" validate:"regexp=^[1-9][0-9]*([mh]|D(_[DU])?|[WMY](_U)?)$"`
+	// Expiry date of the customer rewards unlocked from this reward. Customer rewards never expire if this is omitted and `validityDuration` is not set.  **Note:** - This field is not returned in combination with `validityDuration`.
+	ExpiryDate           *time.Time `json:"expiryDate,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -225,6 +230,70 @@ func (o *RewardCatalogItem) SetEligibility(v RewardEligibility) {
 	o.Eligibility = &v
 }
 
+// GetValidityDuration returns the ValidityDuration field value if set, zero value otherwise.
+func (o *RewardCatalogItem) GetValidityDuration() string {
+	if o == nil || IsNil(o.ValidityDuration) {
+		var ret string
+		return ret
+	}
+	return *o.ValidityDuration
+}
+
+// GetValidityDurationOk returns a tuple with the ValidityDuration field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *RewardCatalogItem) GetValidityDurationOk() (*string, bool) {
+	if o == nil || IsNil(o.ValidityDuration) {
+		return nil, false
+	}
+	return o.ValidityDuration, true
+}
+
+// HasValidityDuration returns a boolean if a field has been set.
+func (o *RewardCatalogItem) HasValidityDuration() bool {
+	if o != nil && !IsNil(o.ValidityDuration) {
+		return true
+	}
+
+	return false
+}
+
+// SetValidityDuration gets a reference to the given string and assigns it to the ValidityDuration field.
+func (o *RewardCatalogItem) SetValidityDuration(v string) {
+	o.ValidityDuration = &v
+}
+
+// GetExpiryDate returns the ExpiryDate field value if set, zero value otherwise.
+func (o *RewardCatalogItem) GetExpiryDate() time.Time {
+	if o == nil || IsNil(o.ExpiryDate) {
+		var ret time.Time
+		return ret
+	}
+	return *o.ExpiryDate
+}
+
+// GetExpiryDateOk returns a tuple with the ExpiryDate field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *RewardCatalogItem) GetExpiryDateOk() (*time.Time, bool) {
+	if o == nil || IsNil(o.ExpiryDate) {
+		return nil, false
+	}
+	return o.ExpiryDate, true
+}
+
+// HasExpiryDate returns a boolean if a field has been set.
+func (o *RewardCatalogItem) HasExpiryDate() bool {
+	if o != nil && !IsNil(o.ExpiryDate) {
+		return true
+	}
+
+	return false
+}
+
+// SetExpiryDate gets a reference to the given time.Time and assigns it to the ExpiryDate field.
+func (o *RewardCatalogItem) SetExpiryDate(v time.Time) {
+	o.ExpiryDate = &v
+}
+
 func (o RewardCatalogItem) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -246,6 +315,12 @@ func (o RewardCatalogItem) ToMap() (map[string]interface{}, error) {
 	toSerialize["rule"] = o.Rule
 	if !IsNil(o.Eligibility) {
 		toSerialize["eligibility"] = o.Eligibility
+	}
+	if !IsNil(o.ValidityDuration) {
+		toSerialize["validityDuration"] = o.ValidityDuration
+	}
+	if !IsNil(o.ExpiryDate) {
+		toSerialize["expiryDate"] = o.ExpiryDate
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -298,6 +373,8 @@ func (o *RewardCatalogItem) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "pointsRequired")
 		delete(additionalProperties, "rule")
 		delete(additionalProperties, "eligibility")
+		delete(additionalProperties, "validityDuration")
+		delete(additionalProperties, "expiryDate")
 		o.AdditionalProperties = additionalProperties
 	}
 

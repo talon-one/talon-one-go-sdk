@@ -5664,7 +5664,11 @@ func (r ApiExcludePriceHistoryRequest) Execute() (*http.Response, error) {
 /*
 ExcludePriceHistory Exclude price records from price history
 
-Select a batch of historical price IDs to exclude from [best prior price calculation](https://docs.talon.one/integration-api#tag/Catalogs/operation/bestPriorPrice). All IDs in the batch must be valid `id` values obtained from the [Get summary of price history](https://docs.talon.one/management-api#tag/Catalogs/operation/priceHistory.responses.200.history) endpoint, must belong to the specified Application, must not already be excluded from best prior price calculation, and must not be associated with a scheduled strikethrough pricing notification.
+Select a batch of price records (historical price data) to exclude from [best prior price calculation](https://docs.talon.one/integration-api#tag/Catalogs/operation/bestPriorPrice).
+
+All IDs in the batch must be valid `id` values obtained from the [Get summary of price history](https://docs.talon.one/management-api#tag/Catalogs/operation/priceHistory.responses.200.history) endpoint, must belong to the specified Application, must not already be excluded from best prior price calculation, and must not be associated with a scheduled strikethrough pricing notification.
+
+For more information, see [Best prior price](https://docs.talon.one/docs/dev/integration-guides/best-prior-price).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param applicationId The ID of the Application. It is displayed in your Talon.One deployment URL.
@@ -7324,7 +7328,7 @@ func (r ApiExportCouponsRequest) DateFormat(dateFormat string) ApiExportCouponsR
 	return r
 }
 
-// Filter results by the state of the campaign.  - &#x60;enabled&#x60;: Campaigns that are scheduled, running (activated), or expired. - &#x60;running&#x60;: Campaigns that are running (activated). - &#x60;disabled&#x60;: Campaigns that are disabled. - &#x60;expired&#x60;: Campaigns that are expired. - &#x60;archived&#x60;: Campaigns that are archived.
+// Filter results by the state of the campaign.  - &#x60;enabled&#x60;: Campaigns that are scheduled, running (active), or expired. - &#x60;running&#x60;: Campaigns that are running (active). - &#x60;disabled&#x60;: Campaigns that are disabled. - &#x60;expired&#x60;: Campaigns that are expired. - &#x60;archived&#x60;: Campaigns that are archived.
 func (r ApiExportCouponsRequest) CampaignState(campaignState string) ApiExportCouponsRequest {
 	r.campaignState = &campaignState
 	return r
@@ -7680,7 +7684,13 @@ Download a CSV file containing the customer sessions that match the request.
 
   - `store_integration_id`: The integration ID of the store.
 
+  - `loyaltycards`: The identifier of the loyalty card used in the session. A session can have only one loyalty card.
+
+  - `updatecount`: The number of times the session was updated. When the session is created, this value is initialized to `1`.
+
   - `coupons`: Coupon codes in the session.
+
+  - `rewards`: The integration IDs of the unlocked rewards that can be used in the session.
 
     @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
     @param applicationId The ID of the Application. It is displayed in your Talon.One deployment URL.
@@ -8672,13 +8682,14 @@ func (a *ManagementAPIService) ExportLoyaltyCardBalancesExecute(r ApiExportLoyal
 }
 
 type ApiExportLoyaltyCardLedgerRequest struct {
-	ctx              context.Context
-	ApiService       *ManagementAPIService
-	loyaltyProgramId int64
-	loyaltyCardId    string
-	rangeStart       *time.Time
-	rangeEnd         *time.Time
-	dateFormat       *string
+	ctx               context.Context
+	ApiService        *ManagementAPIService
+	loyaltyProgramId  int64
+	loyaltyCardId     string
+	rangeStart        *time.Time
+	rangeEnd          *time.Time
+	dateFormat        *string
+	includeReferences *bool
 }
 
 // Only return results from after this timestamp.  &gt; [!note] **Note** &gt; - This must be an RFC3339 timestamp string. &gt; - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting &gt;   considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.
@@ -8699,6 +8710,12 @@ func (r ApiExportLoyaltyCardLedgerRequest) DateFormat(dateFormat string) ApiExpo
 	return r
 }
 
+// Whether to include the UUIDs of transactions referenced by deductions. When set to &#x60;true&#x60;, the UUIDs are included in the &#x60;referencetransactionuuids&#x60; column of the export CSV.  **Note:** Enabling this can decrease query performance, especially  when no date filter is applied to a large transaction history.
+func (r ApiExportLoyaltyCardLedgerRequest) IncludeReferences(includeReferences bool) ApiExportLoyaltyCardLedgerRequest {
+	r.includeReferences = &includeReferences
+	return r
+}
+
 func (r ApiExportLoyaltyCardLedgerRequest) Execute() (string, *http.Response, error) {
 	return r.ApiService.ExportLoyaltyCardLedgerExecute(r)
 }
@@ -8711,8 +8728,7 @@ program.
 
 > [!tip] If the exported CSV file is too large to view, you can
 > [split it into multiple files](https://www.google.com/search?q=split+CSV+into+multiple+files).
-
-The generated file can contain the following columns:
+The file contains the following columns:
 
 - `cardidentifier`: The identifier of the loyalty card.
 - `applicationid`: The ID of the Application.
@@ -8734,6 +8750,7 @@ The generated file can contain the following columns:
 - `transactionUUID`: Unique identifier of the transaction in the UUID format.
 - `validityDuration`: The duration for which the points remain active, relative to the activation date.
 - `remainingAmount`: The current unused amount of points, when applicable to `addition` transactions.
+- `referencetransactionuuids`: The UUIDs of the addition transactions from which points were deducted by the subtraction, separated by semicolons. Included only when `includeReferences` is `true`.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param loyaltyProgramId Identifier of the card-based loyalty program containing the loyalty card. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
@@ -8789,6 +8806,13 @@ func (a *ManagementAPIService) ExportLoyaltyCardLedgerExecute(r ApiExportLoyalty
 	parameterAddToHeaderOrQuery(localVarQueryParams, "rangeEnd", r.rangeEnd, "form", "")
 	if r.dateFormat != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "dateFormat", r.dateFormat, "form", "")
+	}
+	if r.includeReferences != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "includeReferences", r.includeReferences, "form", "")
+	} else {
+		var defaultValue bool = false
+		parameterAddToHeaderOrQuery(localVarQueryParams, "includeReferences", defaultValue, "form", "")
+		r.includeReferences = &defaultValue
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -9223,13 +9247,14 @@ func (a *ManagementAPIService) ExportLoyaltyJoinDatesExecute(r ApiExportLoyaltyJ
 }
 
 type ApiExportLoyaltyLedgerRequest struct {
-	ctx              context.Context
-	ApiService       *ManagementAPIService
-	rangeStart       *time.Time
-	rangeEnd         *time.Time
-	loyaltyProgramId string
-	integrationId    string
-	dateFormat       *string
+	ctx               context.Context
+	ApiService        *ManagementAPIService
+	rangeStart        *time.Time
+	rangeEnd          *time.Time
+	loyaltyProgramId  string
+	integrationId     string
+	dateFormat        *string
+	includeReferences *bool
 }
 
 // Only return results from after this timestamp.  &gt; [!note] **Note** &gt; - This must be an RFC3339 timestamp string. &gt; - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting &gt;   considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.
@@ -9250,6 +9275,12 @@ func (r ApiExportLoyaltyLedgerRequest) DateFormat(dateFormat string) ApiExportLo
 	return r
 }
 
+// Whether to include the UUIDs of transactions referenced by deductions. When set to &#x60;true&#x60;, the UUIDs are included in the &#x60;referencetransactionuuids&#x60; column of the export CSV.  **Note:** Enabling this can decrease query performance, especially when no date filter is applied to a large transaction history.
+func (r ApiExportLoyaltyLedgerRequest) IncludeReferences(includeReferences bool) ApiExportLoyaltyLedgerRequest {
+	r.includeReferences = &includeReferences
+	return r
+}
+
 func (r ApiExportLoyaltyLedgerRequest) Execute() (string, *http.Response, error) {
 	return r.ApiService.ExportLoyaltyLedgerExecute(r)
 }
@@ -9263,7 +9294,7 @@ program.
 > [!tip] If the exported CSV file is too large to view, you can
 > [split it into multiple files](https://www.google.com/search?q=split+CSV+into+multiple+files).
 
-The generated file can contain the following columns:
+The file contains the following columns:
 
 - `customerprofileid`: The ID of the profile.
 - `customersessionid`: The ID of the customer session.
@@ -9284,6 +9315,7 @@ The generated file can contain the following columns:
 - `transactionUUID`: Unique identifier of the transaction in the UUID format.
 - `validityDuration`: The duration for which the points remain active, relative to the activation date.
 - `remainingAmount`: The current unused amount of points, when applicable to `addition` transactions.
+- `referencetransactionuuids`: The UUIDs of the addition transactions from which points were deducted by the subtraction, separated by semicolons. Included only when `includeReferences` is `true`.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param loyaltyProgramId The identifier for the loyalty program.
@@ -9333,6 +9365,13 @@ func (a *ManagementAPIService) ExportLoyaltyLedgerExecute(r ApiExportLoyaltyLedg
 	parameterAddToHeaderOrQuery(localVarQueryParams, "rangeEnd", r.rangeEnd, "form", "")
 	if r.dateFormat != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "dateFormat", r.dateFormat, "form", "")
+	}
+	if r.includeReferences != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "includeReferences", r.includeReferences, "form", "")
+	} else {
+		var defaultValue bool = false
+		parameterAddToHeaderOrQuery(localVarQueryParams, "includeReferences", defaultValue, "form", "")
+		r.includeReferences = &defaultValue
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -14280,7 +14319,7 @@ func (r ApiGetCampaignByAttributesRequest) Sort(sort string) ApiGetCampaignByAtt
 	return r
 }
 
-// Filter results by the state of the campaign.  - &#x60;enabled&#x60;: Campaigns that are scheduled, running (activated), or expired. - &#x60;running&#x60;: Campaigns that are running (activated). - &#x60;disabled&#x60;: Campaigns that are disabled. - &#x60;expired&#x60;: Campaigns that are expired. - &#x60;archived&#x60;: Campaigns that are archived.
+// Filter results by the state of the campaign.  - &#x60;enabled&#x60;: Campaigns that are scheduled, running (active), or expired. - &#x60;running&#x60;: Campaigns that are running (active). - &#x60;disabled&#x60;: Campaigns that are disabled. - &#x60;expired&#x60;: Campaigns that are expired. - &#x60;archived&#x60;: Campaigns that are archived.
 func (r ApiGetCampaignByAttributesRequest) CampaignState(campaignState string) ApiGetCampaignByAttributesRequest {
 	r.campaignState = &campaignState
 	return r
@@ -14912,7 +14951,7 @@ func (r ApiGetCampaignsRequest) Sort(sort string) ApiGetCampaignsRequest {
 	return r
 }
 
-// Filter results by the state of the campaign.  - &#x60;enabled&#x60;: Campaigns that are scheduled, running (activated), or expired. - &#x60;running&#x60;: Campaigns that are running (activated). - &#x60;disabled&#x60;: Campaigns that are disabled. - &#x60;expired&#x60;: Campaigns that are expired. - &#x60;archived&#x60;: Campaigns that are archived.
+// Filter results by the state of the campaign.  - &#x60;enabled&#x60;: Campaigns that are scheduled, running (active), or expired. - &#x60;running&#x60;: Campaigns that are running (active). - &#x60;disabled&#x60;: Campaigns that are disabled. - &#x60;expired&#x60;: Campaigns that are expired. - &#x60;archived&#x60;: Campaigns that are archived.
 func (r ApiGetCampaignsRequest) CampaignState(campaignState string) ApiGetCampaignsRequest {
 	r.campaignState = &campaignState
 	return r
@@ -26466,7 +26505,11 @@ func (r ApiPriceHistoryRequest) Execute() (*PriceHistoryResponse, *http.Response
 /*
 PriceHistory Get summary of price history
 
-Fetch the historical price data for a given SKU within a defined timeframe.
+Fetch the price records (historical price data) for a given SKU within a defined timeframe.
+
+You can use this endpoint for auditing purposes and for ensuring that evaluation produced correct price records.
+
+For more information, see [Best prior price](https://docs.talon.one/docs/dev/integration-guides/best-prior-price).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param applicationId The ID of the Application. It is displayed in your Talon.One deployment URL.
@@ -28768,7 +28811,7 @@ func (r ApiSearchCouponsAdvancedApplicationWideWithoutTotalCountRequest) ExactMa
 	return r
 }
 
-// Filter results by the state of the campaign.  - &#x60;enabled&#x60;: Campaigns that are scheduled, running (activated), or expired. - &#x60;running&#x60;: Campaigns that are running (activated). - &#x60;disabled&#x60;: Campaigns that are disabled. - &#x60;expired&#x60;: Campaigns that are expired. - &#x60;archived&#x60;: Campaigns that are archived.
+// Filter results by the state of the campaign.  - &#x60;enabled&#x60;: Campaigns that are scheduled, running (active), or expired. - &#x60;running&#x60;: Campaigns that are running (active). - &#x60;disabled&#x60;: Campaigns that are disabled. - &#x60;expired&#x60;: Campaigns that are expired. - &#x60;archived&#x60;: Campaigns that are archived.
 func (r ApiSearchCouponsAdvancedApplicationWideWithoutTotalCountRequest) CampaignState(campaignState string) ApiSearchCouponsAdvancedApplicationWideWithoutTotalCountRequest {
 	r.campaignState = &campaignState
 	return r

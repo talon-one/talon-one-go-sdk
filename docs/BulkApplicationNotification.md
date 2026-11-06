@@ -5,13 +5,13 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **TotalResultSize** | **int64** |  | 
-**Data** | [**[]CampaignEvaluationTreeChangedNotification**](CampaignEvaluationTreeChangedNotification.md) |  | 
+**Data** | [**[]CampaignEvaluationTreeChangedNotificationData**](CampaignEvaluationTreeChangedNotificationData.md) |  | 
 
 ## Methods
 
 ### NewBulkApplicationNotification
 
-`func NewBulkApplicationNotification(totalResultSize int64, data []CampaignEvaluationTreeChangedNotification, ) *BulkApplicationNotification`
+`func NewBulkApplicationNotification(totalResultSize int64, data []CampaignEvaluationTreeChangedNotificationData, ) *BulkApplicationNotification`
 
 NewBulkApplicationNotification instantiates a new BulkApplicationNotification object
 This constructor will assign default values to properties that have it defined,
@@ -48,20 +48,20 @@ SetTotalResultSize sets TotalResultSize field to given value.
 
 ### GetData
 
-`func (o *BulkApplicationNotification) GetData() []CampaignEvaluationTreeChangedNotification`
+`func (o *BulkApplicationNotification) GetData() []CampaignEvaluationTreeChangedNotificationData`
 
 GetData returns the Data field if non-nil, zero value otherwise.
 
 ### GetDataOk
 
-`func (o *BulkApplicationNotification) GetDataOk() (*[]CampaignEvaluationTreeChangedNotification, bool)`
+`func (o *BulkApplicationNotification) GetDataOk() (*[]CampaignEvaluationTreeChangedNotificationData, bool)`
 
 GetDataOk returns a tuple with the Data field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetData
 
-`func (o *BulkApplicationNotification) SetData(v []CampaignEvaluationTreeChangedNotification)`
+`func (o *BulkApplicationNotification) SetData(v []CampaignEvaluationTreeChangedNotificationData)`
 
 SetData sets Data field to given value.
 

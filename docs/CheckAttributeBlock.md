@@ -7,25 +7,25 @@ Name | Type | Description | Notes
 **Id** | Pointer to **string** | Unique identifier for this block. | [optional] [readonly] 
 **Type** | **string** | A block discriminator of type &#x60;checkAttribute&#x60;. | 
 **Tags** | Pointer to **[]string** | Semantic labels attached to this block. | [optional] [readonly] 
-**Operator** | **string** | The comparison operator applied to the attribute. | 
+**Operator** | **string** | The location membership operator applied to the attribute. | 
 **Attribute** | **interface{}** | The attribute path identifier (e.g. \&quot;$Session.Total\&quot;). | 
-**Value** | Pointer to **interface{}** | The comparison value for scalar operators. | [optional] 
-**Min** | Pointer to **interface{}** | The minimum value allowed for the &#x60;between&#x60; operator. | [optional] 
-**Max** | Pointer to **interface{}** | The maximum value allowed for the &#x60;between&#x60; operator. | [optional] 
-**Start** | Pointer to **interface{}** | The start value for the &#x60;within&#x60; operator. | [optional] 
-**End** | Pointer to **interface{}** | The end value for the &#x60;within&#x60; operator. | [optional] 
+**Value** | **interface{}** | The comparison value for scalar operators. | 
+**Min** | **interface{}** | The minimum value allowed for the &#x60;between&#x60; operator. | 
+**Max** | **interface{}** | The maximum value allowed for the &#x60;between&#x60; operator. | 
+**Start** | **interface{}** | The start value for the &#x60;within&#x60; operator. | 
+**End** | **interface{}** | The end value for the &#x60;within&#x60; operator. | 
 **StartInclusive** | Pointer to **bool** | When &#x60;true&#x60;, the &#x60;start&#x60; value is included in the range for the &#x60;within&#x60; operator. | [optional] 
 **EndInclusive** | Pointer to **bool** | When &#x60;true&#x60;, the &#x60;end&#x60; value is included in the range for the &#x60;within&#x60; operator. | [optional] 
 **TimezoneInsensitive** | Pointer to **bool** | Indicates whether the &#x60;within&#x60; operator ignores time zones and compares the wall-clock time only. When &#x60;false&#x60;, time zones are taken into account. | [optional] 
-**Values** | Pointer to **interface{}** | The set of values to match against for list operators. For location operators (&#x60;in&#x60;, &#x60;not(in)&#x60;), an array of objects with a &#x60;geometry&#x60; (see &#x60;GeoJSONGeometry&#x60;) and an optional &#x60;name&#x60;, or a string reference to a list attribute. | [optional] 
-**Count** | Pointer to **interface{}** | The count threshold for &#x60;containsAtLeast&#x60; and &#x60;containsExactly&#x60; operators. | [optional] 
+**Values** | [**LocationCheckAttributeBlock1Values**](LocationCheckAttributeBlock1Values.md) |  | 
+**Count** | **interface{}** | The count threshold for &#x60;containsAtLeast&#x60; and &#x60;containsExactly&#x60; operators. | 
 **OnFailure** | Pointer to [**[]Block**](Block.md) | Promotion blocks evaluated when this block fails or returns false. | [optional] 
 
 ## Methods
 
 ### NewCheckAttributeBlock
 
-`func NewCheckAttributeBlock(type_ string, operator string, attribute interface{}, ) *CheckAttributeBlock`
+`func NewCheckAttributeBlock(type_ string, operator string, attribute interface{}, value interface{}, min interface{}, max interface{}, start interface{}, end interface{}, values LocationCheckAttributeBlock1Values, count interface{}, ) *CheckAttributeBlock`
 
 NewCheckAttributeBlock instantiates a new CheckAttributeBlock object
 This constructor will assign default values to properties that have it defined,
@@ -179,11 +179,6 @@ and a boolean to check if the value has been set.
 
 SetValue sets Value field to given value.
 
-### HasValue
-
-`func (o *CheckAttributeBlock) HasValue() bool`
-
-HasValue returns a boolean if a field has been set.
 
 ### SetValueNil
 
@@ -214,11 +209,6 @@ and a boolean to check if the value has been set.
 
 SetMin sets Min field to given value.
 
-### HasMin
-
-`func (o *CheckAttributeBlock) HasMin() bool`
-
-HasMin returns a boolean if a field has been set.
 
 ### SetMinNil
 
@@ -249,11 +239,6 @@ and a boolean to check if the value has been set.
 
 SetMax sets Max field to given value.
 
-### HasMax
-
-`func (o *CheckAttributeBlock) HasMax() bool`
-
-HasMax returns a boolean if a field has been set.
 
 ### SetMaxNil
 
@@ -284,11 +269,6 @@ and a boolean to check if the value has been set.
 
 SetStart sets Start field to given value.
 
-### HasStart
-
-`func (o *CheckAttributeBlock) HasStart() bool`
-
-HasStart returns a boolean if a field has been set.
 
 ### SetStartNil
 
@@ -319,11 +299,6 @@ and a boolean to check if the value has been set.
 
 SetEnd sets End field to given value.
 
-### HasEnd
-
-`func (o *CheckAttributeBlock) HasEnd() bool`
-
-HasEnd returns a boolean if a field has been set.
 
 ### SetEndNil
 
@@ -412,39 +387,24 @@ HasTimezoneInsensitive returns a boolean if a field has been set.
 
 ### GetValues
 
-`func (o *CheckAttributeBlock) GetValues() interface{}`
+`func (o *CheckAttributeBlock) GetValues() LocationCheckAttributeBlock1Values`
 
 GetValues returns the Values field if non-nil, zero value otherwise.
 
 ### GetValuesOk
 
-`func (o *CheckAttributeBlock) GetValuesOk() (*interface{}, bool)`
+`func (o *CheckAttributeBlock) GetValuesOk() (*LocationCheckAttributeBlock1Values, bool)`
 
 GetValuesOk returns a tuple with the Values field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetValues
 
-`func (o *CheckAttributeBlock) SetValues(v interface{})`
+`func (o *CheckAttributeBlock) SetValues(v LocationCheckAttributeBlock1Values)`
 
 SetValues sets Values field to given value.
 
-### HasValues
 
-`func (o *CheckAttributeBlock) HasValues() bool`
-
-HasValues returns a boolean if a field has been set.
-
-### SetValuesNil
-
-`func (o *CheckAttributeBlock) SetValuesNil(b bool)`
-
- SetValuesNil sets the value for Values to be an explicit nil
-
-### UnsetValues
-`func (o *CheckAttributeBlock) UnsetValues()`
-
-UnsetValues ensures that no value is present for Values, not even an explicit nil
 ### GetCount
 
 `func (o *CheckAttributeBlock) GetCount() interface{}`
@@ -464,11 +424,6 @@ and a boolean to check if the value has been set.
 
 SetCount sets Count field to given value.
 
-### HasCount
-
-`func (o *CheckAttributeBlock) HasCount() bool`
-
-HasCount returns a boolean if a field has been set.
 
 ### SetCountNil
 

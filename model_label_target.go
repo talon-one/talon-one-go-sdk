@@ -13,7 +13,6 @@ package talon
 import (
 	"encoding/json"
 	"fmt"
-	"gopkg.in/validator.v2"
 )
 
 // LabelTarget - struct for LabelTarget
@@ -41,34 +40,26 @@ func (dst *LabelTarget) UnmarshalJSON(data []byte) error {
 	var err error
 	match := 0
 	// try to unmarshal data into LabelTargetAudience
-	err = newStrictDecoder(data).Decode(&dst.LabelTargetAudience)
+	err = json.Unmarshal(data, &dst.LabelTargetAudience)
 	if err == nil {
 		jsonLabelTargetAudience, _ := json.Marshal(dst.LabelTargetAudience)
 		if string(jsonLabelTargetAudience) == "{}" { // empty struct
 			dst.LabelTargetAudience = nil
 		} else {
-			if err = validator.Validate(dst.LabelTargetAudience); err != nil {
-				dst.LabelTargetAudience = nil
-			} else {
-				match++
-			}
+			match++
 		}
 	} else {
 		dst.LabelTargetAudience = nil
 	}
 
 	// try to unmarshal data into LabelTargetNone
-	err = newStrictDecoder(data).Decode(&dst.LabelTargetNone)
+	err = json.Unmarshal(data, &dst.LabelTargetNone)
 	if err == nil {
 		jsonLabelTargetNone, _ := json.Marshal(dst.LabelTargetNone)
 		if string(jsonLabelTargetNone) == "{}" { // empty struct
 			dst.LabelTargetNone = nil
 		} else {
-			if err = validator.Validate(dst.LabelTargetNone); err != nil {
-				dst.LabelTargetNone = nil
-			} else {
-				match++
-			}
+			match++
 		}
 	} else {
 		dst.LabelTargetNone = nil

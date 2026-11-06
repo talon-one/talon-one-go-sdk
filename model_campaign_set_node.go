@@ -13,7 +13,6 @@ package talon
 import (
 	"encoding/json"
 	"fmt"
-	"gopkg.in/validator.v2"
 )
 
 // CampaignSetNode - struct for CampaignSetNode
@@ -41,34 +40,26 @@ func (dst *CampaignSetNode) UnmarshalJSON(data []byte) error {
 	var err error
 	match := 0
 	// try to unmarshal data into CampaignSetBranchNode
-	err = newStrictDecoder(data).Decode(&dst.CampaignSetBranchNode)
+	err = json.Unmarshal(data, &dst.CampaignSetBranchNode)
 	if err == nil {
 		jsonCampaignSetBranchNode, _ := json.Marshal(dst.CampaignSetBranchNode)
 		if string(jsonCampaignSetBranchNode) == "{}" { // empty struct
 			dst.CampaignSetBranchNode = nil
 		} else {
-			if err = validator.Validate(dst.CampaignSetBranchNode); err != nil {
-				dst.CampaignSetBranchNode = nil
-			} else {
-				match++
-			}
+			match++
 		}
 	} else {
 		dst.CampaignSetBranchNode = nil
 	}
 
 	// try to unmarshal data into CampaignSetLeafNode
-	err = newStrictDecoder(data).Decode(&dst.CampaignSetLeafNode)
+	err = json.Unmarshal(data, &dst.CampaignSetLeafNode)
 	if err == nil {
 		jsonCampaignSetLeafNode, _ := json.Marshal(dst.CampaignSetLeafNode)
 		if string(jsonCampaignSetLeafNode) == "{}" { // empty struct
 			dst.CampaignSetLeafNode = nil
 		} else {
-			if err = validator.Validate(dst.CampaignSetLeafNode); err != nil {
-				dst.CampaignSetLeafNode = nil
-			} else {
-				match++
-			}
+			match++
 		}
 	} else {
 		dst.CampaignSetLeafNode = nil

@@ -12,15 +12,46 @@ package talon
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the UnaryCheckAttributeBlock type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &UnaryCheckAttributeBlock{}
 
-// UnaryCheckAttributeBlock Variant of `CheckAttributeBlock` for operators that test a property of the attribute itself with no comparison value.
+// UnaryCheckAttributeBlock struct for UnaryCheckAttributeBlock
 type UnaryCheckAttributeBlock struct {
+	// Unique identifier for this block.
+	Id *string `json:"id,omitempty"`
+	// A block discriminator of type `checkAttribute`.
+	Type string `json:"type"`
+	// Semantic labels attached to this block.
+	Tags []string `json:"tags,omitempty"`
 	// The unary operator applied to the attribute. These operators require no comparison value.
-	Operator             *string `json:"operator,omitempty"`
+	Operator string `json:"operator"`
+	// The attribute path identifier (e.g. \"$Session.Total\").
+	Attribute interface{} `json:"attribute"`
+	// The comparison value for scalar operators.
+	Value interface{} `json:"value,omitempty"`
+	// The minimum value allowed for the `between` operator.
+	Min interface{} `json:"min,omitempty"`
+	// The maximum value allowed for the `between` operator.
+	Max interface{} `json:"max,omitempty"`
+	// The start value for the `within` operator.
+	Start interface{} `json:"start,omitempty"`
+	// The end value for the `within` operator.
+	End interface{} `json:"end,omitempty"`
+	// When `true`, the `start` value is included in the range for the `within` operator.
+	StartInclusive *bool `json:"startInclusive,omitempty"`
+	// When `true`, the `end` value is included in the range for the `within` operator.
+	EndInclusive *bool `json:"endInclusive,omitempty"`
+	// Indicates whether the `within` operator ignores time zones and compares the wall-clock time only. When `false`, time zones are taken into account.
+	TimezoneInsensitive *bool `json:"timezoneInsensitive,omitempty"`
+	// The set of values to match against for list operators. For location operators (`in`, `not(in)`), an array of objects with a `geometry` (see `GeoJSONGeometry`) and an optional `name`, or a string reference to a list attribute.
+	Values interface{} `json:"values,omitempty"`
+	// The count threshold for `containsAtLeast` and `containsExactly` operators.
+	Count interface{} `json:"count,omitempty"`
+	// Promotion blocks evaluated when this block fails or returns false.
+	OnFailure            []Block `json:"onFailure,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -30,8 +61,11 @@ type _UnaryCheckAttributeBlock UnaryCheckAttributeBlock
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildUnaryCheckAttributeBlock() *UnaryCheckAttributeBlock {
+func BuildUnaryCheckAttributeBlock(type_ string, operator string, attribute interface{}) *UnaryCheckAttributeBlock {
 	this := UnaryCheckAttributeBlock{}
+	this.Type = type_
+	this.Operator = operator
+	this.Attribute = attribute
 	return &this
 }
 
@@ -43,36 +77,501 @@ func NewUnaryCheckAttributeBlockWithDefaults() *UnaryCheckAttributeBlock {
 	return &this
 }
 
-// GetOperator returns the Operator field value if set, zero value otherwise.
-func (o *UnaryCheckAttributeBlock) GetOperator() string {
-	if o == nil || IsNil(o.Operator) {
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *UnaryCheckAttributeBlock) GetId() string {
+	if o == nil || IsNil(o.Id) {
 		var ret string
 		return ret
 	}
-	return *o.Operator
+	return *o.Id
 }
 
-// GetOperatorOk returns a tuple with the Operator field value if set, nil otherwise
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *UnaryCheckAttributeBlock) GetOperatorOk() (*string, bool) {
-	if o == nil || IsNil(o.Operator) {
+func (o *UnaryCheckAttributeBlock) GetIdOk() (*string, bool) {
+	if o == nil || IsNil(o.Id) {
 		return nil, false
 	}
-	return o.Operator, true
+	return o.Id, true
 }
 
-// HasOperator returns a boolean if a field has been set.
-func (o *UnaryCheckAttributeBlock) HasOperator() bool {
-	if o != nil && !IsNil(o.Operator) {
+// HasId returns a boolean if a field has been set.
+func (o *UnaryCheckAttributeBlock) HasId() bool {
+	if o != nil && !IsNil(o.Id) {
 		return true
 	}
 
 	return false
 }
 
-// SetOperator gets a reference to the given string and assigns it to the Operator field.
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *UnaryCheckAttributeBlock) SetId(v string) {
+	o.Id = &v
+}
+
+// GetType returns the Type field value
+func (o *UnaryCheckAttributeBlock) GetType() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Type
+}
+
+// GetTypeOk returns a tuple with the Type field value
+// and a boolean to check if the value has been set.
+func (o *UnaryCheckAttributeBlock) GetTypeOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Type, true
+}
+
+// SetType sets field value
+func (o *UnaryCheckAttributeBlock) SetType(v string) {
+	o.Type = v
+}
+
+// GetTags returns the Tags field value if set, zero value otherwise.
+func (o *UnaryCheckAttributeBlock) GetTags() []string {
+	if o == nil || IsNil(o.Tags) {
+		var ret []string
+		return ret
+	}
+	return o.Tags
+}
+
+// GetTagsOk returns a tuple with the Tags field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *UnaryCheckAttributeBlock) GetTagsOk() ([]string, bool) {
+	if o == nil || IsNil(o.Tags) {
+		return nil, false
+	}
+	return o.Tags, true
+}
+
+// HasTags returns a boolean if a field has been set.
+func (o *UnaryCheckAttributeBlock) HasTags() bool {
+	if o != nil && !IsNil(o.Tags) {
+		return true
+	}
+
+	return false
+}
+
+// SetTags gets a reference to the given []string and assigns it to the Tags field.
+func (o *UnaryCheckAttributeBlock) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetOperator returns the Operator field value
+func (o *UnaryCheckAttributeBlock) GetOperator() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Operator
+}
+
+// GetOperatorOk returns a tuple with the Operator field value
+// and a boolean to check if the value has been set.
+func (o *UnaryCheckAttributeBlock) GetOperatorOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Operator, true
+}
+
+// SetOperator sets field value
 func (o *UnaryCheckAttributeBlock) SetOperator(v string) {
-	o.Operator = &v
+	o.Operator = v
+}
+
+// GetAttribute returns the Attribute field value
+// If the value is explicit nil, the zero value for interface{} will be returned
+func (o *UnaryCheckAttributeBlock) GetAttribute() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+
+	return o.Attribute
+}
+
+// GetAttributeOk returns a tuple with the Attribute field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *UnaryCheckAttributeBlock) GetAttributeOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.Attribute) {
+		return nil, false
+	}
+	return &o.Attribute, true
+}
+
+// SetAttribute sets field value
+func (o *UnaryCheckAttributeBlock) SetAttribute(v interface{}) {
+	o.Attribute = v
+}
+
+// GetValue returns the Value field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *UnaryCheckAttributeBlock) GetValue() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+	return o.Value
+}
+
+// GetValueOk returns a tuple with the Value field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *UnaryCheckAttributeBlock) GetValueOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.Value) {
+		return nil, false
+	}
+	return &o.Value, true
+}
+
+// HasValue returns a boolean if a field has been set.
+func (o *UnaryCheckAttributeBlock) HasValue() bool {
+	if o != nil && !IsNil(o.Value) {
+		return true
+	}
+
+	return false
+}
+
+// SetValue gets a reference to the given interface{} and assigns it to the Value field.
+func (o *UnaryCheckAttributeBlock) SetValue(v interface{}) {
+	o.Value = v
+}
+
+// GetMin returns the Min field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *UnaryCheckAttributeBlock) GetMin() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+	return o.Min
+}
+
+// GetMinOk returns a tuple with the Min field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *UnaryCheckAttributeBlock) GetMinOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.Min) {
+		return nil, false
+	}
+	return &o.Min, true
+}
+
+// HasMin returns a boolean if a field has been set.
+func (o *UnaryCheckAttributeBlock) HasMin() bool {
+	if o != nil && !IsNil(o.Min) {
+		return true
+	}
+
+	return false
+}
+
+// SetMin gets a reference to the given interface{} and assigns it to the Min field.
+func (o *UnaryCheckAttributeBlock) SetMin(v interface{}) {
+	o.Min = v
+}
+
+// GetMax returns the Max field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *UnaryCheckAttributeBlock) GetMax() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+	return o.Max
+}
+
+// GetMaxOk returns a tuple with the Max field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *UnaryCheckAttributeBlock) GetMaxOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.Max) {
+		return nil, false
+	}
+	return &o.Max, true
+}
+
+// HasMax returns a boolean if a field has been set.
+func (o *UnaryCheckAttributeBlock) HasMax() bool {
+	if o != nil && !IsNil(o.Max) {
+		return true
+	}
+
+	return false
+}
+
+// SetMax gets a reference to the given interface{} and assigns it to the Max field.
+func (o *UnaryCheckAttributeBlock) SetMax(v interface{}) {
+	o.Max = v
+}
+
+// GetStart returns the Start field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *UnaryCheckAttributeBlock) GetStart() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+	return o.Start
+}
+
+// GetStartOk returns a tuple with the Start field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *UnaryCheckAttributeBlock) GetStartOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.Start) {
+		return nil, false
+	}
+	return &o.Start, true
+}
+
+// HasStart returns a boolean if a field has been set.
+func (o *UnaryCheckAttributeBlock) HasStart() bool {
+	if o != nil && !IsNil(o.Start) {
+		return true
+	}
+
+	return false
+}
+
+// SetStart gets a reference to the given interface{} and assigns it to the Start field.
+func (o *UnaryCheckAttributeBlock) SetStart(v interface{}) {
+	o.Start = v
+}
+
+// GetEnd returns the End field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *UnaryCheckAttributeBlock) GetEnd() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+	return o.End
+}
+
+// GetEndOk returns a tuple with the End field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *UnaryCheckAttributeBlock) GetEndOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.End) {
+		return nil, false
+	}
+	return &o.End, true
+}
+
+// HasEnd returns a boolean if a field has been set.
+func (o *UnaryCheckAttributeBlock) HasEnd() bool {
+	if o != nil && !IsNil(o.End) {
+		return true
+	}
+
+	return false
+}
+
+// SetEnd gets a reference to the given interface{} and assigns it to the End field.
+func (o *UnaryCheckAttributeBlock) SetEnd(v interface{}) {
+	o.End = v
+}
+
+// GetStartInclusive returns the StartInclusive field value if set, zero value otherwise.
+func (o *UnaryCheckAttributeBlock) GetStartInclusive() bool {
+	if o == nil || IsNil(o.StartInclusive) {
+		var ret bool
+		return ret
+	}
+	return *o.StartInclusive
+}
+
+// GetStartInclusiveOk returns a tuple with the StartInclusive field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *UnaryCheckAttributeBlock) GetStartInclusiveOk() (*bool, bool) {
+	if o == nil || IsNil(o.StartInclusive) {
+		return nil, false
+	}
+	return o.StartInclusive, true
+}
+
+// HasStartInclusive returns a boolean if a field has been set.
+func (o *UnaryCheckAttributeBlock) HasStartInclusive() bool {
+	if o != nil && !IsNil(o.StartInclusive) {
+		return true
+	}
+
+	return false
+}
+
+// SetStartInclusive gets a reference to the given bool and assigns it to the StartInclusive field.
+func (o *UnaryCheckAttributeBlock) SetStartInclusive(v bool) {
+	o.StartInclusive = &v
+}
+
+// GetEndInclusive returns the EndInclusive field value if set, zero value otherwise.
+func (o *UnaryCheckAttributeBlock) GetEndInclusive() bool {
+	if o == nil || IsNil(o.EndInclusive) {
+		var ret bool
+		return ret
+	}
+	return *o.EndInclusive
+}
+
+// GetEndInclusiveOk returns a tuple with the EndInclusive field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *UnaryCheckAttributeBlock) GetEndInclusiveOk() (*bool, bool) {
+	if o == nil || IsNil(o.EndInclusive) {
+		return nil, false
+	}
+	return o.EndInclusive, true
+}
+
+// HasEndInclusive returns a boolean if a field has been set.
+func (o *UnaryCheckAttributeBlock) HasEndInclusive() bool {
+	if o != nil && !IsNil(o.EndInclusive) {
+		return true
+	}
+
+	return false
+}
+
+// SetEndInclusive gets a reference to the given bool and assigns it to the EndInclusive field.
+func (o *UnaryCheckAttributeBlock) SetEndInclusive(v bool) {
+	o.EndInclusive = &v
+}
+
+// GetTimezoneInsensitive returns the TimezoneInsensitive field value if set, zero value otherwise.
+func (o *UnaryCheckAttributeBlock) GetTimezoneInsensitive() bool {
+	if o == nil || IsNil(o.TimezoneInsensitive) {
+		var ret bool
+		return ret
+	}
+	return *o.TimezoneInsensitive
+}
+
+// GetTimezoneInsensitiveOk returns a tuple with the TimezoneInsensitive field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *UnaryCheckAttributeBlock) GetTimezoneInsensitiveOk() (*bool, bool) {
+	if o == nil || IsNil(o.TimezoneInsensitive) {
+		return nil, false
+	}
+	return o.TimezoneInsensitive, true
+}
+
+// HasTimezoneInsensitive returns a boolean if a field has been set.
+func (o *UnaryCheckAttributeBlock) HasTimezoneInsensitive() bool {
+	if o != nil && !IsNil(o.TimezoneInsensitive) {
+		return true
+	}
+
+	return false
+}
+
+// SetTimezoneInsensitive gets a reference to the given bool and assigns it to the TimezoneInsensitive field.
+func (o *UnaryCheckAttributeBlock) SetTimezoneInsensitive(v bool) {
+	o.TimezoneInsensitive = &v
+}
+
+// GetValues returns the Values field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *UnaryCheckAttributeBlock) GetValues() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+	return o.Values
+}
+
+// GetValuesOk returns a tuple with the Values field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *UnaryCheckAttributeBlock) GetValuesOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.Values) {
+		return nil, false
+	}
+	return &o.Values, true
+}
+
+// HasValues returns a boolean if a field has been set.
+func (o *UnaryCheckAttributeBlock) HasValues() bool {
+	if o != nil && !IsNil(o.Values) {
+		return true
+	}
+
+	return false
+}
+
+// SetValues gets a reference to the given interface{} and assigns it to the Values field.
+func (o *UnaryCheckAttributeBlock) SetValues(v interface{}) {
+	o.Values = v
+}
+
+// GetCount returns the Count field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *UnaryCheckAttributeBlock) GetCount() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+	return o.Count
+}
+
+// GetCountOk returns a tuple with the Count field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *UnaryCheckAttributeBlock) GetCountOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.Count) {
+		return nil, false
+	}
+	return &o.Count, true
+}
+
+// HasCount returns a boolean if a field has been set.
+func (o *UnaryCheckAttributeBlock) HasCount() bool {
+	if o != nil && !IsNil(o.Count) {
+		return true
+	}
+
+	return false
+}
+
+// SetCount gets a reference to the given interface{} and assigns it to the Count field.
+func (o *UnaryCheckAttributeBlock) SetCount(v interface{}) {
+	o.Count = v
+}
+
+// GetOnFailure returns the OnFailure field value if set, zero value otherwise.
+func (o *UnaryCheckAttributeBlock) GetOnFailure() []Block {
+	if o == nil || IsNil(o.OnFailure) {
+		var ret []Block
+		return ret
+	}
+	return o.OnFailure
+}
+
+// GetOnFailureOk returns a tuple with the OnFailure field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *UnaryCheckAttributeBlock) GetOnFailureOk() ([]Block, bool) {
+	if o == nil || IsNil(o.OnFailure) {
+		return nil, false
+	}
+	return o.OnFailure, true
+}
+
+// HasOnFailure returns a boolean if a field has been set.
+func (o *UnaryCheckAttributeBlock) HasOnFailure() bool {
+	if o != nil && !IsNil(o.OnFailure) {
+		return true
+	}
+
+	return false
+}
+
+// SetOnFailure gets a reference to the given []Block and assigns it to the OnFailure field.
+func (o *UnaryCheckAttributeBlock) SetOnFailure(v []Block) {
+	o.OnFailure = v
 }
 
 func (o UnaryCheckAttributeBlock) MarshalJSON() ([]byte, error) {
@@ -85,8 +584,49 @@ func (o UnaryCheckAttributeBlock) MarshalJSON() ([]byte, error) {
 
 func (o UnaryCheckAttributeBlock) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.Operator) {
-		toSerialize["operator"] = o.Operator
+	if !IsNil(o.Id) {
+		toSerialize["id"] = o.Id
+	}
+	toSerialize["type"] = o.Type
+	if !IsNil(o.Tags) {
+		toSerialize["tags"] = o.Tags
+	}
+	toSerialize["operator"] = o.Operator
+	if o.Attribute != nil {
+		toSerialize["attribute"] = o.Attribute
+	}
+	if o.Value != nil {
+		toSerialize["value"] = o.Value
+	}
+	if o.Min != nil {
+		toSerialize["min"] = o.Min
+	}
+	if o.Max != nil {
+		toSerialize["max"] = o.Max
+	}
+	if o.Start != nil {
+		toSerialize["start"] = o.Start
+	}
+	if o.End != nil {
+		toSerialize["end"] = o.End
+	}
+	if !IsNil(o.StartInclusive) {
+		toSerialize["startInclusive"] = o.StartInclusive
+	}
+	if !IsNil(o.EndInclusive) {
+		toSerialize["endInclusive"] = o.EndInclusive
+	}
+	if !IsNil(o.TimezoneInsensitive) {
+		toSerialize["timezoneInsensitive"] = o.TimezoneInsensitive
+	}
+	if o.Values != nil {
+		toSerialize["values"] = o.Values
+	}
+	if o.Count != nil {
+		toSerialize["count"] = o.Count
+	}
+	if !IsNil(o.OnFailure) {
+		toSerialize["onFailure"] = o.OnFailure
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -97,6 +637,29 @@ func (o UnaryCheckAttributeBlock) ToMap() (map[string]interface{}, error) {
 }
 
 func (o *UnaryCheckAttributeBlock) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"type",
+		"operator",
+		"attribute",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
 	varUnaryCheckAttributeBlock := _UnaryCheckAttributeBlock{}
 
 	err = json.Unmarshal(data, &varUnaryCheckAttributeBlock)
@@ -110,7 +673,22 @@ func (o *UnaryCheckAttributeBlock) UnmarshalJSON(data []byte) (err error) {
 	additionalProperties := make(map[string]interface{})
 
 	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "tags")
 		delete(additionalProperties, "operator")
+		delete(additionalProperties, "attribute")
+		delete(additionalProperties, "value")
+		delete(additionalProperties, "min")
+		delete(additionalProperties, "max")
+		delete(additionalProperties, "start")
+		delete(additionalProperties, "end")
+		delete(additionalProperties, "startInclusive")
+		delete(additionalProperties, "endInclusive")
+		delete(additionalProperties, "timezoneInsensitive")
+		delete(additionalProperties, "values")
+		delete(additionalProperties, "count")
+		delete(additionalProperties, "onFailure")
 		o.AdditionalProperties = additionalProperties
 	}
 

@@ -18,12 +18,40 @@ import (
 // checks if the ScalarCheckAttributeBlock type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &ScalarCheckAttributeBlock{}
 
-// ScalarCheckAttributeBlock Variant of `CheckAttributeBlock` for operators that compare an attribute against a single value.
+// ScalarCheckAttributeBlock struct for ScalarCheckAttributeBlock
 type ScalarCheckAttributeBlock struct {
+	// Unique identifier for this block.
+	Id *string `json:"id,omitempty"`
+	// A block discriminator of type `checkAttribute`.
+	Type string `json:"type"`
+	// Semantic labels attached to this block.
+	Tags []string `json:"tags,omitempty"`
 	// The comparison operator applied to the attribute.
-	Operator *string `json:"operator,omitempty"`
+	Operator string `json:"operator"`
+	// The attribute path identifier (e.g. \"$Session.Total\").
+	Attribute interface{} `json:"attribute"`
 	// The comparison value for this operator.
-	Value                interface{} `json:"value"`
+	Value interface{} `json:"value"`
+	// The minimum value allowed for the `between` operator.
+	Min interface{} `json:"min,omitempty"`
+	// The maximum value allowed for the `between` operator.
+	Max interface{} `json:"max,omitempty"`
+	// The start value for the `within` operator.
+	Start interface{} `json:"start,omitempty"`
+	// The end value for the `within` operator.
+	End interface{} `json:"end,omitempty"`
+	// When `true`, the `start` value is included in the range for the `within` operator.
+	StartInclusive *bool `json:"startInclusive,omitempty"`
+	// When `true`, the `end` value is included in the range for the `within` operator.
+	EndInclusive *bool `json:"endInclusive,omitempty"`
+	// Indicates whether the `within` operator ignores time zones and compares the wall-clock time only. When `false`, time zones are taken into account.
+	TimezoneInsensitive *bool `json:"timezoneInsensitive,omitempty"`
+	// The set of values to match against for list operators. For location operators (`in`, `not(in)`), an array of objects with a `geometry` (see `GeoJSONGeometry`) and an optional `name`, or a string reference to a list attribute.
+	Values interface{} `json:"values,omitempty"`
+	// The count threshold for `containsAtLeast` and `containsExactly` operators.
+	Count interface{} `json:"count,omitempty"`
+	// Promotion blocks evaluated when this block fails or returns false.
+	OnFailure            []Block `json:"onFailure,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -33,8 +61,11 @@ type _ScalarCheckAttributeBlock ScalarCheckAttributeBlock
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildScalarCheckAttributeBlock(value interface{}) *ScalarCheckAttributeBlock {
+func BuildScalarCheckAttributeBlock(type_ string, operator string, attribute interface{}, value interface{}) *ScalarCheckAttributeBlock {
 	this := ScalarCheckAttributeBlock{}
+	this.Type = type_
+	this.Operator = operator
+	this.Attribute = attribute
 	this.Value = value
 	return &this
 }
@@ -47,36 +78,142 @@ func NewScalarCheckAttributeBlockWithDefaults() *ScalarCheckAttributeBlock {
 	return &this
 }
 
-// GetOperator returns the Operator field value if set, zero value otherwise.
-func (o *ScalarCheckAttributeBlock) GetOperator() string {
-	if o == nil || IsNil(o.Operator) {
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *ScalarCheckAttributeBlock) GetId() string {
+	if o == nil || IsNil(o.Id) {
 		var ret string
 		return ret
 	}
-	return *o.Operator
+	return *o.Id
 }
 
-// GetOperatorOk returns a tuple with the Operator field value if set, nil otherwise
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ScalarCheckAttributeBlock) GetOperatorOk() (*string, bool) {
-	if o == nil || IsNil(o.Operator) {
+func (o *ScalarCheckAttributeBlock) GetIdOk() (*string, bool) {
+	if o == nil || IsNil(o.Id) {
 		return nil, false
 	}
-	return o.Operator, true
+	return o.Id, true
 }
 
-// HasOperator returns a boolean if a field has been set.
-func (o *ScalarCheckAttributeBlock) HasOperator() bool {
-	if o != nil && !IsNil(o.Operator) {
+// HasId returns a boolean if a field has been set.
+func (o *ScalarCheckAttributeBlock) HasId() bool {
+	if o != nil && !IsNil(o.Id) {
 		return true
 	}
 
 	return false
 }
 
-// SetOperator gets a reference to the given string and assigns it to the Operator field.
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *ScalarCheckAttributeBlock) SetId(v string) {
+	o.Id = &v
+}
+
+// GetType returns the Type field value
+func (o *ScalarCheckAttributeBlock) GetType() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Type
+}
+
+// GetTypeOk returns a tuple with the Type field value
+// and a boolean to check if the value has been set.
+func (o *ScalarCheckAttributeBlock) GetTypeOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Type, true
+}
+
+// SetType sets field value
+func (o *ScalarCheckAttributeBlock) SetType(v string) {
+	o.Type = v
+}
+
+// GetTags returns the Tags field value if set, zero value otherwise.
+func (o *ScalarCheckAttributeBlock) GetTags() []string {
+	if o == nil || IsNil(o.Tags) {
+		var ret []string
+		return ret
+	}
+	return o.Tags
+}
+
+// GetTagsOk returns a tuple with the Tags field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ScalarCheckAttributeBlock) GetTagsOk() ([]string, bool) {
+	if o == nil || IsNil(o.Tags) {
+		return nil, false
+	}
+	return o.Tags, true
+}
+
+// HasTags returns a boolean if a field has been set.
+func (o *ScalarCheckAttributeBlock) HasTags() bool {
+	if o != nil && !IsNil(o.Tags) {
+		return true
+	}
+
+	return false
+}
+
+// SetTags gets a reference to the given []string and assigns it to the Tags field.
+func (o *ScalarCheckAttributeBlock) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetOperator returns the Operator field value
+func (o *ScalarCheckAttributeBlock) GetOperator() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Operator
+}
+
+// GetOperatorOk returns a tuple with the Operator field value
+// and a boolean to check if the value has been set.
+func (o *ScalarCheckAttributeBlock) GetOperatorOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Operator, true
+}
+
+// SetOperator sets field value
 func (o *ScalarCheckAttributeBlock) SetOperator(v string) {
-	o.Operator = &v
+	o.Operator = v
+}
+
+// GetAttribute returns the Attribute field value
+// If the value is explicit nil, the zero value for interface{} will be returned
+func (o *ScalarCheckAttributeBlock) GetAttribute() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+
+	return o.Attribute
+}
+
+// GetAttributeOk returns a tuple with the Attribute field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ScalarCheckAttributeBlock) GetAttributeOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.Attribute) {
+		return nil, false
+	}
+	return &o.Attribute, true
+}
+
+// SetAttribute sets field value
+func (o *ScalarCheckAttributeBlock) SetAttribute(v interface{}) {
+	o.Attribute = v
 }
 
 // GetValue returns the Value field value
@@ -105,6 +242,332 @@ func (o *ScalarCheckAttributeBlock) SetValue(v interface{}) {
 	o.Value = v
 }
 
+// GetMin returns the Min field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *ScalarCheckAttributeBlock) GetMin() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+	return o.Min
+}
+
+// GetMinOk returns a tuple with the Min field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ScalarCheckAttributeBlock) GetMinOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.Min) {
+		return nil, false
+	}
+	return &o.Min, true
+}
+
+// HasMin returns a boolean if a field has been set.
+func (o *ScalarCheckAttributeBlock) HasMin() bool {
+	if o != nil && !IsNil(o.Min) {
+		return true
+	}
+
+	return false
+}
+
+// SetMin gets a reference to the given interface{} and assigns it to the Min field.
+func (o *ScalarCheckAttributeBlock) SetMin(v interface{}) {
+	o.Min = v
+}
+
+// GetMax returns the Max field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *ScalarCheckAttributeBlock) GetMax() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+	return o.Max
+}
+
+// GetMaxOk returns a tuple with the Max field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ScalarCheckAttributeBlock) GetMaxOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.Max) {
+		return nil, false
+	}
+	return &o.Max, true
+}
+
+// HasMax returns a boolean if a field has been set.
+func (o *ScalarCheckAttributeBlock) HasMax() bool {
+	if o != nil && !IsNil(o.Max) {
+		return true
+	}
+
+	return false
+}
+
+// SetMax gets a reference to the given interface{} and assigns it to the Max field.
+func (o *ScalarCheckAttributeBlock) SetMax(v interface{}) {
+	o.Max = v
+}
+
+// GetStart returns the Start field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *ScalarCheckAttributeBlock) GetStart() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+	return o.Start
+}
+
+// GetStartOk returns a tuple with the Start field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ScalarCheckAttributeBlock) GetStartOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.Start) {
+		return nil, false
+	}
+	return &o.Start, true
+}
+
+// HasStart returns a boolean if a field has been set.
+func (o *ScalarCheckAttributeBlock) HasStart() bool {
+	if o != nil && !IsNil(o.Start) {
+		return true
+	}
+
+	return false
+}
+
+// SetStart gets a reference to the given interface{} and assigns it to the Start field.
+func (o *ScalarCheckAttributeBlock) SetStart(v interface{}) {
+	o.Start = v
+}
+
+// GetEnd returns the End field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *ScalarCheckAttributeBlock) GetEnd() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+	return o.End
+}
+
+// GetEndOk returns a tuple with the End field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ScalarCheckAttributeBlock) GetEndOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.End) {
+		return nil, false
+	}
+	return &o.End, true
+}
+
+// HasEnd returns a boolean if a field has been set.
+func (o *ScalarCheckAttributeBlock) HasEnd() bool {
+	if o != nil && !IsNil(o.End) {
+		return true
+	}
+
+	return false
+}
+
+// SetEnd gets a reference to the given interface{} and assigns it to the End field.
+func (o *ScalarCheckAttributeBlock) SetEnd(v interface{}) {
+	o.End = v
+}
+
+// GetStartInclusive returns the StartInclusive field value if set, zero value otherwise.
+func (o *ScalarCheckAttributeBlock) GetStartInclusive() bool {
+	if o == nil || IsNil(o.StartInclusive) {
+		var ret bool
+		return ret
+	}
+	return *o.StartInclusive
+}
+
+// GetStartInclusiveOk returns a tuple with the StartInclusive field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ScalarCheckAttributeBlock) GetStartInclusiveOk() (*bool, bool) {
+	if o == nil || IsNil(o.StartInclusive) {
+		return nil, false
+	}
+	return o.StartInclusive, true
+}
+
+// HasStartInclusive returns a boolean if a field has been set.
+func (o *ScalarCheckAttributeBlock) HasStartInclusive() bool {
+	if o != nil && !IsNil(o.StartInclusive) {
+		return true
+	}
+
+	return false
+}
+
+// SetStartInclusive gets a reference to the given bool and assigns it to the StartInclusive field.
+func (o *ScalarCheckAttributeBlock) SetStartInclusive(v bool) {
+	o.StartInclusive = &v
+}
+
+// GetEndInclusive returns the EndInclusive field value if set, zero value otherwise.
+func (o *ScalarCheckAttributeBlock) GetEndInclusive() bool {
+	if o == nil || IsNil(o.EndInclusive) {
+		var ret bool
+		return ret
+	}
+	return *o.EndInclusive
+}
+
+// GetEndInclusiveOk returns a tuple with the EndInclusive field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ScalarCheckAttributeBlock) GetEndInclusiveOk() (*bool, bool) {
+	if o == nil || IsNil(o.EndInclusive) {
+		return nil, false
+	}
+	return o.EndInclusive, true
+}
+
+// HasEndInclusive returns a boolean if a field has been set.
+func (o *ScalarCheckAttributeBlock) HasEndInclusive() bool {
+	if o != nil && !IsNil(o.EndInclusive) {
+		return true
+	}
+
+	return false
+}
+
+// SetEndInclusive gets a reference to the given bool and assigns it to the EndInclusive field.
+func (o *ScalarCheckAttributeBlock) SetEndInclusive(v bool) {
+	o.EndInclusive = &v
+}
+
+// GetTimezoneInsensitive returns the TimezoneInsensitive field value if set, zero value otherwise.
+func (o *ScalarCheckAttributeBlock) GetTimezoneInsensitive() bool {
+	if o == nil || IsNil(o.TimezoneInsensitive) {
+		var ret bool
+		return ret
+	}
+	return *o.TimezoneInsensitive
+}
+
+// GetTimezoneInsensitiveOk returns a tuple with the TimezoneInsensitive field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ScalarCheckAttributeBlock) GetTimezoneInsensitiveOk() (*bool, bool) {
+	if o == nil || IsNil(o.TimezoneInsensitive) {
+		return nil, false
+	}
+	return o.TimezoneInsensitive, true
+}
+
+// HasTimezoneInsensitive returns a boolean if a field has been set.
+func (o *ScalarCheckAttributeBlock) HasTimezoneInsensitive() bool {
+	if o != nil && !IsNil(o.TimezoneInsensitive) {
+		return true
+	}
+
+	return false
+}
+
+// SetTimezoneInsensitive gets a reference to the given bool and assigns it to the TimezoneInsensitive field.
+func (o *ScalarCheckAttributeBlock) SetTimezoneInsensitive(v bool) {
+	o.TimezoneInsensitive = &v
+}
+
+// GetValues returns the Values field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *ScalarCheckAttributeBlock) GetValues() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+	return o.Values
+}
+
+// GetValuesOk returns a tuple with the Values field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ScalarCheckAttributeBlock) GetValuesOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.Values) {
+		return nil, false
+	}
+	return &o.Values, true
+}
+
+// HasValues returns a boolean if a field has been set.
+func (o *ScalarCheckAttributeBlock) HasValues() bool {
+	if o != nil && !IsNil(o.Values) {
+		return true
+	}
+
+	return false
+}
+
+// SetValues gets a reference to the given interface{} and assigns it to the Values field.
+func (o *ScalarCheckAttributeBlock) SetValues(v interface{}) {
+	o.Values = v
+}
+
+// GetCount returns the Count field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *ScalarCheckAttributeBlock) GetCount() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+	return o.Count
+}
+
+// GetCountOk returns a tuple with the Count field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ScalarCheckAttributeBlock) GetCountOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.Count) {
+		return nil, false
+	}
+	return &o.Count, true
+}
+
+// HasCount returns a boolean if a field has been set.
+func (o *ScalarCheckAttributeBlock) HasCount() bool {
+	if o != nil && !IsNil(o.Count) {
+		return true
+	}
+
+	return false
+}
+
+// SetCount gets a reference to the given interface{} and assigns it to the Count field.
+func (o *ScalarCheckAttributeBlock) SetCount(v interface{}) {
+	o.Count = v
+}
+
+// GetOnFailure returns the OnFailure field value if set, zero value otherwise.
+func (o *ScalarCheckAttributeBlock) GetOnFailure() []Block {
+	if o == nil || IsNil(o.OnFailure) {
+		var ret []Block
+		return ret
+	}
+	return o.OnFailure
+}
+
+// GetOnFailureOk returns a tuple with the OnFailure field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ScalarCheckAttributeBlock) GetOnFailureOk() ([]Block, bool) {
+	if o == nil || IsNil(o.OnFailure) {
+		return nil, false
+	}
+	return o.OnFailure, true
+}
+
+// HasOnFailure returns a boolean if a field has been set.
+func (o *ScalarCheckAttributeBlock) HasOnFailure() bool {
+	if o != nil && !IsNil(o.OnFailure) {
+		return true
+	}
+
+	return false
+}
+
+// SetOnFailure gets a reference to the given []Block and assigns it to the OnFailure field.
+func (o *ScalarCheckAttributeBlock) SetOnFailure(v []Block) {
+	o.OnFailure = v
+}
+
 func (o ScalarCheckAttributeBlock) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -115,11 +578,49 @@ func (o ScalarCheckAttributeBlock) MarshalJSON() ([]byte, error) {
 
 func (o ScalarCheckAttributeBlock) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.Operator) {
-		toSerialize["operator"] = o.Operator
+	if !IsNil(o.Id) {
+		toSerialize["id"] = o.Id
+	}
+	toSerialize["type"] = o.Type
+	if !IsNil(o.Tags) {
+		toSerialize["tags"] = o.Tags
+	}
+	toSerialize["operator"] = o.Operator
+	if o.Attribute != nil {
+		toSerialize["attribute"] = o.Attribute
 	}
 	if o.Value != nil {
 		toSerialize["value"] = o.Value
+	}
+	if o.Min != nil {
+		toSerialize["min"] = o.Min
+	}
+	if o.Max != nil {
+		toSerialize["max"] = o.Max
+	}
+	if o.Start != nil {
+		toSerialize["start"] = o.Start
+	}
+	if o.End != nil {
+		toSerialize["end"] = o.End
+	}
+	if !IsNil(o.StartInclusive) {
+		toSerialize["startInclusive"] = o.StartInclusive
+	}
+	if !IsNil(o.EndInclusive) {
+		toSerialize["endInclusive"] = o.EndInclusive
+	}
+	if !IsNil(o.TimezoneInsensitive) {
+		toSerialize["timezoneInsensitive"] = o.TimezoneInsensitive
+	}
+	if o.Values != nil {
+		toSerialize["values"] = o.Values
+	}
+	if o.Count != nil {
+		toSerialize["count"] = o.Count
+	}
+	if !IsNil(o.OnFailure) {
+		toSerialize["onFailure"] = o.OnFailure
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -134,6 +635,9 @@ func (o *ScalarCheckAttributeBlock) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
+		"type",
+		"operator",
+		"attribute",
 		"value",
 	}
 
@@ -164,8 +668,22 @@ func (o *ScalarCheckAttributeBlock) UnmarshalJSON(data []byte) (err error) {
 	additionalProperties := make(map[string]interface{})
 
 	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "tags")
 		delete(additionalProperties, "operator")
+		delete(additionalProperties, "attribute")
 		delete(additionalProperties, "value")
+		delete(additionalProperties, "min")
+		delete(additionalProperties, "max")
+		delete(additionalProperties, "start")
+		delete(additionalProperties, "end")
+		delete(additionalProperties, "startInclusive")
+		delete(additionalProperties, "endInclusive")
+		delete(additionalProperties, "timezoneInsensitive")
+		delete(additionalProperties, "values")
+		delete(additionalProperties, "count")
+		delete(additionalProperties, "onFailure")
 		o.AdditionalProperties = additionalProperties
 	}
 
