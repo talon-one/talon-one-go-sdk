@@ -13,7 +13,6 @@ package talon
 import (
 	"encoding/json"
 	"fmt"
-	"gopkg.in/validator.v2"
 )
 
 // BaseNotificationPolicy - Indicates which notification properties to apply.
@@ -137,238 +136,182 @@ func (dst *BaseNotificationPolicy) UnmarshalJSON(data []byte) error {
 	var err error
 	match := 0
 	// try to unmarshal data into AddedDeductedPointsBalancesNotificationPolicy
-	err = newStrictDecoder(data).Decode(&dst.AddedDeductedPointsBalancesNotificationPolicy)
+	err = json.Unmarshal(data, &dst.AddedDeductedPointsBalancesNotificationPolicy)
 	if err == nil {
 		jsonAddedDeductedPointsBalancesNotificationPolicy, _ := json.Marshal(dst.AddedDeductedPointsBalancesNotificationPolicy)
 		if string(jsonAddedDeductedPointsBalancesNotificationPolicy) == "{}" { // empty struct
 			dst.AddedDeductedPointsBalancesNotificationPolicy = nil
 		} else {
-			if err = validator.Validate(dst.AddedDeductedPointsBalancesNotificationPolicy); err != nil {
-				dst.AddedDeductedPointsBalancesNotificationPolicy = nil
-			} else {
-				match++
-			}
+			match++
 		}
 	} else {
 		dst.AddedDeductedPointsBalancesNotificationPolicy = nil
 	}
 
 	// try to unmarshal data into AddedDeductedPointsNotificationPolicy
-	err = newStrictDecoder(data).Decode(&dst.AddedDeductedPointsNotificationPolicy)
+	err = json.Unmarshal(data, &dst.AddedDeductedPointsNotificationPolicy)
 	if err == nil {
 		jsonAddedDeductedPointsNotificationPolicy, _ := json.Marshal(dst.AddedDeductedPointsNotificationPolicy)
 		if string(jsonAddedDeductedPointsNotificationPolicy) == "{}" { // empty struct
 			dst.AddedDeductedPointsNotificationPolicy = nil
 		} else {
-			if err = validator.Validate(dst.AddedDeductedPointsNotificationPolicy); err != nil {
-				dst.AddedDeductedPointsNotificationPolicy = nil
-			} else {
-				match++
-			}
+			match++
 		}
 	} else {
 		dst.AddedDeductedPointsNotificationPolicy = nil
 	}
 
 	// try to unmarshal data into CampaignNotificationPolicy
-	err = newStrictDecoder(data).Decode(&dst.CampaignNotificationPolicy)
+	err = json.Unmarshal(data, &dst.CampaignNotificationPolicy)
 	if err == nil {
 		jsonCampaignNotificationPolicy, _ := json.Marshal(dst.CampaignNotificationPolicy)
 		if string(jsonCampaignNotificationPolicy) == "{}" { // empty struct
 			dst.CampaignNotificationPolicy = nil
 		} else {
-			if err = validator.Validate(dst.CampaignNotificationPolicy); err != nil {
-				dst.CampaignNotificationPolicy = nil
-			} else {
-				match++
-			}
+			match++
 		}
 	} else {
 		dst.CampaignNotificationPolicy = nil
 	}
 
 	// try to unmarshal data into CardAddedDeductedPointsBalancesNotificationPolicy
-	err = newStrictDecoder(data).Decode(&dst.CardAddedDeductedPointsBalancesNotificationPolicy)
+	err = json.Unmarshal(data, &dst.CardAddedDeductedPointsBalancesNotificationPolicy)
 	if err == nil {
 		jsonCardAddedDeductedPointsBalancesNotificationPolicy, _ := json.Marshal(dst.CardAddedDeductedPointsBalancesNotificationPolicy)
 		if string(jsonCardAddedDeductedPointsBalancesNotificationPolicy) == "{}" { // empty struct
 			dst.CardAddedDeductedPointsBalancesNotificationPolicy = nil
 		} else {
-			if err = validator.Validate(dst.CardAddedDeductedPointsBalancesNotificationPolicy); err != nil {
-				dst.CardAddedDeductedPointsBalancesNotificationPolicy = nil
-			} else {
-				match++
-			}
+			match++
 		}
 	} else {
 		dst.CardAddedDeductedPointsBalancesNotificationPolicy = nil
 	}
 
 	// try to unmarshal data into CardAddedDeductedPointsNotificationPolicy
-	err = newStrictDecoder(data).Decode(&dst.CardAddedDeductedPointsNotificationPolicy)
+	err = json.Unmarshal(data, &dst.CardAddedDeductedPointsNotificationPolicy)
 	if err == nil {
 		jsonCardAddedDeductedPointsNotificationPolicy, _ := json.Marshal(dst.CardAddedDeductedPointsNotificationPolicy)
 		if string(jsonCardAddedDeductedPointsNotificationPolicy) == "{}" { // empty struct
 			dst.CardAddedDeductedPointsNotificationPolicy = nil
 		} else {
-			if err = validator.Validate(dst.CardAddedDeductedPointsNotificationPolicy); err != nil {
-				dst.CardAddedDeductedPointsNotificationPolicy = nil
-			} else {
-				match++
-			}
+			match++
 		}
 	} else {
 		dst.CardAddedDeductedPointsNotificationPolicy = nil
 	}
 
 	// try to unmarshal data into CardExpiringPointsNotificationPolicy
-	err = newStrictDecoder(data).Decode(&dst.CardExpiringPointsNotificationPolicy)
+	err = json.Unmarshal(data, &dst.CardExpiringPointsNotificationPolicy)
 	if err == nil {
 		jsonCardExpiringPointsNotificationPolicy, _ := json.Marshal(dst.CardExpiringPointsNotificationPolicy)
 		if string(jsonCardExpiringPointsNotificationPolicy) == "{}" { // empty struct
 			dst.CardExpiringPointsNotificationPolicy = nil
 		} else {
-			if err = validator.Validate(dst.CardExpiringPointsNotificationPolicy); err != nil {
-				dst.CardExpiringPointsNotificationPolicy = nil
-			} else {
-				match++
-			}
+			match++
 		}
 	} else {
 		dst.CardExpiringPointsNotificationPolicy = nil
 	}
 
 	// try to unmarshal data into CatalogsStrikethroughNotificationPolicy
-	err = newStrictDecoder(data).Decode(&dst.CatalogsStrikethroughNotificationPolicy)
+	err = json.Unmarshal(data, &dst.CatalogsStrikethroughNotificationPolicy)
 	if err == nil {
 		jsonCatalogsStrikethroughNotificationPolicy, _ := json.Marshal(dst.CatalogsStrikethroughNotificationPolicy)
 		if string(jsonCatalogsStrikethroughNotificationPolicy) == "{}" { // empty struct
 			dst.CatalogsStrikethroughNotificationPolicy = nil
 		} else {
-			if err = validator.Validate(dst.CatalogsStrikethroughNotificationPolicy); err != nil {
-				dst.CatalogsStrikethroughNotificationPolicy = nil
-			} else {
-				match++
-			}
+			match++
 		}
 	} else {
 		dst.CatalogsStrikethroughNotificationPolicy = nil
 	}
 
 	// try to unmarshal data into CouponsNotificationPolicy
-	err = newStrictDecoder(data).Decode(&dst.CouponsNotificationPolicy)
+	err = json.Unmarshal(data, &dst.CouponsNotificationPolicy)
 	if err == nil {
 		jsonCouponsNotificationPolicy, _ := json.Marshal(dst.CouponsNotificationPolicy)
 		if string(jsonCouponsNotificationPolicy) == "{}" { // empty struct
 			dst.CouponsNotificationPolicy = nil
 		} else {
-			if err = validator.Validate(dst.CouponsNotificationPolicy); err != nil {
-				dst.CouponsNotificationPolicy = nil
-			} else {
-				match++
-			}
+			match++
 		}
 	} else {
 		dst.CouponsNotificationPolicy = nil
 	}
 
 	// try to unmarshal data into ExpiringCouponsNotificationPolicy
-	err = newStrictDecoder(data).Decode(&dst.ExpiringCouponsNotificationPolicy)
+	err = json.Unmarshal(data, &dst.ExpiringCouponsNotificationPolicy)
 	if err == nil {
 		jsonExpiringCouponsNotificationPolicy, _ := json.Marshal(dst.ExpiringCouponsNotificationPolicy)
 		if string(jsonExpiringCouponsNotificationPolicy) == "{}" { // empty struct
 			dst.ExpiringCouponsNotificationPolicy = nil
 		} else {
-			if err = validator.Validate(dst.ExpiringCouponsNotificationPolicy); err != nil {
-				dst.ExpiringCouponsNotificationPolicy = nil
-			} else {
-				match++
-			}
+			match++
 		}
 	} else {
 		dst.ExpiringCouponsNotificationPolicy = nil
 	}
 
 	// try to unmarshal data into ExpiringPointsNotificationPolicy
-	err = newStrictDecoder(data).Decode(&dst.ExpiringPointsNotificationPolicy)
+	err = json.Unmarshal(data, &dst.ExpiringPointsNotificationPolicy)
 	if err == nil {
 		jsonExpiringPointsNotificationPolicy, _ := json.Marshal(dst.ExpiringPointsNotificationPolicy)
 		if string(jsonExpiringPointsNotificationPolicy) == "{}" { // empty struct
 			dst.ExpiringPointsNotificationPolicy = nil
 		} else {
-			if err = validator.Validate(dst.ExpiringPointsNotificationPolicy); err != nil {
-				dst.ExpiringPointsNotificationPolicy = nil
-			} else {
-				match++
-			}
+			match++
 		}
 	} else {
 		dst.ExpiringPointsNotificationPolicy = nil
 	}
 
 	// try to unmarshal data into PendingPointsNotificationPolicy
-	err = newStrictDecoder(data).Decode(&dst.PendingPointsNotificationPolicy)
+	err = json.Unmarshal(data, &dst.PendingPointsNotificationPolicy)
 	if err == nil {
 		jsonPendingPointsNotificationPolicy, _ := json.Marshal(dst.PendingPointsNotificationPolicy)
 		if string(jsonPendingPointsNotificationPolicy) == "{}" { // empty struct
 			dst.PendingPointsNotificationPolicy = nil
 		} else {
-			if err = validator.Validate(dst.PendingPointsNotificationPolicy); err != nil {
-				dst.PendingPointsNotificationPolicy = nil
-			} else {
-				match++
-			}
+			match++
 		}
 	} else {
 		dst.PendingPointsNotificationPolicy = nil
 	}
 
 	// try to unmarshal data into TierDowngradeNotificationPolicy
-	err = newStrictDecoder(data).Decode(&dst.TierDowngradeNotificationPolicy)
+	err = json.Unmarshal(data, &dst.TierDowngradeNotificationPolicy)
 	if err == nil {
 		jsonTierDowngradeNotificationPolicy, _ := json.Marshal(dst.TierDowngradeNotificationPolicy)
 		if string(jsonTierDowngradeNotificationPolicy) == "{}" { // empty struct
 			dst.TierDowngradeNotificationPolicy = nil
 		} else {
-			if err = validator.Validate(dst.TierDowngradeNotificationPolicy); err != nil {
-				dst.TierDowngradeNotificationPolicy = nil
-			} else {
-				match++
-			}
+			match++
 		}
 	} else {
 		dst.TierDowngradeNotificationPolicy = nil
 	}
 
 	// try to unmarshal data into TierUpgradeNotificationPolicy
-	err = newStrictDecoder(data).Decode(&dst.TierUpgradeNotificationPolicy)
+	err = json.Unmarshal(data, &dst.TierUpgradeNotificationPolicy)
 	if err == nil {
 		jsonTierUpgradeNotificationPolicy, _ := json.Marshal(dst.TierUpgradeNotificationPolicy)
 		if string(jsonTierUpgradeNotificationPolicy) == "{}" { // empty struct
 			dst.TierUpgradeNotificationPolicy = nil
 		} else {
-			if err = validator.Validate(dst.TierUpgradeNotificationPolicy); err != nil {
-				dst.TierUpgradeNotificationPolicy = nil
-			} else {
-				match++
-			}
+			match++
 		}
 	} else {
 		dst.TierUpgradeNotificationPolicy = nil
 	}
 
 	// try to unmarshal data into TierWillDowngradeNotificationPolicy
-	err = newStrictDecoder(data).Decode(&dst.TierWillDowngradeNotificationPolicy)
+	err = json.Unmarshal(data, &dst.TierWillDowngradeNotificationPolicy)
 	if err == nil {
 		jsonTierWillDowngradeNotificationPolicy, _ := json.Marshal(dst.TierWillDowngradeNotificationPolicy)
 		if string(jsonTierWillDowngradeNotificationPolicy) == "{}" { // empty struct
 			dst.TierWillDowngradeNotificationPolicy = nil
 		} else {
-			if err = validator.Validate(dst.TierWillDowngradeNotificationPolicy); err != nil {
-				dst.TierWillDowngradeNotificationPolicy = nil
-			} else {
-				match++
-			}
+			match++
 		}
 	} else {
 		dst.TierWillDowngradeNotificationPolicy = nil

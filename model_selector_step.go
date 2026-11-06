@@ -13,7 +13,6 @@ package talon
 import (
 	"encoding/json"
 	"fmt"
-	"gopkg.in/validator.v2"
 )
 
 // SelectorStep - A single step in a selector item pipeline. The `type` field determines the step variant.
@@ -79,146 +78,98 @@ func SortSelectorStepAsSelectorStep(v *SortSelectorStep) SelectorStep {
 // Unmarshal JSON data into one of the pointers in the struct
 func (dst *SelectorStep) UnmarshalJSON(data []byte) error {
 	var err error
-	match := 0
-	// try to unmarshal data into FilterAndMapValuesSelectorStep
-	err = newStrictDecoder(data).Decode(&dst.FilterAndMapValuesSelectorStep)
-	if err == nil {
-		jsonFilterAndMapValuesSelectorStep, _ := json.Marshal(dst.FilterAndMapValuesSelectorStep)
-		if string(jsonFilterAndMapValuesSelectorStep) == "{}" { // empty struct
-			dst.FilterAndMapValuesSelectorStep = nil
-		} else {
-			if err = validator.Validate(dst.FilterAndMapValuesSelectorStep); err != nil {
-				dst.FilterAndMapValuesSelectorStep = nil
-			} else {
-				match++
-			}
-		}
-	} else {
-		dst.FilterAndMapValuesSelectorStep = nil
+	// use discriminator value to speed up the lookup
+	var jsonDict map[string]interface{}
+	err = newStrictDecoder(data).Decode(&jsonDict)
+	if err != nil {
+		return fmt.Errorf("failed to unmarshal JSON into map for the discriminator lookup")
 	}
 
-	// try to unmarshal data into FilterSelectorStep
-	err = newStrictDecoder(data).Decode(&dst.FilterSelectorStep)
-	if err == nil {
-		jsonFilterSelectorStep, _ := json.Marshal(dst.FilterSelectorStep)
-		if string(jsonFilterSelectorStep) == "{}" { // empty struct
+	// check if the discriminator value is 'filter'
+	if jsonDict["type"] == "filter" {
+		// try to unmarshal JSON data into FilterSelectorStep
+		err = json.Unmarshal(data, &dst.FilterSelectorStep)
+		if err == nil {
+			return nil // data stored in dst.FilterSelectorStep, return on the first match
+		} else {
 			dst.FilterSelectorStep = nil
-		} else {
-			if err = validator.Validate(dst.FilterSelectorStep); err != nil {
-				dst.FilterSelectorStep = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal SelectorStep as FilterSelectorStep: %s", err.Error())
 		}
-	} else {
-		dst.FilterSelectorStep = nil
 	}
 
-	// try to unmarshal data into MapSelectorStep
-	err = newStrictDecoder(data).Decode(&dst.MapSelectorStep)
-	if err == nil {
-		jsonMapSelectorStep, _ := json.Marshal(dst.MapSelectorStep)
-		if string(jsonMapSelectorStep) == "{}" { // empty struct
+	// check if the discriminator value is 'filterAndMapValues'
+	if jsonDict["type"] == "filterAndMapValues" {
+		// try to unmarshal JSON data into FilterAndMapValuesSelectorStep
+		err = json.Unmarshal(data, &dst.FilterAndMapValuesSelectorStep)
+		if err == nil {
+			return nil // data stored in dst.FilterAndMapValuesSelectorStep, return on the first match
+		} else {
+			dst.FilterAndMapValuesSelectorStep = nil
+			return fmt.Errorf("failed to unmarshal SelectorStep as FilterAndMapValuesSelectorStep: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'map'
+	if jsonDict["type"] == "map" {
+		// try to unmarshal JSON data into MapSelectorStep
+		err = json.Unmarshal(data, &dst.MapSelectorStep)
+		if err == nil {
+			return nil // data stored in dst.MapSelectorStep, return on the first match
+		} else {
 			dst.MapSelectorStep = nil
-		} else {
-			if err = validator.Validate(dst.MapSelectorStep); err != nil {
-				dst.MapSelectorStep = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal SelectorStep as MapSelectorStep: %s", err.Error())
 		}
-	} else {
-		dst.MapSelectorStep = nil
 	}
 
-	// try to unmarshal data into ReduceSelectorStep
-	err = newStrictDecoder(data).Decode(&dst.ReduceSelectorStep)
-	if err == nil {
-		jsonReduceSelectorStep, _ := json.Marshal(dst.ReduceSelectorStep)
-		if string(jsonReduceSelectorStep) == "{}" { // empty struct
+	// check if the discriminator value is 'reduce'
+	if jsonDict["type"] == "reduce" {
+		// try to unmarshal JSON data into ReduceSelectorStep
+		err = json.Unmarshal(data, &dst.ReduceSelectorStep)
+		if err == nil {
+			return nil // data stored in dst.ReduceSelectorStep, return on the first match
+		} else {
 			dst.ReduceSelectorStep = nil
-		} else {
-			if err = validator.Validate(dst.ReduceSelectorStep); err != nil {
-				dst.ReduceSelectorStep = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal SelectorStep as ReduceSelectorStep: %s", err.Error())
 		}
-	} else {
-		dst.ReduceSelectorStep = nil
 	}
 
-	// try to unmarshal data into ReverseSelectorStep
-	err = newStrictDecoder(data).Decode(&dst.ReverseSelectorStep)
-	if err == nil {
-		jsonReverseSelectorStep, _ := json.Marshal(dst.ReverseSelectorStep)
-		if string(jsonReverseSelectorStep) == "{}" { // empty struct
+	// check if the discriminator value is 'reverse'
+	if jsonDict["type"] == "reverse" {
+		// try to unmarshal JSON data into ReverseSelectorStep
+		err = json.Unmarshal(data, &dst.ReverseSelectorStep)
+		if err == nil {
+			return nil // data stored in dst.ReverseSelectorStep, return on the first match
+		} else {
 			dst.ReverseSelectorStep = nil
-		} else {
-			if err = validator.Validate(dst.ReverseSelectorStep); err != nil {
-				dst.ReverseSelectorStep = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal SelectorStep as ReverseSelectorStep: %s", err.Error())
 		}
-	} else {
-		dst.ReverseSelectorStep = nil
 	}
 
-	// try to unmarshal data into SelectSelectorStep
-	err = newStrictDecoder(data).Decode(&dst.SelectSelectorStep)
-	if err == nil {
-		jsonSelectSelectorStep, _ := json.Marshal(dst.SelectSelectorStep)
-		if string(jsonSelectSelectorStep) == "{}" { // empty struct
+	// check if the discriminator value is 'select'
+	if jsonDict["type"] == "select" {
+		// try to unmarshal JSON data into SelectSelectorStep
+		err = json.Unmarshal(data, &dst.SelectSelectorStep)
+		if err == nil {
+			return nil // data stored in dst.SelectSelectorStep, return on the first match
+		} else {
 			dst.SelectSelectorStep = nil
-		} else {
-			if err = validator.Validate(dst.SelectSelectorStep); err != nil {
-				dst.SelectSelectorStep = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal SelectorStep as SelectSelectorStep: %s", err.Error())
 		}
-	} else {
-		dst.SelectSelectorStep = nil
 	}
 
-	// try to unmarshal data into SortSelectorStep
-	err = newStrictDecoder(data).Decode(&dst.SortSelectorStep)
-	if err == nil {
-		jsonSortSelectorStep, _ := json.Marshal(dst.SortSelectorStep)
-		if string(jsonSortSelectorStep) == "{}" { // empty struct
+	// check if the discriminator value is 'sort'
+	if jsonDict["type"] == "sort" {
+		// try to unmarshal JSON data into SortSelectorStep
+		err = json.Unmarshal(data, &dst.SortSelectorStep)
+		if err == nil {
+			return nil // data stored in dst.SortSelectorStep, return on the first match
+		} else {
 			dst.SortSelectorStep = nil
-		} else {
-			if err = validator.Validate(dst.SortSelectorStep); err != nil {
-				dst.SortSelectorStep = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal SelectorStep as SortSelectorStep: %s", err.Error())
 		}
-	} else {
-		dst.SortSelectorStep = nil
 	}
 
-	if match > 1 { // more than 1 match
-		// reset to nil
-		dst.FilterAndMapValuesSelectorStep = nil
-		dst.FilterSelectorStep = nil
-		dst.MapSelectorStep = nil
-		dst.ReduceSelectorStep = nil
-		dst.ReverseSelectorStep = nil
-		dst.SelectSelectorStep = nil
-		dst.SortSelectorStep = nil
-
-		return fmt.Errorf("data matches more than one schema in oneOf(SelectorStep)")
-	} else if match == 1 {
-		return nil // exactly one match
-	} else { // no match
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(SelectorStep): %v", err)
-		}
-
-		return fmt.Errorf("data failed to match schemas in oneOf(SelectorStep)")
-	}
+	return nil
 }
 
 // Marshal data from the first non-nil pointers in the struct to JSON

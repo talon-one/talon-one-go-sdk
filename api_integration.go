@@ -5146,6 +5146,182 @@ func (a *IntegrationAPIService) IntegrationRewardsCatalogExecute(r ApiIntegratio
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiIntegrationUpdateLoyaltyCardRequest struct {
+	ctx                      context.Context
+	ApiService               *IntegrationAPIService
+	loyaltyProgramId         int64
+	loyaltyCardId            string
+	updateLoyaltyCardRequest *UpdateLoyaltyCardRequest
+}
+
+// body
+func (r ApiIntegrationUpdateLoyaltyCardRequest) UpdateLoyaltyCardRequest(updateLoyaltyCardRequest UpdateLoyaltyCardRequest) ApiIntegrationUpdateLoyaltyCardRequest {
+	r.updateLoyaltyCardRequest = &updateLoyaltyCardRequest
+	return r
+}
+
+func (r ApiIntegrationUpdateLoyaltyCardRequest) Execute() (*LoyaltyCard, *http.Response, error) {
+	return r.ApiService.IntegrationUpdateLoyaltyCardExecute(r)
+}
+
+/*
+IntegrationUpdateLoyaltyCard Update loyalty card
+
+Updates the details of a specific loyalty card. Use this endpoint to modify the card's status and custom attribute values.
+
+You must provide at least one of the following parameters:
+-   `status`
+-  `attributes`
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param loyaltyProgramId Identifier of the card-based loyalty program containing the loyalty card. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
+	@param loyaltyCardId Identifier of the loyalty card. You can get the identifier with the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.  **Important**: The loyalty card ID requires [URL encoding](https://www.w3schools.com/tags//ref_urlencode.asp) if it contains special characters. For example, you must encode `NewCard2026%` as `NewCard2026%25`.
+	@return ApiIntegrationUpdateLoyaltyCardRequest
+*/
+func (a *IntegrationAPIService) IntegrationUpdateLoyaltyCard(ctx context.Context, loyaltyProgramId int64, loyaltyCardId string) ApiIntegrationUpdateLoyaltyCardRequest {
+	return ApiIntegrationUpdateLoyaltyCardRequest{
+		ApiService:       a,
+		ctx:              ctx,
+		loyaltyProgramId: loyaltyProgramId,
+		loyaltyCardId:    loyaltyCardId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return LoyaltyCard
+func (a *IntegrationAPIService) IntegrationUpdateLoyaltyCardExecute(r ApiIntegrationUpdateLoyaltyCardRequest) (*LoyaltyCard, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPut
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *LoyaltyCard
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IntegrationAPIService.IntegrationUpdateLoyaltyCard")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/update"
+	localVarPath = strings.Replace(localVarPath, "{"+"loyaltyProgramId"+"}", url.PathEscape(parameterValueToString(r.loyaltyProgramId, "loyaltyProgramId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"loyaltyCardId"+"}", url.PathEscape(parameterValueToString(r.loyaltyCardId, "loyaltyCardId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if strlen(r.loyaltyCardId) < 4 {
+		return localVarReturnValue, nil, reportError("loyaltyCardId must have at least 4 elements")
+	}
+	if strlen(r.loyaltyCardId) > 108 {
+		return localVarReturnValue, nil, reportError("loyaltyCardId must have less than 108 elements")
+	}
+	if r.updateLoyaltyCardRequest == nil {
+		return localVarReturnValue, nil, reportError("updateLoyaltyCardRequest is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.updateLoyaltyCardRequest
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiJoinLoyaltyProgramRequest struct {
 	ctx              context.Context
 	ApiService       *IntegrationAPIService

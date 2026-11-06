@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **ProgramTitle** | Pointer to **string** | The Campaign Manager-displayed name of the loyalty program that owns this entity. | [optional] 
 **Status** | **string** | Status of the loyalty card. Can be &#x60;active&#x60; or &#x60;inactive&#x60;.  | 
 **BlockReason** | Pointer to **string** | Reason for transferring and blocking the loyalty card.  | [optional] 
+**Attributes** | Pointer to **map[string]interface{}** | Set values for the [custom attributes](https://docs.talon.one/docs/dev/concepts/attributes#custom-attributes) of a loyalty card. These attributes must be created in the Campaign Manager before their values can be updated through this endpoint.  | [optional] 
 **Identifier** | **string** | The identifier of the loyalty card, which must match the regular expression &#x60;^[A-Za-z0-9._%+@-]+$&#x60;.  | 
 **UsersPerCardLimit** | **int64** | The max amount of customer profiles that can be linked to the card. 0 means unlimited.  | 
 **Profiles** | Pointer to [**[]LoyaltyCardProfileRegistration**](LoyaltyCardProfileRegistration.md) | Integration IDs of the customers profiles linked to the card. | [optional] 
@@ -194,6 +195,31 @@ SetBlockReason sets BlockReason field to given value.
 `func (o *LoyaltyCard) HasBlockReason() bool`
 
 HasBlockReason returns a boolean if a field has been set.
+
+### GetAttributes
+
+`func (o *LoyaltyCard) GetAttributes() map[string]interface{}`
+
+GetAttributes returns the Attributes field if non-nil, zero value otherwise.
+
+### GetAttributesOk
+
+`func (o *LoyaltyCard) GetAttributesOk() (*map[string]interface{}, bool)`
+
+GetAttributesOk returns a tuple with the Attributes field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAttributes
+
+`func (o *LoyaltyCard) SetAttributes(v map[string]interface{})`
+
+SetAttributes sets Attributes field to given value.
+
+### HasAttributes
+
+`func (o *LoyaltyCard) HasAttributes() bool`
+
+HasAttributes returns a boolean if a field has been set.
 
 ### GetIdentifier
 

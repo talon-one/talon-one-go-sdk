@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"testing"
-	openapiclient "github.com/talon-one/talon-one-go-sdk/v26"
+	openapiclient "github.com/talon-one/talon-one-go-sdk"
 )
 
 func Test_talon_ManagementAPIService(t *testing.T) {

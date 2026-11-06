@@ -18,23 +18,23 @@ import (
 // checks if the OutboundLogBase type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &OutboundLogBase{}
 
-// OutboundLogBase Shared details of an outbound notification or webhook message.
+// OutboundLogBase struct for OutboundLogBase
 type OutboundLogBase struct {
 	// UUID of the outbound message.
 	Uuid string `json:"uuid"`
-	// ID of the notification that produced the outbound request.
+	// ID of the notification that triggered the outbound message.
 	NotificationId *int64 `json:"notificationId,omitempty"`
-	// Name of the notification that produced the outbound request.
+	// Name of the notification that triggered the outbound message.
 	NotificationName *string `json:"notificationName,omitempty"`
-	// ID of the webhook that produced the outbound request.
+	// ID of the webhook that triggered the outbound message.
 	WebhookId *int64 `json:"webhookId,omitempty"`
-	// The name of the webhook that produced the outbound request.
+	// Name of the webhook that triggered the outbound message.
 	WebhookName *string `json:"webhookName,omitempty"`
-	// Type of notification that produced the outbound request.
+	// Type of notification that triggered the outbound message.
 	NotificationType string `json:"notificationType"`
-	// ID of the Application associated with the outbound request.
+	// ID of the Application associated with the outbound message.
 	ApplicationId *int64 `json:"applicationId,omitempty"`
-	// ID of the loyalty program associated with the outbound request.
+	// ID of the loyalty program associated with the outbound message.
 	LoyaltyProgramId     *int64              `json:"loyaltyProgramId,omitempty"`
 	Request              *OutboundLogRequest `json:"request,omitempty"`
 	AdditionalProperties map[string]interface{}

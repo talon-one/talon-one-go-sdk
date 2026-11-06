@@ -13,7 +13,6 @@ package talon
 import (
 	"encoding/json"
 	"fmt"
-	"gopkg.in/validator.v2"
 )
 
 // IntegrationHubPaginatedEventPayloadDataInner - struct for IntegrationHubPaginatedEventPayloadDataInner
@@ -55,92 +54,86 @@ func IntegrationHubEventPayloadLoyaltyProfileBasedTierUpgradeNotificationAsInteg
 // Unmarshal JSON data into one of the pointers in the struct
 func (dst *IntegrationHubPaginatedEventPayloadDataInner) UnmarshalJSON(data []byte) error {
 	var err error
-	match := 0
-	// try to unmarshal data into IntegrationHubEventPayloadCouponBasedNotifications
-	err = newStrictDecoder(data).Decode(&dst.IntegrationHubEventPayloadCouponBasedNotifications)
-	if err == nil {
-		jsonIntegrationHubEventPayloadCouponBasedNotifications, _ := json.Marshal(dst.IntegrationHubEventPayloadCouponBasedNotifications)
-		if string(jsonIntegrationHubEventPayloadCouponBasedNotifications) == "{}" { // empty struct
+	// use discriminator value to speed up the lookup
+	var jsonDict map[string]interface{}
+	err = newStrictDecoder(data).Decode(&jsonDict)
+	if err != nil {
+		return fmt.Errorf("failed to unmarshal JSON into map for the discriminator lookup")
+	}
+
+	// check if the discriminator value is 'CouponCreated'
+	if jsonDict["EventType"] == "CouponCreated" {
+		// try to unmarshal JSON data into IntegrationHubEventPayloadCouponBasedNotifications
+		err = json.Unmarshal(data, &dst.IntegrationHubEventPayloadCouponBasedNotifications)
+		if err == nil {
+			return nil // data stored in dst.IntegrationHubEventPayloadCouponBasedNotifications, return on the first match
+		} else {
 			dst.IntegrationHubEventPayloadCouponBasedNotifications = nil
-		} else {
-			if err = validator.Validate(dst.IntegrationHubEventPayloadCouponBasedNotifications); err != nil {
-				dst.IntegrationHubEventPayloadCouponBasedNotifications = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal IntegrationHubPaginatedEventPayloadDataInner as IntegrationHubEventPayloadCouponBasedNotifications: %s", err.Error())
 		}
-	} else {
-		dst.IntegrationHubEventPayloadCouponBasedNotifications = nil
 	}
 
-	// try to unmarshal data into IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification
-	err = newStrictDecoder(data).Decode(&dst.IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification)
-	if err == nil {
-		jsonIntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification, _ := json.Marshal(dst.IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification)
-		if string(jsonIntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification) == "{}" { // empty struct
+	// check if the discriminator value is 'CouponDeleted'
+	if jsonDict["EventType"] == "CouponDeleted" {
+		// try to unmarshal JSON data into IntegrationHubEventPayloadCouponBasedNotifications
+		err = json.Unmarshal(data, &dst.IntegrationHubEventPayloadCouponBasedNotifications)
+		if err == nil {
+			return nil // data stored in dst.IntegrationHubEventPayloadCouponBasedNotifications, return on the first match
+		} else {
+			dst.IntegrationHubEventPayloadCouponBasedNotifications = nil
+			return fmt.Errorf("failed to unmarshal IntegrationHubPaginatedEventPayloadDataInner as IntegrationHubEventPayloadCouponBasedNotifications: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'CouponUpdated'
+	if jsonDict["EventType"] == "CouponUpdated" {
+		// try to unmarshal JSON data into IntegrationHubEventPayloadCouponBasedNotifications
+		err = json.Unmarshal(data, &dst.IntegrationHubEventPayloadCouponBasedNotifications)
+		if err == nil {
+			return nil // data stored in dst.IntegrationHubEventPayloadCouponBasedNotifications, return on the first match
+		} else {
+			dst.IntegrationHubEventPayloadCouponBasedNotifications = nil
+			return fmt.Errorf("failed to unmarshal IntegrationHubPaginatedEventPayloadDataInner as IntegrationHubEventPayloadCouponBasedNotifications: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'LoyaltyPointsChanged'
+	if jsonDict["EventType"] == "LoyaltyPointsChanged" {
+		// try to unmarshal JSON data into IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification
+		err = json.Unmarshal(data, &dst.IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification)
+		if err == nil {
+			return nil // data stored in dst.IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification, return on the first match
+		} else {
 			dst.IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification = nil
-		} else {
-			if err = validator.Validate(dst.IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification); err != nil {
-				dst.IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal IntegrationHubPaginatedEventPayloadDataInner as IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification: %s", err.Error())
 		}
-	} else {
-		dst.IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification = nil
 	}
 
-	// try to unmarshal data into IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification
-	err = newStrictDecoder(data).Decode(&dst.IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification)
-	if err == nil {
-		jsonIntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification, _ := json.Marshal(dst.IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification)
-		if string(jsonIntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification) == "{}" { // empty struct
+	// check if the discriminator value is 'LoyaltyTierDowngrade'
+	if jsonDict["EventType"] == "LoyaltyTierDowngrade" {
+		// try to unmarshal JSON data into IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification
+		err = json.Unmarshal(data, &dst.IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification)
+		if err == nil {
+			return nil // data stored in dst.IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification, return on the first match
+		} else {
 			dst.IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification = nil
-		} else {
-			if err = validator.Validate(dst.IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification); err != nil {
-				dst.IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal IntegrationHubPaginatedEventPayloadDataInner as IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification: %s", err.Error())
 		}
-	} else {
-		dst.IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification = nil
 	}
 
-	// try to unmarshal data into IntegrationHubEventPayloadLoyaltyProfileBasedTierUpgradeNotification
-	err = newStrictDecoder(data).Decode(&dst.IntegrationHubEventPayloadLoyaltyProfileBasedTierUpgradeNotification)
-	if err == nil {
-		jsonIntegrationHubEventPayloadLoyaltyProfileBasedTierUpgradeNotification, _ := json.Marshal(dst.IntegrationHubEventPayloadLoyaltyProfileBasedTierUpgradeNotification)
-		if string(jsonIntegrationHubEventPayloadLoyaltyProfileBasedTierUpgradeNotification) == "{}" { // empty struct
+	// check if the discriminator value is 'LoyaltyTierUpgrade'
+	if jsonDict["EventType"] == "LoyaltyTierUpgrade" {
+		// try to unmarshal JSON data into IntegrationHubEventPayloadLoyaltyProfileBasedTierUpgradeNotification
+		err = json.Unmarshal(data, &dst.IntegrationHubEventPayloadLoyaltyProfileBasedTierUpgradeNotification)
+		if err == nil {
+			return nil // data stored in dst.IntegrationHubEventPayloadLoyaltyProfileBasedTierUpgradeNotification, return on the first match
+		} else {
 			dst.IntegrationHubEventPayloadLoyaltyProfileBasedTierUpgradeNotification = nil
-		} else {
-			if err = validator.Validate(dst.IntegrationHubEventPayloadLoyaltyProfileBasedTierUpgradeNotification); err != nil {
-				dst.IntegrationHubEventPayloadLoyaltyProfileBasedTierUpgradeNotification = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal IntegrationHubPaginatedEventPayloadDataInner as IntegrationHubEventPayloadLoyaltyProfileBasedTierUpgradeNotification: %s", err.Error())
 		}
-	} else {
-		dst.IntegrationHubEventPayloadLoyaltyProfileBasedTierUpgradeNotification = nil
 	}
 
-	if match > 1 { // more than 1 match
-		// reset to nil
-		dst.IntegrationHubEventPayloadCouponBasedNotifications = nil
-		dst.IntegrationHubEventPayloadLoyaltyProfileBasedPointsChangedNotification = nil
-		dst.IntegrationHubEventPayloadLoyaltyProfileBasedTierDowngradeNotification = nil
-		dst.IntegrationHubEventPayloadLoyaltyProfileBasedTierUpgradeNotification = nil
-
-		return fmt.Errorf("data matches more than one schema in oneOf(IntegrationHubPaginatedEventPayloadDataInner)")
-	} else if match == 1 {
-		return nil // exactly one match
-	} else { // no match
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(IntegrationHubPaginatedEventPayloadDataInner): %v", err)
-		}
-
-		return fmt.Errorf("data failed to match schemas in oneOf(IntegrationHubPaginatedEventPayloadDataInner)")
-	}
+	return nil
 }
 
 // Marshal data from the first non-nil pointers in the struct to JSON

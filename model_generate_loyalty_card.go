@@ -24,7 +24,9 @@ type GenerateLoyaltyCard struct {
 	// Integration IDs of the customer profiles linked to the card.
 	CustomerProfileIds []string `json:"customerProfileIds,omitempty"`
 	// The identifier of the loyalty card, which must match the regular expression `^[A-Za-z0-9._%+@-]+$`.
-	CardIdentifier       *string `json:"cardIdentifier,omitempty" validate:"regexp=^[A-Za-z0-9._%+@-]+$"`
+	CardIdentifier *string `json:"cardIdentifier,omitempty" validate:"regexp=^[A-Za-z0-9._%+@-]+$"`
+	// Set values for the [custom attributes](https://docs.talon.one/docs/dev/concepts/attributes#custom-attributes) of a loyalty card. These attributes must be created in the Campaign Manager before their values can be updated through this endpoint.
+	Attributes           map[string]interface{} `json:"attributes,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -147,6 +149,38 @@ func (o *GenerateLoyaltyCard) SetCardIdentifier(v string) {
 	o.CardIdentifier = &v
 }
 
+// GetAttributes returns the Attributes field value if set, zero value otherwise.
+func (o *GenerateLoyaltyCard) GetAttributes() map[string]interface{} {
+	if o == nil || IsNil(o.Attributes) {
+		var ret map[string]interface{}
+		return ret
+	}
+	return o.Attributes
+}
+
+// GetAttributesOk returns a tuple with the Attributes field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *GenerateLoyaltyCard) GetAttributesOk() (map[string]interface{}, bool) {
+	if o == nil || IsNil(o.Attributes) {
+		return map[string]interface{}{}, false
+	}
+	return o.Attributes, true
+}
+
+// HasAttributes returns a boolean if a field has been set.
+func (o *GenerateLoyaltyCard) HasAttributes() bool {
+	if o != nil && !IsNil(o.Attributes) {
+		return true
+	}
+
+	return false
+}
+
+// SetAttributes gets a reference to the given map[string]interface{} and assigns it to the Attributes field.
+func (o *GenerateLoyaltyCard) SetAttributes(v map[string]interface{}) {
+	o.Attributes = v
+}
+
 func (o GenerateLoyaltyCard) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -165,6 +199,9 @@ func (o GenerateLoyaltyCard) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.CardIdentifier) {
 		toSerialize["cardIdentifier"] = o.CardIdentifier
+	}
+	if !IsNil(o.Attributes) {
+		toSerialize["attributes"] = o.Attributes
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -191,6 +228,7 @@ func (o *GenerateLoyaltyCard) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "status")
 		delete(additionalProperties, "customerProfileIds")
 		delete(additionalProperties, "cardIdentifier")
+		delete(additionalProperties, "attributes")
 		o.AdditionalProperties = additionalProperties
 	}
 

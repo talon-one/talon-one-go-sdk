@@ -13,7 +13,6 @@ package talon
 import (
 	"encoding/json"
 	"fmt"
-	"gopkg.in/validator.v2"
 )
 
 // Block - Describes a part of the logic of the rule.
@@ -239,506 +238,338 @@ func UpdateLoyaltyPointsExpiryBlockAsBlock(v *UpdateLoyaltyPointsExpiryBlock) Bl
 // Unmarshal JSON data into one of the pointers in the struct
 func (dst *Block) UnmarshalJSON(data []byte) error {
 	var err error
-	match := 0
-	// try to unmarshal data into AwardDiscountBlock
-	err = newStrictDecoder(data).Decode(&dst.AwardDiscountBlock)
-	if err == nil {
-		jsonAwardDiscountBlock, _ := json.Marshal(dst.AwardDiscountBlock)
-		if string(jsonAwardDiscountBlock) == "{}" { // empty struct
+	// use discriminator value to speed up the lookup
+	var jsonDict map[string]interface{}
+	err = newStrictDecoder(data).Decode(&jsonDict)
+	if err != nil {
+		return fmt.Errorf("failed to unmarshal JSON into map for the discriminator lookup")
+	}
+
+	// check if the discriminator value is 'awardDiscount'
+	if jsonDict["type"] == "awardDiscount" {
+		// try to unmarshal JSON data into AwardDiscountBlock
+		err = json.Unmarshal(data, &dst.AwardDiscountBlock)
+		if err == nil {
+			return nil // data stored in dst.AwardDiscountBlock, return on the first match
+		} else {
 			dst.AwardDiscountBlock = nil
-		} else {
-			if err = validator.Validate(dst.AwardDiscountBlock); err != nil {
-				dst.AwardDiscountBlock = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Block as AwardDiscountBlock: %s", err.Error())
 		}
-	} else {
-		dst.AwardDiscountBlock = nil
 	}
 
-	// try to unmarshal data into AwardGiveawayBlock
-	err = newStrictDecoder(data).Decode(&dst.AwardGiveawayBlock)
-	if err == nil {
-		jsonAwardGiveawayBlock, _ := json.Marshal(dst.AwardGiveawayBlock)
-		if string(jsonAwardGiveawayBlock) == "{}" { // empty struct
+	// check if the discriminator value is 'awardGiveaway'
+	if jsonDict["type"] == "awardGiveaway" {
+		// try to unmarshal JSON data into AwardGiveawayBlock
+		err = json.Unmarshal(data, &dst.AwardGiveawayBlock)
+		if err == nil {
+			return nil // data stored in dst.AwardGiveawayBlock, return on the first match
+		} else {
 			dst.AwardGiveawayBlock = nil
-		} else {
-			if err = validator.Validate(dst.AwardGiveawayBlock); err != nil {
-				dst.AwardGiveawayBlock = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Block as AwardGiveawayBlock: %s", err.Error())
 		}
-	} else {
-		dst.AwardGiveawayBlock = nil
 	}
 
-	// try to unmarshal data into AwardItemBlock
-	err = newStrictDecoder(data).Decode(&dst.AwardItemBlock)
-	if err == nil {
-		jsonAwardItemBlock, _ := json.Marshal(dst.AwardItemBlock)
-		if string(jsonAwardItemBlock) == "{}" { // empty struct
+	// check if the discriminator value is 'awardItem'
+	if jsonDict["type"] == "awardItem" {
+		// try to unmarshal JSON data into AwardItemBlock
+		err = json.Unmarshal(data, &dst.AwardItemBlock)
+		if err == nil {
+			return nil // data stored in dst.AwardItemBlock, return on the first match
+		} else {
 			dst.AwardItemBlock = nil
-		} else {
-			if err = validator.Validate(dst.AwardItemBlock); err != nil {
-				dst.AwardItemBlock = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Block as AwardItemBlock: %s", err.Error())
 		}
-	} else {
-		dst.AwardItemBlock = nil
 	}
 
-	// try to unmarshal data into AwardLoyaltyPointsBlock
-	err = newStrictDecoder(data).Decode(&dst.AwardLoyaltyPointsBlock)
-	if err == nil {
-		jsonAwardLoyaltyPointsBlock, _ := json.Marshal(dst.AwardLoyaltyPointsBlock)
-		if string(jsonAwardLoyaltyPointsBlock) == "{}" { // empty struct
+	// check if the discriminator value is 'awardLoyaltyPoints'
+	if jsonDict["type"] == "awardLoyaltyPoints" {
+		// try to unmarshal JSON data into AwardLoyaltyPointsBlock
+		err = json.Unmarshal(data, &dst.AwardLoyaltyPointsBlock)
+		if err == nil {
+			return nil // data stored in dst.AwardLoyaltyPointsBlock, return on the first match
+		} else {
 			dst.AwardLoyaltyPointsBlock = nil
-		} else {
-			if err = validator.Validate(dst.AwardLoyaltyPointsBlock); err != nil {
-				dst.AwardLoyaltyPointsBlock = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Block as AwardLoyaltyPointsBlock: %s", err.Error())
 		}
-	} else {
-		dst.AwardLoyaltyPointsBlock = nil
 	}
 
-	// try to unmarshal data into CheckAchievementBlock
-	err = newStrictDecoder(data).Decode(&dst.CheckAchievementBlock)
-	if err == nil {
-		jsonCheckAchievementBlock, _ := json.Marshal(dst.CheckAchievementBlock)
-		if string(jsonCheckAchievementBlock) == "{}" { // empty struct
+	// check if the discriminator value is 'checkAchievement'
+	if jsonDict["type"] == "checkAchievement" {
+		// try to unmarshal JSON data into CheckAchievementBlock
+		err = json.Unmarshal(data, &dst.CheckAchievementBlock)
+		if err == nil {
+			return nil // data stored in dst.CheckAchievementBlock, return on the first match
+		} else {
 			dst.CheckAchievementBlock = nil
-		} else {
-			if err = validator.Validate(dst.CheckAchievementBlock); err != nil {
-				dst.CheckAchievementBlock = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Block as CheckAchievementBlock: %s", err.Error())
 		}
-	} else {
-		dst.CheckAchievementBlock = nil
 	}
 
-	// try to unmarshal data into CheckAttributeBlock
-	err = newStrictDecoder(data).Decode(&dst.CheckAttributeBlock)
-	if err == nil {
-		jsonCheckAttributeBlock, _ := json.Marshal(dst.CheckAttributeBlock)
-		if string(jsonCheckAttributeBlock) == "{}" { // empty struct
+	// check if the discriminator value is 'checkAttribute'
+	if jsonDict["type"] == "checkAttribute" {
+		// try to unmarshal JSON data into CheckAttributeBlock
+		err = json.Unmarshal(data, &dst.CheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.CheckAttributeBlock, return on the first match
+		} else {
 			dst.CheckAttributeBlock = nil
-		} else {
-			if err = validator.Validate(dst.CheckAttributeBlock); err != nil {
-				dst.CheckAttributeBlock = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Block as CheckAttributeBlock: %s", err.Error())
 		}
-	} else {
-		dst.CheckAttributeBlock = nil
 	}
 
-	// try to unmarshal data into CheckAudienceBlock
-	err = newStrictDecoder(data).Decode(&dst.CheckAudienceBlock)
-	if err == nil {
-		jsonCheckAudienceBlock, _ := json.Marshal(dst.CheckAudienceBlock)
-		if string(jsonCheckAudienceBlock) == "{}" { // empty struct
+	// check if the discriminator value is 'checkAudience'
+	if jsonDict["type"] == "checkAudience" {
+		// try to unmarshal JSON data into CheckAudienceBlock
+		err = json.Unmarshal(data, &dst.CheckAudienceBlock)
+		if err == nil {
+			return nil // data stored in dst.CheckAudienceBlock, return on the first match
+		} else {
 			dst.CheckAudienceBlock = nil
-		} else {
-			if err = validator.Validate(dst.CheckAudienceBlock); err != nil {
-				dst.CheckAudienceBlock = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Block as CheckAudienceBlock: %s", err.Error())
 		}
-	} else {
-		dst.CheckAudienceBlock = nil
 	}
 
-	// try to unmarshal data into CheckBudgetBlock
-	err = newStrictDecoder(data).Decode(&dst.CheckBudgetBlock)
-	if err == nil {
-		jsonCheckBudgetBlock, _ := json.Marshal(dst.CheckBudgetBlock)
-		if string(jsonCheckBudgetBlock) == "{}" { // empty struct
+	// check if the discriminator value is 'checkBudget'
+	if jsonDict["type"] == "checkBudget" {
+		// try to unmarshal JSON data into CheckBudgetBlock
+		err = json.Unmarshal(data, &dst.CheckBudgetBlock)
+		if err == nil {
+			return nil // data stored in dst.CheckBudgetBlock, return on the first match
+		} else {
 			dst.CheckBudgetBlock = nil
-		} else {
-			if err = validator.Validate(dst.CheckBudgetBlock); err != nil {
-				dst.CheckBudgetBlock = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Block as CheckBudgetBlock: %s", err.Error())
 		}
-	} else {
-		dst.CheckBudgetBlock = nil
 	}
 
-	// try to unmarshal data into CheckCouponBlock
-	err = newStrictDecoder(data).Decode(&dst.CheckCouponBlock)
-	if err == nil {
-		jsonCheckCouponBlock, _ := json.Marshal(dst.CheckCouponBlock)
-		if string(jsonCheckCouponBlock) == "{}" { // empty struct
+	// check if the discriminator value is 'checkCoupon'
+	if jsonDict["type"] == "checkCoupon" {
+		// try to unmarshal JSON data into CheckCouponBlock
+		err = json.Unmarshal(data, &dst.CheckCouponBlock)
+		if err == nil {
+			return nil // data stored in dst.CheckCouponBlock, return on the first match
+		} else {
 			dst.CheckCouponBlock = nil
-		} else {
-			if err = validator.Validate(dst.CheckCouponBlock); err != nil {
-				dst.CheckCouponBlock = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Block as CheckCouponBlock: %s", err.Error())
 		}
-	} else {
-		dst.CheckCouponBlock = nil
 	}
 
-	// try to unmarshal data into CheckEventBlock
-	err = newStrictDecoder(data).Decode(&dst.CheckEventBlock)
-	if err == nil {
-		jsonCheckEventBlock, _ := json.Marshal(dst.CheckEventBlock)
-		if string(jsonCheckEventBlock) == "{}" { // empty struct
+	// check if the discriminator value is 'checkEvent'
+	if jsonDict["type"] == "checkEvent" {
+		// try to unmarshal JSON data into CheckEventBlock
+		err = json.Unmarshal(data, &dst.CheckEventBlock)
+		if err == nil {
+			return nil // data stored in dst.CheckEventBlock, return on the first match
+		} else {
 			dst.CheckEventBlock = nil
-		} else {
-			if err = validator.Validate(dst.CheckEventBlock); err != nil {
-				dst.CheckEventBlock = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Block as CheckEventBlock: %s", err.Error())
 		}
-	} else {
-		dst.CheckEventBlock = nil
 	}
 
-	// try to unmarshal data into CheckLoyaltyBalanceBlock
-	err = newStrictDecoder(data).Decode(&dst.CheckLoyaltyBalanceBlock)
-	if err == nil {
-		jsonCheckLoyaltyBalanceBlock, _ := json.Marshal(dst.CheckLoyaltyBalanceBlock)
-		if string(jsonCheckLoyaltyBalanceBlock) == "{}" { // empty struct
+	// check if the discriminator value is 'checkLoyaltyBalance'
+	if jsonDict["type"] == "checkLoyaltyBalance" {
+		// try to unmarshal JSON data into CheckLoyaltyBalanceBlock
+		err = json.Unmarshal(data, &dst.CheckLoyaltyBalanceBlock)
+		if err == nil {
+			return nil // data stored in dst.CheckLoyaltyBalanceBlock, return on the first match
+		} else {
 			dst.CheckLoyaltyBalanceBlock = nil
-		} else {
-			if err = validator.Validate(dst.CheckLoyaltyBalanceBlock); err != nil {
-				dst.CheckLoyaltyBalanceBlock = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Block as CheckLoyaltyBalanceBlock: %s", err.Error())
 		}
-	} else {
-		dst.CheckLoyaltyBalanceBlock = nil
 	}
 
-	// try to unmarshal data into CheckLoyaltyCardBlock
-	err = newStrictDecoder(data).Decode(&dst.CheckLoyaltyCardBlock)
-	if err == nil {
-		jsonCheckLoyaltyCardBlock, _ := json.Marshal(dst.CheckLoyaltyCardBlock)
-		if string(jsonCheckLoyaltyCardBlock) == "{}" { // empty struct
+	// check if the discriminator value is 'checkLoyaltyCard'
+	if jsonDict["type"] == "checkLoyaltyCard" {
+		// try to unmarshal JSON data into CheckLoyaltyCardBlock
+		err = json.Unmarshal(data, &dst.CheckLoyaltyCardBlock)
+		if err == nil {
+			return nil // data stored in dst.CheckLoyaltyCardBlock, return on the first match
+		} else {
 			dst.CheckLoyaltyCardBlock = nil
-		} else {
-			if err = validator.Validate(dst.CheckLoyaltyCardBlock); err != nil {
-				dst.CheckLoyaltyCardBlock = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Block as CheckLoyaltyCardBlock: %s", err.Error())
 		}
-	} else {
-		dst.CheckLoyaltyCardBlock = nil
 	}
 
-	// try to unmarshal data into CheckReferralBlock
-	err = newStrictDecoder(data).Decode(&dst.CheckReferralBlock)
-	if err == nil {
-		jsonCheckReferralBlock, _ := json.Marshal(dst.CheckReferralBlock)
-		if string(jsonCheckReferralBlock) == "{}" { // empty struct
+	// check if the discriminator value is 'checkReferral'
+	if jsonDict["type"] == "checkReferral" {
+		// try to unmarshal JSON data into CheckReferralBlock
+		err = json.Unmarshal(data, &dst.CheckReferralBlock)
+		if err == nil {
+			return nil // data stored in dst.CheckReferralBlock, return on the first match
+		} else {
 			dst.CheckReferralBlock = nil
-		} else {
-			if err = validator.Validate(dst.CheckReferralBlock); err != nil {
-				dst.CheckReferralBlock = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Block as CheckReferralBlock: %s", err.Error())
 		}
-	} else {
-		dst.CheckReferralBlock = nil
 	}
 
-	// try to unmarshal data into CheckTierBlock
-	err = newStrictDecoder(data).Decode(&dst.CheckTierBlock)
-	if err == nil {
-		jsonCheckTierBlock, _ := json.Marshal(dst.CheckTierBlock)
-		if string(jsonCheckTierBlock) == "{}" { // empty struct
+	// check if the discriminator value is 'checkTier'
+	if jsonDict["type"] == "checkTier" {
+		// try to unmarshal JSON data into CheckTierBlock
+		err = json.Unmarshal(data, &dst.CheckTierBlock)
+		if err == nil {
+			return nil // data stored in dst.CheckTierBlock, return on the first match
+		} else {
 			dst.CheckTierBlock = nil
-		} else {
-			if err = validator.Validate(dst.CheckTierBlock); err != nil {
-				dst.CheckTierBlock = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Block as CheckTierBlock: %s", err.Error())
 		}
-	} else {
-		dst.CheckTierBlock = nil
 	}
 
-	// try to unmarshal data into CreateCouponBlock
-	err = newStrictDecoder(data).Decode(&dst.CreateCouponBlock)
-	if err == nil {
-		jsonCreateCouponBlock, _ := json.Marshal(dst.CreateCouponBlock)
-		if string(jsonCreateCouponBlock) == "{}" { // empty struct
+	// check if the discriminator value is 'createCoupon'
+	if jsonDict["type"] == "createCoupon" {
+		// try to unmarshal JSON data into CreateCouponBlock
+		err = json.Unmarshal(data, &dst.CreateCouponBlock)
+		if err == nil {
+			return nil // data stored in dst.CreateCouponBlock, return on the first match
+		} else {
 			dst.CreateCouponBlock = nil
-		} else {
-			if err = validator.Validate(dst.CreateCouponBlock); err != nil {
-				dst.CreateCouponBlock = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Block as CreateCouponBlock: %s", err.Error())
 		}
-	} else {
-		dst.CreateCouponBlock = nil
 	}
 
-	// try to unmarshal data into CreateReferralBlock
-	err = newStrictDecoder(data).Decode(&dst.CreateReferralBlock)
-	if err == nil {
-		jsonCreateReferralBlock, _ := json.Marshal(dst.CreateReferralBlock)
-		if string(jsonCreateReferralBlock) == "{}" { // empty struct
+	// check if the discriminator value is 'createReferral'
+	if jsonDict["type"] == "createReferral" {
+		// try to unmarshal JSON data into CreateReferralBlock
+		err = json.Unmarshal(data, &dst.CreateReferralBlock)
+		if err == nil {
+			return nil // data stored in dst.CreateReferralBlock, return on the first match
+		} else {
 			dst.CreateReferralBlock = nil
-		} else {
-			if err = validator.Validate(dst.CreateReferralBlock); err != nil {
-				dst.CreateReferralBlock = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Block as CreateReferralBlock: %s", err.Error())
 		}
-	} else {
-		dst.CreateReferralBlock = nil
 	}
 
-	// try to unmarshal data into GroupBlock
-	err = newStrictDecoder(data).Decode(&dst.GroupBlock)
-	if err == nil {
-		jsonGroupBlock, _ := json.Marshal(dst.GroupBlock)
-		if string(jsonGroupBlock) == "{}" { // empty struct
+	// check if the discriminator value is 'group'
+	if jsonDict["type"] == "group" {
+		// try to unmarshal JSON data into GroupBlock
+		err = json.Unmarshal(data, &dst.GroupBlock)
+		if err == nil {
+			return nil // data stored in dst.GroupBlock, return on the first match
+		} else {
 			dst.GroupBlock = nil
-		} else {
-			if err = validator.Validate(dst.GroupBlock); err != nil {
-				dst.GroupBlock = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Block as GroupBlock: %s", err.Error())
 		}
-	} else {
-		dst.GroupBlock = nil
 	}
 
-	// try to unmarshal data into PassthroughBlock
-	err = newStrictDecoder(data).Decode(&dst.PassthroughBlock)
-	if err == nil {
-		jsonPassthroughBlock, _ := json.Marshal(dst.PassthroughBlock)
-		if string(jsonPassthroughBlock) == "{}" { // empty struct
+	// check if the discriminator value is 'passthrough'
+	if jsonDict["type"] == "passthrough" {
+		// try to unmarshal JSON data into PassthroughBlock
+		err = json.Unmarshal(data, &dst.PassthroughBlock)
+		if err == nil {
+			return nil // data stored in dst.PassthroughBlock, return on the first match
+		} else {
 			dst.PassthroughBlock = nil
-		} else {
-			if err = validator.Validate(dst.PassthroughBlock); err != nil {
-				dst.PassthroughBlock = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Block as PassthroughBlock: %s", err.Error())
 		}
-	} else {
-		dst.PassthroughBlock = nil
 	}
 
-	// try to unmarshal data into RedeemLoyaltyPointsBlock
-	err = newStrictDecoder(data).Decode(&dst.RedeemLoyaltyPointsBlock)
-	if err == nil {
-		jsonRedeemLoyaltyPointsBlock, _ := json.Marshal(dst.RedeemLoyaltyPointsBlock)
-		if string(jsonRedeemLoyaltyPointsBlock) == "{}" { // empty struct
+	// check if the discriminator value is 'redeemLoyaltyPoints'
+	if jsonDict["type"] == "redeemLoyaltyPoints" {
+		// try to unmarshal JSON data into RedeemLoyaltyPointsBlock
+		err = json.Unmarshal(data, &dst.RedeemLoyaltyPointsBlock)
+		if err == nil {
+			return nil // data stored in dst.RedeemLoyaltyPointsBlock, return on the first match
+		} else {
 			dst.RedeemLoyaltyPointsBlock = nil
-		} else {
-			if err = validator.Validate(dst.RedeemLoyaltyPointsBlock); err != nil {
-				dst.RedeemLoyaltyPointsBlock = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Block as RedeemLoyaltyPointsBlock: %s", err.Error())
 		}
-	} else {
-		dst.RedeemLoyaltyPointsBlock = nil
 	}
 
-	// try to unmarshal data into ReserveCouponBlock
-	err = newStrictDecoder(data).Decode(&dst.ReserveCouponBlock)
-	if err == nil {
-		jsonReserveCouponBlock, _ := json.Marshal(dst.ReserveCouponBlock)
-		if string(jsonReserveCouponBlock) == "{}" { // empty struct
+	// check if the discriminator value is 'reserveCoupon'
+	if jsonDict["type"] == "reserveCoupon" {
+		// try to unmarshal JSON data into ReserveCouponBlock
+		err = json.Unmarshal(data, &dst.ReserveCouponBlock)
+		if err == nil {
+			return nil // data stored in dst.ReserveCouponBlock, return on the first match
+		} else {
 			dst.ReserveCouponBlock = nil
-		} else {
-			if err = validator.Validate(dst.ReserveCouponBlock); err != nil {
-				dst.ReserveCouponBlock = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Block as ReserveCouponBlock: %s", err.Error())
 		}
-	} else {
-		dst.ReserveCouponBlock = nil
 	}
 
-	// try to unmarshal data into ShowNotificationBlock
-	err = newStrictDecoder(data).Decode(&dst.ShowNotificationBlock)
-	if err == nil {
-		jsonShowNotificationBlock, _ := json.Marshal(dst.ShowNotificationBlock)
-		if string(jsonShowNotificationBlock) == "{}" { // empty struct
+	// check if the discriminator value is 'showNotification'
+	if jsonDict["type"] == "showNotification" {
+		// try to unmarshal JSON data into ShowNotificationBlock
+		err = json.Unmarshal(data, &dst.ShowNotificationBlock)
+		if err == nil {
+			return nil // data stored in dst.ShowNotificationBlock, return on the first match
+		} else {
 			dst.ShowNotificationBlock = nil
-		} else {
-			if err = validator.Validate(dst.ShowNotificationBlock); err != nil {
-				dst.ShowNotificationBlock = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Block as ShowNotificationBlock: %s", err.Error())
 		}
-	} else {
-		dst.ShowNotificationBlock = nil
 	}
 
-	// try to unmarshal data into TriggerCustomEffectBlock
-	err = newStrictDecoder(data).Decode(&dst.TriggerCustomEffectBlock)
-	if err == nil {
-		jsonTriggerCustomEffectBlock, _ := json.Marshal(dst.TriggerCustomEffectBlock)
-		if string(jsonTriggerCustomEffectBlock) == "{}" { // empty struct
+	// check if the discriminator value is 'triggerCustomEffect'
+	if jsonDict["type"] == "triggerCustomEffect" {
+		// try to unmarshal JSON data into TriggerCustomEffectBlock
+		err = json.Unmarshal(data, &dst.TriggerCustomEffectBlock)
+		if err == nil {
+			return nil // data stored in dst.TriggerCustomEffectBlock, return on the first match
+		} else {
 			dst.TriggerCustomEffectBlock = nil
-		} else {
-			if err = validator.Validate(dst.TriggerCustomEffectBlock); err != nil {
-				dst.TriggerCustomEffectBlock = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Block as TriggerCustomEffectBlock: %s", err.Error())
 		}
-	} else {
-		dst.TriggerCustomEffectBlock = nil
 	}
 
-	// try to unmarshal data into TriggerWebhookBlock
-	err = newStrictDecoder(data).Decode(&dst.TriggerWebhookBlock)
-	if err == nil {
-		jsonTriggerWebhookBlock, _ := json.Marshal(dst.TriggerWebhookBlock)
-		if string(jsonTriggerWebhookBlock) == "{}" { // empty struct
+	// check if the discriminator value is 'triggerWebhook'
+	if jsonDict["type"] == "triggerWebhook" {
+		// try to unmarshal JSON data into TriggerWebhookBlock
+		err = json.Unmarshal(data, &dst.TriggerWebhookBlock)
+		if err == nil {
+			return nil // data stored in dst.TriggerWebhookBlock, return on the first match
+		} else {
 			dst.TriggerWebhookBlock = nil
-		} else {
-			if err = validator.Validate(dst.TriggerWebhookBlock); err != nil {
-				dst.TriggerWebhookBlock = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Block as TriggerWebhookBlock: %s", err.Error())
 		}
-	} else {
-		dst.TriggerWebhookBlock = nil
 	}
 
-	// try to unmarshal data into UpdateAchievementProgressBlock
-	err = newStrictDecoder(data).Decode(&dst.UpdateAchievementProgressBlock)
-	if err == nil {
-		jsonUpdateAchievementProgressBlock, _ := json.Marshal(dst.UpdateAchievementProgressBlock)
-		if string(jsonUpdateAchievementProgressBlock) == "{}" { // empty struct
+	// check if the discriminator value is 'updateAchievementProgress'
+	if jsonDict["type"] == "updateAchievementProgress" {
+		// try to unmarshal JSON data into UpdateAchievementProgressBlock
+		err = json.Unmarshal(data, &dst.UpdateAchievementProgressBlock)
+		if err == nil {
+			return nil // data stored in dst.UpdateAchievementProgressBlock, return on the first match
+		} else {
 			dst.UpdateAchievementProgressBlock = nil
-		} else {
-			if err = validator.Validate(dst.UpdateAchievementProgressBlock); err != nil {
-				dst.UpdateAchievementProgressBlock = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Block as UpdateAchievementProgressBlock: %s", err.Error())
 		}
-	} else {
-		dst.UpdateAchievementProgressBlock = nil
 	}
 
-	// try to unmarshal data into UpdateAttributeValueBlock
-	err = newStrictDecoder(data).Decode(&dst.UpdateAttributeValueBlock)
-	if err == nil {
-		jsonUpdateAttributeValueBlock, _ := json.Marshal(dst.UpdateAttributeValueBlock)
-		if string(jsonUpdateAttributeValueBlock) == "{}" { // empty struct
+	// check if the discriminator value is 'updateAttributeValue'
+	if jsonDict["type"] == "updateAttributeValue" {
+		// try to unmarshal JSON data into UpdateAttributeValueBlock
+		err = json.Unmarshal(data, &dst.UpdateAttributeValueBlock)
+		if err == nil {
+			return nil // data stored in dst.UpdateAttributeValueBlock, return on the first match
+		} else {
 			dst.UpdateAttributeValueBlock = nil
-		} else {
-			if err = validator.Validate(dst.UpdateAttributeValueBlock); err != nil {
-				dst.UpdateAttributeValueBlock = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Block as UpdateAttributeValueBlock: %s", err.Error())
 		}
-	} else {
-		dst.UpdateAttributeValueBlock = nil
 	}
 
-	// try to unmarshal data into UpdateAudienceMembershipBlock
-	err = newStrictDecoder(data).Decode(&dst.UpdateAudienceMembershipBlock)
-	if err == nil {
-		jsonUpdateAudienceMembershipBlock, _ := json.Marshal(dst.UpdateAudienceMembershipBlock)
-		if string(jsonUpdateAudienceMembershipBlock) == "{}" { // empty struct
+	// check if the discriminator value is 'updateAudienceMembership'
+	if jsonDict["type"] == "updateAudienceMembership" {
+		// try to unmarshal JSON data into UpdateAudienceMembershipBlock
+		err = json.Unmarshal(data, &dst.UpdateAudienceMembershipBlock)
+		if err == nil {
+			return nil // data stored in dst.UpdateAudienceMembershipBlock, return on the first match
+		} else {
 			dst.UpdateAudienceMembershipBlock = nil
-		} else {
-			if err = validator.Validate(dst.UpdateAudienceMembershipBlock); err != nil {
-				dst.UpdateAudienceMembershipBlock = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Block as UpdateAudienceMembershipBlock: %s", err.Error())
 		}
-	} else {
-		dst.UpdateAudienceMembershipBlock = nil
 	}
 
-	// try to unmarshal data into UpdateLoyaltyPointsExpiryBlock
-	err = newStrictDecoder(data).Decode(&dst.UpdateLoyaltyPointsExpiryBlock)
-	if err == nil {
-		jsonUpdateLoyaltyPointsExpiryBlock, _ := json.Marshal(dst.UpdateLoyaltyPointsExpiryBlock)
-		if string(jsonUpdateLoyaltyPointsExpiryBlock) == "{}" { // empty struct
+	// check if the discriminator value is 'updateLoyaltyPointsExpiry'
+	if jsonDict["type"] == "updateLoyaltyPointsExpiry" {
+		// try to unmarshal JSON data into UpdateLoyaltyPointsExpiryBlock
+		err = json.Unmarshal(data, &dst.UpdateLoyaltyPointsExpiryBlock)
+		if err == nil {
+			return nil // data stored in dst.UpdateLoyaltyPointsExpiryBlock, return on the first match
+		} else {
 			dst.UpdateLoyaltyPointsExpiryBlock = nil
-		} else {
-			if err = validator.Validate(dst.UpdateLoyaltyPointsExpiryBlock); err != nil {
-				dst.UpdateLoyaltyPointsExpiryBlock = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal Block as UpdateLoyaltyPointsExpiryBlock: %s", err.Error())
 		}
-	} else {
-		dst.UpdateLoyaltyPointsExpiryBlock = nil
 	}
 
-	if match > 1 { // more than 1 match
-		// reset to nil
-		dst.AwardDiscountBlock = nil
-		dst.AwardGiveawayBlock = nil
-		dst.AwardItemBlock = nil
-		dst.AwardLoyaltyPointsBlock = nil
-		dst.CheckAchievementBlock = nil
-		dst.CheckAttributeBlock = nil
-		dst.CheckAudienceBlock = nil
-		dst.CheckBudgetBlock = nil
-		dst.CheckCouponBlock = nil
-		dst.CheckEventBlock = nil
-		dst.CheckLoyaltyBalanceBlock = nil
-		dst.CheckLoyaltyCardBlock = nil
-		dst.CheckReferralBlock = nil
-		dst.CheckTierBlock = nil
-		dst.CreateCouponBlock = nil
-		dst.CreateReferralBlock = nil
-		dst.GroupBlock = nil
-		dst.PassthroughBlock = nil
-		dst.RedeemLoyaltyPointsBlock = nil
-		dst.ReserveCouponBlock = nil
-		dst.ShowNotificationBlock = nil
-		dst.TriggerCustomEffectBlock = nil
-		dst.TriggerWebhookBlock = nil
-		dst.UpdateAchievementProgressBlock = nil
-		dst.UpdateAttributeValueBlock = nil
-		dst.UpdateAudienceMembershipBlock = nil
-		dst.UpdateLoyaltyPointsExpiryBlock = nil
-
-		return fmt.Errorf("data matches more than one schema in oneOf(Block)")
-	} else if match == 1 {
-		return nil // exactly one match
-	} else { // no match
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(Block): %v", err)
-		}
-
-		return fmt.Errorf("data failed to match schemas in oneOf(Block)")
-	}
+	return nil
 }
 
 // Marshal data from the first non-nil pointers in the struct to JSON

@@ -13,7 +13,6 @@ package talon
 import (
 	"encoding/json"
 	"fmt"
-	"gopkg.in/validator.v2"
 )
 
 // LocationCheckAttributeBlockValues - The geometric areas to check the location against.
@@ -41,34 +40,26 @@ func (dst *LocationCheckAttributeBlockValues) UnmarshalJSON(data []byte) error {
 	var err error
 	match := 0
 	// try to unmarshal data into ArrayOfLocationCheckAttributeBlockValuesOneOfInner
-	err = newStrictDecoder(data).Decode(&dst.ArrayOfLocationCheckAttributeBlockValuesOneOfInner)
+	err = json.Unmarshal(data, &dst.ArrayOfLocationCheckAttributeBlockValuesOneOfInner)
 	if err == nil {
 		jsonArrayOfLocationCheckAttributeBlockValuesOneOfInner, _ := json.Marshal(dst.ArrayOfLocationCheckAttributeBlockValuesOneOfInner)
 		if string(jsonArrayOfLocationCheckAttributeBlockValuesOneOfInner) == "{}" { // empty struct
 			dst.ArrayOfLocationCheckAttributeBlockValuesOneOfInner = nil
 		} else {
-			if err = validator.Validate(dst.ArrayOfLocationCheckAttributeBlockValuesOneOfInner); err != nil {
-				dst.ArrayOfLocationCheckAttributeBlockValuesOneOfInner = nil
-			} else {
-				match++
-			}
+			match++
 		}
 	} else {
 		dst.ArrayOfLocationCheckAttributeBlockValuesOneOfInner = nil
 	}
 
 	// try to unmarshal data into String
-	err = newStrictDecoder(data).Decode(&dst.String)
+	err = json.Unmarshal(data, &dst.String)
 	if err == nil {
 		jsonString, _ := json.Marshal(dst.String)
 		if string(jsonString) == "{}" { // empty struct
 			dst.String = nil
 		} else {
-			if err = validator.Validate(dst.String); err != nil {
-				dst.String = nil
-			} else {
-				match++
-			}
+			match++
 		}
 	} else {
 		dst.String = nil

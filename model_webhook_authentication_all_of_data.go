@@ -13,7 +13,6 @@ package talon
 import (
 	"encoding/json"
 	"fmt"
-	"gopkg.in/validator.v2"
 )
 
 // WebhookAuthenticationAllOfData - struct for WebhookAuthenticationAllOfData
@@ -41,34 +40,26 @@ func (dst *WebhookAuthenticationAllOfData) UnmarshalJSON(data []byte) error {
 	var err error
 	match := 0
 	// try to unmarshal data into WebhookAuthenticationDataBasic
-	err = newStrictDecoder(data).Decode(&dst.WebhookAuthenticationDataBasic)
+	err = json.Unmarshal(data, &dst.WebhookAuthenticationDataBasic)
 	if err == nil {
 		jsonWebhookAuthenticationDataBasic, _ := json.Marshal(dst.WebhookAuthenticationDataBasic)
 		if string(jsonWebhookAuthenticationDataBasic) == "{}" { // empty struct
 			dst.WebhookAuthenticationDataBasic = nil
 		} else {
-			if err = validator.Validate(dst.WebhookAuthenticationDataBasic); err != nil {
-				dst.WebhookAuthenticationDataBasic = nil
-			} else {
-				match++
-			}
+			match++
 		}
 	} else {
 		dst.WebhookAuthenticationDataBasic = nil
 	}
 
 	// try to unmarshal data into WebhookAuthenticationDataCustom
-	err = newStrictDecoder(data).Decode(&dst.WebhookAuthenticationDataCustom)
+	err = json.Unmarshal(data, &dst.WebhookAuthenticationDataCustom)
 	if err == nil {
 		jsonWebhookAuthenticationDataCustom, _ := json.Marshal(dst.WebhookAuthenticationDataCustom)
 		if string(jsonWebhookAuthenticationDataCustom) == "{}" { // empty struct
 			dst.WebhookAuthenticationDataCustom = nil
 		} else {
-			if err = validator.Validate(dst.WebhookAuthenticationDataCustom); err != nil {
-				dst.WebhookAuthenticationDataCustom = nil
-			} else {
-				match++
-			}
+			match++
 		}
 	} else {
 		dst.WebhookAuthenticationDataCustom = nil

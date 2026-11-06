@@ -13,7 +13,6 @@ package talon
 import (
 	"encoding/json"
 	"fmt"
-	"gopkg.in/validator.v2"
 )
 
 // CatalogAction - Definition of all the properties that are needed for a single catalog sync action. The `type` field selects the concrete action variant.
@@ -71,128 +70,86 @@ func CatalogActionRemoveManyAsCatalogAction(v *CatalogActionRemoveMany) CatalogA
 // Unmarshal JSON data into one of the pointers in the struct
 func (dst *CatalogAction) UnmarshalJSON(data []byte) error {
 	var err error
-	match := 0
-	// try to unmarshal data into CatalogActionAdd
-	err = newStrictDecoder(data).Decode(&dst.CatalogActionAdd)
-	if err == nil {
-		jsonCatalogActionAdd, _ := json.Marshal(dst.CatalogActionAdd)
-		if string(jsonCatalogActionAdd) == "{}" { // empty struct
+	// use discriminator value to speed up the lookup
+	var jsonDict map[string]interface{}
+	err = newStrictDecoder(data).Decode(&jsonDict)
+	if err != nil {
+		return fmt.Errorf("failed to unmarshal JSON into map for the discriminator lookup")
+	}
+
+	// check if the discriminator value is 'ADD'
+	if jsonDict["type"] == "ADD" {
+		// try to unmarshal JSON data into CatalogActionAdd
+		err = json.Unmarshal(data, &dst.CatalogActionAdd)
+		if err == nil {
+			return nil // data stored in dst.CatalogActionAdd, return on the first match
+		} else {
 			dst.CatalogActionAdd = nil
-		} else {
-			if err = validator.Validate(dst.CatalogActionAdd); err != nil {
-				dst.CatalogActionAdd = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal CatalogAction as CatalogActionAdd: %s", err.Error())
 		}
-	} else {
-		dst.CatalogActionAdd = nil
 	}
 
-	// try to unmarshal data into CatalogActionAddPriceAdjustment
-	err = newStrictDecoder(data).Decode(&dst.CatalogActionAddPriceAdjustment)
-	if err == nil {
-		jsonCatalogActionAddPriceAdjustment, _ := json.Marshal(dst.CatalogActionAddPriceAdjustment)
-		if string(jsonCatalogActionAddPriceAdjustment) == "{}" { // empty struct
+	// check if the discriminator value is 'ADD_PRICE_ADJUSTMENT'
+	if jsonDict["type"] == "ADD_PRICE_ADJUSTMENT" {
+		// try to unmarshal JSON data into CatalogActionAddPriceAdjustment
+		err = json.Unmarshal(data, &dst.CatalogActionAddPriceAdjustment)
+		if err == nil {
+			return nil // data stored in dst.CatalogActionAddPriceAdjustment, return on the first match
+		} else {
 			dst.CatalogActionAddPriceAdjustment = nil
-		} else {
-			if err = validator.Validate(dst.CatalogActionAddPriceAdjustment); err != nil {
-				dst.CatalogActionAddPriceAdjustment = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal CatalogAction as CatalogActionAddPriceAdjustment: %s", err.Error())
 		}
-	} else {
-		dst.CatalogActionAddPriceAdjustment = nil
 	}
 
-	// try to unmarshal data into CatalogActionPatch
-	err = newStrictDecoder(data).Decode(&dst.CatalogActionPatch)
-	if err == nil {
-		jsonCatalogActionPatch, _ := json.Marshal(dst.CatalogActionPatch)
-		if string(jsonCatalogActionPatch) == "{}" { // empty struct
+	// check if the discriminator value is 'PATCH'
+	if jsonDict["type"] == "PATCH" {
+		// try to unmarshal JSON data into CatalogActionPatch
+		err = json.Unmarshal(data, &dst.CatalogActionPatch)
+		if err == nil {
+			return nil // data stored in dst.CatalogActionPatch, return on the first match
+		} else {
 			dst.CatalogActionPatch = nil
-		} else {
-			if err = validator.Validate(dst.CatalogActionPatch); err != nil {
-				dst.CatalogActionPatch = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal CatalogAction as CatalogActionPatch: %s", err.Error())
 		}
-	} else {
-		dst.CatalogActionPatch = nil
 	}
 
-	// try to unmarshal data into CatalogActionPatchMany
-	err = newStrictDecoder(data).Decode(&dst.CatalogActionPatchMany)
-	if err == nil {
-		jsonCatalogActionPatchMany, _ := json.Marshal(dst.CatalogActionPatchMany)
-		if string(jsonCatalogActionPatchMany) == "{}" { // empty struct
+	// check if the discriminator value is 'PATCH_MANY'
+	if jsonDict["type"] == "PATCH_MANY" {
+		// try to unmarshal JSON data into CatalogActionPatchMany
+		err = json.Unmarshal(data, &dst.CatalogActionPatchMany)
+		if err == nil {
+			return nil // data stored in dst.CatalogActionPatchMany, return on the first match
+		} else {
 			dst.CatalogActionPatchMany = nil
-		} else {
-			if err = validator.Validate(dst.CatalogActionPatchMany); err != nil {
-				dst.CatalogActionPatchMany = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal CatalogAction as CatalogActionPatchMany: %s", err.Error())
 		}
-	} else {
-		dst.CatalogActionPatchMany = nil
 	}
 
-	// try to unmarshal data into CatalogActionRemove
-	err = newStrictDecoder(data).Decode(&dst.CatalogActionRemove)
-	if err == nil {
-		jsonCatalogActionRemove, _ := json.Marshal(dst.CatalogActionRemove)
-		if string(jsonCatalogActionRemove) == "{}" { // empty struct
+	// check if the discriminator value is 'REMOVE'
+	if jsonDict["type"] == "REMOVE" {
+		// try to unmarshal JSON data into CatalogActionRemove
+		err = json.Unmarshal(data, &dst.CatalogActionRemove)
+		if err == nil {
+			return nil // data stored in dst.CatalogActionRemove, return on the first match
+		} else {
 			dst.CatalogActionRemove = nil
-		} else {
-			if err = validator.Validate(dst.CatalogActionRemove); err != nil {
-				dst.CatalogActionRemove = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal CatalogAction as CatalogActionRemove: %s", err.Error())
 		}
-	} else {
-		dst.CatalogActionRemove = nil
 	}
 
-	// try to unmarshal data into CatalogActionRemoveMany
-	err = newStrictDecoder(data).Decode(&dst.CatalogActionRemoveMany)
-	if err == nil {
-		jsonCatalogActionRemoveMany, _ := json.Marshal(dst.CatalogActionRemoveMany)
-		if string(jsonCatalogActionRemoveMany) == "{}" { // empty struct
+	// check if the discriminator value is 'REMOVE_MANY'
+	if jsonDict["type"] == "REMOVE_MANY" {
+		// try to unmarshal JSON data into CatalogActionRemoveMany
+		err = json.Unmarshal(data, &dst.CatalogActionRemoveMany)
+		if err == nil {
+			return nil // data stored in dst.CatalogActionRemoveMany, return on the first match
+		} else {
 			dst.CatalogActionRemoveMany = nil
-		} else {
-			if err = validator.Validate(dst.CatalogActionRemoveMany); err != nil {
-				dst.CatalogActionRemoveMany = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal CatalogAction as CatalogActionRemoveMany: %s", err.Error())
 		}
-	} else {
-		dst.CatalogActionRemoveMany = nil
 	}
 
-	if match > 1 { // more than 1 match
-		// reset to nil
-		dst.CatalogActionAdd = nil
-		dst.CatalogActionAddPriceAdjustment = nil
-		dst.CatalogActionPatch = nil
-		dst.CatalogActionPatchMany = nil
-		dst.CatalogActionRemove = nil
-		dst.CatalogActionRemoveMany = nil
-
-		return fmt.Errorf("data matches more than one schema in oneOf(CatalogAction)")
-	} else if match == 1 {
-		return nil // exactly one match
-	} else { // no match
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(CatalogAction): %v", err)
-		}
-
-		return fmt.Errorf("data failed to match schemas in oneOf(CatalogAction)")
-	}
+	return nil
 }
 
 // Marshal data from the first non-nil pointers in the struct to JSON

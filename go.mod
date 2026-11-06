@@ -1,11 +1,8 @@
-module github.com/talon-one/talon-one-go-sdk/v26
+module github.com/talon-one/talon-one-go-sdk
 
 go 1.23.0
 
-require (
-	github.com/stretchr/testify v1.12.1
-	gopkg.in/validator.v2 v2.0.1
-)
+require github.com/stretchr/testify v1.12.1
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
