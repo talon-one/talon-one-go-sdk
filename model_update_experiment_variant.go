@@ -26,6 +26,8 @@ type UpdateExperimentVariant struct {
 	Ruleset NewRuleset `json:"ruleset"`
 	// The percentage split of this variant. For `random` assignment, the split must be between 1 and 99 and the sum across all variants must equal 100. Ignored for `audience` and `external` assignment.
 	Weight int64 `json:"weight"`
+	// The position of this variant in the experiment. The variant with `order: 0` is the primary variant.
+	Order *int64 `json:"order,omitempty"`
 	// The ID of the audience this variant targets. Only used when the experiment `assignmentType` is `audience`.
 	AudienceId           *int64 `json:"audienceId,omitempty"`
 	AdditionalProperties map[string]interface{}
@@ -150,6 +152,38 @@ func (o *UpdateExperimentVariant) SetWeight(v int64) {
 	o.Weight = v
 }
 
+// GetOrder returns the Order field value if set, zero value otherwise.
+func (o *UpdateExperimentVariant) GetOrder() int64 {
+	if o == nil || IsNil(o.Order) {
+		var ret int64
+		return ret
+	}
+	return *o.Order
+}
+
+// GetOrderOk returns a tuple with the Order field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *UpdateExperimentVariant) GetOrderOk() (*int64, bool) {
+	if o == nil || IsNil(o.Order) {
+		return nil, false
+	}
+	return o.Order, true
+}
+
+// HasOrder returns a boolean if a field has been set.
+func (o *UpdateExperimentVariant) HasOrder() bool {
+	if o != nil && !IsNil(o.Order) {
+		return true
+	}
+
+	return false
+}
+
+// SetOrder gets a reference to the given int64 and assigns it to the Order field.
+func (o *UpdateExperimentVariant) SetOrder(v int64) {
+	o.Order = &v
+}
+
 // GetAudienceId returns the AudienceId field value if set, zero value otherwise.
 func (o *UpdateExperimentVariant) GetAudienceId() int64 {
 	if o == nil || IsNil(o.AudienceId) {
@@ -196,6 +230,9 @@ func (o UpdateExperimentVariant) ToMap() (map[string]interface{}, error) {
 	toSerialize["name"] = o.Name
 	toSerialize["ruleset"] = o.Ruleset
 	toSerialize["weight"] = o.Weight
+	if !IsNil(o.Order) {
+		toSerialize["order"] = o.Order
+	}
 	if !IsNil(o.AudienceId) {
 		toSerialize["audienceId"] = o.AudienceId
 	}
@@ -249,6 +286,7 @@ func (o *UpdateExperimentVariant) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "name")
 		delete(additionalProperties, "ruleset")
 		delete(additionalProperties, "weight")
+		delete(additionalProperties, "order")
 		delete(additionalProperties, "audienceId")
 		o.AdditionalProperties = additionalProperties
 	}

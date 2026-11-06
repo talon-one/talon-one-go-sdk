@@ -13,7 +13,6 @@ package talon
 import (
 	"encoding/json"
 	"fmt"
-	"gopkg.in/validator.v2"
 )
 
 // AwardDiscountAdditionalCostTargetTarget - A subset of cart items whose additional cost the discount applies to. Cannot be another `additionalCost` target.
@@ -55,92 +54,62 @@ func AwardDiscountSelectorTargetAsAwardDiscountAdditionalCostTargetTarget(v *Awa
 // Unmarshal JSON data into one of the pointers in the struct
 func (dst *AwardDiscountAdditionalCostTargetTarget) UnmarshalJSON(data []byte) error {
 	var err error
-	match := 0
-	// try to unmarshal data into AwardDiscountAllItemsTarget
-	err = newStrictDecoder(data).Decode(&dst.AwardDiscountAllItemsTarget)
-	if err == nil {
-		jsonAwardDiscountAllItemsTarget, _ := json.Marshal(dst.AwardDiscountAllItemsTarget)
-		if string(jsonAwardDiscountAllItemsTarget) == "{}" { // empty struct
+	// use discriminator value to speed up the lookup
+	var jsonDict map[string]interface{}
+	err = newStrictDecoder(data).Decode(&jsonDict)
+	if err != nil {
+		return fmt.Errorf("failed to unmarshal JSON into map for the discriminator lookup")
+	}
+
+	// check if the discriminator value is 'allItems'
+	if jsonDict["type"] == "allItems" {
+		// try to unmarshal JSON data into AwardDiscountAllItemsTarget
+		err = json.Unmarshal(data, &dst.AwardDiscountAllItemsTarget)
+		if err == nil {
+			return nil // data stored in dst.AwardDiscountAllItemsTarget, return on the first match
+		} else {
 			dst.AwardDiscountAllItemsTarget = nil
-		} else {
-			if err = validator.Validate(dst.AwardDiscountAllItemsTarget); err != nil {
-				dst.AwardDiscountAllItemsTarget = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal AwardDiscountAdditionalCostTargetTarget as AwardDiscountAllItemsTarget: %s", err.Error())
 		}
-	} else {
-		dst.AwardDiscountAllItemsTarget = nil
 	}
 
-	// try to unmarshal data into AwardDiscountCartTarget
-	err = newStrictDecoder(data).Decode(&dst.AwardDiscountCartTarget)
-	if err == nil {
-		jsonAwardDiscountCartTarget, _ := json.Marshal(dst.AwardDiscountCartTarget)
-		if string(jsonAwardDiscountCartTarget) == "{}" { // empty struct
+	// check if the discriminator value is 'cart'
+	if jsonDict["type"] == "cart" {
+		// try to unmarshal JSON data into AwardDiscountCartTarget
+		err = json.Unmarshal(data, &dst.AwardDiscountCartTarget)
+		if err == nil {
+			return nil // data stored in dst.AwardDiscountCartTarget, return on the first match
+		} else {
 			dst.AwardDiscountCartTarget = nil
-		} else {
-			if err = validator.Validate(dst.AwardDiscountCartTarget); err != nil {
-				dst.AwardDiscountCartTarget = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal AwardDiscountAdditionalCostTargetTarget as AwardDiscountCartTarget: %s", err.Error())
 		}
-	} else {
-		dst.AwardDiscountCartTarget = nil
 	}
 
-	// try to unmarshal data into AwardDiscountGlobalFilterTarget
-	err = newStrictDecoder(data).Decode(&dst.AwardDiscountGlobalFilterTarget)
-	if err == nil {
-		jsonAwardDiscountGlobalFilterTarget, _ := json.Marshal(dst.AwardDiscountGlobalFilterTarget)
-		if string(jsonAwardDiscountGlobalFilterTarget) == "{}" { // empty struct
+	// check if the discriminator value is 'globalFilter'
+	if jsonDict["type"] == "globalFilter" {
+		// try to unmarshal JSON data into AwardDiscountGlobalFilterTarget
+		err = json.Unmarshal(data, &dst.AwardDiscountGlobalFilterTarget)
+		if err == nil {
+			return nil // data stored in dst.AwardDiscountGlobalFilterTarget, return on the first match
+		} else {
 			dst.AwardDiscountGlobalFilterTarget = nil
-		} else {
-			if err = validator.Validate(dst.AwardDiscountGlobalFilterTarget); err != nil {
-				dst.AwardDiscountGlobalFilterTarget = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal AwardDiscountAdditionalCostTargetTarget as AwardDiscountGlobalFilterTarget: %s", err.Error())
 		}
-	} else {
-		dst.AwardDiscountGlobalFilterTarget = nil
 	}
 
-	// try to unmarshal data into AwardDiscountSelectorTarget
-	err = newStrictDecoder(data).Decode(&dst.AwardDiscountSelectorTarget)
-	if err == nil {
-		jsonAwardDiscountSelectorTarget, _ := json.Marshal(dst.AwardDiscountSelectorTarget)
-		if string(jsonAwardDiscountSelectorTarget) == "{}" { // empty struct
+	// check if the discriminator value is 'selector'
+	if jsonDict["type"] == "selector" {
+		// try to unmarshal JSON data into AwardDiscountSelectorTarget
+		err = json.Unmarshal(data, &dst.AwardDiscountSelectorTarget)
+		if err == nil {
+			return nil // data stored in dst.AwardDiscountSelectorTarget, return on the first match
+		} else {
 			dst.AwardDiscountSelectorTarget = nil
-		} else {
-			if err = validator.Validate(dst.AwardDiscountSelectorTarget); err != nil {
-				dst.AwardDiscountSelectorTarget = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal AwardDiscountAdditionalCostTargetTarget as AwardDiscountSelectorTarget: %s", err.Error())
 		}
-	} else {
-		dst.AwardDiscountSelectorTarget = nil
 	}
 
-	if match > 1 { // more than 1 match
-		// reset to nil
-		dst.AwardDiscountAllItemsTarget = nil
-		dst.AwardDiscountCartTarget = nil
-		dst.AwardDiscountGlobalFilterTarget = nil
-		dst.AwardDiscountSelectorTarget = nil
-
-		return fmt.Errorf("data matches more than one schema in oneOf(AwardDiscountAdditionalCostTargetTarget)")
-	} else if match == 1 {
-		return nil // exactly one match
-	} else { // no match
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(AwardDiscountAdditionalCostTargetTarget): %v", err)
-		}
-
-		return fmt.Errorf("data failed to match schemas in oneOf(AwardDiscountAdditionalCostTargetTarget)")
-	}
+	return nil
 }
 
 // Marshal data from the first non-nil pointers in the struct to JSON

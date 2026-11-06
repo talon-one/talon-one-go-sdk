@@ -13,7 +13,6 @@ package talon
 import (
 	"encoding/json"
 	"fmt"
-	"gopkg.in/validator.v2"
 )
 
 // AwardLoyaltyPointsTarget - Identifies the scope over which loyalty points are awarded. The `type` field selects the target variant.
@@ -63,110 +62,74 @@ func AwardLoyaltyPointsSelectorTargetAsAwardLoyaltyPointsTarget(v *AwardLoyaltyP
 // Unmarshal JSON data into one of the pointers in the struct
 func (dst *AwardLoyaltyPointsTarget) UnmarshalJSON(data []byte) error {
 	var err error
-	match := 0
-	// try to unmarshal data into AwardLoyaltyPointsAllItemsTarget
-	err = newStrictDecoder(data).Decode(&dst.AwardLoyaltyPointsAllItemsTarget)
-	if err == nil {
-		jsonAwardLoyaltyPointsAllItemsTarget, _ := json.Marshal(dst.AwardLoyaltyPointsAllItemsTarget)
-		if string(jsonAwardLoyaltyPointsAllItemsTarget) == "{}" { // empty struct
+	// use discriminator value to speed up the lookup
+	var jsonDict map[string]interface{}
+	err = newStrictDecoder(data).Decode(&jsonDict)
+	if err != nil {
+		return fmt.Errorf("failed to unmarshal JSON into map for the discriminator lookup")
+	}
+
+	// check if the discriminator value is 'allItems'
+	if jsonDict["type"] == "allItems" {
+		// try to unmarshal JSON data into AwardLoyaltyPointsAllItemsTarget
+		err = json.Unmarshal(data, &dst.AwardLoyaltyPointsAllItemsTarget)
+		if err == nil {
+			return nil // data stored in dst.AwardLoyaltyPointsAllItemsTarget, return on the first match
+		} else {
 			dst.AwardLoyaltyPointsAllItemsTarget = nil
-		} else {
-			if err = validator.Validate(dst.AwardLoyaltyPointsAllItemsTarget); err != nil {
-				dst.AwardLoyaltyPointsAllItemsTarget = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal AwardLoyaltyPointsTarget as AwardLoyaltyPointsAllItemsTarget: %s", err.Error())
 		}
-	} else {
-		dst.AwardLoyaltyPointsAllItemsTarget = nil
 	}
 
-	// try to unmarshal data into AwardLoyaltyPointsBundleTarget
-	err = newStrictDecoder(data).Decode(&dst.AwardLoyaltyPointsBundleTarget)
-	if err == nil {
-		jsonAwardLoyaltyPointsBundleTarget, _ := json.Marshal(dst.AwardLoyaltyPointsBundleTarget)
-		if string(jsonAwardLoyaltyPointsBundleTarget) == "{}" { // empty struct
+	// check if the discriminator value is 'bundle'
+	if jsonDict["type"] == "bundle" {
+		// try to unmarshal JSON data into AwardLoyaltyPointsBundleTarget
+		err = json.Unmarshal(data, &dst.AwardLoyaltyPointsBundleTarget)
+		if err == nil {
+			return nil // data stored in dst.AwardLoyaltyPointsBundleTarget, return on the first match
+		} else {
 			dst.AwardLoyaltyPointsBundleTarget = nil
-		} else {
-			if err = validator.Validate(dst.AwardLoyaltyPointsBundleTarget); err != nil {
-				dst.AwardLoyaltyPointsBundleTarget = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal AwardLoyaltyPointsTarget as AwardLoyaltyPointsBundleTarget: %s", err.Error())
 		}
-	} else {
-		dst.AwardLoyaltyPointsBundleTarget = nil
 	}
 
-	// try to unmarshal data into AwardLoyaltyPointsCartTarget
-	err = newStrictDecoder(data).Decode(&dst.AwardLoyaltyPointsCartTarget)
-	if err == nil {
-		jsonAwardLoyaltyPointsCartTarget, _ := json.Marshal(dst.AwardLoyaltyPointsCartTarget)
-		if string(jsonAwardLoyaltyPointsCartTarget) == "{}" { // empty struct
+	// check if the discriminator value is 'cart'
+	if jsonDict["type"] == "cart" {
+		// try to unmarshal JSON data into AwardLoyaltyPointsCartTarget
+		err = json.Unmarshal(data, &dst.AwardLoyaltyPointsCartTarget)
+		if err == nil {
+			return nil // data stored in dst.AwardLoyaltyPointsCartTarget, return on the first match
+		} else {
 			dst.AwardLoyaltyPointsCartTarget = nil
-		} else {
-			if err = validator.Validate(dst.AwardLoyaltyPointsCartTarget); err != nil {
-				dst.AwardLoyaltyPointsCartTarget = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal AwardLoyaltyPointsTarget as AwardLoyaltyPointsCartTarget: %s", err.Error())
 		}
-	} else {
-		dst.AwardLoyaltyPointsCartTarget = nil
 	}
 
-	// try to unmarshal data into AwardLoyaltyPointsGlobalFilterTarget
-	err = newStrictDecoder(data).Decode(&dst.AwardLoyaltyPointsGlobalFilterTarget)
-	if err == nil {
-		jsonAwardLoyaltyPointsGlobalFilterTarget, _ := json.Marshal(dst.AwardLoyaltyPointsGlobalFilterTarget)
-		if string(jsonAwardLoyaltyPointsGlobalFilterTarget) == "{}" { // empty struct
+	// check if the discriminator value is 'globalFilter'
+	if jsonDict["type"] == "globalFilter" {
+		// try to unmarshal JSON data into AwardLoyaltyPointsGlobalFilterTarget
+		err = json.Unmarshal(data, &dst.AwardLoyaltyPointsGlobalFilterTarget)
+		if err == nil {
+			return nil // data stored in dst.AwardLoyaltyPointsGlobalFilterTarget, return on the first match
+		} else {
 			dst.AwardLoyaltyPointsGlobalFilterTarget = nil
-		} else {
-			if err = validator.Validate(dst.AwardLoyaltyPointsGlobalFilterTarget); err != nil {
-				dst.AwardLoyaltyPointsGlobalFilterTarget = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal AwardLoyaltyPointsTarget as AwardLoyaltyPointsGlobalFilterTarget: %s", err.Error())
 		}
-	} else {
-		dst.AwardLoyaltyPointsGlobalFilterTarget = nil
 	}
 
-	// try to unmarshal data into AwardLoyaltyPointsSelectorTarget
-	err = newStrictDecoder(data).Decode(&dst.AwardLoyaltyPointsSelectorTarget)
-	if err == nil {
-		jsonAwardLoyaltyPointsSelectorTarget, _ := json.Marshal(dst.AwardLoyaltyPointsSelectorTarget)
-		if string(jsonAwardLoyaltyPointsSelectorTarget) == "{}" { // empty struct
+	// check if the discriminator value is 'selector'
+	if jsonDict["type"] == "selector" {
+		// try to unmarshal JSON data into AwardLoyaltyPointsSelectorTarget
+		err = json.Unmarshal(data, &dst.AwardLoyaltyPointsSelectorTarget)
+		if err == nil {
+			return nil // data stored in dst.AwardLoyaltyPointsSelectorTarget, return on the first match
+		} else {
 			dst.AwardLoyaltyPointsSelectorTarget = nil
-		} else {
-			if err = validator.Validate(dst.AwardLoyaltyPointsSelectorTarget); err != nil {
-				dst.AwardLoyaltyPointsSelectorTarget = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal AwardLoyaltyPointsTarget as AwardLoyaltyPointsSelectorTarget: %s", err.Error())
 		}
-	} else {
-		dst.AwardLoyaltyPointsSelectorTarget = nil
 	}
 
-	if match > 1 { // more than 1 match
-		// reset to nil
-		dst.AwardLoyaltyPointsAllItemsTarget = nil
-		dst.AwardLoyaltyPointsBundleTarget = nil
-		dst.AwardLoyaltyPointsCartTarget = nil
-		dst.AwardLoyaltyPointsGlobalFilterTarget = nil
-		dst.AwardLoyaltyPointsSelectorTarget = nil
-
-		return fmt.Errorf("data matches more than one schema in oneOf(AwardLoyaltyPointsTarget)")
-	} else if match == 1 {
-		return nil // exactly one match
-	} else { // no match
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(AwardLoyaltyPointsTarget): %v", err)
-		}
-
-		return fmt.Errorf("data failed to match schemas in oneOf(AwardLoyaltyPointsTarget)")
-	}
+	return nil
 }
 
 // Marshal data from the first non-nil pointers in the struct to JSON

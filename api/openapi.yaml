@@ -3193,6 +3193,83 @@ paths:
       summary: List card's transactions
       tags:
       - integration
+  /v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/update:
+    put:
+      description: |
+        Updates the details of a specific loyalty card. Use this endpoint to modify the card's status and custom attribute values.
+
+        You must provide at least one of the following parameters:
+        -   `status`
+        -  `attributes`
+      operationId: integrationUpdateLoyaltyCard
+      parameters:
+      - description: |
+          Identifier of the card-based loyalty program containing the loyalty card. You can get the ID with
+          the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
+        explode: false
+        in: path
+        name: loyaltyProgramId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      - description: |
+          Identifier of the loyalty card. You can get the identifier with
+          the [List loyalty
+          cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards)
+          endpoint.
+
+          **Important**: The loyalty card ID requires [URL
+          encoding](https://www.w3schools.com/tags//ref_urlencode.asp) if it
+          contains special characters. For example, you must encode `NewCard2026%`
+          as `NewCard2026%25`.
+        explode: false
+        in: path
+        name: loyaltyCardId
+        required: true
+        schema:
+          maxLength: 108
+          minLength: 4
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateLoyaltyCardRequest"
+        description: body
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoyaltyCard"
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Not found
+      security:
+      - api_key_v1: []
+      summary: Update loyalty card
+      tags:
+      - integration
   /v1/loyalty_programs/{loyaltyProgramId}/profile/{integrationId}/transactions:
     get:
       description: |
@@ -4081,8 +4158,8 @@ paths:
       - description: |
           Filter results by the state of the campaign.
 
-          - `enabled`: Campaigns that are scheduled, running (activated), or expired.
-          - `running`: Campaigns that are running (activated).
+          - `enabled`: Campaigns that are scheduled, running (active), or expired.
+          - `running`: Campaigns that are running (active).
           - `disabled`: Campaigns that are disabled.
           - `expired`: Campaigns that are expired.
           - `archived`: Campaigns that are archived.
@@ -4370,8 +4447,8 @@ paths:
       - description: |
           Filter results by the state of the campaign.
 
-          - `enabled`: Campaigns that are scheduled, running (activated), or expired.
-          - `running`: Campaigns that are running (activated).
+          - `enabled`: Campaigns that are scheduled, running (active), or expired.
+          - `running`: Campaigns that are running (active).
           - `disabled`: Campaigns that are disabled.
           - `expired`: Campaigns that are expired.
           - `archived`: Campaigns that are archived.
@@ -5306,8 +5383,8 @@ paths:
       - description: |
           Filter results by the state of the campaign.
 
-          - `enabled`: Campaigns that are scheduled, running (activated), or expired.
-          - `running`: Campaigns that are running (activated).
+          - `enabled`: Campaigns that are scheduled, running (active), or expired.
+          - `running`: Campaigns that are running (active).
           - `disabled`: Campaigns that are disabled.
           - `expired`: Campaigns that are expired.
           - `archived`: Campaigns that are archived.
@@ -6328,7 +6405,7 @@ paths:
         > [!tip] If the exported CSV file is too large to view, you can
         > [split it into multiple files](https://www.google.com/search?q=split+CSV+into+multiple+files).
 
-        The generated file can contain the following columns:
+        The file contains the following columns:
 
         - `customerprofileid`: The ID of the profile.
         - `customersessionid`: The ID of the customer session.
@@ -6349,6 +6426,7 @@ paths:
         - `transactionUUID`: Unique identifier of the transaction in the UUID format.
         - `validityDuration`: The duration for which the points remain active, relative to the activation date.
         - `remainingAmount`: The current unused amount of points, when applicable to `addition` transactions.
+        - `referencetransactionuuids`: The UUIDs of the addition transactions from which points were deducted by the subtraction, separated by semicolons. Included only when `includeReferences` is `true`.
       operationId: exportLoyaltyLedger
       parameters:
       - description: |
@@ -6392,6 +6470,21 @@ paths:
           - ISO8601
           type: string
         style: form
+      - description: |
+          Whether to include the UUIDs of transactions referenced by deductions. When set
+          to `true`, the UUIDs are included in the `referencetransactionuuids` column
+          of the export CSV.
+
+          **Note:** Enabling this can decrease query performance, especially
+          when no date filter is applied to a large transaction history.
+        explode: true
+        in: query
+        name: includeReferences
+        required: false
+        schema:
+          default: false
+          type: boolean
+        style: form
       - description: The identifier for the loyalty program.
         explode: false
         in: path
@@ -6420,9 +6513,9 @@ paths:
               examples:
                 response:
                   value: |
-                    customerprofileid,customersessionid,rulesetid,rulename,programid,type,name,subledgerid,startdate,expirydate,id,created,amount,archived,campaignid,flags,transactionuuid,validityDuration,remainingAmount
-                    8NHOS78H,06b0fafb-ccbf-42c7-b44b-d858e8b525022,1691,test,37,subtraction,10% of current total,,immediate,unlimited,60803,2022-11-29 16:16:10,100.00,false,5,createsNegativeBalance,8c122fb1-1874-4ee2-b7e2-e7b5f8b7b801,"",
-                    EB780RDN,06b0fafb-ccbf-42c7-b44b-d858e8b525022,1691,test,37,addition,Reimbursed loyalty points,,on_action,unlimited,60804,2022-11-29 16:16:23,100.00,false,5,,8c122fb1-1874-4ee2-b7e2-e7b5f8b7b801,"30D",100.00
+                    customerprofileid,customersessionid,rulesetid,rulename,programid,type,name,subledgerid,startdate,expirydate,id,created,amount,archived,campaignid,flags,transactionuuid,validityDuration,remainingAmount,referencetransactionuuids
+                    8NHOS78H,06b0fafb-ccbf-42c7-b44b-d858e8b525022,1691,test,37,addition,Reimbursed loyalty points,,on_action,unlimited,60803,2022-11-29 16:16:10,100.00,false,5,,8c122fb1-1874-4ee2-b7e2-e7b5f8b7b801,"30D",0.00,""
+                    8NHOS78H,06b0fafb-ccbf-42c7-b44b-d858e8b525022,1691,test,37,subtraction,10% of current total,,immediate,unlimited,60804,2022-11-29 16:16:23,100.00,false,5,,6d3d42d1-9078-49d5-b959-960205a6e3e3,"",,8c122fb1-1874-4ee2-b7e2-e7b5f8b7b801
               schema:
                 format: csv
                 type: string
@@ -7735,8 +7828,7 @@ paths:
 
         > [!tip] If the exported CSV file is too large to view, you can
         > [split it into multiple files](https://www.google.com/search?q=split+CSV+into+multiple+files).
-
-        The generated file can contain the following columns:
+        The file contains the following columns:
 
         - `cardidentifier`: The identifier of the loyalty card.
         - `applicationid`: The ID of the Application.
@@ -7758,6 +7850,7 @@ paths:
         - `transactionUUID`: Unique identifier of the transaction in the UUID format.
         - `validityDuration`: The duration for which the points remain active, relative to the activation date.
         - `remainingAmount`: The current unused amount of points, when applicable to `addition` transactions.
+        - `referencetransactionuuids`: The UUIDs of the addition transactions from which points were deducted by the subtraction, separated by semicolons. Included only when `includeReferences` is `true`.
       operationId: exportLoyaltyCardLedger
       parameters:
       - description: |
@@ -7830,6 +7923,19 @@ paths:
           - excel
           - ISO8601
           type: string
+        style: form
+      - description: "Whether to include the UUIDs of transactions referenced by deductions.\
+          \ When set\nto `true`, the UUIDs are included in the `referencetransactionuuids`\
+          \ column\nof the export CSV.\n\n**Note:** Enabling this can decrease query\
+          \ performance, especially\n when no date filter is applied to a large transaction\
+          \ history.        \n"
+        explode: true
+        in: query
+        name: includeReferences
+        required: false
+        schema:
+          default: false
+          type: boolean
         style: form
       responses:
         "200":
@@ -10116,7 +10222,9 @@ paths:
   /v1/best_prior_price:
     post:
       description: |
-        Returns the best prior price based on historical pricing data for the specified SKUs within a defined timeframe.
+        Returns the best prior price based on price records (historical price data) for the specified SKUs within a defined timeframe.
+
+        For more information, see the [docs](https://docs.talon.one/docs/dev/integration-guides/best-prior-price).
       operationId: bestPriorPrice
       requestBody:
         $ref: "#/components/requestBodies/BestPriorPrice"
@@ -10134,7 +10242,11 @@ paths:
   /v1/applications/{applicationId}/price_history:
     post:
       description: |
-        Fetch the historical price data for a given SKU within a defined timeframe.
+        Fetch the price records (historical price data) for a given SKU within a defined timeframe.
+
+        You can use this endpoint for auditing purposes and for ensuring that evaluation produced correct price records.
+
+        For more information, see [Best prior price](https://docs.talon.one/docs/dev/integration-guides/best-prior-price).
       operationId: priceHistory
       parameters:
       - $ref: "#/components/parameters/applicationId"
@@ -10154,7 +10266,11 @@ paths:
   /v1/applications/{applicationId}/price_history/exclusions:
     post:
       description: |
-        Select a batch of historical price IDs to exclude from [best prior price calculation](https://docs.talon.one/integration-api#tag/Catalogs/operation/bestPriorPrice). All IDs in the batch must be valid `id` values obtained from the [Get summary of price history](https://docs.talon.one/management-api#tag/Catalogs/operation/priceHistory.responses.200.history) endpoint, must belong to the specified Application, must not already be excluded from best prior price calculation, and must not be associated with a scheduled strikethrough pricing notification.
+        Select a batch of price records (historical price data) to exclude from [best prior price calculation](https://docs.talon.one/integration-api#tag/Catalogs/operation/bestPriorPrice).
+
+        All IDs in the batch must be valid `id` values obtained from the [Get summary of price history](https://docs.talon.one/management-api#tag/Catalogs/operation/priceHistory.responses.200.history) endpoint, must belong to the specified Application, must not already be excluded from best prior price calculation, and must not be associated with a scheduled strikethrough pricing notification.
+
+        For more information, see [Best prior price](https://docs.talon.one/docs/dev/integration-guides/best-prior-price).
       operationId: excludePriceHistory
       parameters:
       - $ref: "#/components/parameters/applicationId"
@@ -10475,16 +10591,20 @@ paths:
         - Update the attributes of multiple items in the catalog.
         - Remove an item from the catalog.
         - Remove multiple items from the catalog.
+        - Add a [price adjustment](https://docs.talon.one/docs/dev/integration-guides/set-up-price-types#price-adjustments)
+          to an item in the catalog.
 
         You can either add, update, or delete up to 1000 cart items in a single
         request. Each item synced to a catalog must have a unique `SKU`.
+
+        For examples of each action, see the request body.
 
         > [!important] You can perform only one type of action in a single sync
         request. Syncing items with duplicate `SKU` values in a single request
         returns an error message with a `400` status code.
 
-        For more information, read [managing cart item
-        catalogs](https://docs.talon.one/docs/product/account/dev-tools/managing-cart-item-catalogs).
+
+        For more information, see [Sync a cart item catalog best practices](https://docs.talon.one/docs/dev/integration-guides/sync-cic#best-practices) and [Managing cart item catalogs](https://docs.talon.one/docs/product/account/dev-tools/managing-cart-item-catalogs).
 
         ### Filtering cart items
 
@@ -10511,8 +10631,6 @@ paths:
 
           **Note:** `GE`, `LE`, `GT`, `LT` are for numeric values only.
         - `value`: The value of the attribute selected in `attr`.
-
-        For request examples of each action, see the **Request Body** examples.
       operationId: syncCatalog
       parameters:
       - description: The ID of the catalog. You can find the ID in the Campaign Manager
@@ -11285,8 +11403,8 @@ paths:
       - description: |
           Filter results by the state of the campaign.
 
-          - `enabled`: Campaigns that are scheduled, running (activated), or expired.
-          - `running`: Campaigns that are running (activated).
+          - `enabled`: Campaigns that are scheduled, running (active), or expired.
+          - `running`: Campaigns that are running (active).
           - `disabled`: Campaigns that are disabled.
           - `expired`: Campaigns that are expired.
           - `archived`: Campaigns that are archived.
@@ -11591,7 +11709,10 @@ paths:
            in the session.
         - `updated`: Timestamp of the last session update.
         - `store_integration_id`: The integration ID of the store.
+        - `loyaltycards`: The identifier of the loyalty card used in the session. A session can have only one loyalty card.
+        - `updatecount`: The number of times the session was updated. When the session is created, this value is initialized to `1`.
         - `coupons`: Coupon codes in the session.
+        - `rewards`: The integration IDs of the unlocked rewards that can be used in the session.
       operationId: exportCustomerSessions
       parameters:
       - $ref: "#/components/parameters/applicationId"
@@ -11675,8 +11796,8 @@ paths:
               examples:
                 response:
                   value: |
-                    id,firstsession,integrationid,applicationid,profileid,profileintegrationid,created,state,cartitems,discounts,total,attributes,closedat,cancelledat,referral,identifiers,additional_costs,updated,store_integration_id,coupons
-                    12328,true,62791173fbf323ee5cfd96f3,270,6111,dxclwds,2022-05-09T13:05:31Z,open,"[{""sku"": ""B00004TKVY"", ""name"": ""Gravel bike - \""Aisle of Man\"""", ""price"": 1800, ""weight"": 6, ""category"": ""gravelbikes"", ""position"": 0, ""quantity"": 1, ""attributes"": {""color"": [""black,white""], ""material"": ""titanium""}, ""returnedQuantity"": 0, ""remainingQuantity"": 1}]","{}",1850.00,"{""ShippingCost"": 50, ""PaymentMethod"": ""creditcard"", ""ShippingMethod"": ""Standard""}",0001-01-01T00:00:00Z,0001-01-01T00:00:00Z,,"null","{""ShippingCost"": {""price"": 50}}",2022-05-09T13:13:28Z,"STORE-001","[""SORRY5QMUJRWA""]"
+                    id,firstsession,integrationid,applicationid,profileid,profileintegrationid,created,state,cartitems,discounts,total,attributes,closedat,cancelledat,referral,identifiers,additional_costs,updated,store_integration_id,loyaltycards,updatecount,coupons,rewards
+                    12328,true,62791173fbf323ee5cfd96f3,270,6111,dxclwds,2022-05-09T13:05:31Z,open,"[{""sku"": ""B00004TKVY"", ""name"": ""Gravel bike - \""Aisle of Man\"""", ""price"": 1800, ""weight"": 6, ""category"": ""gravelbikes"", ""position"": 0, ""quantity"": 1, ""attributes"": {""color"": [""black,white""], ""material"": ""titanium""}, ""returnedQuantity"": 0, ""remainingQuantity"": 1}]","{}",1850.00,"{""ShippingCost"": 50, ""PaymentMethod"": ""creditcard"", ""ShippingMethod"": ""Standard""}",0001-01-01T00:00:00Z,0001-01-01T00:00:00Z,,"null","{""ShippingCost"": {""price"": 50}}",2022-05-09T13:13:28Z,"STORE-001","[""loyalty-card-1""]",2,"[""SORRY5QMUJRWA""]","[""5c0b5e6d-3f8a-4c2b-9f1e-2a7d6b4c8e90""]"
               schema:
                 format: csv
                 type: string
@@ -14621,7 +14742,8 @@ components:
         type: string
       style: form
     cursor:
-      description: Page-start location. Omit this parameter to get the first page.
+      description: "Cursor from a previous response's `nextCursor` field, used to\
+        \ fetch the next page of results. Omit this parameter to get the first page."
       explode: true
       in: query
       name: cursor
@@ -14642,7 +14764,7 @@ components:
       style: form
     requestPayloadSearch:
       description: |
-        Free-text terms to match against the request payload.
+        Free-text terms to filter results by.
 
         Search terms are matched as substrings and may contain `*` wildcards. Repeat this parameter to combine multiple terms with AND logic.
       explode: true
@@ -14655,15 +14777,21 @@ components:
       style: form
     isSuccessful:
       description: |
-        Indicates whether to return log entries with either successful or unsuccessful HTTP response codes. When set to`true`, only log entries with `2xx` response codes are returned. When set to `false`, only log entries with `4xx` and `5xx` response codes are returned.
+        Whether to filter log entries by successful or unsuccessful response codes. When set to `true`, the endpoint returns only log entries with `2xx` response codes. When set to `false`, the endpoint returns only log entries with `4xx` and `5xx` response codes. When omitted, the endpoint returns all log entries.
       explode: true
       in: query
       name: isSuccessful
       required: false
-      schema: {}
+      schema:
+        type: boolean
       style: form
     entityType:
-      description: Entity type related to the outbound request.
+      description: |
+        The kind of log entries to return:
+
+        - `application`: Returns log entries for Application notifications.
+        - `loyalty_program`: Returns log entries for loyalty program notifications.
+        - `rule_engine_webhook`: Returns log entries for webhooks.
       explode: true
       in: query
       name: entityType
@@ -14675,8 +14803,8 @@ components:
         - rule_engine_webhook
       style: form
     responseCode:
-      description: "HTTP response status code or status-code placeholder with a leading\
-        \ digit, for example `2XX`."
+      description: HTTP response code to filter results by. You can use an exact code
+        (`404`) or a wildcard (`4xx`).
       explode: true
       in: query
       name: responseCode
@@ -14685,7 +14813,8 @@ components:
         pattern: "^[1-5]([0-9]{2}|[Xx]{2})$"
       style: form
     notificationId:
-      description: ID of the notification that produced the outbound request.
+      description: "Notification ID to filter results by. To find the ID, edit a notification\
+        \ in the Campaign Manager and check the browser URL."
       explode: true
       in: query
       name: notificationId
@@ -14695,7 +14824,8 @@ components:
         minimum: 1
       style: form
     webhookId:
-      description: ID of the webhook that sent the outbound request.
+      description: "Webhook ID to filter results by. To find the ID, edit a webhook\
+        \ in the Campaign Manager and check the browser URL."
       explode: true
       in: query
       name: webhookId
@@ -14705,7 +14835,8 @@ components:
         minimum: 1
       style: form
     uuid:
-      description: "Message UUID, matching the `X-UUID` request header."
+      description: "Message UUID to filter results by, matching the `X-UUID` request\
+        \ header."
       explode: true
       in: query
       name: uuid
@@ -14714,7 +14845,7 @@ components:
         format: uuid
       style: form
     url:
-      description: Target URL of the outbound request.
+      description: Target URL of the webhook or notification to filter results by.
       explode: true
       in: query
       name: url
@@ -14723,7 +14854,8 @@ components:
         type: string
       style: form
     outboundLogs_applicationId:
-      description: The ID of the Application associated with the outbound request.
+      description: Application ID to filter results by. It refers to the Application
+        that the webhook or notification is connected to.
       explode: true
       in: query
       name: applicationId
@@ -14733,7 +14865,9 @@ components:
         minimum: 1
       style: form
     outboundLogs_campaignId:
-      description: The ID of the campaign associated with the outbound request.
+      description: "Campaign ID to filter results by. For webhooks, this is the campaign\
+        \ that triggered the webhook. For notifications, entries match only if the\
+        \ notification payload references the campaign."
       explode: true
       in: query
       name: campaignId
@@ -14743,7 +14877,8 @@ components:
         minimum: 1
       style: form
     loyaltyProgramId:
-      description: The ID of the loyalty program associated with the outbound request.
+      description: Loyalty program ID to filter results by. It refers to the loyalty
+        program associated with the outbound message.
       explode: true
       in: query
       name: loyaltyProgramId
@@ -14753,7 +14888,7 @@ components:
         minimum: 1
       style: form
     notificationType:
-      description: Notification type in the outbound request payload.
+      description: Notification type to filter results by.
       explode: true
       in: query
       name: notificationType
@@ -14785,29 +14920,29 @@ components:
         - GiveawayPoolNotification
       style: form
     createdBefore:
-      description: "Filter results where request and response times to return entries\
-        \ before parameter value, expected to be an RFC3339 timestamp string. Use\
-        \ UTC time."
+      description: "Timestamp to filter results by, returning only entries created\
+        \ at or before this time. Must be an RFC3339 timestamp in UTC."
       explode: true
       in: query
       name: createdBefore
       required: false
       schema:
         format: date-time
+        type: string
       style: form
     createdAfter:
-      description: "Filter results where request and response times to return entries\
-        \ after parameter value, expected to be an RFC3339 timestamp string. Use UTC\
-        \ time."
+      description: "Timestamp to filter results by, returning only entries created\
+        \ at or after this time. Must be an RFC3339 timestamp in UTC."
       explode: true
       in: query
       name: createdAfter
       required: false
       schema:
         format: date-time
+        type: string
       style: form
     batchId:
-      description: Batch ID in coupon notification payloads.
+      description: Batch ID in coupon notification payloads to filter results by.
       explode: true
       in: query
       name: batchId
@@ -14816,7 +14951,8 @@ components:
         type: string
       style: form
     catalogId:
-      description: Catalog ID in strikethrough notification payloads.
+      description: Catalog ID in strikethrough notification payloads to filter results
+        by.
       explode: true
       in: query
       name: catalogId
@@ -14826,7 +14962,8 @@ components:
         minimum: 1
       style: form
     subledgerId:
-      description: Subledger ID in loyalty notification payloads.
+      description: Subledger ID in loyalty notification payloads to filter results
+        by.
       explode: true
       in: query
       name: subledgerId
@@ -14835,7 +14972,8 @@ components:
         type: string
       style: form
     profileId:
-      description: Customer profile integration ID in notification payloads.
+      description: Customer profile integration ID in notification payloads to filter
+        results by.
       explode: true
       in: query
       name: profileId
@@ -14844,7 +14982,8 @@ components:
         type: string
       style: form
     cardIdentifier:
-      description: Loyalty card identifier in card-based loyalty notification payloads.
+      description: Loyalty card identifier in card-based loyalty notification payloads
+        to filter results by.
       explode: true
       in: query
       name: cardIdentifier
@@ -14853,7 +14992,7 @@ components:
         type: string
       style: form
     couponCode:
-      description: Coupon code in coupon notification payloads.
+      description: Coupon code in coupon notification payloads to filter results by.
       explode: true
       in: query
       name: couponCode
@@ -14862,8 +15001,8 @@ components:
         type: string
       style: form
     expirationDateBefore:
-      description: 'Filter results where coupon expiration date in coupon notification
-        payload is before parameter value.  '
+      description: "Timestamp to filter results by, returning only coupon notifications\
+        \ whose coupon expires before this time. Must be an RFC3339 timestamp in UTC."
       explode: true
       in: query
       name: expirationDateBefore
@@ -14873,8 +15012,8 @@ components:
         type: string
       style: form
     expirationDateAfter:
-      description: 'Filter results where coupon expiration date in coupon notification
-        payload is after parameter value.  '
+      description: "Timestamp to filter results by, returning only coupon notifications\
+        \ whose coupon expires after this time. Must be an RFC3339 timestamp in UTC."
       explode: true
       in: query
       name: expirationDateAfter
@@ -14884,7 +15023,7 @@ components:
         type: string
       style: form
     sku:
-      description: SKU in strikethrough notification payloads.
+      description: SKU in strikethrough notification payloads to filter results by.
       explode: true
       in: query
       name: sku
@@ -14893,8 +15032,8 @@ components:
         type: string
       style: form
     tags:
-      description: Campaign tags in campaign notification payloads. Results must match
-        all provided tags.
+      description: Campaign tags in campaign notification payloads to filter results
+        by. Results must match all provided tags.
       explode: true
       in: query
       name: tags
@@ -14904,8 +15043,9 @@ components:
           type: string
       style: form
     validFromBefore:
-      description: Filter results where ValidFrom timestamp in scheduled strikethrough
-        notification payload is before parameter value.
+      description: "Timestamp to filter results by, returning only scheduled strikethrough\
+        \ notifications whose `validFrom` is before this time. Must be an RFC3339\
+        \ timestamp in UTC."
       explode: true
       in: query
       name: validFromBefore
@@ -14915,8 +15055,9 @@ components:
         type: string
       style: form
     validFromAfter:
-      description: Filter results where ValidFrom timestamp in scheduled strikethrough
-        notification payload is after parameter value.
+      description: "Timestamp to filter results by, returning only scheduled strikethrough\
+        \ notifications whose `validFrom` is after this time. Must be an RFC3339 timestamp\
+        \ in UTC."
       explode: true
       in: query
       name: validFromAfter
@@ -14926,7 +15067,8 @@ components:
         type: string
       style: form
     version:
-      description: Version in scheduled strikethrough notification payloads.
+      description: Version in scheduled strikethrough notification payloads to filter
+        results by.
       explode: true
       in: query
       name: version
@@ -15333,7 +15475,7 @@ components:
       required: true
   schemas:
     ApplicationNotification:
-      $ref: "#/components/schemas/CampaignEvaluationTreeChangedNotification"
+      $ref: "#/components/schemas/CampaignEvaluationTreeChangedNotificationData"
     ApplicationSessionEntity:
       properties:
         sessionId:
@@ -15655,7 +15797,7 @@ components:
       required:
       - RoleID
       - UserID
-    StrikethroughLabelingNotification:
+    StrikethroughPriceNotification:
       description: The strikethrough labels notification for an application.
       properties:
         version:
@@ -16553,7 +16695,10 @@ components:
       description: |-
         This effect indicates that a coupon code redemption has been rolled back. The coupon becomes redeemable again.
 
-        The effect is triggered when you [cancel](https://docs.talon.one/docs/dev/concepts/entities/customer-sessions#manage-the-sessions-state) a session where a coupon was accepted. See an example of use in the [cancelling a session tutorial](https://docs.talon.one/docs/dev/tutorials/roll-back-effects).
+        This effect is triggered in the following cases:
+
+        - A session where a coupon was accepted is [cancelled](https://docs.talon.one/docs/dev/concepts/entities/customer-sessions#manage-the-sessions-state). See an example of use in the [cancelling a session tutorial](https://docs.talon.one/docs/dev/tutorials/roll-back-effects).
+        - A session where a coupon was accepted is [reopened](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/reopenCustomerSession).
       example:
         value: COUP-XYZ789
       properties:
@@ -17056,6 +17201,13 @@ components:
       description: "This effect indicates that the customer was temporarily placed\
         \ in a higher loyalty tier for a specified period, without any change to their\
         \ points balance."
+      example:
+        programId: 5
+        subLedgerId: main
+        tierName: Gold
+        reason: Summer promotion
+        expiryDate: 2025-01-01T00:00:00Z
+        boostUuid: 27b16dbb-fbc7-4c02-99b1-b21b8a94c186
       properties:
         programId:
           description: The ID of the loyalty program.
@@ -18392,6 +18544,10 @@ components:
     RollbackUseRewardEffectProps:
       description: This effect is triggered when a reward usage has been rolled back
         by a session cancellation.
+      example:
+        integrationId: 5c0b5e6d-3f8a-4c2b-9f1e-2a7d6b4c8e90
+        rewardId: 5
+        applicationId: 1
       properties:
         integrationId:
           description: The integration ID of the customer reward that was rolled back.
@@ -18411,7 +18567,7 @@ components:
       - applicationId
       - integrationId
       - rewardId
-      title: RollbackUseReward
+      title: rollbackUseReward
     EffectRollbackUseReward:
       allOf:
       - $ref: "#/components/schemas/EffectEntity"
@@ -18447,7 +18603,7 @@ components:
       required:
       - path
       - value
-      title: updateAttribute
+      title: set
     EffectSet:
       allOf:
       - $ref: "#/components/schemas/EffectEntity"
@@ -18719,7 +18875,10 @@ components:
           type: number
         excludedFromPriceHistory:
           description: "When set to `true`, the applied discount is excluded from\
-            \ the item's price history."
+            \ the item's price history. When set to `false`, the applied discount\
+            \ is included in the item's price history. This property is only returned\
+            \ if the [best prior price](https://docs.talon.one/docs/dev/integration-guides/best-prior-price)\
+            \ setting is enabled for the Application."
           type: boolean
       required:
       - name
@@ -19003,6 +19162,13 @@ components:
     UnlockRewardEffectProps:
       description: The properties specific to the "unlockReward" effect. This gets
         triggered whenever a validated rule unlocks a reward for a customer profile.
+      example:
+        integrationId: reward-unlock-123
+        rewardId: 5
+        applicationId: 1
+        profileIntegrationId: customer1
+        unlockedAt: 2024-05-29T15:04:05Z
+        loyaltyCardId: summer-loyalty-card-0543
       properties:
         integrationId:
           description: The integration ID assigned to the customer reward unlock.
@@ -19062,6 +19228,10 @@ components:
     UseRewardEffectProps:
       description: This effect is triggered when a rule that uses a customer's unlocked
         reward is validated during session evaluation.
+      example:
+        integrationId: 5c0b5e6d-3f8a-4c2b-9f1e-2a7d6b4c8e90
+        rewardId: 5
+        applicationId: 1
       properties:
         integrationId:
           description: The integration ID of the customer reward that was used.
@@ -19502,7 +19672,7 @@ components:
           type: array
           default: null
         StatusCode:
-          description: The error code
+          description: The error code.
           format: int64
           type: integer
     IntegrationRequest:
@@ -19731,6 +19901,14 @@ components:
             Reason for transferring and blocking the loyalty card.
           example: Current card lost. Customer needs a new card.
           type: string
+        attributes:
+          description: |
+            Set values for the [custom attributes](https://docs.talon.one/docs/dev/concepts/attributes#custom-attributes) of a loyalty card.
+            These attributes must be created in the Campaign Manager before their values can be updated through this endpoint.
+          example:
+            PIN: 1234
+            Language: DE
+          type: object
       required:
       - status
     LoyaltyCardProfileRegistration:
@@ -19963,6 +20141,9 @@ components:
         programTitle: Loyalty program
         status: active
         blockReason: Current card lost. Customer needs a new card.
+        attributes:
+          PIN: 1234
+          Language: DE
         identifier: summer-loyalty-card-0543
         usersPerCardLimit: 111
         profiles:
@@ -20058,6 +20239,9 @@ components:
           programTitle: Loyalty program
           status: active
           blockReason: Current card lost. Customer needs a new card.
+          attributes:
+            PIN: 1234
+            Language: DE
           identifier: summer-loyalty-card-0543
           usersPerCardLimit: 111
           profiles:
@@ -20090,6 +20274,9 @@ components:
           programTitle: Loyalty program
           status: active
           blockReason: Current card lost. Customer needs a new card.
+          attributes:
+            PIN: 1234
+            Language: DE
           identifier: summer-loyalty-card-0543
           usersPerCardLimit: 111
           profiles:
@@ -23519,6 +23706,9 @@ components:
             programTitle: Loyalty program
             status: active
             blockReason: Current card lost. Customer needs a new card.
+            attributes:
+              PIN: 1234
+              Language: DE
             identifier: summer-loyalty-card-0543
             usersPerCardLimit: 111
             profiles:
@@ -23551,6 +23741,9 @@ components:
             programTitle: Loyalty program
             status: active
             blockReason: Current card lost. Customer needs a new card.
+            attributes:
+              PIN: 1234
+              Language: DE
             identifier: summer-loyalty-card-0543
             usersPerCardLimit: 111
             profiles:
@@ -27145,6 +27338,9 @@ components:
             programTitle: Loyalty program
             status: active
             blockReason: Current card lost. Customer needs a new card.
+            attributes:
+              PIN: 1234
+              Language: DE
             identifier: summer-loyalty-card-0543
             usersPerCardLimit: 111
             profiles:
@@ -27177,6 +27373,9 @@ components:
             programTitle: Loyalty program
             status: active
             blockReason: Current card lost. Customer needs a new card.
+            attributes:
+              PIN: 1234
+              Language: DE
             identifier: summer-loyalty-card-0543
             usersPerCardLimit: 111
             profiles:
@@ -28108,12 +28307,23 @@ components:
     UpdateLoyaltyCardRequest:
       example:
         status: active
+        attributes:
+          PIN: 1234
+          Language: DE
       properties:
         status:
           description: |
             Status of the loyalty card. Can be `active` or `inactive`.
           example: active
           type: string
+        attributes:
+          description: |
+            Set values for the [custom attributes](https://docs.talon.one/docs/dev/concepts/attributes#custom-attributes) of a loyalty card.
+            These attributes must be created in the Campaign Manager before their values can be updated through this endpoint.
+          example:
+            PIN: 1234
+            Language: DE
+          type: object
     LoyaltyLedgerEntryFlags:
       description: A map of flags providing additional details about the entry.
       properties:
@@ -29911,7 +30121,7 @@ components:
         params: []
         enabled: true
         authenticationId: 1
-    ExpiringCouponsNotificationTrigger:
+    CouponCodeExpiringNotificationTrigger:
       properties:
         amount:
           description: The amount of period.
@@ -29928,7 +30138,7 @@ components:
       required:
       - amount
       - period
-    ExpiringCouponsNotificationPolicy:
+    CouponCodeExpiringNotificationPolicy:
       properties:
         name:
           description: Notification name.
@@ -29937,7 +30147,7 @@ components:
           type: string
         triggers:
           items:
-            $ref: "#/components/schemas/ExpiringCouponsNotificationTrigger"
+            $ref: "#/components/schemas/CouponCodeExpiringNotificationTrigger"
           maxItems: 3
           minItems: 1
           type: array
@@ -29957,7 +30167,7 @@ components:
       required:
       - name
       - triggers
-    CardExpiringPointsNotificationTrigger:
+    LoyaltyCardPointsExpiringNotificationTrigger:
       properties:
         amount:
           description: The amount of period.
@@ -29974,7 +30184,7 @@ components:
       required:
       - amount
       - period
-    CardExpiringPointsNotificationPolicy:
+    LoyaltyCardPointsExpiringNotificationPolicy:
       properties:
         name:
           description: Notification name.
@@ -29983,7 +30193,7 @@ components:
           type: string
         triggers:
           items:
-            $ref: "#/components/schemas/CardExpiringPointsNotificationTrigger"
+            $ref: "#/components/schemas/LoyaltyCardPointsExpiringNotificationTrigger"
           maxItems: 3
           minItems: 1
           type: array
@@ -30003,7 +30213,7 @@ components:
       required:
       - name
       - triggers
-    ExpiringPointsNotificationTrigger:
+    LoyaltyPointsExpiringNotificationTrigger:
       properties:
         amount:
           description: The amount of period.
@@ -30020,7 +30230,7 @@ components:
       required:
       - amount
       - period
-    ExpiringPointsNotificationPolicy:
+    LoyaltyPointsExpiringNotificationPolicy:
       properties:
         name:
           description: Notification name.
@@ -30029,7 +30239,7 @@ components:
           type: string
         triggers:
           items:
-            $ref: "#/components/schemas/ExpiringPointsNotificationTrigger"
+            $ref: "#/components/schemas/LoyaltyPointsExpiringNotificationTrigger"
           maxItems: 3
           minItems: 1
           type: array
@@ -30049,7 +30259,7 @@ components:
       required:
       - name
       - triggers
-    AddedDeductedPointsNotificationPolicy:
+    LoyaltyPointsAddedDeductedNotificationPolicy:
       properties:
         name:
           description: Notification name.
@@ -30071,7 +30281,7 @@ components:
       required:
       - name
       - scopes
-    CardAddedDeductedPointsNotificationPolicy:
+    LoyaltyCardPointsAddedDeductedNotificationPolicy:
       properties:
         name:
           description: Notification name.
@@ -30093,12 +30303,12 @@ components:
       required:
       - name
       - scopes
-    AddedDeductedPointsBalancesNotificationPolicy:
+    LoyaltyAddedDeductedPointsBalancesNotificationPolicy:
       allOf:
-      - $ref: "#/components/schemas/AddedDeductedPointsNotificationPolicy"
-    CardAddedDeductedPointsBalancesNotificationPolicy:
+      - $ref: "#/components/schemas/LoyaltyPointsAddedDeductedNotificationPolicy"
+    LoyaltyCardAddedDeductedPointsBalancesNotificationPolicy:
       allOf:
-      - $ref: "#/components/schemas/CardAddedDeductedPointsNotificationPolicy"
+      - $ref: "#/components/schemas/LoyaltyCardPointsAddedDeductedNotificationPolicy"
     CouponsNotificationPolicy:
       properties:
         name:
@@ -30138,7 +30348,7 @@ components:
       required:
       - name
       - scopes
-    CatalogsStrikethroughNotificationPolicy:
+    StrikethroughPriceNotificationPolicy:
       properties:
         name:
           description: Notification name.
@@ -30160,7 +30370,7 @@ components:
           type: integer
       required:
       - name
-    PendingPointsNotificationPolicy:
+    LoyaltyPointsPendingToActiveNotificationPolicy:
       properties:
         name:
           description: Notification name.
@@ -30292,16 +30502,16 @@ components:
     BaseNotificationPolicy:
       description: Indicates which notification properties to apply.
       oneOf:
-      - $ref: "#/components/schemas/ExpiringCouponsNotificationPolicy"
-      - $ref: "#/components/schemas/CardExpiringPointsNotificationPolicy"
-      - $ref: "#/components/schemas/ExpiringPointsNotificationPolicy"
-      - $ref: "#/components/schemas/AddedDeductedPointsNotificationPolicy"
-      - $ref: "#/components/schemas/CardAddedDeductedPointsNotificationPolicy"
-      - $ref: "#/components/schemas/AddedDeductedPointsBalancesNotificationPolicy"
-      - $ref: "#/components/schemas/CardAddedDeductedPointsBalancesNotificationPolicy"
+      - $ref: "#/components/schemas/CouponCodeExpiringNotificationPolicy"
+      - $ref: "#/components/schemas/LoyaltyCardPointsExpiringNotificationPolicy"
+      - $ref: "#/components/schemas/LoyaltyPointsExpiringNotificationPolicy"
+      - $ref: "#/components/schemas/LoyaltyPointsAddedDeductedNotificationPolicy"
+      - $ref: "#/components/schemas/LoyaltyCardPointsAddedDeductedNotificationPolicy"
+      - $ref: "#/components/schemas/LoyaltyAddedDeductedPointsBalancesNotificationPolicy"
+      - $ref: "#/components/schemas/LoyaltyCardAddedDeductedPointsBalancesNotificationPolicy"
       - $ref: "#/components/schemas/CouponsNotificationPolicy"
-      - $ref: "#/components/schemas/CatalogsStrikethroughNotificationPolicy"
-      - $ref: "#/components/schemas/PendingPointsNotificationPolicy"
+      - $ref: "#/components/schemas/StrikethroughPriceNotificationPolicy"
+      - $ref: "#/components/schemas/LoyaltyPointsPendingToActiveNotificationPolicy"
       - $ref: "#/components/schemas/CampaignNotificationPolicy"
       - $ref: "#/components/schemas/TierDowngradeNotificationPolicy"
       - $ref: "#/components/schemas/TierUpgradeNotificationPolicy"
@@ -30404,6 +30614,10 @@ components:
       - enabled
     StrikethroughSetDiscountPerItemEffectProps:
       description: setDiscountPerItem effect in strikethrough pricing payload.
+      example:
+        name: 1EuroOff
+        value: 1
+        excludedFromPriceHistory: false
       properties:
         name:
           description: The effect name.
@@ -30441,6 +30655,9 @@ components:
       - payload
     StrikethroughSetDiscountPerItemMemberEffectProps:
       description: setDiscountPerItem member effect in strikethrough pricing payload.
+      example:
+        name: 10% off members only
+        value: 9
       properties:
         name:
           description: The effect name.
@@ -30482,6 +30699,8 @@ components:
     LabelTargetAudience:
       description: |
         Target type when a specific audience is selected.
+
+        Talon.One logs a separate price record per audience. You can use this object to compare the price records of a price type to those of a [base price](https://docs.talon.one/docs/dev/integration-guides/best-prior-price#price-history), for example.
       properties:
         type:
           enum:
@@ -31800,143 +32019,209 @@ components:
         - webhook
         title: TriggerWebhookBlock
     ScalarCheckAttributeBlock:
-      description: Variant of `CheckAttributeBlock` for operators that compare an
-        attribute against a single value.
-      properties:
-        operator:
-          description: The comparison operator applied to the attribute.
-          enum:
-          - equals
-          - not(equals)
-          - lessThan
-          - lessThanOrEqual
-          - greaterThan
-          - greaterThanOrEqual
-          - contains
-          - not(contains)
-          - matchesRegexp
-          - startsWith
-          - endsWith
-          - oneOf
-          - not(oneOf)
-          - inCollection
-          - not(inCollection)
-          - after
-          - before
-          type: string
-        value:
-          description: The comparison value for this operator.
-          example: 100
-      required:
-      - value
-      title: ScalarCheckAttributeBlock
+      allOf:
+      - $ref: "#/components/schemas/CheckAttributeBlockBase"
+      - properties:
+          type:
+            description: A block discriminator of type `checkAttribute`.
+            enum:
+            - checkAttribute
+            example: checkAttribute
+            type: string
+        required:
+        - type
+      - description: Variant of `CheckAttributeBlock` for operators that compare an
+          attribute against a single value.
+        properties:
+          operator:
+            description: The comparison operator applied to the attribute.
+            enum:
+            - equals
+            - not(equals)
+            - lessThan
+            - lessThanOrEqual
+            - greaterThan
+            - greaterThanOrEqual
+            - contains
+            - not(contains)
+            - matchesRegexp
+            - startsWith
+            - endsWith
+            - oneOf
+            - not(oneOf)
+            - inCollection
+            - not(inCollection)
+            - after
+            - before
+            type: string
+          value:
+            description: The comparison value for this operator.
+            example: 100
+        required:
+        - value
+        title: ScalarCheckAttributeBlock
     BetweenCheckAttributeBlock:
-      description: "Variant of `CheckAttributeBlock` for the `between` operator, which\
-        \ requires both a minimum and maximum value."
-      properties:
-        operator:
-          description: The range comparison operator. Must be `between`.
-          enum:
-          - between
-          type: string
-        min:
-          description: The minimum value allowed for the `between` operator.
-          example: 10
-        max:
-          description: The maximum value allowed for the `between` operator.
-          example: 100
-      required:
-      - max
-      - min
-      title: BetweenCheckAttributeBlock
+      allOf:
+      - $ref: "#/components/schemas/CheckAttributeBlockBase"
+      - properties:
+          type:
+            description: A block discriminator of type `checkAttribute`.
+            enum:
+            - checkAttribute
+            example: checkAttribute
+            type: string
+        required:
+        - type
+      - description: "Variant of `CheckAttributeBlock` for the `between` operator,\
+          \ which requires both a minimum and maximum value."
+        properties:
+          operator:
+            description: The range comparison operator. Must be `between`.
+            enum:
+            - between
+            type: string
+          min:
+            description: The minimum value allowed for the `between` operator.
+            example: 10
+          max:
+            description: The maximum value allowed for the `between` operator.
+            example: 100
+        required:
+        - max
+        - min
+        title: BetweenCheckAttributeBlock
     ListCheckAttributeBlock:
-      description: Variant of `CheckAttributeBlock` for operators that test list membership
-        against a set of values.
-      properties:
-        operator:
-          description: The list membership operator applied to the attribute.
-          enum:
-          - containsOneOf
-          - containsNoneOf
-          - containsAllOf
-          type: string
-        values:
-          description: The set of values to match against.
-      required:
-      - values
-      title: ListCheckAttributeBlock
+      allOf:
+      - $ref: "#/components/schemas/CheckAttributeBlockBase"
+      - properties:
+          type:
+            description: A block discriminator of type `checkAttribute`.
+            enum:
+            - checkAttribute
+            example: checkAttribute
+            type: string
+        required:
+        - type
+      - description: Variant of `CheckAttributeBlock` for operators that test list
+          membership against a set of values.
+        properties:
+          operator:
+            description: The list membership operator applied to the attribute.
+            enum:
+            - containsOneOf
+            - containsNoneOf
+            - containsAllOf
+            type: string
+          values:
+            description: The set of values to match against.
+        required:
+        - values
+        title: ListCheckAttributeBlock
     ListWithCountCheckAttributeBlock:
-      description: Variant of `CheckAttributeBlock` for operators that test list membership
-        with a minimum or exact count threshold.
-      properties:
-        operator:
-          description: The list membership operator with a count threshold applied
-            to the attribute.
-          enum:
-          - containsAtLeast
-          - containsExactly
-          type: string
-        values:
-          description: The set of values to match against.
-        count:
-          description: The count threshold for this operator.
-          example: 2
-      required:
-      - count
-      - values
-      title: ListWithCountCheckAttributeBlock
+      allOf:
+      - $ref: "#/components/schemas/CheckAttributeBlockBase"
+      - properties:
+          type:
+            description: A block discriminator of type `checkAttribute`.
+            enum:
+            - checkAttribute
+            example: checkAttribute
+            type: string
+        required:
+        - type
+      - description: Variant of `CheckAttributeBlock` for operators that test list
+          membership with a minimum or exact count threshold.
+        properties:
+          operator:
+            description: The list membership operator with a count threshold applied
+              to the attribute.
+            enum:
+            - containsAtLeast
+            - containsExactly
+            type: string
+          values:
+            description: The set of values to match against.
+          count:
+            description: The count threshold for this operator.
+            example: 2
+        required:
+        - count
+        - values
+        title: ListWithCountCheckAttributeBlock
     UnaryCheckAttributeBlock:
-      description: Variant of `CheckAttributeBlock` for operators that test a property
-        of the attribute itself with no comparison value.
-      properties:
-        operator:
-          description: The unary operator applied to the attribute. These operators
-            require no comparison value.
-          enum:
-          - empty
-          - not(empty)
-          - exists
-          - not(exists)
-          - isTrue
-          - isFalse
-          type: string
-      title: UnaryCheckAttributeBlock
+      allOf:
+      - $ref: "#/components/schemas/CheckAttributeBlockBase"
+      - properties:
+          type:
+            description: A block discriminator of type `checkAttribute`.
+            enum:
+            - checkAttribute
+            example: checkAttribute
+            type: string
+        required:
+        - type
+      - description: Variant of `CheckAttributeBlock` for operators that test a property
+          of the attribute itself with no comparison value.
+        properties:
+          operator:
+            description: The unary operator applied to the attribute. These operators
+              require no comparison value.
+            enum:
+            - empty
+            - not(empty)
+            - exists
+            - not(exists)
+            - isTrue
+            - isFalse
+            type: string
+        title: UnaryCheckAttributeBlock
     WithinCheckAttributeBlock:
-      description: "Variant of `CheckAttributeBlock` for the `within` and `not(within)`\
-        \ operators, which require both a start and end value."
-      properties:
-        operator:
-          description: The range comparison operator. Must be `within` or `not(within)`.
-          enum:
-          - within
-          - not(within)
-          type: string
-        start:
-          description: The start value for the `within` operator.
-          example: 2021-09-22T22:00:00Z
-        end:
-          description: The end value for the `within` operator.
-          example: 2021-09-22T22:00:00Z
-        startInclusive:
-          description: "When `true`, the `start` value is included in the range for\
-            \ the `within` operator."
-          example: true
-          type: boolean
-        endInclusive:
-          description: "When `true`, the `end` value is included in the range for\
-            \ the `within` operator."
-          example: true
-          type: boolean
-        timezoneInsensitive:
-          description: "Indicates whether the `within` operator ignores time zones\
-            \ and compares the wall-clock time only. When `false`, time zones are\
-            \ taken into account."
-          example: false
-          type: boolean
-      required:
-      - end
-      - start
-      title: WithinCheckAttributeBlock
+      allOf:
+      - $ref: "#/components/schemas/CheckAttributeBlockBase"
+      - properties:
+          type:
+            description: A block discriminator of type `checkAttribute`.
+            enum:
+            - checkAttribute
+            example: checkAttribute
+            type: string
+        required:
+        - type
+      - description: "Variant of `CheckAttributeBlock` for the `within` and `not(within)`\
+          \ operators, which require both a start and end value."
+        properties:
+          operator:
+            description: The range comparison operator. Must be `within` or `not(within)`.
+            enum:
+            - within
+            - not(within)
+            type: string
+          start:
+            description: The start value for the `within` operator.
+            example: 2021-09-22T22:00:00Z
+          end:
+            description: The end value for the `within` operator.
+            example: 2021-09-22T22:00:00Z
+          startInclusive:
+            description: "When `true`, the `start` value is included in the range\
+              \ for the `within` operator."
+            example: true
+            type: boolean
+          endInclusive:
+            description: "When `true`, the `end` value is included in the range for\
+              \ the `within` operator."
+            example: true
+            type: boolean
+          timezoneInsensitive:
+            description: "Indicates whether the `within` operator ignores time zones\
+              \ and compares the wall-clock time only. When `false`, time zones are\
+              \ taken into account."
+            example: false
+            type: boolean
+        required:
+        - end
+        - start
+        title: WithinCheckAttributeBlock
     GeoJSONPoint:
       description: "A single point on a map, defined by its longitude and latitude\
         \ coordinates, following the GeoJSON format."
@@ -32080,20 +32365,31 @@ components:
       - type
       title: GeoJSONGeometryCollection
     LocationCheckAttributeBlock:
-      description: A block variant of `CheckAttributeBlock` for operators that check
-        whether a geographical location is inside a set of geometric areas.
-      properties:
-        operator:
-          description: The location membership operator applied to the attribute.
-          enum:
-          - in
-          - not(in)
-          type: string
-        values:
-          $ref: "#/components/schemas/LocationCheckAttributeBlock_values"
-      required:
-      - values
-      title: LocationCheckAttributeBlock
+      allOf:
+      - $ref: "#/components/schemas/CheckAttributeBlockBase"
+      - properties:
+          type:
+            description: A block discriminator of type `checkAttribute`.
+            enum:
+            - checkAttribute
+            example: checkAttribute
+            type: string
+        required:
+        - type
+      - description: A block variant of `CheckAttributeBlock` for operators that check
+          whether a geographical location is inside a set of geometric areas.
+        properties:
+          operator:
+            description: The location membership operator applied to the attribute.
+            enum:
+            - in
+            - not(in)
+            type: string
+          values:
+            $ref: "#/components/schemas/LocationCheckAttributeBlock_1_values"
+        required:
+        - values
+        title: LocationCheckAttributeBlock
     CheckAttributeBlockBase:
       allOf:
       - $ref: "#/components/schemas/BaseBlock"
@@ -32206,17 +32502,6 @@ components:
         - operator
         title: CheckAttributeBlockBase
     CheckAttributeBlock:
-      allOf:
-      - $ref: "#/components/schemas/CheckAttributeBlockBase"
-      - properties:
-          type:
-            description: A block discriminator of type `checkAttribute`.
-            enum:
-            - checkAttribute
-            example: checkAttribute
-            type: string
-        required:
-        - type
       discriminator:
         mapping:
           equals: "#/components/schemas/ScalarCheckAttributeBlock"
@@ -35390,8 +35675,19 @@ components:
             format: int64
             type: integer
           isPrimary:
+            deprecated: true
+            description: |
+              **Deprecated.** Use `order` instead.
+              Indicates whether this is the primary variant. This is computed as `order == 0`.
             example: true
             type: boolean
+          order:
+            description: |
+              The position of this variant in the experiment. The variant with `order: 0` is the primary variant.
+            example: 0
+            format: int64
+            minimum: 0
+            type: integer
           audienceId:
             description: |
               The ID of the audience this variant targets. Only used when the experiment `assignmentType` is `audience`.
@@ -35399,7 +35695,6 @@ components:
             format: int64
             type: integer
         required:
-        - isPrimary
         - name
       example:
         id: 6
@@ -35580,6 +35875,7 @@ components:
           activatedAt: 2000-01-23T04:56:07.000+00:00
         weight: 12
         isPrimary: true
+        order: 0
         audienceId: 55
     Experiment:
       allOf:
@@ -35988,6 +36284,7 @@ components:
             activatedAt: 2000-01-23T04:56:07.000+00:00
           weight: 12
           isPrimary: true
+          order: 0
           audienceId: 55
         - id: 6
           created: 2020-06-10T09:05:27.993483Z
@@ -36167,6 +36464,7 @@ components:
             activatedAt: 2000-01-23T04:56:07.000+00:00
           weight: 12
           isPrimary: true
+          order: 0
           audienceId: 55
         goalType: other
         goalDescription: Offering free shipping will increase average order revenue
@@ -36372,6 +36670,13 @@ components:
             maximum: 99
             minimum: 0
             type: integer
+          order:
+            description: |
+              The position of this variant in the experiment. The variant with `order: 0` is the primary variant.
+            example: 0
+            format: int64
+            minimum: 0
+            type: integer
           audienceId:
             description: |
               The ID of the audience this variant targets. Only used when the experiment `assignmentType` is `audience`.
@@ -36412,8 +36717,19 @@ components:
         ruleset:
           $ref: "#/components/schemas/NewRuleset"
         isPrimary:
+          deprecated: true
+          description: |
+            **Deprecated.** Use `order` instead.
+            Indicates whether this is the primary variant. This is computed as `order == 0`.
           example: true
           type: boolean
+        order:
+          description: |
+            The position of this variant in the experiment. The variant with `order: 0` is the primary variant. When omitted, the backend assigns order based on the array position.
+          example: 0
+          format: int64
+          minimum: 0
+          type: integer
         audienceId:
           description: |
             The ID of the audience this variant targets. Only used when the experiment `assignmentType` is `audience`.
@@ -36421,7 +36737,6 @@ components:
           format: int64
           type: integer
       required:
-      - isPrimary
       - name
       - ruleset
       - weight
@@ -38021,6 +38336,8 @@ components:
             - inactive
             example: active
             type: string
+          attributes:
+            $ref: "#/components/schemas/LoyaltyCardBatch_allOf_attributes"
           cardCodeSettings:
             $ref: "#/components/schemas/CodeGeneratorSettings"
         required:
@@ -38029,6 +38346,7 @@ components:
         numberOfCards: 5000
         batchId: hwernpjz
         status: active
+        attributes: "{PIN=1234, Language=DE}"
         cardCodeSettings:
           validCharacters:
           - A
@@ -38122,6 +38440,12 @@ components:
           minLength: 4
           pattern: "^[A-Za-z0-9._%+@-]+$"
           type: string
+        attributes:
+          description: |
+            Set values for the [custom attributes](https://docs.talon.one/docs/dev/concepts/attributes#custom-attributes) of a loyalty card. These attributes must be created in the Campaign Manager before their values can be updated through this endpoint.
+          example:
+            preferredReward: discount
+          type: object
     CardLedgerTransactionLogEntry:
       description: Log entry for a given loyalty card transaction.
       example:
@@ -40215,11 +40539,15 @@ components:
           example: "30"
           type: string
         timeframeEndDateType:
-          description: |
-            Sets the timeframe for retrieving historical pricing data. Can be one of the following values:
-            - `strict`: The timeframe ends at the `timeframeEndDate` value.
-            - `price`: The timeframe ends at the start of current price value and takes the prices prior to the start of the current price value into account.
-            - `sale`:  The timeframe ends at the start of the current sales event, as defined by the `contextId`. It takes the prices prior to the current sale event into account.
+          description: "Sets the timeframe for retrieving historical pricing data.\
+            \ Can be one of the following values:\n- `strict`: The timeframe ends\
+            \ at the `timeframeEndDate` value.\n- `price`: The timeframe ends at the\
+            \ start of current price value and takes the prices prior to the start\
+            \ of the current price value into account.\n- `sale`:  The timeframe ends\
+            \ at the start of the current sales event, as defined by the `contextId`.\
+            \ It takes the prices prior to the current sale event into account.\n\n\
+            For an example, see [Best prior price](https://docs.talon.one/docs/dev/integration-guides/best-prior-price#best-prior-price-timeframe-selection).\
+            \ \n"
           enum:
           - strict
           - price
@@ -40269,7 +40597,7 @@ components:
       - selectedPriceType
       - value
     BestPriorPriceMetadata:
-      description: Auxiliary data for found price observation.
+      description: Auxiliary data for the found price record.
       example:
         influencingCampaignDetails:
         - campaignId: 0
@@ -40310,7 +40638,7 @@ components:
           type: NONE
       properties:
         id:
-          description: The ID of the historical price.
+          description: The ID of the price record.
           example: 1
           format: int64
           type: integer
@@ -40319,13 +40647,13 @@ components:
           example: SKU7345278
           type: string
         observedAt:
-          description: The date and time when the price was observed.
+          description: The date and time when the price change was recorded.
           example: 2025-11-10T23:00:00Z
           format: date-time
           type: string
         contextIds:
           description: |
-            The identifiers of the relevant context (the sales events, e.g. "Spring Sale", "Summer Sale") at the time the price was observed. Includes the context IDs of any price adjustments and of the campaigns that influenced the final price.
+            The identifiers of the relevant context (the sales events, e.g. "Spring Sale", "Summer Sale") at the time the price change was recorded. Includes the context IDs of any price adjustments and of the campaigns that influenced the final price.
           example:
           - SpringSale
           - SummerSale2025
@@ -40361,19 +40689,18 @@ components:
         endDate: 2020-12-10T23:00:00Z
       properties:
         sku:
-          description: The SKU of the item for which the historical prices are being
-            retrieved.
+          description: The SKU of the item for which the price records are being retrieved.
           example: SKU1241028
           type: string
         startDate:
-          description: The start date of the period for which historical prices should
+          description: The start date of the period for which price records should
             be retrieved.
           example: 2020-11-10T23:00:00Z
           format: date-time
           type: string
         endDate:
-          description: The end date of the period for which historical prices should
-            be retrieved.
+          description: The end date of the period for which price records should be
+            retrieved.
           example: 2020-12-10T23:00:00Z
           format: date-time
           type: string
@@ -40402,18 +40729,18 @@ components:
         exclusionReason: Incorrect contextID value
       properties:
         id:
-          description: The ID of the historical price.
+          description: The ID of the price record.
           example: 1
           format: int64
           type: integer
         observedAt:
-          description: The date and time when the price was observed.
+          description: The date and time from which the price record is effective.
           example: 2025-11-10T23:00:00Z
           format: date-time
           type: string
         contextIds:
           description: |
-            The identifiers of the relevant context (the sales events, e.g. "Spring Sale", "Summer Sale") at the time the price was observed. Includes the context IDs of any price adjustments and of the campaigns that influenced the final price.
+            The identifiers of the relevant context (the sales events, e.g. "Spring Sale", "Summer Sale") at the time from which the price record is effective. Includes the context IDs of any price adjustments and of the campaigns that influenced the final price.
           example:
           - SpringSale
           - SummerSale2025
@@ -40430,12 +40757,12 @@ components:
         target:
           $ref: "#/components/schemas/LabelTarget"
         excludedAt:
-          description: The date and time when the historical price ID was excluded.
+          description: The date and time when the price record was excluded.
           example: 2025-11-10T23:00:00Z
           format: date-time
           type: string
         exclusionReason:
-          description: The reason for excluding this historical price ID.
+          description: The reason for excluding this price record.
           example: Incorrect contextID value
           type: string
       required:
@@ -40485,7 +40812,7 @@ components:
           exclusionReason: Incorrect contextID value
       properties:
         sku:
-          description: The SKU of the item for which historical prices should be retrieved.
+          description: The SKU of the item for which price records should be retrieved.
           example: SKU1241028
           type: string
         history:
@@ -40508,7 +40835,7 @@ components:
       properties:
         ids:
           description: |
-            A list of historical price IDs to exclude from best prior price calculation. Must contain between 1 and 1000 IDs. All IDs must be valid `id` values obtained from the [Get summary of price history](https://docs.talon.one/management-api#tag/Catalogs/operation/priceHistory.responses.200.history) endpoint, must belong to the specified Application, and must not already be excluded from best prior price calculation.
+            A list of price record IDs to exclude from best prior price calculation. Must contain between 1 and 1000 IDs. All IDs must be valid `id` values obtained from the [Get summary of price history](https://docs.talon.one/management-api#tag/Catalogs/operation/priceHistory.responses.200.history) endpoint, must belong to the specified Application, and must not already be excluded from best prior price calculation.
           items:
             format: int64
             minimum: 1
@@ -40520,7 +40847,7 @@ components:
           default: null
         reason:
           description: |
-            The reason for excluding these historical price IDs. Applies to all IDs in the batch.
+            The reason for excluding these IDs. Applies to all IDs in the batch.
           example: Incorrect contextID value.
           minLength: 1
           type: string
@@ -40975,12 +41302,18 @@ components:
           format: date-time
           type: string
         effectiveFrom:
-          description: The date and time from which the price adjustment is effective.
+          description: |
+            The date and time from which the price adjustment is effective.
+
+            **Note**: If no timeframe is defined, the price adjustment is applied immediately and is effective until another, more recent, price adjustment is synced with the catalog.
           example: 2021-09-12T10:12:42Z
           format: date-time
           type: string
         effectiveUntil:
-          description: The date and time until which the price adjustment is effective.
+          description: |
+            The date and time until which the price adjustment is effective.
+
+            **Note**: If no timeframe is defined, the price adjustment is applied immediately and is effective until another, more recent, price adjustment is synced with the catalog.
           example: 2021-09-12T10:12:42Z
           format: date-time
           type: string
@@ -45746,6 +46079,130 @@ components:
         required:
         - applicationId
         - applicationName
+    requestType:
+      description: "Type of reward requested, including gift cards, personal coupons,\
+        \ and loyalty point additions or deductions."
+      enum:
+      - gift_card
+      - personal_coupon
+      - loyalty_points_added
+      - loyalty_points_deducted
+      example: personal_coupon
+      type: string
+    requestStatus:
+      description: Current status of the support request.
+      enum:
+      - pending_approval
+      - approved
+      - rejected
+      - expired
+      example: approved
+      type: string
+    SupportRequest:
+      description: Summary of a support request created by a customer support agent.
+      properties:
+        id:
+          description: Identifier of the support request.
+          example: 1
+          format: int64
+          type: integer
+        applicationId:
+          description: Identifier of the Application connected to the loyalty program
+            or the campaign. It is displayed in your Talon.One deployment URL.
+          example: 322
+          format: int64
+          type: integer
+        campaignId:
+          description: Identifier of the campaign where the coupon or gift card is
+            created.
+          example: 100
+          format: int64
+          type: integer
+        loyaltyProgramId:
+          description: Identifier of the loyalty program where the points are added
+            or deducted.
+          example: 8
+          format: int64
+          type: integer
+        subledgerId:
+          description: ID of the subledger the points are added to or deducted from.
+            Must be combined with `loyaltyProgramId`. The subledger must already exist
+            in the given loyalty program.
+          example: sub-123
+          type: string
+        createdByUser:
+          description: Email address of the customer support agent who created the
+            support request.
+          example: jane.smith@example.com
+          type: string
+        createdAt:
+          description: Timestamp when the request was made.
+          example: 2025-07-20T22:00:00Z
+          format: date-time
+          type: string
+        customerProfileId:
+          description: Integration ID of the customer profile linked to the support
+            request.
+          example: URNGV8294NV
+          type: string
+        requestType:
+          description: "Type of reward requested, including gift cards, personal coupons,\
+            \ and loyalty point additions or deductions."
+          enum:
+          - gift_card
+          - personal_coupon
+          - loyalty_points_added
+          - loyalty_points_deducted
+          example: personal_coupon
+          type: string
+        requestValue:
+          description: Requested monetary balance of the gift card or the number of
+            loyalty points to be added or deducted.
+          example: 20.5
+          exclusiveMinimum: true
+          format: float
+          minimum: 0
+          type: number
+        requestNote:
+          description: Notes attached to the support request.
+          example: Support request for coupon failure.
+          type: string
+        requestStatus:
+          description: Current status of the support request.
+          enum:
+          - pending_approval
+          - approved
+          - rejected
+          - expired
+          example: approved
+          type: string
+        processedAt:
+          description: Timestamp when the request was approved or rejected.
+          example: 2025-07-20T22:10:00Z
+          format: date-time
+          type: string
+        processingNote:
+          description: Notes attached by the admin when rejecting or approving a request.
+          example: Rejected as the customer was awarded points already.
+          type: string
+        processedByUser:
+          description: Email address of the admin who approved or rejected the support
+            request.
+          example: john.doe@example.com
+          type: string
+        couponCode:
+          description: Coupon code associated with the approved support request.
+          example: SUMMER-2025-XYZ
+          type: string
+      required:
+      - applicationId
+      - createdAt
+      - createdByUser
+      - customerProfileId
+      - id
+      - requestNote
+      - requestStatus
+      - requestType
     SupportRequestInput:
       properties:
         applicationId:
@@ -45804,111 +46261,6 @@ components:
       - applicationId
       - customerProfileId
       - requestNote
-      - requestType
-    SupportRequest:
-      description: Summary of a support request created by a customer support agent.
-      properties:
-        id:
-          description: Identifier of the support request.
-          example: 1
-          format: int64
-          type: integer
-        applicationId:
-          description: Identifier of the Application connected to the loyalty program
-            or the campaign. It is displayed in your Talon.One deployment URL.
-          example: 322
-          format: int64
-          type: integer
-        campaignId:
-          description: Identifier of the campaign where the coupon or gift card is
-            created.
-          example: 100
-          format: int64
-          type: integer
-        loyaltyProgramId:
-          description: Identifier of the loyalty program where the points are added
-            or deducted.
-          example: 8
-          format: int64
-          type: integer
-        subledgerId:
-          description: ID of the subledger the points are added to or deducted from.
-            Must be combined with `loyaltyProgramId`. The subledger must already exist
-            in the given loyalty program.
-          example: sub-123
-          type: string
-        createdByUser:
-          description: Email address of the customer support agent who created the
-            support request.
-          example: support.agent.name@company.com
-          type: string
-        createdAt:
-          description: Timestamp when the request was made.
-          example: 2025-07-20T22:00:00Z
-          format: date-time
-          type: string
-        customerProfileId:
-          description: Integration ID of the customer profile linked to the support
-            request.
-          example: URNGV8294NV
-          type: string
-        requestType:
-          description: "Type of reward requested, including gift cards, personal coupons,\
-            \ and loyalty point additions or deductions."
-          enum:
-          - gift_card
-          - personal_coupon
-          - loyalty_points_added
-          - loyalty_points_deducted
-          example: personal_coupon
-          type: string
-        requestValue:
-          description: Requested monetary balance of the gift card or the number of
-            loyalty points to be added or deducted.
-          example: 20.5
-          exclusiveMinimum: true
-          format: float
-          minimum: 0
-          type: number
-        requestNote:
-          description: Notes attached to the support request.
-          example: Support request for coupon failure.
-          type: string
-        requestStatus:
-          description: Current status of the support request.
-          enum:
-          - pending_approval
-          - approved
-          - rejected
-          - expired
-          example: approved
-          type: string
-        processedAt:
-          description: Timestamp when the request was approved or rejected.
-          example: 2025-07-20T22:10:00Z
-          format: date-time
-          type: string
-        processingNote:
-          description: Notes attached by the admin when rejecting or approving a request.
-          example: Rejected as the customer was awarded points already.
-          type: string
-        processedByUser:
-          description: Email address of the admin who approved or rejected the support
-            request.
-          example: admin.name@company.com
-          type: string
-        couponCode:
-          description: Coupon code associated with the approved support request.
-          example: SUMMER-2025-XYZ
-          type: string
-      required:
-      - applicationId
-      - createdAt
-      - createdByUser
-      - customerProfileId
-      - id
-      - requestNote
-      - requestStatus
       - requestType
     UpdateSupportRequest:
       properties:
@@ -46179,10 +46531,12 @@ components:
 
             The time format is an **integer** followed by one letter indicating the time unit.
 
-            Examples: `5D`, `7W`, `10M`, `15Y`.
+            Examples: `30m`, `1h`, `5D`, `7W`, `10M`, `15Y`.
 
             Available units:
 
+            - `m`: minutes
+            - `h`: hours
             - `D`: days
             - `W`: weeks
             - `M`: months
@@ -46286,6 +46640,8 @@ components:
           subledgerId: mysubledger
         rule: ""
         eligibility: ""
+        validityDuration: 3M_U
+        expiryDate: 2026-12-31T00:00:00Z
       properties:
         id:
           description: The unique ID of the reward.
@@ -46316,6 +46672,41 @@ components:
           description: |
             The customer's eligibility for the reward. Returned only when the request
             includes a `profileIntegrationId` or `loyaltyCardId`.
+        validityDuration:
+          description: |
+            The duration for which the customer rewards unlocked from this reward remain active, relative to when the customer reward was unlocked.
+
+            The time format is an **integer** followed by one letter indicating the time unit.
+
+            Examples: `30m`, `1h`, `5D`, `7W`, `10M`, `15Y`.
+
+            Available units:
+
+            - `m`: minutes
+            - `h`: hours
+            - `D`: days
+            - `W`: weeks
+            - `M`: months
+            - `Y`: years
+
+            Certain units can be rounded up or down:
+            - `_D` for rounding down days only. Signifies the start of the day.
+            - `_U` for rounding up days, weeks, months and years. Signifies the end of the day, week, month or year.
+
+            This field is not returned in combination with `expiryDate`. If both `validityDuration` and `expiryDate` are not returned, customer rewards have unlimited validity.
+          example: 3M_U
+          pattern: "^[1-9][0-9]*([mh]|D(_[DU])?|[WMY](_U)?)$"
+          type: string
+        expiryDate:
+          description: |
+            Expiry date of the customer rewards unlocked from this reward. Customer
+            rewards never expire if this is omitted and `validityDuration` is not set.
+
+            **Note:**
+            - This field is not returned in combination with `validityDuration`.
+          example: 2026-12-31T00:00:00Z
+          format: date-time
+          type: string
       required:
       - id
       - name
@@ -46386,10 +46777,12 @@ components:
 
             The time format is an **integer** followed by one letter indicating the time unit.
 
-            Examples: `5D`, `7W`, `10M`, `15Y`.
+            Examples: `30m`, `1h`, `5D`, `7W`, `10M`, `15Y`.
 
             Available units:
 
+            - `m`: minutes
+            - `h`: hours
             - `D`: days
             - `W`: weeks
             - `M`: months
@@ -47377,6 +47770,23 @@ components:
           $ref: "#/components/schemas/EmbeddedAnalyticsConfiguration_dashboards"
       required:
       - dashboards
+    EmbeddedAnalyticsToken:
+      description: Contains a JWT for authentication and the hostname of the embedded
+        analytics instance.
+      properties:
+        token:
+          description: JWT for embedded analytics.
+          example: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJleGFtcGxlLXVzZXIiLCJpc3MiOiJ0YWxvbi5vbmUiLCJpYXQiOjE3NjcyMjU2MDAsImV4cCI6MTc2NzIyOTIwMH0.ZXhhbXBsZS1zaWduYXR1cmUtbm90LXZhbGlk
+          type: string
+        hostname:
+          description: Base URL of the embedded analytics instance.
+          example: https://talon-sg.cloud.analyticsprovider.com
+          format: uri
+          type: string
+      required:
+      - hostname
+      - token
+      title: EmbeddedAnalyticsToken
     OutboundLogRequest:
       description: Details of the outbound HTTP request.
       properties:
@@ -47421,7 +47831,6 @@ components:
       - method
       - url
     OutboundLogBase:
-      description: Shared details of an outbound notification or webhook message.
       properties:
         uuid:
           description: UUID of the outbound message.
@@ -47429,34 +47838,34 @@ components:
           format: uuid
           type: string
         notificationId:
-          description: ID of the notification that produced the outbound request.
+          description: ID of the notification that triggered the outbound message.
           example: 1
           format: int64
           type: integer
         notificationName:
-          description: Name of the notification that produced the outbound request.
+          description: Name of the notification that triggered the outbound message.
           example: Notification name
           type: string
         webhookId:
-          description: ID of the webhook that produced the outbound request.
+          description: ID of the webhook that triggered the outbound message.
           example: 101
           format: int64
           type: integer
         webhookName:
-          description: The name of the webhook that produced the outbound request.
+          description: Name of the webhook that triggered the outbound message.
           example: My webhook
           type: string
         notificationType:
-          description: Type of notification that produced the outbound request.
+          description: Type of notification that triggered the outbound message.
           example: CampaignNotification
           type: string
         applicationId:
-          description: ID of the Application associated with the outbound request.
+          description: ID of the Application associated with the outbound message.
           example: 1
           format: int64
           type: integer
         loyaltyProgramId:
-          description: ID of the loyalty program associated with the outbound request.
+          description: ID of the loyalty program associated with the outbound message.
           example: 2
           format: int64
           type: integer
@@ -47485,12 +47894,13 @@ components:
       - $ref: "#/components/schemas/OutboundLogBase"
       - properties:
           createdAt:
-            description: Timestamp when the log entry was created.
+            description: Timestamp when the log was created.
             example: 2026-08-17T14:32:05Z
             format: date-time
             type: string
           processingTimeMs:
-            description: Processing time of the outbound request in milliseconds.
+            description: Time in milliseconds between sending the outbound request
+              and receiving the response.
             example: 180
             format: int64
             type: integer
@@ -47499,9 +47909,7 @@ components:
         required:
         - createdAt
         - processingTimeMs
-      description: Log of an outbound notification or webhook request.
     OutboundLogs:
-      description: Paginated list of outbound logs.
       properties:
         nextCursor:
           description: Cursor for the next page of results. Omitted when there are
@@ -47563,7 +47971,8 @@ components:
             format: int64
             type: integer
           responses:
-            description: Log entries for this message. Omitted when `includeLogs=false`.
+            description: Log entries for this message. One entry per delivery attempt.
+              Empty when `includeLogs=false`.
             items:
               $ref: "#/components/schemas/OutboundMessageResponse"
             type: array
@@ -47572,8 +47981,6 @@ components:
         - firstLogAt
         - lastLogAt
         - status
-      description: Outbound notification or webhook message with its shared request
-        details.
     OutboundMessages:
       description: Paginated list of outbound messages.
       properties:
@@ -47897,7 +48304,7 @@ components:
             default: null
         required:
         - TotalResultSize
-    CampaignEvaluationTreeChangedNotification:
+    CampaignEvaluationTreeChangedNotificationData:
       description: Notification about an Application whose campaign evaluation tree
         changed.
       properties:
@@ -47917,7 +48324,7 @@ components:
       required:
       - applicationId
       - evaluationTree
-    CampaignEvaluationTreeChangedMessage:
+    CampaignEvaluationTreeChangedNotification:
       properties:
         NotificationType:
           description: The type of the notification
@@ -48045,7 +48452,7 @@ components:
             type: integer
         required:
         - ApplicationId
-    CreateCouponData:
+    CouponCreatedNotification:
       properties:
         data:
           description: "The array of coupons codes. If 1000 or fewer coupons are requested,\
@@ -48109,7 +48516,7 @@ components:
       - NotificationType
       - Operation
       - TypeOfChange
-    CouponsNotificationData:
+    CouponUpdatedDeletedNotification:
       properties:
         TypeOfChange:
           description: The type of change that occurred.
@@ -48145,7 +48552,7 @@ components:
       - NotificationType
       - Operation
       - TypeOfChange
-    AsyncCouponsData:
+    AsyncCouponsCreatedNotification:
       properties:
         BatchID:
           description: |
@@ -48177,7 +48584,7 @@ components:
       - NotificationType
       - Operation
       - TypeOfChange
-    UpdateCouponsData:
+    CouponsUpdatedNotification:
       properties:
         BatchID:
           type: string
@@ -48206,7 +48613,7 @@ components:
       - NotificationType
       - Operation
       - TypeOfChange
-    DeleteCouponsData:
+    CouponsDeletedNotification:
       properties:
         TypeOfChange:
           type: string
@@ -48289,7 +48696,7 @@ components:
       - ExpiryDate
       - LoyaltyProgramID
       - SubledgerID
-    ExpiringPointsNotification:
+    LoyaltyPointsExpiringNotification:
       properties:
         TotalResultSize:
           example: 1
@@ -48377,7 +48784,7 @@ components:
       - Profiles
       - SubledgerID
       - UsersPerCardLimit
-    ExpiringCardPointsNotification:
+    LoyaltyCardPointsExpiringNotification:
       properties:
         TotalResultSize:
           example: 1
@@ -48398,7 +48805,7 @@ components:
       - Data
       - NotificationType
       - TotalResultSize
-    AddedDeductedPointsNotification:
+    LoyaltyPointsAddedDeductedNotification:
       properties:
         EmployeeName:
           description: The name of the employee who added or deducted points.
@@ -48564,7 +48971,7 @@ components:
       - Operation
       - Reason
       - TransactionUUID
-    AddedDeductedPointsBalancesNotification:
+    LoyaltyAddedDeductedPointsBalancesNotification:
       properties:
         EmployeeName:
           description: The name of the employee who added or deducted points.
@@ -48696,7 +49103,7 @@ components:
       - LoyaltyProgramID
       - Points
       - SubledgerID
-    PendingActivePointsNotification:
+    LoyaltyPointsPendingToActiveNotification:
       properties:
         TotalResultSize:
           example: 1
@@ -49052,7 +49459,7 @@ components:
       - Data
       - NotificationType
       - TotalResultSize
-    ExpiringCouponsData:
+    CouponCodeExpiringNotificationData:
       properties:
         CouponValue:
           description: The coupon code.
@@ -49117,7 +49524,7 @@ components:
       - CouponValue
       - UsageCounter
       - UsageLimit
-    ExpiringCouponsNotification:
+    CouponCodeExpiringNotification:
       properties:
         TotalResultSize:
           example: 1
@@ -49126,7 +49533,7 @@ components:
         Data:
           description: The array of expiring coupon notifications.
           items:
-            $ref: "#/components/schemas/ExpiringCouponsData"
+            $ref: "#/components/schemas/CouponCodeExpiringNotificationData"
           type: array
           default: null
         NotificationType:
@@ -49138,7 +49545,7 @@ components:
       - Data
       - NotificationType
       - TotalResultSize
-    CardAddedDeductedPointsNotification:
+    LoyaltyCardPointsAddedDeductedNotification:
       properties:
         CardIdentifier:
           description: Loyalty card identification number.
@@ -49267,7 +49674,7 @@ components:
       - TypeOfChange
       - UserID
       - UsersPerCardLimit
-    CardAddedDeductedPointsBalancesNotification:
+    LoyaltyCardAddedDeductedPointsBalancesNotification:
       properties:
         CardIdentifier:
           description: Loyalty card identification number.
@@ -52242,6 +52649,7 @@ components:
               activatedAt: 2000-01-23T04:56:07.000+00:00
             weight: 12
             isPrimary: true
+            order: 0
             audienceId: 55
           - id: 6
             created: 2020-06-10T09:05:27.993483Z
@@ -52421,6 +52829,7 @@ components:
               activatedAt: 2000-01-23T04:56:07.000+00:00
             weight: 12
             isPrimary: true
+            order: 0
             audienceId: 55
           goalType: other
           goalDescription: Offering free shipping will increase average order revenue
@@ -52768,6 +53177,7 @@ components:
               activatedAt: 2000-01-23T04:56:07.000+00:00
             weight: 12
             isPrimary: true
+            order: 0
             audienceId: 55
           - id: 6
             created: 2020-06-10T09:05:27.993483Z
@@ -52947,6 +53357,7 @@ components:
               activatedAt: 2000-01-23T04:56:07.000+00:00
             weight: 12
             isPrimary: true
+            order: 0
             audienceId: 55
           goalType: other
           goalDescription: Offering free shipping will increase average order revenue
@@ -53256,6 +53667,9 @@ components:
           programTitle: Loyalty program
           status: active
           blockReason: Current card lost. Customer needs a new card.
+          attributes:
+            PIN: 1234
+            Language: DE
           identifier: summer-loyalty-card-0543
           usersPerCardLimit: 111
           profiles:
@@ -53288,6 +53702,9 @@ components:
           programTitle: Loyalty program
           status: active
           blockReason: Current card lost. Customer needs a new card.
+          attributes:
+            PIN: 1234
+            Language: DE
           identifier: summer-loyalty-card-0543
           usersPerCardLimit: 111
           profiles:
@@ -55361,6 +55778,8 @@ components:
             subledgerId: mysubledger
           rule: ""
           eligibility: ""
+          validityDuration: 3M_U
+          expiryDate: 2026-12-31T00:00:00Z
         - id: 42
           name: 10% Off Coupon
           description: Applies to next order
@@ -55375,6 +55794,8 @@ components:
             subledgerId: mysubledger
           rule: ""
           eligibility: ""
+          validityDuration: 3M_U
+          expiryDate: 2026-12-31T00:00:00Z
       properties:
         hasMore:
           description: Whether more pages exist after the current one.
@@ -55406,6 +55827,8 @@ components:
               subledgerId: mysubledger
             rule: ""
             eligibility: ""
+            validityDuration: 3M_U
+            expiryDate: 2026-12-31T00:00:00Z
           - id: 42
             name: 10% Off Coupon
             description: Applies to next order
@@ -55420,6 +55843,8 @@ components:
               subledgerId: mysubledger
             rule: ""
             eligibility: ""
+            validityDuration: 3M_U
+            expiryDate: 2026-12-31T00:00:00Z
         loyalty:
           key:
             balance: ""
@@ -55545,7 +55970,7 @@ components:
         type: number
       - example: "{{$Session.CartTotal * 0.1}}"
         type: string
-    LocationCheckAttributeBlock_values_oneOf_inner:
+    LocationCheckAttributeBlock_1_values_oneOf_inner:
       properties:
         name:
           description: A human-readable label for this location.
@@ -55555,11 +55980,11 @@ components:
           $ref: "#/components/schemas/GeoJSONGeometry"
       required:
       - geometry
-    LocationCheckAttributeBlock_values:
+    LocationCheckAttributeBlock_1_values:
       description: The geometric areas to check the location against.
       oneOf:
       - items:
-          $ref: "#/components/schemas/LocationCheckAttributeBlock_values_oneOf_inner"
+          $ref: "#/components/schemas/LocationCheckAttributeBlock_1_values_oneOf_inner"
         type: array
         default: null
       - description: A reference to a list attribute that contains locations.
@@ -55832,6 +56257,12 @@ components:
           type: string
       required:
       - campaign
+    LoyaltyCardBatch_allOf_attributes:
+      description: |
+        Set values for the [custom attributes](https://docs.talon.one/docs/dev/concepts/attributes#custom-attributes) of a loyalty card.
+        These attributes must be created in the Campaign Manager before their values can be updated through this endpoint.
+      example: "{PIN=1234, Language=DE}"
+      type: object
     ApplicationEvent_allOf_attributes:
       description: Additional JSON serialized data associated with the event.
       example: {}

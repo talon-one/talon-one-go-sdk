@@ -391,6 +391,21 @@ func Test_talon_IntegrationAPIService(t *testing.T) {
 
 	})
 
+	t.Run("Test IntegrationAPIService IntegrationUpdateLoyaltyCard", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var loyaltyProgramId int64
+		var loyaltyCardId string
+
+		resp, httpRes, err := apiClient.IntegrationAPI.IntegrationUpdateLoyaltyCard(context.Background(), loyaltyProgramId, loyaltyCardId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test IntegrationAPIService JoinLoyaltyProgram", func(t *testing.T) {
 
 		t.Skip("skip test")  // remove to run test

@@ -21,19 +21,19 @@ var _ MappedNullable = &History{}
 
 // History struct for History
 type History struct {
-	// The ID of the historical price.
+	// The ID of the price record.
 	Id int64 `json:"id"`
-	// The date and time when the price was observed.
+	// The date and time from which the price record is effective.
 	ObservedAt time.Time `json:"observedAt"`
-	// The identifiers of the relevant context (the sales events, e.g. \"Spring Sale\", \"Summer Sale\") at the time the price was observed. Includes the context IDs of any price adjustments and of the campaigns that influenced the final price.
+	// The identifiers of the relevant context (the sales events, e.g. \"Spring Sale\", \"Summer Sale\") at the time from which the price record is effective. Includes the context IDs of any price adjustments and of the campaigns that influenced the final price.
 	ContextIds []string `json:"contextIds"`
 	// Price of the item.
 	Price    float32                `json:"price"`
 	Metadata BestPriorPriceMetadata `json:"metadata"`
 	Target   LabelTarget            `json:"target"`
-	// The date and time when the historical price ID was excluded.
+	// The date and time when the price record was excluded.
 	ExcludedAt *time.Time `json:"excludedAt,omitempty"`
-	// The reason for excluding this historical price ID.
+	// The reason for excluding this price record.
 	ExclusionReason      *string `json:"exclusionReason,omitempty"`
 	AdditionalProperties map[string]interface{}
 }

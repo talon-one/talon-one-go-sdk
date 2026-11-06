@@ -18,14 +18,40 @@ import (
 // checks if the ListWithCountCheckAttributeBlock type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &ListWithCountCheckAttributeBlock{}
 
-// ListWithCountCheckAttributeBlock Variant of `CheckAttributeBlock` for operators that test list membership with a minimum or exact count threshold.
+// ListWithCountCheckAttributeBlock struct for ListWithCountCheckAttributeBlock
 type ListWithCountCheckAttributeBlock struct {
+	// Unique identifier for this block.
+	Id *string `json:"id,omitempty"`
+	// A block discriminator of type `checkAttribute`.
+	Type string `json:"type"`
+	// Semantic labels attached to this block.
+	Tags []string `json:"tags,omitempty"`
 	// The list membership operator with a count threshold applied to the attribute.
-	Operator *string `json:"operator,omitempty"`
+	Operator string `json:"operator"`
+	// The attribute path identifier (e.g. \"$Session.Total\").
+	Attribute interface{} `json:"attribute"`
+	// The comparison value for scalar operators.
+	Value interface{} `json:"value,omitempty"`
+	// The minimum value allowed for the `between` operator.
+	Min interface{} `json:"min,omitempty"`
+	// The maximum value allowed for the `between` operator.
+	Max interface{} `json:"max,omitempty"`
+	// The start value for the `within` operator.
+	Start interface{} `json:"start,omitempty"`
+	// The end value for the `within` operator.
+	End interface{} `json:"end,omitempty"`
+	// When `true`, the `start` value is included in the range for the `within` operator.
+	StartInclusive *bool `json:"startInclusive,omitempty"`
+	// When `true`, the `end` value is included in the range for the `within` operator.
+	EndInclusive *bool `json:"endInclusive,omitempty"`
+	// Indicates whether the `within` operator ignores time zones and compares the wall-clock time only. When `false`, time zones are taken into account.
+	TimezoneInsensitive *bool `json:"timezoneInsensitive,omitempty"`
 	// The set of values to match against.
 	Values interface{} `json:"values"`
 	// The count threshold for this operator.
-	Count                interface{} `json:"count"`
+	Count interface{} `json:"count"`
+	// Promotion blocks evaluated when this block fails or returns false.
+	OnFailure            []Block `json:"onFailure,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -35,8 +61,11 @@ type _ListWithCountCheckAttributeBlock ListWithCountCheckAttributeBlock
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildListWithCountCheckAttributeBlock(values interface{}, count interface{}) *ListWithCountCheckAttributeBlock {
+func BuildListWithCountCheckAttributeBlock(type_ string, operator string, attribute interface{}, values interface{}, count interface{}) *ListWithCountCheckAttributeBlock {
 	this := ListWithCountCheckAttributeBlock{}
+	this.Type = type_
+	this.Operator = operator
+	this.Attribute = attribute
 	this.Values = values
 	this.Count = count
 	return &this
@@ -50,36 +79,403 @@ func NewListWithCountCheckAttributeBlockWithDefaults() *ListWithCountCheckAttrib
 	return &this
 }
 
-// GetOperator returns the Operator field value if set, zero value otherwise.
-func (o *ListWithCountCheckAttributeBlock) GetOperator() string {
-	if o == nil || IsNil(o.Operator) {
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *ListWithCountCheckAttributeBlock) GetId() string {
+	if o == nil || IsNil(o.Id) {
 		var ret string
 		return ret
 	}
-	return *o.Operator
+	return *o.Id
 }
 
-// GetOperatorOk returns a tuple with the Operator field value if set, nil otherwise
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ListWithCountCheckAttributeBlock) GetOperatorOk() (*string, bool) {
-	if o == nil || IsNil(o.Operator) {
+func (o *ListWithCountCheckAttributeBlock) GetIdOk() (*string, bool) {
+	if o == nil || IsNil(o.Id) {
 		return nil, false
 	}
-	return o.Operator, true
+	return o.Id, true
 }
 
-// HasOperator returns a boolean if a field has been set.
-func (o *ListWithCountCheckAttributeBlock) HasOperator() bool {
-	if o != nil && !IsNil(o.Operator) {
+// HasId returns a boolean if a field has been set.
+func (o *ListWithCountCheckAttributeBlock) HasId() bool {
+	if o != nil && !IsNil(o.Id) {
 		return true
 	}
 
 	return false
 }
 
-// SetOperator gets a reference to the given string and assigns it to the Operator field.
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *ListWithCountCheckAttributeBlock) SetId(v string) {
+	o.Id = &v
+}
+
+// GetType returns the Type field value
+func (o *ListWithCountCheckAttributeBlock) GetType() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Type
+}
+
+// GetTypeOk returns a tuple with the Type field value
+// and a boolean to check if the value has been set.
+func (o *ListWithCountCheckAttributeBlock) GetTypeOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Type, true
+}
+
+// SetType sets field value
+func (o *ListWithCountCheckAttributeBlock) SetType(v string) {
+	o.Type = v
+}
+
+// GetTags returns the Tags field value if set, zero value otherwise.
+func (o *ListWithCountCheckAttributeBlock) GetTags() []string {
+	if o == nil || IsNil(o.Tags) {
+		var ret []string
+		return ret
+	}
+	return o.Tags
+}
+
+// GetTagsOk returns a tuple with the Tags field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ListWithCountCheckAttributeBlock) GetTagsOk() ([]string, bool) {
+	if o == nil || IsNil(o.Tags) {
+		return nil, false
+	}
+	return o.Tags, true
+}
+
+// HasTags returns a boolean if a field has been set.
+func (o *ListWithCountCheckAttributeBlock) HasTags() bool {
+	if o != nil && !IsNil(o.Tags) {
+		return true
+	}
+
+	return false
+}
+
+// SetTags gets a reference to the given []string and assigns it to the Tags field.
+func (o *ListWithCountCheckAttributeBlock) SetTags(v []string) {
+	o.Tags = v
+}
+
+// GetOperator returns the Operator field value
+func (o *ListWithCountCheckAttributeBlock) GetOperator() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Operator
+}
+
+// GetOperatorOk returns a tuple with the Operator field value
+// and a boolean to check if the value has been set.
+func (o *ListWithCountCheckAttributeBlock) GetOperatorOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Operator, true
+}
+
+// SetOperator sets field value
 func (o *ListWithCountCheckAttributeBlock) SetOperator(v string) {
-	o.Operator = &v
+	o.Operator = v
+}
+
+// GetAttribute returns the Attribute field value
+// If the value is explicit nil, the zero value for interface{} will be returned
+func (o *ListWithCountCheckAttributeBlock) GetAttribute() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+
+	return o.Attribute
+}
+
+// GetAttributeOk returns a tuple with the Attribute field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ListWithCountCheckAttributeBlock) GetAttributeOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.Attribute) {
+		return nil, false
+	}
+	return &o.Attribute, true
+}
+
+// SetAttribute sets field value
+func (o *ListWithCountCheckAttributeBlock) SetAttribute(v interface{}) {
+	o.Attribute = v
+}
+
+// GetValue returns the Value field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *ListWithCountCheckAttributeBlock) GetValue() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+	return o.Value
+}
+
+// GetValueOk returns a tuple with the Value field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ListWithCountCheckAttributeBlock) GetValueOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.Value) {
+		return nil, false
+	}
+	return &o.Value, true
+}
+
+// HasValue returns a boolean if a field has been set.
+func (o *ListWithCountCheckAttributeBlock) HasValue() bool {
+	if o != nil && !IsNil(o.Value) {
+		return true
+	}
+
+	return false
+}
+
+// SetValue gets a reference to the given interface{} and assigns it to the Value field.
+func (o *ListWithCountCheckAttributeBlock) SetValue(v interface{}) {
+	o.Value = v
+}
+
+// GetMin returns the Min field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *ListWithCountCheckAttributeBlock) GetMin() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+	return o.Min
+}
+
+// GetMinOk returns a tuple with the Min field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ListWithCountCheckAttributeBlock) GetMinOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.Min) {
+		return nil, false
+	}
+	return &o.Min, true
+}
+
+// HasMin returns a boolean if a field has been set.
+func (o *ListWithCountCheckAttributeBlock) HasMin() bool {
+	if o != nil && !IsNil(o.Min) {
+		return true
+	}
+
+	return false
+}
+
+// SetMin gets a reference to the given interface{} and assigns it to the Min field.
+func (o *ListWithCountCheckAttributeBlock) SetMin(v interface{}) {
+	o.Min = v
+}
+
+// GetMax returns the Max field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *ListWithCountCheckAttributeBlock) GetMax() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+	return o.Max
+}
+
+// GetMaxOk returns a tuple with the Max field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ListWithCountCheckAttributeBlock) GetMaxOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.Max) {
+		return nil, false
+	}
+	return &o.Max, true
+}
+
+// HasMax returns a boolean if a field has been set.
+func (o *ListWithCountCheckAttributeBlock) HasMax() bool {
+	if o != nil && !IsNil(o.Max) {
+		return true
+	}
+
+	return false
+}
+
+// SetMax gets a reference to the given interface{} and assigns it to the Max field.
+func (o *ListWithCountCheckAttributeBlock) SetMax(v interface{}) {
+	o.Max = v
+}
+
+// GetStart returns the Start field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *ListWithCountCheckAttributeBlock) GetStart() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+	return o.Start
+}
+
+// GetStartOk returns a tuple with the Start field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ListWithCountCheckAttributeBlock) GetStartOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.Start) {
+		return nil, false
+	}
+	return &o.Start, true
+}
+
+// HasStart returns a boolean if a field has been set.
+func (o *ListWithCountCheckAttributeBlock) HasStart() bool {
+	if o != nil && !IsNil(o.Start) {
+		return true
+	}
+
+	return false
+}
+
+// SetStart gets a reference to the given interface{} and assigns it to the Start field.
+func (o *ListWithCountCheckAttributeBlock) SetStart(v interface{}) {
+	o.Start = v
+}
+
+// GetEnd returns the End field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *ListWithCountCheckAttributeBlock) GetEnd() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+	return o.End
+}
+
+// GetEndOk returns a tuple with the End field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ListWithCountCheckAttributeBlock) GetEndOk() (*interface{}, bool) {
+	if o == nil || IsNil(o.End) {
+		return nil, false
+	}
+	return &o.End, true
+}
+
+// HasEnd returns a boolean if a field has been set.
+func (o *ListWithCountCheckAttributeBlock) HasEnd() bool {
+	if o != nil && !IsNil(o.End) {
+		return true
+	}
+
+	return false
+}
+
+// SetEnd gets a reference to the given interface{} and assigns it to the End field.
+func (o *ListWithCountCheckAttributeBlock) SetEnd(v interface{}) {
+	o.End = v
+}
+
+// GetStartInclusive returns the StartInclusive field value if set, zero value otherwise.
+func (o *ListWithCountCheckAttributeBlock) GetStartInclusive() bool {
+	if o == nil || IsNil(o.StartInclusive) {
+		var ret bool
+		return ret
+	}
+	return *o.StartInclusive
+}
+
+// GetStartInclusiveOk returns a tuple with the StartInclusive field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ListWithCountCheckAttributeBlock) GetStartInclusiveOk() (*bool, bool) {
+	if o == nil || IsNil(o.StartInclusive) {
+		return nil, false
+	}
+	return o.StartInclusive, true
+}
+
+// HasStartInclusive returns a boolean if a field has been set.
+func (o *ListWithCountCheckAttributeBlock) HasStartInclusive() bool {
+	if o != nil && !IsNil(o.StartInclusive) {
+		return true
+	}
+
+	return false
+}
+
+// SetStartInclusive gets a reference to the given bool and assigns it to the StartInclusive field.
+func (o *ListWithCountCheckAttributeBlock) SetStartInclusive(v bool) {
+	o.StartInclusive = &v
+}
+
+// GetEndInclusive returns the EndInclusive field value if set, zero value otherwise.
+func (o *ListWithCountCheckAttributeBlock) GetEndInclusive() bool {
+	if o == nil || IsNil(o.EndInclusive) {
+		var ret bool
+		return ret
+	}
+	return *o.EndInclusive
+}
+
+// GetEndInclusiveOk returns a tuple with the EndInclusive field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ListWithCountCheckAttributeBlock) GetEndInclusiveOk() (*bool, bool) {
+	if o == nil || IsNil(o.EndInclusive) {
+		return nil, false
+	}
+	return o.EndInclusive, true
+}
+
+// HasEndInclusive returns a boolean if a field has been set.
+func (o *ListWithCountCheckAttributeBlock) HasEndInclusive() bool {
+	if o != nil && !IsNil(o.EndInclusive) {
+		return true
+	}
+
+	return false
+}
+
+// SetEndInclusive gets a reference to the given bool and assigns it to the EndInclusive field.
+func (o *ListWithCountCheckAttributeBlock) SetEndInclusive(v bool) {
+	o.EndInclusive = &v
+}
+
+// GetTimezoneInsensitive returns the TimezoneInsensitive field value if set, zero value otherwise.
+func (o *ListWithCountCheckAttributeBlock) GetTimezoneInsensitive() bool {
+	if o == nil || IsNil(o.TimezoneInsensitive) {
+		var ret bool
+		return ret
+	}
+	return *o.TimezoneInsensitive
+}
+
+// GetTimezoneInsensitiveOk returns a tuple with the TimezoneInsensitive field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ListWithCountCheckAttributeBlock) GetTimezoneInsensitiveOk() (*bool, bool) {
+	if o == nil || IsNil(o.TimezoneInsensitive) {
+		return nil, false
+	}
+	return o.TimezoneInsensitive, true
+}
+
+// HasTimezoneInsensitive returns a boolean if a field has been set.
+func (o *ListWithCountCheckAttributeBlock) HasTimezoneInsensitive() bool {
+	if o != nil && !IsNil(o.TimezoneInsensitive) {
+		return true
+	}
+
+	return false
+}
+
+// SetTimezoneInsensitive gets a reference to the given bool and assigns it to the TimezoneInsensitive field.
+func (o *ListWithCountCheckAttributeBlock) SetTimezoneInsensitive(v bool) {
+	o.TimezoneInsensitive = &v
 }
 
 // GetValues returns the Values field value
@@ -134,6 +530,38 @@ func (o *ListWithCountCheckAttributeBlock) SetCount(v interface{}) {
 	o.Count = v
 }
 
+// GetOnFailure returns the OnFailure field value if set, zero value otherwise.
+func (o *ListWithCountCheckAttributeBlock) GetOnFailure() []Block {
+	if o == nil || IsNil(o.OnFailure) {
+		var ret []Block
+		return ret
+	}
+	return o.OnFailure
+}
+
+// GetOnFailureOk returns a tuple with the OnFailure field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ListWithCountCheckAttributeBlock) GetOnFailureOk() ([]Block, bool) {
+	if o == nil || IsNil(o.OnFailure) {
+		return nil, false
+	}
+	return o.OnFailure, true
+}
+
+// HasOnFailure returns a boolean if a field has been set.
+func (o *ListWithCountCheckAttributeBlock) HasOnFailure() bool {
+	if o != nil && !IsNil(o.OnFailure) {
+		return true
+	}
+
+	return false
+}
+
+// SetOnFailure gets a reference to the given []Block and assigns it to the OnFailure field.
+func (o *ListWithCountCheckAttributeBlock) SetOnFailure(v []Block) {
+	o.OnFailure = v
+}
+
 func (o ListWithCountCheckAttributeBlock) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -144,14 +572,49 @@ func (o ListWithCountCheckAttributeBlock) MarshalJSON() ([]byte, error) {
 
 func (o ListWithCountCheckAttributeBlock) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.Operator) {
-		toSerialize["operator"] = o.Operator
+	if !IsNil(o.Id) {
+		toSerialize["id"] = o.Id
+	}
+	toSerialize["type"] = o.Type
+	if !IsNil(o.Tags) {
+		toSerialize["tags"] = o.Tags
+	}
+	toSerialize["operator"] = o.Operator
+	if o.Attribute != nil {
+		toSerialize["attribute"] = o.Attribute
+	}
+	if o.Value != nil {
+		toSerialize["value"] = o.Value
+	}
+	if o.Min != nil {
+		toSerialize["min"] = o.Min
+	}
+	if o.Max != nil {
+		toSerialize["max"] = o.Max
+	}
+	if o.Start != nil {
+		toSerialize["start"] = o.Start
+	}
+	if o.End != nil {
+		toSerialize["end"] = o.End
+	}
+	if !IsNil(o.StartInclusive) {
+		toSerialize["startInclusive"] = o.StartInclusive
+	}
+	if !IsNil(o.EndInclusive) {
+		toSerialize["endInclusive"] = o.EndInclusive
+	}
+	if !IsNil(o.TimezoneInsensitive) {
+		toSerialize["timezoneInsensitive"] = o.TimezoneInsensitive
 	}
 	if o.Values != nil {
 		toSerialize["values"] = o.Values
 	}
 	if o.Count != nil {
 		toSerialize["count"] = o.Count
+	}
+	if !IsNil(o.OnFailure) {
+		toSerialize["onFailure"] = o.OnFailure
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -166,6 +629,9 @@ func (o *ListWithCountCheckAttributeBlock) UnmarshalJSON(data []byte) (err error
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
+		"type",
+		"operator",
+		"attribute",
 		"values",
 		"count",
 	}
@@ -197,9 +663,22 @@ func (o *ListWithCountCheckAttributeBlock) UnmarshalJSON(data []byte) (err error
 	additionalProperties := make(map[string]interface{})
 
 	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "tags")
 		delete(additionalProperties, "operator")
+		delete(additionalProperties, "attribute")
+		delete(additionalProperties, "value")
+		delete(additionalProperties, "min")
+		delete(additionalProperties, "max")
+		delete(additionalProperties, "start")
+		delete(additionalProperties, "end")
+		delete(additionalProperties, "startInclusive")
+		delete(additionalProperties, "endInclusive")
+		delete(additionalProperties, "timezoneInsensitive")
 		delete(additionalProperties, "values")
 		delete(additionalProperties, "count")
+		delete(additionalProperties, "onFailure")
 		o.AdditionalProperties = additionalProperties
 	}
 

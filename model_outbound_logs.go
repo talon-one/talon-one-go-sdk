@@ -18,7 +18,7 @@ import (
 // checks if the OutboundLogs type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &OutboundLogs{}
 
-// OutboundLogs Paginated list of outbound logs.
+// OutboundLogs struct for OutboundLogs
 type OutboundLogs struct {
 	// Cursor for the next page of results. Omitted when there are no more results.
 	NextCursor *string `json:"nextCursor,omitempty"`

@@ -18,7 +18,7 @@ import (
 // checks if the BestPriorPriceMetadata type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &BestPriorPriceMetadata{}
 
-// BestPriorPriceMetadata Auxiliary data for found price observation.
+// BestPriorPriceMetadata Auxiliary data for the found price record.
 type BestPriorPriceMetadata struct {
 	// Details about campaigns that influenced the final price.
 	InfluencingCampaignDetails []InfluencingCampaignDetails `json:"influencingCampaignDetails"`

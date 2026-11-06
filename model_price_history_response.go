@@ -20,7 +20,7 @@ var _ MappedNullable = &PriceHistoryResponse{}
 
 // PriceHistoryResponse struct for PriceHistoryResponse
 type PriceHistoryResponse struct {
-	// The SKU of the item for which historical prices should be retrieved.
+	// The SKU of the item for which price records should be retrieved.
 	Sku                  string    `json:"sku"`
 	History              []History `json:"history"`
 	AdditionalProperties map[string]interface{}

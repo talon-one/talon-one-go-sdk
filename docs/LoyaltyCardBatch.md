@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 **NumberOfCards** | **int64** | Number of loyalty cards in the batch. | 
 **BatchId** | Pointer to **string** | ID of the loyalty card batch. | [optional] 
 **Status** | Pointer to **string** | Status of the loyalty cards in the batch. | [optional] [default to "active"]
+**Attributes** | Pointer to **map[string]interface{}** | Set values for the [custom attributes](https://docs.talon.one/docs/dev/concepts/attributes#custom-attributes) of a loyalty card. These attributes must be created in the Campaign Manager before their values can be updated through this endpoint.  | [optional] 
 **CardCodeSettings** | Pointer to [**CodeGeneratorSettings**](CodeGeneratorSettings.md) |  | [optional] 
 
 ## Methods
@@ -97,6 +98,31 @@ SetStatus sets Status field to given value.
 `func (o *LoyaltyCardBatch) HasStatus() bool`
 
 HasStatus returns a boolean if a field has been set.
+
+### GetAttributes
+
+`func (o *LoyaltyCardBatch) GetAttributes() map[string]interface{}`
+
+GetAttributes returns the Attributes field if non-nil, zero value otherwise.
+
+### GetAttributesOk
+
+`func (o *LoyaltyCardBatch) GetAttributesOk() (*map[string]interface{}, bool)`
+
+GetAttributesOk returns a tuple with the Attributes field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAttributes
+
+`func (o *LoyaltyCardBatch) SetAttributes(v map[string]interface{})`
+
+SetAttributes sets Attributes field to given value.
+
+### HasAttributes
+
+`func (o *LoyaltyCardBatch) HasAttributes() bool`
+
+HasAttributes returns a boolean if a field has been set.
 
 ### GetCardCodeSettings
 

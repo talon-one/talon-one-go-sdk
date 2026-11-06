@@ -20,9 +20,9 @@ var _ MappedNullable = &ExcludePriceObservationsRequest{}
 
 // ExcludePriceObservationsRequest struct for ExcludePriceObservationsRequest
 type ExcludePriceObservationsRequest struct {
-	// A list of historical price IDs to exclude from best prior price calculation. Must contain between 1 and 1000 IDs. All IDs must be valid `id` values obtained from the [Get summary of price history](https://docs.talon.one/management-api#tag/Catalogs/operation/priceHistory.responses.200.history) endpoint, must belong to the specified Application, and must not already be excluded from best prior price calculation.
+	// A list of price record IDs to exclude from best prior price calculation. Must contain between 1 and 1000 IDs. All IDs must be valid `id` values obtained from the [Get summary of price history](https://docs.talon.one/management-api#tag/Catalogs/operation/priceHistory.responses.200.history) endpoint, must belong to the specified Application, and must not already be excluded from best prior price calculation.
 	Ids []int64 `json:"ids"`
-	// The reason for excluding these historical price IDs. Applies to all IDs in the batch.
+	// The reason for excluding these IDs. Applies to all IDs in the batch.
 	Reason               string `json:"reason"`
 	AdditionalProperties map[string]interface{}
 }

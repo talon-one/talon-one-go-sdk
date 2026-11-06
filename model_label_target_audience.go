@@ -18,7 +18,7 @@ import (
 // checks if the LabelTargetAudience type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &LabelTargetAudience{}
 
-// LabelTargetAudience Target type when a specific audience is selected.
+// LabelTargetAudience Target type when a specific audience is selected.  Talon.One logs a separate price record per audience. You can use this object to compare the price records of a price type to those of a [base price](https://docs.talon.one/docs/dev/integration-guides/best-prior-price#price-history), for example.
 type LabelTargetAudience struct {
 	Type                 string            `json:"type"`
 	Audience             AudienceReference `json:"audience"`

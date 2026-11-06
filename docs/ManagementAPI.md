@@ -3896,7 +3896,7 @@ func main() {
 	batchId := "batchId_example" // string | Filter results by batches of coupons (optional)
 	exactMatch := true // bool | Filter results to an exact case-insensitive matching against the coupon code. (optional) (default to false)
 	dateFormat := "dateFormat_example" // string | Determines the format of dates in the export document. (optional)
-	campaignState := "campaignState_example" // string | Filter results by the state of the campaign.  - `enabled`: Campaigns that are scheduled, running (activated), or expired. - `running`: Campaigns that are running (activated). - `disabled`: Campaigns that are disabled. - `expired`: Campaigns that are expired. - `archived`: Campaigns that are archived.  (optional)
+	campaignState := "campaignState_example" // string | Filter results by the state of the campaign.  - `enabled`: Campaigns that are scheduled, running (active), or expired. - `running`: Campaigns that are running (active). - `disabled`: Campaigns that are disabled. - `expired`: Campaigns that are expired. - `archived`: Campaigns that are archived.  (optional)
 	valuesOnly := true // bool | Filter results to only return the coupon codes (`value` column) without the associated coupon data. (optional) (default to false)
 	deletedBefore := time.Now() // time.Time | Timestamp that filters the results to only contain coupons deleted before this date. Must be an RFC3339 timestamp string. You can use any time zone setting. Talon.One will convert to UTC internally.  **Note:** Only coupons deleted in the last 7 days will appear in the results. (optional)
 	deletedAfter := time.Now() // time.Time | Timestamp that filters the results to only contain coupons deleted after this date. Must be an RFC3339 timestamp string. You can use any time zone setting. Talon.One will convert to UTC internally.  **Note:** Only coupons deleted in the last 7 days will appear in the results. (optional)
@@ -3941,7 +3941,7 @@ Name | Type | Description  | Notes
  **batchId** | **string** | Filter results by batches of coupons | 
  **exactMatch** | **bool** | Filter results to an exact case-insensitive matching against the coupon code. | [default to false]
  **dateFormat** | **string** | Determines the format of dates in the export document. | 
- **campaignState** | **string** | Filter results by the state of the campaign.  - &#x60;enabled&#x60;: Campaigns that are scheduled, running (activated), or expired. - &#x60;running&#x60;: Campaigns that are running (activated). - &#x60;disabled&#x60;: Campaigns that are disabled. - &#x60;expired&#x60;: Campaigns that are expired. - &#x60;archived&#x60;: Campaigns that are archived.  | 
+ **campaignState** | **string** | Filter results by the state of the campaign.  - &#x60;enabled&#x60;: Campaigns that are scheduled, running (active), or expired. - &#x60;running&#x60;: Campaigns that are running (active). - &#x60;disabled&#x60;: Campaigns that are disabled. - &#x60;expired&#x60;: Campaigns that are expired. - &#x60;archived&#x60;: Campaigns that are archived.  | 
  **valuesOnly** | **bool** | Filter results to only return the coupon codes (&#x60;value&#x60; column) without the associated coupon data. | [default to false]
  **deletedBefore** | **time.Time** | Timestamp that filters the results to only contain coupons deleted before this date. Must be an RFC3339 timestamp string. You can use any time zone setting. Talon.One will convert to UTC internally.  **Note:** Only coupons deleted in the last 7 days will appear in the results. | 
  **deletedAfter** | **time.Time** | Timestamp that filters the results to only contain coupons deleted after this date. Must be an RFC3339 timestamp string. You can use any time zone setting. Talon.One will convert to UTC internally.  **Note:** Only coupons deleted in the last 7 days will appear in the results. | 
@@ -4431,7 +4431,7 @@ Name | Type | Description  | Notes
 
 ## ExportLoyaltyCardLedger
 
-> string ExportLoyaltyCardLedger(ctx, loyaltyProgramId, loyaltyCardId).RangeStart(rangeStart).RangeEnd(rangeEnd).DateFormat(dateFormat).Execute()
+> string ExportLoyaltyCardLedger(ctx, loyaltyProgramId, loyaltyCardId).RangeStart(rangeStart).RangeEnd(rangeEnd).DateFormat(dateFormat).IncludeReferences(includeReferences).Execute()
 
 Export card's ledger log
 
@@ -4456,10 +4456,11 @@ func main() {
 	rangeStart := time.Now() // time.Time | Only return results from after this timestamp.  > [!note] **Note** > - This must be an RFC3339 timestamp string. > - You can include a time component in your string, for example, `T23:59:59` to specify the end of the day. The time zone setting >   considered is `UTC`. If you do not include a time component, a default time value of `T00:00:00` (midnight) in `UTC` is considered. 
 	rangeEnd := time.Now() // time.Time | Only return results from before this timestamp.  > [!note] **Note** > - This must be an RFC3339 timestamp string. > - You can include a time component in your string, for example, `T23:59:59` to specify the end of the day. The time zone setting >   considered is `UTC`. If you do not include a time component, a default time value of `T00:00:00` (midnight) in `UTC` is considered. 
 	dateFormat := "dateFormat_example" // string | Determines the format of dates in the export document. (optional)
+	includeReferences := true // bool | Whether to include the UUIDs of transactions referenced by deductions. When set to `true`, the UUIDs are included in the `referencetransactionuuids` column of the export CSV.  **Note:** Enabling this can decrease query performance, especially  when no date filter is applied to a large transaction history.          (optional) (default to false)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ManagementAPI.ExportLoyaltyCardLedger(context.Background(), loyaltyProgramId, loyaltyCardId).RangeStart(rangeStart).RangeEnd(rangeEnd).DateFormat(dateFormat).Execute()
+	resp, r, err := apiClient.ManagementAPI.ExportLoyaltyCardLedger(context.Background(), loyaltyProgramId, loyaltyCardId).RangeStart(rangeStart).RangeEnd(rangeEnd).DateFormat(dateFormat).IncludeReferences(includeReferences).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.ExportLoyaltyCardLedger``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -4490,6 +4491,7 @@ Name | Type | Description  | Notes
  **rangeStart** | **time.Time** | Only return results from after this timestamp.  &gt; [!note] **Note** &gt; - This must be an RFC3339 timestamp string. &gt; - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting &gt;   considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.  | 
  **rangeEnd** | **time.Time** | Only return results from before this timestamp.  &gt; [!note] **Note** &gt; - This must be an RFC3339 timestamp string. &gt; - You can include a time component in your string, for example, &#x60;T23:59:59&#x60; to specify the end of the day. The time zone setting &gt;   considered is &#x60;UTC&#x60;. If you do not include a time component, a default time value of &#x60;T00:00:00&#x60; (midnight) in &#x60;UTC&#x60; is considered.  | 
  **dateFormat** | **string** | Determines the format of dates in the export document. | 
+ **includeReferences** | **bool** | Whether to include the UUIDs of transactions referenced by deductions. When set to &#x60;true&#x60;, the UUIDs are included in the &#x60;referencetransactionuuids&#x60; column of the export CSV.  **Note:** Enabling this can decrease query performance, especially  when no date filter is applied to a large transaction history.          | [default to false]
 
 ### Return type
 
@@ -4660,7 +4662,7 @@ Name | Type | Description  | Notes
 
 ## ExportLoyaltyLedger
 
-> string ExportLoyaltyLedger(ctx, loyaltyProgramId, integrationId).RangeStart(rangeStart).RangeEnd(rangeEnd).DateFormat(dateFormat).Execute()
+> string ExportLoyaltyLedger(ctx, loyaltyProgramId, integrationId).RangeStart(rangeStart).RangeEnd(rangeEnd).DateFormat(dateFormat).IncludeReferences(includeReferences).Execute()
 
 Export customer's transaction logs
 
@@ -4685,10 +4687,11 @@ func main() {
 	loyaltyProgramId := "loyaltyProgramId_example" // string | The identifier for the loyalty program.
 	integrationId := "integrationId_example" // string | The integration identifier for this customer profile. Must be: - Unique within the deployment. - Stable for the customer. Do not use an ID that the customer can update themselves. For example, you can use a database ID.  Once set, you cannot update this identifier. 
 	dateFormat := "dateFormat_example" // string | Determines the format of dates in the export document. (optional)
+	includeReferences := true // bool | Whether to include the UUIDs of transactions referenced by deductions. When set to `true`, the UUIDs are included in the `referencetransactionuuids` column of the export CSV.  **Note:** Enabling this can decrease query performance, especially when no date filter is applied to a large transaction history.  (optional) (default to false)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ManagementAPI.ExportLoyaltyLedger(context.Background(), loyaltyProgramId, integrationId).RangeStart(rangeStart).RangeEnd(rangeEnd).DateFormat(dateFormat).Execute()
+	resp, r, err := apiClient.ManagementAPI.ExportLoyaltyLedger(context.Background(), loyaltyProgramId, integrationId).RangeStart(rangeStart).RangeEnd(rangeEnd).DateFormat(dateFormat).IncludeReferences(includeReferences).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.ExportLoyaltyLedger``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -4719,6 +4722,7 @@ Name | Type | Description  | Notes
 
 
  **dateFormat** | **string** | Determines the format of dates in the export document. | 
+ **includeReferences** | **bool** | Whether to include the UUIDs of transactions referenced by deductions. When set to &#x60;true&#x60;, the UUIDs are included in the &#x60;referencetransactionuuids&#x60; column of the export CSV.  **Note:** Enabling this can decrease query performance, especially when no date filter is applied to a large transaction history.  | [default to false]
 
 ### Return type
 
@@ -7125,7 +7129,7 @@ func main() {
 	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 1000)
 	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
 	sort := "sort_example" // string | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with `-`.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  (optional)
-	campaignState := "campaignState_example" // string | Filter results by the state of the campaign.  - `enabled`: Campaigns that are scheduled, running (activated), or expired. - `running`: Campaigns that are running (activated). - `disabled`: Campaigns that are disabled. - `expired`: Campaigns that are expired. - `archived`: Campaigns that are archived.  (optional)
+	campaignState := "campaignState_example" // string | Filter results by the state of the campaign.  - `enabled`: Campaigns that are scheduled, running (active), or expired. - `running`: Campaigns that are running (active). - `disabled`: Campaigns that are disabled. - `expired`: Campaigns that are expired. - `archived`: Campaigns that are archived.  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -7159,7 +7163,7 @@ Name | Type | Description  | Notes
  **pageSize** | **int64** | The number of items in the response. | [default to 1000]
  **skip** | **int64** | The number of items to skip when paging through large result sets. | 
  **sort** | **string** | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with &#x60;-&#x60;.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  | 
- **campaignState** | **string** | Filter results by the state of the campaign.  - &#x60;enabled&#x60;: Campaigns that are scheduled, running (activated), or expired. - &#x60;running&#x60;: Campaigns that are running (activated). - &#x60;disabled&#x60;: Campaigns that are disabled. - &#x60;expired&#x60;: Campaigns that are expired. - &#x60;archived&#x60;: Campaigns that are archived.  | 
+ **campaignState** | **string** | Filter results by the state of the campaign.  - &#x60;enabled&#x60;: Campaigns that are scheduled, running (active), or expired. - &#x60;running&#x60;: Campaigns that are running (active). - &#x60;disabled&#x60;: Campaigns that are disabled. - &#x60;expired&#x60;: Campaigns that are expired. - &#x60;archived&#x60;: Campaigns that are archived.  | 
 
 ### Return type
 
@@ -7423,7 +7427,7 @@ func main() {
 	pageSize := int64(789) // int64 | The number of items in the response. (optional) (default to 1000)
 	skip := int64(789) // int64 | The number of items to skip when paging through large result sets. (optional)
 	sort := "sort_example" // string | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with `-`.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  (optional)
-	campaignState := "campaignState_example" // string | Filter results by the state of the campaign.  - `enabled`: Campaigns that are scheduled, running (activated), or expired. - `running`: Campaigns that are running (activated). - `disabled`: Campaigns that are disabled. - `expired`: Campaigns that are expired. - `archived`: Campaigns that are archived.  (optional)
+	campaignState := "campaignState_example" // string | Filter results by the state of the campaign.  - `enabled`: Campaigns that are scheduled, running (active), or expired. - `running`: Campaigns that are running (active). - `disabled`: Campaigns that are disabled. - `expired`: Campaigns that are expired. - `archived`: Campaigns that are archived.  (optional)
 	name := "name_example" // string | Filter results performing case-insensitive matching against the name of the campaign. (optional)
 	tags := []string{"Inner_example"} // []string | Filter results performing case-insensitive matching against the tags of the campaign.  (optional)
 	createdBefore := time.Now() // time.Time | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the campaign creation timestamp. You can use any time zone setting. Talon.One will convert to UTC internally. (optional)
@@ -7467,7 +7471,7 @@ Name | Type | Description  | Notes
  **pageSize** | **int64** | The number of items in the response. | [default to 1000]
  **skip** | **int64** | The number of items to skip when paging through large result sets. | 
  **sort** | **string** | The field by which results should be sorted. By default, results are sorted in ascending order. To sort them in descending order, prefix the field name with &#x60;-&#x60;.  **Note:** You may not be able to use all fields for sorting. This is due to performance limitations.  | 
- **campaignState** | **string** | Filter results by the state of the campaign.  - &#x60;enabled&#x60;: Campaigns that are scheduled, running (activated), or expired. - &#x60;running&#x60;: Campaigns that are running (activated). - &#x60;disabled&#x60;: Campaigns that are disabled. - &#x60;expired&#x60;: Campaigns that are expired. - &#x60;archived&#x60;: Campaigns that are archived.  | 
+ **campaignState** | **string** | Filter results by the state of the campaign.  - &#x60;enabled&#x60;: Campaigns that are scheduled, running (active), or expired. - &#x60;running&#x60;: Campaigns that are running (active). - &#x60;disabled&#x60;: Campaigns that are disabled. - &#x60;expired&#x60;: Campaigns that are expired. - &#x60;archived&#x60;: Campaigns that are archived.  | 
  **name** | **string** | Filter results performing case-insensitive matching against the name of the campaign. | 
  **tags** | **[]string** | Filter results performing case-insensitive matching against the tags of the campaign.  | 
  **createdBefore** | **time.Time** | Filter results comparing the parameter value, expected to be an RFC3339 timestamp string, to the campaign creation timestamp. You can use any time zone setting. Talon.One will convert to UTC internally. | 
@@ -13718,7 +13722,7 @@ func main() {
 	recipientIntegrationId := "recipientIntegrationId_example" // string | Filter results by match with a profile ID specified in the coupon's RecipientIntegrationId field. (optional)
 	batchId := "batchId_example" // string | Filter results by batches of coupons (optional)
 	exactMatch := true // bool | Filter results to an exact case-insensitive matching against the coupon code. (optional) (default to false)
-	campaignState := "campaignState_example" // string | Filter results by the state of the campaign.  - `enabled`: Campaigns that are scheduled, running (activated), or expired. - `running`: Campaigns that are running (activated). - `disabled`: Campaigns that are disabled. - `expired`: Campaigns that are expired. - `archived`: Campaigns that are archived.  (optional)
+	campaignState := "campaignState_example" // string | Filter results by the state of the campaign.  - `enabled`: Campaigns that are scheduled, running (active), or expired. - `running`: Campaigns that are running (active). - `disabled`: Campaigns that are disabled. - `expired`: Campaigns that are expired. - `archived`: Campaigns that are archived.  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -13761,7 +13765,7 @@ Name | Type | Description  | Notes
  **recipientIntegrationId** | **string** | Filter results by match with a profile ID specified in the coupon&#39;s RecipientIntegrationId field. | 
  **batchId** | **string** | Filter results by batches of coupons | 
  **exactMatch** | **bool** | Filter results to an exact case-insensitive matching against the coupon code. | [default to false]
- **campaignState** | **string** | Filter results by the state of the campaign.  - &#x60;enabled&#x60;: Campaigns that are scheduled, running (activated), or expired. - &#x60;running&#x60;: Campaigns that are running (activated). - &#x60;disabled&#x60;: Campaigns that are disabled. - &#x60;expired&#x60;: Campaigns that are expired. - &#x60;archived&#x60;: Campaigns that are archived.  | 
+ **campaignState** | **string** | Filter results by the state of the campaign.  - &#x60;enabled&#x60;: Campaigns that are scheduled, running (active), or expired. - &#x60;running&#x60;: Campaigns that are running (active). - &#x60;disabled&#x60;: Campaigns that are disabled. - &#x60;expired&#x60;: Campaigns that are expired. - &#x60;archived&#x60;: Campaigns that are archived.  | 
 
 ### Return type
 

@@ -210,7 +210,9 @@ func (r ApiBestPriorPriceRequest) Execute() ([]BestPriorPrice, *http.Response, e
 /*
 BestPriorPrice Fetch best prior price
 
-Returns the best prior price based on historical pricing data for the specified SKUs within a defined timeframe.
+Returns the best prior price based on price records (historical price data) for the specified SKUs within a defined timeframe.
+
+For more information, see the [docs](https://docs.talon.one/docs/dev/integration-guides/best-prior-price).
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiBestPriorPriceRequest
@@ -5146,6 +5148,182 @@ func (a *IntegrationAPIService) IntegrationRewardsCatalogExecute(r ApiIntegratio
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiIntegrationUpdateLoyaltyCardRequest struct {
+	ctx                      context.Context
+	ApiService               *IntegrationAPIService
+	loyaltyProgramId         int64
+	loyaltyCardId            string
+	updateLoyaltyCardRequest *UpdateLoyaltyCardRequest
+}
+
+// body
+func (r ApiIntegrationUpdateLoyaltyCardRequest) UpdateLoyaltyCardRequest(updateLoyaltyCardRequest UpdateLoyaltyCardRequest) ApiIntegrationUpdateLoyaltyCardRequest {
+	r.updateLoyaltyCardRequest = &updateLoyaltyCardRequest
+	return r
+}
+
+func (r ApiIntegrationUpdateLoyaltyCardRequest) Execute() (*LoyaltyCard, *http.Response, error) {
+	return r.ApiService.IntegrationUpdateLoyaltyCardExecute(r)
+}
+
+/*
+IntegrationUpdateLoyaltyCard Update loyalty card
+
+Updates the details of a specific loyalty card. Use this endpoint to modify the card's status and custom attribute values.
+
+You must provide at least one of the following parameters:
+-   `status`
+-  `attributes`
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param loyaltyProgramId Identifier of the card-based loyalty program containing the loyalty card. You can get the ID with the [List loyalty programs](https://docs.talon.one/management-api#tag/Loyalty/operation/getLoyaltyPrograms) endpoint.
+	@param loyaltyCardId Identifier of the loyalty card. You can get the identifier with the [List loyalty cards](https://docs.talon.one/management-api#tag/Loyalty-cards/operation/getLoyaltyCards) endpoint.  **Important**: The loyalty card ID requires [URL encoding](https://www.w3schools.com/tags//ref_urlencode.asp) if it contains special characters. For example, you must encode `NewCard2026%` as `NewCard2026%25`.
+	@return ApiIntegrationUpdateLoyaltyCardRequest
+*/
+func (a *IntegrationAPIService) IntegrationUpdateLoyaltyCard(ctx context.Context, loyaltyProgramId int64, loyaltyCardId string) ApiIntegrationUpdateLoyaltyCardRequest {
+	return ApiIntegrationUpdateLoyaltyCardRequest{
+		ApiService:       a,
+		ctx:              ctx,
+		loyaltyProgramId: loyaltyProgramId,
+		loyaltyCardId:    loyaltyCardId,
+	}
+}
+
+// Execute executes the request
+//
+//	@return LoyaltyCard
+func (a *IntegrationAPIService) IntegrationUpdateLoyaltyCardExecute(r ApiIntegrationUpdateLoyaltyCardRequest) (*LoyaltyCard, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPut
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *LoyaltyCard
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IntegrationAPIService.IntegrationUpdateLoyaltyCard")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v1/loyalty_programs/{loyaltyProgramId}/cards/{loyaltyCardId}/update"
+	localVarPath = strings.Replace(localVarPath, "{"+"loyaltyProgramId"+"}", url.PathEscape(parameterValueToString(r.loyaltyProgramId, "loyaltyProgramId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"loyaltyCardId"+"}", url.PathEscape(parameterValueToString(r.loyaltyCardId, "loyaltyCardId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if strlen(r.loyaltyCardId) < 4 {
+		return localVarReturnValue, nil, reportError("loyaltyCardId must have at least 4 elements")
+	}
+	if strlen(r.loyaltyCardId) > 108 {
+		return localVarReturnValue, nil, reportError("loyaltyCardId must have less than 108 elements")
+	}
+	if r.updateLoyaltyCardRequest == nil {
+		return localVarReturnValue, nil, reportError("updateLoyaltyCardRequest is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.updateLoyaltyCardRequest
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["api_key_v1"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiJoinLoyaltyProgramRequest struct {
 	ctx              context.Context
 	ApiService       *IntegrationAPIService
@@ -5893,22 +6071,25 @@ SyncCatalog Sync cart item catalog
 
 Perform the following actions for a given cart item catalog:
 
-- Add an item to the catalog.
-- Add multiple items to the catalog.
-- Update the attributes of an item in the catalog.
-- Update the attributes of multiple items in the catalog.
-- Remove an item from the catalog.
-- Remove multiple items from the catalog.
+  - Add an item to the catalog.
+  - Add multiple items to the catalog.
+  - Update the attributes of an item in the catalog.
+  - Update the attributes of multiple items in the catalog.
+  - Remove an item from the catalog.
+  - Remove multiple items from the catalog.
+  - Add a [price adjustment](https://docs.talon.one/docs/dev/integration-guides/set-up-price-types#price-adjustments)
+    to an item in the catalog.
 
 You can either add, update, or delete up to 1000 cart items in a single
 request. Each item synced to a catalog must have a unique `SKU`.
+
+For examples of each action, see the request body.
 
 > [!important] You can perform only one type of action in a single sync
 request. Syncing items with duplicate `SKU` values in a single request
 returns an error message with a `400` status code.
 
-For more information, read [managing cart item
-catalogs](https://docs.talon.one/docs/product/account/dev-tools/managing-cart-item-catalogs).
+For more information, see [Sync a cart item catalog best practices](https://docs.talon.one/docs/dev/integration-guides/sync-cic#best-practices) and [Managing cart item catalogs](https://docs.talon.one/docs/product/account/dev-tools/managing-cart-item-catalogs).
 
 ### Filtering cart items
 
@@ -5942,8 +6123,6 @@ The `filters` array contains an object with the following properties:
     **Note:** `GE`, `LE`, `GT`, `LT` are for numeric values only.
 
 - `value`: The value of the attribute selected in `attr`.
-
-For request examples of each action, see the **Request Body** examples.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param catalogId The ID of the catalog. You can find the ID in the Campaign Manager in **Account** > **Tools** > **Cart item catalogs**.
