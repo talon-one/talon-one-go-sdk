@@ -36,9 +36,10 @@ package main
 
 import (
     "context"
+    "encoding/json"
     "fmt"
 
-    talon "github.com/talon-one/talon-one-go-sdk/v26"
+    talon "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {
@@ -58,7 +59,7 @@ func main() {
 
     // Create integration authentication context using api key
     integrationAuthContext := context.WithValue(context.Background(), talon.ContextAPIKeys, map[string]talon.APIKey{
-        "Authorization": {
+        "api_key_v1": {
             Prefix: "ApiKey-v1",
             Key:    "fd1fd219b1e953a6b2700e8034de5bfc877462ae106127311ddd710978654312",
         },
@@ -68,7 +69,7 @@ func main() {
     newCustomerSession := talon.NewCustomerSessionV2{
         // You can use either struct literals
         ProfileId:   talon.PtrString("DEADBEEF"),
-        CouponCodes: []string{"Cool-Stuff!"},
+        CouponCodes: &[]string{"Cool-Stuff!"},
     }
 
     // Or alternatively, using the relevant setter in a later stage in the code
@@ -116,21 +117,43 @@ func main() {
 
     // Parsing the returned effects list, please consult https://developers.talon.one/Integration-API/handling-effects-v2 for the full list of effects and their corresponding properties
     for _, effect := range integrationState.GetEffects() {
+        effectType := effect.GetEffectType()
         switch {
-        case effect.EffectSetDiscount != nil:
-            effectProps := effect.EffectSetDiscount.GetProps()
+        case "setDiscount" == effectType:
+            // Initiating right props instance according to the effect type
+            effectProps := talon.SetDiscountEffectProps{}
+            if err := decodeHelper(effect.GetProps(), &effectProps); err != nil {
+                fmt.Printf("ERROR while decoding 'setDiscount' props: %s\n", err)
+                continue
+            }
 
             // Access the specific effect's properties
             fmt.Printf("Set a discount '%s' of %2.3f\n", effectProps.GetName(), effectProps.GetValue())
-        case effect.EffectAcceptCoupon != nil:
-            effectProps := effect.EffectAcceptCoupon.GetProps()
-            fmt.Printf("Accepted coupon '%s'\n", effectProps.GetValue())
+        case "acceptCoupon" == effectType:
+            // Initiating right props instance according to the effect type
+            effectProps := talon.AcceptCouponEffectProps{}
+            if err := decodeHelper(effect.GetProps(), &effectProps); err != nil {
+                fmt.Printf("ERROR while decoding props: %s\n", err)
+                continue
+            }
+
+            // Work with AcceptCouponEffectProps' properties
+            // ...
         default:
-            fmt.Printf("Unhandled effect: %#v\n", effect.GetActualInstance())
+            fmt.Printf("Encounter unknown effect type: %s\n", effectType)
         }
     }
 }
 
+// quick decoding of props-map into our library structures using JSON marshaling,
+// or alternatively using a library like https://github.com/mitchellh/mapstructure
+func decodeHelper(propsMap map[string]interface{}, v interface{}) error {
+    propsJSON, err := json.Marshal(propsMap)
+    if err != nil {
+        return err
+    }
+    return json.Unmarshal(propsJSON, v)
+}
 ```
 
 ### Management API
@@ -144,7 +167,7 @@ import (
     "context"
     "fmt"
 
-    talon "github.com/talon-one/talon-one-go-sdk/v26"
+    talon "github.com/talon-one/talon-one-go-sdk"
 )
 
 func main() {

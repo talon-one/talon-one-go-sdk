@@ -13,7 +13,6 @@ package talon
 import (
 	"encoding/json"
 	"fmt"
-	"gopkg.in/validator.v2"
 )
 
 // CheckAttributeBlock - struct for CheckAttributeBlock
@@ -39,56 +38,410 @@ func MapmapOfStringAnyAsCheckAttributeBlock(v *map[string]interface{}) CheckAttr
 // Unmarshal JSON data into one of the pointers in the struct
 func (dst *CheckAttributeBlock) UnmarshalJSON(data []byte) error {
 	var err error
-	match := 0
-	// try to unmarshal data into CheckAttributeBlockBase
-	err = newStrictDecoder(data).Decode(&dst.CheckAttributeBlockBase)
-	if err == nil {
-		jsonCheckAttributeBlockBase, _ := json.Marshal(dst.CheckAttributeBlockBase)
-		if string(jsonCheckAttributeBlockBase) == "{}" { // empty struct
-			dst.CheckAttributeBlockBase = nil
+	// use discriminator value to speed up the lookup
+	var jsonDict map[string]interface{}
+	err = newStrictDecoder(data).Decode(&jsonDict)
+	if err != nil {
+		return fmt.Errorf("failed to unmarshal JSON into map for the discriminator lookup")
+	}
+
+	// check if the discriminator value is 'after'
+	if jsonDict["operator"] == "after" {
+		// try to unmarshal JSON data into ScalarCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.ScalarCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.ScalarCheckAttributeBlock, return on the first match
 		} else {
-			if err = validator.Validate(dst.CheckAttributeBlockBase); err != nil {
-				dst.CheckAttributeBlockBase = nil
-			} else {
-				match++
-			}
+			dst.ScalarCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as ScalarCheckAttributeBlock: %s", err.Error())
 		}
-	} else {
-		dst.CheckAttributeBlockBase = nil
 	}
 
-	// try to unmarshal data into MapmapOfStringAny
-	err = newStrictDecoder(data).Decode(&dst.MapmapOfStringAny)
-	if err == nil {
-		jsonMapmapOfStringAny, _ := json.Marshal(dst.MapmapOfStringAny)
-		if string(jsonMapmapOfStringAny) == "{}" { // empty struct
-			dst.MapmapOfStringAny = nil
+	// check if the discriminator value is 'before'
+	if jsonDict["operator"] == "before" {
+		// try to unmarshal JSON data into ScalarCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.ScalarCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.ScalarCheckAttributeBlock, return on the first match
 		} else {
-			if err = validator.Validate(dst.MapmapOfStringAny); err != nil {
-				dst.MapmapOfStringAny = nil
-			} else {
-				match++
-			}
+			dst.ScalarCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as ScalarCheckAttributeBlock: %s", err.Error())
 		}
-	} else {
-		dst.MapmapOfStringAny = nil
 	}
 
-	if match > 1 { // more than 1 match
-		// reset to nil
-		dst.CheckAttributeBlockBase = nil
-		dst.MapmapOfStringAny = nil
-
-		return fmt.Errorf("data matches more than one schema in oneOf(CheckAttributeBlock)")
-	} else if match == 1 {
-		return nil // exactly one match
-	} else { // no match
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(CheckAttributeBlock): %v", err)
+	// check if the discriminator value is 'between'
+	if jsonDict["operator"] == "between" {
+		// try to unmarshal JSON data into BetweenCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.BetweenCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.BetweenCheckAttributeBlock, return on the first match
+		} else {
+			dst.BetweenCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as BetweenCheckAttributeBlock: %s", err.Error())
 		}
-
-		return fmt.Errorf("data failed to match schemas in oneOf(CheckAttributeBlock)")
 	}
+
+	// check if the discriminator value is 'contains'
+	if jsonDict["operator"] == "contains" {
+		// try to unmarshal JSON data into ScalarCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.ScalarCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.ScalarCheckAttributeBlock, return on the first match
+		} else {
+			dst.ScalarCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as ScalarCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'containsAllOf'
+	if jsonDict["operator"] == "containsAllOf" {
+		// try to unmarshal JSON data into ListCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.ListCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.ListCheckAttributeBlock, return on the first match
+		} else {
+			dst.ListCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as ListCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'containsAtLeast'
+	if jsonDict["operator"] == "containsAtLeast" {
+		// try to unmarshal JSON data into ListWithCountCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.ListWithCountCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.ListWithCountCheckAttributeBlock, return on the first match
+		} else {
+			dst.ListWithCountCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as ListWithCountCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'containsExactly'
+	if jsonDict["operator"] == "containsExactly" {
+		// try to unmarshal JSON data into ListWithCountCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.ListWithCountCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.ListWithCountCheckAttributeBlock, return on the first match
+		} else {
+			dst.ListWithCountCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as ListWithCountCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'containsNoneOf'
+	if jsonDict["operator"] == "containsNoneOf" {
+		// try to unmarshal JSON data into ListCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.ListCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.ListCheckAttributeBlock, return on the first match
+		} else {
+			dst.ListCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as ListCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'containsOneOf'
+	if jsonDict["operator"] == "containsOneOf" {
+		// try to unmarshal JSON data into ListCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.ListCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.ListCheckAttributeBlock, return on the first match
+		} else {
+			dst.ListCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as ListCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'empty'
+	if jsonDict["operator"] == "empty" {
+		// try to unmarshal JSON data into UnaryCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.UnaryCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.UnaryCheckAttributeBlock, return on the first match
+		} else {
+			dst.UnaryCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as UnaryCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'endsWith'
+	if jsonDict["operator"] == "endsWith" {
+		// try to unmarshal JSON data into ScalarCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.ScalarCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.ScalarCheckAttributeBlock, return on the first match
+		} else {
+			dst.ScalarCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as ScalarCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'equals'
+	if jsonDict["operator"] == "equals" {
+		// try to unmarshal JSON data into ScalarCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.ScalarCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.ScalarCheckAttributeBlock, return on the first match
+		} else {
+			dst.ScalarCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as ScalarCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'exists'
+	if jsonDict["operator"] == "exists" {
+		// try to unmarshal JSON data into UnaryCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.UnaryCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.UnaryCheckAttributeBlock, return on the first match
+		} else {
+			dst.UnaryCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as UnaryCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'greaterThan'
+	if jsonDict["operator"] == "greaterThan" {
+		// try to unmarshal JSON data into ScalarCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.ScalarCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.ScalarCheckAttributeBlock, return on the first match
+		} else {
+			dst.ScalarCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as ScalarCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'greaterThanOrEqual'
+	if jsonDict["operator"] == "greaterThanOrEqual" {
+		// try to unmarshal JSON data into ScalarCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.ScalarCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.ScalarCheckAttributeBlock, return on the first match
+		} else {
+			dst.ScalarCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as ScalarCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'in'
+	if jsonDict["operator"] == "in" {
+		// try to unmarshal JSON data into LocationCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.LocationCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.LocationCheckAttributeBlock, return on the first match
+		} else {
+			dst.LocationCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as LocationCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'inCollection'
+	if jsonDict["operator"] == "inCollection" {
+		// try to unmarshal JSON data into ScalarCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.ScalarCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.ScalarCheckAttributeBlock, return on the first match
+		} else {
+			dst.ScalarCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as ScalarCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'isFalse'
+	if jsonDict["operator"] == "isFalse" {
+		// try to unmarshal JSON data into UnaryCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.UnaryCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.UnaryCheckAttributeBlock, return on the first match
+		} else {
+			dst.UnaryCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as UnaryCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'isTrue'
+	if jsonDict["operator"] == "isTrue" {
+		// try to unmarshal JSON data into UnaryCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.UnaryCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.UnaryCheckAttributeBlock, return on the first match
+		} else {
+			dst.UnaryCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as UnaryCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'lessThan'
+	if jsonDict["operator"] == "lessThan" {
+		// try to unmarshal JSON data into ScalarCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.ScalarCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.ScalarCheckAttributeBlock, return on the first match
+		} else {
+			dst.ScalarCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as ScalarCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'lessThanOrEqual'
+	if jsonDict["operator"] == "lessThanOrEqual" {
+		// try to unmarshal JSON data into ScalarCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.ScalarCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.ScalarCheckAttributeBlock, return on the first match
+		} else {
+			dst.ScalarCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as ScalarCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'matchesRegexp'
+	if jsonDict["operator"] == "matchesRegexp" {
+		// try to unmarshal JSON data into ScalarCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.ScalarCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.ScalarCheckAttributeBlock, return on the first match
+		} else {
+			dst.ScalarCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as ScalarCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'not(contains)'
+	if jsonDict["operator"] == "not(contains)" {
+		// try to unmarshal JSON data into ScalarCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.ScalarCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.ScalarCheckAttributeBlock, return on the first match
+		} else {
+			dst.ScalarCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as ScalarCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'not(empty)'
+	if jsonDict["operator"] == "not(empty)" {
+		// try to unmarshal JSON data into UnaryCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.UnaryCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.UnaryCheckAttributeBlock, return on the first match
+		} else {
+			dst.UnaryCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as UnaryCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'not(equals)'
+	if jsonDict["operator"] == "not(equals)" {
+		// try to unmarshal JSON data into ScalarCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.ScalarCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.ScalarCheckAttributeBlock, return on the first match
+		} else {
+			dst.ScalarCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as ScalarCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'not(exists)'
+	if jsonDict["operator"] == "not(exists)" {
+		// try to unmarshal JSON data into UnaryCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.UnaryCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.UnaryCheckAttributeBlock, return on the first match
+		} else {
+			dst.UnaryCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as UnaryCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'not(in)'
+	if jsonDict["operator"] == "not(in)" {
+		// try to unmarshal JSON data into LocationCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.LocationCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.LocationCheckAttributeBlock, return on the first match
+		} else {
+			dst.LocationCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as LocationCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'not(inCollection)'
+	if jsonDict["operator"] == "not(inCollection)" {
+		// try to unmarshal JSON data into ScalarCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.ScalarCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.ScalarCheckAttributeBlock, return on the first match
+		} else {
+			dst.ScalarCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as ScalarCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'not(oneOf)'
+	if jsonDict["operator"] == "not(oneOf)" {
+		// try to unmarshal JSON data into ScalarCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.ScalarCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.ScalarCheckAttributeBlock, return on the first match
+		} else {
+			dst.ScalarCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as ScalarCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'not(within)'
+	if jsonDict["operator"] == "not(within)" {
+		// try to unmarshal JSON data into WithinCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.WithinCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.WithinCheckAttributeBlock, return on the first match
+		} else {
+			dst.WithinCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as WithinCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'oneOf'
+	if jsonDict["operator"] == "oneOf" {
+		// try to unmarshal JSON data into ScalarCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.ScalarCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.ScalarCheckAttributeBlock, return on the first match
+		} else {
+			dst.ScalarCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as ScalarCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'startsWith'
+	if jsonDict["operator"] == "startsWith" {
+		// try to unmarshal JSON data into ScalarCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.ScalarCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.ScalarCheckAttributeBlock, return on the first match
+		} else {
+			dst.ScalarCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as ScalarCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'within'
+	if jsonDict["operator"] == "within" {
+		// try to unmarshal JSON data into WithinCheckAttributeBlock
+		err = json.Unmarshal(data, &dst.WithinCheckAttributeBlock)
+		if err == nil {
+			return nil // data stored in dst.WithinCheckAttributeBlock, return on the first match
+		} else {
+			dst.WithinCheckAttributeBlock = nil
+			return fmt.Errorf("failed to unmarshal CheckAttributeBlock as WithinCheckAttributeBlock: %s", err.Error())
+		}
+	}
+
+	return nil
 }
 
 // Marshal data from the first non-nil pointers in the struct to JSON

@@ -13,7 +13,6 @@ package talon
 import (
 	"encoding/json"
 	"fmt"
-	"gopkg.in/validator.v2"
 )
 
 // GeoJSONGeometry - A shape used to represent a geographical location. The `type` field determines the kind of shape.
@@ -55,92 +54,62 @@ func GeoJSONPolygonAsGeoJSONGeometry(v *GeoJSONPolygon) GeoJSONGeometry {
 // Unmarshal JSON data into one of the pointers in the struct
 func (dst *GeoJSONGeometry) UnmarshalJSON(data []byte) error {
 	var err error
-	match := 0
-	// try to unmarshal data into GeoJSONGeometryCollection
-	err = newStrictDecoder(data).Decode(&dst.GeoJSONGeometryCollection)
-	if err == nil {
-		jsonGeoJSONGeometryCollection, _ := json.Marshal(dst.GeoJSONGeometryCollection)
-		if string(jsonGeoJSONGeometryCollection) == "{}" { // empty struct
+	// use discriminator value to speed up the lookup
+	var jsonDict map[string]interface{}
+	err = newStrictDecoder(data).Decode(&jsonDict)
+	if err != nil {
+		return fmt.Errorf("failed to unmarshal JSON into map for the discriminator lookup")
+	}
+
+	// check if the discriminator value is 'GeometryCollection'
+	if jsonDict["type"] == "GeometryCollection" {
+		// try to unmarshal JSON data into GeoJSONGeometryCollection
+		err = json.Unmarshal(data, &dst.GeoJSONGeometryCollection)
+		if err == nil {
+			return nil // data stored in dst.GeoJSONGeometryCollection, return on the first match
+		} else {
 			dst.GeoJSONGeometryCollection = nil
-		} else {
-			if err = validator.Validate(dst.GeoJSONGeometryCollection); err != nil {
-				dst.GeoJSONGeometryCollection = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal GeoJSONGeometry as GeoJSONGeometryCollection: %s", err.Error())
 		}
-	} else {
-		dst.GeoJSONGeometryCollection = nil
 	}
 
-	// try to unmarshal data into GeoJSONMultiPolygon
-	err = newStrictDecoder(data).Decode(&dst.GeoJSONMultiPolygon)
-	if err == nil {
-		jsonGeoJSONMultiPolygon, _ := json.Marshal(dst.GeoJSONMultiPolygon)
-		if string(jsonGeoJSONMultiPolygon) == "{}" { // empty struct
+	// check if the discriminator value is 'MultiPolygon'
+	if jsonDict["type"] == "MultiPolygon" {
+		// try to unmarshal JSON data into GeoJSONMultiPolygon
+		err = json.Unmarshal(data, &dst.GeoJSONMultiPolygon)
+		if err == nil {
+			return nil // data stored in dst.GeoJSONMultiPolygon, return on the first match
+		} else {
 			dst.GeoJSONMultiPolygon = nil
-		} else {
-			if err = validator.Validate(dst.GeoJSONMultiPolygon); err != nil {
-				dst.GeoJSONMultiPolygon = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal GeoJSONGeometry as GeoJSONMultiPolygon: %s", err.Error())
 		}
-	} else {
-		dst.GeoJSONMultiPolygon = nil
 	}
 
-	// try to unmarshal data into GeoJSONPoint
-	err = newStrictDecoder(data).Decode(&dst.GeoJSONPoint)
-	if err == nil {
-		jsonGeoJSONPoint, _ := json.Marshal(dst.GeoJSONPoint)
-		if string(jsonGeoJSONPoint) == "{}" { // empty struct
+	// check if the discriminator value is 'Point'
+	if jsonDict["type"] == "Point" {
+		// try to unmarshal JSON data into GeoJSONPoint
+		err = json.Unmarshal(data, &dst.GeoJSONPoint)
+		if err == nil {
+			return nil // data stored in dst.GeoJSONPoint, return on the first match
+		} else {
 			dst.GeoJSONPoint = nil
-		} else {
-			if err = validator.Validate(dst.GeoJSONPoint); err != nil {
-				dst.GeoJSONPoint = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal GeoJSONGeometry as GeoJSONPoint: %s", err.Error())
 		}
-	} else {
-		dst.GeoJSONPoint = nil
 	}
 
-	// try to unmarshal data into GeoJSONPolygon
-	err = newStrictDecoder(data).Decode(&dst.GeoJSONPolygon)
-	if err == nil {
-		jsonGeoJSONPolygon, _ := json.Marshal(dst.GeoJSONPolygon)
-		if string(jsonGeoJSONPolygon) == "{}" { // empty struct
+	// check if the discriminator value is 'Polygon'
+	if jsonDict["type"] == "Polygon" {
+		// try to unmarshal JSON data into GeoJSONPolygon
+		err = json.Unmarshal(data, &dst.GeoJSONPolygon)
+		if err == nil {
+			return nil // data stored in dst.GeoJSONPolygon, return on the first match
+		} else {
 			dst.GeoJSONPolygon = nil
-		} else {
-			if err = validator.Validate(dst.GeoJSONPolygon); err != nil {
-				dst.GeoJSONPolygon = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal GeoJSONGeometry as GeoJSONPolygon: %s", err.Error())
 		}
-	} else {
-		dst.GeoJSONPolygon = nil
 	}
 
-	if match > 1 { // more than 1 match
-		// reset to nil
-		dst.GeoJSONGeometryCollection = nil
-		dst.GeoJSONMultiPolygon = nil
-		dst.GeoJSONPoint = nil
-		dst.GeoJSONPolygon = nil
-
-		return fmt.Errorf("data matches more than one schema in oneOf(GeoJSONGeometry)")
-	} else if match == 1 {
-		return nil // exactly one match
-	} else { // no match
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(GeoJSONGeometry): %v", err)
-		}
-
-		return fmt.Errorf("data failed to match schemas in oneOf(GeoJSONGeometry)")
-	}
+	return nil
 }
 
 // Marshal data from the first non-nil pointers in the struct to JSON

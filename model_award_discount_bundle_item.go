@@ -13,7 +13,6 @@ package talon
 import (
 	"encoding/json"
 	"fmt"
-	"gopkg.in/validator.v2"
 )
 
 // AwardDiscountBundleItem - Selects which slot inside a bundle a discount applies to. The `type` field picks the selection mode.
@@ -39,56 +38,38 @@ func AwardDiscountBundleItemByIndexAsAwardDiscountBundleItem(v *AwardDiscountBun
 // Unmarshal JSON data into one of the pointers in the struct
 func (dst *AwardDiscountBundleItem) UnmarshalJSON(data []byte) error {
 	var err error
-	match := 0
-	// try to unmarshal data into AwardDiscountBundleItemByAttribute
-	err = newStrictDecoder(data).Decode(&dst.AwardDiscountBundleItemByAttribute)
-	if err == nil {
-		jsonAwardDiscountBundleItemByAttribute, _ := json.Marshal(dst.AwardDiscountBundleItemByAttribute)
-		if string(jsonAwardDiscountBundleItemByAttribute) == "{}" { // empty struct
+	// use discriminator value to speed up the lookup
+	var jsonDict map[string]interface{}
+	err = newStrictDecoder(data).Decode(&jsonDict)
+	if err != nil {
+		return fmt.Errorf("failed to unmarshal JSON into map for the discriminator lookup")
+	}
+
+	// check if the discriminator value is 'byAttribute'
+	if jsonDict["type"] == "byAttribute" {
+		// try to unmarshal JSON data into AwardDiscountBundleItemByAttribute
+		err = json.Unmarshal(data, &dst.AwardDiscountBundleItemByAttribute)
+		if err == nil {
+			return nil // data stored in dst.AwardDiscountBundleItemByAttribute, return on the first match
+		} else {
 			dst.AwardDiscountBundleItemByAttribute = nil
-		} else {
-			if err = validator.Validate(dst.AwardDiscountBundleItemByAttribute); err != nil {
-				dst.AwardDiscountBundleItemByAttribute = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal AwardDiscountBundleItem as AwardDiscountBundleItemByAttribute: %s", err.Error())
 		}
-	} else {
-		dst.AwardDiscountBundleItemByAttribute = nil
 	}
 
-	// try to unmarshal data into AwardDiscountBundleItemByIndex
-	err = newStrictDecoder(data).Decode(&dst.AwardDiscountBundleItemByIndex)
-	if err == nil {
-		jsonAwardDiscountBundleItemByIndex, _ := json.Marshal(dst.AwardDiscountBundleItemByIndex)
-		if string(jsonAwardDiscountBundleItemByIndex) == "{}" { // empty struct
+	// check if the discriminator value is 'byIndex'
+	if jsonDict["type"] == "byIndex" {
+		// try to unmarshal JSON data into AwardDiscountBundleItemByIndex
+		err = json.Unmarshal(data, &dst.AwardDiscountBundleItemByIndex)
+		if err == nil {
+			return nil // data stored in dst.AwardDiscountBundleItemByIndex, return on the first match
+		} else {
 			dst.AwardDiscountBundleItemByIndex = nil
-		} else {
-			if err = validator.Validate(dst.AwardDiscountBundleItemByIndex); err != nil {
-				dst.AwardDiscountBundleItemByIndex = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal AwardDiscountBundleItem as AwardDiscountBundleItemByIndex: %s", err.Error())
 		}
-	} else {
-		dst.AwardDiscountBundleItemByIndex = nil
 	}
 
-	if match > 1 { // more than 1 match
-		// reset to nil
-		dst.AwardDiscountBundleItemByAttribute = nil
-		dst.AwardDiscountBundleItemByIndex = nil
-
-		return fmt.Errorf("data matches more than one schema in oneOf(AwardDiscountBundleItem)")
-	} else if match == 1 {
-		return nil // exactly one match
-	} else { // no match
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(AwardDiscountBundleItem): %v", err)
-		}
-
-		return fmt.Errorf("data failed to match schemas in oneOf(AwardDiscountBundleItem)")
-	}
+	return nil
 }
 
 // Marshal data from the first non-nil pointers in the struct to JSON

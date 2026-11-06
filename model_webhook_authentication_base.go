@@ -13,7 +13,6 @@ package talon
 import (
 	"encoding/json"
 	"fmt"
-	"gopkg.in/validator.v2"
 )
 
 // WebhookAuthenticationBase - Definition of all the properties that are needed to create or update a webhook authentication. The `type` field selects the concrete authentication variant.
@@ -39,56 +38,38 @@ func WebhookAuthenticationBaseCustomAsWebhookAuthenticationBase(v *WebhookAuthen
 // Unmarshal JSON data into one of the pointers in the struct
 func (dst *WebhookAuthenticationBase) UnmarshalJSON(data []byte) error {
 	var err error
-	match := 0
-	// try to unmarshal data into WebhookAuthenticationBaseBasic
-	err = newStrictDecoder(data).Decode(&dst.WebhookAuthenticationBaseBasic)
-	if err == nil {
-		jsonWebhookAuthenticationBaseBasic, _ := json.Marshal(dst.WebhookAuthenticationBaseBasic)
-		if string(jsonWebhookAuthenticationBaseBasic) == "{}" { // empty struct
+	// use discriminator value to speed up the lookup
+	var jsonDict map[string]interface{}
+	err = newStrictDecoder(data).Decode(&jsonDict)
+	if err != nil {
+		return fmt.Errorf("failed to unmarshal JSON into map for the discriminator lookup")
+	}
+
+	// check if the discriminator value is 'basic'
+	if jsonDict["type"] == "basic" {
+		// try to unmarshal JSON data into WebhookAuthenticationBaseBasic
+		err = json.Unmarshal(data, &dst.WebhookAuthenticationBaseBasic)
+		if err == nil {
+			return nil // data stored in dst.WebhookAuthenticationBaseBasic, return on the first match
+		} else {
 			dst.WebhookAuthenticationBaseBasic = nil
-		} else {
-			if err = validator.Validate(dst.WebhookAuthenticationBaseBasic); err != nil {
-				dst.WebhookAuthenticationBaseBasic = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal WebhookAuthenticationBase as WebhookAuthenticationBaseBasic: %s", err.Error())
 		}
-	} else {
-		dst.WebhookAuthenticationBaseBasic = nil
 	}
 
-	// try to unmarshal data into WebhookAuthenticationBaseCustom
-	err = newStrictDecoder(data).Decode(&dst.WebhookAuthenticationBaseCustom)
-	if err == nil {
-		jsonWebhookAuthenticationBaseCustom, _ := json.Marshal(dst.WebhookAuthenticationBaseCustom)
-		if string(jsonWebhookAuthenticationBaseCustom) == "{}" { // empty struct
+	// check if the discriminator value is 'custom'
+	if jsonDict["type"] == "custom" {
+		// try to unmarshal JSON data into WebhookAuthenticationBaseCustom
+		err = json.Unmarshal(data, &dst.WebhookAuthenticationBaseCustom)
+		if err == nil {
+			return nil // data stored in dst.WebhookAuthenticationBaseCustom, return on the first match
+		} else {
 			dst.WebhookAuthenticationBaseCustom = nil
-		} else {
-			if err = validator.Validate(dst.WebhookAuthenticationBaseCustom); err != nil {
-				dst.WebhookAuthenticationBaseCustom = nil
-			} else {
-				match++
-			}
+			return fmt.Errorf("failed to unmarshal WebhookAuthenticationBase as WebhookAuthenticationBaseCustom: %s", err.Error())
 		}
-	} else {
-		dst.WebhookAuthenticationBaseCustom = nil
 	}
 
-	if match > 1 { // more than 1 match
-		// reset to nil
-		dst.WebhookAuthenticationBaseBasic = nil
-		dst.WebhookAuthenticationBaseCustom = nil
-
-		return fmt.Errorf("data matches more than one schema in oneOf(WebhookAuthenticationBase)")
-	} else if match == 1 {
-		return nil // exactly one match
-	} else { // no match
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(WebhookAuthenticationBase): %v", err)
-		}
-
-		return fmt.Errorf("data failed to match schemas in oneOf(WebhookAuthenticationBase)")
-	}
+	return nil
 }
 
 // Marshal data from the first non-nil pointers in the struct to JSON
