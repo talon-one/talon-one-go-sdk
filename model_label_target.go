@@ -38,48 +38,38 @@ func LabelTargetNoneAsLabelTarget(v *LabelTargetNone) LabelTarget {
 // Unmarshal JSON data into one of the pointers in the struct
 func (dst *LabelTarget) UnmarshalJSON(data []byte) error {
 	var err error
-	match := 0
-	// try to unmarshal data into LabelTargetAudience
-	err = json.Unmarshal(data, &dst.LabelTargetAudience)
-	if err == nil {
-		jsonLabelTargetAudience, _ := json.Marshal(dst.LabelTargetAudience)
-		if string(jsonLabelTargetAudience) == "{}" { // empty struct
+	// use discriminator value to speed up the lookup
+	var jsonDict map[string]interface{}
+	err = newStrictDecoder(data).Decode(&jsonDict)
+	if err != nil {
+		return fmt.Errorf("failed to unmarshal JSON into map for the discriminator lookup")
+	}
+
+	// check if the discriminator value is 'AUDIENCE'
+	if jsonDict["type"] == "AUDIENCE" {
+		// try to unmarshal JSON data into LabelTargetAudience
+		err = json.Unmarshal(data, &dst.LabelTargetAudience)
+		if err == nil {
+			return nil // data stored in dst.LabelTargetAudience, return on the first match
+		} else {
 			dst.LabelTargetAudience = nil
-		} else {
-			match++
+			return fmt.Errorf("failed to unmarshal LabelTarget as LabelTargetAudience: %s", err.Error())
 		}
-	} else {
-		dst.LabelTargetAudience = nil
 	}
 
-	// try to unmarshal data into LabelTargetNone
-	err = json.Unmarshal(data, &dst.LabelTargetNone)
-	if err == nil {
-		jsonLabelTargetNone, _ := json.Marshal(dst.LabelTargetNone)
-		if string(jsonLabelTargetNone) == "{}" { // empty struct
+	// check if the discriminator value is 'NONE'
+	if jsonDict["type"] == "NONE" {
+		// try to unmarshal JSON data into LabelTargetNone
+		err = json.Unmarshal(data, &dst.LabelTargetNone)
+		if err == nil {
+			return nil // data stored in dst.LabelTargetNone, return on the first match
+		} else {
 			dst.LabelTargetNone = nil
-		} else {
-			match++
+			return fmt.Errorf("failed to unmarshal LabelTarget as LabelTargetNone: %s", err.Error())
 		}
-	} else {
-		dst.LabelTargetNone = nil
 	}
 
-	if match > 1 { // more than 1 match
-		// reset to nil
-		dst.LabelTargetAudience = nil
-		dst.LabelTargetNone = nil
-
-		return fmt.Errorf("data matches more than one schema in oneOf(LabelTarget)")
-	} else if match == 1 {
-		return nil // exactly one match
-	} else { // no match
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(LabelTarget): %v", err)
-		}
-
-		return fmt.Errorf("data failed to match schemas in oneOf(LabelTarget)")
-	}
+	return nil
 }
 
 // Marshal data from the first non-nil pointers in the struct to JSON

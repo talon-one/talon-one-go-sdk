@@ -13,359 +13,107 @@ package talon
 import (
 	"encoding/json"
 	"fmt"
-	"time"
 )
 
-// checks if the WebhookAuthentication type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &WebhookAuthentication{}
-
-// WebhookAuthentication struct for WebhookAuthentication
+// WebhookAuthentication - A webhook authentication. The `type` field selects the concrete authentication variant.
 type WebhookAuthentication struct {
-	// The internal ID of this entity.
-	Id int64 `json:"id"`
-	// The time this entity was created.
-	Created time.Time `json:"created"`
-	// The time this entity was last modified.
-	Modified time.Time `json:"modified"`
-	// The name of the user who created the webhook authentication.
-	CreatedBy string `json:"createdBy"`
-	// The name of the user who last modified the webhook authentication.
-	ModifiedBy string                            `json:"modifiedBy"`
-	Webhooks   []WebhookAuthenticationWebhookRef `json:"webhooks"`
-	// The name of the webhook authentication.
-	Name                 string                         `json:"name"`
-	Type                 string                         `json:"type"`
-	Data                 WebhookAuthenticationAllOfData `json:"data"`
-	AdditionalProperties map[string]interface{}
+	WebhookAuthenticationBasic  *WebhookAuthenticationBasic
+	WebhookAuthenticationCustom *WebhookAuthenticationCustom
 }
 
-type _WebhookAuthentication WebhookAuthentication
-
-// NewWebhookAuthentication instantiates a new WebhookAuthentication object
-// This constructor will assign default values to properties that have it defined,
-// and makes sure properties required by API are set, but the set of arguments
-// will change when the set of required properties is changed
-func BuildWebhookAuthentication(id int64, created time.Time, modified time.Time, createdBy string, modifiedBy string, webhooks []WebhookAuthenticationWebhookRef, name string, type_ string, data WebhookAuthenticationAllOfData) *WebhookAuthentication {
-	this := WebhookAuthentication{}
-	this.Id = id
-	this.Created = created
-	this.Modified = modified
-	this.CreatedBy = createdBy
-	this.ModifiedBy = modifiedBy
-	this.Webhooks = webhooks
-	this.Name = name
-	this.Type = type_
-	this.Data = data
-	return &this
-}
-
-// NewWebhookAuthenticationWithDefaults instantiates a new WebhookAuthentication object
-// This constructor will only assign default values to properties that have it defined,
-// but it doesn't guarantee that properties required by API are set
-func NewWebhookAuthenticationWithDefaults() *WebhookAuthentication {
-	this := WebhookAuthentication{}
-	return &this
-}
-
-// GetId returns the Id field value
-func (o *WebhookAuthentication) GetId() int64 {
-	if o == nil {
-		var ret int64
-		return ret
+// WebhookAuthenticationBasicAsWebhookAuthentication is a convenience function that returns WebhookAuthenticationBasic wrapped in WebhookAuthentication
+func WebhookAuthenticationBasicAsWebhookAuthentication(v *WebhookAuthenticationBasic) WebhookAuthentication {
+	return WebhookAuthentication{
+		WebhookAuthenticationBasic: v,
 	}
-
-	return o.Id
 }
 
-// GetIdOk returns a tuple with the Id field value
-// and a boolean to check if the value has been set.
-func (o *WebhookAuthentication) GetIdOk() (*int64, bool) {
-	if o == nil {
-		return nil, false
+// WebhookAuthenticationCustomAsWebhookAuthentication is a convenience function that returns WebhookAuthenticationCustom wrapped in WebhookAuthentication
+func WebhookAuthenticationCustomAsWebhookAuthentication(v *WebhookAuthenticationCustom) WebhookAuthentication {
+	return WebhookAuthentication{
+		WebhookAuthenticationCustom: v,
 	}
-	return &o.Id, true
 }
 
-// SetId sets field value
-func (o *WebhookAuthentication) SetId(v int64) {
-	o.Id = v
-}
-
-// GetCreated returns the Created field value
-func (o *WebhookAuthentication) GetCreated() time.Time {
-	if o == nil {
-		var ret time.Time
-		return ret
-	}
-
-	return o.Created
-}
-
-// GetCreatedOk returns a tuple with the Created field value
-// and a boolean to check if the value has been set.
-func (o *WebhookAuthentication) GetCreatedOk() (*time.Time, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Created, true
-}
-
-// SetCreated sets field value
-func (o *WebhookAuthentication) SetCreated(v time.Time) {
-	o.Created = v
-}
-
-// GetModified returns the Modified field value
-func (o *WebhookAuthentication) GetModified() time.Time {
-	if o == nil {
-		var ret time.Time
-		return ret
-	}
-
-	return o.Modified
-}
-
-// GetModifiedOk returns a tuple with the Modified field value
-// and a boolean to check if the value has been set.
-func (o *WebhookAuthentication) GetModifiedOk() (*time.Time, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Modified, true
-}
-
-// SetModified sets field value
-func (o *WebhookAuthentication) SetModified(v time.Time) {
-	o.Modified = v
-}
-
-// GetCreatedBy returns the CreatedBy field value
-func (o *WebhookAuthentication) GetCreatedBy() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.CreatedBy
-}
-
-// GetCreatedByOk returns a tuple with the CreatedBy field value
-// and a boolean to check if the value has been set.
-func (o *WebhookAuthentication) GetCreatedByOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.CreatedBy, true
-}
-
-// SetCreatedBy sets field value
-func (o *WebhookAuthentication) SetCreatedBy(v string) {
-	o.CreatedBy = v
-}
-
-// GetModifiedBy returns the ModifiedBy field value
-func (o *WebhookAuthentication) GetModifiedBy() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.ModifiedBy
-}
-
-// GetModifiedByOk returns a tuple with the ModifiedBy field value
-// and a boolean to check if the value has been set.
-func (o *WebhookAuthentication) GetModifiedByOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.ModifiedBy, true
-}
-
-// SetModifiedBy sets field value
-func (o *WebhookAuthentication) SetModifiedBy(v string) {
-	o.ModifiedBy = v
-}
-
-// GetWebhooks returns the Webhooks field value
-func (o *WebhookAuthentication) GetWebhooks() []WebhookAuthenticationWebhookRef {
-	if o == nil {
-		var ret []WebhookAuthenticationWebhookRef
-		return ret
-	}
-
-	return o.Webhooks
-}
-
-// GetWebhooksOk returns a tuple with the Webhooks field value
-// and a boolean to check if the value has been set.
-func (o *WebhookAuthentication) GetWebhooksOk() ([]WebhookAuthenticationWebhookRef, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return o.Webhooks, true
-}
-
-// SetWebhooks sets field value
-func (o *WebhookAuthentication) SetWebhooks(v []WebhookAuthenticationWebhookRef) {
-	o.Webhooks = v
-}
-
-// GetName returns the Name field value
-func (o *WebhookAuthentication) GetName() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Name
-}
-
-// GetNameOk returns a tuple with the Name field value
-// and a boolean to check if the value has been set.
-func (o *WebhookAuthentication) GetNameOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Name, true
-}
-
-// SetName sets field value
-func (o *WebhookAuthentication) SetName(v string) {
-	o.Name = v
-}
-
-// GetType returns the Type field value
-func (o *WebhookAuthentication) GetType() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Type
-}
-
-// GetTypeOk returns a tuple with the Type field value
-// and a boolean to check if the value has been set.
-func (o *WebhookAuthentication) GetTypeOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Type, true
-}
-
-// SetType sets field value
-func (o *WebhookAuthentication) SetType(v string) {
-	o.Type = v
-}
-
-// GetData returns the Data field value
-func (o *WebhookAuthentication) GetData() WebhookAuthenticationAllOfData {
-	if o == nil {
-		var ret WebhookAuthenticationAllOfData
-		return ret
-	}
-
-	return o.Data
-}
-
-// GetDataOk returns a tuple with the Data field value
-// and a boolean to check if the value has been set.
-func (o *WebhookAuthentication) GetDataOk() (*WebhookAuthenticationAllOfData, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Data, true
-}
-
-// SetData sets field value
-func (o *WebhookAuthentication) SetData(v WebhookAuthenticationAllOfData) {
-	o.Data = v
-}
-
-func (o WebhookAuthentication) MarshalJSON() ([]byte, error) {
-	toSerialize, err := o.ToMap()
+// Unmarshal JSON data into one of the pointers in the struct
+func (dst *WebhookAuthentication) UnmarshalJSON(data []byte) error {
+	var err error
+	// use discriminator value to speed up the lookup
+	var jsonDict map[string]interface{}
+	err = newStrictDecoder(data).Decode(&jsonDict)
 	if err != nil {
-		return []byte{}, err
-	}
-	return json.Marshal(toSerialize)
-}
-
-func (o WebhookAuthentication) ToMap() (map[string]interface{}, error) {
-	toSerialize := map[string]interface{}{}
-	toSerialize["id"] = o.Id
-	toSerialize["created"] = o.Created
-	toSerialize["modified"] = o.Modified
-	toSerialize["createdBy"] = o.CreatedBy
-	toSerialize["modifiedBy"] = o.ModifiedBy
-	toSerialize["webhooks"] = o.Webhooks
-	toSerialize["name"] = o.Name
-	toSerialize["type"] = o.Type
-	toSerialize["data"] = o.Data
-
-	for key, value := range o.AdditionalProperties {
-		toSerialize[key] = value
+		return fmt.Errorf("failed to unmarshal JSON into map for the discriminator lookup")
 	}
 
-	return toSerialize, nil
-}
-
-func (o *WebhookAuthentication) UnmarshalJSON(data []byte) (err error) {
-	// This validates that all required properties are included in the JSON object
-	// by unmarshalling the object into a generic map with string keys and checking
-	// that every required field exists as a key in the generic map.
-	requiredProperties := []string{
-		"id",
-		"created",
-		"modified",
-		"createdBy",
-		"modifiedBy",
-		"webhooks",
-		"name",
-		"type",
-		"data",
-	}
-
-	allProperties := make(map[string]interface{})
-
-	err = json.Unmarshal(data, &allProperties)
-
-	if err != nil {
-		return err
-	}
-
-	for _, requiredProperty := range requiredProperties {
-		if _, exists := allProperties[requiredProperty]; !exists {
-			return fmt.Errorf("no value given for required property %v", requiredProperty)
+	// check if the discriminator value is 'basic'
+	if jsonDict["type"] == "basic" {
+		// try to unmarshal JSON data into WebhookAuthenticationBasic
+		err = json.Unmarshal(data, &dst.WebhookAuthenticationBasic)
+		if err == nil {
+			return nil // data stored in dst.WebhookAuthenticationBasic, return on the first match
+		} else {
+			dst.WebhookAuthenticationBasic = nil
+			return fmt.Errorf("failed to unmarshal WebhookAuthentication as WebhookAuthenticationBasic: %s", err.Error())
 		}
 	}
 
-	varWebhookAuthentication := _WebhookAuthentication{}
-
-	err = json.Unmarshal(data, &varWebhookAuthentication)
-
-	if err != nil {
-		return err
+	// check if the discriminator value is 'custom'
+	if jsonDict["type"] == "custom" {
+		// try to unmarshal JSON data into WebhookAuthenticationCustom
+		err = json.Unmarshal(data, &dst.WebhookAuthenticationCustom)
+		if err == nil {
+			return nil // data stored in dst.WebhookAuthenticationCustom, return on the first match
+		} else {
+			dst.WebhookAuthenticationCustom = nil
+			return fmt.Errorf("failed to unmarshal WebhookAuthentication as WebhookAuthenticationCustom: %s", err.Error())
+		}
 	}
 
-	*o = WebhookAuthentication(varWebhookAuthentication)
+	return nil
+}
 
-	additionalProperties := make(map[string]interface{})
-
-	if err = json.Unmarshal(data, &additionalProperties); err == nil {
-		delete(additionalProperties, "id")
-		delete(additionalProperties, "created")
-		delete(additionalProperties, "modified")
-		delete(additionalProperties, "createdBy")
-		delete(additionalProperties, "modifiedBy")
-		delete(additionalProperties, "webhooks")
-		delete(additionalProperties, "name")
-		delete(additionalProperties, "type")
-		delete(additionalProperties, "data")
-		o.AdditionalProperties = additionalProperties
+// Marshal data from the first non-nil pointers in the struct to JSON
+func (src WebhookAuthentication) MarshalJSON() ([]byte, error) {
+	if src.WebhookAuthenticationBasic != nil {
+		return json.Marshal(&src.WebhookAuthenticationBasic)
 	}
 
-	return err
+	if src.WebhookAuthenticationCustom != nil {
+		return json.Marshal(&src.WebhookAuthenticationCustom)
+	}
+
+	return nil, nil // no data in oneOf schemas
+}
+
+// Get the actual instance
+func (obj *WebhookAuthentication) GetActualInstance() interface{} {
+	if obj == nil {
+		return nil
+	}
+	if obj.WebhookAuthenticationBasic != nil {
+		return obj.WebhookAuthenticationBasic
+	}
+
+	if obj.WebhookAuthenticationCustom != nil {
+		return obj.WebhookAuthenticationCustom
+	}
+
+	// all schemas are nil
+	return nil
+}
+
+// Get the actual instance value
+func (obj WebhookAuthentication) GetActualInstanceValue() interface{} {
+	if obj.WebhookAuthenticationBasic != nil {
+		return *obj.WebhookAuthenticationBasic
+	}
+
+	if obj.WebhookAuthenticationCustom != nil {
+		return *obj.WebhookAuthenticationCustom
+	}
+
+	// all schemas are nil
+	return nil
 }
 
 type NullableWebhookAuthentication struct {

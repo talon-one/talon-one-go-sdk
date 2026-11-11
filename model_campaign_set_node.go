@@ -38,48 +38,38 @@ func CampaignSetLeafNodeAsCampaignSetNode(v *CampaignSetLeafNode) CampaignSetNod
 // Unmarshal JSON data into one of the pointers in the struct
 func (dst *CampaignSetNode) UnmarshalJSON(data []byte) error {
 	var err error
-	match := 0
-	// try to unmarshal data into CampaignSetBranchNode
-	err = json.Unmarshal(data, &dst.CampaignSetBranchNode)
-	if err == nil {
-		jsonCampaignSetBranchNode, _ := json.Marshal(dst.CampaignSetBranchNode)
-		if string(jsonCampaignSetBranchNode) == "{}" { // empty struct
-			dst.CampaignSetBranchNode = nil
-		} else {
-			match++
-		}
-	} else {
-		dst.CampaignSetBranchNode = nil
+	// use discriminator value to speed up the lookup
+	var jsonDict map[string]interface{}
+	err = newStrictDecoder(data).Decode(&jsonDict)
+	if err != nil {
+		return fmt.Errorf("failed to unmarshal JSON into map for the discriminator lookup")
 	}
 
-	// try to unmarshal data into CampaignSetLeafNode
-	err = json.Unmarshal(data, &dst.CampaignSetLeafNode)
-	if err == nil {
-		jsonCampaignSetLeafNode, _ := json.Marshal(dst.CampaignSetLeafNode)
-		if string(jsonCampaignSetLeafNode) == "{}" { // empty struct
+	// check if the discriminator value is 'CAMPAIGN'
+	if jsonDict["type"] == "CAMPAIGN" {
+		// try to unmarshal JSON data into CampaignSetLeafNode
+		err = json.Unmarshal(data, &dst.CampaignSetLeafNode)
+		if err == nil {
+			return nil // data stored in dst.CampaignSetLeafNode, return on the first match
+		} else {
 			dst.CampaignSetLeafNode = nil
+			return fmt.Errorf("failed to unmarshal CampaignSetNode as CampaignSetLeafNode: %s", err.Error())
+		}
+	}
+
+	// check if the discriminator value is 'SET'
+	if jsonDict["type"] == "SET" {
+		// try to unmarshal JSON data into CampaignSetBranchNode
+		err = json.Unmarshal(data, &dst.CampaignSetBranchNode)
+		if err == nil {
+			return nil // data stored in dst.CampaignSetBranchNode, return on the first match
 		} else {
-			match++
+			dst.CampaignSetBranchNode = nil
+			return fmt.Errorf("failed to unmarshal CampaignSetNode as CampaignSetBranchNode: %s", err.Error())
 		}
-	} else {
-		dst.CampaignSetLeafNode = nil
 	}
 
-	if match > 1 { // more than 1 match
-		// reset to nil
-		dst.CampaignSetBranchNode = nil
-		dst.CampaignSetLeafNode = nil
-
-		return fmt.Errorf("data matches more than one schema in oneOf(CampaignSetNode)")
-	} else if match == 1 {
-		return nil // exactly one match
-	} else { // no match
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(CampaignSetNode): %v", err)
-		}
-
-		return fmt.Errorf("data failed to match schemas in oneOf(CampaignSetNode)")
-	}
+	return nil
 }
 
 // Marshal data from the first non-nil pointers in the struct to JSON
