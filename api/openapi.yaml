@@ -14762,6 +14762,19 @@ components:
         format: int64
         minimum: 1
       style: form
+    format:
+      description: |
+        Response format:
+
+        - `json`: Returns a page of log entries in a JSON object.
+        - `ndjson`: Returns a page of log entries as newline-delimited JSON, one `OutboundLogStreamEntry` per line. When more results exist, the last line is an `OutboundLogStreamCursorEntry`.
+      explode: true
+      in: query
+      name: format
+      required: false
+      schema:
+        $ref: "#/components/schemas/OutboundLogsFormat"
+      style: form
     requestPayloadSearch:
       description: |
         Free-text terms to filter results by.
@@ -29285,6 +29298,11 @@ components:
       - campaignId
       - type
     CampaignSetNode:
+      discriminator:
+        mapping:
+          SET: "#/components/schemas/CampaignSetBranchNode"
+          CAMPAIGN: "#/components/schemas/CampaignSetLeafNode"
+        propertyName: type
       oneOf:
       - $ref: "#/components/schemas/CampaignSetBranchNode"
       - $ref: "#/components/schemas/CampaignSetLeafNode"
@@ -30712,6 +30730,11 @@ components:
       - audience
       - type
     LabelTarget:
+      discriminator:
+        mapping:
+          NONE: "#/components/schemas/LabelTargetNone"
+          AUDIENCE: "#/components/schemas/LabelTargetAudience"
+        propertyName: type
       oneOf:
       - $ref: "#/components/schemas/LabelTargetNone"
       - $ref: "#/components/schemas/LabelTargetAudience"
@@ -41474,25 +41497,6 @@ components:
         outgoingIntegrationTemplateId: 1
         outgoingIntegrationTypeId: 1
         outgoingIntegrationTypeName: Braze
-    WebhookAuthenticationWebhookRef:
-      properties:
-        id:
-          description: The internal ID of this entity.
-          example: 6
-          format: int64
-          type: integer
-        title:
-          description: The title of the webhook authentication.
-          example: Send message
-          pattern: "^[A-Za-z][A-Za-z0-9_.!~*'() -]*$"
-          type: string
-        description:
-          description: A description of the webhook authentication.
-          example: A webhook to send a coupon to the user.
-          type: string
-      required:
-      - id
-      - title
     WebhookAuthenticationDataBasic:
       properties:
         username:
@@ -41504,48 +41508,6 @@ components:
       required:
       - password
       - username
-    WebhookAuthenticationDataCustom:
-      properties:
-        headers:
-          additionalProperties:
-            type: string
-          type: object
-      required:
-      - headers
-    WebhookAuthentication:
-      allOf:
-      - properties:
-          createdBy:
-            description: The name of the user who created the webhook authentication.
-            type: string
-          modifiedBy:
-            description: The name of the user who last modified the webhook authentication.
-            type: string
-          webhooks:
-            items:
-              $ref: "#/components/schemas/WebhookAuthenticationWebhookRef"
-            type: array
-            default: null
-          name:
-            description: The name of the webhook authentication.
-            example: My basic auth
-            type: string
-          type:
-            enum:
-            - basic
-            - custom
-            type: string
-          data:
-            $ref: "#/components/schemas/WebhookAuthentication_allOf_data"
-        required:
-        - createdBy
-        - data
-        - modifiedBy
-        - name
-        - type
-        - webhooks
-      - $ref: "#/components/schemas/Entity"
-      - $ref: "#/components/schemas/MutableEntity"
     WebhookAuthenticationBaseBasic:
       description: Authenticates the webhook with Basic HTTP authentication.
       properties:
@@ -41567,6 +41529,59 @@ components:
       - name
       - type
       title: Basic
+    WebhookAuthenticationWebhookRef:
+      properties:
+        id:
+          description: The internal ID of this entity.
+          example: 6
+          format: int64
+          type: integer
+        title:
+          description: The title of the webhook authentication.
+          example: Send message
+          pattern: "^[A-Za-z][A-Za-z0-9_.!~*'() -]*$"
+          type: string
+        description:
+          description: A description of the webhook authentication.
+          example: A webhook to send a coupon to the user.
+          type: string
+      required:
+      - id
+      - title
+    WebhookAuthenticationEntity:
+      allOf:
+      - properties:
+          createdBy:
+            description: The name of the user who created the webhook authentication.
+            type: string
+          modifiedBy:
+            description: The name of the user who last modified the webhook authentication.
+            type: string
+          webhooks:
+            items:
+              $ref: "#/components/schemas/WebhookAuthenticationWebhookRef"
+            type: array
+            default: null
+        required:
+        - createdBy
+        - modifiedBy
+        - webhooks
+      - $ref: "#/components/schemas/Entity"
+      - $ref: "#/components/schemas/MutableEntity"
+    WebhookAuthenticationBasic:
+      allOf:
+      - $ref: "#/components/schemas/WebhookAuthenticationBaseBasic"
+      - $ref: "#/components/schemas/WebhookAuthenticationEntity"
+      description: A webhook authentication that uses Basic HTTP authentication.
+      title: Basic
+    WebhookAuthenticationDataCustom:
+      properties:
+        headers:
+          additionalProperties:
+            type: string
+          type: object
+      required:
+      - headers
     WebhookAuthenticationBaseCustom:
       description: Authenticates the webhook with a custom set of HTTP headers.
       properties:
@@ -41588,6 +41603,23 @@ components:
       - name
       - type
       title: Custom
+    WebhookAuthenticationCustom:
+      allOf:
+      - $ref: "#/components/schemas/WebhookAuthenticationBaseCustom"
+      - $ref: "#/components/schemas/WebhookAuthenticationEntity"
+      description: A webhook authentication that uses a custom set of HTTP headers.
+      title: Custom
+    WebhookAuthentication:
+      description: A webhook authentication. The `type` field selects the concrete
+        authentication variant.
+      discriminator:
+        mapping:
+          basic: "#/components/schemas/WebhookAuthenticationBasic"
+          custom: "#/components/schemas/WebhookAuthenticationCustom"
+        propertyName: type
+      oneOf:
+      - $ref: "#/components/schemas/WebhookAuthenticationBasic"
+      - $ref: "#/components/schemas/WebhookAuthenticationCustom"
     WebhookAuthenticationBase:
       description: Definition of all the properties that are needed to create or update
         a webhook authentication. The `type` field selects the concrete authentication
@@ -44051,6 +44083,95 @@ components:
             type: string
         required:
         - key
+    MCPOAuthClient:
+      properties:
+        client_id:
+          description: Unique identifier for the OAuth2 client.
+          example: a3f8c1e2b4d56789
+          type: string
+        client_name:
+          description: Human-readable name for the OAuth2 client.
+          example: My MCP Integration
+          type: string
+        redirect_uris:
+          description: List of allowed redirect URIs for the authorization code flow.
+          example:
+          - https://example.com/callback
+          - http://localhost:3000/callback
+          items:
+            type: string
+          type: array
+          default: null
+        created_at:
+          description: Timestamp of when the client was registered.
+          example: 2026-06-12T10:00:00Z
+          format: date-time
+          type: string
+      required:
+      - client_id
+      - client_name
+      - created_at
+      - redirect_uris
+    MCPOAuthStaticClient:
+      allOf:
+      - $ref: "#/components/schemas/MCPOAuthClient"
+      - properties:
+          id:
+            description: "Numeric ID of the OAuth client, used to delete it."
+            example: 34
+            format: int64
+            type: integer
+          created_by:
+            description: ID of the user who created the client.
+            example: 280
+            format: int64
+            type: integer
+          expiry_date:
+            description: The date the client credentials expire.
+            example: 2027-01-01T00:00:00Z
+            format: date-time
+            type: string
+        required:
+        - created_by
+        - id
+    NewMCPOAuthClient:
+      properties:
+        client_name:
+          description: Human-readable name for the OAuth2 client.
+          example: My MCP Integration
+          type: string
+        redirect_uris:
+          description: List of allowed redirect URIs for the authorization code flow.
+            At least one URI is required.
+          example:
+          - http://localhost:3000/callback
+          items:
+            type: string
+          minItems: 1
+          type: array
+          default: null
+      required:
+      - client_name
+      - redirect_uris
+    NewMCPOAuthStaticClient:
+      allOf:
+      - $ref: "#/components/schemas/NewMCPOAuthClient"
+      - properties:
+          expiry_date:
+            description: The date the client credentials expire.
+            example: 2027-01-01T00:00:00Z
+            format: date-time
+            type: string
+    MCPOAuthStaticClientWithSecret:
+      allOf:
+      - $ref: "#/components/schemas/MCPOAuthStaticClient"
+      - properties:
+          client_secret:
+            description: The generated client secret. Only returned once on creation.
+            example: 7b1f0c9d8e2a4f6b1c3d5e7f9a0b2c4d6e8f0a1b3c5d7e9f1a2b4c6d8e0f2a4b
+            type: string
+        required:
+        - client_secret
     MCPOAuthTokenRequest:
       properties:
         grant_type:
@@ -44131,54 +44252,6 @@ components:
           type: string
       required:
       - error
-    NewMCPOAuthClient:
-      properties:
-        client_name:
-          description: Human-readable name for the OAuth2 client.
-          example: My MCP Integration
-          type: string
-        redirect_uris:
-          description: List of allowed redirect URIs for the authorization code flow.
-            At least one URI is required.
-          example:
-          - http://localhost:3000/callback
-          items:
-            type: string
-          minItems: 1
-          type: array
-          default: null
-      required:
-      - client_name
-      - redirect_uris
-    MCPOAuthClient:
-      properties:
-        client_id:
-          description: Unique identifier for the OAuth2 client.
-          example: a3f8c1e2b4d56789
-          type: string
-        client_name:
-          description: Human-readable name for the OAuth2 client.
-          example: My MCP Integration
-          type: string
-        redirect_uris:
-          description: List of allowed redirect URIs for the authorization code flow.
-          example:
-          - https://example.com/callback
-          - http://localhost:3000/callback
-          items:
-            type: string
-          type: array
-          default: null
-        created_at:
-          description: Timestamp of when the client was registered.
-          example: 2026-06-12T10:00:00Z
-          format: date-time
-          type: string
-      required:
-      - client_id
-      - client_name
-      - created_at
-      - redirect_uris
     MCPCompleteOAuthSession:
       properties:
         sessionId:
@@ -47787,6 +47860,15 @@ components:
       - hostname
       - token
       title: EmbeddedAnalyticsToken
+    OutboundLogsFormat:
+      default: json
+      description: Response format of outbound logs.
+      enum:
+      - json
+      - ndjson
+      example: ndjson
+      type: string
+      x-generate-enum-go: true
     OutboundLogRequest:
       description: Details of the outbound HTTP request.
       properties:
@@ -47909,6 +47991,20 @@ components:
         required:
         - createdAt
         - processingTimeMs
+    OutboundLogStreamError:
+      description: Details about an error that ended the stream.
+      properties:
+        error:
+          description: Reason the stream ended.
+          example: internal server error
+          type: string
+        id:
+          description: ID of the error. Include it when reporting the error.
+          example: 67e55044-10b1-426f-9247-bb680e5fe0c8
+          format: uuid
+          type: string
+      required:
+      - error
     OutboundLogs:
       properties:
         nextCursor:
@@ -47918,13 +48014,87 @@ components:
           format: byte
           type: string
         data:
-          description: List of outbound logs.
+          description: "List of outbound logs. When an error ends the response, an\
+            \ `OutboundLogStreamError` is the last item and the response is incomplete."
           items:
-            $ref: "#/components/schemas/OutboundLog"
+            $ref: "#/components/schemas/OutboundLogs_data_inner"
           type: array
           default: null
       required:
       - data
+    OutboundLogStreamEntryType:
+      description: |
+        Kind of entry in an `ndjson` stream of outbound logs:
+
+        - `log`: An outbound log entry.
+        - `error`: An error that ended the stream.
+        - `cursor`: The cursor for the next page. Always the last entry.
+      enum:
+      - log
+      - error
+      - cursor
+      example: log
+      type: string
+      x-generate-enum-go: true
+    OutboundLogStreamLogEntry:
+      description: An outbound log entry in an `ndjson` stream.
+      properties:
+        type:
+          $ref: "#/components/schemas/OutboundLogStreamEntryType"
+        data:
+          $ref: "#/components/schemas/OutboundLog"
+      required:
+      - data
+      - type
+      title: OutboundLogStreamLogEntry
+    OutboundLogStreamErrorEntry:
+      description: "An error that ended an `ndjson` stream, such as a log entry that\
+        \ couldn't be read. It is the last entry and the response is incomplete."
+      properties:
+        type:
+          $ref: "#/components/schemas/OutboundLogStreamEntryType"
+        data:
+          $ref: "#/components/schemas/OutboundLogStreamError"
+      required:
+      - data
+      - type
+      title: OutboundLogStreamErrorEntry
+    OutboundLogStreamCursor:
+      description: Cursor for the next page of results.
+      properties:
+        nextCursor:
+          description: Cursor for the next page of results. Pass it as the `cursor`
+            parameter to fetch the next page.
+          example: SmJlNERRMHdyNWFsTmRDZDVYU0c=
+          format: byte
+          type: string
+      required:
+      - nextCursor
+    OutboundLogStreamCursorEntry:
+      description: "The cursor for the next page, as the last entry of an `ndjson`\
+        \ stream. Omitted when there are no more results."
+      properties:
+        type:
+          $ref: "#/components/schemas/OutboundLogStreamEntryType"
+        data:
+          $ref: "#/components/schemas/OutboundLogStreamCursor"
+      required:
+      - data
+      - type
+      title: OutboundLogStreamCursorEntry
+    OutboundLogStreamEntry:
+      description: One line of an `ndjson` stream of outbound logs. The `type` field
+        determines the kind of entry.
+      discriminator:
+        mapping:
+          log: "#/components/schemas/OutboundLogStreamLogEntry"
+          error: "#/components/schemas/OutboundLogStreamErrorEntry"
+          cursor: "#/components/schemas/OutboundLogStreamCursorEntry"
+        propertyName: type
+      oneOf:
+      - $ref: "#/components/schemas/OutboundLogStreamLogEntry"
+      - $ref: "#/components/schemas/OutboundLogStreamErrorEntry"
+      - $ref: "#/components/schemas/OutboundLogStreamCursorEntry"
     OutboundMessageResponse:
       allOf:
       - $ref: "#/components/schemas/OutboundLogResponse"
@@ -56267,10 +56437,6 @@ components:
       description: Additional JSON serialized data associated with the event.
       example: {}
       type: object
-    WebhookAuthentication_allOf_data:
-      oneOf:
-      - $ref: "#/components/schemas/WebhookAuthenticationDataBasic"
-      - $ref: "#/components/schemas/WebhookAuthenticationDataCustom"
     User_allOf_policy:
       description: Access level of the user.
       example: "{Role=127}"
@@ -56378,6 +56544,10 @@ components:
           allOf:
           - $ref: "#/components/schemas/EmbeddedDashboardConfiguration"
           description: The configuration of the embedded Insights dashboard for campaigns.
+    OutboundLogs_data_inner:
+      oneOf:
+      - $ref: "#/components/schemas/OutboundLog"
+      - $ref: "#/components/schemas/OutboundLogStreamError"
     IntegrationHubEventPayloadCouponBasedNotifications_allOf_Attributes:
       type: object
   securitySchemes:

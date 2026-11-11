@@ -4,21 +4,21 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **int64** | The internal ID of this entity. | 
-**Created** | **time.Time** | The time this entity was created. | 
-**Modified** | **time.Time** | The time this entity was last modified. | 
+**Name** | **string** | The name of the webhook authentication. | 
+**Type** | **string** | A webhook authentication discriminator of type &#x60;basic&#x60;. | 
+**Data** | [**WebhookAuthenticationDataCustom**](WebhookAuthenticationDataCustom.md) | The credentials of the webhook authentication. | 
 **CreatedBy** | **string** | The name of the user who created the webhook authentication. | 
 **ModifiedBy** | **string** | The name of the user who last modified the webhook authentication. | 
 **Webhooks** | [**[]WebhookAuthenticationWebhookRef**](WebhookAuthenticationWebhookRef.md) |  | 
-**Name** | **string** | The name of the webhook authentication. | 
-**Type** | **string** |  | 
-**Data** | [**WebhookAuthenticationAllOfData**](WebhookAuthenticationAllOfData.md) |  | 
+**Id** | **int64** | The internal ID of this entity. | 
+**Created** | **time.Time** | The time this entity was created. | 
+**Modified** | **time.Time** | The time this entity was last modified. | 
 
 ## Methods
 
 ### NewWebhookAuthentication
 
-`func NewWebhookAuthentication(id int64, created time.Time, modified time.Time, createdBy string, modifiedBy string, webhooks []WebhookAuthenticationWebhookRef, name string, type_ string, data WebhookAuthenticationAllOfData, ) *WebhookAuthentication`
+`func NewWebhookAuthentication(name string, type_ string, data WebhookAuthenticationDataCustom, createdBy string, modifiedBy string, webhooks []WebhookAuthenticationWebhookRef, id int64, created time.Time, modified time.Time, ) *WebhookAuthentication`
 
 NewWebhookAuthentication instantiates a new WebhookAuthentication object
 This constructor will assign default values to properties that have it defined,
@@ -33,64 +33,64 @@ NewWebhookAuthenticationWithDefaults instantiates a new WebhookAuthentication ob
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
-### GetId
+### GetName
 
-`func (o *WebhookAuthentication) GetId() int64`
+`func (o *WebhookAuthentication) GetName() string`
 
-GetId returns the Id field if non-nil, zero value otherwise.
+GetName returns the Name field if non-nil, zero value otherwise.
 
-### GetIdOk
+### GetNameOk
 
-`func (o *WebhookAuthentication) GetIdOk() (*int64, bool)`
+`func (o *WebhookAuthentication) GetNameOk() (*string, bool)`
 
-GetIdOk returns a tuple with the Id field if it's non-nil, zero value otherwise
+GetNameOk returns a tuple with the Name field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetId
+### SetName
 
-`func (o *WebhookAuthentication) SetId(v int64)`
+`func (o *WebhookAuthentication) SetName(v string)`
 
-SetId sets Id field to given value.
+SetName sets Name field to given value.
 
 
-### GetCreated
+### GetType
 
-`func (o *WebhookAuthentication) GetCreated() time.Time`
+`func (o *WebhookAuthentication) GetType() string`
 
-GetCreated returns the Created field if non-nil, zero value otherwise.
+GetType returns the Type field if non-nil, zero value otherwise.
 
-### GetCreatedOk
+### GetTypeOk
 
-`func (o *WebhookAuthentication) GetCreatedOk() (*time.Time, bool)`
+`func (o *WebhookAuthentication) GetTypeOk() (*string, bool)`
 
-GetCreatedOk returns a tuple with the Created field if it's non-nil, zero value otherwise
+GetTypeOk returns a tuple with the Type field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetCreated
+### SetType
 
-`func (o *WebhookAuthentication) SetCreated(v time.Time)`
+`func (o *WebhookAuthentication) SetType(v string)`
 
-SetCreated sets Created field to given value.
+SetType sets Type field to given value.
 
 
-### GetModified
+### GetData
 
-`func (o *WebhookAuthentication) GetModified() time.Time`
+`func (o *WebhookAuthentication) GetData() WebhookAuthenticationDataCustom`
 
-GetModified returns the Modified field if non-nil, zero value otherwise.
+GetData returns the Data field if non-nil, zero value otherwise.
 
-### GetModifiedOk
+### GetDataOk
 
-`func (o *WebhookAuthentication) GetModifiedOk() (*time.Time, bool)`
+`func (o *WebhookAuthentication) GetDataOk() (*WebhookAuthenticationDataCustom, bool)`
 
-GetModifiedOk returns a tuple with the Modified field if it's non-nil, zero value otherwise
+GetDataOk returns a tuple with the Data field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetModified
+### SetData
 
-`func (o *WebhookAuthentication) SetModified(v time.Time)`
+`func (o *WebhookAuthentication) SetData(v WebhookAuthenticationDataCustom)`
 
-SetModified sets Modified field to given value.
+SetData sets Data field to given value.
 
 
 ### GetCreatedBy
@@ -153,64 +153,64 @@ and a boolean to check if the value has been set.
 SetWebhooks sets Webhooks field to given value.
 
 
-### GetName
+### GetId
 
-`func (o *WebhookAuthentication) GetName() string`
+`func (o *WebhookAuthentication) GetId() int64`
 
-GetName returns the Name field if non-nil, zero value otherwise.
+GetId returns the Id field if non-nil, zero value otherwise.
 
-### GetNameOk
+### GetIdOk
 
-`func (o *WebhookAuthentication) GetNameOk() (*string, bool)`
+`func (o *WebhookAuthentication) GetIdOk() (*int64, bool)`
 
-GetNameOk returns a tuple with the Name field if it's non-nil, zero value otherwise
+GetIdOk returns a tuple with the Id field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetName
+### SetId
 
-`func (o *WebhookAuthentication) SetName(v string)`
+`func (o *WebhookAuthentication) SetId(v int64)`
 
-SetName sets Name field to given value.
+SetId sets Id field to given value.
 
 
-### GetType
+### GetCreated
 
-`func (o *WebhookAuthentication) GetType() string`
+`func (o *WebhookAuthentication) GetCreated() time.Time`
 
-GetType returns the Type field if non-nil, zero value otherwise.
+GetCreated returns the Created field if non-nil, zero value otherwise.
 
-### GetTypeOk
+### GetCreatedOk
 
-`func (o *WebhookAuthentication) GetTypeOk() (*string, bool)`
+`func (o *WebhookAuthentication) GetCreatedOk() (*time.Time, bool)`
 
-GetTypeOk returns a tuple with the Type field if it's non-nil, zero value otherwise
+GetCreatedOk returns a tuple with the Created field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetType
+### SetCreated
 
-`func (o *WebhookAuthentication) SetType(v string)`
+`func (o *WebhookAuthentication) SetCreated(v time.Time)`
 
-SetType sets Type field to given value.
+SetCreated sets Created field to given value.
 
 
-### GetData
+### GetModified
 
-`func (o *WebhookAuthentication) GetData() WebhookAuthenticationAllOfData`
+`func (o *WebhookAuthentication) GetModified() time.Time`
 
-GetData returns the Data field if non-nil, zero value otherwise.
+GetModified returns the Modified field if non-nil, zero value otherwise.
 
-### GetDataOk
+### GetModifiedOk
 
-`func (o *WebhookAuthentication) GetDataOk() (*WebhookAuthenticationAllOfData, bool)`
+`func (o *WebhookAuthentication) GetModifiedOk() (*time.Time, bool)`
 
-GetDataOk returns a tuple with the Data field if it's non-nil, zero value otherwise
+GetModifiedOk returns a tuple with the Modified field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetData
+### SetModified
 
-`func (o *WebhookAuthentication) SetData(v WebhookAuthenticationAllOfData)`
+`func (o *WebhookAuthentication) SetModified(v time.Time)`
 
-SetData sets Data field to given value.
+SetModified sets Modified field to given value.
 
 
 

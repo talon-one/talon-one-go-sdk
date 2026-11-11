@@ -22,8 +22,8 @@ var _ MappedNullable = &OutboundLogs{}
 type OutboundLogs struct {
 	// Cursor for the next page of results. Omitted when there are no more results.
 	NextCursor *string `json:"nextCursor,omitempty"`
-	// List of outbound logs.
-	Data                 []OutboundLog `json:"data"`
+	// List of outbound logs. When an error ends the response, an `OutboundLogStreamError` is the last item and the response is incomplete.
+	Data                 []OutboundLogsDataInner `json:"data"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -33,7 +33,7 @@ type _OutboundLogs OutboundLogs
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildOutboundLogs(data []OutboundLog) *OutboundLogs {
+func BuildOutboundLogs(data []OutboundLogsDataInner) *OutboundLogs {
 	this := OutboundLogs{}
 	this.Data = data
 	return &this
@@ -80,9 +80,9 @@ func (o *OutboundLogs) SetNextCursor(v string) {
 }
 
 // GetData returns the Data field value
-func (o *OutboundLogs) GetData() []OutboundLog {
+func (o *OutboundLogs) GetData() []OutboundLogsDataInner {
 	if o == nil {
-		var ret []OutboundLog
+		var ret []OutboundLogsDataInner
 		return ret
 	}
 
@@ -91,7 +91,7 @@ func (o *OutboundLogs) GetData() []OutboundLog {
 
 // GetDataOk returns a tuple with the Data field value
 // and a boolean to check if the value has been set.
-func (o *OutboundLogs) GetDataOk() ([]OutboundLog, bool) {
+func (o *OutboundLogs) GetDataOk() ([]OutboundLogsDataInner, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -99,7 +99,7 @@ func (o *OutboundLogs) GetDataOk() ([]OutboundLog, bool) {
 }
 
 // SetData sets field value
-func (o *OutboundLogs) SetData(v []OutboundLog) {
+func (o *OutboundLogs) SetData(v []OutboundLogsDataInner) {
 	o.Data = v
 }
 

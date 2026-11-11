@@ -5,13 +5,13 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **NextCursor** | Pointer to **string** | Cursor for the next page of results. Omitted when there are no more results. | [optional] 
-**Data** | [**[]OutboundLog**](OutboundLog.md) | List of outbound logs. | 
+**Data** | [**[]OutboundLogsDataInner**](OutboundLogsDataInner.md) | List of outbound logs. When an error ends the response, an &#x60;OutboundLogStreamError&#x60; is the last item and the response is incomplete. | 
 
 ## Methods
 
 ### NewOutboundLogs
 
-`func NewOutboundLogs(data []OutboundLog, ) *OutboundLogs`
+`func NewOutboundLogs(data []OutboundLogsDataInner, ) *OutboundLogs`
 
 NewOutboundLogs instantiates a new OutboundLogs object
 This constructor will assign default values to properties that have it defined,
@@ -53,20 +53,20 @@ HasNextCursor returns a boolean if a field has been set.
 
 ### GetData
 
-`func (o *OutboundLogs) GetData() []OutboundLog`
+`func (o *OutboundLogs) GetData() []OutboundLogsDataInner`
 
 GetData returns the Data field if non-nil, zero value otherwise.
 
 ### GetDataOk
 
-`func (o *OutboundLogs) GetDataOk() (*[]OutboundLog, bool)`
+`func (o *OutboundLogs) GetDataOk() (*[]OutboundLogsDataInner, bool)`
 
 GetDataOk returns a tuple with the Data field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetData
 
-`func (o *OutboundLogs) SetData(v []OutboundLog)`
+`func (o *OutboundLogs) SetData(v []OutboundLogsDataInner)`
 
 SetData sets Data field to given value.
 
