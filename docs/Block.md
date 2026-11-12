@@ -15,6 +15,7 @@ Name | Type | Description | Notes
 **Value** | [**RedeemLoyaltyPointsBlock1Value**](RedeemLoyaltyPointsBlock1Value.md) |  | 
 **Partial** | **bool** | When &#x60;true&#x60;, applies a partial points reward when the requested value exceeds the configured budget. | 
 **Target** | [**AwardLoyaltyPointsTarget**](AwardLoyaltyPointsTarget.md) |  | 
+**ExcludedFromPriceHistory** | Pointer to **bool** | When set to &#x60;true&#x60;, the applied discount is excluded from the item&#39;s [price history](https://docs.talon.one/docs/dev/integration-guides/best-prior-price#price-history). | [optional] 
 **Expression** | **[]interface{}** | The raw Talang expression as an array. For a function call, the first element is the function name and subsequent elements are its arguments. For any other expression (for example a bare attribute path or a literal value), this is a single-element array containing that value. | 
 **NotificationType** | **string** | The type of notification to display. | 
 **Title** | **string** | The notification heading shown to the customer. | 
@@ -311,6 +312,31 @@ and a boolean to check if the value has been set.
 
 SetTarget sets Target field to given value.
 
+
+### GetExcludedFromPriceHistory
+
+`func (o *Block) GetExcludedFromPriceHistory() bool`
+
+GetExcludedFromPriceHistory returns the ExcludedFromPriceHistory field if non-nil, zero value otherwise.
+
+### GetExcludedFromPriceHistoryOk
+
+`func (o *Block) GetExcludedFromPriceHistoryOk() (*bool, bool)`
+
+GetExcludedFromPriceHistoryOk returns a tuple with the ExcludedFromPriceHistory field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetExcludedFromPriceHistory
+
+`func (o *Block) SetExcludedFromPriceHistory(v bool)`
+
+SetExcludedFromPriceHistory sets ExcludedFromPriceHistory field to given value.
+
+### HasExcludedFromPriceHistory
+
+`func (o *Block) HasExcludedFromPriceHistory() bool`
+
+HasExcludedFromPriceHistory returns a boolean if a field has been set.
 
 ### GetExpression
 

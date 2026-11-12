@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **Value** | [**AwardDiscountBlock1Value**](AwardDiscountBlock1Value.md) |  | 
 **Partial** | **bool** | Whether to apply a partial discount when the requested value exceeds the configured budget. | 
 **Target** | [**AwardDiscountTarget**](AwardDiscountTarget.md) |  | 
+**ExcludedFromPriceHistory** | Pointer to **bool** | When set to &#x60;true&#x60;, the applied discount is excluded from the item&#39;s [price history](https://docs.talon.one/docs/dev/integration-guides/best-prior-price#price-history). | [optional] 
 
 ## Methods
 
@@ -180,6 +181,31 @@ and a boolean to check if the value has been set.
 
 SetTarget sets Target field to given value.
 
+
+### GetExcludedFromPriceHistory
+
+`func (o *AwardDiscountBlock) GetExcludedFromPriceHistory() bool`
+
+GetExcludedFromPriceHistory returns the ExcludedFromPriceHistory field if non-nil, zero value otherwise.
+
+### GetExcludedFromPriceHistoryOk
+
+`func (o *AwardDiscountBlock) GetExcludedFromPriceHistoryOk() (*bool, bool)`
+
+GetExcludedFromPriceHistoryOk returns a tuple with the ExcludedFromPriceHistory field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetExcludedFromPriceHistory
+
+`func (o *AwardDiscountBlock) SetExcludedFromPriceHistory(v bool)`
+
+SetExcludedFromPriceHistory sets ExcludedFromPriceHistory field to given value.
+
+### HasExcludedFromPriceHistory
+
+`func (o *AwardDiscountBlock) HasExcludedFromPriceHistory() bool`
+
+HasExcludedFromPriceHistory returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

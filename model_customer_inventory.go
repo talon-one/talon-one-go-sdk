@@ -26,7 +26,7 @@ type CustomerInventory struct {
 	Coupons      []InventoryCoupon                   `json:"coupons,omitempty"`
 	Giveaways    []Giveaway                          `json:"giveaways,omitempty"`
 	Achievements []AchievementProgressWithDefinition `json:"achievements,omitempty"`
-	// The customer rewards that are `unlocked` and not yet `used`.
+	// The rewards that the customer has unlocked but not used. Expired customer rewards are not returned.
 	Rewards              []RewardWithUnlocks `json:"rewards,omitempty"`
 	AdditionalProperties map[string]interface{}
 }

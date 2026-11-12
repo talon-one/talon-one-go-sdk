@@ -2330,8 +2330,8 @@ paths:
         schema:
           type: boolean
         style: form
-      - description: Set to `true` to include `unlocked` rewards that have not been
-          `used` in the response.
+      - description: The instances of this reward that the customer has unlocked but
+          not used. Expired customer rewards are not returned.
         explode: true
         in: query
         name: unlockedRewards
@@ -2606,6 +2606,7 @@ paths:
             enum:
             - unlocked
             - used
+            - expired
             type: string
           type: array
           default: null
@@ -22098,6 +22099,7 @@ components:
         profileIntegrationId: customer1
         integrationId: reward-unlock-123
         unlockedAt: 2024-01-01T00:00:00Z
+        expiryDate: 2024-03-31T23:59:59Z
         usedAt: 2024-01-02T00:00:00Z
       properties:
         applicationId:
@@ -22117,6 +22119,16 @@ components:
         unlockedAt:
           description: The date and time when the reward was unlocked.
           example: 2024-01-01T00:00:00Z
+          format: date-time
+          type: string
+        expiryDate:
+          description: "The date and time when the customer reward expires, based\
+            \ on the \n`validityDuration` or `expiryDate` of the reward when the reward\
+            \ was \nunlocked. If the reward does not specify either property, the\
+            \ customer reward \nhas unlimited validity and this field is omitted.\n\
+            \n**Note**: The expiry date is calculated using the time zone of the \n\
+            Application connected to the reward.\n"
+          example: 2024-03-31T23:59:59Z
           format: date-time
           type: string
         usedAt:
@@ -22143,11 +22155,13 @@ components:
           profileIntegrationId: customer1
           integrationId: reward-unlock-123
           unlockedAt: 2024-01-01T00:00:00Z
+          expiryDate: 2024-03-31T23:59:59Z
           usedAt: 2024-01-02T00:00:00Z
         - applicationId: 3
           profileIntegrationId: customer1
           integrationId: reward-unlock-123
           unlockedAt: 2024-01-01T00:00:00Z
+          expiryDate: 2024-03-31T23:59:59Z
           usedAt: 2024-01-02T00:00:00Z
       properties:
         id:
@@ -22172,8 +22186,8 @@ components:
           - $ref: "#/components/schemas/RuleMetadata"
           description: Customer-facing rule metadata for the reward.
         unlocked:
-          description: The customer profile's unlocks of this reward that are not
-            yet `used`.
+          description: The instances of this reward that the customer has unlocked
+            but not used. Expired customer rewards are not returned.
           items:
             $ref: "#/components/schemas/CustomerReward"
           type: array
@@ -27621,11 +27635,13 @@ components:
             profileIntegrationId: customer1
             integrationId: reward-unlock-123
             unlockedAt: 2024-01-01T00:00:00Z
+            expiryDate: 2024-03-31T23:59:59Z
             usedAt: 2024-01-02T00:00:00Z
           - applicationId: 3
             profileIntegrationId: customer1
             integrationId: reward-unlock-123
             unlockedAt: 2024-01-01T00:00:00Z
+            expiryDate: 2024-03-31T23:59:59Z
             usedAt: 2024-01-02T00:00:00Z
         - id: 42
           integrationId: free-coffee
@@ -27637,11 +27653,13 @@ components:
             profileIntegrationId: customer1
             integrationId: reward-unlock-123
             unlockedAt: 2024-01-01T00:00:00Z
+            expiryDate: 2024-03-31T23:59:59Z
             usedAt: 2024-01-02T00:00:00Z
           - applicationId: 3
             profileIntegrationId: customer1
             integrationId: reward-unlock-123
             unlockedAt: 2024-01-01T00:00:00Z
+            expiryDate: 2024-03-31T23:59:59Z
             usedAt: 2024-01-02T00:00:00Z
       properties:
         profile:
@@ -27671,7 +27689,8 @@ components:
           type: array
           default: null
         rewards:
-          description: The customer rewards that are `unlocked` and not yet `used`.
+          description: The rewards that the customer has unlocked but not used. Expired
+            customer rewards are not returned.
           items:
             $ref: "#/components/schemas/RewardWithUnlocks"
           type: array
@@ -27951,6 +27970,7 @@ components:
         status: unlocked
         unlockedAt: 2026-07-01T09:00:00Z
         unlockedByProfileIntegrationId: customer2839
+        expiryDate: 2026-08-31T23:59:59Z
         usedAt: 2026-07-02T10:30:00Z
         usedByProfileIntegrationId: customer2840
         loyaltyProgramId: 9
@@ -27993,9 +28013,11 @@ components:
             The status of the customer reward:
             - `unlocked`: The reward is available for use.
             - `used`: The reward has been used.
+            - `expired`: The reward was not used before its expiry date.
           enum:
           - unlocked
           - used
+          - expired
           example: unlocked
           type: string
         unlockedAt:
@@ -28008,6 +28030,16 @@ components:
             \ reward. \n\nFor rewards unlocked with a loyalty card, this can be any\
             \ customer profile \nlinked to that loyalty card.\n"
           example: customer2839
+          type: string
+        expiryDate:
+          description: "The date and time when the customer reward expires, based\
+            \ on the \n`validityDuration` or `expiryDate` of the reward when the reward\
+            \ was \nunlocked. If the reward does not specify either property, the\
+            \ customer reward \nhas unlimited validity and this field is omitted.\n\
+            \n**Note**: The expiry date is calculated using the time zone of the \n\
+            Application connected to the reward.\n"
+          example: 2026-08-31T23:59:59Z
+          format: date-time
           type: string
         usedAt:
           description: The date and time when the reward was used.
@@ -31837,6 +31869,11 @@ components:
             type: boolean
           target:
             $ref: "#/components/schemas/AwardDiscountTarget"
+          excludedFromPriceHistory:
+            description: "When set to `true`, the applied discount is excluded from\
+              \ the item's [price history](https://docs.talon.one/docs/dev/integration-guides/best-prior-price#price-history)."
+            example: false
+            type: boolean
         required:
         - name
         - partial
@@ -47869,6 +47906,20 @@ components:
       example: ndjson
       type: string
       x-generate-enum-go: true
+    OutboundLogStreamEntryType:
+      description: |
+        Kind of entry in an `ndjson` stream of outbound logs:
+
+        - `log`: An outbound log entry.
+        - `error`: An error that ended the stream.
+        - `cursor`: The cursor for the next page. Always the last entry.
+      enum:
+      - log
+      - error
+      - cursor
+      example: log
+      type: string
+      x-generate-enum-go: true
     OutboundLogRequest:
       description: Details of the outbound HTTP request.
       properties:
@@ -47991,6 +48042,17 @@ components:
         required:
         - createdAt
         - processingTimeMs
+    OutboundLogStreamLogEntry:
+      description: An outbound log entry in a stream of outbound logs.
+      properties:
+        type:
+          $ref: "#/components/schemas/OutboundLogStreamEntryType"
+        data:
+          $ref: "#/components/schemas/OutboundLog"
+      required:
+      - data
+      - type
+      title: OutboundLogStreamLogEntry
     OutboundLogStreamError:
       description: Details about an error that ended the stream.
       properties:
@@ -48005,51 +48067,9 @@ components:
           type: string
       required:
       - error
-    OutboundLogs:
-      properties:
-        nextCursor:
-          description: Cursor for the next page of results. Omitted when there are
-            no more results.
-          example: SmJlNERRMHdyNWFsTmRDZDVYU0c=
-          format: byte
-          type: string
-        data:
-          description: "List of outbound logs. When an error ends the response, an\
-            \ `OutboundLogStreamError` is the last item and the response is incomplete."
-          items:
-            $ref: "#/components/schemas/OutboundLogs_data_inner"
-          type: array
-          default: null
-      required:
-      - data
-    OutboundLogStreamEntryType:
-      description: |
-        Kind of entry in an `ndjson` stream of outbound logs:
-
-        - `log`: An outbound log entry.
-        - `error`: An error that ended the stream.
-        - `cursor`: The cursor for the next page. Always the last entry.
-      enum:
-      - log
-      - error
-      - cursor
-      example: log
-      type: string
-      x-generate-enum-go: true
-    OutboundLogStreamLogEntry:
-      description: An outbound log entry in an `ndjson` stream.
-      properties:
-        type:
-          $ref: "#/components/schemas/OutboundLogStreamEntryType"
-        data:
-          $ref: "#/components/schemas/OutboundLog"
-      required:
-      - data
-      - type
-      title: OutboundLogStreamLogEntry
     OutboundLogStreamErrorEntry:
-      description: "An error that ended an `ndjson` stream, such as a log entry that\
-        \ couldn't be read. It is the last entry and the response is incomplete."
+      description: "An error that ended a stream of outbound logs, such as a log entry\
+        \ that couldn't be read. It is the last entry and the response is incomplete."
       properties:
         type:
           $ref: "#/components/schemas/OutboundLogStreamEntryType"
@@ -48059,6 +48079,24 @@ components:
       - data
       - type
       title: OutboundLogStreamErrorEntry
+    OutboundLogs:
+      properties:
+        nextCursor:
+          description: Cursor for the next page of results. Omitted when there are
+            no more results.
+          example: SmJlNERRMHdyNWFsTmRDZDVYU0c=
+          format: byte
+          type: string
+        data:
+          description: "List of outbound log entries. The `type` field determines\
+            \ the kind of entry. When an error ends the response, an `OutboundLogStreamErrorEntry`\
+            \ is the last item and the response is incomplete."
+          items:
+            $ref: "#/components/schemas/OutboundLogs_data_inner"
+          type: array
+          default: null
+      required:
+      - data
     OutboundLogStreamCursor:
       description: Cursor for the next page of results.
       properties:
@@ -50562,6 +50600,7 @@ components:
           status: unlocked
           unlockedAt: 2026-07-01T09:00:00Z
           unlockedByProfileIntegrationId: customer2839
+          expiryDate: 2026-08-31T23:59:59Z
           usedAt: 2026-07-02T10:30:00Z
           usedByProfileIntegrationId: customer2840
           loyaltyProgramId: 9
@@ -50576,6 +50615,7 @@ components:
           status: unlocked
           unlockedAt: 2026-07-01T09:00:00Z
           unlockedByProfileIntegrationId: customer2839
+          expiryDate: 2026-08-31T23:59:59Z
           usedAt: 2026-07-02T10:30:00Z
           usedByProfileIntegrationId: customer2840
           loyaltyProgramId: 9
@@ -56545,9 +56585,14 @@ components:
           - $ref: "#/components/schemas/EmbeddedDashboardConfiguration"
           description: The configuration of the embedded Insights dashboard for campaigns.
     OutboundLogs_data_inner:
+      discriminator:
+        mapping:
+          log: "#/components/schemas/OutboundLogStreamLogEntry"
+          error: "#/components/schemas/OutboundLogStreamErrorEntry"
+        propertyName: type
       oneOf:
-      - $ref: "#/components/schemas/OutboundLog"
-      - $ref: "#/components/schemas/OutboundLogStreamError"
+      - $ref: "#/components/schemas/OutboundLogStreamLogEntry"
+      - $ref: "#/components/schemas/OutboundLogStreamErrorEntry"
     IntegrationHubEventPayloadCouponBasedNotifications_allOf_Attributes:
       type: object
   securitySchemes:

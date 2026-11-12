@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **Name** | **string** | The customer-facing name of the reward. | 
 **Description** | Pointer to **string** | Customer-facing description of the reward. | [optional] 
 **Rule** | [**RuleMetadata**](RuleMetadata.md) | Customer-facing rule metadata for the reward. | 
-**Unlocked** | Pointer to [**[]CustomerReward**](CustomerReward.md) | The customer profile&#39;s unlocks of this reward that are not yet &#x60;used&#x60;. | [optional] 
+**Unlocked** | Pointer to [**[]CustomerReward**](CustomerReward.md) | The instances of this reward that the customer has unlocked but not used. Expired customer rewards are not returned. | [optional] 
 
 ## Methods
 

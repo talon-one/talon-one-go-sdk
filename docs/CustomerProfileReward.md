@@ -11,9 +11,10 @@ Name | Type | Description | Notes
 **RewardName** | **string** | The name of the reward. | 
 **Description** | Pointer to **string** | The customer-facing description of the reward. | [optional] 
 **Rule** | Pointer to [**RuleMetadata**](RuleMetadata.md) | Customer-facing rule metadata for the reward. Only returned when the reward defines a rule. | [optional] 
-**Status** | **string** | The status of the customer reward: - &#x60;unlocked&#x60;: The reward is available for use. - &#x60;used&#x60;: The reward has been used.  | 
+**Status** | **string** | The status of the customer reward: - &#x60;unlocked&#x60;: The reward is available for use. - &#x60;used&#x60;: The reward has been used. - &#x60;expired&#x60;: The reward was not used before its expiry date.  | 
 **UnlockedAt** | **time.Time** | The date and time when the reward was unlocked. | 
 **UnlockedByProfileIntegrationId** | Pointer to **string** | The integration ID of the customer profile that unlocked the reward.   For rewards unlocked with a loyalty card, this can be any customer profile  linked to that loyalty card.  | [optional] 
+**ExpiryDate** | Pointer to **time.Time** | The date and time when the customer reward expires, based on the  &#x60;validityDuration&#x60; or &#x60;expiryDate&#x60; of the reward when the reward was  unlocked. If the reward does not specify either property, the customer reward  has unlimited validity and this field is omitted.  **Note**: The expiry date is calculated using the time zone of the  Application connected to the reward.  | [optional] 
 **UsedAt** | Pointer to **time.Time** | The date and time when the reward was used. | [optional] 
 **UsedByProfileIntegrationId** | Pointer to **string** | The integration ID of the customer profile that used the reward.   For rewards unlocked with a loyalty card, this can be any customer profile  linked to that loyalty card.   Only returned when the reward has been used.  | [optional] 
 **LoyaltyProgramId** | Pointer to **int64** | The ID of the loyalty program that the loyalty card belongs to. Only returned for rewards unlocked with a loyalty card. | [optional] 
@@ -252,6 +253,31 @@ SetUnlockedByProfileIntegrationId sets UnlockedByProfileIntegrationId field to g
 `func (o *CustomerProfileReward) HasUnlockedByProfileIntegrationId() bool`
 
 HasUnlockedByProfileIntegrationId returns a boolean if a field has been set.
+
+### GetExpiryDate
+
+`func (o *CustomerProfileReward) GetExpiryDate() time.Time`
+
+GetExpiryDate returns the ExpiryDate field if non-nil, zero value otherwise.
+
+### GetExpiryDateOk
+
+`func (o *CustomerProfileReward) GetExpiryDateOk() (*time.Time, bool)`
+
+GetExpiryDateOk returns a tuple with the ExpiryDate field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetExpiryDate
+
+`func (o *CustomerProfileReward) SetExpiryDate(v time.Time)`
+
+SetExpiryDate sets ExpiryDate field to given value.
+
+### HasExpiryDate
+
+`func (o *CustomerProfileReward) HasExpiryDate() bool`
+
+HasExpiryDate returns a boolean if a field has been set.
 
 ### GetUsedAt
 

@@ -17,79 +17,69 @@ import (
 
 // OutboundLogsDataInner - struct for OutboundLogsDataInner
 type OutboundLogsDataInner struct {
-	OutboundLog            *OutboundLog
-	OutboundLogStreamError *OutboundLogStreamError
+	OutboundLogStreamErrorEntry *OutboundLogStreamErrorEntry
+	OutboundLogStreamLogEntry   *OutboundLogStreamLogEntry
 }
 
-// OutboundLogAsOutboundLogsDataInner is a convenience function that returns OutboundLog wrapped in OutboundLogsDataInner
-func OutboundLogAsOutboundLogsDataInner(v *OutboundLog) OutboundLogsDataInner {
+// OutboundLogStreamErrorEntryAsOutboundLogsDataInner is a convenience function that returns OutboundLogStreamErrorEntry wrapped in OutboundLogsDataInner
+func OutboundLogStreamErrorEntryAsOutboundLogsDataInner(v *OutboundLogStreamErrorEntry) OutboundLogsDataInner {
 	return OutboundLogsDataInner{
-		OutboundLog: v,
+		OutboundLogStreamErrorEntry: v,
 	}
 }
 
-// OutboundLogStreamErrorAsOutboundLogsDataInner is a convenience function that returns OutboundLogStreamError wrapped in OutboundLogsDataInner
-func OutboundLogStreamErrorAsOutboundLogsDataInner(v *OutboundLogStreamError) OutboundLogsDataInner {
+// OutboundLogStreamLogEntryAsOutboundLogsDataInner is a convenience function that returns OutboundLogStreamLogEntry wrapped in OutboundLogsDataInner
+func OutboundLogStreamLogEntryAsOutboundLogsDataInner(v *OutboundLogStreamLogEntry) OutboundLogsDataInner {
 	return OutboundLogsDataInner{
-		OutboundLogStreamError: v,
+		OutboundLogStreamLogEntry: v,
 	}
 }
 
 // Unmarshal JSON data into one of the pointers in the struct
 func (dst *OutboundLogsDataInner) UnmarshalJSON(data []byte) error {
 	var err error
-	match := 0
-	// try to unmarshal data into OutboundLog
-	err = json.Unmarshal(data, &dst.OutboundLog)
-	if err == nil {
-		jsonOutboundLog, _ := json.Marshal(dst.OutboundLog)
-		if string(jsonOutboundLog) == "{}" { // empty struct
-			dst.OutboundLog = nil
+	// use discriminator value to speed up the lookup
+	var jsonDict map[string]interface{}
+	err = newStrictDecoder(data).Decode(&jsonDict)
+	if err != nil {
+		return fmt.Errorf("failed to unmarshal JSON into map for the discriminator lookup")
+	}
+
+	// check if the discriminator value is 'error'
+	if jsonDict["type"] == "error" {
+		// try to unmarshal JSON data into OutboundLogStreamErrorEntry
+		err = json.Unmarshal(data, &dst.OutboundLogStreamErrorEntry)
+		if err == nil {
+			return nil // data stored in dst.OutboundLogStreamErrorEntry, return on the first match
 		} else {
-			match++
+			dst.OutboundLogStreamErrorEntry = nil
+			return fmt.Errorf("failed to unmarshal OutboundLogsDataInner as OutboundLogStreamErrorEntry: %s", err.Error())
 		}
-	} else {
-		dst.OutboundLog = nil
 	}
 
-	// try to unmarshal data into OutboundLogStreamError
-	err = json.Unmarshal(data, &dst.OutboundLogStreamError)
-	if err == nil {
-		jsonOutboundLogStreamError, _ := json.Marshal(dst.OutboundLogStreamError)
-		if string(jsonOutboundLogStreamError) == "{}" { // empty struct
-			dst.OutboundLogStreamError = nil
+	// check if the discriminator value is 'log'
+	if jsonDict["type"] == "log" {
+		// try to unmarshal JSON data into OutboundLogStreamLogEntry
+		err = json.Unmarshal(data, &dst.OutboundLogStreamLogEntry)
+		if err == nil {
+			return nil // data stored in dst.OutboundLogStreamLogEntry, return on the first match
 		} else {
-			match++
+			dst.OutboundLogStreamLogEntry = nil
+			return fmt.Errorf("failed to unmarshal OutboundLogsDataInner as OutboundLogStreamLogEntry: %s", err.Error())
 		}
-	} else {
-		dst.OutboundLogStreamError = nil
 	}
 
-	if match > 1 { // more than 1 match
-		// reset to nil
-		dst.OutboundLog = nil
-		dst.OutboundLogStreamError = nil
-
-		return fmt.Errorf("data matches more than one schema in oneOf(OutboundLogsDataInner)")
-	} else if match == 1 {
-		return nil // exactly one match
-	} else { // no match
-		if err != nil {
-			return fmt.Errorf("data failed to match schemas in oneOf(OutboundLogsDataInner): %v", err)
-		}
-
-		return fmt.Errorf("data failed to match schemas in oneOf(OutboundLogsDataInner)")
-	}
+	return nil
 }
 
 // Marshal data from the first non-nil pointers in the struct to JSON
 func (src OutboundLogsDataInner) MarshalJSON() ([]byte, error) {
-	if src.OutboundLog != nil {
-		return json.Marshal(&src.OutboundLog)
+	if src.OutboundLogStreamErrorEntry != nil {
+		return json.Marshal(&src.OutboundLogStreamErrorEntry)
 	}
 
-	if src.OutboundLogStreamError != nil {
-		return json.Marshal(&src.OutboundLogStreamError)
+	if src.OutboundLogStreamLogEntry != nil {
+		return json.Marshal(&src.OutboundLogStreamLogEntry)
 	}
 
 	return nil, nil // no data in oneOf schemas
@@ -100,12 +90,12 @@ func (obj *OutboundLogsDataInner) GetActualInstance() interface{} {
 	if obj == nil {
 		return nil
 	}
-	if obj.OutboundLog != nil {
-		return obj.OutboundLog
+	if obj.OutboundLogStreamErrorEntry != nil {
+		return obj.OutboundLogStreamErrorEntry
 	}
 
-	if obj.OutboundLogStreamError != nil {
-		return obj.OutboundLogStreamError
+	if obj.OutboundLogStreamLogEntry != nil {
+		return obj.OutboundLogStreamLogEntry
 	}
 
 	// all schemas are nil
@@ -114,12 +104,12 @@ func (obj *OutboundLogsDataInner) GetActualInstance() interface{} {
 
 // Get the actual instance value
 func (obj OutboundLogsDataInner) GetActualInstanceValue() interface{} {
-	if obj.OutboundLog != nil {
-		return *obj.OutboundLog
+	if obj.OutboundLogStreamErrorEntry != nil {
+		return *obj.OutboundLogStreamErrorEntry
 	}
 
-	if obj.OutboundLogStreamError != nil {
-		return *obj.OutboundLogStreamError
+	if obj.OutboundLogStreamLogEntry != nil {
+		return *obj.OutboundLogStreamLogEntry
 	}
 
 	// all schemas are nil

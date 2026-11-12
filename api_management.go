@@ -16,7 +16,6 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"os"
 	"reflect"
 	"strings"
 	"time"
@@ -21686,11 +21685,11 @@ type ApiImportAccountCollectionRequest struct {
 	ctx          context.Context
 	ApiService   *ManagementAPIService
 	collectionId int64
-	upFile       *os.File
+	upFile       io.Reader
 }
 
 // The CSV file containing the data that is being imported.
-func (r ApiImportAccountCollectionRequest) UpFile(upFile *os.File) ApiImportAccountCollectionRequest {
+func (r ApiImportAccountCollectionRequest) UpFile(upFile io.Reader) ApiImportAccountCollectionRequest {
 	r.upFile = upFile
 	return r
 }
@@ -21779,20 +21778,13 @@ func (a *ManagementAPIService) ImportAccountCollectionExecute(r ApiImportAccount
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	var upFileLocalVarFormFileName string
-	var upFileLocalVarFileName string
-	var upFileLocalVarFileBytes []byte
-
-	upFileLocalVarFormFileName = "upFile"
-	upFileLocalVarFile := r.upFile
-
-	if upFileLocalVarFile != nil {
-		fbs, _ := io.ReadAll(upFileLocalVarFile)
-
-		upFileLocalVarFileBytes = fbs
-		upFileLocalVarFileName = upFileLocalVarFile.Name()
-		upFileLocalVarFile.Close()
-		formFiles = append(formFiles, formFile{fileBytes: upFileLocalVarFileBytes, fileName: upFileLocalVarFileName, formFileName: upFileLocalVarFormFileName})
+	// Talon.One: file params are io.Readers; see readFormFile in upload.go.
+	if r.upFile != nil {
+		upFileLocalVarFormFile, err := readFormFile(r.upFile, "upFile")
+		if err != nil {
+			return localVarReturnValue, nil, err
+		}
+		formFiles = append(formFiles, upFileLocalVarFormFile)
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -21870,11 +21862,11 @@ type ApiImportAllowedListRequest struct {
 	ctx         context.Context
 	ApiService  *ManagementAPIService
 	attributeId int64
-	upFile      *os.File
+	upFile      io.Reader
 }
 
 // The CSV file containing the data that is being imported.
-func (r ApiImportAllowedListRequest) UpFile(upFile *os.File) ApiImportAllowedListRequest {
+func (r ApiImportAllowedListRequest) UpFile(upFile io.Reader) ApiImportAllowedListRequest {
 	r.upFile = upFile
 	return r
 }
@@ -21962,20 +21954,13 @@ func (a *ManagementAPIService) ImportAllowedListExecute(r ApiImportAllowedListRe
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	var upFileLocalVarFormFileName string
-	var upFileLocalVarFileName string
-	var upFileLocalVarFileBytes []byte
-
-	upFileLocalVarFormFileName = "upFile"
-	upFileLocalVarFile := r.upFile
-
-	if upFileLocalVarFile != nil {
-		fbs, _ := io.ReadAll(upFileLocalVarFile)
-
-		upFileLocalVarFileBytes = fbs
-		upFileLocalVarFileName = upFileLocalVarFile.Name()
-		upFileLocalVarFile.Close()
-		formFiles = append(formFiles, formFile{fileBytes: upFileLocalVarFileBytes, fileName: upFileLocalVarFileName, formFileName: upFileLocalVarFormFileName})
+	// Talon.One: file params are io.Readers; see readFormFile in upload.go.
+	if r.upFile != nil {
+		upFileLocalVarFormFile, err := readFormFile(r.upFile, "upFile")
+		if err != nil {
+			return localVarReturnValue, nil, err
+		}
+		formFiles = append(formFiles, upFileLocalVarFormFile)
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -22064,11 +22049,11 @@ type ApiImportAudiencesMembershipsRequest struct {
 	ctx        context.Context
 	ApiService *ManagementAPIService
 	audienceId int64
-	upFile     *os.File
+	upFile     io.Reader
 }
 
 // The CSV file containing the data that is being imported.
-func (r ApiImportAudiencesMembershipsRequest) UpFile(upFile *os.File) ApiImportAudiencesMembershipsRequest {
+func (r ApiImportAudiencesMembershipsRequest) UpFile(upFile io.Reader) ApiImportAudiencesMembershipsRequest {
 	r.upFile = upFile
 	return r
 }
@@ -22152,20 +22137,13 @@ func (a *ManagementAPIService) ImportAudiencesMembershipsExecute(r ApiImportAudi
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	var upFileLocalVarFormFileName string
-	var upFileLocalVarFileName string
-	var upFileLocalVarFileBytes []byte
-
-	upFileLocalVarFormFileName = "upFile"
-	upFileLocalVarFile := r.upFile
-
-	if upFileLocalVarFile != nil {
-		fbs, _ := io.ReadAll(upFileLocalVarFile)
-
-		upFileLocalVarFileBytes = fbs
-		upFileLocalVarFileName = upFileLocalVarFile.Name()
-		upFileLocalVarFile.Close()
-		formFiles = append(formFiles, formFile{fileBytes: upFileLocalVarFileBytes, fileName: upFileLocalVarFileName, formFileName: upFileLocalVarFormFileName})
+	// Talon.One: file params are io.Readers; see readFormFile in upload.go.
+	if r.upFile != nil {
+		upFileLocalVarFormFile, err := readFormFile(r.upFile, "upFile")
+		if err != nil {
+			return localVarReturnValue, nil, err
+		}
+		formFiles = append(formFiles, upFileLocalVarFormFile)
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -22257,7 +22235,7 @@ type ApiImportCampaignStoreBudgetRequest struct {
 	campaignId    int64
 	action        *string
 	period        *string
-	upFile        *os.File
+	upFile        io.Reader
 }
 
 // The action that this budget is limiting.
@@ -22273,7 +22251,7 @@ func (r ApiImportCampaignStoreBudgetRequest) Period(period string) ApiImportCamp
 }
 
 // The CSV file containing the data that is being imported.
-func (r ApiImportCampaignStoreBudgetRequest) UpFile(upFile *os.File) ApiImportCampaignStoreBudgetRequest {
+func (r ApiImportCampaignStoreBudgetRequest) UpFile(upFile io.Reader) ApiImportCampaignStoreBudgetRequest {
 	r.upFile = upFile
 	return r
 }
@@ -22356,20 +22334,13 @@ func (a *ManagementAPIService) ImportCampaignStoreBudgetExecute(r ApiImportCampa
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	var upFileLocalVarFormFileName string
-	var upFileLocalVarFileName string
-	var upFileLocalVarFileBytes []byte
-
-	upFileLocalVarFormFileName = "upFile"
-	upFileLocalVarFile := r.upFile
-
-	if upFileLocalVarFile != nil {
-		fbs, _ := io.ReadAll(upFileLocalVarFile)
-
-		upFileLocalVarFileBytes = fbs
-		upFileLocalVarFileName = upFileLocalVarFile.Name()
-		upFileLocalVarFile.Close()
-		formFiles = append(formFiles, formFile{fileBytes: upFileLocalVarFileBytes, fileName: upFileLocalVarFileName, formFileName: upFileLocalVarFormFileName})
+	// Talon.One: file params are io.Readers; see readFormFile in upload.go.
+	if r.upFile != nil {
+		upFileLocalVarFormFile, err := readFormFile(r.upFile, "upFile")
+		if err != nil {
+			return localVarReturnValue, nil, err
+		}
+		formFiles = append(formFiles, upFileLocalVarFormFile)
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -22437,11 +22408,11 @@ type ApiImportCampaignStoresRequest struct {
 	ApiService    *ManagementAPIService
 	applicationId int64
 	campaignId    int64
-	upFile        *os.File
+	upFile        io.Reader
 }
 
 // The CSV file containing the data that is being imported.
-func (r ApiImportCampaignStoresRequest) UpFile(upFile *os.File) ApiImportCampaignStoresRequest {
+func (r ApiImportCampaignStoresRequest) UpFile(upFile io.Reader) ApiImportCampaignStoresRequest {
 	r.upFile = upFile
 	return r
 }
@@ -22517,20 +22488,13 @@ func (a *ManagementAPIService) ImportCampaignStoresExecute(r ApiImportCampaignSt
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	var upFileLocalVarFormFileName string
-	var upFileLocalVarFileName string
-	var upFileLocalVarFileBytes []byte
-
-	upFileLocalVarFormFileName = "upFile"
-	upFileLocalVarFile := r.upFile
-
-	if upFileLocalVarFile != nil {
-		fbs, _ := io.ReadAll(upFileLocalVarFile)
-
-		upFileLocalVarFileBytes = fbs
-		upFileLocalVarFileName = upFileLocalVarFile.Name()
-		upFileLocalVarFile.Close()
-		formFiles = append(formFiles, formFile{fileBytes: upFileLocalVarFileBytes, fileName: upFileLocalVarFileName, formFileName: upFileLocalVarFormFileName})
+	// Talon.One: file params are io.Readers; see readFormFile in upload.go.
+	if r.upFile != nil {
+		upFileLocalVarFormFile, err := readFormFile(r.upFile, "upFile")
+		if err != nil {
+			return localVarReturnValue, nil, err
+		}
+		formFiles = append(formFiles, upFileLocalVarFormFile)
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -22621,11 +22585,11 @@ type ApiImportCollectionRequest struct {
 	applicationId int64
 	campaignId    int64
 	collectionId  int64
-	upFile        *os.File
+	upFile        io.Reader
 }
 
 // The CSV file containing the data that is being imported.
-func (r ApiImportCollectionRequest) UpFile(upFile *os.File) ApiImportCollectionRequest {
+func (r ApiImportCollectionRequest) UpFile(upFile io.Reader) ApiImportCollectionRequest {
 	r.upFile = upFile
 	return r
 }
@@ -22720,20 +22684,13 @@ func (a *ManagementAPIService) ImportCollectionExecute(r ApiImportCollectionRequ
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	var upFileLocalVarFormFileName string
-	var upFileLocalVarFileName string
-	var upFileLocalVarFileBytes []byte
-
-	upFileLocalVarFormFileName = "upFile"
-	upFileLocalVarFile := r.upFile
-
-	if upFileLocalVarFile != nil {
-		fbs, _ := io.ReadAll(upFileLocalVarFile)
-
-		upFileLocalVarFileBytes = fbs
-		upFileLocalVarFileName = upFileLocalVarFile.Name()
-		upFileLocalVarFile.Close()
-		formFiles = append(formFiles, formFile{fileBytes: upFileLocalVarFileBytes, fileName: upFileLocalVarFileName, formFileName: upFileLocalVarFormFileName})
+	// Talon.One: file params are io.Readers; see readFormFile in upload.go.
+	if r.upFile != nil {
+		upFileLocalVarFormFile, err := readFormFile(r.upFile, "upFile")
+		if err != nil {
+			return localVarReturnValue, nil, err
+		}
+		formFiles = append(formFiles, upFileLocalVarFormFile)
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -22802,7 +22759,7 @@ type ApiImportCouponsRequest struct {
 	applicationId  int64
 	campaignId     int64
 	skipDuplicates *bool
-	upFile         *os.File
+	upFile         io.Reader
 }
 
 // An indicator of whether to skip duplicate coupon values instead of causing an error. Duplicate values are ignored when &#x60;skipDuplicates&#x3D;true&#x60;.
@@ -22812,7 +22769,7 @@ func (r ApiImportCouponsRequest) SkipDuplicates(skipDuplicates bool) ApiImportCo
 }
 
 // The CSV file containing the data that is being imported.
-func (r ApiImportCouponsRequest) UpFile(upFile *os.File) ApiImportCouponsRequest {
+func (r ApiImportCouponsRequest) UpFile(upFile io.Reader) ApiImportCouponsRequest {
 	r.upFile = upFile
 	return r
 }
@@ -22915,20 +22872,13 @@ func (a *ManagementAPIService) ImportCouponsExecute(r ApiImportCouponsRequest) (
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	var upFileLocalVarFormFileName string
-	var upFileLocalVarFileName string
-	var upFileLocalVarFileBytes []byte
-
-	upFileLocalVarFormFileName = "upFile"
-	upFileLocalVarFile := r.upFile
-
-	if upFileLocalVarFile != nil {
-		fbs, _ := io.ReadAll(upFileLocalVarFile)
-
-		upFileLocalVarFileBytes = fbs
-		upFileLocalVarFileName = upFileLocalVarFile.Name()
-		upFileLocalVarFile.Close()
-		formFiles = append(formFiles, formFile{fileBytes: upFileLocalVarFileBytes, fileName: upFileLocalVarFileName, formFileName: upFileLocalVarFormFileName})
+	// Talon.One: file params are io.Readers; see readFormFile in upload.go.
+	if r.upFile != nil {
+		upFileLocalVarFormFile, err := readFormFile(r.upFile, "upFile")
+		if err != nil {
+			return localVarReturnValue, nil, err
+		}
+		formFiles = append(formFiles, upFileLocalVarFormFile)
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -22985,11 +22935,11 @@ type ApiImportLoyaltyCardsRequest struct {
 	ctx              context.Context
 	ApiService       *ManagementAPIService
 	loyaltyProgramId int64
-	upFile           *os.File
+	upFile           io.Reader
 }
 
 // The CSV file containing the data that is being imported.
-func (r ApiImportLoyaltyCardsRequest) UpFile(upFile *os.File) ApiImportLoyaltyCardsRequest {
+func (r ApiImportLoyaltyCardsRequest) UpFile(upFile io.Reader) ApiImportLoyaltyCardsRequest {
 	r.upFile = upFile
 	return r
 }
@@ -23080,20 +23030,13 @@ func (a *ManagementAPIService) ImportLoyaltyCardsExecute(r ApiImportLoyaltyCards
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	var upFileLocalVarFormFileName string
-	var upFileLocalVarFileName string
-	var upFileLocalVarFileBytes []byte
-
-	upFileLocalVarFormFileName = "upFile"
-	upFileLocalVarFile := r.upFile
-
-	if upFileLocalVarFile != nil {
-		fbs, _ := io.ReadAll(upFileLocalVarFile)
-
-		upFileLocalVarFileBytes = fbs
-		upFileLocalVarFileName = upFileLocalVarFile.Name()
-		upFileLocalVarFile.Close()
-		formFiles = append(formFiles, formFile{fileBytes: upFileLocalVarFileBytes, fileName: upFileLocalVarFileName, formFileName: upFileLocalVarFormFileName})
+	// Talon.One: file params are io.Readers; see readFormFile in upload.go.
+	if r.upFile != nil {
+		upFileLocalVarFormFile, err := readFormFile(r.upFile, "upFile")
+		if err != nil {
+			return localVarReturnValue, nil, err
+		}
+		formFiles = append(formFiles, upFileLocalVarFormFile)
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -23171,11 +23114,11 @@ type ApiImportLoyaltyCustomersTiersRequest struct {
 	ctx              context.Context
 	ApiService       *ManagementAPIService
 	loyaltyProgramId int64
-	upFile           *os.File
+	upFile           io.Reader
 }
 
 // The CSV file containing the data that is being imported.
-func (r ApiImportLoyaltyCustomersTiersRequest) UpFile(upFile *os.File) ApiImportLoyaltyCustomersTiersRequest {
+func (r ApiImportLoyaltyCustomersTiersRequest) UpFile(upFile io.Reader) ApiImportLoyaltyCustomersTiersRequest {
 	r.upFile = upFile
 	return r
 }
@@ -23287,20 +23230,13 @@ func (a *ManagementAPIService) ImportLoyaltyCustomersTiersExecute(r ApiImportLoy
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	var upFileLocalVarFormFileName string
-	var upFileLocalVarFileName string
-	var upFileLocalVarFileBytes []byte
-
-	upFileLocalVarFormFileName = "upFile"
-	upFileLocalVarFile := r.upFile
-
-	if upFileLocalVarFile != nil {
-		fbs, _ := io.ReadAll(upFileLocalVarFile)
-
-		upFileLocalVarFileBytes = fbs
-		upFileLocalVarFileName = upFileLocalVarFile.Name()
-		upFileLocalVarFile.Close()
-		formFiles = append(formFiles, formFile{fileBytes: upFileLocalVarFileBytes, fileName: upFileLocalVarFileName, formFileName: upFileLocalVarFormFileName})
+	// Talon.One: file params are io.Readers; see readFormFile in upload.go.
+	if r.upFile != nil {
+		upFileLocalVarFormFile, err := readFormFile(r.upFile, "upFile")
+		if err != nil {
+			return localVarReturnValue, nil, err
+		}
+		formFiles = append(formFiles, upFileLocalVarFormFile)
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -23389,11 +23325,11 @@ type ApiImportLoyaltyJoinDatesRequest struct {
 	ctx              context.Context
 	ApiService       *ManagementAPIService
 	loyaltyProgramId int64
-	upFile           *os.File
+	upFile           io.Reader
 }
 
 // The CSV file containing the data that is being imported.
-func (r ApiImportLoyaltyJoinDatesRequest) UpFile(upFile *os.File) ApiImportLoyaltyJoinDatesRequest {
+func (r ApiImportLoyaltyJoinDatesRequest) UpFile(upFile io.Reader) ApiImportLoyaltyJoinDatesRequest {
 	r.upFile = upFile
 	return r
 }
@@ -23486,20 +23422,13 @@ func (a *ManagementAPIService) ImportLoyaltyJoinDatesExecute(r ApiImportLoyaltyJ
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	var upFileLocalVarFormFileName string
-	var upFileLocalVarFileName string
-	var upFileLocalVarFileBytes []byte
-
-	upFileLocalVarFormFileName = "upFile"
-	upFileLocalVarFile := r.upFile
-
-	if upFileLocalVarFile != nil {
-		fbs, _ := io.ReadAll(upFileLocalVarFile)
-
-		upFileLocalVarFileBytes = fbs
-		upFileLocalVarFileName = upFileLocalVarFile.Name()
-		upFileLocalVarFile.Close()
-		formFiles = append(formFiles, formFile{fileBytes: upFileLocalVarFileBytes, fileName: upFileLocalVarFileName, formFileName: upFileLocalVarFormFileName})
+	// Talon.One: file params are io.Readers; see readFormFile in upload.go.
+	if r.upFile != nil {
+		upFileLocalVarFormFile, err := readFormFile(r.upFile, "upFile")
+		if err != nil {
+			return localVarReturnValue, nil, err
+		}
+		formFiles = append(formFiles, upFileLocalVarFormFile)
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -23589,7 +23518,7 @@ type ApiImportLoyaltyPointsRequest struct {
 	ApiService           *ManagementAPIService
 	loyaltyProgramId     int64
 	notificationsEnabled *bool
-	upFile               *os.File
+	upFile               io.Reader
 }
 
 // Indicates whether the points import triggers notifications about its effects. For example, a notification is sent if the import upgrades a customer&#39;s tier or offsets their negative points balance.  This parameter is optional and defaults to &#x60;true&#x60;.
@@ -23599,7 +23528,7 @@ func (r ApiImportLoyaltyPointsRequest) NotificationsEnabled(notificationsEnabled
 }
 
 // The CSV file containing the data that is being imported.
-func (r ApiImportLoyaltyPointsRequest) UpFile(upFile *os.File) ApiImportLoyaltyPointsRequest {
+func (r ApiImportLoyaltyPointsRequest) UpFile(upFile io.Reader) ApiImportLoyaltyPointsRequest {
 	r.upFile = upFile
 	return r
 }
@@ -23757,20 +23686,13 @@ func (a *ManagementAPIService) ImportLoyaltyPointsExecute(r ApiImportLoyaltyPoin
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	var upFileLocalVarFormFileName string
-	var upFileLocalVarFileName string
-	var upFileLocalVarFileBytes []byte
-
-	upFileLocalVarFormFileName = "upFile"
-	upFileLocalVarFile := r.upFile
-
-	if upFileLocalVarFile != nil {
-		fbs, _ := io.ReadAll(upFileLocalVarFile)
-
-		upFileLocalVarFileBytes = fbs
-		upFileLocalVarFileName = upFileLocalVarFile.Name()
-		upFileLocalVarFile.Close()
-		formFiles = append(formFiles, formFile{fileBytes: upFileLocalVarFileBytes, fileName: upFileLocalVarFileName, formFileName: upFileLocalVarFormFileName})
+	// Talon.One: file params are io.Readers; see readFormFile in upload.go.
+	if r.upFile != nil {
+		upFileLocalVarFormFile, err := readFormFile(r.upFile, "upFile")
+		if err != nil {
+			return localVarReturnValue, nil, err
+		}
+		formFiles = append(formFiles, upFileLocalVarFormFile)
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -23827,11 +23749,11 @@ type ApiImportPoolGiveawaysRequest struct {
 	ctx        context.Context
 	ApiService *ManagementAPIService
 	poolId     int64
-	upFile     *os.File
+	upFile     io.Reader
 }
 
 // The CSV file containing the data that is being imported.
-func (r ApiImportPoolGiveawaysRequest) UpFile(upFile *os.File) ApiImportPoolGiveawaysRequest {
+func (r ApiImportPoolGiveawaysRequest) UpFile(upFile io.Reader) ApiImportPoolGiveawaysRequest {
 	r.upFile = upFile
 	return r
 }
@@ -23929,20 +23851,13 @@ func (a *ManagementAPIService) ImportPoolGiveawaysExecute(r ApiImportPoolGiveawa
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	var upFileLocalVarFormFileName string
-	var upFileLocalVarFileName string
-	var upFileLocalVarFileBytes []byte
-
-	upFileLocalVarFormFileName = "upFile"
-	upFileLocalVarFile := r.upFile
-
-	if upFileLocalVarFile != nil {
-		fbs, _ := io.ReadAll(upFileLocalVarFile)
-
-		upFileLocalVarFileBytes = fbs
-		upFileLocalVarFileName = upFileLocalVarFile.Name()
-		upFileLocalVarFile.Close()
-		formFiles = append(formFiles, formFile{fileBytes: upFileLocalVarFileBytes, fileName: upFileLocalVarFileName, formFileName: upFileLocalVarFormFileName})
+	// Talon.One: file params are io.Readers; see readFormFile in upload.go.
+	if r.upFile != nil {
+		upFileLocalVarFormFile, err := readFormFile(r.upFile, "upFile")
+		if err != nil {
+			return localVarReturnValue, nil, err
+		}
+		formFiles = append(formFiles, upFileLocalVarFormFile)
 	}
 	if r.ctx != nil {
 		// API Key Authentication
@@ -24000,11 +23915,11 @@ type ApiImportReferralsRequest struct {
 	ApiService    *ManagementAPIService
 	applicationId int64
 	campaignId    int64
-	upFile        *os.File
+	upFile        io.Reader
 }
 
 // The CSV file containing the data that is being imported.
-func (r ApiImportReferralsRequest) UpFile(upFile *os.File) ApiImportReferralsRequest {
+func (r ApiImportReferralsRequest) UpFile(upFile io.Reader) ApiImportReferralsRequest {
 	r.upFile = upFile
 	return r
 }
@@ -24107,20 +24022,13 @@ func (a *ManagementAPIService) ImportReferralsExecute(r ApiImportReferralsReques
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	var upFileLocalVarFormFileName string
-	var upFileLocalVarFileName string
-	var upFileLocalVarFileBytes []byte
-
-	upFileLocalVarFormFileName = "upFile"
-	upFileLocalVarFile := r.upFile
-
-	if upFileLocalVarFile != nil {
-		fbs, _ := io.ReadAll(upFileLocalVarFile)
-
-		upFileLocalVarFileBytes = fbs
-		upFileLocalVarFileName = upFileLocalVarFile.Name()
-		upFileLocalVarFile.Close()
-		formFiles = append(formFiles, formFile{fileBytes: upFileLocalVarFileBytes, fileName: upFileLocalVarFileName, formFileName: upFileLocalVarFormFileName})
+	// Talon.One: file params are io.Readers; see readFormFile in upload.go.
+	if r.upFile != nil {
+		upFileLocalVarFormFile, err := readFormFile(r.upFile, "upFile")
+		if err != nil {
+			return localVarReturnValue, nil, err
+		}
+		formFiles = append(formFiles, upFileLocalVarFormFile)
 	}
 	if r.ctx != nil {
 		// API Key Authentication

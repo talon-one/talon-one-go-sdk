@@ -2380,7 +2380,7 @@ func (r ApiGetCustomerInventoryRequest) Achievements(achievements bool) ApiGetCu
 	return r
 }
 
-// Set to &#x60;true&#x60; to include &#x60;unlocked&#x60; rewards that have not been &#x60;used&#x60; in the response.
+// The instances of this reward that the customer has unlocked but not used. Expired customer rewards are not returned.
 func (r ApiGetCustomerInventoryRequest) UnlockedRewards(unlockedRewards bool) ApiGetCustomerInventoryRequest {
 	r.unlockedRewards = &unlockedRewards
 	return r
