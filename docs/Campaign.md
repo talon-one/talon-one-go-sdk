@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **ApplicationId** | **int64** | The ID of the Application that owns this entity. | 
 **UserId** | **int64** | The ID of the user associated with this entity. | 
 **Name** | **string** | A user-facing name for this campaign. | 
-**Description** | Pointer to **string** | A detailed description of the campaign. | [optional] 
+**Description** | **string** | A detailed description of the campaign. | 
 **StartTime** | Pointer to **time.Time** | Timestamp when the campaign will become active. | [optional] 
 **EndTime** | Pointer to **time.Time** | Timestamp when the campaign will become inactive. | [optional] 
 **Attributes** | Pointer to **map[string]interface{}** | Arbitrary properties associated with this campaign. | [optional] 
@@ -22,7 +22,7 @@ Name | Type | Description | Notes
 **ReferralSettings** | Pointer to [**CodeGeneratorSettings**](CodeGeneratorSettings.md) |  | [optional] 
 **Limits** | [**[]LimitConfig**](LimitConfig.md) | The set of [budget limits](https://docs.talon.one/docs/product/campaigns/settings/managing-campaign-budgets) for this campaign.  | 
 **CampaignGroups** | Pointer to **[]int64** | The IDs of the [campaign groups](https://docs.talon.one/docs/product/account/managing-campaign-groups) this campaign belongs to.  | [optional] 
-**Type** | Pointer to **string** | The campaign type. Possible type values:   - &#x60;cartItem&#x60;: Type of campaign that can apply effects only to cart items.   - &#x60;advanced&#x60;: Type of campaign that can apply effects to customer sessions and cart items.  | [optional] [default to "advanced"]
+**Type** | **string** | The campaign type. Possible type values:   - &#x60;cartItem&#x60;: Type of campaign that can apply effects only to cart items.   - &#x60;advanced&#x60;: Type of campaign that can apply effects to customer sessions and cart items.  | [default to "advanced"]
 **LinkedStoreIds** | Pointer to **[]int64** | A list of store IDs that you want to link to the campaign.  **Note:** Campaigns with linked store IDs will only be evaluated when there is a [customer session update](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2) that references a linked store.  | [optional] 
 **CouponAttributes** | Pointer to **map[string]interface{}** | Arbitrary properties associated with coupons in this campaign. | [optional] 
 **Budgets** | Pointer to [**[]CampaignBudget**](CampaignBudget.md) | A list of all the budgets that are defined by this campaign and their usage.  **Note:** Budgets that are not defined do not appear in this list and their usage is not counted until they are defined.  | [optional] 
@@ -62,7 +62,7 @@ Name | Type | Description | Notes
 
 ### NewCampaign
 
-`func NewCampaign(id int64, created time.Time, applicationId int64, userId int64, name string, state string, tags []string, reevaluateOnReturn bool, features []string, limits []LimitConfig, frontendState string, storesImported bool, ) *Campaign`
+`func NewCampaign(id int64, created time.Time, applicationId int64, userId int64, name string, description string, state string, tags []string, reevaluateOnReturn bool, features []string, limits []LimitConfig, type_ string, frontendState string, storesImported bool, ) *Campaign`
 
 NewCampaign instantiates a new Campaign object
 This constructor will assign default values to properties that have it defined,
@@ -196,11 +196,6 @@ and a boolean to check if the value has been set.
 
 SetDescription sets Description field to given value.
 
-### HasDescription
-
-`func (o *Campaign) HasDescription() bool`
-
-HasDescription returns a boolean if a field has been set.
 
 ### GetStartTime
 
@@ -496,11 +491,6 @@ and a boolean to check if the value has been set.
 
 SetType sets Type field to given value.
 
-### HasType
-
-`func (o *Campaign) HasType() bool`
-
-HasType returns a boolean if a field has been set.
 
 ### GetLinkedStoreIds
 

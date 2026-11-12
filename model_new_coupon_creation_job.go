@@ -22,7 +22,7 @@ var _ MappedNullable = &NewCouponCreationJob{}
 // NewCouponCreationJob struct for NewCouponCreationJob
 type NewCouponCreationJob struct {
 	// The number of times the coupon code can be redeemed. `0` means unlimited redemptions but any campaign usage limits will still apply.
-	UsageLimit *int64 `json:"usageLimit,omitempty"`
+	UsageLimit int64 `json:"usageLimit"`
 	// The total discount value that the code can give. Typically used to represent a gift card value.
 	DiscountLimit *float32 `json:"discountLimit,omitempty"`
 	// The number of reservations that can be made with this coupon code.
@@ -47,8 +47,9 @@ type _NewCouponCreationJob NewCouponCreationJob
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildNewCouponCreationJob(numberOfCoupons int64, attributes map[string]interface{}) *NewCouponCreationJob {
+func BuildNewCouponCreationJob(usageLimit int64, numberOfCoupons int64, attributes map[string]interface{}) *NewCouponCreationJob {
 	this := NewCouponCreationJob{}
+	this.UsageLimit = usageLimit
 	this.NumberOfCoupons = numberOfCoupons
 	this.Attributes = attributes
 	var isReservationMandatory bool = false
@@ -66,36 +67,28 @@ func NewNewCouponCreationJobWithDefaults() *NewCouponCreationJob {
 	return &this
 }
 
-// GetUsageLimit returns the UsageLimit field value if set, zero value otherwise.
+// GetUsageLimit returns the UsageLimit field value
 func (o *NewCouponCreationJob) GetUsageLimit() int64 {
-	if o == nil || IsNil(o.UsageLimit) {
+	if o == nil {
 		var ret int64
 		return ret
 	}
-	return *o.UsageLimit
+
+	return o.UsageLimit
 }
 
-// GetUsageLimitOk returns a tuple with the UsageLimit field value if set, nil otherwise
+// GetUsageLimitOk returns a tuple with the UsageLimit field value
 // and a boolean to check if the value has been set.
 func (o *NewCouponCreationJob) GetUsageLimitOk() (*int64, bool) {
-	if o == nil || IsNil(o.UsageLimit) {
+	if o == nil {
 		return nil, false
 	}
-	return o.UsageLimit, true
+	return &o.UsageLimit, true
 }
 
-// HasUsageLimit returns a boolean if a field has been set.
-func (o *NewCouponCreationJob) HasUsageLimit() bool {
-	if o != nil && !IsNil(o.UsageLimit) {
-		return true
-	}
-
-	return false
-}
-
-// SetUsageLimit gets a reference to the given int64 and assigns it to the UsageLimit field.
+// SetUsageLimit sets field value
 func (o *NewCouponCreationJob) SetUsageLimit(v int64) {
-	o.UsageLimit = &v
+	o.UsageLimit = v
 }
 
 // GetDiscountLimit returns the DiscountLimit field value if set, zero value otherwise.
@@ -348,9 +341,7 @@ func (o NewCouponCreationJob) MarshalJSON() ([]byte, error) {
 
 func (o NewCouponCreationJob) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.UsageLimit) {
-		toSerialize["usageLimit"] = o.UsageLimit
-	}
+	toSerialize["usageLimit"] = o.UsageLimit
 	if !IsNil(o.DiscountLimit) {
 		toSerialize["discountLimit"] = o.DiscountLimit
 	}
@@ -384,6 +375,7 @@ func (o *NewCouponCreationJob) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
+		"usageLimit",
 		"numberOfCoupons",
 		"attributes",
 	}

@@ -15617,6 +15617,19 @@ components:
       - $ref: "#/components/schemas/ApplicationEntity"
       - $ref: "#/components/schemas/AccountEntity"
       - $ref: "#/components/schemas/NewCouponCreationJob"
+      - required:
+        - attributes
+        - batchId
+        - chunkExecutionCount
+        - communicated
+        - createdAmount
+        - createdBy
+        - errors
+        - failCount
+        - requestedAmount
+        - status
+        - usageLimit
+        type: object
       - properties:
           batchId:
             description: The batch ID coupons created by this job will bear.
@@ -15683,18 +15696,6 @@ components:
             format: int64
             title: Chunk size
             type: integer
-        required:
-        - attributes
-        - batchId
-        - chunkExecutionCount
-        - communicated
-        - createdAmount
-        - createdBy
-        - errors
-        - failCount
-        - requestedAmount
-        - status
-        - usageLimit
     CouponDeletionJob:
       allOf:
       - $ref: "#/components/schemas/Entity"
@@ -16424,6 +16425,23 @@ components:
       - $ref: "#/components/schemas/IntegrationEntity"
       - $ref: "#/components/schemas/ApplicationEntity"
       - $ref: "#/components/schemas/NewCustomerSessionV2"
+      - required:
+        - additionalCostTotal
+        - applicationId
+        - attributes
+        - cartItemAdditionalCostTotal
+        - cartItemTotal
+        - cartItems
+        - coupon
+        - firstSession
+        - integrationId
+        - profileId
+        - referral
+        - state
+        - total
+        - updateCount
+        - updated
+        type: object
       - properties:
           firstSession:
             description: Indicates whether this is the first session for the customer's
@@ -16469,14 +16487,6 @@ components:
             format: date-time
             title: Last activity on the session
             type: string
-        required:
-        - additionalCostTotal
-        - cartItemAdditionalCostTotal
-        - cartItemTotal
-        - firstSession
-        - total
-        - updateCount
-        - updated
       example:
         id: 6
         created: 2020-02-07T08:15:22Z
@@ -19798,6 +19808,13 @@ components:
       - $ref: "#/components/schemas/CustomerProfileEntity"
       - $ref: "#/components/schemas/IntegrationEntity"
       - $ref: "#/components/schemas/NewCustomerProfile"
+      - required:
+        - accountId
+        - attributes
+        - closedSessions
+        - lastActivity
+        - totalSales
+        type: object
       - properties:
           accountId:
             description: The ID of the Talon.One account that owns this profile.
@@ -19856,11 +19873,6 @@ components:
             example: false
             title: Sandbox
             type: boolean
-        required:
-        - accountId
-        - closedSessions
-        - lastActivity
-        - totalSales
       example:
         id: 6
         created: 2020-02-07T08:15:22Z
@@ -20930,7 +20942,10 @@ components:
       - $ref: "#/components/schemas/AdditionalCampaignProperties"
       - $ref: "#/components/schemas/CampaignVersions"
       - required:
+        - description
         - reevaluateOnReturn
+        - state
+        - type
         type: object
       example:
         id: 4
@@ -21616,6 +21631,11 @@ components:
       - $ref: "#/components/schemas/CouponValue"
       - $ref: "#/components/schemas/CouponConstraints"
       - $ref: "#/components/schemas/CouponLimitConfigs"
+      - required:
+        - usageCounter
+        - usageLimit
+        - value
+        type: object
       - properties:
           usageCounter:
             description: The number of times the coupon has been successfully redeemed.
@@ -21688,8 +21708,6 @@ components:
             example: false
             title: Is coupon implicitly reserved for all customers
             type: boolean
-        required:
-        - usageCounter
       example:
         id: 6
         created: 2020-06-10T09:05:27.993483Z
@@ -21794,6 +21812,11 @@ components:
       - $ref: "#/components/schemas/Entity"
       - $ref: "#/components/schemas/NewReferral"
       - $ref: "#/components/schemas/ImportEntity"
+      - required:
+        - code
+        - usageCounter
+        - usageLimit
+        type: object
       - properties:
           code:
             description: The referral code.
@@ -21813,9 +21836,6 @@ components:
             example: tqyrgahe
             title: Batch ID
             type: string
-        required:
-        - code
-        - usageCounter
       example:
         id: 6
         created: 2020-06-10T09:05:27.993483Z
@@ -21833,6 +21853,12 @@ components:
     Giveaway:
       allOf:
       - $ref: "#/components/schemas/Entity"
+      - required:
+        - code
+        - created
+        - id
+        - poolId
+        type: object
       - properties:
           code:
             description: The code value of this giveaway.
@@ -21875,9 +21901,6 @@ components:
             example: 1
             format: int64
             type: integer
-        required:
-        - code
-        - poolId
       example:
         id: 6
         created: 2020-06-10T09:05:27.993483Z
@@ -22337,6 +22360,15 @@ components:
       allOf:
       - $ref: "#/components/schemas/Entity"
       - $ref: "#/components/schemas/IntegrationProfileEntity"
+      - required:
+        - accountId
+        - amount
+        - eventId
+        - expiryDate
+        - loyaltyProgramId
+        - profileId
+        - reason
+        type: object
       - description: Entry in the point ledger.
         properties:
           accountId:
@@ -22371,13 +22403,6 @@ components:
             description: The ID of the balancing ledgerEntry.
             format: int64
             type: integer
-        required:
-        - accountId
-        - amount
-        - eventId
-        - expiryDate
-        - loyaltyProgramId
-        - reason
       example:
         id: 6
         created: 2020-06-10T09:05:27.993483Z
@@ -24608,6 +24633,9 @@ components:
     NewAudience:
       allOf:
       - $ref: "#/components/schemas/NewInternalAudience"
+      - required:
+        - name
+        type: object
       - properties:
           integration:
             description: |
@@ -25619,6 +25647,20 @@ components:
       allOf:
       - $ref: "#/components/schemas/Entity"
       - $ref: "#/components/schemas/BaseLoyaltyProgram"
+      - required:
+        - accountID
+        - allowSubledger
+        - cardBased
+        - defaultPending
+        - defaultValidity
+        - description
+        - id
+        - name
+        - sandbox
+        - subscribedApplications
+        - timezone
+        - title
+        type: object
       - description: A Loyalty Program
         properties:
           id:
@@ -25694,12 +25736,6 @@ components:
               `True` if the `allowSubledger` property can be updated in the loyalty program.
             example: true
             type: boolean
-        required:
-        - accountID
-        - cardBased
-        - id
-        - name
-        - timezone
       example:
         id: 139
         created: 2020-06-10T09:05:27.993483Z
@@ -26044,6 +26080,11 @@ components:
       allOf:
       - $ref: "#/components/schemas/Entity"
       - $ref: "#/components/schemas/NewMultipleAudiencesItem"
+      - required:
+        - integrationId
+        - name
+        - status
+        type: object
       - properties:
           status:
             description: |
@@ -26054,8 +26095,6 @@ components:
             - new
             example: new
             type: string
-        required:
-        - status
     MultipleAudiences:
       properties:
         accountId:
@@ -26138,6 +26177,21 @@ components:
       - $ref: "#/components/schemas/IntegrationEntity"
       - $ref: "#/components/schemas/ApplicationEntity"
       - $ref: "#/components/schemas/NewCustomerSession"
+      - required:
+        - applicationId
+        - attributes
+        - cartItems
+        - coupon
+        - discounts
+        - firstSession
+        - integrationId
+        - profileId
+        - referral
+        - state
+        - total
+        - updateCount
+        - updated
+        type: object
       - properties:
           firstSession:
             description: Indicates whether this is the first session for the customer's
@@ -26168,12 +26222,6 @@ components:
             format: date-time
             title: Last activity on the session
             type: string
-        required:
-        - discounts
-        - firstSession
-        - integrationId
-        - updateCount
-        - updated
     IntegrationState:
       description: |
         Contains all state that might interest application integration plugins. This is the response type returned by all of the Integration API operations.
@@ -26953,6 +27001,11 @@ components:
     NewReferralsForMultipleAdvocates:
       allOf:
       - $ref: "#/components/schemas/ReferralConstraints"
+      - required:
+        - advocateProfileIntegrationIds
+        - campaignId
+        - usageLimit
+        type: object
       - properties:
           campaignId:
             description: The ID of the campaign from which the referral received the
@@ -27017,9 +27070,6 @@ components:
             maxLength: 100
             minLength: 3
             type: string
-        required:
-        - advocateProfileIntegrationIds
-        - campaignId
       example:
         startDate: 2020-11-10T23:00:00Z
         expiryDate: 2021-11-10T23:00:00Z
@@ -34203,6 +34253,10 @@ components:
       allOf:
       - $ref: "#/components/schemas/CouponConstraints"
       - $ref: "#/components/schemas/CouponLimitConfigs"
+      - required:
+        - numberOfCoupons
+        - usageLimit
+        type: object
       - properties:
           numberOfCoupons:
             description: The number of new coupon codes to generate for the campaign.
@@ -34277,8 +34331,6 @@ components:
               or rejected. Applied when `supportRequestId` is provided.
             example: Approved as compensation for the delayed order.
             type: string
-        required:
-        - numberOfCoupons
       example:
         usageLimit: 100
         discountLimit: 30
@@ -34314,6 +34366,10 @@ components:
     NewCouponsForMultipleRecipients:
       allOf:
       - $ref: "#/components/schemas/CouponConstraints"
+      - required:
+        - recipientsIntegrationIds
+        - usageLimit
+        type: object
       - properties:
           batchId:
             description: "The batch ID that all coupons created by the request will\
@@ -34376,8 +34432,6 @@ components:
             maxLength: 100
             minLength: 3
             type: string
-        required:
-        - recipientsIntegrationIds
       example:
         usageLimit: 100
         discountLimit: 30
@@ -34420,6 +34474,11 @@ components:
     NewCouponCreationJob:
       allOf:
       - $ref: "#/components/schemas/CouponConstraints"
+      - required:
+        - attributes
+        - numberOfCoupons
+        - usageLimit
+        type: object
       - properties:
           numberOfCoupons:
             description: The number of new coupon codes to generate for the campaign.
@@ -34438,9 +34497,6 @@ components:
               it has been reserved first.
             example: false
             type: boolean
-        required:
-        - attributes
-        - numberOfCoupons
       example:
         usageLimit: 100
         discountLimit: 30
@@ -35085,6 +35141,11 @@ components:
       - $ref: "#/components/schemas/AccountEntity"
       - $ref: "#/components/schemas/UserEntity"
       - $ref: "#/components/schemas/UpdateCampaignTemplate"
+      - required:
+        - applicationIds
+        - campaignType
+        - validApplicationIds
+        type: object
       - properties:
           applicationsIds:
             example:
@@ -35129,8 +35190,6 @@ components:
               a favorite.
             example: false
             type: boolean
-        required:
-        - validApplicationIds
       - required:
         - reevaluateOnReturn
         type: object
@@ -37679,6 +37738,16 @@ components:
     NewLoyaltyProgram:
       allOf:
       - $ref: "#/components/schemas/BaseLoyaltyProgram"
+      - required:
+        - allowSubledger
+        - cardBased
+        - defaultPending
+        - defaultValidity
+        - name
+        - sandbox
+        - timezone
+        - title
+        type: object
       - description: A new loyalty program
         properties:
           name:
@@ -37704,15 +37773,6 @@ components:
               - `false`: the program is profile-based.
             example: true
             type: boolean
-        required:
-        - allowSubledger
-        - cardBased
-        - defaultPending
-        - defaultValidity
-        - name
-        - sandbox
-        - timezone
-        - title
     UpdateLoyaltyProgram:
       allOf:
       - $ref: "#/components/schemas/BaseLoyaltyProgram"
@@ -39055,6 +39115,10 @@ components:
       - signOnURL
     SamlConnection:
       allOf:
+      - required:
+        - assertionConsumerServiceURL
+        - audienceURI
+        type: object
       - description: A SAML 2.0 connection.
         properties:
           assertionConsumerServiceURL:
@@ -39066,9 +39130,6 @@ components:
             example: 2021-07-20T21:59:00Z
             format: date-time
             type: string
-        required:
-        - assertionConsumerServiceURL
-        - audienceURI
       - $ref: "#/components/schemas/BaseSamlConnection"
       - $ref: "#/components/schemas/Entity"
     NewSamlConnection:
@@ -39573,6 +39634,20 @@ components:
     CustomerActivityReport:
       allOf:
       - $ref: "#/components/schemas/IntegrationEntity"
+      - required:
+        - accruedDiscounts
+        - accruedRevenue
+        - campaignName
+        - couponFailedAttempts
+        - couponRedemptions
+        - couponUseAttempts
+        - created
+        - customerId
+        - integrationId
+        - name
+        - totalOrders
+        - totalOrdersNoCoupon
+        type: object
       - properties:
           name:
             description: The name for this customer profile.
@@ -39614,17 +39689,6 @@ components:
           campaignName:
             description: The name of the campaign this customer belongs to.
             type: string
-        required:
-        - accruedDiscounts
-        - accruedRevenue
-        - campaignName
-        - couponFailedAttempts
-        - couponRedemptions
-        - couponUseAttempts
-        - customerId
-        - name
-        - totalOrders
-        - totalOrdersNoCoupon
       description: A summary report of customer activity for a given time range.
       example:
         integrationId: URNGV8294NV
@@ -40162,13 +40226,16 @@ components:
       - $ref: "#/components/schemas/Entity"
       - $ref: "#/components/schemas/ApplicationEntity"
       - $ref: "#/components/schemas/NewTemplateDef"
+      - required:
+        - description
+        - help
+        - name
+        type: object
       - properties:
           name:
             description: The template name used in Talang.
             minLength: 1
             type: string
-        required:
-        - name
     AchievementAdditionalProperties:
       properties:
         campaignId:
@@ -43824,6 +43891,15 @@ components:
     ApplicationAPIKey:
       allOf:
       - $ref: "#/components/schemas/CreateApplicationAPIKey"
+      - required:
+        - accountID
+        - applicationID
+        - created
+        - createdBy
+        - expires
+        - id
+        - title
+        type: object
       - properties:
           id:
             description: ID of the API Key.
@@ -43850,12 +43926,6 @@ components:
             example: 2022-03-02T16:46:17.758585Z
             format: date-time
             type: string
-        required:
-        - accountID
-        - applicationID
-        - created
-        - createdBy
-        - id
     NewApplicationAPIKey:
       allOf:
       - $ref: "#/components/schemas/ApplicationAPIKey"
@@ -43974,6 +44044,15 @@ components:
     ManagementKey:
       allOf:
       - $ref: "#/components/schemas/CreateManagementKey"
+      - required:
+        - accountID
+        - created
+        - createdBy
+        - endpoints
+        - expiryDate
+        - id
+        - name
+        type: object
       - properties:
           id:
             description: ID of the management key.
@@ -44005,11 +44084,6 @@ components:
             example: 2022-03-02T16:46:17.758585Z
             format: date-time
             type: string
-        required:
-        - accountID
-        - created
-        - createdBy
-        - id
     NewManagementKey:
       allOf:
       - $ref: "#/components/schemas/ManagementKey"
@@ -44037,6 +44111,14 @@ components:
     MCPKey:
       allOf:
       - $ref: "#/components/schemas/CreateMCPKey"
+      - required:
+        - accountID
+        - created
+        - createdBy
+        - expiryDate
+        - id
+        - name
+        type: object
       - properties:
           id:
             description: ID of the MCP key.
@@ -44068,11 +44150,6 @@ components:
             example: 2026-03-02T16:46:17.758585Z
             format: date-time
             type: string
-        required:
-        - accountID
-        - created
-        - createdBy
-        - id
     NewMCPKey:
       allOf:
       - $ref: "#/components/schemas/MCPKey"
@@ -44426,6 +44503,12 @@ components:
       allOf:
       - $ref: "#/components/schemas/Entity"
       - $ref: "#/components/schemas/NewStore"
+      - required:
+        - applicationId
+        - created
+        - integrationId
+        - updated
+        type: object
       - properties:
           created:
             description: The time this entity was created.
@@ -44454,10 +44537,6 @@ components:
               type: integer
             type: array
             default: null
-        required:
-        - applicationId
-        - created
-        - updated
       example:
         id: 6
         created: 2020-02-07T08:15:22Z
@@ -45061,6 +45140,18 @@ components:
       - $ref: "#/components/schemas/Entity"
       - $ref: "#/components/schemas/AchievementBaseV2"
       - $ref: "#/components/schemas/AchievementAdditionalPropertiesV2"
+      - required:
+        - activationPolicy
+        - description
+        - name
+        - recurrencePolicy
+        - referencedByCampaigns
+        - sandbox
+        - subscribedApplications
+        - target
+        - timezone
+        - title
+        type: object
       - properties:
           sandbox:
             description: Indicates if this achievement is a live or sandbox achievement.
@@ -45090,10 +45181,6 @@ components:
               $ref: "#/components/schemas/CampaignReference"
             type: array
             default: null
-        required:
-        - referencedByCampaigns
-        - sandbox
-        - timezone
       example:
         id: 6
         created: 2020-06-10T09:05:27.993483Z
@@ -45126,6 +45213,14 @@ components:
     CreateAchievementV2:
       allOf:
       - $ref: "#/components/schemas/AchievementBaseV2"
+      - required:
+        - description
+        - name
+        - sandbox
+        - target
+        - timezone
+        - title
+        type: object
       - properties:
           sandbox:
             description: Indicates if this achievement is a live or sandbox achievement.
@@ -45139,9 +45234,6 @@ components:
             example: Europe/Berlin
             minLength: 1
             type: string
-        required:
-        - sandbox
-        - timezone
       example:
         name: Order50Discount
         title: 50% off on 50th purchase.
@@ -46055,6 +46147,13 @@ components:
       allOf:
       - $ref: "#/components/schemas/CouponConstraints"
       - $ref: "#/components/schemas/CouponLimitConfigs"
+      - required:
+        - applicationId
+        - batchId
+        - campaignId
+        - numberOfCoupons
+        - usageLimit
+        type: object
       - properties:
           applicationId:
             description: The ID of the Application the coupons will belong to.
@@ -46130,12 +46229,6 @@ components:
               or rejected. Applied when `supportRequestId` is provided.
             example: Approved as compensation for the delayed order.
             type: string
-        required:
-        - applicationId
-        - batchId
-        - campaignId
-        - numberOfCoupons
-        - usageLimit
     CouponWithApplication:
       allOf:
       - $ref: "#/components/schemas/Coupon"
@@ -48116,6 +48209,12 @@ components:
     OutboundMessage:
       allOf:
       - $ref: "#/components/schemas/OutboundLogBase"
+      - required:
+        - firstLogAt
+        - lastLogAt
+        - request
+        - status
+        type: object
       - properties:
           firstLogAt:
             description: Timestamp of the first log entry for this message.
@@ -48147,10 +48246,6 @@ components:
               $ref: "#/components/schemas/OutboundMessageResponse"
             type: array
             default: null
-        required:
-        - firstLogAt
-        - lastLogAt
-        - status
     OutboundMessages:
       description: Paginated list of outbound messages.
       properties:
@@ -48267,6 +48362,9 @@ components:
     CampaignCreatedNotification:
       allOf:
       - $ref: "#/components/schemas/CampaignNotificationBase"
+      - required:
+        - TotalResultSize
+        type: object
       - properties:
           Data:
             description: A list of campaign notification data.
@@ -48274,8 +48372,6 @@ components:
               $ref: "#/components/schemas/CampaignCreatedNotificationItem"
             type: array
             default: null
-        required:
-        - TotalResultSize
     CampaignStateChangedNotificationItem:
       allOf:
       - $ref: "#/components/schemas/CampaignNotificationItemBase"
@@ -48313,6 +48409,9 @@ components:
     CampaignStateChangedNotification:
       allOf:
       - $ref: "#/components/schemas/CampaignNotificationBase"
+      - required:
+        - TotalResultSize
+        type: object
       - properties:
           Data:
             description: A list of campaign notification data.
@@ -48320,8 +48419,6 @@ components:
               $ref: "#/components/schemas/CampaignStateChangedNotificationItem"
             type: array
             default: null
-        required:
-        - TotalResultSize
     CampaignRulesetChangedNotificationItem:
       allOf:
       - $ref: "#/components/schemas/CampaignNotificationItemBase"
@@ -48358,6 +48455,9 @@ components:
     CampaignRulesetChangedNotification:
       allOf:
       - $ref: "#/components/schemas/CampaignNotificationBase"
+      - required:
+        - TotalResultSize
+        type: object
       - properties:
           Data:
             description: A list of campaign notification data.
@@ -48365,8 +48465,6 @@ components:
               $ref: "#/components/schemas/CampaignRulesetChangedNotificationItem"
             type: array
             default: null
-        required:
-        - TotalResultSize
     CampaignEditedNotificationItem:
       allOf:
       - $ref: "#/components/schemas/CampaignNotificationItemBase"
@@ -48397,6 +48495,9 @@ components:
     CampaignEditedNotification:
       allOf:
       - $ref: "#/components/schemas/CampaignNotificationBase"
+      - required:
+        - TotalResultSize
+        type: object
       - properties:
           Data:
             description: A list of campaign notification data.
@@ -48404,8 +48505,6 @@ components:
               $ref: "#/components/schemas/CampaignEditedNotificationItem"
             type: array
             default: null
-        required:
-        - TotalResultSize
     CampaignCollectionEditedNotificationItem:
       allOf:
       - $ref: "#/components/schemas/CampaignNotificationItemBase"
@@ -48436,6 +48535,9 @@ components:
     CampaignCollectionEditedNotification:
       allOf:
       - $ref: "#/components/schemas/CampaignNotificationBase"
+      - required:
+        - TotalResultSize
+        type: object
       - properties:
           Data:
             description: A list of campaign notification data.
@@ -48443,8 +48545,6 @@ components:
               $ref: "#/components/schemas/CampaignCollectionEditedNotificationItem"
             type: array
             default: null
-        required:
-        - TotalResultSize
     CampaignDeletedNotificationItem:
       allOf:
       - $ref: "#/components/schemas/CampaignNotificationItemBase"
@@ -48465,6 +48565,9 @@ components:
     CampaignDeletedNotification:
       allOf:
       - $ref: "#/components/schemas/CampaignNotificationBase"
+      - required:
+        - TotalResultSize
+        type: object
       - properties:
           Data:
             description: A list of campaign notification data.
@@ -48472,8 +48575,6 @@ components:
               $ref: "#/components/schemas/CampaignDeletedNotificationItem"
             type: array
             default: null
-        required:
-        - TotalResultSize
     CampaignEvaluationTreeChangedNotificationData:
       description: Notification about an Application whose campaign evaluation tree
         changed.

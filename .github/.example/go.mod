@@ -2,6 +2,6 @@ module example
 
 go 1.24.5
 
-replace github.com/talon-one/talon-one-go-sdk/v26 => ../..
+replace github.com/talon-one/talon-one-go-sdk/v99 => ../..
 
-require github.com/talon-one/talon-one-go-sdk/v26 v26.23.0
+require github.com/talon-one/talon-one-go-sdk/v99 v99.99.99
