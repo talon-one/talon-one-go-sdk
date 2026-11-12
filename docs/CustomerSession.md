@@ -7,14 +7,14 @@ Name | Type | Description | Notes
 **IntegrationId** | **string** |  | 
 **Created** | **time.Time** | The time this entity was created. | 
 **ApplicationId** | **int64** | The ID of the Application that owns this entity. | 
-**ProfileId** | Pointer to **string** | ID of the customer profile set by your integration layer.  **Note:** If the customer does not yet have a known &#x60;profileId&#x60;, we recommend you use a guest &#x60;profileId&#x60;.  | [optional] 
-**Coupon** | Pointer to **string** | Any coupon code entered. | [optional] 
-**Referral** | Pointer to **string** | Any referral code entered. | [optional] 
-**State** | Pointer to **string** | Indicates the current state of the session. Sessions can be created as &#x60;open&#x60; or &#x60;closed&#x60;. The state transitions are:  1. &#x60;open&#x60; -&gt; &#x60;closed&#x60; 2. &#x60;open&#x60; -&gt; &#x60;cancelled&#x60; 3. &#x60;closed&#x60; -&gt; &#x60;cancelled&#x60; or &#x60;partially_returned&#x60; 4. &#x60;partially_returned&#x60; -&gt; &#x60;cancelled&#x60;  For more information, see [Customer session states](https://docs.talon.one/docs/dev/concepts/entities/customer-sessions).  | [optional] [default to "open"]
-**CartItems** | Pointer to [**[]CartItem**](CartItem.md) | Serialized JSON representation. | [optional] 
+**ProfileId** | **string** | ID of the customer profile set by your integration layer.  **Note:** If the customer does not yet have a known &#x60;profileId&#x60;, we recommend you use a guest &#x60;profileId&#x60;.  | 
+**Coupon** | **string** | Any coupon code entered. | 
+**Referral** | **string** | Any referral code entered. | 
+**State** | **string** | Indicates the current state of the session. Sessions can be created as &#x60;open&#x60; or &#x60;closed&#x60;. The state transitions are:  1. &#x60;open&#x60; -&gt; &#x60;closed&#x60; 2. &#x60;open&#x60; -&gt; &#x60;cancelled&#x60; 3. &#x60;closed&#x60; -&gt; &#x60;cancelled&#x60; or &#x60;partially_returned&#x60; 4. &#x60;partially_returned&#x60; -&gt; &#x60;cancelled&#x60;  For more information, see [Customer session states](https://docs.talon.one/docs/dev/concepts/entities/customer-sessions).  | [default to "open"]
+**CartItems** | [**[]CartItem**](CartItem.md) | Serialized JSON representation. | 
 **Identifiers** | Pointer to **[]string** | Session custom identifiers that you can set limits on or use inside your rules.  For example, you can use IP addresses as identifiers to potentially identify devices and limit discounts abuse in case of customers creating multiple accounts. See the [tutorial](https://docs.talon.one/docs/dev/tutorials/using-identifiers).  | [optional] 
-**Total** | Pointer to **float32** | The total sum of the cart in one session. | [optional] 
-**Attributes** | Pointer to **map[string]interface{}** | A key-value map of the sessions attributes. The potentially valid attributes are configured in your accounts developer settings.  | [optional] 
+**Total** | **float32** | The total sum of the cart in one session. | 
+**Attributes** | **map[string]interface{}** | A key-value map of the sessions attributes. The potentially valid attributes are configured in your accounts developer settings.  | 
 **FirstSession** | **bool** | Indicates whether this is the first session for the customer&#39;s profile. Will always be true for anonymous sessions. | 
 **UpdateCount** | **int64** | The number of times the session was updated. When the session is created, this value is initialized to &#x60;1&#x60;. | 
 **Discounts** | **map[string]float32** | A map of labelled discount values, values will be in the same currency as the application associated with the session. | 
@@ -24,7 +24,7 @@ Name | Type | Description | Notes
 
 ### NewCustomerSession
 
-`func NewCustomerSession(integrationId string, created time.Time, applicationId int64, firstSession bool, updateCount int64, discounts map[string]float32, updated time.Time, ) *CustomerSession`
+`func NewCustomerSession(integrationId string, created time.Time, applicationId int64, profileId string, coupon string, referral string, state string, cartItems []CartItem, total float32, attributes map[string]interface{}, firstSession bool, updateCount int64, discounts map[string]float32, updated time.Time, ) *CustomerSession`
 
 NewCustomerSession instantiates a new CustomerSession object
 This constructor will assign default values to properties that have it defined,
@@ -118,11 +118,6 @@ and a boolean to check if the value has been set.
 
 SetProfileId sets ProfileId field to given value.
 
-### HasProfileId
-
-`func (o *CustomerSession) HasProfileId() bool`
-
-HasProfileId returns a boolean if a field has been set.
 
 ### GetCoupon
 
@@ -143,11 +138,6 @@ and a boolean to check if the value has been set.
 
 SetCoupon sets Coupon field to given value.
 
-### HasCoupon
-
-`func (o *CustomerSession) HasCoupon() bool`
-
-HasCoupon returns a boolean if a field has been set.
 
 ### GetReferral
 
@@ -168,11 +158,6 @@ and a boolean to check if the value has been set.
 
 SetReferral sets Referral field to given value.
 
-### HasReferral
-
-`func (o *CustomerSession) HasReferral() bool`
-
-HasReferral returns a boolean if a field has been set.
 
 ### GetState
 
@@ -193,11 +178,6 @@ and a boolean to check if the value has been set.
 
 SetState sets State field to given value.
 
-### HasState
-
-`func (o *CustomerSession) HasState() bool`
-
-HasState returns a boolean if a field has been set.
 
 ### GetCartItems
 
@@ -218,11 +198,6 @@ and a boolean to check if the value has been set.
 
 SetCartItems sets CartItems field to given value.
 
-### HasCartItems
-
-`func (o *CustomerSession) HasCartItems() bool`
-
-HasCartItems returns a boolean if a field has been set.
 
 ### GetIdentifiers
 
@@ -268,11 +243,6 @@ and a boolean to check if the value has been set.
 
 SetTotal sets Total field to given value.
 
-### HasTotal
-
-`func (o *CustomerSession) HasTotal() bool`
-
-HasTotal returns a boolean if a field has been set.
 
 ### GetAttributes
 
@@ -293,11 +263,6 @@ and a boolean to check if the value has been set.
 
 SetAttributes sets Attributes field to given value.
 
-### HasAttributes
-
-`func (o *CustomerSession) HasAttributes() bool`
-
-HasAttributes returns a boolean if a field has been set.
 
 ### GetFirstSession
 

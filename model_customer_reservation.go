@@ -28,7 +28,7 @@ type CustomerReservation struct {
 	// The integration ID set by your integration layer.
 	IntegrationId string `json:"integrationId"`
 	// Arbitrary properties associated with this item.
-	Attributes map[string]interface{} `json:"attributes,omitempty"`
+	Attributes map[string]interface{} `json:"attributes"`
 	// The ID of the Talon.One account that owns this profile.
 	AccountId int64 `json:"accountId"`
 	// The total number of closed sessions. Does not include closed sessions that have been cancelled or reopened. See the [docs](https://docs.talon.one/docs/dev/concepts/entities/customer-sessions#customer-session-states).
@@ -55,11 +55,12 @@ type _CustomerReservation CustomerReservation
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCustomerReservation(id int64, created time.Time, integrationId string, accountId int64, closedSessions int64, totalSales float32, lastActivity time.Time) *CustomerReservation {
+func BuildCustomerReservation(id int64, created time.Time, integrationId string, attributes map[string]interface{}, accountId int64, closedSessions int64, totalSales float32, lastActivity time.Time) *CustomerReservation {
 	this := CustomerReservation{}
 	this.Id = id
 	this.Created = created
 	this.IntegrationId = integrationId
+	this.Attributes = attributes
 	this.AccountId = accountId
 	this.ClosedSessions = closedSessions
 	this.TotalSales = totalSales
@@ -147,34 +148,26 @@ func (o *CustomerReservation) SetIntegrationId(v string) {
 	o.IntegrationId = v
 }
 
-// GetAttributes returns the Attributes field value if set, zero value otherwise.
+// GetAttributes returns the Attributes field value
 func (o *CustomerReservation) GetAttributes() map[string]interface{} {
-	if o == nil || IsNil(o.Attributes) {
+	if o == nil {
 		var ret map[string]interface{}
 		return ret
 	}
+
 	return o.Attributes
 }
 
-// GetAttributesOk returns a tuple with the Attributes field value if set, nil otherwise
+// GetAttributesOk returns a tuple with the Attributes field value
 // and a boolean to check if the value has been set.
 func (o *CustomerReservation) GetAttributesOk() (map[string]interface{}, bool) {
-	if o == nil || IsNil(o.Attributes) {
+	if o == nil {
 		return map[string]interface{}{}, false
 	}
 	return o.Attributes, true
 }
 
-// HasAttributes returns a boolean if a field has been set.
-func (o *CustomerReservation) HasAttributes() bool {
-	if o != nil && !IsNil(o.Attributes) {
-		return true
-	}
-
-	return false
-}
-
-// SetAttributes gets a reference to the given map[string]interface{} and assigns it to the Attributes field.
+// SetAttributes sets field value
 func (o *CustomerReservation) SetAttributes(v map[string]interface{}) {
 	o.Attributes = v
 }
@@ -419,9 +412,7 @@ func (o CustomerReservation) ToMap() (map[string]interface{}, error) {
 	toSerialize["id"] = o.Id
 	toSerialize["created"] = o.Created
 	toSerialize["integrationId"] = o.IntegrationId
-	if !IsNil(o.Attributes) {
-		toSerialize["attributes"] = o.Attributes
-	}
+	toSerialize["attributes"] = o.Attributes
 	toSerialize["accountId"] = o.AccountId
 	toSerialize["closedSessions"] = o.ClosedSessions
 	toSerialize["totalSales"] = o.TotalSales
@@ -454,6 +445,7 @@ func (o *CustomerReservation) UnmarshalJSON(data []byte) (err error) {
 		"id",
 		"created",
 		"integrationId",
+		"attributes",
 		"accountId",
 		"closedSessions",
 		"totalSales",

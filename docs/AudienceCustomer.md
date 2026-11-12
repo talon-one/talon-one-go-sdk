@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **Id** | **int64** | The internal ID of the customer profile. | 
 **Created** | **time.Time** | The time this entity was created. | 
 **IntegrationId** | **string** | The integration ID set by your integration layer. | 
-**Attributes** | Pointer to **map[string]interface{}** | Arbitrary properties associated with this item. | [optional] 
+**Attributes** | **map[string]interface{}** | Arbitrary properties associated with this item. | 
 **AccountId** | **int64** | The ID of the Talon.One account that owns this profile. | 
 **ClosedSessions** | **int64** | The total number of closed sessions. Does not include closed sessions that have been cancelled or reopened. See the [docs](https://docs.talon.one/docs/dev/concepts/entities/customer-sessions#customer-session-states). | 
 **TotalSales** | **float32** | The total amount of money spent by the customer **before** discounts are applied.  The total sales amount excludes the following: - Cancelled or reopened sessions. - Returned items.  | 
@@ -22,7 +22,7 @@ Name | Type | Description | Notes
 
 ### NewAudienceCustomer
 
-`func NewAudienceCustomer(id int64, created time.Time, integrationId string, accountId int64, closedSessions int64, totalSales float32, lastActivity time.Time, ) *AudienceCustomer`
+`func NewAudienceCustomer(id int64, created time.Time, integrationId string, attributes map[string]interface{}, accountId int64, closedSessions int64, totalSales float32, lastActivity time.Time, ) *AudienceCustomer`
 
 NewAudienceCustomer instantiates a new AudienceCustomer object
 This constructor will assign default values to properties that have it defined,
@@ -116,11 +116,6 @@ and a boolean to check if the value has been set.
 
 SetAttributes sets Attributes field to given value.
 
-### HasAttributes
-
-`func (o *AudienceCustomer) HasAttributes() bool`
-
-HasAttributes returns a boolean if a field has been set.
 
 ### GetAccountId
 

@@ -8,14 +8,14 @@ Name | Type | Description | Notes
 **Created** | **time.Time** | The time this entity was created. | 
 **Name** | **string** | The human-friendly display name for this audience. | 
 **SubscribedApplicationsIds** | Pointer to **[]int64** | A list of the IDs of the Applications that are connected to this audience. | [optional] 
-**IntegrationId** | Pointer to **string** | The ID of this audience in the third-party integration. | [optional] 
+**IntegrationId** | **string** | The ID of this audience in the third-party integration. | 
 **Status** | **string** | Indicates whether the audience is new, updated or unmodified by the request.  | 
 
 ## Methods
 
 ### NewMultipleAudiencesItem
 
-`func NewMultipleAudiencesItem(id int64, created time.Time, name string, status string, ) *MultipleAudiencesItem`
+`func NewMultipleAudiencesItem(id int64, created time.Time, name string, integrationId string, status string, ) *MultipleAudiencesItem`
 
 NewMultipleAudiencesItem instantiates a new MultipleAudiencesItem object
 This constructor will assign default values to properties that have it defined,
@@ -134,11 +134,6 @@ and a boolean to check if the value has been set.
 
 SetIntegrationId sets IntegrationId field to given value.
 
-### HasIntegrationId
-
-`func (o *MultipleAudiencesItem) HasIntegrationId() bool`
-
-HasIntegrationId returns a boolean if a field has been set.
 
 ### GetStatus
 

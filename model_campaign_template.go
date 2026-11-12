@@ -62,7 +62,7 @@ type CampaignTemplate struct {
 	// The default campaign group ID.
 	DefaultCampaignGroupId *int64 `json:"defaultCampaignGroupId,omitempty"`
 	// The campaign type. Possible type values:   - `cartItem`: Type of campaign that can apply effects only to cart items.   - `advanced`: Type of campaign that can apply effects to customer sessions and cart items.
-	CampaignType *string `json:"campaignType,omitempty"`
+	CampaignType string `json:"campaignType"`
 	// The number of Campaigns created from this template.
 	CampaignsCount *int64 `json:"campaignsCount,omitempty"`
 	// Timestamp of the most recent update to the campaign template or any of its elements.
@@ -82,7 +82,7 @@ type _CampaignTemplate CampaignTemplate
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCampaignTemplate(id int64, created time.Time, accountId int64, userId int64, name string, description string, instructions string, state string, reevaluateOnReturn bool, applicationsIds []int64, validApplicationIds []int64) *CampaignTemplate {
+func BuildCampaignTemplate(id int64, created time.Time, accountId int64, userId int64, name string, description string, instructions string, state string, reevaluateOnReturn bool, applicationsIds []int64, campaignType string, validApplicationIds []int64) *CampaignTemplate {
 	this := CampaignTemplate{}
 	this.Id = id
 	this.Created = created
@@ -94,8 +94,7 @@ func BuildCampaignTemplate(id int64, created time.Time, accountId int64, userId 
 	this.State = state
 	this.ReevaluateOnReturn = reevaluateOnReturn
 	this.ApplicationsIds = applicationsIds
-	var campaignType string = "advanced"
-	this.CampaignType = &campaignType
+	this.CampaignType = campaignType
 	this.ValidApplicationIds = validApplicationIds
 	var isUserFavorite bool = false
 	this.IsUserFavorite = &isUserFavorite
@@ -108,7 +107,7 @@ func BuildCampaignTemplate(id int64, created time.Time, accountId int64, userId 
 func NewCampaignTemplateWithDefaults() *CampaignTemplate {
 	this := CampaignTemplate{}
 	var campaignType string = "advanced"
-	this.CampaignType = &campaignType
+	this.CampaignType = campaignType
 	var isUserFavorite bool = false
 	this.IsUserFavorite = &isUserFavorite
 	return &this
@@ -738,36 +737,28 @@ func (o *CampaignTemplate) SetDefaultCampaignGroupId(v int64) {
 	o.DefaultCampaignGroupId = &v
 }
 
-// GetCampaignType returns the CampaignType field value if set, zero value otherwise.
+// GetCampaignType returns the CampaignType field value
 func (o *CampaignTemplate) GetCampaignType() string {
-	if o == nil || IsNil(o.CampaignType) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.CampaignType
+
+	return o.CampaignType
 }
 
-// GetCampaignTypeOk returns a tuple with the CampaignType field value if set, nil otherwise
+// GetCampaignTypeOk returns a tuple with the CampaignType field value
 // and a boolean to check if the value has been set.
 func (o *CampaignTemplate) GetCampaignTypeOk() (*string, bool) {
-	if o == nil || IsNil(o.CampaignType) {
+	if o == nil {
 		return nil, false
 	}
-	return o.CampaignType, true
+	return &o.CampaignType, true
 }
 
-// HasCampaignType returns a boolean if a field has been set.
-func (o *CampaignTemplate) HasCampaignType() bool {
-	if o != nil && !IsNil(o.CampaignType) {
-		return true
-	}
-
-	return false
-}
-
-// SetCampaignType gets a reference to the given string and assigns it to the CampaignType field.
+// SetCampaignType sets field value
 func (o *CampaignTemplate) SetCampaignType(v string) {
-	o.CampaignType = &v
+	o.CampaignType = v
 }
 
 // GetCampaignsCount returns the CampaignsCount field value if set, zero value otherwise.
@@ -978,9 +969,7 @@ func (o CampaignTemplate) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.DefaultCampaignGroupId) {
 		toSerialize["defaultCampaignGroupId"] = o.DefaultCampaignGroupId
 	}
-	if !IsNil(o.CampaignType) {
-		toSerialize["campaignType"] = o.CampaignType
-	}
+	toSerialize["campaignType"] = o.CampaignType
 	if !IsNil(o.CampaignsCount) {
 		toSerialize["campaignsCount"] = o.CampaignsCount
 	}
@@ -1017,6 +1006,7 @@ func (o *CampaignTemplate) UnmarshalJSON(data []byte) (err error) {
 		"state",
 		"reevaluateOnReturn",
 		"applicationsIds",
+		"campaignType",
 		"validApplicationIds",
 	}
 

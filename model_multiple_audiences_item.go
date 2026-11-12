@@ -30,7 +30,7 @@ type MultipleAudiencesItem struct {
 	// A list of the IDs of the Applications that are connected to this audience.
 	SubscribedApplicationsIds []int64 `json:"subscribedApplicationsIds,omitempty"`
 	// The ID of this audience in the third-party integration.
-	IntegrationId *string `json:"integrationId,omitempty"`
+	IntegrationId string `json:"integrationId"`
 	// Indicates whether the audience is new, updated or unmodified by the request.
 	Status               string `json:"status"`
 	AdditionalProperties map[string]interface{}
@@ -42,11 +42,12 @@ type _MultipleAudiencesItem MultipleAudiencesItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildMultipleAudiencesItem(id int64, created time.Time, name string, status string) *MultipleAudiencesItem {
+func BuildMultipleAudiencesItem(id int64, created time.Time, name string, integrationId string, status string) *MultipleAudiencesItem {
 	this := MultipleAudiencesItem{}
 	this.Id = id
 	this.Created = created
 	this.Name = name
+	this.IntegrationId = integrationId
 	this.Status = status
 	return &this
 }
@@ -163,36 +164,28 @@ func (o *MultipleAudiencesItem) SetSubscribedApplicationsIds(v []int64) {
 	o.SubscribedApplicationsIds = v
 }
 
-// GetIntegrationId returns the IntegrationId field value if set, zero value otherwise.
+// GetIntegrationId returns the IntegrationId field value
 func (o *MultipleAudiencesItem) GetIntegrationId() string {
-	if o == nil || IsNil(o.IntegrationId) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.IntegrationId
+
+	return o.IntegrationId
 }
 
-// GetIntegrationIdOk returns a tuple with the IntegrationId field value if set, nil otherwise
+// GetIntegrationIdOk returns a tuple with the IntegrationId field value
 // and a boolean to check if the value has been set.
 func (o *MultipleAudiencesItem) GetIntegrationIdOk() (*string, bool) {
-	if o == nil || IsNil(o.IntegrationId) {
+	if o == nil {
 		return nil, false
 	}
-	return o.IntegrationId, true
+	return &o.IntegrationId, true
 }
 
-// HasIntegrationId returns a boolean if a field has been set.
-func (o *MultipleAudiencesItem) HasIntegrationId() bool {
-	if o != nil && !IsNil(o.IntegrationId) {
-		return true
-	}
-
-	return false
-}
-
-// SetIntegrationId gets a reference to the given string and assigns it to the IntegrationId field.
+// SetIntegrationId sets field value
 func (o *MultipleAudiencesItem) SetIntegrationId(v string) {
-	o.IntegrationId = &v
+	o.IntegrationId = v
 }
 
 // GetStatus returns the Status field value
@@ -235,9 +228,7 @@ func (o MultipleAudiencesItem) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.SubscribedApplicationsIds) {
 		toSerialize["subscribedApplicationsIds"] = o.SubscribedApplicationsIds
 	}
-	if !IsNil(o.IntegrationId) {
-		toSerialize["integrationId"] = o.IntegrationId
-	}
+	toSerialize["integrationId"] = o.IntegrationId
 	toSerialize["status"] = o.Status
 
 	for key, value := range o.AdditionalProperties {
@@ -255,6 +246,7 @@ func (o *MultipleAudiencesItem) UnmarshalJSON(data []byte) (err error) {
 		"id",
 		"created",
 		"name",
+		"integrationId",
 		"status",
 	}
 
