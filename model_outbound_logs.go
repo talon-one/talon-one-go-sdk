@@ -22,7 +22,7 @@ var _ MappedNullable = &OutboundLogs{}
 type OutboundLogs struct {
 	// Cursor for the next page of results. Omitted when there are no more results.
 	NextCursor *string `json:"nextCursor,omitempty"`
-	// List of outbound logs. When an error ends the response, an `OutboundLogStreamError` is the last item and the response is incomplete.
+	// List of outbound log entries. The `type` field determines the kind of entry. When an error ends the response, an `OutboundLogStreamErrorEntry` is the last item and the response is incomplete.
 	Data                 []OutboundLogsDataInner `json:"data"`
 	AdditionalProperties map[string]interface{}
 }

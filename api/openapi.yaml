@@ -47869,6 +47869,20 @@ components:
       example: ndjson
       type: string
       x-generate-enum-go: true
+    OutboundLogStreamEntryType:
+      description: |
+        Kind of entry in an `ndjson` stream of outbound logs:
+
+        - `log`: An outbound log entry.
+        - `error`: An error that ended the stream.
+        - `cursor`: The cursor for the next page. Always the last entry.
+      enum:
+      - log
+      - error
+      - cursor
+      example: log
+      type: string
+      x-generate-enum-go: true
     OutboundLogRequest:
       description: Details of the outbound HTTP request.
       properties:
@@ -47991,6 +48005,17 @@ components:
         required:
         - createdAt
         - processingTimeMs
+    OutboundLogStreamLogEntry:
+      description: An outbound log entry in a stream of outbound logs.
+      properties:
+        type:
+          $ref: "#/components/schemas/OutboundLogStreamEntryType"
+        data:
+          $ref: "#/components/schemas/OutboundLog"
+      required:
+      - data
+      - type
+      title: OutboundLogStreamLogEntry
     OutboundLogStreamError:
       description: Details about an error that ended the stream.
       properties:
@@ -48005,51 +48030,9 @@ components:
           type: string
       required:
       - error
-    OutboundLogs:
-      properties:
-        nextCursor:
-          description: Cursor for the next page of results. Omitted when there are
-            no more results.
-          example: SmJlNERRMHdyNWFsTmRDZDVYU0c=
-          format: byte
-          type: string
-        data:
-          description: "List of outbound logs. When an error ends the response, an\
-            \ `OutboundLogStreamError` is the last item and the response is incomplete."
-          items:
-            $ref: "#/components/schemas/OutboundLogs_data_inner"
-          type: array
-          default: null
-      required:
-      - data
-    OutboundLogStreamEntryType:
-      description: |
-        Kind of entry in an `ndjson` stream of outbound logs:
-
-        - `log`: An outbound log entry.
-        - `error`: An error that ended the stream.
-        - `cursor`: The cursor for the next page. Always the last entry.
-      enum:
-      - log
-      - error
-      - cursor
-      example: log
-      type: string
-      x-generate-enum-go: true
-    OutboundLogStreamLogEntry:
-      description: An outbound log entry in an `ndjson` stream.
-      properties:
-        type:
-          $ref: "#/components/schemas/OutboundLogStreamEntryType"
-        data:
-          $ref: "#/components/schemas/OutboundLog"
-      required:
-      - data
-      - type
-      title: OutboundLogStreamLogEntry
     OutboundLogStreamErrorEntry:
-      description: "An error that ended an `ndjson` stream, such as a log entry that\
-        \ couldn't be read. It is the last entry and the response is incomplete."
+      description: "An error that ended a stream of outbound logs, such as a log entry\
+        \ that couldn't be read. It is the last entry and the response is incomplete."
       properties:
         type:
           $ref: "#/components/schemas/OutboundLogStreamEntryType"
@@ -48059,6 +48042,24 @@ components:
       - data
       - type
       title: OutboundLogStreamErrorEntry
+    OutboundLogs:
+      properties:
+        nextCursor:
+          description: Cursor for the next page of results. Omitted when there are
+            no more results.
+          example: SmJlNERRMHdyNWFsTmRDZDVYU0c=
+          format: byte
+          type: string
+        data:
+          description: "List of outbound log entries. The `type` field determines\
+            \ the kind of entry. When an error ends the response, an `OutboundLogStreamErrorEntry`\
+            \ is the last item and the response is incomplete."
+          items:
+            $ref: "#/components/schemas/OutboundLogs_data_inner"
+          type: array
+          default: null
+      required:
+      - data
     OutboundLogStreamCursor:
       description: Cursor for the next page of results.
       properties:
@@ -56545,9 +56546,14 @@ components:
           - $ref: "#/components/schemas/EmbeddedDashboardConfiguration"
           description: The configuration of the embedded Insights dashboard for campaigns.
     OutboundLogs_data_inner:
+      discriminator:
+        mapping:
+          log: "#/components/schemas/OutboundLogStreamLogEntry"
+          error: "#/components/schemas/OutboundLogStreamErrorEntry"
+        propertyName: type
       oneOf:
-      - $ref: "#/components/schemas/OutboundLog"
-      - $ref: "#/components/schemas/OutboundLogStreamError"
+      - $ref: "#/components/schemas/OutboundLogStreamLogEntry"
+      - $ref: "#/components/schemas/OutboundLogStreamErrorEntry"
     IntegrationHubEventPayloadCouponBasedNotifications_allOf_Attributes:
       type: object
   securitySchemes:

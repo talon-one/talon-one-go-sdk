@@ -1,4 +1,4 @@
-module github.com/talon-one/talon-one-go-sdk/v26
+module github.com/talon-one/talon-one-go-sdk/v99
 
 go 1.23.0
 
