@@ -35,12 +35,14 @@ type CustomerProfileReward struct {
 	Description *string `json:"description,omitempty"`
 	// Customer-facing rule metadata for the reward. Only returned when the reward defines a rule.
 	Rule *RuleMetadata `json:"rule,omitempty"`
-	// The status of the customer reward: - `unlocked`: The reward is available for use. - `used`: The reward has been used.
+	// The status of the customer reward: - `unlocked`: The reward is available for use. - `used`: The reward has been used. - `expired`: The reward was not used before its expiry date.
 	Status string `json:"status"`
 	// The date and time when the reward was unlocked.
 	UnlockedAt time.Time `json:"unlockedAt"`
 	// The integration ID of the customer profile that unlocked the reward.   For rewards unlocked with a loyalty card, this can be any customer profile  linked to that loyalty card.
 	UnlockedByProfileIntegrationId *string `json:"unlockedByProfileIntegrationId,omitempty"`
+	// The date and time when the customer reward expires, based on the  `validityDuration` or `expiryDate` of the reward when the reward was  unlocked. If the reward does not specify either property, the customer reward  has unlimited validity and this field is omitted.  **Note**: The expiry date is calculated using the time zone of the  Application connected to the reward.
+	ExpiryDate *time.Time `json:"expiryDate,omitempty"`
 	// The date and time when the reward was used.
 	UsedAt *time.Time `json:"usedAt,omitempty"`
 	// The integration ID of the customer profile that used the reward.   For rewards unlocked with a loyalty card, this can be any customer profile  linked to that loyalty card.   Only returned when the reward has been used.
@@ -342,6 +344,38 @@ func (o *CustomerProfileReward) SetUnlockedByProfileIntegrationId(v string) {
 	o.UnlockedByProfileIntegrationId = &v
 }
 
+// GetExpiryDate returns the ExpiryDate field value if set, zero value otherwise.
+func (o *CustomerProfileReward) GetExpiryDate() time.Time {
+	if o == nil || IsNil(o.ExpiryDate) {
+		var ret time.Time
+		return ret
+	}
+	return *o.ExpiryDate
+}
+
+// GetExpiryDateOk returns a tuple with the ExpiryDate field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustomerProfileReward) GetExpiryDateOk() (*time.Time, bool) {
+	if o == nil || IsNil(o.ExpiryDate) {
+		return nil, false
+	}
+	return o.ExpiryDate, true
+}
+
+// HasExpiryDate returns a boolean if a field has been set.
+func (o *CustomerProfileReward) HasExpiryDate() bool {
+	if o != nil && !IsNil(o.ExpiryDate) {
+		return true
+	}
+
+	return false
+}
+
+// SetExpiryDate gets a reference to the given time.Time and assigns it to the ExpiryDate field.
+func (o *CustomerProfileReward) SetExpiryDate(v time.Time) {
+	o.ExpiryDate = &v
+}
+
 // GetUsedAt returns the UsedAt field value if set, zero value otherwise.
 func (o *CustomerProfileReward) GetUsedAt() time.Time {
 	if o == nil || IsNil(o.UsedAt) {
@@ -496,6 +530,9 @@ func (o CustomerProfileReward) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.UnlockedByProfileIntegrationId) {
 		toSerialize["unlockedByProfileIntegrationId"] = o.UnlockedByProfileIntegrationId
 	}
+	if !IsNil(o.ExpiryDate) {
+		toSerialize["expiryDate"] = o.ExpiryDate
+	}
 	if !IsNil(o.UsedAt) {
 		toSerialize["usedAt"] = o.UsedAt
 	}
@@ -567,6 +604,7 @@ func (o *CustomerProfileReward) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "status")
 		delete(additionalProperties, "unlockedAt")
 		delete(additionalProperties, "unlockedByProfileIntegrationId")
+		delete(additionalProperties, "expiryDate")
 		delete(additionalProperties, "usedAt")
 		delete(additionalProperties, "usedByProfileIntegrationId")
 		delete(additionalProperties, "loyaltyProgramId")

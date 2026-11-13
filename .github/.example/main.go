@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"os"
@@ -25,7 +26,7 @@ func main() {
 
 	// Create integration authentication context using api key
 	integrationAuthContext := context.WithValue(context.Background(), talon.ContextAPIKeys, map[string]talon.APIKey{
-		"Authorization": {
+		"api_key_v1": {
 			Prefix: "ApiKey-v1",
 			Key:    os.Getenv("TALON_API_KEY"),
 		},
@@ -76,7 +77,7 @@ func main() {
 		Execute()
 	if err != nil {
 		fmt.Printf("ERROR while calling UpdateCustomerSessionV2: %s\n", err)
-		return
+		os.Exit(1)
 	}
 	fmt.Printf("%#v\n", integrationState)
 
@@ -95,4 +96,47 @@ func main() {
 			fmt.Printf("Unhandled effect: %#v\n", effect.GetActualInstance())
 		}
 	}
+
+	// Management API: the same client serves both APIs. Management endpoints accept a user
+	// token with the "Bearer" prefix, or a Management API key with the "ManagementKey-v1" prefix.
+	managementAuthContext := context.WithValue(context.Background(), talon.ContextAPIKeys, map[string]talon.APIKey{
+		"api_key_v1": {
+			Prefix: "Bearer",
+			Key:    os.Getenv("TALON_USER_TOKEN"),
+		},
+	})
+
+	collection, _, err := integrationClient.ManagementAPI.
+		CreateAccountCollection(managementAuthContext).
+		NewCollection(talon.NewCollection{Name: "SDK example collection"}).
+		Execute()
+	if err != nil {
+		fmt.Printf("ERROR while calling CreateAccountCollection: %s\n", err)
+		os.Exit(1)
+	}
+
+	// Upload setters accept any io.Reader, so the CSV can come straight from memory.
+	// talon.NamedReader sets the file name; an *os.File can be passed directly instead.
+	items := []byte("item\nSKU-1\nSKU-2\n")
+	_, _, err = integrationClient.ManagementAPI.
+		ImportAccountCollection(managementAuthContext, collection.Id).
+		UpFile(talon.NamedReader(bytes.NewReader(items), "items.csv")).
+		Execute()
+	if err != nil {
+		fmt.Printf("ERROR while calling ImportAccountCollection: %s\n", err)
+		os.Exit(1)
+	}
+
+	collectionItems, _, err := integrationClient.ManagementAPI.
+		GetCollectionItems(managementAuthContext, collection.Id).
+		Execute()
+	if err != nil {
+		fmt.Printf("ERROR while calling GetCollectionItems: %s\n", err)
+		os.Exit(1)
+	}
+	if len(collectionItems.Data) != 2 {
+		fmt.Printf("ERROR: expected 2 collection items after import, got %d\n", len(collectionItems.Data))
+		os.Exit(1)
+	}
+	fmt.Printf("Imported %d collection items from memory\n", len(collectionItems.Data))
 }

@@ -23,10 +23,11 @@ type CustomerInventory struct {
 	Loyalty   *Loyalty            `json:"loyalty,omitempty"`
 	Referrals []InventoryReferral `json:"referrals,omitempty"`
 	// The coupons reserved by this profile. This array includes hard and soft reservations.
-	Coupons      []InventoryCoupon                   `json:"coupons,omitempty"`
-	Giveaways    []Giveaway                          `json:"giveaways,omitempty"`
+	Coupons   []InventoryCoupon `json:"coupons,omitempty"`
+	Giveaways []Giveaway        `json:"giveaways,omitempty"`
+	// The customer's progress in each achievement they have participated in.  Only achievements the customer has started are included, whether they  are in progress, completed, or expired. Recurring achievements can appear  more than once, once per iteration.
 	Achievements []AchievementProgressWithDefinition `json:"achievements,omitempty"`
-	// The customer rewards that are `unlocked` and not yet `used`.
+	// The rewards that the customer has unlocked but not used. Expired customer rewards are not returned.
 	Rewards              []RewardWithUnlocks `json:"rewards,omitempty"`
 	AdditionalProperties map[string]interface{}
 }

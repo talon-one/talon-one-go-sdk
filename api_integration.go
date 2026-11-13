@@ -2172,7 +2172,26 @@ func (r ApiGetCustomerAchievementsRequest) Execute() (*GetCustomerAchievements20
 /*
 GetCustomerAchievements List customer's available achievements
 
-Retrieve all the achievements available to a given customer and their progress in them.
+Retrieve all the achievements available to a given customer and their progress
+in them. Use this endpoint to build an achievements page where customers can
+browse the achievements they can participate in and see the details of each one.
+
+The response contains one entry for each active achievement connected to
+the Application, whether or not the customer has started it. Each entry
+includes the achievement's details such as `target` and `period`, and the
+customer's progress in the achievement. If the customer has not started
+the achievement, `currentProgress.status` is `not_started`.
+
+> [!note] The [List customer data](https://docs.talon.one/integration-api#tag/Customer-profiles/operation/getCustomerInventory)
+> endpoint also returns achievement data when `achievements=true`, but with a
+> different scope and structure:
+> - It returns only the achievements the customer has started, completed, or
+>  that have expired for them, one entry per progress record. Achievements the
+>  customer has not started are not returned.
+> - The results cannot be filtered or paginated.
+>
+> Use this endpoint when you need the customer's achievement progress
+> together with other customer data, such as loyalty or coupons, in a single request.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param integrationId The integration identifier for this customer profile. Must be: - Unique within the deployment. - Stable for the customer. Do not use an ID that the customer can update themselves. For example, you can use a database ID.  Once set, you cannot update this identifier.
@@ -2374,13 +2393,13 @@ func (r ApiGetCustomerInventoryRequest) Giveaways(giveaways bool) ApiGetCustomer
 	return r
 }
 
-// Set to &#x60;true&#x60; to include achievement information in the response.
+// Set to &#x60;true&#x60; to include the customer&#39;s progress in achievements in the  response. Only achievements the customer has started are returned, whether  they are in progress, completed, or expired.  Recurring achievements can appear more than once, once per iteration. The  achievements cannot be filtered or paginated.
 func (r ApiGetCustomerInventoryRequest) Achievements(achievements bool) ApiGetCustomerInventoryRequest {
 	r.achievements = &achievements
 	return r
 }
 
-// Set to &#x60;true&#x60; to include &#x60;unlocked&#x60; rewards that have not been &#x60;used&#x60; in the response.
+// The instances of this reward that the customer has unlocked but not used. Expired customer rewards are not returned.
 func (r ApiGetCustomerInventoryRequest) UnlockedRewards(unlockedRewards bool) ApiGetCustomerInventoryRequest {
 	r.unlockedRewards = &unlockedRewards
 	return r
@@ -2393,10 +2412,22 @@ func (r ApiGetCustomerInventoryRequest) Execute() (*CustomerInventory, *http.Res
 /*
 GetCustomerInventory List customer data
 
-Return the customer inventory regarding entities referencing this customer profile's `integrationId`.
+Return a snapshot of the customer profile including the entities referencing this customer
+profile's `integrationId`. Typical entities returned are: customer profile information, referral codes,
+loyalty points, loyalty cards, reserved coupons and achievements.
 
-Typical entities returned are: customer profile information, referral codes, loyalty points, loyalty cards and reserved coupons.
-Reserved coupons also include redeemed coupons.
+> [!note] Reserved coupons also include redeemed coupons.
+
+When `achievements=true`, the `achievements` array contains the customer's progress
+in the achievements they have participated in. Only achievements the customer
+has started are returned, whether they are in progress, completed, or expired.
+
+Recurring achievements can appear more than once, once per iteration. The
+achievements cannot be filtered or paginated.
+
+> [!note] To list all the achievements available to the customer, including the ones
+> they have not started, and to filter or paginate the results, use the [List customer's available achievements](https://docs.talon.one/integration-api#tag/Achievements/operation/getCustomerAchievements)
+> endpoint.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param integrationId The integration ID of the customer profile. You can get the `integrationId` of a profile using: - A customer session integration ID with the [Update customer session](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2) endpoint. - The Management API with the [List application's customers](https://docs.talon.one/management-api#tag/Customer-data/operation/getApplicationCustomers) endpoint.

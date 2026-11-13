@@ -2000,4 +2000,6 @@ patches/ruleengine-types/model_template_def.patch
 response.go
 test/api_integration_test.go
 test/api_management_test.go
+upload.go
+upload_test.go
 utils.go

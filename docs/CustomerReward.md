@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **ProfileIntegrationId** | **string** | The integration ID of the customer profile that unlocked this reward. | 
 **IntegrationId** | **string** | The integration ID assigned to this reward unlock. | 
 **UnlockedAt** | **time.Time** | The date and time when the reward was unlocked. | 
+**ExpiryDate** | Pointer to **time.Time** | The date and time when the customer reward expires, based on the  &#x60;validityDuration&#x60; or &#x60;expiryDate&#x60; of the reward when the reward was  unlocked. If the reward does not specify either property, the customer reward  has unlimited validity and this field is omitted.  **Note**: The expiry date is calculated using the time zone of the  Application connected to the reward.  | [optional] 
 **UsedAt** | Pointer to **time.Time** | The date and time when the reward was used. | [optional] 
 
 ## Methods
@@ -108,6 +109,31 @@ and a boolean to check if the value has been set.
 
 SetUnlockedAt sets UnlockedAt field to given value.
 
+
+### GetExpiryDate
+
+`func (o *CustomerReward) GetExpiryDate() time.Time`
+
+GetExpiryDate returns the ExpiryDate field if non-nil, zero value otherwise.
+
+### GetExpiryDateOk
+
+`func (o *CustomerReward) GetExpiryDateOk() (*time.Time, bool)`
+
+GetExpiryDateOk returns a tuple with the ExpiryDate field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetExpiryDate
+
+`func (o *CustomerReward) SetExpiryDate(v time.Time)`
+
+SetExpiryDate sets ExpiryDate field to given value.
+
+### HasExpiryDate
+
+`func (o *CustomerReward) HasExpiryDate() bool`
+
+HasExpiryDate returns a boolean if a field has been set.
 
 ### GetUsedAt
 

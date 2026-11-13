@@ -29,6 +29,8 @@ type CustomerReward struct {
 	IntegrationId string `json:"integrationId"`
 	// The date and time when the reward was unlocked.
 	UnlockedAt time.Time `json:"unlockedAt"`
+	// The date and time when the customer reward expires, based on the  `validityDuration` or `expiryDate` of the reward when the reward was  unlocked. If the reward does not specify either property, the customer reward  has unlimited validity and this field is omitted.  **Note**: The expiry date is calculated using the time zone of the  Application connected to the reward.
+	ExpiryDate *time.Time `json:"expiryDate,omitempty"`
 	// The date and time when the reward was used.
 	UsedAt               *time.Time `json:"usedAt,omitempty"`
 	AdditionalProperties map[string]interface{}
@@ -153,6 +155,38 @@ func (o *CustomerReward) SetUnlockedAt(v time.Time) {
 	o.UnlockedAt = v
 }
 
+// GetExpiryDate returns the ExpiryDate field value if set, zero value otherwise.
+func (o *CustomerReward) GetExpiryDate() time.Time {
+	if o == nil || IsNil(o.ExpiryDate) {
+		var ret time.Time
+		return ret
+	}
+	return *o.ExpiryDate
+}
+
+// GetExpiryDateOk returns a tuple with the ExpiryDate field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustomerReward) GetExpiryDateOk() (*time.Time, bool) {
+	if o == nil || IsNil(o.ExpiryDate) {
+		return nil, false
+	}
+	return o.ExpiryDate, true
+}
+
+// HasExpiryDate returns a boolean if a field has been set.
+func (o *CustomerReward) HasExpiryDate() bool {
+	if o != nil && !IsNil(o.ExpiryDate) {
+		return true
+	}
+
+	return false
+}
+
+// SetExpiryDate gets a reference to the given time.Time and assigns it to the ExpiryDate field.
+func (o *CustomerReward) SetExpiryDate(v time.Time) {
+	o.ExpiryDate = &v
+}
+
 // GetUsedAt returns the UsedAt field value if set, zero value otherwise.
 func (o *CustomerReward) GetUsedAt() time.Time {
 	if o == nil || IsNil(o.UsedAt) {
@@ -199,6 +233,9 @@ func (o CustomerReward) ToMap() (map[string]interface{}, error) {
 	toSerialize["profileIntegrationId"] = o.ProfileIntegrationId
 	toSerialize["integrationId"] = o.IntegrationId
 	toSerialize["unlockedAt"] = o.UnlockedAt
+	if !IsNil(o.ExpiryDate) {
+		toSerialize["expiryDate"] = o.ExpiryDate
+	}
 	if !IsNil(o.UsedAt) {
 		toSerialize["usedAt"] = o.UsedAt
 	}
@@ -252,6 +289,7 @@ func (o *CustomerReward) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "profileIntegrationId")
 		delete(additionalProperties, "integrationId")
 		delete(additionalProperties, "unlockedAt")
+		delete(additionalProperties, "expiryDate")
 		delete(additionalProperties, "usedAt")
 		o.AdditionalProperties = additionalProperties
 	}

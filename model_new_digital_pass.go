@@ -25,12 +25,12 @@ type NewDigitalPass struct {
 	// The ID of the digital pass template used to generate the pass.
 	PassTemplateId string `json:"passTemplateId"`
 	// The integration ID of the customer profile the pass is issued for.
-	ProfileId string `json:"profileId"`
+	ProfileIntegrationId string `json:"profileIntegrationId"`
 	// The identifier of the loyalty card the pass is issued for.  **Note**: Only applicable for card-based loyalty programs.
 	LoyaltyCardId *string `json:"loyaltyCardId,omitempty"`
 	// The wallet platform the pass is generated for. Possible values:  - `apple`: The digital pass is generated for Apple Wallet. - `google`: The digital pass is generated for Google Wallet.
 	Platform string `json:"platform"`
-	// A map of placeholder values that you provide to fill in the pass template. These values are not validated against the template.
+	// A map of placeholder values that you provide to fill in the pass template. Pass templates reference each value as `CustomerProfile.Attributes.<key>`.  Each key must start with a letter or an underscore and can contain only letters, digits, and underscores. If the template requires a value that is missing, the request fails with a `422` error.
 	Attributes           *map[string]string `json:"attributes,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
@@ -41,11 +41,11 @@ type _NewDigitalPass NewDigitalPass
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildNewDigitalPass(loyaltyProgramId int64, passTemplateId string, profileId string, platform string) *NewDigitalPass {
+func BuildNewDigitalPass(loyaltyProgramId int64, passTemplateId string, profileIntegrationId string, platform string) *NewDigitalPass {
 	this := NewDigitalPass{}
 	this.LoyaltyProgramId = loyaltyProgramId
 	this.PassTemplateId = passTemplateId
-	this.ProfileId = profileId
+	this.ProfileIntegrationId = profileIntegrationId
 	this.Platform = platform
 	return &this
 }
@@ -106,28 +106,28 @@ func (o *NewDigitalPass) SetPassTemplateId(v string) {
 	o.PassTemplateId = v
 }
 
-// GetProfileId returns the ProfileId field value
-func (o *NewDigitalPass) GetProfileId() string {
+// GetProfileIntegrationId returns the ProfileIntegrationId field value
+func (o *NewDigitalPass) GetProfileIntegrationId() string {
 	if o == nil {
 		var ret string
 		return ret
 	}
 
-	return o.ProfileId
+	return o.ProfileIntegrationId
 }
 
-// GetProfileIdOk returns a tuple with the ProfileId field value
+// GetProfileIntegrationIdOk returns a tuple with the ProfileIntegrationId field value
 // and a boolean to check if the value has been set.
-func (o *NewDigitalPass) GetProfileIdOk() (*string, bool) {
+func (o *NewDigitalPass) GetProfileIntegrationIdOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.ProfileId, true
+	return &o.ProfileIntegrationId, true
 }
 
-// SetProfileId sets field value
-func (o *NewDigitalPass) SetProfileId(v string) {
-	o.ProfileId = v
+// SetProfileIntegrationId sets field value
+func (o *NewDigitalPass) SetProfileIntegrationId(v string) {
+	o.ProfileIntegrationId = v
 }
 
 // GetLoyaltyCardId returns the LoyaltyCardId field value if set, zero value otherwise.
@@ -230,7 +230,7 @@ func (o NewDigitalPass) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["loyaltyProgramId"] = o.LoyaltyProgramId
 	toSerialize["passTemplateId"] = o.PassTemplateId
-	toSerialize["profileId"] = o.ProfileId
+	toSerialize["profileIntegrationId"] = o.ProfileIntegrationId
 	if !IsNil(o.LoyaltyCardId) {
 		toSerialize["loyaltyCardId"] = o.LoyaltyCardId
 	}
@@ -253,7 +253,7 @@ func (o *NewDigitalPass) UnmarshalJSON(data []byte) (err error) {
 	requiredProperties := []string{
 		"loyaltyProgramId",
 		"passTemplateId",
-		"profileId",
+		"profileIntegrationId",
 		"platform",
 	}
 
@@ -286,7 +286,7 @@ func (o *NewDigitalPass) UnmarshalJSON(data []byte) (err error) {
 	if err = json.Unmarshal(data, &additionalProperties); err == nil {
 		delete(additionalProperties, "loyaltyProgramId")
 		delete(additionalProperties, "passTemplateId")
-		delete(additionalProperties, "profileId")
+		delete(additionalProperties, "profileIntegrationId")
 		delete(additionalProperties, "loyaltyCardId")
 		delete(additionalProperties, "platform")
 		delete(additionalProperties, "attributes")

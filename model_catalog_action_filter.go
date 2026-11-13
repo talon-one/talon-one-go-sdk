@@ -20,11 +20,11 @@ var _ MappedNullable = &CatalogActionFilter{}
 
 // CatalogActionFilter The properties for a single filtering condition in a catalog sync action.
 type CatalogActionFilter struct {
-	// The name of the attribute to filter on.
+	// The name of the attribute to filter on. The attribute must exist in the catalog. For the `LT`, `LE`, `GT`, and `GE` comparison operators, the attribute must be of type `number`.
 	Attr string `json:"attr"`
 	// The filtering operator.
 	Op string `json:"op"`
-	// The value to filter for.
+	// The value to filter for. For the `LT`, `LE`, `GT`, and `GE` comparison operators, the value must be a number or a numeric string.
 	Value                interface{} `json:"value"`
 	AdditionalProperties map[string]interface{}
 }

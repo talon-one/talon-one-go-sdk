@@ -30,9 +30,11 @@ type AwardDiscountBlock struct {
 	Name  string                   `json:"name"`
 	Value AwardDiscountBlock1Value `json:"value"`
 	// Whether to apply a partial discount when the requested value exceeds the configured budget.
-	Partial              bool                `json:"partial"`
-	Target               AwardDiscountTarget `json:"target"`
-	AdditionalProperties map[string]interface{}
+	Partial bool                `json:"partial"`
+	Target  AwardDiscountTarget `json:"target"`
+	// When set to `true`, the applied discount is excluded from the item's [price history](https://docs.talon.one/docs/dev/integration-guides/best-prior-price#price-history).
+	ExcludedFromPriceHistory *bool `json:"excludedFromPriceHistory,omitempty"`
+	AdditionalProperties     map[string]interface{}
 }
 
 type _AwardDiscountBlock AwardDiscountBlock
@@ -243,6 +245,38 @@ func (o *AwardDiscountBlock) SetTarget(v AwardDiscountTarget) {
 	o.Target = v
 }
 
+// GetExcludedFromPriceHistory returns the ExcludedFromPriceHistory field value if set, zero value otherwise.
+func (o *AwardDiscountBlock) GetExcludedFromPriceHistory() bool {
+	if o == nil || IsNil(o.ExcludedFromPriceHistory) {
+		var ret bool
+		return ret
+	}
+	return *o.ExcludedFromPriceHistory
+}
+
+// GetExcludedFromPriceHistoryOk returns a tuple with the ExcludedFromPriceHistory field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *AwardDiscountBlock) GetExcludedFromPriceHistoryOk() (*bool, bool) {
+	if o == nil || IsNil(o.ExcludedFromPriceHistory) {
+		return nil, false
+	}
+	return o.ExcludedFromPriceHistory, true
+}
+
+// HasExcludedFromPriceHistory returns a boolean if a field has been set.
+func (o *AwardDiscountBlock) HasExcludedFromPriceHistory() bool {
+	if o != nil && !IsNil(o.ExcludedFromPriceHistory) {
+		return true
+	}
+
+	return false
+}
+
+// SetExcludedFromPriceHistory gets a reference to the given bool and assigns it to the ExcludedFromPriceHistory field.
+func (o *AwardDiscountBlock) SetExcludedFromPriceHistory(v bool) {
+	o.ExcludedFromPriceHistory = &v
+}
+
 func (o AwardDiscountBlock) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -264,6 +298,9 @@ func (o AwardDiscountBlock) ToMap() (map[string]interface{}, error) {
 	toSerialize["value"] = o.Value
 	toSerialize["partial"] = o.Partial
 	toSerialize["target"] = o.Target
+	if !IsNil(o.ExcludedFromPriceHistory) {
+		toSerialize["excludedFromPriceHistory"] = o.ExcludedFromPriceHistory
+	}
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value
@@ -318,6 +355,7 @@ func (o *AwardDiscountBlock) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "value")
 		delete(additionalProperties, "partial")
 		delete(additionalProperties, "target")
+		delete(additionalProperties, "excludedFromPriceHistory")
 		o.AdditionalProperties = additionalProperties
 	}
 

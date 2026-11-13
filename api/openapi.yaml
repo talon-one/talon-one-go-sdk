@@ -2263,11 +2263,19 @@ paths:
       - integration
   /v1/customer_profiles/{integrationId}/inventory:
     get:
-      description: |
-        Return the customer inventory regarding entities referencing this customer profile's `integrationId`.
-
-        Typical entities returned are: customer profile information, referral codes, loyalty points, loyalty cards and reserved coupons.
-        Reserved coupons also include redeemed coupons.
+      description: "Return a snapshot of the customer profile including the entities\
+        \ referencing this customer\nprofile's `integrationId`. Typical entities returned\
+        \ are: customer profile information, referral codes,\nloyalty points, loyalty\
+        \ cards, reserved coupons and achievements. \n\n> [!note] Reserved coupons\
+        \ also include redeemed coupons.\n\nWhen `achievements=true`, the `achievements`\
+        \ array contains the customer's progress \nin the achievements they have participated\
+        \ in. Only achievements the customer \nhas started are returned, whether they\
+        \ are in progress, completed, or expired. \n\nRecurring achievements can appear\
+        \ more than once, once per iteration. The \nachievements cannot be filtered\
+        \ or paginated.\n\n> [!note] To list all the achievements available to the\
+        \ customer, including the ones\n> they have not started, and to filter or\
+        \ paginate the results, use the [List customer's available achievements](https://docs.talon.one/integration-api#tag/Achievements/operation/getCustomerAchievements)\n\
+        > endpoint.\n"
       operationId: getCustomerInventory
       parameters:
       - description: |
@@ -2322,7 +2330,11 @@ paths:
         schema:
           type: boolean
         style: form
-      - description: Set to `true` to include achievement information in the response.
+      - description: "Set to `true` to include the customer's progress in achievements\
+          \ in the \nresponse. Only achievements the customer has started are returned,\
+          \ whether \nthey are in progress, completed, or expired.\n\nRecurring achievements\
+          \ can appear more than once, once per iteration. The \nachievements cannot\
+          \ be filtered or paginated.\n"
         explode: true
         in: query
         name: achievements
@@ -2330,8 +2342,8 @@ paths:
         schema:
           type: boolean
         style: form
-      - description: Set to `true` to include `unlocked` rewards that have not been
-          `used` in the response.
+      - description: The instances of this reward that the customer has unlocked but
+          not used. Expired customer rewards are not returned.
         explode: true
         in: query
         name: unlockedRewards
@@ -2365,8 +2377,22 @@ paths:
       - integration
   /v1/customer_profiles/{integrationId}/achievements:
     get:
-      description: |
-        Retrieve all the achievements available to a given customer and their progress in them.
+      description: "Retrieve all the achievements available to a given customer and\
+        \ their progress \nin them. Use this endpoint to build an achievements page\
+        \ where customers can \nbrowse the achievements they can participate in and\
+        \ see the details of each one.\n\n\nThe response contains one entry for each\
+        \ active achievement connected to \nthe Application, whether or not the customer\
+        \ has started it. Each entry \nincludes the achievement's details such as\
+        \ `target` and `period`, and the \ncustomer's progress in the achievement.\
+        \ If the customer has not started \nthe achievement, `currentProgress.status`\
+        \ is `not_started`.\n\n\n> [!note] The [List customer data](https://docs.talon.one/integration-api#tag/Customer-profiles/operation/getCustomerInventory)\n\
+        > endpoint also returns achievement data when `achievements=true`, but with\
+        \ a\n> different scope and structure:\n> - It returns only the achievements\
+        \ the customer has started, completed, or\n>  that have expired for them,\
+        \ one entry per progress record. Achievements the\n>  customer has not started\
+        \ are not returned.\n> - The results cannot be filtered or paginated.\n>\n\
+        > Use this endpoint when you need the customer's achievement progress\n> together\
+        \ with other customer data, such as loyalty or coupons, in a single request.\n"
       operationId: getCustomerAchievements
       parameters:
       - description: |
@@ -2606,6 +2632,7 @@ paths:
             enum:
             - unlocked
             - used
+            - expired
             type: string
           type: array
           default: null
@@ -22098,6 +22125,7 @@ components:
         profileIntegrationId: customer1
         integrationId: reward-unlock-123
         unlockedAt: 2024-01-01T00:00:00Z
+        expiryDate: 2024-03-31T23:59:59Z
         usedAt: 2024-01-02T00:00:00Z
       properties:
         applicationId:
@@ -22117,6 +22145,16 @@ components:
         unlockedAt:
           description: The date and time when the reward was unlocked.
           example: 2024-01-01T00:00:00Z
+          format: date-time
+          type: string
+        expiryDate:
+          description: "The date and time when the customer reward expires, based\
+            \ on the \n`validityDuration` or `expiryDate` of the reward when the reward\
+            \ was \nunlocked. If the reward does not specify either property, the\
+            \ customer reward \nhas unlimited validity and this field is omitted.\n\
+            \n**Note**: The expiry date is calculated using the time zone of the \n\
+            Application connected to the reward.\n"
+          example: 2024-03-31T23:59:59Z
           format: date-time
           type: string
         usedAt:
@@ -22143,11 +22181,13 @@ components:
           profileIntegrationId: customer1
           integrationId: reward-unlock-123
           unlockedAt: 2024-01-01T00:00:00Z
+          expiryDate: 2024-03-31T23:59:59Z
           usedAt: 2024-01-02T00:00:00Z
         - applicationId: 3
           profileIntegrationId: customer1
           integrationId: reward-unlock-123
           unlockedAt: 2024-01-01T00:00:00Z
+          expiryDate: 2024-03-31T23:59:59Z
           usedAt: 2024-01-02T00:00:00Z
       properties:
         id:
@@ -22172,8 +22212,8 @@ components:
           - $ref: "#/components/schemas/RuleMetadata"
           description: Customer-facing rule metadata for the reward.
         unlocked:
-          description: The customer profile's unlocks of this reward that are not
-            yet `used`.
+          description: The instances of this reward that the customer has unlocked
+            but not used. Expired customer rewards are not returned.
           items:
             $ref: "#/components/schemas/CustomerReward"
           type: array
@@ -26201,12 +26241,11 @@ components:
           minimum: 1
           type: integer
         passTemplateId:
-          description: |
-            The ID of the digital pass template used to generate the pass.
-          example: tmpl_summer_loyalty
-          minLength: 1
+          description: The ID of the digital pass template used to generate the pass.
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          format: uuid
           type: string
-        profileId:
+        profileIntegrationId:
           description: The integration ID of the customer profile the pass is issued
             for.
           example: "12412412421"
@@ -26235,7 +26274,11 @@ components:
             type: string
           description: |
             A map of placeholder values that you provide to fill in the pass template.
-            These values are not validated against the template.
+            Pass templates reference each value as `CustomerProfile.Attributes.<key>`.
+
+            Each key must start with a letter or an underscore and can contain only
+            letters, digits, and underscores.
+            If the template requires a value that is missing, the request fails with a `422` error.
           example:
             hm_member_name: Jane Doe
           type: object
@@ -26243,16 +26286,18 @@ components:
       - loyaltyProgramId
       - passTemplateId
       - platform
-      - profileId
+      - profileIntegrationId
     DigitalPass:
       properties:
         passId:
           description: The ID of the generated digital pass.
-          example: pass_9c3f1a2b
+          example: 9c3f1a2b-4d5e-4f60-8a71-b2c3d4e5f607
+          format: uuid
           type: string
         passTemplateId:
           description: The ID of the digital pass template used to generate the pass.
-          example: tmpl_summer_loyalty
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          format: uuid
           type: string
         status:
           description: |
@@ -26264,9 +26309,11 @@ components:
           example: created
           type: string
         passUrl:
-          description: The URL you can use to let the customer add the digital pass
-            to their wallet.
-          example: https://wallet.example.com/passes/pass_9c3f1a2b
+          description: |
+            The URL you can use to let the customer add the digital pass to their wallet.
+
+            **Note**: For Google Wallet, the URL is valid for 30 days. After 30 days, create the pass again to get a new URL.
+          example: https://wallet.example.com/passes/9c3f1a2b-4d5e-4f60-8a71-b2c3d4e5f607
           format: uri
           type: string
       required:
@@ -27621,11 +27668,13 @@ components:
             profileIntegrationId: customer1
             integrationId: reward-unlock-123
             unlockedAt: 2024-01-01T00:00:00Z
+            expiryDate: 2024-03-31T23:59:59Z
             usedAt: 2024-01-02T00:00:00Z
           - applicationId: 3
             profileIntegrationId: customer1
             integrationId: reward-unlock-123
             unlockedAt: 2024-01-01T00:00:00Z
+            expiryDate: 2024-03-31T23:59:59Z
             usedAt: 2024-01-02T00:00:00Z
         - id: 42
           integrationId: free-coffee
@@ -27637,11 +27686,13 @@ components:
             profileIntegrationId: customer1
             integrationId: reward-unlock-123
             unlockedAt: 2024-01-01T00:00:00Z
+            expiryDate: 2024-03-31T23:59:59Z
             usedAt: 2024-01-02T00:00:00Z
           - applicationId: 3
             profileIntegrationId: customer1
             integrationId: reward-unlock-123
             unlockedAt: 2024-01-01T00:00:00Z
+            expiryDate: 2024-03-31T23:59:59Z
             usedAt: 2024-01-02T00:00:00Z
       properties:
         profile:
@@ -27666,12 +27717,17 @@ components:
           type: array
           default: null
         achievements:
+          description: "The customer's progress in each achievement they have participated\
+            \ in. \nOnly achievements the customer has started are included, whether\
+            \ they \nare in progress, completed, or expired. Recurring achievements\
+            \ can appear \nmore than once, once per iteration.\n"
           items:
             $ref: "#/components/schemas/AchievementProgressWithDefinition"
           type: array
           default: null
         rewards:
-          description: The customer rewards that are `unlocked` and not yet `used`.
+          description: The rewards that the customer has unlocked but not used. Expired
+            customer rewards are not returned.
           items:
             $ref: "#/components/schemas/RewardWithUnlocks"
           type: array
@@ -27951,6 +28007,7 @@ components:
         status: unlocked
         unlockedAt: 2026-07-01T09:00:00Z
         unlockedByProfileIntegrationId: customer2839
+        expiryDate: 2026-08-31T23:59:59Z
         usedAt: 2026-07-02T10:30:00Z
         usedByProfileIntegrationId: customer2840
         loyaltyProgramId: 9
@@ -27993,9 +28050,11 @@ components:
             The status of the customer reward:
             - `unlocked`: The reward is available for use.
             - `used`: The reward has been used.
+            - `expired`: The reward was not used before its expiry date.
           enum:
           - unlocked
           - used
+          - expired
           example: unlocked
           type: string
         unlockedAt:
@@ -28008,6 +28067,16 @@ components:
             \ reward. \n\nFor rewards unlocked with a loyalty card, this can be any\
             \ customer profile \nlinked to that loyalty card.\n"
           example: customer2839
+          type: string
+        expiryDate:
+          description: "The date and time when the customer reward expires, based\
+            \ on the \n`validityDuration` or `expiryDate` of the reward when the reward\
+            \ was \nunlocked. If the reward does not specify either property, the\
+            \ customer reward \nhas unlimited validity and this field is omitted.\n\
+            \n**Note**: The expiry date is calculated using the time zone of the \n\
+            Application connected to the reward.\n"
+          example: 2026-08-31T23:59:59Z
+          format: date-time
           type: string
         usedAt:
           description: The date and time when the reward was used.
@@ -31837,6 +31906,11 @@ components:
             type: boolean
           target:
             $ref: "#/components/schemas/AwardDiscountTarget"
+          excludedFromPriceHistory:
+            description: "When set to `true`, the applied discount is excluded from\
+              \ the item's [price history](https://docs.talon.one/docs/dev/integration-guides/best-prior-price#price-history)."
+            example: false
+            type: boolean
         required:
         - name
         - partial
@@ -41193,7 +41267,10 @@ components:
         action.
       properties:
         attr:
-          description: The name of the attribute to filter on.
+          description: "The name of the attribute to filter on. The attribute must\
+            \ exist in the catalog. For the `LT`, `LE`, `GT`, and `GE` comparison\
+            \ operators, the attribute must be of type `number`."
+          example: color
           type: string
         op:
           description: The filtering operator.
@@ -41204,9 +41281,12 @@ components:
           - GT
           - GE
           - IN
+          example: EQ
           type: string
         value:
-          description: The value to filter for.
+          description: "The value to filter for. For the `LT`, `LE`, `GT`, and `GE`\
+            \ comparison operators, the value must be a number or a numeric string."
+          example: blue
       required:
       - attr
       - op
@@ -47869,6 +47949,20 @@ components:
       example: ndjson
       type: string
       x-generate-enum-go: true
+    OutboundLogStreamEntryType:
+      description: |
+        Kind of entry in an `ndjson` stream of outbound logs:
+
+        - `log`: An outbound log entry.
+        - `error`: An error that ended the stream.
+        - `cursor`: The cursor for the next page. Always the last entry.
+      enum:
+      - log
+      - error
+      - cursor
+      example: log
+      type: string
+      x-generate-enum-go: true
     OutboundLogRequest:
       description: Details of the outbound HTTP request.
       properties:
@@ -47991,6 +48085,17 @@ components:
         required:
         - createdAt
         - processingTimeMs
+    OutboundLogStreamLogEntry:
+      description: An outbound log entry in a stream of outbound logs.
+      properties:
+        type:
+          $ref: "#/components/schemas/OutboundLogStreamEntryType"
+        data:
+          $ref: "#/components/schemas/OutboundLog"
+      required:
+      - data
+      - type
+      title: OutboundLogStreamLogEntry
     OutboundLogStreamError:
       description: Details about an error that ended the stream.
       properties:
@@ -48005,51 +48110,9 @@ components:
           type: string
       required:
       - error
-    OutboundLogs:
-      properties:
-        nextCursor:
-          description: Cursor for the next page of results. Omitted when there are
-            no more results.
-          example: SmJlNERRMHdyNWFsTmRDZDVYU0c=
-          format: byte
-          type: string
-        data:
-          description: "List of outbound logs. When an error ends the response, an\
-            \ `OutboundLogStreamError` is the last item and the response is incomplete."
-          items:
-            $ref: "#/components/schemas/OutboundLogs_data_inner"
-          type: array
-          default: null
-      required:
-      - data
-    OutboundLogStreamEntryType:
-      description: |
-        Kind of entry in an `ndjson` stream of outbound logs:
-
-        - `log`: An outbound log entry.
-        - `error`: An error that ended the stream.
-        - `cursor`: The cursor for the next page. Always the last entry.
-      enum:
-      - log
-      - error
-      - cursor
-      example: log
-      type: string
-      x-generate-enum-go: true
-    OutboundLogStreamLogEntry:
-      description: An outbound log entry in an `ndjson` stream.
-      properties:
-        type:
-          $ref: "#/components/schemas/OutboundLogStreamEntryType"
-        data:
-          $ref: "#/components/schemas/OutboundLog"
-      required:
-      - data
-      - type
-      title: OutboundLogStreamLogEntry
     OutboundLogStreamErrorEntry:
-      description: "An error that ended an `ndjson` stream, such as a log entry that\
-        \ couldn't be read. It is the last entry and the response is incomplete."
+      description: "An error that ended a stream of outbound logs, such as a log entry\
+        \ that couldn't be read. It is the last entry and the response is incomplete."
       properties:
         type:
           $ref: "#/components/schemas/OutboundLogStreamEntryType"
@@ -48059,6 +48122,24 @@ components:
       - data
       - type
       title: OutboundLogStreamErrorEntry
+    OutboundLogs:
+      properties:
+        nextCursor:
+          description: Cursor for the next page of results. Omitted when there are
+            no more results.
+          example: SmJlNERRMHdyNWFsTmRDZDVYU0c=
+          format: byte
+          type: string
+        data:
+          description: "List of outbound log entries. The `type` field determines\
+            \ the kind of entry. When an error ends the response, an `OutboundLogStreamErrorEntry`\
+            \ is the last item and the response is incomplete."
+          items:
+            $ref: "#/components/schemas/OutboundLogs_data_inner"
+          type: array
+          default: null
+      required:
+      - data
     OutboundLogStreamCursor:
       description: Cursor for the next page of results.
       properties:
@@ -50562,6 +50643,7 @@ components:
           status: unlocked
           unlockedAt: 2026-07-01T09:00:00Z
           unlockedByProfileIntegrationId: customer2839
+          expiryDate: 2026-08-31T23:59:59Z
           usedAt: 2026-07-02T10:30:00Z
           usedByProfileIntegrationId: customer2840
           loyaltyProgramId: 9
@@ -50576,6 +50658,7 @@ components:
           status: unlocked
           unlockedAt: 2026-07-01T09:00:00Z
           unlockedByProfileIntegrationId: customer2839
+          expiryDate: 2026-08-31T23:59:59Z
           usedAt: 2026-07-02T10:30:00Z
           usedByProfileIntegrationId: customer2840
           loyaltyProgramId: 9
@@ -56545,9 +56628,14 @@ components:
           - $ref: "#/components/schemas/EmbeddedDashboardConfiguration"
           description: The configuration of the embedded Insights dashboard for campaigns.
     OutboundLogs_data_inner:
+      discriminator:
+        mapping:
+          log: "#/components/schemas/OutboundLogStreamLogEntry"
+          error: "#/components/schemas/OutboundLogStreamErrorEntry"
+        propertyName: type
       oneOf:
-      - $ref: "#/components/schemas/OutboundLog"
-      - $ref: "#/components/schemas/OutboundLogStreamError"
+      - $ref: "#/components/schemas/OutboundLogStreamLogEntry"
+      - $ref: "#/components/schemas/OutboundLogStreamErrorEntry"
     IntegrationHubEventPayloadCouponBasedNotifications_allOf_Attributes:
       type: object
   securitySchemes:
