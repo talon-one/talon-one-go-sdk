@@ -18,7 +18,7 @@ import (
 // checks if the OutboundLogStreamLogEntry type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &OutboundLogStreamLogEntry{}
 
-// OutboundLogStreamLogEntry An outbound log entry in an `ndjson` stream.
+// OutboundLogStreamLogEntry An outbound log entry in a stream of outbound logs.
 type OutboundLogStreamLogEntry struct {
 	Type                 OutboundLogStreamEntryType `json:"type"`
 	Data                 OutboundLog                `json:"data"`

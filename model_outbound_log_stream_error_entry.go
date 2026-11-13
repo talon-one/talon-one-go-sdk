@@ -18,7 +18,7 @@ import (
 // checks if the OutboundLogStreamErrorEntry type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &OutboundLogStreamErrorEntry{}
 
-// OutboundLogStreamErrorEntry An error that ended an `ndjson` stream, such as a log entry that couldn't be read. It is the last entry and the response is incomplete.
+// OutboundLogStreamErrorEntry An error that ended a stream of outbound logs, such as a log entry that couldn't be read. It is the last entry and the response is incomplete.
 type OutboundLogStreamErrorEntry struct {
 	Type                 OutboundLogStreamEntryType `json:"type"`
 	Data                 OutboundLogStreamError     `json:"data"`

@@ -9,8 +9,8 @@ Name | Type | Description | Notes
 **Referrals** | Pointer to [**[]InventoryReferral**](InventoryReferral.md) |  | [optional] 
 **Coupons** | Pointer to [**[]InventoryCoupon**](InventoryCoupon.md) | The coupons reserved by this profile. This array includes hard and soft reservations.  | [optional] 
 **Giveaways** | Pointer to [**[]Giveaway**](Giveaway.md) |  | [optional] 
-**Achievements** | Pointer to [**[]AchievementProgressWithDefinition**](AchievementProgressWithDefinition.md) |  | [optional] 
-**Rewards** | Pointer to [**[]RewardWithUnlocks**](RewardWithUnlocks.md) | The customer rewards that are &#x60;unlocked&#x60; and not yet &#x60;used&#x60;. | [optional] 
+**Achievements** | Pointer to [**[]AchievementProgressWithDefinition**](AchievementProgressWithDefinition.md) | The customer&#39;s progress in each achievement they have participated in.  Only achievements the customer has started are included, whether they  are in progress, completed, or expired. Recurring achievements can appear  more than once, once per iteration.  | [optional] 
+**Rewards** | Pointer to [**[]RewardWithUnlocks**](RewardWithUnlocks.md) | The rewards that the customer has unlocked but not used. Expired customer rewards are not returned. | [optional] 
 
 ## Methods
 

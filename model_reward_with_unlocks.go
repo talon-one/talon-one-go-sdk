@@ -30,7 +30,7 @@ type RewardWithUnlocks struct {
 	Description *string `json:"description,omitempty"`
 	// Customer-facing rule metadata for the reward.
 	Rule RuleMetadata `json:"rule"`
-	// The customer profile's unlocks of this reward that are not yet `used`.
+	// The instances of this reward that the customer has unlocked but not used. Expired customer rewards are not returned.
 	Unlocked             []CustomerReward `json:"unlocked,omitempty"`
 	AdditionalProperties map[string]interface{}
 }

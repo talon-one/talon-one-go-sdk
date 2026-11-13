@@ -26,7 +26,7 @@ type DigitalPass struct {
 	PassTemplateId string `json:"passTemplateId"`
 	// The status of the digital pass.  `created` indicates that the pass was generated and is ready to be added to a wallet.
 	Status string `json:"status"`
-	// The URL you can use to let the customer add the digital pass to their wallet.
+	// The URL you can use to let the customer add the digital pass to their wallet.  **Note**: For Google Wallet, the URL is valid for 30 days. After 30 days, create the pass again to get a new URL.
 	PassUrl              string `json:"passUrl"`
 	AdditionalProperties map[string]interface{}
 }

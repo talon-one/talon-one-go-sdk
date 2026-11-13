@@ -5,17 +5,17 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **LoyaltyProgramId** | **int64** | The ID of the associated loyalty program. | 
-**PassTemplateId** | **string** | The ID of the digital pass template used to generate the pass.  | 
-**ProfileId** | **string** | The integration ID of the customer profile the pass is issued for. | 
+**PassTemplateId** | **string** | The ID of the digital pass template used to generate the pass. | 
+**ProfileIntegrationId** | **string** | The integration ID of the customer profile the pass is issued for. | 
 **LoyaltyCardId** | Pointer to **string** | The identifier of the loyalty card the pass is issued for.  **Note**: Only applicable for card-based loyalty programs.  | [optional] 
 **Platform** | **string** | The wallet platform the pass is generated for. Possible values:  - &#x60;apple&#x60;: The digital pass is generated for Apple Wallet. - &#x60;google&#x60;: The digital pass is generated for Google Wallet.  | 
-**Attributes** | Pointer to **map[string]string** | A map of placeholder values that you provide to fill in the pass template. These values are not validated against the template.  | [optional] 
+**Attributes** | Pointer to **map[string]string** | A map of placeholder values that you provide to fill in the pass template. Pass templates reference each value as &#x60;CustomerProfile.Attributes.&lt;key&gt;&#x60;.  Each key must start with a letter or an underscore and can contain only letters, digits, and underscores. If the template requires a value that is missing, the request fails with a &#x60;422&#x60; error.  | [optional] 
 
 ## Methods
 
 ### NewNewDigitalPass
 
-`func NewNewDigitalPass(loyaltyProgramId int64, passTemplateId string, profileId string, platform string, ) *NewDigitalPass`
+`func NewNewDigitalPass(loyaltyProgramId int64, passTemplateId string, profileIntegrationId string, platform string, ) *NewDigitalPass`
 
 NewNewDigitalPass instantiates a new NewDigitalPass object
 This constructor will assign default values to properties that have it defined,
@@ -70,24 +70,24 @@ and a boolean to check if the value has been set.
 SetPassTemplateId sets PassTemplateId field to given value.
 
 
-### GetProfileId
+### GetProfileIntegrationId
 
-`func (o *NewDigitalPass) GetProfileId() string`
+`func (o *NewDigitalPass) GetProfileIntegrationId() string`
 
-GetProfileId returns the ProfileId field if non-nil, zero value otherwise.
+GetProfileIntegrationId returns the ProfileIntegrationId field if non-nil, zero value otherwise.
 
-### GetProfileIdOk
+### GetProfileIntegrationIdOk
 
-`func (o *NewDigitalPass) GetProfileIdOk() (*string, bool)`
+`func (o *NewDigitalPass) GetProfileIntegrationIdOk() (*string, bool)`
 
-GetProfileIdOk returns a tuple with the ProfileId field if it's non-nil, zero value otherwise
+GetProfileIntegrationIdOk returns a tuple with the ProfileIntegrationId field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetProfileId
+### SetProfileIntegrationId
 
-`func (o *NewDigitalPass) SetProfileId(v string)`
+`func (o *NewDigitalPass) SetProfileIntegrationId(v string)`
 
-SetProfileId sets ProfileId field to given value.
+SetProfileIntegrationId sets ProfileIntegrationId field to given value.
 
 
 ### GetLoyaltyCardId

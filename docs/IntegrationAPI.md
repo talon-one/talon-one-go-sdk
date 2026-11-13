@@ -1073,8 +1073,8 @@ func main() {
 	coupons := true // bool | Set to `true` to include coupon information in the response. (optional)
 	loyalty := true // bool | Set to `true` to include loyalty information in the response. (optional)
 	giveaways := true // bool | Set to `true` to include giveaways information in the response. (optional)
-	achievements := true // bool | Set to `true` to include achievement information in the response. (optional)
-	unlockedRewards := true // bool | Set to `true` to include `unlocked` rewards that have not been `used` in the response. (optional)
+	achievements := true // bool | Set to `true` to include the customer's progress in achievements in the  response. Only achievements the customer has started are returned, whether  they are in progress, completed, or expired.  Recurring achievements can appear more than once, once per iteration. The  achievements cannot be filtered or paginated.  (optional)
+	unlockedRewards := true // bool | The instances of this reward that the customer has unlocked but not used. Expired customer rewards are not returned. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1109,8 +1109,8 @@ Name | Type | Description  | Notes
  **coupons** | **bool** | Set to &#x60;true&#x60; to include coupon information in the response. | 
  **loyalty** | **bool** | Set to &#x60;true&#x60; to include loyalty information in the response. | 
  **giveaways** | **bool** | Set to &#x60;true&#x60; to include giveaways information in the response. | 
- **achievements** | **bool** | Set to &#x60;true&#x60; to include achievement information in the response. | 
- **unlockedRewards** | **bool** | Set to &#x60;true&#x60; to include &#x60;unlocked&#x60; rewards that have not been &#x60;used&#x60; in the response. | 
+ **achievements** | **bool** | Set to &#x60;true&#x60; to include the customer&#39;s progress in achievements in the  response. Only achievements the customer has started are returned, whether  they are in progress, completed, or expired.  Recurring achievements can appear more than once, once per iteration. The  achievements cannot be filtered or paginated.  | 
+ **unlockedRewards** | **bool** | The instances of this reward that the customer has unlocked but not used. Expired customer rewards are not returned. | 
 
 ### Return type
 
