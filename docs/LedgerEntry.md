@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **int64** | The internal ID of this entity. | 
 **Created** | **time.Time** | The time this entity was created. | 
-**ProfileId** | Pointer to **string** | ID of the customer profile set by your integration layer.  **Note:** If the customer does not yet have a known &#x60;profileId&#x60;, we recommend you use a guest &#x60;profileId&#x60;.  | [optional] 
+**ProfileId** | **string** | ID of the customer profile set by your integration layer.  **Note:** If the customer does not yet have a known &#x60;profileId&#x60;, we recommend you use a guest &#x60;profileId&#x60;.  | 
 **AccountId** | **int64** | The ID of the Talon.One account that owns this profile. | 
 **LoyaltyProgramId** | **int64** | ID of the ledger. | 
 **EventId** | **int64** | ID of the related event. | 
@@ -19,7 +19,7 @@ Name | Type | Description | Notes
 
 ### NewLedgerEntry
 
-`func NewLedgerEntry(id int64, created time.Time, accountId int64, loyaltyProgramId int64, eventId int64, amount int64, reason string, expiryDate time.Time, ) *LedgerEntry`
+`func NewLedgerEntry(id int64, created time.Time, profileId string, accountId int64, loyaltyProgramId int64, eventId int64, amount int64, reason string, expiryDate time.Time, ) *LedgerEntry`
 
 NewLedgerEntry instantiates a new LedgerEntry object
 This constructor will assign default values to properties that have it defined,
@@ -93,11 +93,6 @@ and a boolean to check if the value has been set.
 
 SetProfileId sets ProfileId field to given value.
 
-### HasProfileId
-
-`func (o *LedgerEntry) HasProfileId() bool`
-
-HasProfileId returns a boolean if a field has been set.
 
 ### GetAccountId
 

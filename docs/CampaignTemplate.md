@@ -26,7 +26,7 @@ Name | Type | Description | Notes
 **ApplicationsIds** | **[]int64** |  | 
 **CampaignCollections** | Pointer to [**[]CampaignTemplateCollection**](CampaignTemplateCollection.md) | The campaign collections from the blueprint campaign for the template. | [optional] 
 **DefaultCampaignGroupId** | Pointer to **int64** | The default campaign group ID. | [optional] 
-**CampaignType** | Pointer to **string** | The campaign type. Possible type values:   - &#x60;cartItem&#x60;: Type of campaign that can apply effects only to cart items.   - &#x60;advanced&#x60;: Type of campaign that can apply effects to customer sessions and cart items.  | [optional] [default to "advanced"]
+**CampaignType** | **string** | The campaign type. Possible type values:   - &#x60;cartItem&#x60;: Type of campaign that can apply effects only to cart items.   - &#x60;advanced&#x60;: Type of campaign that can apply effects to customer sessions and cart items.  | [default to "advanced"]
 **CampaignsCount** | Pointer to **int64** | The number of Campaigns created from this template. | [optional] 
 **Updated** | Pointer to **time.Time** | Timestamp of the most recent update to the campaign template or any of its elements. | [optional] 
 **UpdatedBy** | Pointer to **string** | Name of the user who last updated this campaign template, if available. | [optional] 
@@ -37,7 +37,7 @@ Name | Type | Description | Notes
 
 ### NewCampaignTemplate
 
-`func NewCampaignTemplate(id int64, created time.Time, accountId int64, userId int64, name string, description string, instructions string, state string, reevaluateOnReturn bool, applicationsIds []int64, validApplicationIds []int64, ) *CampaignTemplate`
+`func NewCampaignTemplate(id int64, created time.Time, accountId int64, userId int64, name string, description string, instructions string, state string, reevaluateOnReturn bool, applicationsIds []int64, campaignType string, validApplicationIds []int64, ) *CampaignTemplate`
 
 NewCampaignTemplate instantiates a new CampaignTemplate object
 This constructor will assign default values to properties that have it defined,
@@ -571,11 +571,6 @@ and a boolean to check if the value has been set.
 
 SetCampaignType sets CampaignType field to given value.
 
-### HasCampaignType
-
-`func (o *CampaignTemplate) HasCampaignType() bool`
-
-HasCampaignType returns a boolean if a field has been set.
 
 ### GetCampaignsCount
 

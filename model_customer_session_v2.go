@@ -30,7 +30,7 @@ type CustomerSessionV2 struct {
 	// The ID of the Application that owns this entity.
 	ApplicationId int64 `json:"applicationId"`
 	// ID of the customer profile set by your integration layer.  **Note:** If the customer does not yet have a known `profileId`, we recommend you use a guest `profileId`.
-	ProfileId *string `json:"profileId,omitempty"`
+	ProfileId string `json:"profileId"`
 	// The integration ID of the store. You choose this ID when you create a store.
 	StoreIntegrationId *string `json:"storeIntegrationId,omitempty"`
 	// When using the `dry` query parameter, use this property to list the campaign to be evaluated by the Rule Engine.  These campaigns will be evaluated, even if they are disabled, allowing you to test specific campaigns before activating them.
@@ -44,9 +44,9 @@ type CustomerSessionV2 struct {
 	// The integration IDs of the unlocked rewards that can be used in this session.
 	RewardIntegrationIds []string `json:"rewardIntegrationIds,omitempty"`
 	// Indicates the current state of the session. Sessions can be created as `open` or `closed`. The state transitions are:  1. `open` -> `closed` 2. `open` -> `cancelled` 3. Either:    - `closed` -> `cancelled` (**only** via [Update customer session](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2)) or    - `closed` -> `partially_returned` (**only** via [Return cart items](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/returnCartItems))    - `closed` -> `open` (**only** via [Reopen customer session](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/reopenCustomerSession)) 4. `partially_returned` -> `cancelled`  For more information, see [Customer session states](https://docs.talon.one/docs/dev/concepts/entities/customer-sessions).
-	State *string `json:"state,omitempty"`
+	State string `json:"state"`
 	// The items to add to this session. **Do not exceed 1000 items** and ensure the sum of all cart item's `quantity` **does not exceed 10.000** per request.
-	CartItems []CartItem `json:"cartItems,omitempty"`
+	CartItems []CartItem `json:"cartItems"`
 	// The experiment variant allocations to add to this session.
 	ExperimentVariantAllocations []ExperimentVariantAllocation `json:"experimentVariantAllocations,omitempty"`
 	// Use this property to set a value for the additional costs of this session, such as a shipping cost.  They must be created in the Campaign Manager before you set them with this property. See [Managing additional costs](https://docs.talon.one/docs/product/account/dev-tools/managing-additional-costs).
@@ -54,7 +54,7 @@ type CustomerSessionV2 struct {
 	// Session custom identifiers that you can set limits on or use inside your rules.  For example, you can use IP addresses as identifiers to potentially identify devices and limit discounts abuse in case of customers creating multiple accounts. See the [tutorial](https://docs.talon.one/docs/dev/tutorials/using-identifiers).  **Important**: Ensure the session contains an identifier by the time you close it if: - You [create a unique identifier budget](https://docs.talon.one/docs/product/campaigns/settings/managing-campaign-budgets/#budget-types) for your campaign. - Your campaign has [coupons](https://docs.talon.one/docs/product/campaigns/coupons/coupon-page-overview). - We recommend passing an anonymized (hashed) version of the identifier value.
 	Identifiers []string `json:"identifiers,omitempty"`
 	// Use this property to set a value for the attributes of your choice. Attributes represent any information to attach to your session, like the shipping city.  You can use [built-in attributes](https://docs.talon.one/docs/dev/concepts/attributes#built-in-attributes) or [custom ones](https://docs.talon.one/docs/dev/concepts/attributes#custom-attributes). Custom attributes must be created in the Campaign Manager before you set them with this property.
-	Attributes map[string]interface{} `json:"attributes,omitempty"`
+	Attributes map[string]interface{} `json:"attributes"`
 	// Indicates whether this is the first session for the customer's profile. It's always `true` for anonymous sessions.
 	FirstSession bool `json:"firstSession"`
 	// The number of times the session was updated. When the session is created, this value is initialized to `1`.
@@ -78,14 +78,16 @@ type _CustomerSessionV2 CustomerSessionV2
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCustomerSessionV2(id int64, created time.Time, integrationId string, applicationId int64, firstSession bool, updateCount int64, total float32, cartItemTotal float32, additionalCostTotal float32, cartItemAdditionalCostTotal float32, updated time.Time) *CustomerSessionV2 {
+func BuildCustomerSessionV2(id int64, created time.Time, integrationId string, applicationId int64, profileId string, state string, cartItems []CartItem, attributes map[string]interface{}, firstSession bool, updateCount int64, total float32, cartItemTotal float32, additionalCostTotal float32, cartItemAdditionalCostTotal float32, updated time.Time) *CustomerSessionV2 {
 	this := CustomerSessionV2{}
 	this.Id = id
 	this.Created = created
 	this.IntegrationId = integrationId
 	this.ApplicationId = applicationId
-	var state string = "open"
-	this.State = &state
+	this.ProfileId = profileId
+	this.State = state
+	this.CartItems = cartItems
+	this.Attributes = attributes
 	this.FirstSession = firstSession
 	this.UpdateCount = updateCount
 	this.Total = total
@@ -102,7 +104,7 @@ func BuildCustomerSessionV2(id int64, created time.Time, integrationId string, a
 func NewCustomerSessionV2WithDefaults() *CustomerSessionV2 {
 	this := CustomerSessionV2{}
 	var state string = "open"
-	this.State = &state
+	this.State = state
 	return &this
 }
 
@@ -202,36 +204,28 @@ func (o *CustomerSessionV2) SetApplicationId(v int64) {
 	o.ApplicationId = v
 }
 
-// GetProfileId returns the ProfileId field value if set, zero value otherwise.
+// GetProfileId returns the ProfileId field value
 func (o *CustomerSessionV2) GetProfileId() string {
-	if o == nil || IsNil(o.ProfileId) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.ProfileId
+
+	return o.ProfileId
 }
 
-// GetProfileIdOk returns a tuple with the ProfileId field value if set, nil otherwise
+// GetProfileIdOk returns a tuple with the ProfileId field value
 // and a boolean to check if the value has been set.
 func (o *CustomerSessionV2) GetProfileIdOk() (*string, bool) {
-	if o == nil || IsNil(o.ProfileId) {
+	if o == nil {
 		return nil, false
 	}
-	return o.ProfileId, true
+	return &o.ProfileId, true
 }
 
-// HasProfileId returns a boolean if a field has been set.
-func (o *CustomerSessionV2) HasProfileId() bool {
-	if o != nil && !IsNil(o.ProfileId) {
-		return true
-	}
-
-	return false
-}
-
-// SetProfileId gets a reference to the given string and assigns it to the ProfileId field.
+// SetProfileId sets field value
 func (o *CustomerSessionV2) SetProfileId(v string) {
-	o.ProfileId = &v
+	o.ProfileId = v
 }
 
 // GetStoreIntegrationId returns the StoreIntegrationId field value if set, zero value otherwise.
@@ -426,66 +420,50 @@ func (o *CustomerSessionV2) SetRewardIntegrationIds(v []string) {
 	o.RewardIntegrationIds = v
 }
 
-// GetState returns the State field value if set, zero value otherwise.
+// GetState returns the State field value
 func (o *CustomerSessionV2) GetState() string {
-	if o == nil || IsNil(o.State) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.State
+
+	return o.State
 }
 
-// GetStateOk returns a tuple with the State field value if set, nil otherwise
+// GetStateOk returns a tuple with the State field value
 // and a boolean to check if the value has been set.
 func (o *CustomerSessionV2) GetStateOk() (*string, bool) {
-	if o == nil || IsNil(o.State) {
+	if o == nil {
 		return nil, false
 	}
-	return o.State, true
+	return &o.State, true
 }
 
-// HasState returns a boolean if a field has been set.
-func (o *CustomerSessionV2) HasState() bool {
-	if o != nil && !IsNil(o.State) {
-		return true
-	}
-
-	return false
-}
-
-// SetState gets a reference to the given string and assigns it to the State field.
+// SetState sets field value
 func (o *CustomerSessionV2) SetState(v string) {
-	o.State = &v
+	o.State = v
 }
 
-// GetCartItems returns the CartItems field value if set, zero value otherwise.
+// GetCartItems returns the CartItems field value
 func (o *CustomerSessionV2) GetCartItems() []CartItem {
-	if o == nil || IsNil(o.CartItems) {
+	if o == nil {
 		var ret []CartItem
 		return ret
 	}
+
 	return o.CartItems
 }
 
-// GetCartItemsOk returns a tuple with the CartItems field value if set, nil otherwise
+// GetCartItemsOk returns a tuple with the CartItems field value
 // and a boolean to check if the value has been set.
 func (o *CustomerSessionV2) GetCartItemsOk() ([]CartItem, bool) {
-	if o == nil || IsNil(o.CartItems) {
+	if o == nil {
 		return nil, false
 	}
 	return o.CartItems, true
 }
 
-// HasCartItems returns a boolean if a field has been set.
-func (o *CustomerSessionV2) HasCartItems() bool {
-	if o != nil && !IsNil(o.CartItems) {
-		return true
-	}
-
-	return false
-}
-
-// SetCartItems gets a reference to the given []CartItem and assigns it to the CartItems field.
+// SetCartItems sets field value
 func (o *CustomerSessionV2) SetCartItems(v []CartItem) {
 	o.CartItems = v
 }
@@ -586,34 +564,26 @@ func (o *CustomerSessionV2) SetIdentifiers(v []string) {
 	o.Identifiers = v
 }
 
-// GetAttributes returns the Attributes field value if set, zero value otherwise.
+// GetAttributes returns the Attributes field value
 func (o *CustomerSessionV2) GetAttributes() map[string]interface{} {
-	if o == nil || IsNil(o.Attributes) {
+	if o == nil {
 		var ret map[string]interface{}
 		return ret
 	}
+
 	return o.Attributes
 }
 
-// GetAttributesOk returns a tuple with the Attributes field value if set, nil otherwise
+// GetAttributesOk returns a tuple with the Attributes field value
 // and a boolean to check if the value has been set.
 func (o *CustomerSessionV2) GetAttributesOk() (map[string]interface{}, bool) {
-	if o == nil || IsNil(o.Attributes) {
+	if o == nil {
 		return map[string]interface{}{}, false
 	}
 	return o.Attributes, true
 }
 
-// HasAttributes returns a boolean if a field has been set.
-func (o *CustomerSessionV2) HasAttributes() bool {
-	if o != nil && !IsNil(o.Attributes) {
-		return true
-	}
-
-	return false
-}
-
-// SetAttributes gets a reference to the given map[string]interface{} and assigns it to the Attributes field.
+// SetAttributes sets field value
 func (o *CustomerSessionV2) SetAttributes(v map[string]interface{}) {
 	o.Attributes = v
 }
@@ -800,9 +770,7 @@ func (o CustomerSessionV2) ToMap() (map[string]interface{}, error) {
 	toSerialize["created"] = o.Created
 	toSerialize["integrationId"] = o.IntegrationId
 	toSerialize["applicationId"] = o.ApplicationId
-	if !IsNil(o.ProfileId) {
-		toSerialize["profileId"] = o.ProfileId
-	}
+	toSerialize["profileId"] = o.ProfileId
 	if !IsNil(o.StoreIntegrationId) {
 		toSerialize["storeIntegrationId"] = o.StoreIntegrationId
 	}
@@ -821,12 +789,8 @@ func (o CustomerSessionV2) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.RewardIntegrationIds) {
 		toSerialize["rewardIntegrationIds"] = o.RewardIntegrationIds
 	}
-	if !IsNil(o.State) {
-		toSerialize["state"] = o.State
-	}
-	if !IsNil(o.CartItems) {
-		toSerialize["cartItems"] = o.CartItems
-	}
+	toSerialize["state"] = o.State
+	toSerialize["cartItems"] = o.CartItems
 	if !IsNil(o.ExperimentVariantAllocations) {
 		toSerialize["experimentVariantAllocations"] = o.ExperimentVariantAllocations
 	}
@@ -836,9 +800,7 @@ func (o CustomerSessionV2) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Identifiers) {
 		toSerialize["identifiers"] = o.Identifiers
 	}
-	if !IsNil(o.Attributes) {
-		toSerialize["attributes"] = o.Attributes
-	}
+	toSerialize["attributes"] = o.Attributes
 	toSerialize["firstSession"] = o.FirstSession
 	toSerialize["updateCount"] = o.UpdateCount
 	toSerialize["total"] = o.Total
@@ -863,6 +825,10 @@ func (o *CustomerSessionV2) UnmarshalJSON(data []byte) (err error) {
 		"created",
 		"integrationId",
 		"applicationId",
+		"profileId",
+		"state",
+		"cartItems",
+		"attributes",
 		"firstSession",
 		"updateCount",
 		"total",

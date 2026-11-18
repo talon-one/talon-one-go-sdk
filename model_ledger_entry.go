@@ -26,7 +26,7 @@ type LedgerEntry struct {
 	// The time this entity was created.
 	Created time.Time `json:"created"`
 	// ID of the customer profile set by your integration layer.  **Note:** If the customer does not yet have a known `profileId`, we recommend you use a guest `profileId`.
-	ProfileId *string `json:"profileId,omitempty"`
+	ProfileId string `json:"profileId"`
 	// The ID of the Talon.One account that owns this profile.
 	AccountId int64 `json:"accountId"`
 	// ID of the ledger.
@@ -50,10 +50,11 @@ type _LedgerEntry LedgerEntry
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildLedgerEntry(id int64, created time.Time, accountId int64, loyaltyProgramId int64, eventId int64, amount int64, reason string, expiryDate time.Time) *LedgerEntry {
+func BuildLedgerEntry(id int64, created time.Time, profileId string, accountId int64, loyaltyProgramId int64, eventId int64, amount int64, reason string, expiryDate time.Time) *LedgerEntry {
 	this := LedgerEntry{}
 	this.Id = id
 	this.Created = created
+	this.ProfileId = profileId
 	this.AccountId = accountId
 	this.LoyaltyProgramId = loyaltyProgramId
 	this.EventId = eventId
@@ -119,36 +120,28 @@ func (o *LedgerEntry) SetCreated(v time.Time) {
 	o.Created = v
 }
 
-// GetProfileId returns the ProfileId field value if set, zero value otherwise.
+// GetProfileId returns the ProfileId field value
 func (o *LedgerEntry) GetProfileId() string {
-	if o == nil || IsNil(o.ProfileId) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.ProfileId
+
+	return o.ProfileId
 }
 
-// GetProfileIdOk returns a tuple with the ProfileId field value if set, nil otherwise
+// GetProfileIdOk returns a tuple with the ProfileId field value
 // and a boolean to check if the value has been set.
 func (o *LedgerEntry) GetProfileIdOk() (*string, bool) {
-	if o == nil || IsNil(o.ProfileId) {
+	if o == nil {
 		return nil, false
 	}
-	return o.ProfileId, true
+	return &o.ProfileId, true
 }
 
-// HasProfileId returns a boolean if a field has been set.
-func (o *LedgerEntry) HasProfileId() bool {
-	if o != nil && !IsNil(o.ProfileId) {
-		return true
-	}
-
-	return false
-}
-
-// SetProfileId gets a reference to the given string and assigns it to the ProfileId field.
+// SetProfileId sets field value
 func (o *LedgerEntry) SetProfileId(v string) {
-	o.ProfileId = &v
+	o.ProfileId = v
 }
 
 // GetAccountId returns the AccountId field value
@@ -339,9 +332,7 @@ func (o LedgerEntry) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["id"] = o.Id
 	toSerialize["created"] = o.Created
-	if !IsNil(o.ProfileId) {
-		toSerialize["profileId"] = o.ProfileId
-	}
+	toSerialize["profileId"] = o.ProfileId
 	toSerialize["accountId"] = o.AccountId
 	toSerialize["loyaltyProgramId"] = o.LoyaltyProgramId
 	toSerialize["eventId"] = o.EventId
@@ -366,6 +357,7 @@ func (o *LedgerEntry) UnmarshalJSON(data []byte) (err error) {
 	requiredProperties := []string{
 		"id",
 		"created",
+		"profileId",
 		"accountId",
 		"loyaltyProgramId",
 		"eventId",

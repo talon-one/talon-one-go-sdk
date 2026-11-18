@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **StartDate** | Pointer to **time.Time** | Timestamp at which point the referral code becomes valid. | [optional] 
 **ExpiryDate** | Pointer to **time.Time** | Expiration date of the referral code. Referral never expires if this is omitted. | [optional] 
-**UsageLimit** | Pointer to **int64** | The number of times a referral code can be used. &#x60;0&#x60; means no limit but any campaign usage limits will still apply.  | [optional] 
+**UsageLimit** | **int64** | The number of times a referral code can be used. &#x60;0&#x60; means no limit but any campaign usage limits will still apply.  | 
 **CampaignId** | **int64** | The ID of the campaign from which the referral received the referral code. | 
 **AdvocateProfileIntegrationIds** | **[]string** | An array containing all the respective advocate profiles. | 
 **Attributes** | Pointer to **map[string]interface{}** | Arbitrary properties associated with this referral code. | [optional] 
@@ -17,7 +17,7 @@ Name | Type | Description | Notes
 
 ### NewNewReferralsForMultipleAdvocates
 
-`func NewNewReferralsForMultipleAdvocates(campaignId int64, advocateProfileIntegrationIds []string, ) *NewReferralsForMultipleAdvocates`
+`func NewNewReferralsForMultipleAdvocates(usageLimit int64, campaignId int64, advocateProfileIntegrationIds []string, ) *NewReferralsForMultipleAdvocates`
 
 NewNewReferralsForMultipleAdvocates instantiates a new NewReferralsForMultipleAdvocates object
 This constructor will assign default values to properties that have it defined,
@@ -101,11 +101,6 @@ and a boolean to check if the value has been set.
 
 SetUsageLimit sets UsageLimit field to given value.
 
-### HasUsageLimit
-
-`func (o *NewReferralsForMultipleAdvocates) HasUsageLimit() bool`
-
-HasUsageLimit returns a boolean if a field has been set.
 
 ### GetCampaignId
 

@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **Created** | **time.Time** | The time this entity was created. | 
 **StartDate** | Pointer to **time.Time** | Timestamp at which point the referral code becomes valid. | [optional] 
 **ExpiryDate** | Pointer to **time.Time** | Expiration date of the referral code. Referral never expires if this is omitted. | [optional] 
-**UsageLimit** | Pointer to **int64** | The number of times a referral code can be used. &#x60;0&#x60; means no limit but any campaign usage limits will still apply.  | [optional] 
+**UsageLimit** | **int64** | The number of times a referral code can be used. &#x60;0&#x60; means no limit but any campaign usage limits will still apply.  | 
 **CampaignId** | **int64** | ID of the campaign from which the referral received the referral code. | 
 **AdvocateProfileIntegrationId** | **string** | The Integration ID of the Advocate&#39;s Profile. | 
 **FriendProfileIntegrationId** | Pointer to **string** | An optional Integration ID of the Friend&#39;s Profile. | [optional] 
@@ -23,7 +23,7 @@ Name | Type | Description | Notes
 
 ### NewInventoryReferral
 
-`func NewInventoryReferral(id int64, created time.Time, campaignId int64, advocateProfileIntegrationId string, code string, usageCounter int64, referredCustomers []string, ) *InventoryReferral`
+`func NewInventoryReferral(id int64, created time.Time, usageLimit int64, campaignId int64, advocateProfileIntegrationId string, code string, usageCounter int64, referredCustomers []string, ) *InventoryReferral`
 
 NewInventoryReferral instantiates a new InventoryReferral object
 This constructor will assign default values to properties that have it defined,
@@ -147,11 +147,6 @@ and a boolean to check if the value has been set.
 
 SetUsageLimit sets UsageLimit field to given value.
 
-### HasUsageLimit
-
-`func (o *InventoryReferral) HasUsageLimit() bool`
-
-HasUsageLimit returns a boolean if a field has been set.
 
 ### GetCampaignId
 
