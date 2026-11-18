@@ -32,7 +32,7 @@ type Campaign struct {
 	// A user-facing name for this campaign.
 	Name string `json:"name"`
 	// A detailed description of the campaign.
-	Description *string `json:"description,omitempty"`
+	Description string `json:"description"`
 	// Timestamp when the campaign will become active.
 	StartTime *time.Time `json:"startTime,omitempty"`
 	// Timestamp when the campaign will become inactive.
@@ -56,7 +56,7 @@ type Campaign struct {
 	// The IDs of the [campaign groups](https://docs.talon.one/docs/product/account/managing-campaign-groups) this campaign belongs to.
 	CampaignGroups []int64 `json:"campaignGroups,omitempty"`
 	// The campaign type. Possible type values:   - `cartItem`: Type of campaign that can apply effects only to cart items.   - `advanced`: Type of campaign that can apply effects to customer sessions and cart items.
-	Type *string `json:"type,omitempty"`
+	Type string `json:"type"`
 	// A list of store IDs that you want to link to the campaign.  **Note:** Campaigns with linked store IDs will only be evaluated when there is a [customer session update](https://docs.talon.one/integration-api#tag/Customer-sessions/operation/updateCustomerSessionV2) that references a linked store.
 	LinkedStoreIds []int64 `json:"linkedStoreIds,omitempty"`
 	// Arbitrary properties associated with coupons in this campaign.
@@ -149,20 +149,20 @@ type _Campaign Campaign
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCampaign(id int64, created time.Time, applicationId int64, userId int64, name string, state string, tags []string, reevaluateOnReturn bool, features []string, limits []LimitConfig, frontendState string, storesImported bool) *Campaign {
+func BuildCampaign(id int64, created time.Time, applicationId int64, userId int64, name string, description string, state string, tags []string, reevaluateOnReturn bool, features []string, limits []LimitConfig, type_ string, frontendState string, storesImported bool) *Campaign {
 	this := Campaign{}
 	this.Id = id
 	this.Created = created
 	this.ApplicationId = applicationId
 	this.UserId = userId
 	this.Name = name
+	this.Description = description
 	this.State = state
 	this.Tags = tags
 	this.ReevaluateOnReturn = reevaluateOnReturn
 	this.Features = features
 	this.Limits = limits
-	var type_ string = "advanced"
-	this.Type = &type_
+	this.Type = type_
 	this.FrontendState = frontendState
 	this.StoresImported = storesImported
 	var stageRevision bool = false
@@ -178,7 +178,7 @@ func NewCampaignWithDefaults() *Campaign {
 	var state string = "enabled"
 	this.State = state
 	var type_ string = "advanced"
-	this.Type = &type_
+	this.Type = type_
 	var stageRevision bool = false
 	this.StageRevision = &stageRevision
 	return &this
@@ -304,36 +304,28 @@ func (o *Campaign) SetName(v string) {
 	o.Name = v
 }
 
-// GetDescription returns the Description field value if set, zero value otherwise.
+// GetDescription returns the Description field value
 func (o *Campaign) GetDescription() string {
-	if o == nil || IsNil(o.Description) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.Description
+
+	return o.Description
 }
 
-// GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
+// GetDescriptionOk returns a tuple with the Description field value
 // and a boolean to check if the value has been set.
 func (o *Campaign) GetDescriptionOk() (*string, bool) {
-	if o == nil || IsNil(o.Description) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Description, true
+	return &o.Description, true
 }
 
-// HasDescription returns a boolean if a field has been set.
-func (o *Campaign) HasDescription() bool {
-	if o != nil && !IsNil(o.Description) {
-		return true
-	}
-
-	return false
-}
-
-// SetDescription gets a reference to the given string and assigns it to the Description field.
+// SetDescription sets field value
 func (o *Campaign) SetDescription(v string) {
-	o.Description = &v
+	o.Description = v
 }
 
 // GetStartTime returns the StartTime field value if set, zero value otherwise.
@@ -680,36 +672,28 @@ func (o *Campaign) SetCampaignGroups(v []int64) {
 	o.CampaignGroups = v
 }
 
-// GetType returns the Type field value if set, zero value otherwise.
+// GetType returns the Type field value
 func (o *Campaign) GetType() string {
-	if o == nil || IsNil(o.Type) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.Type
+
+	return o.Type
 }
 
-// GetTypeOk returns a tuple with the Type field value if set, nil otherwise
+// GetTypeOk returns a tuple with the Type field value
 // and a boolean to check if the value has been set.
 func (o *Campaign) GetTypeOk() (*string, bool) {
-	if o == nil || IsNil(o.Type) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Type, true
+	return &o.Type, true
 }
 
-// HasType returns a boolean if a field has been set.
-func (o *Campaign) HasType() bool {
-	if o != nil && !IsNil(o.Type) {
-		return true
-	}
-
-	return false
-}
-
-// SetType gets a reference to the given string and assigns it to the Type field.
+// SetType sets field value
 func (o *Campaign) SetType(v string) {
-	o.Type = &v
+	o.Type = v
 }
 
 // GetLinkedStoreIds returns the LinkedStoreIds field value if set, zero value otherwise.
@@ -1844,9 +1828,7 @@ func (o Campaign) ToMap() (map[string]interface{}, error) {
 	toSerialize["applicationId"] = o.ApplicationId
 	toSerialize["userId"] = o.UserId
 	toSerialize["name"] = o.Name
-	if !IsNil(o.Description) {
-		toSerialize["description"] = o.Description
-	}
+	toSerialize["description"] = o.Description
 	if !IsNil(o.StartTime) {
 		toSerialize["startTime"] = o.StartTime
 	}
@@ -1873,9 +1855,7 @@ func (o Campaign) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CampaignGroups) {
 		toSerialize["campaignGroups"] = o.CampaignGroups
 	}
-	if !IsNil(o.Type) {
-		toSerialize["type"] = o.Type
-	}
+	toSerialize["type"] = o.Type
 	if !IsNil(o.LinkedStoreIds) {
 		toSerialize["linkedStoreIds"] = o.LinkedStoreIds
 	}
@@ -1992,11 +1972,13 @@ func (o *Campaign) UnmarshalJSON(data []byte) (err error) {
 		"applicationId",
 		"userId",
 		"name",
+		"description",
 		"state",
 		"tags",
 		"reevaluateOnReturn",
 		"features",
 		"limits",
+		"type",
 		"frontendState",
 		"storesImported",
 	}

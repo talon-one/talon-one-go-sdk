@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **NotificationType** | **string** | Type of notification that triggered the outbound message. | 
 **ApplicationId** | Pointer to **int64** | ID of the Application associated with the outbound message. | [optional] 
 **LoyaltyProgramId** | Pointer to **int64** | ID of the loyalty program associated with the outbound message. | [optional] 
-**Request** | Pointer to [**OutboundLogRequest**](OutboundLogRequest.md) |  | [optional] 
+**Request** | [**OutboundLogRequest**](OutboundLogRequest.md) |  | 
 **FirstLogAt** | **time.Time** | Timestamp of the first log entry for this message. | 
 **LastLogAt** | **time.Time** | Timestamp of the last log entry for this message. | 
 **LastResponseCode** | Pointer to **int64** | HTTP status code from the latest response. | [optional] 
@@ -24,7 +24,7 @@ Name | Type | Description | Notes
 
 ### NewOutboundMessage
 
-`func NewOutboundMessage(uuid string, notificationType string, firstLogAt time.Time, lastLogAt time.Time, status string, ) *OutboundMessage`
+`func NewOutboundMessage(uuid string, notificationType string, request OutboundLogRequest, firstLogAt time.Time, lastLogAt time.Time, status string, ) *OutboundMessage`
 
 NewOutboundMessage instantiates a new OutboundMessage object
 This constructor will assign default values to properties that have it defined,
@@ -248,11 +248,6 @@ and a boolean to check if the value has been set.
 
 SetRequest sets Request field to given value.
 
-### HasRequest
-
-`func (o *OutboundMessage) HasRequest() bool`
-
-HasRequest returns a boolean if a field has been set.
 
 ### GetFirstLogAt
 

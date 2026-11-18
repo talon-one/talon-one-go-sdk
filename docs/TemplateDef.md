@@ -8,8 +8,8 @@ Name | Type | Description | Notes
 **Created** | **time.Time** | The time this entity was created. | 
 **ApplicationId** | **int64** | The ID of the Application that owns this entity. | 
 **Title** | **string** | Campaigner-friendly name for the template that will be shown in the rule editor. | 
-**Description** | Pointer to **string** | A short description of the template that will be shown in the rule editor. | [optional] 
-**Help** | Pointer to **string** | Extended help text for the template. | [optional] 
+**Description** | **string** | A short description of the template that will be shown in the rule editor. | 
+**Help** | **string** | Extended help text for the template. | 
 **Category** | **string** | Used for grouping templates in the rule editor sidebar. | 
 **Expr** | **[]interface{}** | A Talang expression that contains variable bindings referring to args. | 
 **Args** | [**[]TemplateArgDef**](TemplateArgDef.md) | An array of argument definitions. | 
@@ -20,7 +20,7 @@ Name | Type | Description | Notes
 
 ### NewTemplateDef
 
-`func NewTemplateDef(id int64, created time.Time, applicationId int64, title string, category string, expr []interface{}, args []TemplateArgDef, name string, ) *TemplateDef`
+`func NewTemplateDef(id int64, created time.Time, applicationId int64, title string, description string, help string, category string, expr []interface{}, args []TemplateArgDef, name string, ) *TemplateDef`
 
 NewTemplateDef instantiates a new TemplateDef object
 This constructor will assign default values to properties that have it defined,
@@ -134,11 +134,6 @@ and a boolean to check if the value has been set.
 
 SetDescription sets Description field to given value.
 
-### HasDescription
-
-`func (o *TemplateDef) HasDescription() bool`
-
-HasDescription returns a boolean if a field has been set.
 
 ### GetHelp
 
@@ -159,11 +154,6 @@ and a boolean to check if the value has been set.
 
 SetHelp sets Help field to given value.
 
-### HasHelp
-
-`func (o *TemplateDef) HasHelp() bool`
-
-HasHelp returns a boolean if a field has been set.
 
 ### GetCategory
 

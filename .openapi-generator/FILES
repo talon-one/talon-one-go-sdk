@@ -701,6 +701,7 @@ docs/NewReferralsForMultipleAdvocates.md
 docs/NewReturn.md
 docs/NewRevisionVersion.md
 docs/NewReward.md
+docs/NewRewardBudget.md
 docs/NewRiskNotification.md
 docs/NewRole.md
 docs/NewRoleV2.md
@@ -798,11 +799,15 @@ docs/RevisionActivation.md
 docs/RevisionActivationRequest.md
 docs/RevisionVersion.md
 docs/Reward.md
+docs/RewardBudget.md
+docs/RewardBudgetLimitCounter.md
+docs/RewardBudgetWithLimitCounter.md
 docs/RewardCatalogItem.md
 docs/RewardEligibility.md
 docs/RewardEligibilityFailureDetails.md
 docs/RewardPointsRequired.md
 docs/RewardUnlockRejection.md
+docs/RewardWithBudgets.md
 docs/RewardWithUnlocks.md
 docs/Risk.md
 docs/RiskAffectedEntityItem.md
@@ -971,6 +976,7 @@ docs/UpdatePriceType.md
 docs/UpdateReferral.md
 docs/UpdateReferralBatch.md
 docs/UpdateReward.md
+docs/UpdateRewardBudget.md
 docs/UpdateRiskNotification.md
 docs/UpdateRole.md
 docs/UpdateStore.md
@@ -1678,6 +1684,7 @@ model_new_referrals_for_multiple_advocates.go
 model_new_return.go
 model_new_revision_version.go
 model_new_reward.go
+model_new_reward_budget.go
 model_new_risk_notification.go
 model_new_role.go
 model_new_role_v2.go
@@ -1775,11 +1782,15 @@ model_revision_activation.go
 model_revision_activation_request.go
 model_revision_version.go
 model_reward.go
+model_reward_budget.go
+model_reward_budget_limit_counter.go
+model_reward_budget_with_limit_counter.go
 model_reward_catalog_item.go
 model_reward_eligibility.go
 model_reward_eligibility_failure_details.go
 model_reward_points_required.go
 model_reward_unlock_rejection.go
+model_reward_with_budgets.go
 model_reward_with_unlocks.go
 model_risk.go
 model_risk_affected_entity_item.go
@@ -1948,6 +1959,7 @@ model_update_price_type.go
 model_update_referral.go
 model_update_referral_batch.go
 model_update_reward.go
+model_update_reward_budget.go
 model_update_risk_notification.go
 model_update_role.go
 model_update_store.go

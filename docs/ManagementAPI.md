@@ -653,7 +653,7 @@ import (
 )
 
 func main() {
-	createAchievementV2 := *openapiclient.NewCreateAchievementV2(true, "Europe/Berlin") // CreateAchievementV2 | body
+	createAchievementV2 := *openapiclient.NewCreateAchievementV2("Order50Discount", "50% off on 50th purchase.", "50% off for every 50th purchase in a year.", float32(50), true, "Europe/Berlin") // CreateAchievementV2 | body
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1217,7 +1217,7 @@ import (
 func main() {
 	applicationId := int64(789) // int64 | The ID of the Application. It is displayed in your Talon.One deployment URL.
 	campaignId := int64(789) // int64 | The ID of the campaign. It is displayed in your Talon.One deployment URL.
-	newCoupons := *openapiclient.NewNewCoupons(int64(1)) // NewCoupons | body
+	newCoupons := *openapiclient.NewNewCoupons(int64(100), int64(1)) // NewCoupons | body
 	silent := "silent_example" // string | Possible values: `yes` or `no`. - `yes`: Increases the performance of the API call by returning a 204 response. - `no`: Returns a 200 response that contains the updated customer profiles.  (optional) (default to "yes")
 
 	configuration := openapiclient.NewConfiguration()
@@ -1294,7 +1294,7 @@ import (
 func main() {
 	applicationId := int64(789) // int64 | The ID of the Application. It is displayed in your Talon.One deployment URL.
 	campaignId := int64(789) // int64 | The ID of the campaign. It is displayed in your Talon.One deployment URL.
-	newCouponCreationJob := *openapiclient.NewNewCouponCreationJob(int64(200000), map[string]interface{}(123)) // NewCouponCreationJob | body
+	newCouponCreationJob := *openapiclient.NewNewCouponCreationJob(int64(100), int64(200000), map[string]interface{}(123)) // NewCouponCreationJob | body
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -1444,7 +1444,7 @@ import (
 func main() {
 	applicationId := int64(789) // int64 | The ID of the Application. It is displayed in your Talon.One deployment URL.
 	campaignId := int64(789) // int64 | The ID of the campaign. It is displayed in your Talon.One deployment URL.
-	newCouponsForMultipleRecipients := *openapiclient.NewNewCouponsForMultipleRecipients([]string{"RecipientsIntegrationIds_example"}) // NewCouponsForMultipleRecipients | body
+	newCouponsForMultipleRecipients := *openapiclient.NewNewCouponsForMultipleRecipients(int64(100), []string{"RecipientsIntegrationIds_example"}) // NewCouponsForMultipleRecipients | body
 	silent := "silent_example" // string | Possible values: `yes` or `no`. - `yes`: Increases the performance of the API call by returning a 204 response. - `no`: Returns a 200 response that contains the updated customer profiles.  (optional) (default to "yes")
 
 	configuration := openapiclient.NewConfiguration()

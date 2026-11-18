@@ -414,7 +414,7 @@ import (
 )
 
 func main() {
-	newReferralsForMultipleAdvocates := *openapiclient.NewNewReferralsForMultipleAdvocates(int64(45), []string{"AdvocateProfileIntegrationIds_example"}) // NewReferralsForMultipleAdvocates | body
+	newReferralsForMultipleAdvocates := *openapiclient.NewNewReferralsForMultipleAdvocates(int64(1), int64(45), []string{"AdvocateProfileIntegrationIds_example"}) // NewReferralsForMultipleAdvocates | body
 	silent := "silent_example" // string | Possible values: `yes` or `no`. - `yes`: Increases the performance of the API call by returning a 204 response. - `no`: Returns a 200 response that contains the updated customer profiles.  (optional) (default to "yes")
 
 	configuration := openapiclient.NewConfiguration()

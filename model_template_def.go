@@ -30,9 +30,9 @@ type TemplateDef struct {
 	// Campaigner-friendly name for the template that will be shown in the rule editor.
 	Title string `json:"title"`
 	// A short description of the template that will be shown in the rule editor.
-	Description *string `json:"description,omitempty"`
+	Description string `json:"description"`
 	// Extended help text for the template.
-	Help *string `json:"help,omitempty"`
+	Help string `json:"help"`
 	// Used for grouping templates in the rule editor sidebar.
 	Category string `json:"category"`
 	// A Talang expression that contains variable bindings referring to args.
@@ -52,12 +52,14 @@ type _TemplateDef TemplateDef
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildTemplateDef(id int64, created time.Time, applicationId int64, title string, category string, expr []interface{}, args []TemplateArgDef, name string) *TemplateDef {
+func BuildTemplateDef(id int64, created time.Time, applicationId int64, title string, description string, help string, category string, expr []interface{}, args []TemplateArgDef, name string) *TemplateDef {
 	this := TemplateDef{}
 	this.Id = id
 	this.Created = created
 	this.ApplicationId = applicationId
 	this.Title = title
+	this.Description = description
+	this.Help = help
 	this.Category = category
 	this.Expr = expr
 	this.Args = args
@@ -173,68 +175,52 @@ func (o *TemplateDef) SetTitle(v string) {
 	o.Title = v
 }
 
-// GetDescription returns the Description field value if set, zero value otherwise.
+// GetDescription returns the Description field value
 func (o *TemplateDef) GetDescription() string {
-	if o == nil || IsNil(o.Description) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.Description
+
+	return o.Description
 }
 
-// GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
+// GetDescriptionOk returns a tuple with the Description field value
 // and a boolean to check if the value has been set.
 func (o *TemplateDef) GetDescriptionOk() (*string, bool) {
-	if o == nil || IsNil(o.Description) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Description, true
+	return &o.Description, true
 }
 
-// HasDescription returns a boolean if a field has been set.
-func (o *TemplateDef) HasDescription() bool {
-	if o != nil && !IsNil(o.Description) {
-		return true
-	}
-
-	return false
-}
-
-// SetDescription gets a reference to the given string and assigns it to the Description field.
+// SetDescription sets field value
 func (o *TemplateDef) SetDescription(v string) {
-	o.Description = &v
+	o.Description = v
 }
 
-// GetHelp returns the Help field value if set, zero value otherwise.
+// GetHelp returns the Help field value
 func (o *TemplateDef) GetHelp() string {
-	if o == nil || IsNil(o.Help) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.Help
+
+	return o.Help
 }
 
-// GetHelpOk returns a tuple with the Help field value if set, nil otherwise
+// GetHelpOk returns a tuple with the Help field value
 // and a boolean to check if the value has been set.
 func (o *TemplateDef) GetHelpOk() (*string, bool) {
-	if o == nil || IsNil(o.Help) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Help, true
+	return &o.Help, true
 }
 
-// HasHelp returns a boolean if a field has been set.
-func (o *TemplateDef) HasHelp() bool {
-	if o != nil && !IsNil(o.Help) {
-		return true
-	}
-
-	return false
-}
-
-// SetHelp gets a reference to the given string and assigns it to the Help field.
+// SetHelp sets field value
 func (o *TemplateDef) SetHelp(v string) {
-	o.Help = &v
+	o.Help = v
 }
 
 // GetCategory returns the Category field value
@@ -379,12 +365,8 @@ func (o TemplateDef) ToMap() (map[string]interface{}, error) {
 	toSerialize["created"] = o.Created
 	toSerialize["applicationId"] = o.ApplicationId
 	toSerialize["title"] = o.Title
-	if !IsNil(o.Description) {
-		toSerialize["description"] = o.Description
-	}
-	if !IsNil(o.Help) {
-		toSerialize["help"] = o.Help
-	}
+	toSerialize["description"] = o.Description
+	toSerialize["help"] = o.Help
 	toSerialize["category"] = o.Category
 	toSerialize["expr"] = o.Expr
 	toSerialize["args"] = o.Args
@@ -409,6 +391,8 @@ func (o *TemplateDef) UnmarshalJSON(data []byte) (err error) {
 		"created",
 		"applicationId",
 		"title",
+		"description",
+		"help",
 		"category",
 		"expr",
 		"args",
