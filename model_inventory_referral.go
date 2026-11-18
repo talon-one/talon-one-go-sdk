@@ -30,7 +30,7 @@ type InventoryReferral struct {
 	// Expiration date of the referral code. Referral never expires if this is omitted.
 	ExpiryDate *time.Time `json:"expiryDate,omitempty"`
 	// The number of times a referral code can be used. `0` means no limit but any campaign usage limits will still apply.
-	UsageLimit int64 `json:"usageLimit"`
+	UsageLimit *int64 `json:"usageLimit,omitempty"`
 	// ID of the campaign from which the referral received the referral code.
 	CampaignId int64 `json:"campaignId"`
 	// The Integration ID of the Advocate's Profile.
@@ -58,11 +58,10 @@ type _InventoryReferral InventoryReferral
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildInventoryReferral(id int64, created time.Time, usageLimit int64, campaignId int64, advocateProfileIntegrationId string, code string, usageCounter int64, referredCustomers []string) *InventoryReferral {
+func BuildInventoryReferral(id int64, created time.Time, campaignId int64, advocateProfileIntegrationId string, code string, usageCounter int64, referredCustomers []string) *InventoryReferral {
 	this := InventoryReferral{}
 	this.Id = id
 	this.Created = created
-	this.UsageLimit = usageLimit
 	this.CampaignId = campaignId
 	this.AdvocateProfileIntegrationId = advocateProfileIntegrationId
 	this.Code = code
@@ -191,28 +190,36 @@ func (o *InventoryReferral) SetExpiryDate(v time.Time) {
 	o.ExpiryDate = &v
 }
 
-// GetUsageLimit returns the UsageLimit field value
+// GetUsageLimit returns the UsageLimit field value if set, zero value otherwise.
 func (o *InventoryReferral) GetUsageLimit() int64 {
-	if o == nil {
+	if o == nil || IsNil(o.UsageLimit) {
 		var ret int64
 		return ret
 	}
-
-	return o.UsageLimit
+	return *o.UsageLimit
 }
 
-// GetUsageLimitOk returns a tuple with the UsageLimit field value
+// GetUsageLimitOk returns a tuple with the UsageLimit field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *InventoryReferral) GetUsageLimitOk() (*int64, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.UsageLimit) {
 		return nil, false
 	}
-	return &o.UsageLimit, true
+	return o.UsageLimit, true
 }
 
-// SetUsageLimit sets field value
+// HasUsageLimit returns a boolean if a field has been set.
+func (o *InventoryReferral) HasUsageLimit() bool {
+	if o != nil && !IsNil(o.UsageLimit) {
+		return true
+	}
+
+	return false
+}
+
+// SetUsageLimit gets a reference to the given int64 and assigns it to the UsageLimit field.
 func (o *InventoryReferral) SetUsageLimit(v int64) {
-	o.UsageLimit = v
+	o.UsageLimit = &v
 }
 
 // GetCampaignId returns the CampaignId field value
@@ -481,7 +488,9 @@ func (o InventoryReferral) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ExpiryDate) {
 		toSerialize["expiryDate"] = o.ExpiryDate
 	}
-	toSerialize["usageLimit"] = o.UsageLimit
+	if !IsNil(o.UsageLimit) {
+		toSerialize["usageLimit"] = o.UsageLimit
+	}
 	toSerialize["campaignId"] = o.CampaignId
 	toSerialize["advocateProfileIntegrationId"] = o.AdvocateProfileIntegrationId
 	if !IsNil(o.FriendProfileIntegrationId) {
@@ -514,7 +523,6 @@ func (o *InventoryReferral) UnmarshalJSON(data []byte) (err error) {
 	requiredProperties := []string{
 		"id",
 		"created",
-		"usageLimit",
 		"campaignId",
 		"advocateProfileIntegrationId",
 		"code",

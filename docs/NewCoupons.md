@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**UsageLimit** | **int64** | The number of times the coupon code can be redeemed. &#x60;0&#x60; means unlimited redemptions but any campaign usage limits will still apply.  | 
+**UsageLimit** | Pointer to **int64** | The number of times the coupon code can be redeemed. &#x60;0&#x60; means unlimited redemptions but any campaign usage limits will still apply.  | [optional] 
 **DiscountLimit** | Pointer to **float32** | The total discount value that the code can give. Typically used to represent a gift card value.  | [optional] 
 **ReservationLimit** | Pointer to **int64** | The number of reservations that can be made with this coupon code.  | [optional] 
 **StartDate** | Pointer to **time.Time** | Timestamp at which point the coupon becomes valid. | [optional] 
@@ -26,7 +26,7 @@ Name | Type | Description | Notes
 
 ### NewNewCoupons
 
-`func NewNewCoupons(usageLimit int64, numberOfCoupons int64, ) *NewCoupons`
+`func NewNewCoupons(numberOfCoupons int64, ) *NewCoupons`
 
 NewNewCoupons instantiates a new NewCoupons object
 This constructor will assign default values to properties that have it defined,
@@ -60,6 +60,11 @@ and a boolean to check if the value has been set.
 
 SetUsageLimit sets UsageLimit field to given value.
 
+### HasUsageLimit
+
+`func (o *NewCoupons) HasUsageLimit() bool`
+
+HasUsageLimit returns a boolean if a field has been set.
 
 ### GetDiscountLimit
 

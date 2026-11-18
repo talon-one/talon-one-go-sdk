@@ -22,13 +22,13 @@ var _ MappedNullable = &CreateAchievementV2{}
 // CreateAchievementV2 struct for CreateAchievementV2
 type CreateAchievementV2 struct {
 	// The internal name of the achievement used in API requests.  **Note**: The name should start with a letter. This cannot be changed after the achievement has been created.
-	Name string `json:"name" validate:"regexp=^[a-zA-Z]\\w+$"`
+	Name *string `json:"name,omitempty" validate:"regexp=^[a-zA-Z]\\w+$"`
 	// The display name for the achievement in the Campaign Manager.
-	Title string `json:"title"`
+	Title *string `json:"title,omitempty"`
 	// A description of the achievement.
-	Description string `json:"description"`
+	Description *string `json:"description,omitempty"`
 	// The required number of actions or the transactional milestone to complete the achievement.
-	Target float32 `json:"target"`
+	Target *float32 `json:"target,omitempty"`
 	// The relative duration after which the achievement ends and resets for a particular customer profile.  **Note**: The `period` does not start when the achievement is created.  The period is a **positive real number** followed by one letter indicating the time unit.  Examples: `30s`, `40m`, `1h`, `5D`, `7W`, `10M`, `15Y`.  Available units:  - `s`: seconds - `m`: minutes - `h`: hours - `D`: days - `W`: weeks - `M`: months - `Y`: years  You can also round certain units down to the beginning of period and up to the end of period.: - `_D` for rounding down days only. Signifies the start of the day. Example: `30D_D` - `_U` for rounding up days, weeks, months and years. Signifies the end of the day, week, month or year. Example: `23W_U`  **Note**: You can either use the round down and round up option or set an absolute period.
 	Period *string `json:"period,omitempty"`
 	// The policy that determines if and how the achievement recurs. - `no_recurrence`: The achievement can be completed only once. - `on_expiration`: The achievement resets after it expires and becomes available again. - `on_completion`: When the customer progress status reaches `completed`, the achievement resets and becomes available again.
@@ -56,12 +56,8 @@ type _CreateAchievementV2 CreateAchievementV2
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCreateAchievementV2(name string, title string, description string, target float32, sandbox bool, timezone string) *CreateAchievementV2 {
+func BuildCreateAchievementV2(sandbox bool, timezone string) *CreateAchievementV2 {
 	this := CreateAchievementV2{}
-	this.Name = name
-	this.Title = title
-	this.Description = description
-	this.Target = target
 	this.Sandbox = sandbox
 	this.Timezone = timezone
 	return &this
@@ -75,100 +71,132 @@ func NewCreateAchievementV2WithDefaults() *CreateAchievementV2 {
 	return &this
 }
 
-// GetName returns the Name field value
+// GetName returns the Name field value if set, zero value otherwise.
 func (o *CreateAchievementV2) GetName() string {
-	if o == nil {
+	if o == nil || IsNil(o.Name) {
 		var ret string
 		return ret
 	}
-
-	return o.Name
+	return *o.Name
 }
 
-// GetNameOk returns a tuple with the Name field value
+// GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateAchievementV2) GetNameOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Name) {
 		return nil, false
 	}
-	return &o.Name, true
+	return o.Name, true
 }
 
-// SetName sets field value
+// HasName returns a boolean if a field has been set.
+func (o *CreateAchievementV2) HasName() bool {
+	if o != nil && !IsNil(o.Name) {
+		return true
+	}
+
+	return false
+}
+
+// SetName gets a reference to the given string and assigns it to the Name field.
 func (o *CreateAchievementV2) SetName(v string) {
-	o.Name = v
+	o.Name = &v
 }
 
-// GetTitle returns the Title field value
+// GetTitle returns the Title field value if set, zero value otherwise.
 func (o *CreateAchievementV2) GetTitle() string {
-	if o == nil {
+	if o == nil || IsNil(o.Title) {
 		var ret string
 		return ret
 	}
-
-	return o.Title
+	return *o.Title
 }
 
-// GetTitleOk returns a tuple with the Title field value
+// GetTitleOk returns a tuple with the Title field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateAchievementV2) GetTitleOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Title) {
 		return nil, false
 	}
-	return &o.Title, true
+	return o.Title, true
 }
 
-// SetTitle sets field value
+// HasTitle returns a boolean if a field has been set.
+func (o *CreateAchievementV2) HasTitle() bool {
+	if o != nil && !IsNil(o.Title) {
+		return true
+	}
+
+	return false
+}
+
+// SetTitle gets a reference to the given string and assigns it to the Title field.
 func (o *CreateAchievementV2) SetTitle(v string) {
-	o.Title = v
+	o.Title = &v
 }
 
-// GetDescription returns the Description field value
+// GetDescription returns the Description field value if set, zero value otherwise.
 func (o *CreateAchievementV2) GetDescription() string {
-	if o == nil {
+	if o == nil || IsNil(o.Description) {
 		var ret string
 		return ret
 	}
-
-	return o.Description
+	return *o.Description
 }
 
-// GetDescriptionOk returns a tuple with the Description field value
+// GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateAchievementV2) GetDescriptionOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Description) {
 		return nil, false
 	}
-	return &o.Description, true
+	return o.Description, true
 }
 
-// SetDescription sets field value
+// HasDescription returns a boolean if a field has been set.
+func (o *CreateAchievementV2) HasDescription() bool {
+	if o != nil && !IsNil(o.Description) {
+		return true
+	}
+
+	return false
+}
+
+// SetDescription gets a reference to the given string and assigns it to the Description field.
 func (o *CreateAchievementV2) SetDescription(v string) {
-	o.Description = v
+	o.Description = &v
 }
 
-// GetTarget returns the Target field value
+// GetTarget returns the Target field value if set, zero value otherwise.
 func (o *CreateAchievementV2) GetTarget() float32 {
-	if o == nil {
+	if o == nil || IsNil(o.Target) {
 		var ret float32
 		return ret
 	}
-
-	return o.Target
+	return *o.Target
 }
 
-// GetTargetOk returns a tuple with the Target field value
+// GetTargetOk returns a tuple with the Target field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateAchievementV2) GetTargetOk() (*float32, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Target) {
 		return nil, false
 	}
-	return &o.Target, true
+	return o.Target, true
 }
 
-// SetTarget sets field value
+// HasTarget returns a boolean if a field has been set.
+func (o *CreateAchievementV2) HasTarget() bool {
+	if o != nil && !IsNil(o.Target) {
+		return true
+	}
+
+	return false
+}
+
+// SetTarget gets a reference to the given float32 and assigns it to the Target field.
 func (o *CreateAchievementV2) SetTarget(v float32) {
-	o.Target = v
+	o.Target = &v
 }
 
 // GetPeriod returns the Period field value if set, zero value otherwise.
@@ -453,10 +481,18 @@ func (o CreateAchievementV2) MarshalJSON() ([]byte, error) {
 
 func (o CreateAchievementV2) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["name"] = o.Name
-	toSerialize["title"] = o.Title
-	toSerialize["description"] = o.Description
-	toSerialize["target"] = o.Target
+	if !IsNil(o.Name) {
+		toSerialize["name"] = o.Name
+	}
+	if !IsNil(o.Title) {
+		toSerialize["title"] = o.Title
+	}
+	if !IsNil(o.Description) {
+		toSerialize["description"] = o.Description
+	}
+	if !IsNil(o.Target) {
+		toSerialize["target"] = o.Target
+	}
 	if !IsNil(o.Period) {
 		toSerialize["period"] = o.Period
 	}
@@ -493,10 +529,6 @@ func (o *CreateAchievementV2) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"name",
-		"title",
-		"description",
-		"target",
 		"sandbox",
 		"timezone",
 	}

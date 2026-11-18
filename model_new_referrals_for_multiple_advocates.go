@@ -26,7 +26,7 @@ type NewReferralsForMultipleAdvocates struct {
 	// Expiration date of the referral code. Referral never expires if this is omitted.
 	ExpiryDate *time.Time `json:"expiryDate,omitempty"`
 	// The number of times a referral code can be used. `0` means no limit but any campaign usage limits will still apply.
-	UsageLimit int64 `json:"usageLimit"`
+	UsageLimit *int64 `json:"usageLimit,omitempty"`
 	// The ID of the campaign from which the referral received the referral code.
 	CampaignId int64 `json:"campaignId"`
 	// An array containing all the respective advocate profiles.
@@ -46,9 +46,8 @@ type _NewReferralsForMultipleAdvocates NewReferralsForMultipleAdvocates
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildNewReferralsForMultipleAdvocates(usageLimit int64, campaignId int64, advocateProfileIntegrationIds []string) *NewReferralsForMultipleAdvocates {
+func BuildNewReferralsForMultipleAdvocates(campaignId int64, advocateProfileIntegrationIds []string) *NewReferralsForMultipleAdvocates {
 	this := NewReferralsForMultipleAdvocates{}
-	this.UsageLimit = usageLimit
 	this.CampaignId = campaignId
 	this.AdvocateProfileIntegrationIds = advocateProfileIntegrationIds
 	return &this
@@ -126,28 +125,36 @@ func (o *NewReferralsForMultipleAdvocates) SetExpiryDate(v time.Time) {
 	o.ExpiryDate = &v
 }
 
-// GetUsageLimit returns the UsageLimit field value
+// GetUsageLimit returns the UsageLimit field value if set, zero value otherwise.
 func (o *NewReferralsForMultipleAdvocates) GetUsageLimit() int64 {
-	if o == nil {
+	if o == nil || IsNil(o.UsageLimit) {
 		var ret int64
 		return ret
 	}
-
-	return o.UsageLimit
+	return *o.UsageLimit
 }
 
-// GetUsageLimitOk returns a tuple with the UsageLimit field value
+// GetUsageLimitOk returns a tuple with the UsageLimit field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *NewReferralsForMultipleAdvocates) GetUsageLimitOk() (*int64, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.UsageLimit) {
 		return nil, false
 	}
-	return &o.UsageLimit, true
+	return o.UsageLimit, true
 }
 
-// SetUsageLimit sets field value
+// HasUsageLimit returns a boolean if a field has been set.
+func (o *NewReferralsForMultipleAdvocates) HasUsageLimit() bool {
+	if o != nil && !IsNil(o.UsageLimit) {
+		return true
+	}
+
+	return false
+}
+
+// SetUsageLimit gets a reference to the given int64 and assigns it to the UsageLimit field.
 func (o *NewReferralsForMultipleAdvocates) SetUsageLimit(v int64) {
-	o.UsageLimit = v
+	o.UsageLimit = &v
 }
 
 // GetCampaignId returns the CampaignId field value
@@ -310,7 +317,9 @@ func (o NewReferralsForMultipleAdvocates) ToMap() (map[string]interface{}, error
 	if !IsNil(o.ExpiryDate) {
 		toSerialize["expiryDate"] = o.ExpiryDate
 	}
-	toSerialize["usageLimit"] = o.UsageLimit
+	if !IsNil(o.UsageLimit) {
+		toSerialize["usageLimit"] = o.UsageLimit
+	}
 	toSerialize["campaignId"] = o.CampaignId
 	toSerialize["advocateProfileIntegrationIds"] = o.AdvocateProfileIntegrationIds
 	if !IsNil(o.Attributes) {
@@ -335,7 +344,6 @@ func (o *NewReferralsForMultipleAdvocates) UnmarshalJSON(data []byte) (err error
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"usageLimit",
 		"campaignId",
 		"advocateProfileIntegrationIds",
 	}

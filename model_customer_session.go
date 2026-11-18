@@ -27,21 +27,21 @@ type CustomerSession struct {
 	// The ID of the Application that owns this entity.
 	ApplicationId int64 `json:"applicationId"`
 	// ID of the customer profile set by your integration layer.  **Note:** If the customer does not yet have a known `profileId`, we recommend you use a guest `profileId`.
-	ProfileId string `json:"profileId"`
+	ProfileId *string `json:"profileId,omitempty"`
 	// Any coupon code entered.
-	Coupon string `json:"coupon"`
+	Coupon *string `json:"coupon,omitempty"`
 	// Any referral code entered.
-	Referral string `json:"referral"`
+	Referral *string `json:"referral,omitempty"`
 	// Indicates the current state of the session. Sessions can be created as `open` or `closed`. The state transitions are:  1. `open` -> `closed` 2. `open` -> `cancelled` 3. `closed` -> `cancelled` or `partially_returned` 4. `partially_returned` -> `cancelled`  For more information, see [Customer session states](https://docs.talon.one/docs/dev/concepts/entities/customer-sessions).
-	State string `json:"state"`
+	State *string `json:"state,omitempty"`
 	// Serialized JSON representation.
-	CartItems []CartItem `json:"cartItems"`
+	CartItems []CartItem `json:"cartItems,omitempty"`
 	// Session custom identifiers that you can set limits on or use inside your rules.  For example, you can use IP addresses as identifiers to potentially identify devices and limit discounts abuse in case of customers creating multiple accounts. See the [tutorial](https://docs.talon.one/docs/dev/tutorials/using-identifiers).
 	Identifiers []string `json:"identifiers,omitempty"`
 	// The total sum of the cart in one session.
-	Total float32 `json:"total"`
+	Total *float32 `json:"total,omitempty"`
 	// A key-value map of the sessions attributes. The potentially valid attributes are configured in your accounts developer settings.
-	Attributes map[string]interface{} `json:"attributes"`
+	Attributes map[string]interface{} `json:"attributes,omitempty"`
 	// Indicates whether this is the first session for the customer's profile. Will always be true for anonymous sessions.
 	FirstSession bool `json:"firstSession"`
 	// The number of times the session was updated. When the session is created, this value is initialized to `1`.
@@ -59,18 +59,13 @@ type _CustomerSession CustomerSession
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildCustomerSession(integrationId string, created time.Time, applicationId int64, profileId string, coupon string, referral string, state string, cartItems []CartItem, total float32, attributes map[string]interface{}, firstSession bool, updateCount int64, discounts map[string]float32, updated time.Time) *CustomerSession {
+func BuildCustomerSession(integrationId string, created time.Time, applicationId int64, firstSession bool, updateCount int64, discounts map[string]float32, updated time.Time) *CustomerSession {
 	this := CustomerSession{}
 	this.IntegrationId = integrationId
 	this.Created = created
 	this.ApplicationId = applicationId
-	this.ProfileId = profileId
-	this.Coupon = coupon
-	this.Referral = referral
-	this.State = state
-	this.CartItems = cartItems
-	this.Total = total
-	this.Attributes = attributes
+	var state string = "open"
+	this.State = &state
 	this.FirstSession = firstSession
 	this.UpdateCount = updateCount
 	this.Discounts = discounts
@@ -84,7 +79,7 @@ func BuildCustomerSession(integrationId string, created time.Time, applicationId
 func NewCustomerSessionWithDefaults() *CustomerSession {
 	this := CustomerSession{}
 	var state string = "open"
-	this.State = state
+	this.State = &state
 	return &this
 }
 
@@ -160,122 +155,162 @@ func (o *CustomerSession) SetApplicationId(v int64) {
 	o.ApplicationId = v
 }
 
-// GetProfileId returns the ProfileId field value
+// GetProfileId returns the ProfileId field value if set, zero value otherwise.
 func (o *CustomerSession) GetProfileId() string {
-	if o == nil {
+	if o == nil || IsNil(o.ProfileId) {
 		var ret string
 		return ret
 	}
-
-	return o.ProfileId
+	return *o.ProfileId
 }
 
-// GetProfileIdOk returns a tuple with the ProfileId field value
+// GetProfileIdOk returns a tuple with the ProfileId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CustomerSession) GetProfileIdOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.ProfileId) {
 		return nil, false
 	}
-	return &o.ProfileId, true
+	return o.ProfileId, true
 }
 
-// SetProfileId sets field value
+// HasProfileId returns a boolean if a field has been set.
+func (o *CustomerSession) HasProfileId() bool {
+	if o != nil && !IsNil(o.ProfileId) {
+		return true
+	}
+
+	return false
+}
+
+// SetProfileId gets a reference to the given string and assigns it to the ProfileId field.
 func (o *CustomerSession) SetProfileId(v string) {
-	o.ProfileId = v
+	o.ProfileId = &v
 }
 
-// GetCoupon returns the Coupon field value
+// GetCoupon returns the Coupon field value if set, zero value otherwise.
 func (o *CustomerSession) GetCoupon() string {
-	if o == nil {
+	if o == nil || IsNil(o.Coupon) {
 		var ret string
 		return ret
 	}
-
-	return o.Coupon
+	return *o.Coupon
 }
 
-// GetCouponOk returns a tuple with the Coupon field value
+// GetCouponOk returns a tuple with the Coupon field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CustomerSession) GetCouponOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Coupon) {
 		return nil, false
 	}
-	return &o.Coupon, true
+	return o.Coupon, true
 }
 
-// SetCoupon sets field value
+// HasCoupon returns a boolean if a field has been set.
+func (o *CustomerSession) HasCoupon() bool {
+	if o != nil && !IsNil(o.Coupon) {
+		return true
+	}
+
+	return false
+}
+
+// SetCoupon gets a reference to the given string and assigns it to the Coupon field.
 func (o *CustomerSession) SetCoupon(v string) {
-	o.Coupon = v
+	o.Coupon = &v
 }
 
-// GetReferral returns the Referral field value
+// GetReferral returns the Referral field value if set, zero value otherwise.
 func (o *CustomerSession) GetReferral() string {
-	if o == nil {
+	if o == nil || IsNil(o.Referral) {
 		var ret string
 		return ret
 	}
-
-	return o.Referral
+	return *o.Referral
 }
 
-// GetReferralOk returns a tuple with the Referral field value
+// GetReferralOk returns a tuple with the Referral field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CustomerSession) GetReferralOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Referral) {
 		return nil, false
 	}
-	return &o.Referral, true
+	return o.Referral, true
 }
 
-// SetReferral sets field value
+// HasReferral returns a boolean if a field has been set.
+func (o *CustomerSession) HasReferral() bool {
+	if o != nil && !IsNil(o.Referral) {
+		return true
+	}
+
+	return false
+}
+
+// SetReferral gets a reference to the given string and assigns it to the Referral field.
 func (o *CustomerSession) SetReferral(v string) {
-	o.Referral = v
+	o.Referral = &v
 }
 
-// GetState returns the State field value
+// GetState returns the State field value if set, zero value otherwise.
 func (o *CustomerSession) GetState() string {
-	if o == nil {
+	if o == nil || IsNil(o.State) {
 		var ret string
 		return ret
 	}
-
-	return o.State
+	return *o.State
 }
 
-// GetStateOk returns a tuple with the State field value
+// GetStateOk returns a tuple with the State field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CustomerSession) GetStateOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.State) {
 		return nil, false
 	}
-	return &o.State, true
+	return o.State, true
 }
 
-// SetState sets field value
+// HasState returns a boolean if a field has been set.
+func (o *CustomerSession) HasState() bool {
+	if o != nil && !IsNil(o.State) {
+		return true
+	}
+
+	return false
+}
+
+// SetState gets a reference to the given string and assigns it to the State field.
 func (o *CustomerSession) SetState(v string) {
-	o.State = v
+	o.State = &v
 }
 
-// GetCartItems returns the CartItems field value
+// GetCartItems returns the CartItems field value if set, zero value otherwise.
 func (o *CustomerSession) GetCartItems() []CartItem {
-	if o == nil {
+	if o == nil || IsNil(o.CartItems) {
 		var ret []CartItem
 		return ret
 	}
-
 	return o.CartItems
 }
 
-// GetCartItemsOk returns a tuple with the CartItems field value
+// GetCartItemsOk returns a tuple with the CartItems field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CustomerSession) GetCartItemsOk() ([]CartItem, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.CartItems) {
 		return nil, false
 	}
 	return o.CartItems, true
 }
 
-// SetCartItems sets field value
+// HasCartItems returns a boolean if a field has been set.
+func (o *CustomerSession) HasCartItems() bool {
+	if o != nil && !IsNil(o.CartItems) {
+		return true
+	}
+
+	return false
+}
+
+// SetCartItems gets a reference to the given []CartItem and assigns it to the CartItems field.
 func (o *CustomerSession) SetCartItems(v []CartItem) {
 	o.CartItems = v
 }
@@ -312,50 +347,66 @@ func (o *CustomerSession) SetIdentifiers(v []string) {
 	o.Identifiers = v
 }
 
-// GetTotal returns the Total field value
+// GetTotal returns the Total field value if set, zero value otherwise.
 func (o *CustomerSession) GetTotal() float32 {
-	if o == nil {
+	if o == nil || IsNil(o.Total) {
 		var ret float32
 		return ret
 	}
-
-	return o.Total
+	return *o.Total
 }
 
-// GetTotalOk returns a tuple with the Total field value
+// GetTotalOk returns a tuple with the Total field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CustomerSession) GetTotalOk() (*float32, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Total) {
 		return nil, false
 	}
-	return &o.Total, true
+	return o.Total, true
 }
 
-// SetTotal sets field value
+// HasTotal returns a boolean if a field has been set.
+func (o *CustomerSession) HasTotal() bool {
+	if o != nil && !IsNil(o.Total) {
+		return true
+	}
+
+	return false
+}
+
+// SetTotal gets a reference to the given float32 and assigns it to the Total field.
 func (o *CustomerSession) SetTotal(v float32) {
-	o.Total = v
+	o.Total = &v
 }
 
-// GetAttributes returns the Attributes field value
+// GetAttributes returns the Attributes field value if set, zero value otherwise.
 func (o *CustomerSession) GetAttributes() map[string]interface{} {
-	if o == nil {
+	if o == nil || IsNil(o.Attributes) {
 		var ret map[string]interface{}
 		return ret
 	}
-
 	return o.Attributes
 }
 
-// GetAttributesOk returns a tuple with the Attributes field value
+// GetAttributesOk returns a tuple with the Attributes field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CustomerSession) GetAttributesOk() (map[string]interface{}, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Attributes) {
 		return map[string]interface{}{}, false
 	}
 	return o.Attributes, true
 }
 
-// SetAttributes sets field value
+// HasAttributes returns a boolean if a field has been set.
+func (o *CustomerSession) HasAttributes() bool {
+	if o != nil && !IsNil(o.Attributes) {
+		return true
+	}
+
+	return false
+}
+
+// SetAttributes gets a reference to the given map[string]interface{} and assigns it to the Attributes field.
 func (o *CustomerSession) SetAttributes(v map[string]interface{}) {
 	o.Attributes = v
 }
@@ -469,16 +520,30 @@ func (o CustomerSession) ToMap() (map[string]interface{}, error) {
 	toSerialize["integrationId"] = o.IntegrationId
 	toSerialize["created"] = o.Created
 	toSerialize["applicationId"] = o.ApplicationId
-	toSerialize["profileId"] = o.ProfileId
-	toSerialize["coupon"] = o.Coupon
-	toSerialize["referral"] = o.Referral
-	toSerialize["state"] = o.State
-	toSerialize["cartItems"] = o.CartItems
+	if !IsNil(o.ProfileId) {
+		toSerialize["profileId"] = o.ProfileId
+	}
+	if !IsNil(o.Coupon) {
+		toSerialize["coupon"] = o.Coupon
+	}
+	if !IsNil(o.Referral) {
+		toSerialize["referral"] = o.Referral
+	}
+	if !IsNil(o.State) {
+		toSerialize["state"] = o.State
+	}
+	if !IsNil(o.CartItems) {
+		toSerialize["cartItems"] = o.CartItems
+	}
 	if !IsNil(o.Identifiers) {
 		toSerialize["identifiers"] = o.Identifiers
 	}
-	toSerialize["total"] = o.Total
-	toSerialize["attributes"] = o.Attributes
+	if !IsNil(o.Total) {
+		toSerialize["total"] = o.Total
+	}
+	if !IsNil(o.Attributes) {
+		toSerialize["attributes"] = o.Attributes
+	}
 	toSerialize["firstSession"] = o.FirstSession
 	toSerialize["updateCount"] = o.UpdateCount
 	toSerialize["discounts"] = o.Discounts
@@ -499,13 +564,6 @@ func (o *CustomerSession) UnmarshalJSON(data []byte) (err error) {
 		"integrationId",
 		"created",
 		"applicationId",
-		"profileId",
-		"coupon",
-		"referral",
-		"state",
-		"cartItems",
-		"total",
-		"attributes",
 		"firstSession",
 		"updateCount",
 		"discounts",

@@ -22,7 +22,7 @@ var _ MappedNullable = &NewCouponsForMultipleRecipients{}
 // NewCouponsForMultipleRecipients struct for NewCouponsForMultipleRecipients
 type NewCouponsForMultipleRecipients struct {
 	// The number of times the coupon code can be redeemed. `0` means unlimited redemptions but any campaign usage limits will still apply.
-	UsageLimit int64 `json:"usageLimit"`
+	UsageLimit *int64 `json:"usageLimit,omitempty"`
 	// The total discount value that the code can give. Typically used to represent a gift card value.
 	DiscountLimit *float32 `json:"discountLimit,omitempty"`
 	// The number of reservations that can be made with this coupon code.
@@ -50,9 +50,8 @@ type _NewCouponsForMultipleRecipients NewCouponsForMultipleRecipients
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildNewCouponsForMultipleRecipients(usageLimit int64, recipientsIntegrationIds []string) *NewCouponsForMultipleRecipients {
+func BuildNewCouponsForMultipleRecipients(recipientsIntegrationIds []string) *NewCouponsForMultipleRecipients {
 	this := NewCouponsForMultipleRecipients{}
-	this.UsageLimit = usageLimit
 	this.RecipientsIntegrationIds = recipientsIntegrationIds
 	return &this
 }
@@ -65,28 +64,36 @@ func NewNewCouponsForMultipleRecipientsWithDefaults() *NewCouponsForMultipleReci
 	return &this
 }
 
-// GetUsageLimit returns the UsageLimit field value
+// GetUsageLimit returns the UsageLimit field value if set, zero value otherwise.
 func (o *NewCouponsForMultipleRecipients) GetUsageLimit() int64 {
-	if o == nil {
+	if o == nil || IsNil(o.UsageLimit) {
 		var ret int64
 		return ret
 	}
-
-	return o.UsageLimit
+	return *o.UsageLimit
 }
 
-// GetUsageLimitOk returns a tuple with the UsageLimit field value
+// GetUsageLimitOk returns a tuple with the UsageLimit field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *NewCouponsForMultipleRecipients) GetUsageLimitOk() (*int64, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.UsageLimit) {
 		return nil, false
 	}
-	return &o.UsageLimit, true
+	return o.UsageLimit, true
 }
 
-// SetUsageLimit sets field value
+// HasUsageLimit returns a boolean if a field has been set.
+func (o *NewCouponsForMultipleRecipients) HasUsageLimit() bool {
+	if o != nil && !IsNil(o.UsageLimit) {
+		return true
+	}
+
+	return false
+}
+
+// SetUsageLimit gets a reference to the given int64 and assigns it to the UsageLimit field.
 func (o *NewCouponsForMultipleRecipients) SetUsageLimit(v int64) {
-	o.UsageLimit = v
+	o.UsageLimit = &v
 }
 
 // GetDiscountLimit returns the DiscountLimit field value if set, zero value otherwise.
@@ -379,7 +386,9 @@ func (o NewCouponsForMultipleRecipients) MarshalJSON() ([]byte, error) {
 
 func (o NewCouponsForMultipleRecipients) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["usageLimit"] = o.UsageLimit
+	if !IsNil(o.UsageLimit) {
+		toSerialize["usageLimit"] = o.UsageLimit
+	}
 	if !IsNil(o.DiscountLimit) {
 		toSerialize["discountLimit"] = o.DiscountLimit
 	}
@@ -418,7 +427,6 @@ func (o *NewCouponsForMultipleRecipients) UnmarshalJSON(data []byte) (err error)
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"usageLimit",
 		"recipientsIntegrationIds",
 	}
 

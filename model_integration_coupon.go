@@ -28,9 +28,9 @@ type IntegrationCoupon struct {
 	// The ID of the campaign that owns this entity.
 	CampaignId int64 `json:"campaignId"`
 	// The coupon code.
-	Value string `json:"value"`
+	Value *string `json:"value,omitempty"`
 	// The number of times the coupon code can be redeemed. `0` means unlimited redemptions but any campaign usage limits will still apply.
-	UsageLimit int64 `json:"usageLimit"`
+	UsageLimit *int64 `json:"usageLimit,omitempty"`
 	// The total discount value that the code can give. Typically used to represent a gift card value.
 	DiscountLimit *float32 `json:"discountLimit,omitempty"`
 	// The number of reservations that can be made with this coupon code.
@@ -76,13 +76,11 @@ type _IntegrationCoupon IntegrationCoupon
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildIntegrationCoupon(id int64, created time.Time, campaignId int64, value string, usageLimit int64, usageCounter int64, profileRedemptionCount int64) *IntegrationCoupon {
+func BuildIntegrationCoupon(id int64, created time.Time, campaignId int64, usageCounter int64, profileRedemptionCount int64) *IntegrationCoupon {
 	this := IntegrationCoupon{}
 	this.Id = id
 	this.Created = created
 	this.CampaignId = campaignId
-	this.Value = value
-	this.UsageLimit = usageLimit
 	this.UsageCounter = usageCounter
 	var reservation bool = true
 	this.Reservation = &reservation
@@ -176,52 +174,68 @@ func (o *IntegrationCoupon) SetCampaignId(v int64) {
 	o.CampaignId = v
 }
 
-// GetValue returns the Value field value
+// GetValue returns the Value field value if set, zero value otherwise.
 func (o *IntegrationCoupon) GetValue() string {
-	if o == nil {
+	if o == nil || IsNil(o.Value) {
 		var ret string
 		return ret
 	}
-
-	return o.Value
+	return *o.Value
 }
 
-// GetValueOk returns a tuple with the Value field value
+// GetValueOk returns a tuple with the Value field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *IntegrationCoupon) GetValueOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Value) {
 		return nil, false
 	}
-	return &o.Value, true
+	return o.Value, true
 }
 
-// SetValue sets field value
+// HasValue returns a boolean if a field has been set.
+func (o *IntegrationCoupon) HasValue() bool {
+	if o != nil && !IsNil(o.Value) {
+		return true
+	}
+
+	return false
+}
+
+// SetValue gets a reference to the given string and assigns it to the Value field.
 func (o *IntegrationCoupon) SetValue(v string) {
-	o.Value = v
+	o.Value = &v
 }
 
-// GetUsageLimit returns the UsageLimit field value
+// GetUsageLimit returns the UsageLimit field value if set, zero value otherwise.
 func (o *IntegrationCoupon) GetUsageLimit() int64 {
-	if o == nil {
+	if o == nil || IsNil(o.UsageLimit) {
 		var ret int64
 		return ret
 	}
-
-	return o.UsageLimit
+	return *o.UsageLimit
 }
 
-// GetUsageLimitOk returns a tuple with the UsageLimit field value
+// GetUsageLimitOk returns a tuple with the UsageLimit field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *IntegrationCoupon) GetUsageLimitOk() (*int64, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.UsageLimit) {
 		return nil, false
 	}
-	return &o.UsageLimit, true
+	return o.UsageLimit, true
 }
 
-// SetUsageLimit sets field value
+// HasUsageLimit returns a boolean if a field has been set.
+func (o *IntegrationCoupon) HasUsageLimit() bool {
+	if o != nil && !IsNil(o.UsageLimit) {
+		return true
+	}
+
+	return false
+}
+
+// SetUsageLimit gets a reference to the given int64 and assigns it to the UsageLimit field.
 func (o *IntegrationCoupon) SetUsageLimit(v int64) {
-	o.UsageLimit = v
+	o.UsageLimit = &v
 }
 
 // GetDiscountLimit returns the DiscountLimit field value if set, zero value otherwise.
@@ -797,8 +811,12 @@ func (o IntegrationCoupon) ToMap() (map[string]interface{}, error) {
 	toSerialize["id"] = o.Id
 	toSerialize["created"] = o.Created
 	toSerialize["campaignId"] = o.CampaignId
-	toSerialize["value"] = o.Value
-	toSerialize["usageLimit"] = o.UsageLimit
+	if !IsNil(o.Value) {
+		toSerialize["value"] = o.Value
+	}
+	if !IsNil(o.UsageLimit) {
+		toSerialize["usageLimit"] = o.UsageLimit
+	}
 	if !IsNil(o.DiscountLimit) {
 		toSerialize["discountLimit"] = o.DiscountLimit
 	}
@@ -865,8 +883,6 @@ func (o *IntegrationCoupon) UnmarshalJSON(data []byte) (err error) {
 		"id",
 		"created",
 		"campaignId",
-		"value",
-		"usageLimit",
 		"usageCounter",
 		"profileRedemptionCount",
 	}

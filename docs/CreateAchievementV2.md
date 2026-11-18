@@ -4,10 +4,10 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Name** | **string** | The internal name of the achievement used in API requests.  **Note**: The name should start with a letter. This cannot be changed after the achievement has been created.  | 
-**Title** | **string** | The display name for the achievement in the Campaign Manager. | 
-**Description** | **string** | A description of the achievement. | 
-**Target** | **float32** | The required number of actions or the transactional milestone to complete the achievement. | 
+**Name** | Pointer to **string** | The internal name of the achievement used in API requests.  **Note**: The name should start with a letter. This cannot be changed after the achievement has been created.  | [optional] 
+**Title** | Pointer to **string** | The display name for the achievement in the Campaign Manager. | [optional] 
+**Description** | Pointer to **string** | A description of the achievement. | [optional] 
+**Target** | Pointer to **float32** | The required number of actions or the transactional milestone to complete the achievement. | [optional] 
 **Period** | Pointer to **string** | The relative duration after which the achievement ends and resets for a particular customer profile.  **Note**: The &#x60;period&#x60; does not start when the achievement is created.  The period is a **positive real number** followed by one letter indicating the time unit.  Examples: &#x60;30s&#x60;, &#x60;40m&#x60;, &#x60;1h&#x60;, &#x60;5D&#x60;, &#x60;7W&#x60;, &#x60;10M&#x60;, &#x60;15Y&#x60;.  Available units:  - &#x60;s&#x60;: seconds - &#x60;m&#x60;: minutes - &#x60;h&#x60;: hours - &#x60;D&#x60;: days - &#x60;W&#x60;: weeks - &#x60;M&#x60;: months - &#x60;Y&#x60;: years  You can also round certain units down to the beginning of period and up to the end of period.: - &#x60;_D&#x60; for rounding down days only. Signifies the start of the day. Example: &#x60;30D_D&#x60; - &#x60;_U&#x60; for rounding up days, weeks, months and years. Signifies the end of the day, week, month or year. Example: &#x60;23W_U&#x60;  **Note**: You can either use the round down and round up option or set an absolute period.  | [optional] 
 **RecurrencePolicy** | Pointer to **string** | The policy that determines if and how the achievement recurs. - &#x60;no_recurrence&#x60;: The achievement can be completed only once. - &#x60;on_expiration&#x60;: The achievement resets after it expires and becomes available again. - &#x60;on_completion&#x60;: When the customer progress status reaches &#x60;completed&#x60;, the achievement resets and becomes available again.  | [optional] 
 **ActivationPolicy** | Pointer to **string** | The policy that determines how the achievement starts, ends, or resets. - &#x60;user_action&#x60;: The achievement ends or resets relative to when the customer started the achievement. - &#x60;fixed_schedule&#x60;: The achievement starts, ends, or resets for all customers following a fixed schedule.  | [optional] 
@@ -22,7 +22,7 @@ Name | Type | Description | Notes
 
 ### NewCreateAchievementV2
 
-`func NewCreateAchievementV2(name string, title string, description string, target float32, sandbox bool, timezone string, ) *CreateAchievementV2`
+`func NewCreateAchievementV2(sandbox bool, timezone string, ) *CreateAchievementV2`
 
 NewCreateAchievementV2 instantiates a new CreateAchievementV2 object
 This constructor will assign default values to properties that have it defined,
@@ -56,6 +56,11 @@ and a boolean to check if the value has been set.
 
 SetName sets Name field to given value.
 
+### HasName
+
+`func (o *CreateAchievementV2) HasName() bool`
+
+HasName returns a boolean if a field has been set.
 
 ### GetTitle
 
@@ -76,6 +81,11 @@ and a boolean to check if the value has been set.
 
 SetTitle sets Title field to given value.
 
+### HasTitle
+
+`func (o *CreateAchievementV2) HasTitle() bool`
+
+HasTitle returns a boolean if a field has been set.
 
 ### GetDescription
 
@@ -96,6 +106,11 @@ and a boolean to check if the value has been set.
 
 SetDescription sets Description field to given value.
 
+### HasDescription
+
+`func (o *CreateAchievementV2) HasDescription() bool`
+
+HasDescription returns a boolean if a field has been set.
 
 ### GetTarget
 
@@ -116,6 +131,11 @@ and a boolean to check if the value has been set.
 
 SetTarget sets Target field to given value.
 
+### HasTarget
+
+`func (o *CreateAchievementV2) HasTarget() bool`
+
+HasTarget returns a boolean if a field has been set.
 
 ### GetPeriod
 

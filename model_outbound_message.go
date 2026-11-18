@@ -36,8 +36,8 @@ type OutboundMessage struct {
 	// ID of the Application associated with the outbound message.
 	ApplicationId *int64 `json:"applicationId,omitempty"`
 	// ID of the loyalty program associated with the outbound message.
-	LoyaltyProgramId *int64             `json:"loyaltyProgramId,omitempty"`
-	Request          OutboundLogRequest `json:"request"`
+	LoyaltyProgramId *int64              `json:"loyaltyProgramId,omitempty"`
+	Request          *OutboundLogRequest `json:"request,omitempty"`
 	// Timestamp of the first log entry for this message.
 	FirstLogAt time.Time `json:"firstLogAt"`
 	// Timestamp of the last log entry for this message.
@@ -58,11 +58,10 @@ type _OutboundMessage OutboundMessage
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildOutboundMessage(uuid string, notificationType string, request OutboundLogRequest, firstLogAt time.Time, lastLogAt time.Time, status string) *OutboundMessage {
+func BuildOutboundMessage(uuid string, notificationType string, firstLogAt time.Time, lastLogAt time.Time, status string) *OutboundMessage {
 	this := OutboundMessage{}
 	this.Uuid = uuid
 	this.NotificationType = notificationType
-	this.Request = request
 	this.FirstLogAt = firstLogAt
 	this.LastLogAt = lastLogAt
 	this.Status = status
@@ -317,28 +316,36 @@ func (o *OutboundMessage) SetLoyaltyProgramId(v int64) {
 	o.LoyaltyProgramId = &v
 }
 
-// GetRequest returns the Request field value
+// GetRequest returns the Request field value if set, zero value otherwise.
 func (o *OutboundMessage) GetRequest() OutboundLogRequest {
-	if o == nil {
+	if o == nil || IsNil(o.Request) {
 		var ret OutboundLogRequest
 		return ret
 	}
-
-	return o.Request
+	return *o.Request
 }
 
-// GetRequestOk returns a tuple with the Request field value
+// GetRequestOk returns a tuple with the Request field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OutboundMessage) GetRequestOk() (*OutboundLogRequest, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Request) {
 		return nil, false
 	}
-	return &o.Request, true
+	return o.Request, true
 }
 
-// SetRequest sets field value
+// HasRequest returns a boolean if a field has been set.
+func (o *OutboundMessage) HasRequest() bool {
+	if o != nil && !IsNil(o.Request) {
+		return true
+	}
+
+	return false
+}
+
+// SetRequest gets a reference to the given OutboundLogRequest and assigns it to the Request field.
 func (o *OutboundMessage) SetRequest(v OutboundLogRequest) {
-	o.Request = v
+	o.Request = &v
 }
 
 // GetFirstLogAt returns the FirstLogAt field value
@@ -539,7 +546,9 @@ func (o OutboundMessage) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.LoyaltyProgramId) {
 		toSerialize["loyaltyProgramId"] = o.LoyaltyProgramId
 	}
-	toSerialize["request"] = o.Request
+	if !IsNil(o.Request) {
+		toSerialize["request"] = o.Request
+	}
 	toSerialize["firstLogAt"] = o.FirstLogAt
 	toSerialize["lastLogAt"] = o.LastLogAt
 	if !IsNil(o.LastResponseCode) {
@@ -567,7 +576,6 @@ func (o *OutboundMessage) UnmarshalJSON(data []byte) (err error) {
 	requiredProperties := []string{
 		"uuid",
 		"notificationType",
-		"request",
 		"firstLogAt",
 		"lastLogAt",
 		"status",
