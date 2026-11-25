@@ -4778,14 +4778,26 @@ paths:
       parameters:
       - description: |
           Possible values: `yes` or `no`.
-          - `yes`: Increases the performance of the API call by returning a 204 response.
-          - `no`: Returns a 200 response that contains the updated customer profiles.
+          - `yes`: Increases the performance of the API call by returning a 204 response. Requires `full` to be `no`; otherwise a 400 error is returned.
+          - `no`: Returns a 200 response that contains the created coupons.
         explode: true
         in: query
         name: silent
         required: false
         schema:
-          default: "yes"
+          default: "no"
+          type: string
+        style: form
+      - description: |
+          Possible values: `yes` or `no`.
+          - `yes`: Returns all created coupons. Requires `silent` to be `no`; otherwise a 400 error is returned.
+          - `no`: Returns at most 1000 created coupons.
+        explode: true
+        in: query
+        name: full
+        required: false
+        schema:
+          default: "no"
           type: string
         style: form
       - $ref: "#/components/parameters/applicationId"
@@ -4806,6 +4818,12 @@ paths:
           description: OK
         "204":
           description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithStatus"
+          description: Bad request
       summary: Create coupons
       tags:
       - management
@@ -16148,8 +16166,8 @@ components:
           member:
             price: 90
             adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-            effectiveFrom: 2025-05-25T00:00:00Z
-            effectiveUntil: 2025-05-30T00:00:00Z
+            adjustmentEffectiveFrom: 2025-05-25T00:00:00Z
+            adjustmentEffectiveUntil: 2025-05-30T00:00:00Z
           base:
             price: 100
       properties:
@@ -16298,8 +16316,8 @@ components:
             member:
               price: 90
               adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-              effectiveFrom: 2025-05-25T00:00:00Z
-              effectiveUntil: 2025-05-30T00:00:00Z
+              adjustmentEffectiveFrom: 2025-05-25T00:00:00Z
+              adjustmentEffectiveUntil: 2025-05-30T00:00:00Z
             base:
               price: 100
           readOnly: true
@@ -16575,8 +16593,8 @@ components:
             member:
               price: 90
               adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-              effectiveFrom: 2025-05-25T00:00:00Z
-              effectiveUntil: 2025-05-30T00:00:00Z
+              adjustmentEffectiveFrom: 2025-05-25T00:00:00Z
+              adjustmentEffectiveUntil: 2025-05-30T00:00:00Z
             base:
               price: 100
         - name: Air Glide
@@ -16607,8 +16625,8 @@ components:
             member:
               price: 90
               adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-              effectiveFrom: 2025-05-25T00:00:00Z
-              effectiveUntil: 2025-05-30T00:00:00Z
+              adjustmentEffectiveFrom: 2025-05-25T00:00:00Z
+              adjustmentEffectiveUntil: 2025-05-30T00:00:00Z
             base:
               price: 100
         experimentVariantAllocations:
@@ -19526,8 +19544,8 @@ components:
               member:
                 price: 90
                 adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-                effectiveFrom: 2025-05-25T00:00:00Z
-                effectiveUntil: 2025-05-30T00:00:00Z
+                adjustmentEffectiveFrom: 2025-05-25T00:00:00Z
+                adjustmentEffectiveUntil: 2025-05-30T00:00:00Z
               base:
                 price: 100
           - name: Air Glide
@@ -19558,8 +19576,8 @@ components:
               member:
                 price: 90
                 adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-                effectiveFrom: 2025-05-25T00:00:00Z
-                effectiveUntil: 2025-05-30T00:00:00Z
+                adjustmentEffectiveFrom: 2025-05-25T00:00:00Z
+                adjustmentEffectiveUntil: 2025-05-30T00:00:00Z
               base:
                 price: 100
           experimentVariantAllocations:
@@ -21223,8 +21241,14 @@ components:
         in the current session.
       properties:
         failureCode:
-          description: A code identifying why the customer was not eligible for the
-            campaign.
+          description: "A code identifying why the customer was not eligible for the\
+            \ campaign.\n\n- `ALL_RULES_FAILED`: Every rule in the campaign failed\
+            \ for the customer, \nso they are not eligible for the campaign.\n\n-\
+            \ `SKIPPED`: The campaign was not applied in the current session because\
+            \ \nit was not selected for evaluation. For example, another campaign\
+            \ in the \nsame evaluation group took precedence.\n\n- `AUDIENCE_NOT_MATCHED`:\
+            \ The campaign was not evaluated because the \ncustomer profile is not\
+            \ a member of any audience that the campaign targets.\n"
           enum:
           - ALL_RULES_FAILED
           - SKIPPED
@@ -21290,8 +21314,11 @@ components:
         in the current session.
       properties:
         failureCode:
-          description: A code identifying why the customer was not eligible for the
-            rule in the current session.
+          description: "A code identifying why the customer was not eligible for the\
+            \ rule in the current session.\n\n- `CONDITION_NOT_MET`: One or more conditions\
+            \ of the rule did not evaluate \nto `true` for the customer.\n\n- `EFFECT_FAILED`:\
+            \ The conditions of the rule were met but one of its effects \ncould not\
+            \ be applied.\n"
           enum:
           - CONDITION_NOT_MET
           - EFFECT_FAILED
@@ -27351,6 +27378,44 @@ components:
               to complete the achievement.
             example: 10
             type: number
+          achievementPeriod:
+            description: |
+              The relative duration after which the achievement ends and resets for
+              a particular customer profile. This property is omitted for
+              on-completion achievements which have no specified period.
+
+              The period is a positive real number followed by one letter indicating
+              the time unit, and an optional rounding suffix.
+
+              Examples: `30s`, `40m`, `1h`, `5D`, `7W`, `10M`, `15Y`, `30D_D`, `1W_U`.
+
+              The letters indicate the following time units:
+
+              - `s`: Seconds.
+
+              - `m`: Minutes.
+
+              - `h`: Hours.
+
+              - `D`: Days.
+
+              - `W`: Weeks.
+
+              - `M`: Months.
+
+              - `Y`: Years.
+
+              If a suffix is present, it indicates the following rounding:
+
+              - `_D`: Rounds down, to the start of the day. It applies to days only.
+              For example, `30D_D` ends at the start of the day, 30 days after the
+              customer starts the achievement.
+
+              - `_U`: Rounds up, to the end of the day, week, month or year. It
+              applies to days, weeks, months and years. For example, `1W_U` ends at
+              the end of the week in which the one-week period would end.
+            example: 1W
+            type: string
           achievementRecurrencePolicy:
             description: |
               The policy that determines if and how the achievement recurs.
@@ -27424,6 +27489,7 @@ components:
         - id: 1
           applicationId: 2
         target: 10
+        achievementPeriod: 1W
         achievementRecurrencePolicy: no_recurrence
         achievementActivationPolicy: fixed_schedule
         achievementFixedStartDate: 2024-01-15T15:04:05Z07:00
@@ -27691,6 +27757,7 @@ components:
           - id: 1
             applicationId: 2
           target: 10
+          achievementPeriod: 1W
           achievementRecurrencePolicy: no_recurrence
           achievementActivationPolicy: fixed_schedule
           achievementFixedStartDate: 2024-01-15T15:04:05Z07:00
@@ -27716,6 +27783,7 @@ components:
           - id: 1
             applicationId: 2
           target: 10
+          achievementPeriod: 1W
           achievementRecurrencePolicy: no_recurrence
           achievementActivationPolicy: fixed_schedule
           achievementFixedStartDate: 2024-01-15T15:04:05Z07:00
@@ -31653,6 +31721,7 @@ components:
           createReferral: "#/components/schemas/CreateReferralBlock"
           reserveCoupon: "#/components/schemas/ReserveCouponBlock"
           updateLoyaltyPointsExpiry: "#/components/schemas/UpdateLoyaltyPointsExpiryBlock"
+          updateLoyaltyProgramMembership: "#/components/schemas/UpdateLoyaltyProgramMembershipBlock"
           checkLoyaltyCard: "#/components/schemas/CheckLoyaltyCardBlock"
           checkTier: "#/components/schemas/CheckTierBlock"
           awardLoyaltyPoints: "#/components/schemas/AwardLoyaltyPointsBlock"
@@ -31682,6 +31751,7 @@ components:
       - $ref: "#/components/schemas/CreateReferralBlock"
       - $ref: "#/components/schemas/ReserveCouponBlock"
       - $ref: "#/components/schemas/UpdateLoyaltyPointsExpiryBlock"
+      - $ref: "#/components/schemas/UpdateLoyaltyProgramMembershipBlock"
       - $ref: "#/components/schemas/CheckLoyaltyCardBlock"
       - $ref: "#/components/schemas/CheckTierBlock"
       - $ref: "#/components/schemas/AwardLoyaltyPointsBlock"
@@ -33344,6 +33414,38 @@ components:
         - subledger
         - value
         title: UpdateLoyaltyPointsExpiryBlock
+    UpdateLoyaltyProgramMembershipBlock:
+      allOf:
+      - $ref: "#/components/schemas/BaseBlock"
+      - description: "A block that enrolls a customer in a profile-based loyalty program.\
+          \ Fails if the customer has already joined the program, if the session has\
+          \ no customer profile, or if the program is card-based."
+        properties:
+          operator:
+            description: The action to perform. `join` adds the customer to the loyalty
+              program.
+            enum:
+            - join
+            example: join
+            type: string
+          program:
+            $ref: "#/components/schemas/UpdateLoyaltyProgramMembershipBlock_1_program"
+          joinDate:
+            description: |-
+              The date and time the customer joins the program. Cannot be in the future. Accepts one of:
+              - An absolute timestamp in RFC 3339 format (e.g. `2026-01-15T10:00:00Z`). - A reference to a value, such as `{{$Now}}` or an attribute. - A relative time: an object with a `baseline` time, a `duration`, and an `operator`
+                that is `laterBy` or `earlierBy`.
+              - A rounded time: an object with a `baseline` time, a `unit` (such as `day`, `hour` or
+                `month`), and a `direction` that is `start` or `end`. The baseline must be a relative
+                time whose duration uses the same unit.
+
+              See the examples for each form.
+            example: "{{$Now}}"
+        required:
+        - joinDate
+        - operator
+        - program
+        title: UpdateLoyaltyProgramMembershipBlock
     CheckLoyaltyCardBlock:
       allOf:
       - $ref: "#/components/schemas/BaseBlock"
@@ -39961,8 +40063,8 @@ components:
             member:
               price: 90
               adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-              effectiveFrom: 2025-05-25T00:00:00Z
-              effectiveUntil: 2025-05-30T00:00:00Z
+              adjustmentEffectiveFrom: 2025-05-25T00:00:00Z
+              adjustmentEffectiveUntil: 2025-05-30T00:00:00Z
             base:
               price: 100
         - name: Air Glide
@@ -39993,8 +40095,8 @@ components:
             member:
               price: 90
               adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-              effectiveFrom: 2025-05-25T00:00:00Z
-              effectiveUntil: 2025-05-30T00:00:00Z
+              adjustmentEffectiveFrom: 2025-05-25T00:00:00Z
+              adjustmentEffectiveUntil: 2025-05-30T00:00:00Z
             base:
               price: 100
         discounts:
@@ -41248,6 +41350,50 @@ components:
           value: ""
         product:
           name: sample_product
+    CatalogItemSummary:
+      properties:
+        id:
+          description: The internal ID of the catalog item.
+          example: 6
+          format: int64
+          type: integer
+        catalogId:
+          description: The ID of the catalog the item belongs to.
+          example: 6
+          format: int64
+          type: integer
+        sku:
+          description: The stock keeping unit of the item.
+          example: SKU1241028
+          type: string
+        price:
+          description: The price of the item.
+          example: 99.99
+          type: number
+        productName:
+          description: The name of the product the item belongs to.
+          example: Running shoes
+          type: string
+        productId:
+          description: |
+            The ID of the product the item is linked to.
+
+            **Note:** Only returned when the product catalog integration is enabled.
+          example: 12
+          format: int64
+          type: integer
+        skuId:
+          description: |
+            The ID of the SKU the item is linked to.
+
+            **Note:** Only returned when the product catalog integration is enabled.
+          example: 34
+          format: int64
+          type: integer
+      required:
+      - catalogId
+      - id
+      - sku
     AddItemCatalogAction:
       description: |
         The specific properties of the "ADD" catalog sync action.
@@ -43048,6 +43194,13 @@ components:
       allOf:
       - $ref: "#/components/schemas/Risk"
       - properties:
+          applicationName:
+            description: |
+              The current name of the Application this risk belongs to. Shown even if the
+              user does not have access to that Application. Omitted if the Application
+              has been deleted or the risk is not associated with an Application.
+            example: My Application
+            type: string
           affectedEntities:
             description: "The affected entities with the highest severity ratios,\
               \ in descending order."
@@ -44363,6 +44516,12 @@ components:
           description: Client ID. Required for `authorization_code` grant.
           example: a3f8c1e2b4d56789
           type: string
+        client_secret:
+          description: Client secret for confidential (static) clients. May also be
+            supplied via HTTP Basic authentication. Public clients registered via
+            dynamic client registration omit it.
+          example: 7b1f0c9d8e2a4f6b1c3d5e7f9a0b2c4d
+          type: string
         redirect_uri:
           description: Redirect URI. Required for `authorization_code` grant.
           example: http://localhost:3000/callback
@@ -44519,6 +44678,18 @@ components:
           description: List of supported PKCE code challenge methods.
           example:
           - S256
+          items:
+            type: string
+          type: array
+          default: null
+        token_endpoint_auth_methods_supported:
+          description: List of supported client authentication methods at the token
+            endpoint. Public clients use `none`; confidential clients use `client_secret_post`
+            or `client_secret_basic`.
+          example:
+          - none
+          - client_secret_post
+          - client_secret_basic
           items:
             type: string
           type: array
@@ -48526,6 +48697,197 @@ components:
           default: null
       required:
       - data
+    ExportJobType:
+      description: Export job type.
+      enum:
+      - active_customer_profiles
+      - loyalty_balance
+      - loyalty_ledger_entries
+      example: active_customer_profiles
+      type: string
+      x-generate-enum-go: true
+    ExportJobDestination:
+      properties:
+        type:
+          description: Destination type can be Google Cloud Storage (gcs) or file.
+          enum:
+          - gcs
+          - file
+          example: gcs
+          type: string
+          x-generate-enum-go: true
+        compression:
+          default: none
+          description: Compression applied to the exported file.
+          enum:
+          - zip
+          - gzip
+          - none
+          example: gzip
+          type: string
+          x-generate-enum-go: true
+        path:
+          description: Directory on the exporter host where the file is written. Required
+            for file destinations; must be omitted for gcs.
+          example: exports/loyalty
+          maxLength: 255
+          pattern: "^/?[A-Za-z0-9_-][A-Za-z0-9._/-]*$"
+          type: string
+        bucket:
+          description: GCS bucket name for storage. Absent for file.
+          example: acme-exports
+          pattern: "^[a-z0-9][a-z0-9._-]{1,61}[a-z0-9]$"
+          type: string
+      required:
+      - type
+    NewExportJob:
+      properties:
+        type:
+          $ref: "#/components/schemas/ExportJobType"
+        args:
+          additionalProperties: true
+          description: Arguments for the exporter. Their structure depends on `type`
+            and is validated by the service.
+          example:
+            loyaltyProgramID: 6
+          type: object
+        destination:
+          description: Destinations for the export job.
+          example:
+          - type: gcs
+            bucket: acme-exports
+            compression: gzip
+          items:
+            $ref: "#/components/schemas/ExportJobDestination"
+          minItems: 1
+          type: array
+          default: null
+        cronSchedule:
+          description: Schedule in standard 5-field cron format.
+          example: 0 3 * * *
+          maxLength: 100
+          minLength: 9
+          type: string
+        timezone:
+          default: UTC
+          description: A string containing an IANA timezone descriptor.
+          example: Europe/Berlin
+          maxLength: 32
+          minLength: 1
+          type: string
+        enabled:
+          default: false
+          description: Whether the export job is enabled.
+          example: true
+          type: boolean
+        allowConcurrentRuns:
+          default: false
+          description: Whether to allow concurrent runs of the job.
+          type: boolean
+        overrideFilename:
+          description: "Filename that replaces the generated export filename, without\
+            \ extension."
+          example: acme-exports
+          maxLength: 255
+          pattern: "^/?[A-Za-z0-9_-][A-Za-z0-9._/-]*$"
+          type: string
+      required:
+      - args
+      - cronSchedule
+      - destination
+      - type
+    ExportJobStatus:
+      default: idle
+      description: The status of the export job. Interrupted jobs are both active
+        and running. Completion status is kept in export job logs.
+      enum:
+      - idle
+      - running
+      type: string
+      x-generate-enum-go: true
+    ExportJob:
+      allOf:
+      - $ref: "#/components/schemas/NewExportJob"
+      - properties:
+          id:
+            description: The internal ID of this entity.
+            example: 6
+            format: int64
+            type: integer
+          accountId:
+            description: The ID of the account that owns this entity.
+            example: 3886
+            format: int64
+            type: integer
+          status:
+            $ref: "#/components/schemas/ExportJobStatus"
+          created:
+            description: The time this entity was created.
+            example: 2020-06-10T09:05:27.993483Z
+            format: date-time
+            type: string
+          modified:
+            description: The time this entity was modified.
+            example: 2020-06-10T09:05:27.993483Z
+            format: date-time
+            type: string
+        required:
+        - accountId
+        - created
+        - id
+        - status
+    UpdateExportJob:
+      allOf:
+      - $ref: "#/components/schemas/NewExportJob"
+    ExportJobLogResult:
+      description: Result of an export job run.
+      enum:
+      - success
+      - failed
+      type: string
+      x-generate-enum-go: true
+    ExportJobLog:
+      properties:
+        id:
+          description: The internal ID of this entity.
+          example: 6
+          format: int64
+          type: integer
+        exportJobId:
+          description: The internal ID of the connected export job.
+          example: 6
+          format: int64
+          type: integer
+        type:
+          $ref: "#/components/schemas/ExportJobType"
+        result:
+          $ref: "#/components/schemas/ExportJobLogResult"
+        filename:
+          description: "Name of the exported file, without extension."
+          example: 6_loyalty_ledger_entries_2026-11-10
+          type: string
+        log:
+          description: The log text.
+          example: 1 rows exported to 1 destinations
+          type: string
+        startedAt:
+          description: Time when the export job run started.
+          example: 2020-06-10T09:05:27.993483Z
+          format: date-time
+          type: string
+        finishedAt:
+          description: Time when the export job run finished.
+          example: 2020-06-10T09:05:27.993483Z
+          format: date-time
+          type: string
+      required:
+      - exportJobId
+      - filename
+      - id
+      - log
+      - result
+      - startedAt
+      - type
     CampaignNotificationBase:
       properties:
         NotificationType:
@@ -48902,7 +49264,7 @@ components:
           description: The total number of items affected by the event that triggered
             the strikethrough labeling.
           example: 1500
-          format: date-time
+          format: int64
           type: integer
         payload:
           description: The arbitrary properties associated with this trigger type.
@@ -54885,8 +55247,8 @@ components:
               member:
                 price: 90
                 adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-                effectiveFrom: 2025-05-25T00:00:00Z
-                effectiveUntil: 2025-05-30T00:00:00Z
+                adjustmentEffectiveFrom: 2025-05-25T00:00:00Z
+                adjustmentEffectiveUntil: 2025-05-30T00:00:00Z
               base:
                 price: 100
           - name: Air Glide
@@ -54917,8 +55279,8 @@ components:
               member:
                 price: 90
                 adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-                effectiveFrom: 2025-05-25T00:00:00Z
-                effectiveUntil: 2025-05-30T00:00:00Z
+                adjustmentEffectiveFrom: 2025-05-25T00:00:00Z
+                adjustmentEffectiveUntil: 2025-05-30T00:00:00Z
               base:
                 price: 100
           discounts:
@@ -54965,8 +55327,8 @@ components:
               member:
                 price: 90
                 adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-                effectiveFrom: 2025-05-25T00:00:00Z
-                effectiveUntil: 2025-05-30T00:00:00Z
+                adjustmentEffectiveFrom: 2025-05-25T00:00:00Z
+                adjustmentEffectiveUntil: 2025-05-30T00:00:00Z
               base:
                 price: 100
           - name: Air Glide
@@ -54997,8 +55359,8 @@ components:
               member:
                 price: 90
                 adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-                effectiveFrom: 2025-05-25T00:00:00Z
-                effectiveUntil: 2025-05-30T00:00:00Z
+                adjustmentEffectiveFrom: 2025-05-25T00:00:00Z
+                adjustmentEffectiveUntil: 2025-05-30T00:00:00Z
               base:
                 price: 100
           discounts:
@@ -55060,8 +55422,8 @@ components:
               member:
                 price: 90
                 adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-                effectiveFrom: 2025-05-25T00:00:00Z
-                effectiveUntil: 2025-05-30T00:00:00Z
+                adjustmentEffectiveFrom: 2025-05-25T00:00:00Z
+                adjustmentEffectiveUntil: 2025-05-30T00:00:00Z
               base:
                 price: 100
           - name: Air Glide
@@ -55092,8 +55454,8 @@ components:
               member:
                 price: 90
                 adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-                effectiveFrom: 2025-05-25T00:00:00Z
-                effectiveUntil: 2025-05-30T00:00:00Z
+                adjustmentEffectiveFrom: 2025-05-25T00:00:00Z
+                adjustmentEffectiveUntil: 2025-05-30T00:00:00Z
               base:
                 price: 100
           discounts:
@@ -55140,8 +55502,8 @@ components:
               member:
                 price: 90
                 adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-                effectiveFrom: 2025-05-25T00:00:00Z
-                effectiveUntil: 2025-05-30T00:00:00Z
+                adjustmentEffectiveFrom: 2025-05-25T00:00:00Z
+                adjustmentEffectiveUntil: 2025-05-30T00:00:00Z
               base:
                 price: 100
           - name: Air Glide
@@ -55172,8 +55534,8 @@ components:
               member:
                 price: 90
                 adjustmentReferenceId: 68851723-e6fa-488f-ace9-112581e6c19b
-                effectiveFrom: 2025-05-25T00:00:00Z
-                effectiveUntil: 2025-05-30T00:00:00Z
+                adjustmentEffectiveFrom: 2025-05-25T00:00:00Z
+                adjustmentEffectiveUntil: 2025-05-30T00:00:00Z
               base:
                 price: 100
           discounts:
@@ -56222,6 +56584,7 @@ components:
           - id: 1
             applicationId: 2
           target: 10
+          achievementPeriod: 1W
           achievementRecurrencePolicy: no_recurrence
           achievementActivationPolicy: fixed_schedule
           achievementFixedStartDate: 2024-01-15T15:04:05Z07:00
@@ -56247,6 +56610,7 @@ components:
           - id: 1
             applicationId: 2
           target: 10
+          achievementPeriod: 1W
           achievementRecurrencePolicy: no_recurrence
           achievementActivationPolicy: fixed_schedule
           achievementFixedStartDate: 2024-01-15T15:04:05Z07:00
@@ -56645,6 +57009,26 @@ components:
         type: string
     UpdateLoyaltyPointsExpiryBlock_1_program:
       description: The loyalty program whose points' expiry is changed.
+      properties:
+        id:
+          description: The ID of the loyalty program.
+          example: 10
+          format: int64
+          type: integer
+        name:
+          description: The internal name of the loyalty program.
+          example: MainProgram
+          readOnly: true
+          type: string
+        title:
+          description: The display name of the loyalty program.
+          example: Main Loyalty Program
+          readOnly: true
+          type: string
+      required:
+      - id
+    UpdateLoyaltyProgramMembershipBlock_1_program:
+      description: The loyalty program the customer joins.
       properties:
         id:
           description: The ID of the loyalty program.

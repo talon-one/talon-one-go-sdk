@@ -17,33 +17,34 @@ import (
 
 // Block - Describes a part of the logic of the rule.
 type Block struct {
-	AwardDiscountBlock             *AwardDiscountBlock
-	AwardGiveawayBlock             *AwardGiveawayBlock
-	AwardItemBlock                 *AwardItemBlock
-	AwardLoyaltyPointsBlock        *AwardLoyaltyPointsBlock
-	CheckAchievementBlock          *CheckAchievementBlock
-	CheckAttributeBlock            *CheckAttributeBlock
-	CheckAudienceBlock             *CheckAudienceBlock
-	CheckBudgetBlock               *CheckBudgetBlock
-	CheckCouponBlock               *CheckCouponBlock
-	CheckEventBlock                *CheckEventBlock
-	CheckLoyaltyBalanceBlock       *CheckLoyaltyBalanceBlock
-	CheckLoyaltyCardBlock          *CheckLoyaltyCardBlock
-	CheckReferralBlock             *CheckReferralBlock
-	CheckTierBlock                 *CheckTierBlock
-	CreateCouponBlock              *CreateCouponBlock
-	CreateReferralBlock            *CreateReferralBlock
-	GroupBlock                     *GroupBlock
-	PassthroughBlock               *PassthroughBlock
-	RedeemLoyaltyPointsBlock       *RedeemLoyaltyPointsBlock
-	ReserveCouponBlock             *ReserveCouponBlock
-	ShowNotificationBlock          *ShowNotificationBlock
-	TriggerCustomEffectBlock       *TriggerCustomEffectBlock
-	TriggerWebhookBlock            *TriggerWebhookBlock
-	UpdateAchievementProgressBlock *UpdateAchievementProgressBlock
-	UpdateAttributeValueBlock      *UpdateAttributeValueBlock
-	UpdateAudienceMembershipBlock  *UpdateAudienceMembershipBlock
-	UpdateLoyaltyPointsExpiryBlock *UpdateLoyaltyPointsExpiryBlock
+	AwardDiscountBlock                  *AwardDiscountBlock
+	AwardGiveawayBlock                  *AwardGiveawayBlock
+	AwardItemBlock                      *AwardItemBlock
+	AwardLoyaltyPointsBlock             *AwardLoyaltyPointsBlock
+	CheckAchievementBlock               *CheckAchievementBlock
+	CheckAttributeBlock                 *CheckAttributeBlock
+	CheckAudienceBlock                  *CheckAudienceBlock
+	CheckBudgetBlock                    *CheckBudgetBlock
+	CheckCouponBlock                    *CheckCouponBlock
+	CheckEventBlock                     *CheckEventBlock
+	CheckLoyaltyBalanceBlock            *CheckLoyaltyBalanceBlock
+	CheckLoyaltyCardBlock               *CheckLoyaltyCardBlock
+	CheckReferralBlock                  *CheckReferralBlock
+	CheckTierBlock                      *CheckTierBlock
+	CreateCouponBlock                   *CreateCouponBlock
+	CreateReferralBlock                 *CreateReferralBlock
+	GroupBlock                          *GroupBlock
+	PassthroughBlock                    *PassthroughBlock
+	RedeemLoyaltyPointsBlock            *RedeemLoyaltyPointsBlock
+	ReserveCouponBlock                  *ReserveCouponBlock
+	ShowNotificationBlock               *ShowNotificationBlock
+	TriggerCustomEffectBlock            *TriggerCustomEffectBlock
+	TriggerWebhookBlock                 *TriggerWebhookBlock
+	UpdateAchievementProgressBlock      *UpdateAchievementProgressBlock
+	UpdateAttributeValueBlock           *UpdateAttributeValueBlock
+	UpdateAudienceMembershipBlock       *UpdateAudienceMembershipBlock
+	UpdateLoyaltyPointsExpiryBlock      *UpdateLoyaltyPointsExpiryBlock
+	UpdateLoyaltyProgramMembershipBlock *UpdateLoyaltyProgramMembershipBlock
 }
 
 // AwardDiscountBlockAsBlock is a convenience function that returns AwardDiscountBlock wrapped in Block
@@ -232,6 +233,13 @@ func UpdateAudienceMembershipBlockAsBlock(v *UpdateAudienceMembershipBlock) Bloc
 func UpdateLoyaltyPointsExpiryBlockAsBlock(v *UpdateLoyaltyPointsExpiryBlock) Block {
 	return Block{
 		UpdateLoyaltyPointsExpiryBlock: v,
+	}
+}
+
+// UpdateLoyaltyProgramMembershipBlockAsBlock is a convenience function that returns UpdateLoyaltyProgramMembershipBlock wrapped in Block
+func UpdateLoyaltyProgramMembershipBlockAsBlock(v *UpdateLoyaltyProgramMembershipBlock) Block {
+	return Block{
+		UpdateLoyaltyProgramMembershipBlock: v,
 	}
 }
 
@@ -569,6 +577,18 @@ func (dst *Block) UnmarshalJSON(data []byte) error {
 		}
 	}
 
+	// check if the discriminator value is 'updateLoyaltyProgramMembership'
+	if jsonDict["type"] == "updateLoyaltyProgramMembership" {
+		// try to unmarshal JSON data into UpdateLoyaltyProgramMembershipBlock
+		err = json.Unmarshal(data, &dst.UpdateLoyaltyProgramMembershipBlock)
+		if err == nil {
+			return nil // data stored in dst.UpdateLoyaltyProgramMembershipBlock, return on the first match
+		} else {
+			dst.UpdateLoyaltyProgramMembershipBlock = nil
+			return fmt.Errorf("failed to unmarshal Block as UpdateLoyaltyProgramMembershipBlock: %s", err.Error())
+		}
+	}
+
 	return nil
 }
 
@@ -680,6 +700,10 @@ func (src Block) MarshalJSON() ([]byte, error) {
 
 	if src.UpdateLoyaltyPointsExpiryBlock != nil {
 		return json.Marshal(&src.UpdateLoyaltyPointsExpiryBlock)
+	}
+
+	if src.UpdateLoyaltyProgramMembershipBlock != nil {
+		return json.Marshal(&src.UpdateLoyaltyProgramMembershipBlock)
 	}
 
 	return nil, nil // no data in oneOf schemas
@@ -798,6 +822,10 @@ func (obj *Block) GetActualInstance() interface{} {
 		return obj.UpdateLoyaltyPointsExpiryBlock
 	}
 
+	if obj.UpdateLoyaltyProgramMembershipBlock != nil {
+		return obj.UpdateLoyaltyProgramMembershipBlock
+	}
+
 	// all schemas are nil
 	return nil
 }
@@ -910,6 +938,10 @@ func (obj Block) GetActualInstanceValue() interface{} {
 
 	if obj.UpdateLoyaltyPointsExpiryBlock != nil {
 		return *obj.UpdateLoyaltyPointsExpiryBlock
+	}
+
+	if obj.UpdateLoyaltyProgramMembershipBlock != nil {
+		return *obj.UpdateLoyaltyProgramMembershipBlock
 	}
 
 	// all schemas are nil

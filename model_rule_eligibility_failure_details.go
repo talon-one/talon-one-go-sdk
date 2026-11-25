@@ -20,7 +20,7 @@ var _ MappedNullable = &RuleEligibilityFailureDetails{}
 
 // RuleEligibilityFailureDetails The details about why the customer was not eligible for the rule in the current session.
 type RuleEligibilityFailureDetails struct {
-	// A code identifying why the customer was not eligible for the rule in the current session.
+	// A code identifying why the customer was not eligible for the rule in the current session.  - `CONDITION_NOT_MET`: One or more conditions of the rule did not evaluate  to `true` for the customer.  - `EFFECT_FAILED`: The conditions of the rule were met but one of its effects  could not be applied.
 	FailureCode string `json:"failureCode"`
 	// The ID of the coupon that was being evaluated when the rule failed.
 	CouponID *int64 `json:"couponID,omitempty"`

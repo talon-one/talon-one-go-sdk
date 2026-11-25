@@ -1196,7 +1196,7 @@ Name | Type | Description  | Notes
 
 ## CreateCoupons
 
-> CreateCoupons200Response CreateCoupons(ctx, applicationId, campaignId).NewCoupons(newCoupons).Silent(silent).Execute()
+> CreateCoupons200Response CreateCoupons(ctx, applicationId, campaignId).NewCoupons(newCoupons).Silent(silent).Full(full).Execute()
 
 Create coupons
 
@@ -1218,11 +1218,12 @@ func main() {
 	applicationId := int64(789) // int64 | The ID of the Application. It is displayed in your Talon.One deployment URL.
 	campaignId := int64(789) // int64 | The ID of the campaign. It is displayed in your Talon.One deployment URL.
 	newCoupons := *openapiclient.NewNewCoupons(int64(100), int64(1)) // NewCoupons | body
-	silent := "silent_example" // string | Possible values: `yes` or `no`. - `yes`: Increases the performance of the API call by returning a 204 response. - `no`: Returns a 200 response that contains the updated customer profiles.  (optional) (default to "yes")
+	silent := "silent_example" // string | Possible values: `yes` or `no`. - `yes`: Increases the performance of the API call by returning a 204 response. Requires `full` to be `no`; otherwise a 400 error is returned. - `no`: Returns a 200 response that contains the created coupons.  (optional) (default to "no")
+	full := "full_example" // string | Possible values: `yes` or `no`. - `yes`: Returns all created coupons. Requires `silent` to be `no`; otherwise a 400 error is returned. - `no`: Returns at most 1000 created coupons.  (optional) (default to "no")
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ManagementAPI.CreateCoupons(context.Background(), applicationId, campaignId).NewCoupons(newCoupons).Silent(silent).Execute()
+	resp, r, err := apiClient.ManagementAPI.CreateCoupons(context.Background(), applicationId, campaignId).NewCoupons(newCoupons).Silent(silent).Full(full).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ManagementAPI.CreateCoupons``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -1251,7 +1252,8 @@ Name | Type | Description  | Notes
 
 
  **newCoupons** | [**NewCoupons**](NewCoupons.md) | body | 
- **silent** | **string** | Possible values: &#x60;yes&#x60; or &#x60;no&#x60;. - &#x60;yes&#x60;: Increases the performance of the API call by returning a 204 response. - &#x60;no&#x60;: Returns a 200 response that contains the updated customer profiles.  | [default to &quot;yes&quot;]
+ **silent** | **string** | Possible values: &#x60;yes&#x60; or &#x60;no&#x60;. - &#x60;yes&#x60;: Increases the performance of the API call by returning a 204 response. Requires &#x60;full&#x60; to be &#x60;no&#x60;; otherwise a 400 error is returned. - &#x60;no&#x60;: Returns a 200 response that contains the created coupons.  | [default to &quot;no&quot;]
+ **full** | **string** | Possible values: &#x60;yes&#x60; or &#x60;no&#x60;. - &#x60;yes&#x60;: Returns all created coupons. Requires &#x60;silent&#x60; to be &#x60;no&#x60;; otherwise a 400 error is returned. - &#x60;no&#x60;: Returns at most 1000 created coupons.  | [default to &quot;no&quot;]
 
 ### Return type
 

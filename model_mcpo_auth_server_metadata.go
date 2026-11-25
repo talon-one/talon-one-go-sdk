@@ -34,7 +34,9 @@ type MCPOAuthServerMetadata struct {
 	GrantTypesSupported []string `json:"grant_types_supported"`
 	// List of supported PKCE code challenge methods.
 	CodeChallengeMethodsSupported []string `json:"code_challenge_methods_supported"`
-	AdditionalProperties          map[string]interface{}
+	// List of supported client authentication methods at the token endpoint. Public clients use `none`; confidential clients use `client_secret_post` or `client_secret_basic`.
+	TokenEndpointAuthMethodsSupported []string `json:"token_endpoint_auth_methods_supported,omitempty"`
+	AdditionalProperties              map[string]interface{}
 }
 
 type _MCPOAuthServerMetadata MCPOAuthServerMetadata
@@ -231,6 +233,38 @@ func (o *MCPOAuthServerMetadata) SetCodeChallengeMethodsSupported(v []string) {
 	o.CodeChallengeMethodsSupported = v
 }
 
+// GetTokenEndpointAuthMethodsSupported returns the TokenEndpointAuthMethodsSupported field value if set, zero value otherwise.
+func (o *MCPOAuthServerMetadata) GetTokenEndpointAuthMethodsSupported() []string {
+	if o == nil || IsNil(o.TokenEndpointAuthMethodsSupported) {
+		var ret []string
+		return ret
+	}
+	return o.TokenEndpointAuthMethodsSupported
+}
+
+// GetTokenEndpointAuthMethodsSupportedOk returns a tuple with the TokenEndpointAuthMethodsSupported field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *MCPOAuthServerMetadata) GetTokenEndpointAuthMethodsSupportedOk() ([]string, bool) {
+	if o == nil || IsNil(o.TokenEndpointAuthMethodsSupported) {
+		return nil, false
+	}
+	return o.TokenEndpointAuthMethodsSupported, true
+}
+
+// HasTokenEndpointAuthMethodsSupported returns a boolean if a field has been set.
+func (o *MCPOAuthServerMetadata) HasTokenEndpointAuthMethodsSupported() bool {
+	if o != nil && !IsNil(o.TokenEndpointAuthMethodsSupported) {
+		return true
+	}
+
+	return false
+}
+
+// SetTokenEndpointAuthMethodsSupported gets a reference to the given []string and assigns it to the TokenEndpointAuthMethodsSupported field.
+func (o *MCPOAuthServerMetadata) SetTokenEndpointAuthMethodsSupported(v []string) {
+	o.TokenEndpointAuthMethodsSupported = v
+}
+
 func (o MCPOAuthServerMetadata) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -248,6 +282,9 @@ func (o MCPOAuthServerMetadata) ToMap() (map[string]interface{}, error) {
 	toSerialize["response_types_supported"] = o.ResponseTypesSupported
 	toSerialize["grant_types_supported"] = o.GrantTypesSupported
 	toSerialize["code_challenge_methods_supported"] = o.CodeChallengeMethodsSupported
+	if !IsNil(o.TokenEndpointAuthMethodsSupported) {
+		toSerialize["token_endpoint_auth_methods_supported"] = o.TokenEndpointAuthMethodsSupported
+	}
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value
@@ -304,6 +341,7 @@ func (o *MCPOAuthServerMetadata) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "response_types_supported")
 		delete(additionalProperties, "grant_types_supported")
 		delete(additionalProperties, "code_challenge_methods_supported")
+		delete(additionalProperties, "token_endpoint_auth_methods_supported")
 		o.AdditionalProperties = additionalProperties
 	}
 

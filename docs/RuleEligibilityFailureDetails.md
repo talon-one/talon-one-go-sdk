@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**FailureCode** | **string** | A code identifying why the customer was not eligible for the rule in the current session. | 
+**FailureCode** | **string** | A code identifying why the customer was not eligible for the rule in the current session.  - &#x60;CONDITION_NOT_MET&#x60;: One or more conditions of the rule did not evaluate  to &#x60;true&#x60; for the customer.  - &#x60;EFFECT_FAILED&#x60;: The conditions of the rule were met but one of its effects  could not be applied.  | 
 **CouponID** | Pointer to **int64** | The ID of the coupon that was being evaluated when the rule failed.  | [optional] 
 **CouponValue** | Pointer to **string** | The coupon code that was being evaluated when the rule failed.  | [optional] 
 **ReferralID** | Pointer to **int64** | The ID of the referral that was being evaluated when the rule failed.  | [optional] 

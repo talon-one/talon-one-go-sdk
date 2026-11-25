@@ -2037,6 +2037,7 @@ type ApiCreateCouponsRequest struct {
 	campaignId    int64
 	newCoupons    *NewCoupons
 	silent        *string
+	full          *string
 }
 
 // body
@@ -2045,9 +2046,15 @@ func (r ApiCreateCouponsRequest) NewCoupons(newCoupons NewCoupons) ApiCreateCoup
 	return r
 }
 
-// Possible values: &#x60;yes&#x60; or &#x60;no&#x60;. - &#x60;yes&#x60;: Increases the performance of the API call by returning a 204 response. - &#x60;no&#x60;: Returns a 200 response that contains the updated customer profiles.
+// Possible values: &#x60;yes&#x60; or &#x60;no&#x60;. - &#x60;yes&#x60;: Increases the performance of the API call by returning a 204 response. Requires &#x60;full&#x60; to be &#x60;no&#x60;; otherwise a 400 error is returned. - &#x60;no&#x60;: Returns a 200 response that contains the created coupons.
 func (r ApiCreateCouponsRequest) Silent(silent string) ApiCreateCouponsRequest {
 	r.silent = &silent
+	return r
+}
+
+// Possible values: &#x60;yes&#x60; or &#x60;no&#x60;. - &#x60;yes&#x60;: Returns all created coupons. Requires &#x60;silent&#x60; to be &#x60;no&#x60;; otherwise a 400 error is returned. - &#x60;no&#x60;: Returns at most 1000 created coupons.
+func (r ApiCreateCouponsRequest) Full(full string) ApiCreateCouponsRequest {
+	r.full = &full
 	return r
 }
 
@@ -2104,9 +2111,16 @@ func (a *ManagementAPIService) CreateCouponsExecute(r ApiCreateCouponsRequest) (
 	if r.silent != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "silent", r.silent, "form", "")
 	} else {
-		var defaultValue string = "yes"
+		var defaultValue string = "no"
 		parameterAddToHeaderOrQuery(localVarQueryParams, "silent", defaultValue, "form", "")
 		r.silent = &defaultValue
+	}
+	if r.full != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "full", r.full, "form", "")
+	} else {
+		var defaultValue string = "no"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "full", defaultValue, "form", "")
+		r.full = &defaultValue
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -2162,6 +2176,16 @@ func (a *ManagementAPIService) CreateCouponsExecute(r ApiCreateCouponsRequest) (
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v ErrorResponseWithStatus
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

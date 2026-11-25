@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 **GrantType** | **string** | OAuth2 grant type. | 
 **Code** | Pointer to **string** | Authorization code. Required for &#x60;authorization_code&#x60; grant. | [optional] 
 **ClientId** | Pointer to **string** | Client ID. Required for &#x60;authorization_code&#x60; grant. | [optional] 
+**ClientSecret** | Pointer to **string** | Client secret for confidential (static) clients. May also be supplied via HTTP Basic authentication. Public clients registered via dynamic client registration omit it. | [optional] 
 **RedirectUri** | Pointer to **string** | Redirect URI. Required for &#x60;authorization_code&#x60; grant. | [optional] 
 **CodeVerifier** | Pointer to **string** | PKCE code verifier. Required for &#x60;authorization_code&#x60; grant. | [optional] 
 **RefreshToken** | Pointer to **string** | Refresh token. Required for &#x60;refresh_token&#x60; grant. | [optional] 
@@ -99,6 +100,31 @@ SetClientId sets ClientId field to given value.
 `func (o *MCPOAuthTokenRequest) HasClientId() bool`
 
 HasClientId returns a boolean if a field has been set.
+
+### GetClientSecret
+
+`func (o *MCPOAuthTokenRequest) GetClientSecret() string`
+
+GetClientSecret returns the ClientSecret field if non-nil, zero value otherwise.
+
+### GetClientSecretOk
+
+`func (o *MCPOAuthTokenRequest) GetClientSecretOk() (*string, bool)`
+
+GetClientSecretOk returns a tuple with the ClientSecret field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetClientSecret
+
+`func (o *MCPOAuthTokenRequest) SetClientSecret(v string)`
+
+SetClientSecret sets ClientSecret field to given value.
+
+### HasClientSecret
+
+`func (o *MCPOAuthTokenRequest) HasClientSecret() bool`
+
+HasClientSecret returns a boolean if a field has been set.
 
 ### GetRedirectUri
 
