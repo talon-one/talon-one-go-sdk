@@ -26,6 +26,8 @@ type MCPOAuthTokenRequest struct {
 	Code *string `json:"code,omitempty"`
 	// Client ID. Required for `authorization_code` grant.
 	ClientId *string `json:"client_id,omitempty"`
+	// Client secret for confidential (static) clients. May also be supplied via HTTP Basic authentication. Public clients registered via dynamic client registration omit it.
+	ClientSecret *string `json:"client_secret,omitempty"`
 	// Redirect URI. Required for `authorization_code` grant.
 	RedirectUri *string `json:"redirect_uri,omitempty"`
 	// PKCE code verifier. Required for `authorization_code` grant.
@@ -143,6 +145,38 @@ func (o *MCPOAuthTokenRequest) SetClientId(v string) {
 	o.ClientId = &v
 }
 
+// GetClientSecret returns the ClientSecret field value if set, zero value otherwise.
+func (o *MCPOAuthTokenRequest) GetClientSecret() string {
+	if o == nil || IsNil(o.ClientSecret) {
+		var ret string
+		return ret
+	}
+	return *o.ClientSecret
+}
+
+// GetClientSecretOk returns a tuple with the ClientSecret field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *MCPOAuthTokenRequest) GetClientSecretOk() (*string, bool) {
+	if o == nil || IsNil(o.ClientSecret) {
+		return nil, false
+	}
+	return o.ClientSecret, true
+}
+
+// HasClientSecret returns a boolean if a field has been set.
+func (o *MCPOAuthTokenRequest) HasClientSecret() bool {
+	if o != nil && !IsNil(o.ClientSecret) {
+		return true
+	}
+
+	return false
+}
+
+// SetClientSecret gets a reference to the given string and assigns it to the ClientSecret field.
+func (o *MCPOAuthTokenRequest) SetClientSecret(v string) {
+	o.ClientSecret = &v
+}
+
 // GetRedirectUri returns the RedirectUri field value if set, zero value otherwise.
 func (o *MCPOAuthTokenRequest) GetRedirectUri() string {
 	if o == nil || IsNil(o.RedirectUri) {
@@ -256,6 +290,9 @@ func (o MCPOAuthTokenRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ClientId) {
 		toSerialize["client_id"] = o.ClientId
 	}
+	if !IsNil(o.ClientSecret) {
+		toSerialize["client_secret"] = o.ClientSecret
+	}
 	if !IsNil(o.RedirectUri) {
 		toSerialize["redirect_uri"] = o.RedirectUri
 	}
@@ -311,6 +348,7 @@ func (o *MCPOAuthTokenRequest) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "grant_type")
 		delete(additionalProperties, "code")
 		delete(additionalProperties, "client_id")
+		delete(additionalProperties, "client_secret")
 		delete(additionalProperties, "redirect_uri")
 		delete(additionalProperties, "code_verifier")
 		delete(additionalProperties, "refresh_token")

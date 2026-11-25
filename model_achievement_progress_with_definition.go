@@ -48,6 +48,8 @@ type AchievementProgressWithDefinition struct {
 	ReferencedByCampaigns []CampaignReference `json:"referencedByCampaigns"`
 	// The required number of actions or the transactional milestone to complete the achievement.
 	Target *float32 `json:"target,omitempty"`
+	// The relative duration after which the achievement ends and resets for a particular customer profile. This property is omitted for on-completion achievements which have no specified period.  The period is a positive real number followed by one letter indicating the time unit, and an optional rounding suffix.  Examples: `30s`, `40m`, `1h`, `5D`, `7W`, `10M`, `15Y`, `30D_D`, `1W_U`.  The letters indicate the following time units:  - `s`: Seconds.  - `m`: Minutes.  - `h`: Hours.  - `D`: Days.  - `W`: Weeks.  - `M`: Months.  - `Y`: Years.  If a suffix is present, it indicates the following rounding:  - `_D`: Rounds down, to the start of the day. It applies to days only. For example, `30D_D` ends at the start of the day, 30 days after the customer starts the achievement.  - `_U`: Rounds up, to the end of the day, week, month or year. It applies to days, weeks, months and years. For example, `1W_U` ends at the end of the week in which the one-week period would end.
+	AchievementPeriod *string `json:"achievementPeriod,omitempty"`
 	// The policy that determines if and how the achievement recurs. - `no_recurrence`: The achievement can be completed only once. - `on_expiration`: The achievement resets after it expires and becomes available again. - `on_completion`: When the customer progress status reaches `completed`, the achievement resets and becomes available again.
 	AchievementRecurrencePolicy string `json:"achievementRecurrencePolicy"`
 	// The policy that determines how the achievement starts, ends, or resets. - `user_action`: The achievement ends or resets relative to when the customer started the achievement. - `fixed_schedule`: The achievement starts, ends, or resets for all customers following a fixed schedule.
@@ -445,6 +447,38 @@ func (o *AchievementProgressWithDefinition) SetTarget(v float32) {
 	o.Target = &v
 }
 
+// GetAchievementPeriod returns the AchievementPeriod field value if set, zero value otherwise.
+func (o *AchievementProgressWithDefinition) GetAchievementPeriod() string {
+	if o == nil || IsNil(o.AchievementPeriod) {
+		var ret string
+		return ret
+	}
+	return *o.AchievementPeriod
+}
+
+// GetAchievementPeriodOk returns a tuple with the AchievementPeriod field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *AchievementProgressWithDefinition) GetAchievementPeriodOk() (*string, bool) {
+	if o == nil || IsNil(o.AchievementPeriod) {
+		return nil, false
+	}
+	return o.AchievementPeriod, true
+}
+
+// HasAchievementPeriod returns a boolean if a field has been set.
+func (o *AchievementProgressWithDefinition) HasAchievementPeriod() bool {
+	if o != nil && !IsNil(o.AchievementPeriod) {
+		return true
+	}
+
+	return false
+}
+
+// SetAchievementPeriod gets a reference to the given string and assigns it to the AchievementPeriod field.
+func (o *AchievementProgressWithDefinition) SetAchievementPeriod(v string) {
+	o.AchievementPeriod = &v
+}
+
 // GetAchievementRecurrencePolicy returns the AchievementRecurrencePolicy field value
 func (o *AchievementProgressWithDefinition) GetAchievementRecurrencePolicy() string {
 	if o == nil {
@@ -622,6 +656,9 @@ func (o AchievementProgressWithDefinition) ToMap() (map[string]interface{}, erro
 	if !IsNil(o.Target) {
 		toSerialize["target"] = o.Target
 	}
+	if !IsNil(o.AchievementPeriod) {
+		toSerialize["achievementPeriod"] = o.AchievementPeriod
+	}
 	toSerialize["achievementRecurrencePolicy"] = o.AchievementRecurrencePolicy
 	toSerialize["achievementActivationPolicy"] = o.AchievementActivationPolicy
 	if !IsNil(o.AchievementFixedStartDate) {
@@ -698,6 +735,7 @@ func (o *AchievementProgressWithDefinition) UnmarshalJSON(data []byte) (err erro
 		delete(additionalProperties, "campaignIds")
 		delete(additionalProperties, "referencedByCampaigns")
 		delete(additionalProperties, "target")
+		delete(additionalProperties, "achievementPeriod")
 		delete(additionalProperties, "achievementRecurrencePolicy")
 		delete(additionalProperties, "achievementActivationPolicy")
 		delete(additionalProperties, "achievementFixedStartDate")

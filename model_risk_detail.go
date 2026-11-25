@@ -59,6 +59,8 @@ type RiskDetail struct {
 	StatusChangedAt *time.Time `json:"statusChangedAt,omitempty"`
 	// Timestamp of the most recent update.
 	Modified time.Time `json:"modified"`
+	// The current name of the Application this risk belongs to. Shown even if the user does not have access to that Application. Omitted if the Application has been deleted or the risk is not associated with an Application.
+	ApplicationName *string `json:"applicationName,omitempty"`
 	// The affected entities with the highest severity ratios, in descending order.
 	AffectedEntities     []RiskAffectedEntityItem `json:"affectedEntities"`
 	AdditionalProperties map[string]interface{}
@@ -601,6 +603,38 @@ func (o *RiskDetail) SetModified(v time.Time) {
 	o.Modified = v
 }
 
+// GetApplicationName returns the ApplicationName field value if set, zero value otherwise.
+func (o *RiskDetail) GetApplicationName() string {
+	if o == nil || IsNil(o.ApplicationName) {
+		var ret string
+		return ret
+	}
+	return *o.ApplicationName
+}
+
+// GetApplicationNameOk returns a tuple with the ApplicationName field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *RiskDetail) GetApplicationNameOk() (*string, bool) {
+	if o == nil || IsNil(o.ApplicationName) {
+		return nil, false
+	}
+	return o.ApplicationName, true
+}
+
+// HasApplicationName returns a boolean if a field has been set.
+func (o *RiskDetail) HasApplicationName() bool {
+	if o != nil && !IsNil(o.ApplicationName) {
+		return true
+	}
+
+	return false
+}
+
+// SetApplicationName gets a reference to the given string and assigns it to the ApplicationName field.
+func (o *RiskDetail) SetApplicationName(v string) {
+	o.ApplicationName = &v
+}
+
 // GetAffectedEntities returns the AffectedEntities field value
 func (o *RiskDetail) GetAffectedEntities() []RiskAffectedEntityItem {
 	if o == nil {
@@ -666,6 +700,9 @@ func (o RiskDetail) ToMap() (map[string]interface{}, error) {
 		toSerialize["statusChangedAt"] = o.StatusChangedAt
 	}
 	toSerialize["modified"] = o.Modified
+	if !IsNil(o.ApplicationName) {
+		toSerialize["applicationName"] = o.ApplicationName
+	}
 	toSerialize["affectedEntities"] = o.AffectedEntities
 
 	for key, value := range o.AdditionalProperties {
@@ -742,6 +779,7 @@ func (o *RiskDetail) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "statusChangedBy")
 		delete(additionalProperties, "statusChangedAt")
 		delete(additionalProperties, "modified")
+		delete(additionalProperties, "applicationName")
 		delete(additionalProperties, "affectedEntities")
 		o.AdditionalProperties = additionalProperties
 	}

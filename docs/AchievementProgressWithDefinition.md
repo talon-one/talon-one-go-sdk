@@ -17,6 +17,7 @@ Name | Type | Description | Notes
 **CampaignIds** | **[]int64** | The IDs of the campaigns that reference this achievement, in ascending order. | 
 **ReferencedByCampaigns** | [**[]CampaignReference**](CampaignReference.md) | The campaigns that reference this achievement, in ascending order of their &#x60;id&#x60;. | 
 **Target** | Pointer to **float32** | The required number of actions or the transactional milestone to complete the achievement. | [optional] 
+**AchievementPeriod** | Pointer to **string** | The relative duration after which the achievement ends and resets for a particular customer profile. This property is omitted for on-completion achievements which have no specified period.  The period is a positive real number followed by one letter indicating the time unit, and an optional rounding suffix.  Examples: &#x60;30s&#x60;, &#x60;40m&#x60;, &#x60;1h&#x60;, &#x60;5D&#x60;, &#x60;7W&#x60;, &#x60;10M&#x60;, &#x60;15Y&#x60;, &#x60;30D_D&#x60;, &#x60;1W_U&#x60;.  The letters indicate the following time units:  - &#x60;s&#x60;: Seconds.  - &#x60;m&#x60;: Minutes.  - &#x60;h&#x60;: Hours.  - &#x60;D&#x60;: Days.  - &#x60;W&#x60;: Weeks.  - &#x60;M&#x60;: Months.  - &#x60;Y&#x60;: Years.  If a suffix is present, it indicates the following rounding:  - &#x60;_D&#x60;: Rounds down, to the start of the day. It applies to days only. For example, &#x60;30D_D&#x60; ends at the start of the day, 30 days after the customer starts the achievement.  - &#x60;_U&#x60;: Rounds up, to the end of the day, week, month or year. It applies to days, weeks, months and years. For example, &#x60;1W_U&#x60; ends at the end of the week in which the one-week period would end.  | [optional] 
 **AchievementRecurrencePolicy** | **string** | The policy that determines if and how the achievement recurs. - &#x60;no_recurrence&#x60;: The achievement can be completed only once. - &#x60;on_expiration&#x60;: The achievement resets after it expires and becomes available again. - &#x60;on_completion&#x60;: When the customer progress status reaches &#x60;completed&#x60;, the achievement resets and becomes available again.  | 
 **AchievementActivationPolicy** | **string** | The policy that determines how the achievement starts, ends, or resets. - &#x60;user_action&#x60;: The achievement ends or resets relative to when the customer started the achievement. - &#x60;fixed_schedule&#x60;: The achievement starts, ends, or resets for all customers following a fixed schedule.  | 
 **AchievementFixedStartDate** | Pointer to **time.Time** | The achievement&#39;s start date when &#x60;achievementActivationPolicy&#x60; is equal to &#x60;fixed_schedule&#x60;.  **Note:** It is an RFC3339 timestamp string.  | [optional] 
@@ -326,6 +327,31 @@ SetTarget sets Target field to given value.
 `func (o *AchievementProgressWithDefinition) HasTarget() bool`
 
 HasTarget returns a boolean if a field has been set.
+
+### GetAchievementPeriod
+
+`func (o *AchievementProgressWithDefinition) GetAchievementPeriod() string`
+
+GetAchievementPeriod returns the AchievementPeriod field if non-nil, zero value otherwise.
+
+### GetAchievementPeriodOk
+
+`func (o *AchievementProgressWithDefinition) GetAchievementPeriodOk() (*string, bool)`
+
+GetAchievementPeriodOk returns a tuple with the AchievementPeriod field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAchievementPeriod
+
+`func (o *AchievementProgressWithDefinition) SetAchievementPeriod(v string)`
+
+SetAchievementPeriod sets AchievementPeriod field to given value.
+
+### HasAchievementPeriod
+
+`func (o *AchievementProgressWithDefinition) HasAchievementPeriod() bool`
+
+HasAchievementPeriod returns a boolean if a field has been set.
 
 ### GetAchievementRecurrencePolicy
 

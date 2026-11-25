@@ -23,6 +23,7 @@ Name | Type | Description | Notes
 **StatusChangedBy** | Pointer to **int64** | The ID of the user who performed the latest reclassification action. | [optional] 
 **StatusChangedAt** | Pointer to **time.Time** | The time of the latest reclassification action. | [optional] 
 **Modified** | **time.Time** | Timestamp of the most recent update. | 
+**ApplicationName** | Pointer to **string** | The current name of the Application this risk belongs to. Shown even if the user does not have access to that Application. Omitted if the Application has been deleted or the risk is not associated with an Application.  | [optional] 
 **AffectedEntities** | [**[]RiskAffectedEntityItem**](RiskAffectedEntityItem.md) | The affected entities with the highest severity ratios, in descending order. | 
 
 ## Methods
@@ -453,6 +454,31 @@ and a boolean to check if the value has been set.
 
 SetModified sets Modified field to given value.
 
+
+### GetApplicationName
+
+`func (o *RiskDetail) GetApplicationName() string`
+
+GetApplicationName returns the ApplicationName field if non-nil, zero value otherwise.
+
+### GetApplicationNameOk
+
+`func (o *RiskDetail) GetApplicationNameOk() (*string, bool)`
+
+GetApplicationNameOk returns a tuple with the ApplicationName field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetApplicationName
+
+`func (o *RiskDetail) SetApplicationName(v string)`
+
+SetApplicationName sets ApplicationName field to given value.
+
+### HasApplicationName
+
+`func (o *RiskDetail) HasApplicationName() bool`
+
+HasApplicationName returns a boolean if a field has been set.
 
 ### GetAffectedEntities
 

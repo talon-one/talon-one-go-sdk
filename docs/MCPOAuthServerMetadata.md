@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **ResponseTypesSupported** | **[]string** | List of supported OAuth2 response types. | 
 **GrantTypesSupported** | **[]string** | List of supported OAuth2 grant types. | 
 **CodeChallengeMethodsSupported** | **[]string** | List of supported PKCE code challenge methods. | 
+**TokenEndpointAuthMethodsSupported** | Pointer to **[]string** | List of supported client authentication methods at the token endpoint. Public clients use &#x60;none&#x60;; confidential clients use &#x60;client_secret_post&#x60; or &#x60;client_secret_basic&#x60;. | [optional] 
 
 ## Methods
 
@@ -170,6 +171,31 @@ and a boolean to check if the value has been set.
 
 SetCodeChallengeMethodsSupported sets CodeChallengeMethodsSupported field to given value.
 
+
+### GetTokenEndpointAuthMethodsSupported
+
+`func (o *MCPOAuthServerMetadata) GetTokenEndpointAuthMethodsSupported() []string`
+
+GetTokenEndpointAuthMethodsSupported returns the TokenEndpointAuthMethodsSupported field if non-nil, zero value otherwise.
+
+### GetTokenEndpointAuthMethodsSupportedOk
+
+`func (o *MCPOAuthServerMetadata) GetTokenEndpointAuthMethodsSupportedOk() (*[]string, bool)`
+
+GetTokenEndpointAuthMethodsSupportedOk returns a tuple with the TokenEndpointAuthMethodsSupported field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTokenEndpointAuthMethodsSupported
+
+`func (o *MCPOAuthServerMetadata) SetTokenEndpointAuthMethodsSupported(v []string)`
+
+SetTokenEndpointAuthMethodsSupported sets TokenEndpointAuthMethodsSupported field to given value.
+
+### HasTokenEndpointAuthMethodsSupported
+
+`func (o *MCPOAuthServerMetadata) HasTokenEndpointAuthMethodsSupported() bool`
+
+HasTokenEndpointAuthMethodsSupported returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

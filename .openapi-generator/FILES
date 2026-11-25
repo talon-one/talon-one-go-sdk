@@ -10,6 +10,7 @@
 .gitignore
 .openapi-generator-ignore
 .travis.yml
+LICENSE
 MIGRATION.md
 Makefile
 README.md
@@ -211,6 +212,7 @@ docs/CatalogActionPatchMany.md
 docs/CatalogActionRemove.md
 docs/CatalogActionRemoveMany.md
 docs/CatalogItem.md
+docs/CatalogItemSummary.md
 docs/CatalogRule.md
 docs/CatalogRuleset.md
 docs/CatalogSyncRequest.md
@@ -401,6 +403,12 @@ docs/ExperimentVerdictResponse.md
 docs/ExpiringCardPointsData.md
 docs/ExpiringPointsData.md
 docs/Export.md
+docs/ExportJob.md
+docs/ExportJobDestination.md
+docs/ExportJobLog.md
+docs/ExportJobLogResult.md
+docs/ExportJobStatus.md
+docs/ExportJobType.md
 docs/ExtendLoyaltyPointsExpiryDateEffectProps.md
 docs/ExtendedCoupon.md
 docs/FeatureFlag.md
@@ -675,6 +683,7 @@ docs/NewExperiment.md
 docs/NewExperimentBlueprint.md
 docs/NewExperimentVariant.md
 docs/NewExperimentVariantArray.md
+docs/NewExportJob.md
 docs/NewExternalInvitation.md
 docs/NewGiveawaysPool.md
 docs/NewIntegrationHubCoupons.md
@@ -965,11 +974,14 @@ docs/UpdateExperimentBlueprint.md
 docs/UpdateExperimentVariant.md
 docs/UpdateExperimentVariantArray.md
 docs/UpdateExperimentVariantName.md
+docs/UpdateExportJob.md
 docs/UpdateLoyaltyCard.md
 docs/UpdateLoyaltyCardRequest.md
 docs/UpdateLoyaltyPointsExpiryBlock.md
 docs/UpdateLoyaltyPointsExpiryBlock1Program.md
 docs/UpdateLoyaltyProgram.md
+docs/UpdateLoyaltyProgramMembershipBlock.md
+docs/UpdateLoyaltyProgramMembershipBlock1Program.md
 docs/UpdateLoyaltyProgramTier.md
 docs/UpdatePicklist.md
 docs/UpdatePriceType.md
@@ -1196,6 +1208,7 @@ model_catalog_action_patch_many.go
 model_catalog_action_remove.go
 model_catalog_action_remove_many.go
 model_catalog_item.go
+model_catalog_item_summary.go
 model_catalog_rule.go
 model_catalog_ruleset.go
 model_catalog_sync_request.go
@@ -1386,6 +1399,12 @@ model_experiment_verdict_response.go
 model_expiring_card_points_data.go
 model_expiring_points_data.go
 model_export.go
+model_export_job.go
+model_export_job_destination.go
+model_export_job_log.go
+model_export_job_log_result.go
+model_export_job_status.go
+model_export_job_type.go
 model_extend_loyalty_points_expiry_date_effect_props.go
 model_extended_coupon.go
 model_feature_flag.go
@@ -1658,6 +1677,7 @@ model_new_experiment.go
 model_new_experiment_blueprint.go
 model_new_experiment_variant.go
 model_new_experiment_variant_array.go
+model_new_export_job.go
 model_new_external_invitation.go
 model_new_giveaways_pool.go
 model_new_integration_hub_coupons.go
@@ -1948,11 +1968,14 @@ model_update_experiment_blueprint.go
 model_update_experiment_variant.go
 model_update_experiment_variant_array.go
 model_update_experiment_variant_name.go
+model_update_export_job.go
 model_update_loyalty_card.go
 model_update_loyalty_card_request.go
 model_update_loyalty_points_expiry_block.go
 model_update_loyalty_points_expiry_block_1_program.go
 model_update_loyalty_program.go
+model_update_loyalty_program_membership_block.go
+model_update_loyalty_program_membership_block_1_program.go
 model_update_loyalty_program_tier.go
 model_update_picklist.go
 model_update_price_type.go

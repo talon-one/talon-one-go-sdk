@@ -28,7 +28,7 @@ type StrikethroughTrigger struct {
 	// The creation time of the event that triggered the strikethrough labeling.
 	TriggeredAt time.Time `json:"triggeredAt"`
 	// The total number of items affected by the event that triggered the strikethrough labeling.
-	TotalAffectedItems int32 `json:"totalAffectedItems"`
+	TotalAffectedItems int64 `json:"totalAffectedItems"`
 	// The arbitrary properties associated with this trigger type.
 	Payload              map[string]interface{} `json:"payload"`
 	AdditionalProperties map[string]interface{}
@@ -40,7 +40,7 @@ type _StrikethroughTrigger StrikethroughTrigger
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func BuildStrikethroughTrigger(id int64, type_ string, triggeredAt time.Time, totalAffectedItems int32, payload map[string]interface{}) *StrikethroughTrigger {
+func BuildStrikethroughTrigger(id int64, type_ string, triggeredAt time.Time, totalAffectedItems int64, payload map[string]interface{}) *StrikethroughTrigger {
 	this := StrikethroughTrigger{}
 	this.Id = id
 	this.Type = type_
@@ -131,9 +131,9 @@ func (o *StrikethroughTrigger) SetTriggeredAt(v time.Time) {
 }
 
 // GetTotalAffectedItems returns the TotalAffectedItems field value
-func (o *StrikethroughTrigger) GetTotalAffectedItems() int32 {
+func (o *StrikethroughTrigger) GetTotalAffectedItems() int64 {
 	if o == nil {
-		var ret int32
+		var ret int64
 		return ret
 	}
 
@@ -142,7 +142,7 @@ func (o *StrikethroughTrigger) GetTotalAffectedItems() int32 {
 
 // GetTotalAffectedItemsOk returns a tuple with the TotalAffectedItems field value
 // and a boolean to check if the value has been set.
-func (o *StrikethroughTrigger) GetTotalAffectedItemsOk() (*int32, bool) {
+func (o *StrikethroughTrigger) GetTotalAffectedItemsOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -150,7 +150,7 @@ func (o *StrikethroughTrigger) GetTotalAffectedItemsOk() (*int32, bool) {
 }
 
 // SetTotalAffectedItems sets field value
-func (o *StrikethroughTrigger) SetTotalAffectedItems(v int32) {
+func (o *StrikethroughTrigger) SetTotalAffectedItems(v int64) {
 	o.TotalAffectedItems = v
 }
 

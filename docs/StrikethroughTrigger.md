@@ -7,14 +7,14 @@ Name | Type | Description | Notes
 **Id** | **int64** | The ID of the event that triggered the strikethrough labeling. | 
 **Type** | **string** | The type of event that triggered the strikethrough labeling. | 
 **TriggeredAt** | **time.Time** | The creation time of the event that triggered the strikethrough labeling. | 
-**TotalAffectedItems** | **int32** | The total number of items affected by the event that triggered the strikethrough labeling. | 
+**TotalAffectedItems** | **int64** | The total number of items affected by the event that triggered the strikethrough labeling. | 
 **Payload** | **map[string]interface{}** | The arbitrary properties associated with this trigger type. | 
 
 ## Methods
 
 ### NewStrikethroughTrigger
 
-`func NewStrikethroughTrigger(id int64, type_ string, triggeredAt time.Time, totalAffectedItems int32, payload map[string]interface{}, ) *StrikethroughTrigger`
+`func NewStrikethroughTrigger(id int64, type_ string, triggeredAt time.Time, totalAffectedItems int64, payload map[string]interface{}, ) *StrikethroughTrigger`
 
 NewStrikethroughTrigger instantiates a new StrikethroughTrigger object
 This constructor will assign default values to properties that have it defined,
@@ -91,20 +91,20 @@ SetTriggeredAt sets TriggeredAt field to given value.
 
 ### GetTotalAffectedItems
 
-`func (o *StrikethroughTrigger) GetTotalAffectedItems() int32`
+`func (o *StrikethroughTrigger) GetTotalAffectedItems() int64`
 
 GetTotalAffectedItems returns the TotalAffectedItems field if non-nil, zero value otherwise.
 
 ### GetTotalAffectedItemsOk
 
-`func (o *StrikethroughTrigger) GetTotalAffectedItemsOk() (*int32, bool)`
+`func (o *StrikethroughTrigger) GetTotalAffectedItemsOk() (*int64, bool)`
 
 GetTotalAffectedItemsOk returns a tuple with the TotalAffectedItems field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetTotalAffectedItems
 
-`func (o *StrikethroughTrigger) SetTotalAffectedItems(v int32)`
+`func (o *StrikethroughTrigger) SetTotalAffectedItems(v int64)`
 
 SetTotalAffectedItems sets TotalAffectedItems field to given value.
 
